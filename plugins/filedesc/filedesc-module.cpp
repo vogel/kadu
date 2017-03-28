@@ -25,9 +25,9 @@
 
 FiledescModule::FiledescModule()
 {
-	add_type<FiledescPluginObject>();
-	add_type<FileDescription>();
-	add_type<FileDescStatusChanger>();
+    add_type<FiledescPluginObject>();
+    add_type<FileDescription>();
+    add_type<FileDescStatusChanger>();
 }
 
 FiledescModule::~FiledescModule()

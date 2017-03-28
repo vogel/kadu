@@ -51,66 +51,65 @@ class Talkable;
  */
 class HistoryQueryResultsModel : public QAbstractListModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	QString TalkableHeader;
-	QString LengthHeader;
-	QVector<HistoryQueryResult> Results;
+    QString TalkableHeader;
+    QString LengthHeader;
+    QVector<HistoryQueryResult> Results;
 
 private slots:
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new model.
-	 * @param parent QObject parent of new model.
-	 */
-	explicit HistoryQueryResultsModel(QObject *parent = nullptr);
-	virtual ~HistoryQueryResultsModel();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new model.
+     * @param parent QObject parent of new model.
+     */
+    explicit HistoryQueryResultsModel(QObject *parent = nullptr);
+    virtual ~HistoryQueryResultsModel();
 
-	virtual int columnCount(const QModelIndex &parent) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set title of first column.
-	 * @param talkableHeader new title for first column
-	 *
-	 * Default title of first column is "Chat".
-	 */
-	void setTalkableHeader(const QString &talkableHeader);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set title of first column.
+     * @param talkableHeader new title for first column
+     *
+     * Default title of first column is "Chat".
+     */
+    void setTalkableHeader(const QString &talkableHeader);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set title of third column.
-	 * @param lengthHeader new title for third column
-	 *
-	 * Default title of third column is "Length".
-	 */
-	void setLengthHeader(const QString &lengthHeader);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set title of third column.
+     * @param lengthHeader new title for third column
+     *
+     * Default title of third column is "Length".
+     */
+    void setLengthHeader(const QString &lengthHeader);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set vector of HistoryQueryResult items.
-	 * @param results new vector of HistoryQueryResult items
-	 */
-	void setResults(const QVector<HistoryQueryResult> &results);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set vector of HistoryQueryResult items.
+     * @param results new vector of HistoryQueryResult items
+     */
+    void setResults(const QVector<HistoryQueryResult> &results);
 
-	/**
-	 * Adds entry for given date. If item for date is not available, new one is created.
-	 */
-	void addEntry(const QDate &date, const Talkable &talkable, const QString &title);
-
+    /**
+     * Adds entry for given date. If item for date is not available, new one is created.
+     */
+    void addEntry(const QDate &date, const Talkable &talkable, const QString &title);
 };
 
 /**
  * @}
  */
 
-#endif // HISTORY_QUERY_RESULTS_MODEL_H
+#endif   // HISTORY_QUERY_RESULTS_MODEL_H

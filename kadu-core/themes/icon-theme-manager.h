@@ -31,26 +31,25 @@ class PathsProvider;
 
 class IconThemeManager : public ThemeManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static QString defaultTheme();
+    static QString defaultTheme();
 
-	Q_INVOKABLE explicit IconThemeManager(QObject *parent = nullptr);
-	virtual ~IconThemeManager();
+    Q_INVOKABLE explicit IconThemeManager(QObject *parent = nullptr);
+    virtual ~IconThemeManager();
 
 protected:
-	virtual QString defaultThemeName() const;
-	virtual QStringList defaultThemePaths() const;
-	virtual bool isValidThemePath(const QString &themePath) const;
+    virtual QString defaultThemeName() const;
+    virtual QStringList defaultThemePaths() const;
+    virtual bool isValidThemePath(const QString &themePath) const;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

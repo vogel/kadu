@@ -57,101 +57,104 @@ class AccountManager;
  */
 class SqlAccountsMapping : public QObject, AccountsAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of SqlAccountsMapping class.
-	 * @param database database with kadu_accounts table
-	 * @param parent QObject parent of new SqlAccountsMapping object
-	 *
-	 * Database provided in this constructor is not checked for existence or validity of kadu_accounts table. It is caller responsibility
-	 * to provide proper database.
-	 */
-	explicit SqlAccountsMapping(const QSqlDatabase &database, QObject *parent = nullptr);
-	virtual ~SqlAccountsMapping();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of SqlAccountsMapping class.
+     * @param database database with kadu_accounts table
+     * @param parent QObject parent of new SqlAccountsMapping object
+     *
+     * Database provided in this constructor is not checked for existence or validity of kadu_accounts table. It is
+     * caller responsibility
+     * to provide proper database.
+     */
+    explicit SqlAccountsMapping(const QSqlDatabase &database, QObject *parent = nullptr);
+    virtual ~SqlAccountsMapping();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return Account matched with given id from database.
-	 * @param sqlId id from database
-	 *
-	 * This method return an Account that matches with given id from database. If no matching account is found, Account::null is returned.
-	 */
-	Account accountById(int sqlId) const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return Account matched with given id from database.
+     * @param sqlId id from database
+     *
+     * This method return an Account that matches with given id from database. If no matching account is found,
+     * Account::null is returned.
+     */
+    Account accountById(int sqlId) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return sql id matched with given account.
-	 * @param account account to match to sql id
-	 *
-	 * This method return sql id that matches with given account. If no matching id is found, 0 is returned.
-	 */
-	static int idByAccount(const Account &account);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return sql id matched with given account.
+     * @param account account to match to sql id
+     *
+     * This method return sql id that matches with given account. If no matching id is found, 0 is returned.
+     */
+    static int idByAccount(const Account &account);
 
 protected:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new kadu_accounts entry for new account.
-	 * @param account added account
-	 *
-	 * This slot is called every time an account is added in @link AccountManager @endlink. New entry is added to database
-	 * to match data of new account.
-	 */
-	virtual void accountAdded(Account account) override;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add new kadu_accounts entry for new account.
+     * @param account added account
+     *
+     * This slot is called every time an account is added in @link AccountManager @endlink. New entry is added to
+     * database
+     * to match data of new account.
+     */
+    virtual void accountAdded(Account account) override;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clear kadu_accounts entry for removed account.
-	 * @param account added account
-	 *
-	 * This slot is called every time an account is removed from @link AccountManager @endlink. Entry for this account is cleared
-	 * from database so no protocol or account username is remembered.
-	 */
-	virtual void accountRemoved(Account account) override;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Clear kadu_accounts entry for removed account.
+     * @param account added account
+     *
+     * This slot is called every time an account is removed from @link AccountManager @endlink. Entry for this account
+     * is cleared
+     * from database so no protocol or account username is remembered.
+     */
+    virtual void accountRemoved(Account account) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
+    QPointer<AccountManager> m_accountManager;
 
-	const QSqlDatabase &Database;
-	mutable QMutex Mutex;
-	QMap<int, Account> AccountMapping;
+    const QSqlDatabase &Database;
+    mutable QMutex Mutex;
+    QMap<int, Account> AccountMapping;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add mapping of given id to given account.
-	 * @param id id to map
-	 * @param account account to map
-	 *
-	 * This method operates only on internal QMap and account's custom properties. No database changes
-	 * are performed.
-	 */
-	void addMapping(int id, const Account &account);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add mapping of given id to given account.
+     * @param id id to map
+     * @param account account to map
+     *
+     * This method operates only on internal QMap and account's custom properties. No database changes
+     * are performed.
+     */
+    void addMapping(int id, const Account &account);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Load mapping from database.
-	 *
-	 * This method loads mapping from database. All database entries from kadu_accounts table are matched
-	 * to existing accounts. Entries without valid accounts will be ignored by this method.
-	 */
-	void loadMappingsFromDatabase();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Load mapping from database.
+     *
+     * This method loads mapping from database. All database entries from kadu_accounts table are matched
+     * to existing accounts. Entries without valid accounts will be ignored by this method.
+     */
+    void loadMappingsFromDatabase();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_INIT void init();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Update kadu_accounts entry to new account's data.
-	 * @param account updated account
-	 *
-	 * This slot is called every time an account registered in @link AccountManager @endlink changes. Database data
-	 * is updated to match new data of changed account.
-	 */
-	void accountUpdated(const Account &account);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Update kadu_accounts entry to new account's data.
+     * @param account updated account
+     *
+     * This slot is called every time an account registered in @link AccountManager @endlink changes. Database data
+     * is updated to match new data of changed account.
+     */
+    void accountUpdated(const Account &account);
 };
 
 /**

@@ -30,25 +30,25 @@ class QNetworkReply;
 
 class GaduDriveSendStatusUpdateRequest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduDriveSendStatusUpdateRequest(GaduDriveSessionToken sessionToken, QString ticketId,
-		QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~GaduDriveSendStatusUpdateRequest();
+    explicit GaduDriveSendStatusUpdateRequest(
+        GaduDriveSessionToken sessionToken, QString ticketId, QNetworkAccessManager *networkAccessManager,
+        QObject *parent = nullptr);
+    virtual ~GaduDriveSendStatusUpdateRequest();
 
 signals:
-	void statusUpdateReceived(GaduDriveSendTicket);
+    void statusUpdateReceived(GaduDriveSendTicket);
 
 private:
-	GaduDriveSessionToken m_sessionToken;
-	QString m_ticketId;
-	QNetworkAccessManager *m_networkAccessManager;
-	QPointer<QNetworkReply> m_reply;
+    GaduDriveSessionToken m_sessionToken;
+    QString m_ticketId;
+    QNetworkAccessManager *m_networkAccessManager;
+    QPointer<QNetworkReply> m_reply;
 
-	void sendRequest();
+    void sendRequest();
 
 private slots:
-	void requestFinished();
-
+    void requestFinished();
 };

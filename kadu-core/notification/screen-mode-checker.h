@@ -27,26 +27,35 @@ class QTimer;
 
 class ScreenModeChecker : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QTimer *FullScreenCheckTimer;
-	bool InFullScreen;
+    QTimer *FullScreenCheckTimer;
+    bool InFullScreen;
 
 private slots:
-	void checkFullScreen();
+    void checkFullScreen();
 
 public:
-	ScreenModeChecker();
-	virtual ~ScreenModeChecker();
+    ScreenModeChecker();
+    virtual ~ScreenModeChecker();
 
-	void enable();
-	void disable();
+    void enable();
+    void disable();
 
-	// Do not call these methods in c-tor/d-tor!
-	virtual bool isFullscreenAppActive() { return false; }
-	virtual bool isScreensaverActive() { return false; }
-	virtual bool isDummy() { return true; }
+    // Do not call these methods in c-tor/d-tor!
+    virtual bool isFullscreenAppActive()
+    {
+        return false;
+    }
+    virtual bool isScreensaverActive()
+    {
+        return false;
+    }
+    virtual bool isDummy()
+    {
+        return true;
+    }
 
 signals:
-	void fullscreenToggled(bool inFullscreen);
+    void fullscreenToggled(bool inFullscreen);
 };

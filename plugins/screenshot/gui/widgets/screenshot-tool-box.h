@@ -28,22 +28,21 @@ class QLabel;
 
 class ScreenshotToolBox : public QFrame
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *GeometryLabel;
-	QLabel *FileSizeLabel;
+    QLabel *GeometryLabel;
+    QLabel *FileSizeLabel;
 
 public:
-	explicit ScreenshotToolBox(QWidget *parent = nullptr);
-	virtual ~ScreenshotToolBox();
+    explicit ScreenshotToolBox(QWidget *parent = nullptr);
+    virtual ~ScreenshotToolBox();
 
-	void setGeometry(const QString &geometry);
-	void setFileSize(const QString &fileSize);
+    void setGeometry(const QString &geometry);
+    void setFileSize(const QString &fileSize);
 
 signals:
-	void crop();
-	void cancel();
-
+    void crop();
+    void cancel();
 };
 
-#endif // SCREENSHOT_TOOL_BOX_H
+#endif   // SCREENSHOT_TOOL_BOX_H

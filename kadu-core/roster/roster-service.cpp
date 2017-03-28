@@ -24,12 +24,11 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-task-type.h"
 
-RosterService::RosterService(const QVector<Contact> &contacts, Protocol *protocol) :
-		ProtocolService{protocol, protocol},
-		m_contacts{std::move(contacts)}
+RosterService::RosterService(const QVector<Contact> &contacts, Protocol *protocol)
+        : ProtocolService{protocol, protocol}, m_contacts{std::move(contacts)}
 {
-	for (auto &&contact : m_contacts)
-		connectContact(contact);
+    for (auto &&contact : m_contacts)
+        connectContact(contact);
 }
 
 RosterService::~RosterService()
@@ -38,98 +37,96 @@ RosterService::~RosterService()
 
 void RosterService::contactUpdated()
 {
-	auto contact = Contact{sender()};
+    auto contact = Contact{sender()};
 
-	Q_ASSERT(contact);
-	Q_ASSERT(m_contacts.contains(contact));
+    Q_ASSERT(contact);
+    Q_ASSERT(m_contacts.contains(contact));
 
-	if (contact.contactAccount() != account() || contact.isAnonymous())
-		return;
+    if (contact.contactAccount() != account() || contact.isAnonymous())
+        return;
 
-	emit contactUpdated(contact);
+    emit contactUpdated(contact);
 }
 
 void RosterService::contactUpdatedLocally()
 {
-	auto contact = Contact{sender()};
+    auto contact = Contact{sender()};
 
-	Q_ASSERT(contact);
-	Q_ASSERT(m_contacts.contains(contact));
+    Q_ASSERT(contact);
+    Q_ASSERT(m_contacts.contains(contact));
 
-	if (contact.contactAccount() != account() || contact.isAnonymous())
-		return;
+    if (contact.contactAccount() != account() || contact.isAnonymous())
+        return;
 
-	emit contactUpdatedLocally(contact);
+    emit contactUpdatedLocally(contact);
 }
 
 void RosterService::fixupInitialState()
 {
-	for (auto &&contact : m_contacts)
-		if (contact.rosterEntry())
-			contact.rosterEntry()->fixupInitialState();
+    for (auto &&contact : m_contacts)
+        if (contact.rosterEntry())
+            contact.rosterEntry()->fixupInitialState();
 }
 
 void RosterService::connectContact(const Contact &contact)
 {
-	connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	connect(contact, SIGNAL(updatedLocally()), this, SLOT(contactUpdatedLocally()));
+    connect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+    connect(contact, SIGNAL(updatedLocally()), this, SLOT(contactUpdatedLocally()));
 }
 
 void RosterService::disconnectContact(const Contact &contact)
 {
-	disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
-	disconnect(contact, SIGNAL(updatedLocally()), this, SLOT(contactUpdatedLocally()));
+    disconnect(contact, SIGNAL(updated()), this, SLOT(contactUpdated()));
+    disconnect(contact, SIGNAL(updatedLocally()), this, SLOT(contactUpdatedLocally()));
 }
 
-RosterServiceTasks * RosterService::tasks() const
+RosterServiceTasks *RosterService::tasks() const
 {
-	return nullptr;
+    return nullptr;
 }
 
-const QVector<Contact> & RosterService::contacts() const
+const QVector<Contact> &RosterService::contacts() const
 {
-	return m_contacts;
+    return m_contacts;
 }
 
 void RosterService::addContact(const Contact &contact)
 {
-	if (contact.contactAccount() != account() || contact.isAnonymous())
-		return;
+    if (contact.contactAccount() != account() || contact.isAnonymous())
+        return;
 
-	if (m_contacts.contains(contact))
-		return;
+    if (m_contacts.contains(contact))
+        return;
 
-	m_contacts.append(contact);
-	connectContact(contact);
+    m_contacts.append(contact);
+    connectContact(contact);
 
-	emit contactAdded(contact);
+    emit contactAdded(contact);
 }
 
 void RosterService::removeContact(const Contact &contact)
 {
-	if (contact.contactAccount() != account())
-		return;
+    if (contact.contactAccount() != account())
+        return;
 
-	int index = m_contacts.indexOf(contact);
-	if (index < 0)
-		return;
+    int index = m_contacts.indexOf(contact);
+    if (index < 0)
+        return;
 
-	m_contacts.remove(index);
-	disconnectContact(contact);
+    m_contacts.remove(index);
+    disconnectContact(contact);
 
-	emit contactRemoved(contact);
+    emit contactRemoved(contact);
 }
 
-RosterService * rosterService(Account account)
+RosterService *rosterService(Account account)
 {
-	return rosterService(protocol(account));
+    return rosterService(protocol(account));
 }
 
-RosterService * rosterService(Protocol *protocol)
+RosterService *rosterService(Protocol *protocol)
 {
-	return protocol
-		? protocol->rosterService()
-		: nullptr;
+    return protocol ? protocol->rosterService() : nullptr;
 }
 
 #include "moc_roster-service.cpp"

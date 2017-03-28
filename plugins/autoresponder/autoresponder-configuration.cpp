@@ -19,89 +19,90 @@
 
 #include "autoresponder-configuration.h"
 
-AutoresponderConfiguration::AutoresponderConfiguration() :
-		RespondConferences(false), RespondOnlyFirst(false), StatusAvailable(false), StatusBusy(false), StatusInvisible(false)
+AutoresponderConfiguration::AutoresponderConfiguration()
+        : RespondConferences(false), RespondOnlyFirst(false), StatusAvailable(false), StatusBusy(false),
+          StatusInvisible(false)
 {
 }
 
 AutoresponderConfiguration::AutoresponderConfiguration(const AutoresponderConfiguration &copyMe)
 {
-	AutoRespondText = copyMe.AutoRespondText;
-	RespondConferences = copyMe.RespondConferences;
-	RespondOnlyFirst = copyMe.RespondOnlyFirst;
-	StatusAvailable = copyMe.StatusAvailable;
-	StatusBusy = copyMe.StatusBusy;
-	StatusInvisible = copyMe.StatusInvisible;
+    AutoRespondText = copyMe.AutoRespondText;
+    RespondConferences = copyMe.RespondConferences;
+    RespondOnlyFirst = copyMe.RespondOnlyFirst;
+    StatusAvailable = copyMe.StatusAvailable;
+    StatusBusy = copyMe.StatusBusy;
+    StatusInvisible = copyMe.StatusInvisible;
 }
 
-AutoresponderConfiguration & AutoresponderConfiguration::operator = (const AutoresponderConfiguration &copyMe)
+AutoresponderConfiguration &AutoresponderConfiguration::operator=(const AutoresponderConfiguration &copyMe)
 {
-	AutoRespondText = copyMe.AutoRespondText;
-	RespondConferences = copyMe.RespondConferences;
-	RespondOnlyFirst = copyMe.RespondOnlyFirst;
-	StatusAvailable = copyMe.StatusAvailable;
-	StatusBusy = copyMe.StatusBusy;
-	StatusInvisible = copyMe.StatusInvisible;
+    AutoRespondText = copyMe.AutoRespondText;
+    RespondConferences = copyMe.RespondConferences;
+    RespondOnlyFirst = copyMe.RespondOnlyFirst;
+    StatusAvailable = copyMe.StatusAvailable;
+    StatusBusy = copyMe.StatusBusy;
+    StatusInvisible = copyMe.StatusInvisible;
 
-	return *this;
+    return *this;
 }
 
 void AutoresponderConfiguration::setAutoRespondText(const QString &autoRespondText)
 {
-	AutoRespondText = autoRespondText;
+    AutoRespondText = autoRespondText;
 }
 
 QString AutoresponderConfiguration::autoRespondText() const
 {
-	return AutoRespondText;
+    return AutoRespondText;
 }
 
 void AutoresponderConfiguration::setRespondConferences(bool respondConferences)
 {
-	RespondConferences = respondConferences;
+    RespondConferences = respondConferences;
 }
 
 bool AutoresponderConfiguration::respondConferences() const
 {
-	return RespondConferences;
+    return RespondConferences;
 }
 
 void AutoresponderConfiguration::setRespondOnlyFirst(bool respondOnlyFirst)
 {
-	RespondOnlyFirst = respondOnlyFirst;
+    RespondOnlyFirst = respondOnlyFirst;
 }
 
 bool AutoresponderConfiguration::respondOnlyFirst() const
 {
-	return RespondOnlyFirst;
+    return RespondOnlyFirst;
 }
 
 void AutoresponderConfiguration::setStatusAvailable(bool statusAvailable)
 {
-	StatusAvailable = statusAvailable;
+    StatusAvailable = statusAvailable;
 }
 
 bool AutoresponderConfiguration::statusAvailable() const
 {
-	return StatusAvailable;
+    return StatusAvailable;
 }
 
 void AutoresponderConfiguration::setStatusBusy(bool statusBusy)
 {
-	StatusBusy = statusBusy;
+    StatusBusy = statusBusy;
 }
 
 bool AutoresponderConfiguration::statusBusy() const
 {
-	return StatusBusy;
+    return StatusBusy;
 }
 
 void AutoresponderConfiguration::setStatusInvisible(bool statusInvisible)
 {
-	StatusInvisible = statusInvisible;
+    StatusInvisible = statusInvisible;
 }
 
 bool AutoresponderConfiguration::statusInvisible() const
 {
-	return StatusInvisible;
+    return StatusInvisible;
 }

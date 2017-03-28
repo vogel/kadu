@@ -22,8 +22,7 @@
 
 #include "hide-contact-chats-talkable-filter.h"
 
-HideContactChatsTalkableFilter::HideContactChatsTalkableFilter(QObject *parent) :
-		TalkableFilter(parent)
+HideContactChatsTalkableFilter::HideContactChatsTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
 }
 
@@ -33,10 +32,10 @@ HideContactChatsTalkableFilter::~HideContactChatsTalkableFilter()
 
 TalkableFilter::FilterResult HideContactChatsTalkableFilter::filterChat(const Chat &chat)
 {
-	if (chat.type() == "Contact" || chat.type() == "Simple")
-		return Rejected;
-	else
-		return Undecided;
+    if (chat.type() == "Contact" || chat.type() == "Simple")
+        return Rejected;
+    else
+        return Undecided;
 }
 
 #include "moc_hide-contact-chats-talkable-filter.cpp"

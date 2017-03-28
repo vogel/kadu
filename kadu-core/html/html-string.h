@@ -26,33 +26,32 @@
 class KADUAPI HtmlString
 {
 public:
-	HtmlString() = default;
-	explicit HtmlString(QString string);
+    HtmlString() = default;
+    explicit HtmlString(QString string);
 
-	const QString & string() const;
+    const QString &string() const;
 
-	template<typename ... T>
-	HtmlString arg(const T & ... args)
-	{
-		return HtmlString{m_string.arg(args.string()...)};
-	}
+    template <typename... T>
+    HtmlString arg(const T &... args)
+    {
+        return HtmlString{m_string.arg(args.string()...)};
+    }
 
-	friend bool operator == (const HtmlString &x, const HtmlString &y)
-	{
-		return x.m_string == y.m_string;
-	}
+    friend bool operator==(const HtmlString &x, const HtmlString &y)
+    {
+        return x.m_string == y.m_string;
+    }
 
-	friend bool operator != (const HtmlString &x, const HtmlString &y)
-	{
-		return !(x == y);
-	}
+    friend bool operator!=(const HtmlString &x, const HtmlString &y)
+    {
+        return !(x == y);
+    }
 
-	friend bool operator < (const HtmlString &x, const HtmlString &y)
-	{
-		return x.m_string < y.m_string;
-	}
+    friend bool operator<(const HtmlString &x, const HtmlString &y)
+    {
+        return x.m_string < y.m_string;
+    }
 
 private:
-	QString m_string;
-
+    QString m_string;
 };

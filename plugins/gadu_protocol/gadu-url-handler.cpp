@@ -38,10 +38,9 @@
 
 #include "gadu-url-handler.h"
 
-GaduUrlHandler::GaduUrlHandler(QObject *parent) :
-		QObject{parent}
+GaduUrlHandler::GaduUrlHandler(QObject *parent) : QObject{parent}
 {
-	m_gaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
+    m_gaduRegExp = QRegExp("\\bgg:(/){0,3}[0-9]{1,12}\\b");
 }
 
 GaduUrlHandler::~GaduUrlHandler()
@@ -50,98 +49,99 @@ GaduUrlHandler::~GaduUrlHandler()
 
 void GaduUrlHandler::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void GaduUrlHandler::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void GaduUrlHandler::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void GaduUrlHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void GaduUrlHandler::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void GaduUrlHandler::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 bool GaduUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return m_gaduRegExp.exactMatch(QString::fromUtf8(url));
+    return m_gaduRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void GaduUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
-	Q_UNUSED(urlOpener);
+    Q_UNUSED(urlOpener);
 
-	auto gaduAccounts = m_accountManager->byProtocolName("gadu");
-	if (gaduAccounts.isEmpty())
-		return;
+    auto gaduAccounts = m_accountManager->byProtocolName("gadu");
+    if (gaduAccounts.isEmpty())
+        return;
 
-	auto gaduId = QString::fromUtf8(url);
-	if (gaduId.startsWith(QStringLiteral("gg:")))
-	{
-		gaduId.remove(0, 3);
-		gaduId.remove(QRegExp("/*"));
-	}
+    auto gaduId = QString::fromUtf8(url);
+    if (gaduId.startsWith(QStringLiteral("gg:")))
+    {
+        gaduId.remove(0, 3);
+        gaduId.remove(QRegExp("/*"));
+    }
 
-	if (gaduAccounts.count() == 1 || disableMenu)
-	{
-		auto const &contact = m_contactManager->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
-		auto const &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
-		if (chat)
-		{
-			m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
-			return;
-		}
-	}
-	else
-	{
-		QMenu menu;
+    if (gaduAccounts.count() == 1 || disableMenu)
+    {
+        auto const &contact = m_contactManager->byId(gaduAccounts[0], gaduId, ActionCreateAndAdd);
+        auto const &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+        if (chat)
+        {
+            m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+            return;
+        }
+    }
+    else
+    {
+        QMenu menu;
 
-		QStringList ids;
-		for (auto const &account : gaduAccounts)
-		{
-			ids.clear();
-			ids.append(account.id());
-			ids.append(gaduId);
+        QStringList ids;
+        for (auto const &account : gaduAccounts)
+        {
+            ids.clear();
+            ids.append(account.id());
+            ids.append(gaduId);
 
-			menu.addAction(m_iconsManager->iconByPath(account.statusContainer()->statusIcon()), account.id())->setData(ids);
-		}
+            menu.addAction(m_iconsManager->iconByPath(account.statusContainer()->statusIcon()), account.id())
+                ->setData(ids);
+        }
 
-		connect(&menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
+        connect(&menu, SIGNAL(triggered(QAction *)), this, SLOT(accountSelected(QAction *)));
 
-		menu.exec(QCursor::pos());
-	}
+        menu.exec(QCursor::pos());
+    }
 }
 
 void GaduUrlHandler::accountSelected(QAction *action)
 {
-	auto ids = action->data().toStringList();
+    auto ids = action->data().toStringList();
 
-	if (ids.count() != 2)
-		return;
+    if (ids.count() != 2)
+        return;
 
-	auto account = m_accountManager->byId(QStringLiteral("gadu"), ids[0]);
-	if (!account)
-		return;
+    auto account = m_accountManager->byId(QStringLiteral("gadu"), ids[0]);
+    if (!account)
+        return;
 
-	const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
-	const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
-	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+    const Contact &contact = m_contactManager->byId(account, ids[1], ActionCreateAndAdd);
+    const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+    m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 
 #include "moc_gadu-url-handler.cpp"

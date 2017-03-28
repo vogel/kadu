@@ -24,43 +24,41 @@
 
 #include <unity.h>
 
-QUnity::QUnity(const QString &desktopId, QObject* parent) :
-	QObject{parent},
-	m_launcher{nullptr}
+QUnity::QUnity(const QString &desktopId, QObject *parent) : QObject{parent}, m_launcher{nullptr}
 {
-	m_launcher = unity_launcher_entry_get_for_desktop_id(desktopId.toUtf8().data());
-	g_object_ref(m_launcher);
+    m_launcher = unity_launcher_entry_get_for_desktop_id(desktopId.toUtf8().data());
+    g_object_ref(m_launcher);
 }
 
 QUnity::~QUnity()
 {
-	unity_launcher_entry_set_count_visible(m_launcher, false);
-	g_object_unref(m_launcher);
-	m_launcher = nullptr;
+    unity_launcher_entry_set_count_visible(m_launcher, false);
+    g_object_unref(m_launcher);
+    m_launcher = nullptr;
 }
 
 void QUnity::updateCount(int count)
 {
-	if (count == 0)
-	{
-		unity_launcher_entry_set_count_visible(m_launcher, false);
-	}
-	else
-	{
-		unity_launcher_entry_set_count_visible(m_launcher, true);
-		unity_launcher_entry_set_count(m_launcher, count);
-	}
+    if (count == 0)
+    {
+        unity_launcher_entry_set_count_visible(m_launcher, false);
+    }
+    else
+    {
+        unity_launcher_entry_set_count_visible(m_launcher, true);
+        unity_launcher_entry_set_count(m_launcher, count);
+    }
 }
 
 void QUnity::updateProgress(int progress)
 {
-	if (progress < 100)
-	{
-		unity_launcher_entry_set_progress_visible(m_launcher, true);
-		unity_launcher_entry_set_progress(m_launcher, static_cast<double>(progress) / 100.0);
-	}
-	else
-		unity_launcher_entry_set_progress_visible(m_launcher, false);
+    if (progress < 100)
+    {
+        unity_launcher_entry_set_progress_visible(m_launcher, true);
+        unity_launcher_entry_set_progress(m_launcher, static_cast<double>(progress) / 100.0);
+    }
+    else
+        unity_launcher_entry_set_progress_visible(m_launcher, false);
 }
 
 #include "moc_qunity.cpp"

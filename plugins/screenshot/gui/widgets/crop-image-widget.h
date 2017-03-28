@@ -34,63 +34,62 @@ class SelectionFrameItem;
 
 class CropImageWidget : public QGraphicsView
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QGraphicsPixmapItem *PixmapItem;
-	SelectionFrameItem *SelectionFrame;
-	HandlerRectItem *TopLeftHandler;
-	HandlerRectItem *TopHandler;
-	HandlerRectItem *TopRightHandler;
-	HandlerRectItem *LeftHandler;
-	HandlerRectItem *RightHandler;
-	HandlerRectItem *BottomLeftHandler;
-	HandlerRectItem *BottomHandler;
-	HandlerRectItem *BottomRightHandler;
-	QGraphicsProxyWidget *ToolBoxProxy;
-	ScreenshotToolBox *ToolBox;
+    QGraphicsPixmapItem *PixmapItem;
+    SelectionFrameItem *SelectionFrame;
+    HandlerRectItem *TopLeftHandler;
+    HandlerRectItem *TopHandler;
+    HandlerRectItem *TopRightHandler;
+    HandlerRectItem *LeftHandler;
+    HandlerRectItem *RightHandler;
+    HandlerRectItem *BottomLeftHandler;
+    HandlerRectItem *BottomHandler;
+    HandlerRectItem *BottomRightHandler;
+    QGraphicsProxyWidget *ToolBoxProxy;
+    ScreenshotToolBox *ToolBox;
 
-	QTimer *ToolBoxTimer;
+    QTimer *ToolBoxTimer;
 
-	QPoint NewTopLeft;
-	QRect CropRect;
-	bool IsMouseButtonPressed;
-	bool WasDoubleClick;
+    QPoint NewTopLeft;
+    QRect CropRect;
+    bool IsMouseButtonPressed;
+    bool WasDoubleClick;
 
-	QRect OldCropRect;
+    QRect OldCropRect;
 
-	void normalizeCropRect();
-	void updateCropRectDisplay();
+    void normalizeCropRect();
+    void updateCropRectDisplay();
 
-	QPixmap croppedPixmap();
+    QPixmap croppedPixmap();
 
 private slots:
-	void updateToolBoxFileSizeHint();
-	void handlerMovedTo(HandlerType type, int x, int y);
+    void updateToolBoxFileSizeHint();
+    void handlerMovedTo(HandlerType type, int x, int y);
 
 protected:
     virtual void keyPressEvent(QKeyEvent *event);
 
-	virtual void mousePressEvent(QMouseEvent *event);
-	virtual void mouseReleaseEvent(QMouseEvent *event);
-	virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void mouseMoveEvent(QMouseEvent *event);
 
-	virtual void resizeEvent(QResizeEvent *event);
-	virtual void showEvent(QShowEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
+    virtual void showEvent(QShowEvent *event);
 
 public:
-	explicit CropImageWidget(QWidget *parent = nullptr);
-	virtual ~CropImageWidget();
+    explicit CropImageWidget(QWidget *parent = nullptr);
+    virtual ~CropImageWidget();
 
-	void setPixmap(QPixmap pixmap);
-	void setCropRect(const QRect &cropRect);
+    void setPixmap(QPixmap pixmap);
+    void setCropRect(const QRect &cropRect);
 
 public slots:
-	void crop();
+    void crop();
 
 signals:
-	void pixmapCropped(QPixmap pixmap);
-	void canceled();
-
+    void pixmapCropped(QPixmap pixmap);
+    void canceled();
 };
 
-#endif // CROP_IMAGE_WIDGET_H
+#endif   // CROP_IMAGE_WIDGET_H

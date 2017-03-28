@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SimpleviewPluginModulesFactory::SimpleviewPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SimpleviewPluginModulesFactory::SimpleviewPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ SimpleviewPluginModulesFactory::~SimpleviewPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SimpleviewPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SimpleviewModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SimpleviewModule>());
 
-	return modules;
+    return modules;
 }
 
 QString SimpleviewPluginModulesFactory::parentInjectorName() const
 {
-	return "docking";
+    return "docking";
 }
 
 #include "moc_simpleview-plugin-modules-factory.cpp"

@@ -31,9 +31,8 @@
 
 #include <QtNetwork/QNetworkAccessManager>
 
-GaduDriveService::GaduDriveService(Account account, QObject *parent) :
-		AccountService{account, parent},
-		m_networkAccessManager{new QNetworkAccessManager{this}}
+GaduDriveService::GaduDriveService(Account account, QObject *parent)
+        : AccountService{account, parent}, m_networkAccessManager{new QNetworkAccessManager{this}}
 {
 }
 
@@ -43,57 +42,64 @@ GaduDriveService::~GaduDriveService()
 
 void GaduDriveService::setVersionService(VersionService *versionService)
 {
-	m_versionService = versionService;
+    m_versionService = versionService;
 }
 
 void GaduDriveService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
 {
-	m_imTokenService = imTokenService;
-	connect(m_imTokenService, SIGNAL(imTokenChanged(QByteArray)), this, SLOT(imTokenChanged(QByteArray)));
+    m_imTokenService = imTokenService;
+    connect(m_imTokenService, SIGNAL(imTokenChanged(QByteArray)), this, SLOT(imTokenChanged(QByteArray)));
 }
 
-GaduDriveSendTicketRequest * GaduDriveService::requestSendTicket(QString recipient, QString fileName, qint64 fileSize)
+GaduDriveSendTicketRequest *GaduDriveService::requestSendTicket(QString recipient, QString fileName, qint64 fileSize)
 {
-	auto sendTicketRequest = new GaduDriveSendTicketRequest{recipient, fileName, fileSize, m_sessionToken, m_networkAccessManager.get(), this};
+    auto sendTicketRequest = new GaduDriveSendTicketRequest{
+        recipient, fileName, fileSize, m_sessionToken, m_networkAccessManager.get(), this};
 
-	if (!m_sessionToken.isValid())
-	{
-		if (!m_authorization)
-		{
-			m_authorization = new GaduDriveAuthorization{account().id(), m_imTokenService->imToken(), m_versionService->nameWithVersion(), m_networkAccessManager.get(), this};
-			connect(m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), this, SLOT(authorized(GaduDriveSessionToken)));
-			m_authorization->authorize();
-		}
+    if (!m_sessionToken.isValid())
+    {
+        if (!m_authorization)
+        {
+            m_authorization =
+                new GaduDriveAuthorization{account().id(), m_imTokenService->imToken(),
+                                           m_versionService->nameWithVersion(), m_networkAccessManager.get(), this};
+            connect(
+                m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), this,
+                SLOT(authorized(GaduDriveSessionToken)));
+            m_authorization->authorize();
+        }
 
-		connect(m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), sendTicketRequest, SLOT(authorized(GaduDriveSessionToken)));
-	}
+        connect(
+            m_authorization.get(), SIGNAL(authorized(GaduDriveSessionToken)), sendTicketRequest,
+            SLOT(authorized(GaduDriveSessionToken)));
+    }
 
-	return sendTicketRequest;
+    return sendTicketRequest;
 }
 
-GaduDriveGetTransfer * GaduDriveService::getFromDrive(QString downloadId, QString fileName, QIODevice *destination)
+GaduDriveGetTransfer *GaduDriveService::getFromDrive(QString downloadId, QString fileName, QIODevice *destination)
 {
-	return new GaduDriveGetTransfer{downloadId, fileName, destination, m_networkAccessManager.get(), this};
+    return new GaduDriveGetTransfer{downloadId, fileName, destination, m_networkAccessManager.get(), this};
 }
 
-GaduDrivePutTransfer * GaduDriveService::putInOutbox(GaduDriveSendTicket ticket, QString fileName, QIODevice *source)
+GaduDrivePutTransfer *GaduDriveService::putInOutbox(GaduDriveSendTicket ticket, QString fileName, QIODevice *source)
 {
-	return new GaduDrivePutTransfer{m_sessionToken, ticket, fileName, source, m_networkAccessManager.get(), this};
+    return new GaduDrivePutTransfer{m_sessionToken, ticket, fileName, source, m_networkAccessManager.get(), this};
 }
 
-GaduDriveSendStatusUpdateRequest * GaduDriveService::requestSendStatusUpdate(QString ticketId)
+GaduDriveSendStatusUpdateRequest *GaduDriveService::requestSendStatusUpdate(QString ticketId)
 {
-	return new GaduDriveSendStatusUpdateRequest(m_sessionToken, ticketId, m_networkAccessManager.get(), this);
+    return new GaduDriveSendStatusUpdateRequest(m_sessionToken, ticketId, m_networkAccessManager.get(), this);
 }
 
 void GaduDriveService::authorized(GaduDriveSessionToken sessionToken)
 {
-	m_sessionToken = sessionToken;
+    m_sessionToken = sessionToken;
 }
 
 void GaduDriveService::imTokenChanged(QByteArray)
 {
-	m_sessionToken = {};
+    m_sessionToken = {};
 }
 
 #include "moc_gadu-drive-service.cpp"

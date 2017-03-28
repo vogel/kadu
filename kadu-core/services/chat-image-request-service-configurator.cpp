@@ -17,36 +17,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "services/chat-image-request-service.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "services/chat-image-request-service-configuration.h"
-#include "services/chat-image-request-service.h"
 
 #include "chat-image-request-service-configurator.h"
 
-ChatImageRequestServiceConfigurator::ChatImageRequestServiceConfigurator(Configuration *configuration) :
-		m_configuration{configuration}
+ChatImageRequestServiceConfigurator::ChatImageRequestServiceConfigurator(Configuration *configuration)
+        : m_configuration{configuration}
 {
 }
 
 void ChatImageRequestServiceConfigurator::setChatImageRequestService(ChatImageRequestService *service)
 {
-	Service = service;
+    Service = service;
 
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void ChatImageRequestServiceConfigurator::configurationUpdated()
 {
-	if (!Service)
-		return;
+    if (!Service)
+        return;
 
-	ChatImageRequestServiceConfiguration configuration;
+    ChatImageRequestServiceConfiguration configuration;
 
-	configuration.setLimitImageSize(m_configuration->deprecatedApi()->readBoolEntry("Chat", "LimitImageSize", true));
-	configuration.setMaximumImageSizeInKiloBytes(m_configuration->deprecatedApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
-	configuration.setAllowBiggerImagesAfterAsking(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
+    configuration.setLimitImageSize(m_configuration->deprecatedApi()->readBoolEntry("Chat", "LimitImageSize", true));
+    configuration.setMaximumImageSizeInKiloBytes(
+        m_configuration->deprecatedApi()->readUnsignedNumEntry("Chat", "MaximumImageSizeInKiloBytes", 255));
+    configuration.setAllowBiggerImagesAfterAsking(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "AllowBiggerImagesAfterAsking", true));
 
-	Service.data()->setConfiguration(configuration);
+    Service.data()->setConfiguration(configuration);
 }

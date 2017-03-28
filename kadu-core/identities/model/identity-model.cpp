@@ -25,110 +25,112 @@
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
-IdentityModel::IdentityModel(QObject *parent) :
-		QAbstractListModel(parent)
+IdentityModel::IdentityModel(QObject *parent) : QAbstractListModel(parent)
 {
 }
 
 IdentityModel::~IdentityModel()
 {
-	disconnect(m_identityManager, 0, this, 0);
+    disconnect(m_identityManager, 0, this, 0);
 }
 
 void IdentityModel::setIdentityManager(IdentityManager *identityManager)
 {
-	m_identityManager = identityManager;
+    m_identityManager = identityManager;
 }
 
 void IdentityModel::init()
 {
-	connect(m_identityManager, SIGNAL(identityAboutToBeAdded(Identity)),
-			this, SLOT(identityAboutToBeAdded(Identity)), Qt::DirectConnection);
-	connect(m_identityManager, SIGNAL(identityAdded(Identity)),
-			this, SLOT(identityAdded(Identity)), Qt::DirectConnection);
-	connect(m_identityManager, SIGNAL(identityAboutToBeRemoved(Identity)),
-			this, SLOT(identityAboutToBeRemoved(Identity)), Qt::DirectConnection);
-	connect(m_identityManager, SIGNAL(identityRemoved(Identity)),
-			this, SLOT(identityRemoved(Identity)), Qt::DirectConnection);
+    connect(
+        m_identityManager, SIGNAL(identityAboutToBeAdded(Identity)), this, SLOT(identityAboutToBeAdded(Identity)),
+        Qt::DirectConnection);
+    connect(
+        m_identityManager, SIGNAL(identityAdded(Identity)), this, SLOT(identityAdded(Identity)), Qt::DirectConnection);
+    connect(
+        m_identityManager, SIGNAL(identityAboutToBeRemoved(Identity)), this, SLOT(identityAboutToBeRemoved(Identity)),
+        Qt::DirectConnection);
+    connect(
+        m_identityManager, SIGNAL(identityRemoved(Identity)), this, SLOT(identityRemoved(Identity)),
+        Qt::DirectConnection);
 }
 
 int IdentityModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : m_identityManager->count();
+    return parent.isValid() ? 0 : m_identityManager->count();
 }
 
 QVariant IdentityModel::data(const QModelIndex &index, int role) const
 {
-	Identity ident = identity(index);
-	if (0 == ident)
-		return QVariant();
+    Identity ident = identity(index);
+    if (0 == ident)
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return ident.name();
-		case IdentityRole:
-			return QVariant::fromValue(ident);
-		case ItemTypeRole:
-			return IdentityRole;
-		default:
-			return QVariant();
-	}
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return ident.name();
+    case IdentityRole:
+        return QVariant::fromValue(ident);
+    case ItemTypeRole:
+        return IdentityRole;
+    default:
+        return QVariant();
+    }
 }
 
 Identity IdentityModel::identity(const QModelIndex &index) const
 {
-	if (!index.isValid())
-		return Identity::null;
+    if (!index.isValid())
+        return Identity::null;
 
-	if (index.row() < 0 || index.row() >= rowCount())
-		return Identity::null;
+    if (index.row() < 0 || index.row() >= rowCount())
+        return Identity::null;
 
-	return m_identityManager->byIndex(index.row());
+    return m_identityManager->byIndex(index.row());
 }
 
 int IdentityModel::identityIndex(Identity identity) const
 {
-	return m_identityManager->indexOf(identity);
+    return m_identityManager->indexOf(identity);
 }
 
 QModelIndexList IdentityModel::indexListForValue(const QVariant &value) const
 {
-	QModelIndexList result;
+    QModelIndexList result;
 
-	const int i = identityIndex(value.value<Identity>());
-	if (-1 != i)
-		result.append(index(i, 0));
+    const int i = identityIndex(value.value<Identity>());
+    if (-1 != i)
+        result.append(index(i, 0));
 
-	return result;
+    return result;
 }
 
 void IdentityModel::identityAboutToBeAdded(Identity identity)
 {
-	Q_UNUSED(identity)
+    Q_UNUSED(identity)
 
-	int count = rowCount();
-	beginInsertRows(QModelIndex(), count, count);
+    int count = rowCount();
+    beginInsertRows(QModelIndex(), count, count);
 }
 
 void IdentityModel::identityAdded(Identity identity)
 {
-	Q_UNUSED(identity)
+    Q_UNUSED(identity)
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void IdentityModel::identityAboutToBeRemoved(Identity identity)
 {
-	int index = identityIndex(identity);
-	beginRemoveRows(QModelIndex(), index, index);
+    int index = identityIndex(identity);
+    beginRemoveRows(QModelIndex(), index, index);
 }
 
 void IdentityModel::identityRemoved(Identity identity)
 {
-	Q_UNUSED(identity)
+    Q_UNUSED(identity)
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
 #include "moc_identity-model.cpp"

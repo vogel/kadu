@@ -23,30 +23,30 @@
 
 class MediaPlayerStatusChanger : public StatusChanger
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum ChangeDescriptionTo {
-		DescriptionReplace,
-		DescriptionPrepend,
-		DescriptionAppend,
-		PlayerTagReplace
-	};
+    enum ChangeDescriptionTo
+    {
+        DescriptionReplace,
+        DescriptionPrepend,
+        DescriptionAppend,
+        PlayerTagReplace
+    };
 
-	explicit MediaPlayerStatusChanger(QObject *parent = nullptr);
-	virtual ~MediaPlayerStatusChanger();
+    explicit MediaPlayerStatusChanger(QObject *parent = nullptr);
+    virtual ~MediaPlayerStatusChanger();
 
-	virtual void changeStatus(StatusContainer *container, Status &status) override;
+    virtual void changeStatus(StatusContainer *container, Status &status) override;
 
-	void setTitle(const QString &newTitle);
-	void setDisable(bool disable);
-	bool isDisabled() const;
-	void changePositionInStatus(ChangeDescriptionTo newPosition);
-	ChangeDescriptionTo changeDescriptionTo() const;
+    void setTitle(const QString &newTitle);
+    void setDisable(bool disable);
+    bool isDisabled() const;
+    void changePositionInStatus(ChangeDescriptionTo newPosition);
+    ChangeDescriptionTo changeDescriptionTo() const;
 
 private:
-	QString _title;
-	bool _disabled;
-	ChangeDescriptionTo _mediaPlayerStatusPosition;
-
+    QString _title;
+    bool _disabled;
+    ChangeDescriptionTo _mediaPlayerStatusPosition;
 };

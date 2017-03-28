@@ -33,26 +33,25 @@ class TalkableConverter;
 
 class ContactParserTags : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ContactParserTags(QObject *parent = nullptr);
-	virtual ~ContactParserTags();
+    Q_INVOKABLE explicit ContactParserTags(QObject *parent = nullptr);
+    virtual ~ContactParserTags();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<Parser> m_parser;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<StatusTypeManager> m_statusTypeManager;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<Parser> m_parser;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<TalkableConverter> m_talkableConverter;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

@@ -44,52 +44,47 @@ class JabberServersService;
 
 class JabberAddAccountWidget : public AccountAddWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberAddAccountWidget(
-		bool isGmail,
-		QString defaultServer,
-		bool showButtons,
-		QWidget *parent = nullptr);
-	virtual ~JabberAddAccountWidget();
+    explicit JabberAddAccountWidget(bool isGmail, QString defaultServer, bool showButtons, QWidget *parent = nullptr);
+    virtual ~JabberAddAccountWidget();
 
-	void setJabberServersService(JabberServersService *serversService);
+    void setJabberServersService(JabberServersService *serversService);
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<AccountStorage> m_accountStorage;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<AccountStorage> m_accountStorage;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
     bool m_isGmail;
     QString m_defaultServer;
-	bool m_showButtons;
+    bool m_showButtons;
 
-	QLineEdit *Username;
-	QComboBox *Domain;
-	QLineEdit *AccountPassword;
-	QCheckBox *RememberPassword;
-	QLabel *AtLabel;
-	IdentitiesComboBox *Identity;
-	QPushButton *AddAccountButton;
+    QLineEdit *Username;
+    QComboBox *Domain;
+    QLineEdit *AccountPassword;
+    QCheckBox *RememberPassword;
+    QLabel *AtLabel;
+    IdentitiesComboBox *Identity;
+    QPushButton *AddAccountButton;
 
-	void createGui(bool showButtons);
-	void resetGui();
+    void createGui(bool showButtons);
+    void resetGui();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 
-	void dataChanged();
-
+    void dataChanged();
 };

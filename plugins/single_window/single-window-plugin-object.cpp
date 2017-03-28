@@ -25,8 +25,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-SingleWindowPluginObject::SingleWindowPluginObject(QObject *parent) :
-		QObject{parent}
+SingleWindowPluginObject::SingleWindowPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,34 +33,37 @@ SingleWindowPluginObject::~SingleWindowPluginObject()
 {
 }
 
-void SingleWindowPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void SingleWindowPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void SingleWindowPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SingleWindowPluginObject::setSingleWindowManager(SingleWindowManager *singleWindowManager)
 {
-	m_singleWindowManager = singleWindowManager;
+    m_singleWindowManager = singleWindowManager;
 }
 
 void SingleWindowPluginObject::setSingleWindow(SingleWindow *singleWindow)
 {
-	m_singleWindow = singleWindow;
+    m_singleWindow = singleWindow;
 }
 
 void SingleWindowPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
 }
 
 void SingleWindowPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
 }
 
 #include "moc_single-window-plugin-object.cpp"

@@ -23,15 +23,14 @@
 
 class FirewallPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit FirewallPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~FirewallPluginModulesFactory();
+    explicit FirewallPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~FirewallPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-	virtual QString parentInjectorName() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
+    virtual QString parentInjectorName() const override;
 };

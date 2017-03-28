@@ -23,9 +23,9 @@
 
 class FacebookModule : public injeqt::module
 {
-
 public:
-	FacebookModule();
-	virtual ~FacebookModule() {}
-
+    FacebookModule();
+    virtual ~FacebookModule()
+    {
+    }
 };

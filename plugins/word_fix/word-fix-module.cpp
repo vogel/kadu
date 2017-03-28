@@ -25,7 +25,7 @@
 
 WordFixModule::WordFixModule()
 {
-	add_type<WordFixConfigurationUiHandler>();
-	add_type<WordFixPluginObject>();
-	add_type<WordFix>();
+    add_type<WordFixConfigurationUiHandler>();
+    add_type<WordFixPluginObject>();
+    add_type<WordFix>();
 }

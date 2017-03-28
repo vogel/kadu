@@ -26,37 +26,45 @@
 
 enum SetStatusMode
 {
-	SetStatusPerAccount,
-	SetStatusPerIdentity,
-	SetStatusForAll
+    SetStatusPerAccount,
+    SetStatusPerIdentity,
+    SetStatusForAll
 };
 
 class Configuration;
 
 class StatusConfigurationHolder : public ConfigurationHolder
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit StatusConfigurationHolder(QObject *parent = nullptr);
-	virtual ~StatusConfigurationHolder();
+    Q_INVOKABLE explicit StatusConfigurationHolder(QObject *parent = nullptr);
+    virtual ~StatusConfigurationHolder();
 
-	void configurationUpdated();
+    void configurationUpdated();
 
-	SetStatusMode setStatusMode() const { return SetStatus; }
-	bool isSetStatusPerAccount() const { return SetStatus == SetStatusPerAccount; }
-	bool isSetStatusPerIdentity() const { return SetStatus == SetStatusPerIdentity; }
+    SetStatusMode setStatusMode() const
+    {
+        return SetStatus;
+    }
+    bool isSetStatusPerAccount() const
+    {
+        return SetStatus == SetStatusPerAccount;
+    }
+    bool isSetStatusPerIdentity() const
+    {
+        return SetStatus == SetStatusPerIdentity;
+    }
 
 signals:
-	void setStatusModeChanged();
+    void setStatusModeChanged();
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	SetStatusMode SetStatus;
+    SetStatusMode SetStatus;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

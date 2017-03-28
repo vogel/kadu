@@ -23,9 +23,8 @@
 #include "services/jabber-change-password.h"
 #include "services/jabber-error-service.h"
 
-JabberChangePasswordService::JabberChangePasswordService(JabberRegisterExtension *registerExtension, QObject *parent) :
-		QObject{parent},
-		m_registerExtension{registerExtension}
+JabberChangePasswordService::JabberChangePasswordService(JabberRegisterExtension *registerExtension, QObject *parent)
+        : QObject{parent}, m_registerExtension{registerExtension}
 {
 }
 
@@ -35,14 +34,14 @@ JabberChangePasswordService::~JabberChangePasswordService()
 
 void JabberChangePasswordService::setErrorService(JabberErrorService *errorService)
 {
-	m_errorService = errorService;
+    m_errorService = errorService;
 }
 
-JabberChangePassword * JabberChangePasswordService::changePassword(const QString &jid, const QString &newPassword)
+JabberChangePassword *JabberChangePasswordService::changePassword(const QString &jid, const QString &newPassword)
 {
-	auto result = new JabberChangePassword{jid, newPassword, m_registerExtension, this};
-	result->setErrorService(m_errorService);
-	return result;
+    auto result = new JabberChangePassword{jid, newPassword, m_registerExtension, this};
+    result->setErrorService(m_errorService);
+    return result;
 }
 
 #include "moc_jabber-change-password-service.cpp"

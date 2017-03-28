@@ -34,22 +34,21 @@ class QMimeData;
 
 class BuddyListMimeDataService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyListMimeDataService(QObject *parent = nullptr);
-	virtual ~BuddyListMimeDataService();
+    Q_INVOKABLE explicit BuddyListMimeDataService(QObject *parent = nullptr);
+    virtual ~BuddyListMimeDataService();
 
-	QStringList mimeTypes();
-	std::unique_ptr<QMimeData> toMimeData(const BuddyList &buddyList);
-	BuddyList fromMimeData(const QMimeData *mimeData);
+    QStringList mimeTypes();
+    std::unique_ptr<QMimeData> toMimeData(const BuddyList &buddyList);
+    BuddyList fromMimeData(const QMimeData *mimeData);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyManager> m_buddyManager;
 
-	QLatin1String m_mimeType;
+    QLatin1String m_mimeType;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 };

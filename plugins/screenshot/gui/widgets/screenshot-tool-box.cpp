@@ -25,33 +25,32 @@
 
 #include "screenshot-tool-box.h"
 
-ScreenshotToolBox::ScreenshotToolBox(QWidget *parent) :
-		QFrame(parent)
+ScreenshotToolBox::ScreenshotToolBox(QWidget *parent) : QFrame(parent)
 {
-	setFrameShape(Box);
+    setFrameShape(Box);
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setSpacing(5);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setSpacing(5);
 
-	GeometryLabel = new QLabel(this);
-	GeometryLabel->setAlignment(Qt::AlignHCenter);
-	QFont font = GeometryLabel->font();
-	font.setBold(true);
-	GeometryLabel->setFont(font);
+    GeometryLabel = new QLabel(this);
+    GeometryLabel->setAlignment(Qt::AlignHCenter);
+    QFont font = GeometryLabel->font();
+    font.setBold(true);
+    GeometryLabel->setFont(font);
 
-	FileSizeLabel = new QLabel(tr("0 KiB"), this);
-	FileSizeLabel->setAlignment(Qt::AlignHCenter);
+    FileSizeLabel = new QLabel(tr("0 KiB"), this);
+    FileSizeLabel->setAlignment(Qt::AlignHCenter);
 
-	QPushButton *cropButton = new QPushButton(tr("Crop"), this);
-	connect(cropButton, SIGNAL(clicked(bool)), this, SIGNAL(crop()));
+    QPushButton *cropButton = new QPushButton(tr("Crop"), this);
+    connect(cropButton, SIGNAL(clicked(bool)), this, SIGNAL(crop()));
 
-	QPushButton *cancelButton = new QPushButton(tr("Cancel"), this);
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancel()));
+    QPushButton *cancelButton = new QPushButton(tr("Cancel"), this);
+    connect(cancelButton, SIGNAL(clicked(bool)), this, SIGNAL(cancel()));
 
-	layout->addWidget(GeometryLabel);
-	layout->addWidget(FileSizeLabel);
-	layout->addWidget(cropButton);
-	layout->addWidget(cancelButton);
+    layout->addWidget(GeometryLabel);
+    layout->addWidget(FileSizeLabel);
+    layout->addWidget(cropButton);
+    layout->addWidget(cancelButton);
 }
 
 ScreenshotToolBox::~ScreenshotToolBox()
@@ -60,12 +59,12 @@ ScreenshotToolBox::~ScreenshotToolBox()
 
 void ScreenshotToolBox::setGeometry(const QString &geometry)
 {
-	GeometryLabel->setText(geometry);
+    GeometryLabel->setText(geometry);
 }
 
 void ScreenshotToolBox::setFileSize(const QString &fileSize)
 {
-	FileSizeLabel->setText(fileSize);
+    FileSizeLabel->setText(fileSize);
 }
 
 #include "moc_screenshot-tool-box.cpp"

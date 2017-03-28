@@ -49,44 +49,43 @@ class InsertEmoticonAction;
  */
 class EmoticonConfigurator : public ConfigurationHolder
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	QString LastLoadedThemeName;
-	EmoticonTheme LastTheme;
-	EmoticonConfiguration m_emoticonConfiguration;
+    QString LastLoadedThemeName;
+    EmoticonTheme LastTheme;
+    EmoticonConfiguration m_emoticonConfiguration;
 
-	QScopedPointer<EmoticonThemeManager> ThemeManager;
-	QPointer<InsertEmoticonAction> InsertAction;
-	QPointer<EmoticonExpanderDomVisitorProvider> EmoticonExpanderProvider;
+    QScopedPointer<EmoticonThemeManager> ThemeManager;
+    QPointer<InsertEmoticonAction> InsertAction;
+    QPointer<EmoticonExpanderDomVisitorProvider> EmoticonExpanderProvider;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	Q_INVOKABLE explicit EmoticonConfigurator(QObject *parent = nullptr);
-	virtual ~EmoticonConfigurator();
+    Q_INVOKABLE explicit EmoticonConfigurator(QObject *parent = nullptr);
+    virtual ~EmoticonConfigurator();
 
-	/**
-	 * @short Update configurations of set objects.
-	 * @author Rafał 'Vogel' Malinowski
-	 *
-	 * Call this method after setInsertAction() and setEmoticonExpanderProvider() to update configuration of
-	 * set objects.
-	 */
-	void configure();
+    /**
+     * @short Update configurations of set objects.
+     * @author Rafał 'Vogel' Malinowski
+     *
+     * Call this method after setInsertAction() and setEmoticonExpanderProvider() to update configuration of
+     * set objects.
+     */
+    void configure();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setInsertAction(InsertEmoticonAction *insertAction);
-	INJEQT_SET void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setInsertAction(InsertEmoticonAction *insertAction);
+    INJEQT_SET void setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider);
+    INJEQT_INIT void init();
 };
 
 /**

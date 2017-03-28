@@ -31,25 +31,24 @@ class PluginInjectedFactory;
 
 class ShowConfigWizardAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowConfigWizardAction(QObject *parent = nullptr);
-	virtual ~ShowConfigWizardAction();
+    Q_INVOKABLE explicit ShowConfigWizardAction(QObject *parent = nullptr);
+    virtual ~ShowConfigWizardAction();
 
-	void showConfigWindow();
+    void showConfigWindow();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<ConfigWizardWindow> m_wizard;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<ConfigWizardWindow> m_wizard;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

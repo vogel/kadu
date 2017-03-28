@@ -24,44 +24,41 @@
 
 namespace QThrift
 {
-
 enum class FieldType : int8_t;
 struct FieldHeader;
 struct Struct;
 
 class Writer
 {
-	friend struct WriteVisitor;
+    friend struct WriteVisitor;
 
 public:
-	explicit Writer(QByteArray &destination);
+    explicit Writer(QByteArray &destination);
 
-	void write(const Struct &s);
+    void write(const Struct &s);
 
 private:
-	QByteArray &m_destination;
-	int m_lastBool {0};
+    QByteArray &m_destination;
+    int m_lastBool{0};
 
-	void writeBool(bool x);
-	void writeUInt8(uint8_t x);
-	void writeInt16(int16_t x);
-	void writeInt32(int32_t x);
-	void writeInt64(int64_t x);
-	void writeVInt32(uint32_t x);
-	void writeVInt64(uint64_t x);
-	void writeHeader(FieldHeader header, int16_t lastId);
+    void writeBool(bool x);
+    void writeUInt8(uint8_t x);
+    void writeInt16(int16_t x);
+    void writeInt32(int32_t x);
+    void writeInt64(int64_t x);
+    void writeVInt32(uint32_t x);
+    void writeVInt64(uint64_t x);
+    void writeHeader(FieldHeader header, int16_t lastId);
 
-	void write(bool x, int16_t id, int16_t lastId);
-	void write(int32_t x, int16_t id, int16_t lastId);
-	void write(int64_t x, int16_t id, int16_t lastId);
-	void write(const QByteArray &x, int16_t id, int16_t lastId);
+    void write(bool x, int16_t id, int16_t lastId);
+    void write(int32_t x, int16_t id, int16_t lastId);
+    void write(int64_t x, int16_t id, int16_t lastId);
+    void write(const QByteArray &x, int16_t id, int16_t lastId);
 
-	void startStruct(int16_t id, int16_t lastId);
-	void endStruct();
+    void startStruct(int16_t id, int16_t lastId);
+    void endStruct();
 
-	void startList(FieldType type, int size, int16_t id, int16_t lastId);
-	void endList();
-
+    void startList(FieldType type, int size, int16_t id, int16_t lastId);
+    void endList();
 };
-
 }

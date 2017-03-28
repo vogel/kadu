@@ -38,23 +38,24 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QScrollBar>
 
-#include "gui/emoticon-selector-button.h"
 #include "emoticon.h"
+#include "gui/emoticon-selector-button.h"
 
 #include "emoticon-selector.h"
 
-EmoticonSelector::EmoticonSelector(const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent) :
-		QScrollArea(parent), PathProvider(pathProvider)
+EmoticonSelector::EmoticonSelector(
+    const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent)
+        : QScrollArea(parent), PathProvider(pathProvider)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowFlags(Qt::Popup);
-	setFrameStyle(QFrame::NoFrame);
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowFlags(Qt::Popup);
+    setFrameStyle(QFrame::NoFrame);
 
-	QWidget *mainWidget = new QWidget(this);
+    QWidget *mainWidget = new QWidget(this);
 
-	addEmoticonButtons(emoticons, mainWidget);
-	setWidget(mainWidget);
-	calculatePositionAndSize(parent, mainWidget);
+    addEmoticonButtons(emoticons, mainWidget);
+    setWidget(mainWidget);
+    calculatePositionAndSize(parent, mainWidget);
 }
 
 EmoticonSelector::~EmoticonSelector()
@@ -63,150 +64,151 @@ EmoticonSelector::~EmoticonSelector()
 
 void EmoticonSelector::addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainWidget)
 {
-	int selector_width = 460;
-	int total_height = 0, cur_width = 0, btn_width = 0;
-	int count = emoticons.count();
-	QScopedArrayPointer<EmoticonSelectorButton *> btns(new EmoticonSelectorButton *[count]);
-	QVBoxLayout *layout = new QVBoxLayout(mainWidget);
-	QHBoxLayout *row = 0;
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->setSpacing(0);
+    int selector_width = 460;
+    int total_height = 0, cur_width = 0, btn_width = 0;
+    int count = emoticons.count();
+    QScopedArrayPointer<EmoticonSelectorButton *> btns(new EmoticonSelectorButton *[count]);
+    QVBoxLayout *layout = new QVBoxLayout(mainWidget);
+    QHBoxLayout *row = 0;
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(0);
 
-	for (int i = 0; i < count; ++i)
-	{
-		const Emoticon &emoticon = emoticons.at(i);
-		btns[i] = new EmoticonSelectorButton(emoticon, PathProvider.data(), mainWidget);
-		btn_width = btns[i]->sizeHint().width();
+    for (int i = 0; i < count; ++i)
+    {
+        const Emoticon &emoticon = emoticons.at(i);
+        btns[i] = new EmoticonSelectorButton(emoticon, PathProvider.data(), mainWidget);
+        btn_width = btns[i]->sizeHint().width();
 
-		if (cur_width + btn_width >= selector_width)
-			cur_width = 0;
+        if (cur_width + btn_width >= selector_width)
+            cur_width = 0;
 
-		if (cur_width == 0)
-			total_height += btns[i]->sizeHint().height() + 1;
-		cur_width += btn_width;
+        if (cur_width == 0)
+            total_height += btns[i]->sizeHint().height() + 1;
+        cur_width += btn_width;
 
-		connect(btns[i], SIGNAL(clicked(Emoticon)), this, SLOT(emoticonClickedSlot(Emoticon)));
-	}
+        connect(btns[i], SIGNAL(clicked(Emoticon)), this, SLOT(emoticonClickedSlot(Emoticon)));
+    }
 
-	if (total_height < selector_width - 80)
-		selector_width = static_cast<int>(sqrt(static_cast<float>(selector_width) * total_height) * 1.1f);
-	else if (total_height > selector_width + 40)
-		selector_width += 40;
+    if (total_height < selector_width - 80)
+        selector_width = static_cast<int>(sqrt(static_cast<float>(selector_width) * total_height) * 1.1f);
+    else if (total_height > selector_width + 40)
+        selector_width += 40;
 
-	cur_width = 0;
-	for (int i = 0; i < count; ++i)
-	{
-		btn_width = btns[i]->sizeHint().width();
+    cur_width = 0;
+    for (int i = 0; i < count; ++i)
+    {
+        btn_width = btns[i]->sizeHint().width();
 
-		if (cur_width + btn_width >= selector_width)
-			cur_width = 0;
+        if (cur_width + btn_width >= selector_width)
+            cur_width = 0;
 
-		if (cur_width == 0)
-		{
-			row = new QHBoxLayout;
-			layout->addLayout(row);
-		}
+        if (cur_width == 0)
+        {
+            row = new QHBoxLayout;
+            layout->addLayout(row);
+        }
 
-		row->addWidget(btns[i]);
-		cur_width += btn_width;
-	}
-	if (row)
-		row->setAlignment(Qt::AlignLeft); // align the last row to left
+        row->addWidget(btns[i]);
+        cur_width += btn_width;
+    }
+    if (row)
+        row->setAlignment(Qt::AlignLeft);   // align the last row to left
 }
 
 void EmoticonSelector::calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget)
 {
-	QPoint w_pos = activatingWidget->mapToGlobal(QPoint(0,0));
-	QSize s_size = QApplication::desktop()->size();
-	QSize e_size = mainwidget->sizeHint();
+    QPoint w_pos = activatingWidget->mapToGlobal(QPoint(0, 0));
+    QSize s_size = QApplication::desktop()->size();
+    QSize e_size = mainwidget->sizeHint();
 
-	bool is_on_left;
-	bool hscroll_needed = false;
-	int x, max_width;
-	int width = e_size.width();
-	int hscrollbar_height = horizontalScrollBar()->sizeHint().height();
-	int vscrollbar_width = verticalScrollBar()->sizeHint().width();
+    bool is_on_left;
+    bool hscroll_needed = false;
+    int x, max_width;
+    int width = e_size.width();
+    int hscrollbar_height = horizontalScrollBar()->sizeHint().height();
+    int vscrollbar_width = verticalScrollBar()->sizeHint().width();
 
-	// if the distance to the left edge of the screen equals or is bigger than the distance to the right edge
-	if (w_pos.x() >= s_size.width() - (w_pos.x() + activatingWidget->width()))
-	{
-		is_on_left = true;
-		x = w_pos.x() - e_size.width();
-		max_width = w_pos.x();
-		if (x < 0)
-		{
-			width = w_pos.x();
-			x = 0;
-			hscroll_needed = true;
-		}
-	}
-	else
-	{
-		is_on_left = false;
-		x = w_pos.x() + activatingWidget->width();
-		max_width = s_size.width() - x;
-		if (x + e_size.width() > s_size.width())
-		{
-			width = s_size.width() - (w_pos.x() + activatingWidget->width());
-			hscroll_needed = true;
-		}
-	}
+    // if the distance to the left edge of the screen equals or is bigger than the distance to the right edge
+    if (w_pos.x() >= s_size.width() - (w_pos.x() + activatingWidget->width()))
+    {
+        is_on_left = true;
+        x = w_pos.x() - e_size.width();
+        max_width = w_pos.x();
+        if (x < 0)
+        {
+            width = w_pos.x();
+            x = 0;
+            hscroll_needed = true;
+        }
+    }
+    else
+    {
+        is_on_left = false;
+        x = w_pos.x() + activatingWidget->width();
+        max_width = s_size.width() - x;
+        if (x + e_size.width() > s_size.width())
+        {
+            width = s_size.width() - (w_pos.x() + activatingWidget->width());
+            hscroll_needed = true;
+        }
+    }
 
-	int height = e_size.height() + (hscroll_needed ? hscrollbar_height : 0);
-	// center vertically
-	int y = w_pos.y() + activatingWidget->height()/2 - height/2;
-	// if we exceed the bottom edge of the screen, let's align the widget to it
-	if (y + height > s_size.height())
-		y = s_size.height() - height;
-	// if we exceed the top edge of the screen, let's align the widget to it
-	if (y < 0)
-		y = 0;
-	if (height > s_size.height())
-	{
-		height = s_size.height();
+    int height = e_size.height() + (hscroll_needed ? hscrollbar_height : 0);
+    // center vertically
+    int y = w_pos.y() + activatingWidget->height() / 2 - height / 2;
+    // if we exceed the bottom edge of the screen, let's align the widget to it
+    if (y + height > s_size.height())
+        y = s_size.height() - height;
+    // if we exceed the top edge of the screen, let's align the widget to it
+    if (y < 0)
+        y = 0;
+    if (height > s_size.height())
+    {
+        height = s_size.height();
 
-		// due to vertical scrollbar added, width of the widget has been increased, so we have to reposition it
-		int add_width = vscrollbar_width;
-		if (width + add_width > max_width)
-			add_width = max_width - width;
-		width += add_width;
-		if (is_on_left)
-			x -= add_width;
-	}
+        // due to vertical scrollbar added, width of the widget has been increased, so we have to reposition it
+        int add_width = vscrollbar_width;
+        if (width + add_width > max_width)
+            add_width = max_width - width;
+        width += add_width;
+        if (is_on_left)
+            x -= add_width;
+    }
 
-	setFixedSize(QSize(width, height));
-	move(x, y);
+    setFixedSize(QSize(width, height));
+    move(x, y);
 }
 
 void EmoticonSelector::emoticonClickedSlot(const Emoticon &emoticon)
 {
-	if (emoticon.isNull())
-		return;
+    if (emoticon.isNull())
+        return;
 
-	emit emoticonClicked(emoticon);
-	emit emoticonClicked(emoticon.triggerText());
+    emit emoticonClicked(emoticon);
+    emit emoticonClicked(emoticon.triggerText());
 
-	close();
+    close();
 }
 
 bool EmoticonSelector::event(QEvent *e)
 {
-	if (e->type() == QEvent::MouseButtonPress && !rect().contains(static_cast<QMouseEvent*>(e)->globalPos() - mapToGlobal(QPoint(0, 0))))
-	{
-		close();
-		return true;
-	}
-	return QScrollArea::event(e);
+    if (e->type() == QEvent::MouseButtonPress &&
+        !rect().contains(static_cast<QMouseEvent *>(e)->globalPos() - mapToGlobal(QPoint(0, 0))))
+    {
+        close();
+        return true;
+    }
+    return QScrollArea::event(e);
 }
 
 void EmoticonSelector::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Escape)
-	{
-		close();
-		return;
-	}
-	QAbstractScrollArea::keyPressEvent(e);
+    if (e->key() == Qt::Key_Escape)
+    {
+        close();
+        return;
+    }
+    QAbstractScrollArea::keyPressEvent(e);
 }
 
 #include "moc_emoticon-selector.cpp"

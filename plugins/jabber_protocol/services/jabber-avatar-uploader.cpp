@@ -21,11 +21,11 @@
 
 #include "jabber-avatar-uploader.h"
 
+#include "jabber-protocol.h"
 #include "services/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
-#include "jabber-protocol.h"
 
 #include <QtCore/QBuffer>
 #include <qxmpp/QXmppVCardIq.h>
@@ -34,20 +34,21 @@
 
 QByteArray JabberAvatarUploader::avatarData(QImage avatar)
 {
-	if (avatar.height() > MAX_AVATAR_DIMENSION || avatar.width() > MAX_AVATAR_DIMENSION)
-		avatar = avatar.scaled(MAX_AVATAR_DIMENSION, MAX_AVATAR_DIMENSION, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (avatar.height() > MAX_AVATAR_DIMENSION || avatar.width() > MAX_AVATAR_DIMENSION)
+        avatar =
+            avatar.scaled(MAX_AVATAR_DIMENSION, MAX_AVATAR_DIMENSION, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
-	QByteArray data;
-	QBuffer buffer(&data);
-	buffer.open(QIODevice::WriteOnly);
-	avatar.save(&buffer, "PNG");
-	buffer.close();
+    QByteArray data;
+    QBuffer buffer(&data);
+    buffer.open(QIODevice::WriteOnly);
+    avatar.save(&buffer, "PNG");
+    buffer.close();
 
-	return data;
+    return data;
 }
 
-JabberAvatarUploader::JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent) :
-		AvatarUploader(parent), VCardService(vcardService)
+JabberAvatarUploader::JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent)
+        : AvatarUploader(parent), VCardService(vcardService)
 {
 }
 
@@ -57,67 +58,68 @@ JabberAvatarUploader::~JabberAvatarUploader()
 
 void JabberAvatarUploader::done()
 {
-	emit avatarUploaded(true, UploadedAvatar);
-	deleteLater();
+    emit avatarUploaded(true, UploadedAvatar);
+    deleteLater();
 }
 
 void JabberAvatarUploader::failed()
 {
-	emit avatarUploaded(false, UploadedAvatar);
-	deleteLater();
+    emit avatarUploaded(false, UploadedAvatar);
+    deleteLater();
 }
 
 void JabberAvatarUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
-	Q_UNUSED(password);
+    Q_UNUSED(password);
 
-	UploadedAvatar = avatar;
+    UploadedAvatar = avatar;
 
-	if (!VCardService)
-	{
-		failed();
-		return;
-	}
+    if (!VCardService)
+    {
+        failed();
+        return;
+    }
 
-	auto vCardDownloader = VCardService.data()->createVCardDownloader();
-	if (!vCardDownloader)
-	{
-		failed();
-		return;
-	}
+    auto vCardDownloader = VCardService.data()->createVCardDownloader();
+    if (!vCardDownloader)
+    {
+        failed();
+        return;
+    }
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,QXmppVCardIq)), this, SLOT(vCardDownloaded(bool,QXmppVCardIq)));
-	vCardDownloader->downloadVCard(id);
+    connect(
+        vCardDownloader, SIGNAL(vCardDownloaded(bool, QXmppVCardIq)), this, SLOT(vCardDownloaded(bool, QXmppVCardIq)));
+    vCardDownloader->downloadVCard(id);
 }
 
 void JabberAvatarUploader::vCardDownloaded(bool ok, const QXmppVCardIq &vcard)
 {
-	if (!ok || !VCardService)
-	{
-		failed();
-		return;
-	}
+    if (!ok || !VCardService)
+    {
+        failed();
+        return;
+    }
 
-	auto updatedVCard = vcard;
-	updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
+    auto updatedVCard = vcard;
+    updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
 
-	auto vCardUploader = VCardService.data()->createVCardUploader();
-	if (!vCardUploader)
-	{
-		failed();
-		return;
-	}
+    auto vCardUploader = VCardService.data()->createVCardUploader();
+    if (!vCardUploader)
+    {
+        failed();
+        return;
+    }
 
-	connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SLOT(vCardUploaded(bool)));
-	vCardUploader->uploadVCard(updatedVCard);
+    connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SLOT(vCardUploaded(bool)));
+    vCardUploader->uploadVCard(updatedVCard);
 }
 
 void JabberAvatarUploader::vCardUploaded(bool ok)
 {
-	if (ok)
-		done();
-	else
-		failed();
+    if (ok)
+        done();
+    else
+        failed();
 }
 
 #include "moc_jabber-avatar-uploader.cpp"

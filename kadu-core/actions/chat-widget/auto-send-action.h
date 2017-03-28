@@ -30,27 +30,26 @@ class Configuration;
 
 class AutoSendAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit AutoSendAction(QObject *parent = nullptr);
-	virtual ~AutoSendAction();
+    Q_INVOKABLE explicit AutoSendAction(QObject *parent = nullptr);
+    virtual ~AutoSendAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<Configuration> m_configuration;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<Configuration> m_configuration;
 
-	void autoSendActionCheck();
+    void autoSendActionCheck();
 
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 };

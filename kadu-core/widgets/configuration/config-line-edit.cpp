@@ -26,55 +26,61 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-edit.h"
 
-ConfigLineEdit::ConfigLineEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: LineEditWithClearButton(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigLineEdit::ConfigLineEdit(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : LineEditWithClearButton(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
-	setClearButtonVisible(false);
+    createWidgets();
+    setClearButtonVisible(false);
 }
 
 ConfigLineEdit::ConfigLineEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: LineEditWithClearButton(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+        : LineEditWithClearButton(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager),
+          label(0)
 {
-	setClearButtonVisible(false);
+    setClearButtonVisible(false);
 }
 
 ConfigLineEdit::~ConfigLineEdit()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigLineEdit::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigLineEdit::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setText(dataManager->readEntry(section, item).toString());
+    if (!dataManager)
+        return;
+    setText(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigLineEdit::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QVariant(text()));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QVariant(text()));
 }
 
 void ConfigLineEdit::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	LineEditWithClearButton::setVisible(visible);
+    label->setVisible(visible);
+    LineEditWithClearButton::setVisible(visible);
 }
 
 #include "moc_config-line-edit.cpp"

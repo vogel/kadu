@@ -23,10 +23,10 @@
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "misc/memory.h"
 #include "os/generic/compositing-aware-object.h"
 #include "protocols/services/chat-state-service.h"
-#include "exports.h"
 
 #include <injeqt/injeqt.h>
 
@@ -46,87 +46,93 @@ class SortedMessages;
 
 class KADUAPI WebkitMessagesView : public KaduWebView, public ConfigurationAwareObject, CompositingAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit WebkitMessagesView(const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = nullptr);
-	virtual ~WebkitMessagesView();
+    explicit WebkitMessagesView(
+        const Chat &chat = Chat::null, bool supportTransparency = true, QWidget *parent = nullptr);
+    virtual ~WebkitMessagesView();
 
-	void add(const Message &message);
-	void add(const SortedMessages &messages);
-	SortedMessages messages() const;
+    void add(const Message &message);
+    void add(const SortedMessages &messages);
+    SortedMessages messages() const;
 
-	int countMessages();
+    int countMessages();
 
-	void setForcePruneDisabled(bool disable);
+    void setForcePruneDisabled(bool disable);
 
-	Chat chat() const { return m_chat; }
-	void setChat(const Chat &chat);
+    Chat chat() const
+    {
+        return m_chat;
+    }
+    void setChat(const Chat &chat);
 
-	bool supportTransparency() { return m_supportTransparency; }
+    bool supportTransparency()
+    {
+        return m_supportTransparency;
+    }
 
-	void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
+    void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 
 public slots:
-	void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
-	void refreshView();
+    void setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
+    void refreshView();
 
-	void clearMessages();
-	void contactActivityChanged(const Contact &contact, ChatState state);
-	void updateAtBottom();
+    void clearMessages();
+    void contactActivityChanged(const Contact &contact, ChatState state);
+    void updateAtBottom();
 
-	void pageUp();
-	void pageDown();
-	void scrollToTop();
-	void scrollToBottom();
-	void forceScrollToBottom();
+    void pageUp();
+    void pageDown();
+    void scrollToTop();
+    void scrollToBottom();
+    void forceScrollToBottom();
 
 signals:
-	void messagesUpdated();
+    void messagesUpdated();
 
 protected:
-	virtual void configurationUpdated() override;
-	virtual void mouseReleaseEvent(QMouseEvent *e) override;
-	virtual void resizeEvent(QResizeEvent *e) override;
-	virtual void wheelEvent(QWheelEvent *e) override;
+    virtual void configurationUpdated() override;
+    virtual void mouseReleaseEvent(QMouseEvent *e) override;
+    virtual void resizeEvent(QResizeEvent *e) override;
+    virtual void wheelEvent(QWheelEvent *e) override;
 
-	virtual void compositingEnabled() override;
-	virtual void compositingDisabled() override;
+    virtual void compositingEnabled() override;
+    virtual void compositingDisabled() override;
 
 private:
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<ChatImageRequestService> m_chatImageRequestService;
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<ChatStyleManager> m_chatStyleManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<ChatImageRequestService> m_chatImageRequestService;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<ChatStyleManager> m_chatStyleManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
 
-	Chat m_chat;
-	owned_qptr<WebkitMessagesViewHandler> m_handler;
-	bool m_forcePruneDisabled;
-	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
+    Chat m_chat;
+    owned_qptr<WebkitMessagesViewHandler> m_handler;
+    bool m_forcePruneDisabled;
+    std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
 
-	bool m_supportTransparency;
-	bool m_atBottom;
+    bool m_supportTransparency;
+    bool m_atBottom;
 
-	void connectChat();
-	void disconnectChat();
+    void connectChat();
+    void disconnectChat();
 
-	ChatStyleRendererConfiguration rendererConfiguration();
-	void setWebkitMessagesViewHandler(owned_qptr<WebkitMessagesViewHandler> handler);
+    ChatStyleRendererConfiguration rendererConfiguration();
+    void setWebkitMessagesViewHandler(owned_qptr<WebkitMessagesViewHandler> handler);
 
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
-	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setChatImageRequestService(ChatImageRequestService *chatImageRequestService);
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 
-	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
-	void sentMessageStatusChanged(const Message &message);
-	void chatStyleConfigurationUpdated();
-
+    void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
+    void sentMessageStatusChanged(const Message &message);
+    void chatStyleConfigurationUpdated();
 };

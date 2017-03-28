@@ -21,8 +21,8 @@
 #pragma once
 
 #include "actions/action-description.h"
-#include "model/roles.h"
 #include "injeqt-type-roles.h"
+#include "model/roles.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
@@ -36,41 +36,40 @@ class Myself;
 
 class DeleteTalkableAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit DeleteTalkableAction(QObject *parent = nullptr);
-	virtual ~DeleteTalkableAction();
+    Q_INVOKABLE explicit DeleteTalkableAction(QObject *parent = nullptr);
+    virtual ~DeleteTalkableAction();
 
-	void trigger(ActionContext *context);
+    void trigger(ActionContext *context);
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void updateActionState(Action *action);
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
+    virtual void actionInstanceCreated(Action *action);
+    virtual void updateActionState(Action *action);
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<Myself> m_myself;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<Myself> m_myself;
 
-	int actionRole(ActionContext *context) const;
-	Chat actionChat(ActionContext *context) const;
-	Buddy actionBuddy(ActionContext *context) const;
+    int actionRole(ActionContext *context) const;
+    Chat actionChat(ActionContext *context) const;
+    Buddy actionBuddy(ActionContext *context) const;
 
-	void setChatActionTitleAndIcon(Action *action);
-	void setBuddyActionTitleAndIcon(Action *action);
+    void setChatActionTitleAndIcon(Action *action);
+    void setBuddyActionTitleAndIcon(Action *action);
 
-	void updateChatActionState(Action *action);
-	void updateBuddyActionState(Action *action);
+    void updateChatActionState(Action *action);
+    void updateBuddyActionState(Action *action);
 
-	void chatActionTriggered(ActionContext *context);
-	void buddyActionTriggered(ActionContext *context);
+    void chatActionTriggered(ActionContext *context);
+    void buddyActionTriggered(ActionContext *context);
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setMyself(Myself *myself);
 };

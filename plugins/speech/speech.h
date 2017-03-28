@@ -38,32 +38,30 @@ class Parser;
 
 class Speech : public QObject, public Notifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QTime lastSpeech;
+    QTime lastSpeech;
 
 public:
-	Q_INVOKABLE explicit Speech(QObject *parent = nullptr);
-	virtual ~Speech();
+    Q_INVOKABLE explicit Speech(QObject *parent = nullptr);
+    virtual ~Speech();
 
-	virtual void notify(const Notification &notification);
-	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent);
+    virtual void notify(const Notification &notification);
+    NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent);
 
-	void say(const QString &s,
-	const QString &path = QString(),
-	bool klatt = false, bool melodie = false,
-	const QString &sound_system = QString(), const QString &device = QString(),
-	int freq = 0, int tempo = 0, int basefreq = 0);
+    void
+    say(const QString &s, const QString &path = QString(), bool klatt = false, bool melodie = false,
+        const QString &sound_system = QString(), const QString &device = QString(), int freq = 0, int tempo = 0,
+        int basefreq = 0);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<Parser> m_parser;
+    QPointer<Configuration> m_configuration;
+    QPointer<Parser> m_parser;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_INIT void init();
 };
 
 /** @} */

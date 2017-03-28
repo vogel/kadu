@@ -30,18 +30,19 @@ class Configuration;
 
 class KADUAPI ConfigFileDataManager : public ConfigurationWindowDataManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ConfigFileDataManager(QObject *parent = nullptr) : ConfigurationWindowDataManager(parent) {}
+    ConfigFileDataManager(QObject *parent = nullptr) : ConfigurationWindowDataManager(parent)
+    {
+    }
 
-	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
-	virtual QVariant readEntry(const QString &section, const QString &name);
+    virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
+    virtual QVariant readEntry(const QString &section, const QString &name);
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 };

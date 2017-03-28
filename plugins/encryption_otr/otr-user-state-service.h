@@ -21,24 +21,23 @@
 #define OTR_USER_STATE_SERVICE_H
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/userstate.h>
+#include <libotr/proto.h>
+#include <libotr/userstate.h>
 }
 
 #include <QtCore/QObject>
 
 class OtrUserStateService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	OtrlUserState UserState;
+    OtrlUserState UserState;
 
 public:
-	Q_INVOKABLE OtrUserStateService();
-	virtual ~OtrUserStateService();
+    Q_INVOKABLE OtrUserStateService();
+    virtual ~OtrUserStateService();
 
-	OtrlUserState userState() const;
-
+    OtrlUserState userState() const;
 };
 
-#endif // OTR_USER_STATE_SERVICE_H
+#endif   // OTR_USER_STATE_SERVICE_H

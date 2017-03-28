@@ -33,43 +33,42 @@
 
 bool SqlRestore::isCorrupted(const QSqlDatabase &database)
 {
-	if (!database.isOpen()) // do not restore closed database
-		return false;
+    if (!database.isOpen())   // do not restore closed database
+        return false;
 
-	if (database.isOpenError()) // restore every database that was not properly opened
-		return true;
+    if (database.isOpenError())   // restore every database that was not properly opened
+        return true;
 
-	const QStringList &tables = database.tables();
-	if (QSqlError::NoError != database.lastError().type())
-		return true;
+    const QStringList &tables = database.tables();
+    if (QSqlError::NoError != database.lastError().type())
+        return true;
 
-	return tables.isEmpty();
+    return tables.isEmpty();
 }
 
 QString SqlRestore::errorMessage(SqlRestore::RestoreError error)
 {
-	switch (error)
-	{
-		case ErrorNoError:
-			return tr("No error.");
-		case ErrorSqlite3NotExecutable:
-			return tr("sqlite3 executable not found.");
-		case ErrorInvalidParameters:
-			return tr("Invalid invocation of recovery script.");
-		case ErrorUnreadableCorruptedDatabase:
-		case ErrorInvalidDirectory:
-			return tr("Unable to read corrupted database.");
-		case ErrorUnableToCreateBackup:
-			return tr("Unable to create backup file. Disc may be full.");
-		case ErrorNoRestoreScriptExecutable:
-			return tr("Recovery script not found or not executable.");
-		default:
-			return tr("Unknown error during database recovery.");
-	}
+    switch (error)
+    {
+    case ErrorNoError:
+        return tr("No error.");
+    case ErrorSqlite3NotExecutable:
+        return tr("sqlite3 executable not found.");
+    case ErrorInvalidParameters:
+        return tr("Invalid invocation of recovery script.");
+    case ErrorUnreadableCorruptedDatabase:
+    case ErrorInvalidDirectory:
+        return tr("Unable to read corrupted database.");
+    case ErrorUnableToCreateBackup:
+        return tr("Unable to create backup file. Disc may be full.");
+    case ErrorNoRestoreScriptExecutable:
+        return tr("Recovery script not found or not executable.");
+    default:
+        return tr("Unknown error during database recovery.");
+    }
 }
 
-SqlRestore::SqlRestore(QObject *parent) :
-		QObject{parent}
+SqlRestore::SqlRestore(QObject *parent) : QObject{parent}
 {
 }
 
@@ -79,25 +78,25 @@ SqlRestore::~SqlRestore()
 
 void SqlRestore::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFilePath)
 {
-	QString recoveryScriptPath = m_pathsProvider->dataPath() + QStringLiteral(RECOVERY_SCRIPT);
+    QString recoveryScriptPath = m_pathsProvider->dataPath() + QStringLiteral(RECOVERY_SCRIPT);
 
-	QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
-	if (!recoveryScriptFileInfo.exists())
-		return ErrorNoRestoreScriptExecutable;
+    QFileInfo recoveryScriptFileInfo(recoveryScriptPath);
+    if (!recoveryScriptFileInfo.exists())
+        return ErrorNoRestoreScriptExecutable;
 
-	QProcess restoreProcess;
-	restoreProcess.execute("bash", QStringList() << recoveryScriptPath << databaseFilePath);
-	restoreProcess.waitForFinished(-1);
+    QProcess restoreProcess;
+    restoreProcess.execute("bash", QStringList() << recoveryScriptPath << databaseFilePath);
+    restoreProcess.waitForFinished(-1);
 
-	if (restoreProcess.exitCode() < 0 || restoreProcess.exitCode() > ErrorRecovering)
-		return ErrorRecovering;
+    if (restoreProcess.exitCode() < 0 || restoreProcess.exitCode() > ErrorRecovering)
+        return ErrorRecovering;
 
-	return static_cast<RestoreError>(restoreProcess.exitCode());
+    return static_cast<RestoreError>(restoreProcess.exitCode());
 }
 
 #include "moc_sql-restore.cpp"

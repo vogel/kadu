@@ -31,8 +31,8 @@
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
-#include "message/message.h"
 #include "exports.h"
+#include "message/message.h"
 
 /**
  * @defgroup Chat
@@ -71,57 +71,62 @@ class UnreadMessageRepository;
 
 class KADUAPI ChatManagerImpl : public ChatManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void chatDataUpdated();
-	void chatOpened();
-	void chatClosed();
+    void chatDataUpdated();
+    void chatOpened();
+    void chatClosed();
 
-	void unreadMessageAdded(const Message &message);
-	void unreadMessageRemoved(const Message &message);
+    void unreadMessageAdded(const Message &message);
+    void unreadMessageRemoved(const Message &message);
 
 protected:
-	virtual Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+    virtual Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeAdded(Chat item) override;
-	virtual void itemAboutToBeRemoved(Chat item) override;
+    virtual void itemAboutToBeAdded(Chat item) override;
+    virtual void itemAboutToBeRemoved(Chat item) override;
 
 public:
-	Q_INVOKABLE explicit ChatManagerImpl(QObject *parent = nullptr);
-	virtual ~ChatManagerImpl();
+    Q_INVOKABLE explicit ChatManagerImpl(QObject *parent = nullptr);
+    virtual ~ChatManagerImpl();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns node name for storage of all chat data.
-	 * @return node name for storage of all chat data
-	 *
-	 * Returns node name for storage of all chat data - "Chat".
-	 */
-	virtual QString storageNodeName() override { return QStringLiteral("Chats"); }
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns node name for storage of all chat data.
+     * @return node name for storage of all chat data
+     *
+     * Returns node name for storage of all chat data - "Chat".
+     */
+    virtual QString storageNodeName() override
+    {
+        return QStringLiteral("Chats");
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns node name for storage of given chat data.
-	 * @return node name for storage of given chat data
-	 *
-	 * Returns node name for storage of given chat data - "Chat".
-	 */
-	virtual QString storageNodeItemName() override { return QStringLiteral("Chat"); }
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns node name for storage of given chat data.
+     * @return node name for storage of given chat data
+     *
+     * Returns node name for storage of given chat data - "Chat".
+     */
+    virtual QString storageNodeItemName() override
+    {
+        return QStringLiteral("Chat");
+    }
 
-	virtual QVector<Chat> chats(const Account &account) override;
-	virtual Chat byDisplay(const QString &display) override;
-
+    virtual QVector<Chat> chats(const Account &account) override;
+    virtual Chat byDisplay(const QString &display) override;
 };
 
 /**

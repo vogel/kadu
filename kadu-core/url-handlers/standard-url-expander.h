@@ -28,21 +28,20 @@
 
 class StandardUrlExpander : public QObject, public DomTextRegexpVisitor
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	StandardUrlExpanderConfiguration Configuration;
+    StandardUrlExpanderConfiguration Configuration;
 
-	bool shouldFold(int length) const;
-	QString displayLink(const QString &link) const;
+    bool shouldFold(int length) const;
+    QString displayLink(const QString &link) const;
 
 public:
-	explicit StandardUrlExpander(QRegExp regExp);
-	virtual ~StandardUrlExpander();
+    explicit StandardUrlExpander(QRegExp regExp);
+    virtual ~StandardUrlExpander();
 
-	void setConfiguration(const StandardUrlExpanderConfiguration &configuration);
+    void setConfiguration(const StandardUrlExpanderConfiguration &configuration);
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
-
+    virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 };
 
-#endif // STANDARD_URL_EXPANDER_H
+#endif   // STANDARD_URL_EXPANDER_H

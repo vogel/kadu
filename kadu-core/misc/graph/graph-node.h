@@ -23,49 +23,50 @@
 
 #include <vector>
 
-template<typename P, typename... SuccessorTypeTags>
+template <typename P, typename... SuccessorTypeTags>
 class GraphNode
 {
-	template<int I, class T, class Head, class... Tail>
-	struct TypeIndex
-	{
-		typedef typename TypeIndex<I + 1, T, Tail...>::type type;
-		static constexpr int i = I;
-	};
+    template <int I, class T, class Head, class... Tail>
+    struct TypeIndex
+    {
+        typedef typename TypeIndex<I + 1, T, Tail...>::type type;
+        static constexpr int i = I;
+    };
 
-	template<int I, class T, class... Tail>
-	struct TypeIndex<I, T, T, Tail...>
-	{
-		typedef TypeIndex type;
-		static constexpr int i = I;
-	};
+    template <int I, class T, class... Tail>
+    struct TypeIndex<I, T, T, Tail...>
+    {
+        typedef TypeIndex type;
+        static constexpr int i = I;
+    };
 
 public:
-	using Type = GraphNode<P, SuccessorTypeTags...>;
-	using Pointer = Type*;
+    using Type = GraphNode<P, SuccessorTypeTags...>;
+    using Pointer = Type *;
 
-	explicit GraphNode(P payload) :
-			m_payload{payload}
-	{
-		m_successors.resize(sizeof...(SuccessorTypeTags));
-	}
+    explicit GraphNode(P payload) : m_payload{payload}
+    {
+        m_successors.resize(sizeof...(SuccessorTypeTags));
+    }
 
-	template<typename SuccessorTypeTag>
-	void addSuccessor(Pointer successor)
-	{
-		m_successors.at(TypeIndex<0, SuccessorTypeTag, SuccessorTypeTags...>::type::i).push_back(successor);
-	}
+    template <typename SuccessorTypeTag>
+    void addSuccessor(Pointer successor)
+    {
+        m_successors.at(TypeIndex<0, SuccessorTypeTag, SuccessorTypeTags...>::type::i).push_back(successor);
+    }
 
-	template<typename SuccessorTypeTag>
-	std::vector<Pointer> successors() const
-	{
-		return m_successors.at(TypeIndex<0, SuccessorTypeTag, SuccessorTypeTags...>::type::i);
-	}
+    template <typename SuccessorTypeTag>
+    std::vector<Pointer> successors() const
+    {
+        return m_successors.at(TypeIndex<0, SuccessorTypeTag, SuccessorTypeTags...>::type::i);
+    }
 
-	P payload() const { return m_payload; }
+    P payload() const
+    {
+        return m_payload;
+    }
 
 private:
-	std::vector<std::vector<Pointer>> m_successors;
-	P m_payload;
-
+    std::vector<std::vector<Pointer>> m_successors;
+    P m_payload;
 };

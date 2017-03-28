@@ -31,8 +31,7 @@
 
 #include "chat-manager-impl.h"
 
-ChatManagerImpl::ChatManagerImpl(QObject *parent) :
-		ChatManager{parent}
+ChatManagerImpl::ChatManagerImpl(QObject *parent) : ChatManager{parent}
 {
 }
 
@@ -42,130 +41,129 @@ ChatManagerImpl::~ChatManagerImpl()
 
 void ChatManagerImpl::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void ChatManagerImpl::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void ChatManagerImpl::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void ChatManagerImpl::init()
 {
-	m_configurationManager->registerStorableObject(this);
+    m_configurationManager->registerStorableObject(this);
 
-	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
-		unreadMessageAdded(message);
+    foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+        unreadMessageAdded(message);
 
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)),
-	        this, SLOT(unreadMessageAdded(Message)));
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)),
-	        this, SLOT(unreadMessageRemoved(Message)));
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
+    connect(
+        m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void ChatManagerImpl::done()
 {
-	disconnect(m_unreadMessageRepository, 0, this, 0);
+    disconnect(m_unreadMessageRepository, 0, this, 0);
 
-	foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
-		unreadMessageRemoved(message);
+    foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+        unreadMessageRemoved(message);
 
-	m_configurationManager->unregisterStorableObject(this);
+    m_configurationManager->unregisterStorableObject(this);
 }
 
 Chat ChatManagerImpl::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return m_chatStorage->loadStubFromStorage(storagePoint);
+    return m_chatStorage->loadStubFromStorage(storagePoint);
 }
 
 void ChatManagerImpl::itemAboutToBeAdded(Chat item)
 {
-	ChatManager::itemAboutToBeAdded(item);
+    ChatManager::itemAboutToBeAdded(item);
 
-	connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
-	connect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
-	connect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
+    connect(item, SIGNAL(updated()), this, SLOT(chatDataUpdated()));
+    connect(item, SIGNAL(opened()), this, SLOT(chatOpened()));
+    connect(item, SIGNAL(closed()), this, SLOT(chatClosed()));
 }
 
 void ChatManagerImpl::itemAboutToBeRemoved(Chat item)
 {
-	disconnect(item, nullptr, this, nullptr);
+    disconnect(item, nullptr, this, nullptr);
 
-	ChatManager::itemAboutToBeRemoved(item);
+    ChatManager::itemAboutToBeRemoved(item);
 }
 
 QVector<Chat> ChatManagerImpl::chats(const Account &account)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	ensureLoaded();
+    ensureLoaded();
 
-	QVector<Chat> chats;
+    QVector<Chat> chats;
 
-	if (account.isNull())
-		return chats;
+    if (account.isNull())
+        return chats;
 
-	foreach (const Chat &chat, items())
-		if (account == chat.chatAccount())
-			chats.append(chat);
+    foreach (const Chat &chat, items())
+        if (account == chat.chatAccount())
+            chats.append(chat);
 
-	return chats;
+    return chats;
 }
 
 Chat ChatManagerImpl::byDisplay(const QString &display)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	ensureLoaded();
+    ensureLoaded();
 
-	if (display.isEmpty())
-		return Chat::null;
+    if (display.isEmpty())
+        return Chat::null;
 
-	foreach (const Chat &chat, items())
-		if (display == chat.display())
-			return chat;
+    foreach (const Chat &chat, items())
+        if (display == chat.display())
+            return chat;
 
-	return Chat::null;
+    return Chat::null;
 }
 
 void ChatManagerImpl::chatDataUpdated()
 {
-	Chat chat(sender());
-	if (!chat.isNull())
-		emit chatUpdated(chat);
+    Chat chat(sender());
+    if (!chat.isNull())
+        emit chatUpdated(chat);
 }
 
 void ChatManagerImpl::chatOpened()
 {
-	Chat chat(sender());
-	if (!chat.isNull())
-		emit ChatManager::chatOpened(chat);
+    Chat chat(sender());
+    if (!chat.isNull())
+        emit ChatManager::chatOpened(chat);
 }
 
 void ChatManagerImpl::chatClosed()
 {
-	Chat chat(sender());
-	if (!chat.isNull())
-		emit ChatManager::chatClosed(chat);
+    Chat chat(sender());
+    if (!chat.isNull())
+        emit ChatManager::chatClosed(chat);
 }
 
 void ChatManagerImpl::unreadMessageAdded(const Message &message)
 {
-	const Chat &chat = message.messageChat();
-	chat.setUnreadMessagesCount(chat.unreadMessagesCount() + 1);
+    const Chat &chat = message.messageChat();
+    chat.setUnreadMessagesCount(chat.unreadMessagesCount() + 1);
 }
 
 void ChatManagerImpl::unreadMessageRemoved(const Message &message)
 {
-	const Chat &chat = message.messageChat();
-	quint16 unreadMessagesCount = chat.unreadMessagesCount();
-	if (unreadMessagesCount > 0)
-		chat.setUnreadMessagesCount(unreadMessagesCount - 1);
+    const Chat &chat = message.messageChat();
+    quint16 unreadMessagesCount = chat.unreadMessagesCount();
+    if (unreadMessagesCount > 0)
+        chat.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
 
 #include "moc_chat-manager-impl.cpp"

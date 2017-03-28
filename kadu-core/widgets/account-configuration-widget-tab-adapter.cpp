@@ -24,16 +24,19 @@
 
 #include "account-configuration-widget-tab-adapter.h"
 
-AccountConfigurationWidgetTabAdapter::AccountConfigurationWidgetTabAdapter(AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent) :
-		QObject(parent), MyAccountEditWidget(accountEditWidget), MyTabWidget(tabWidget)
+AccountConfigurationWidgetTabAdapter::AccountConfigurationWidgetTabAdapter(
+    AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent)
+        : QObject(parent), MyAccountEditWidget(accountEditWidget), MyTabWidget(tabWidget)
 {
-	if (!MyAccountEditWidget || !MyTabWidget)
-		return;
+    if (!MyAccountEditWidget || !MyTabWidget)
+        return;
 
-	connect(MyAccountEditWidget, SIGNAL(widgetAdded(AccountConfigurationWidget*)), this, SLOT(widgetAdded(AccountConfigurationWidget*)));
+    connect(
+        MyAccountEditWidget, SIGNAL(widgetAdded(AccountConfigurationWidget *)), this,
+        SLOT(widgetAdded(AccountConfigurationWidget *)));
 
-	foreach (AccountConfigurationWidget *widget, MyAccountEditWidget->accountConfigurationWidgets())
-		widgetAdded(widget);
+    foreach (AccountConfigurationWidget *widget, MyAccountEditWidget->accountConfigurationWidgets())
+        widgetAdded(widget);
 }
 
 AccountConfigurationWidgetTabAdapter::~AccountConfigurationWidgetTabAdapter()
@@ -42,7 +45,7 @@ AccountConfigurationWidgetTabAdapter::~AccountConfigurationWidgetTabAdapter()
 
 void AccountConfigurationWidgetTabAdapter::widgetAdded(AccountConfigurationWidget *widget)
 {
-	MyTabWidget->addTab(widget, widget->windowTitle());
+    MyTabWidget->addTab(widget, widget->windowTitle());
 }
 
 #include "moc_account-configuration-widget-tab-adapter.cpp"

@@ -23,31 +23,31 @@ EmoticonTheme::EmoticonTheme()
 {
 }
 
-EmoticonTheme::EmoticonTheme(const QVector<Emoticon> &emoticons, const QVector<Emoticon> &aliases) :
-		Emoticons(emoticons), Aliases(aliases)
+EmoticonTheme::EmoticonTheme(const QVector<Emoticon> &emoticons, const QVector<Emoticon> &aliases)
+        : Emoticons(emoticons), Aliases(aliases)
 {
 }
 
 EmoticonTheme::EmoticonTheme(const EmoticonTheme &copyMe)
 {
-	Emoticons = copyMe.Emoticons;
-	Aliases = copyMe.Aliases;
+    Emoticons = copyMe.Emoticons;
+    Aliases = copyMe.Aliases;
 }
 
-EmoticonTheme & EmoticonTheme::operator = (const EmoticonTheme &copyMe)
+EmoticonTheme &EmoticonTheme::operator=(const EmoticonTheme &copyMe)
 {
-	Emoticons = copyMe.Emoticons;
-	Aliases = copyMe.Aliases;
+    Emoticons = copyMe.Emoticons;
+    Aliases = copyMe.Aliases;
 
-	return *this;
+    return *this;
 }
 
 QVector<Emoticon> EmoticonTheme::emoticons() const
 {
-	return Emoticons;
+    return Emoticons;
 }
 
 QVector<Emoticon> EmoticonTheme::aliases() const
 {
-	return Aliases;
+    return Aliases;
 }

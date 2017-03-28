@@ -26,21 +26,20 @@
 
 class SelectionFrameItem : public QGraphicsItem
 {
-	QColor Shadow;
-	QSize Size;
-	QRect Selection;
+    QColor Shadow;
+    QSize Size;
+    QRect Selection;
 
 protected:
-	virtual QRectF boundingRect() const;
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual QRectF boundingRect() const;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
-	explicit SelectionFrameItem(QGraphicsItem *parent = 0);
-	virtual ~SelectionFrameItem();
+    explicit SelectionFrameItem(QGraphicsItem *parent = 0);
+    virtual ~SelectionFrameItem();
 
-	void setSize(const QSize &size);
-	void setSelection(const QRect &selection);
-
+    void setSize(const QSize &size);
+    void setSelection(const QRect &selection);
 };
 
-#endif // SELECTION_FRAME_H
+#endif   // SELECTION_FRAME_H

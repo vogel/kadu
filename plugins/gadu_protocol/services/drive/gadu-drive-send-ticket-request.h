@@ -30,30 +30,30 @@ class QNetworkReply;
 
 class GaduDriveSendTicketRequest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduDriveSendTicketRequest(QString recipient, QString fileName, qint64 fileSize,
-		GaduDriveSessionToken sessionToken, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~GaduDriveSendTicketRequest();
+    explicit GaduDriveSendTicketRequest(
+        QString recipient, QString fileName, qint64 fileSize, GaduDriveSessionToken sessionToken,
+        QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+    virtual ~GaduDriveSendTicketRequest();
 
 public slots:
-	void authorized(GaduDriveSessionToken sessionToken);
+    void authorized(GaduDriveSessionToken sessionToken);
 
 signals:
-	void sendTickedReceived(GaduDriveSendTicket);
+    void sendTickedReceived(GaduDriveSendTicket);
 
 private:
-	QString m_recipient;
-	QString m_fileName;
-	qint64 m_fileSize;
-	GaduDriveSessionToken m_sessionToken;
-	QNetworkAccessManager *m_networkAccessManager;
-	QPointer<QNetworkReply> m_reply;
+    QString m_recipient;
+    QString m_fileName;
+    qint64 m_fileSize;
+    GaduDriveSessionToken m_sessionToken;
+    QNetworkAccessManager *m_networkAccessManager;
+    QPointer<QNetworkReply> m_reply;
 
-	void sendRequest();
+    void sendRequest();
 
 private slots:
-	void requestFinished();
-
+    void requestFinished();
 };

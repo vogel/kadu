@@ -50,8 +50,8 @@
 #include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
-#include "scripts/sms-script-manager.h"
 #include "mobile-number-manager.h"
+#include "scripts/sms-script-manager.h"
 #include "sms-external-sender.h"
 #include "sms-gateway-manager.h"
 #include "sms-gateway.h"
@@ -59,16 +59,14 @@
 
 #include "sms-dialog.h"
 
-SmsDialog::SmsDialog(History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget* parent) :
-		QWidget{parent, Qt::Window},
-		m_history{history},
-		m_mobileNumberManager{mobileNumberManager},
-		m_smsGatewayManager{smsGatewayManager},
-		m_smsScriptsManager{smsScriptsManager},
-		MaxLength{0}
+SmsDialog::SmsDialog(
+    History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager,
+    SmsScriptsManager *smsScriptsManager, QWidget *parent)
+        : QWidget{parent, Qt::Window}, m_history{history}, m_mobileNumberManager{mobileNumberManager},
+          m_smsGatewayManager{smsGatewayManager}, m_smsScriptsManager{smsScriptsManager}, MaxLength{0}
 {
-	setWindowTitle(tr("Send SMS"));
-	setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Send SMS"));
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 SmsDialog::~SmsDialog()
@@ -77,287 +75,291 @@ SmsDialog::~SmsDialog()
 
 void SmsDialog::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void SmsDialog::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SmsDialog::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void SmsDialog::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SmsDialog::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void SmsDialog::init()
 {
-	createGui();
-	validate();
+    createGui();
+    validate();
 
-	configurationUpdated();
+    configurationUpdated();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "Sms", "SmsDialogGeometry"), QRect(200, 200, 400, 250), this);
+    new WindowGeometryManager(
+        new ConfigFileVariantWrapper(m_configuration, "Sms", "SmsDialogGeometry"), QRect(200, 200, 400, 250), this);
 
-	RecipientEdit->setFocus();
+    RecipientEdit->setFocus();
 }
 
 void SmsDialog::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QWidget *formWidget = new QWidget(this);
-	mainLayout->addWidget(formWidget);
+    QWidget *formWidget = new QWidget(this);
+    mainLayout->addWidget(formWidget);
 
-	QFormLayout *formLayout = new QFormLayout(formWidget);
+    QFormLayout *formLayout = new QFormLayout(formWidget);
 
-	QWidget *recipientWidget = new QWidget(this);
-	QHBoxLayout *recipientLayout = new QHBoxLayout(recipientWidget);
-	recipientLayout->setContentsMargins(0, 0, 0, 0);
+    QWidget *recipientWidget = new QWidget(this);
+    QHBoxLayout *recipientLayout = new QHBoxLayout(recipientWidget);
+    recipientLayout->setContentsMargins(0, 0, 0, 0);
 
-	RecipientEdit = new QLineEdit(this);
-	RecipientEdit->setMinimumWidth(140);
+    RecipientEdit = new QLineEdit(this);
+    RecipientEdit->setMinimumWidth(140);
 
-	connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(recipientNumberChanged(QString)));
-	connect(RecipientEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
-	connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(validate()));
+    connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(recipientNumberChanged(QString)));
+    connect(RecipientEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+    connect(RecipientEdit, SIGNAL(textChanged(QString)), this, SLOT(validate()));
 
-	recipientLayout->addWidget(RecipientEdit);
+    recipientLayout->addWidget(RecipientEdit);
 
-	RecipientComboBox = m_pluginInjectedFactory->makeInjected<SelectTalkableComboBox>(this);
-	RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
+    RecipientComboBox = m_pluginInjectedFactory->makeInjected<SelectTalkableComboBox>(this);
+    RecipientComboBox->addBeforeAction(new QAction(tr(" - Select recipient - "), RecipientComboBox));
 
-	auto buddyListModel = m_pluginInjectedFactory->makeInjected<BuddyListModel>(RecipientComboBox);
-	m_pluginInjectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
+    auto buddyListModel = m_pluginInjectedFactory->makeInjected<BuddyListModel>(RecipientComboBox);
+    m_pluginInjectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
 
-	RecipientComboBox->setBaseModel(buddyListModel);
-	RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
+    RecipientComboBox->setBaseModel(buddyListModel);
+    RecipientComboBox->addFilter(new MobileTalkableFilter(RecipientComboBox));
 
-	connect(RecipientComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(recipientBuddyChanged()));
-	recipientLayout->addWidget(RecipientComboBox);
+    connect(RecipientComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(recipientBuddyChanged()));
+    recipientLayout->addWidget(RecipientComboBox);
 
-	formLayout->addRow(tr("Recipient") + ':', recipientWidget);
+    formLayout->addRow(tr("Recipient") + ':', recipientWidget);
 
-	ProviderComboBox = new QComboBox(this);
-	ProviderComboBox->addItem(tr("Select automatically"), QString());
+    ProviderComboBox = new QComboBox(this);
+    ProviderComboBox->addItem(tr("Select automatically"), QString());
 
-	for (auto gateway : m_smsGatewayManager->items())
-		ProviderComboBox->addItem(gateway.name(), gateway.id());
+    for (auto gateway : m_smsGatewayManager->items())
+        ProviderComboBox->addItem(gateway.name(), gateway.id());
 
-	connect(ProviderComboBox, SIGNAL(activated(int)), this, SLOT(gatewayActivated(int)));
+    connect(ProviderComboBox, SIGNAL(activated(int)), this, SLOT(gatewayActivated(int)));
 
-	formLayout->addRow(tr("GSM provider") + ':', ProviderComboBox);
+    formLayout->addRow(tr("GSM provider") + ':', ProviderComboBox);
 
-	ContentEdit = new QTextEdit(this);
-	ContentEdit->setAcceptRichText(false);
-	ContentEdit->setLineWrapMode(QTextEdit::WidgetWidth);
-	ContentEdit->setTabChangesFocus(true);
-	connect(ContentEdit, SIGNAL(textChanged()), this, SLOT(updateCounter()));
+    ContentEdit = new QTextEdit(this);
+    ContentEdit->setAcceptRichText(false);
+    ContentEdit->setLineWrapMode(QTextEdit::WidgetWidth);
+    ContentEdit->setTabChangesFocus(true);
+    connect(ContentEdit, SIGNAL(textChanged()), this, SLOT(updateCounter()));
 
-	formLayout->addRow(tr("Content") + ':', ContentEdit);
+    formLayout->addRow(tr("Content") + ':', ContentEdit);
 
-	LengthLabel = new QLabel("0", this);
-	formLayout->addRow(0, LengthLabel);
+    LengthLabel = new QLabel("0", this);
+    formLayout->addRow(0, LengthLabel);
 
-	SignatureEdit = new QLineEdit(m_configuration->deprecatedApi()->readEntry("SMS", "SmsNick"), this);
-	connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
+    SignatureEdit = new QLineEdit(m_configuration->deprecatedApi()->readEntry("SMS", "SmsNick"), this);
+    connect(SignatureEdit, SIGNAL(returnPressed()), this, SLOT(editReturnPressed()));
 
-	formLayout->addRow(tr("Signature") + ':', SignatureEdit);
+    formLayout->addRow(tr("Signature") + ':', SignatureEdit);
 
-	SaveInHistoryCheckBox = new QCheckBox(tr("Save SMS in history"), this);
-	SaveInHistoryCheckBox->setChecked(true);
+    SaveInHistoryCheckBox = new QCheckBox(tr("Save SMS in history"), this);
+    SaveInHistoryCheckBox->setChecked(true);
 
-	formLayout->addRow(0, SaveInHistoryCheckBox);
+    formLayout->addRow(0, SaveInHistoryCheckBox);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	mainLayout->addSpacing(16);
-	mainLayout->addWidget(buttons);
+    QDialogButtonBox *buttons = new QDialogButtonBox(this);
+    mainLayout->addSpacing(16);
+    mainLayout->addWidget(buttons);
 
-	SendButton = new QPushButton(this);
-	SendButton->setIcon(m_iconsManager->iconByPath(KaduIcon("go-next")));
-	SendButton->setText(tr("&Send"));
-	SendButton->setDefault(true);
-	SendButton->setMaximumWidth(200);
-	connect(SendButton, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
+    SendButton = new QPushButton(this);
+    SendButton->setIcon(m_iconsManager->iconByPath(KaduIcon("go-next")));
+    SendButton->setText(tr("&Send"));
+    SendButton->setDefault(true);
+    SendButton->setMaximumWidth(200);
+    connect(SendButton, SIGNAL(clicked()), this, SLOT(editReturnPressed()));
 
-	QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
-	connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+    QPushButton *closeButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
+    connect(closeButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"));
-	connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clear()));
+    QPushButton *clearButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogResetButton), tr("Clear"));
+    connect(clearButton, SIGNAL(clicked(bool)), this, SLOT(clear()));
 
-	buttons->addButton(SendButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
-	buttons->addButton(clearButton, QDialogButtonBox::DestructiveRole);
+    buttons->addButton(SendButton, QDialogButtonBox::ApplyRole);
+    buttons->addButton(closeButton, QDialogButtonBox::RejectRole);
+    buttons->addButton(clearButton, QDialogButtonBox::DestructiveRole);
 
-	resize(400, 250);
+    resize(400, 250);
 }
 
 void SmsDialog::validate()
 {
-	if (RecipientEdit->text().isEmpty())
-	{
-		SendButton->setEnabled(false);
-		return;
-	}
+    if (RecipientEdit->text().isEmpty())
+    {
+        SendButton->setEnabled(false);
+        return;
+    }
 
-	int currentLength = ContentEdit->toPlainText().length();
-	if (currentLength == 0)
-		SendButton->setEnabled(false);
-	else if (MaxLength == 0)
-		SendButton->setEnabled(true);
-	else
-		SendButton->setEnabled(currentLength <= MaxLength);
+    int currentLength = ContentEdit->toPlainText().length();
+    if (currentLength == 0)
+        SendButton->setEnabled(false);
+    else if (MaxLength == 0)
+        SendButton->setEnabled(true);
+    else
+        SendButton->setEnabled(currentLength <= MaxLength);
 }
 
 void SmsDialog::configurationUpdated()
 {
-	ContentEdit->setFont(m_configuration->deprecatedApi()->readFontEntry("Look", "ChatFont"));
+    ContentEdit->setFont(m_configuration->deprecatedApi()->readFontEntry("Look", "ChatFont"));
 }
 
 void SmsDialog::setRecipient(const QString &phone)
 {
-	RecipientEdit->setText(phone);
-	if (!phone.isEmpty())
-		ContentEdit->setFocus();
+    RecipientEdit->setText(phone);
+    if (!phone.isEmpty())
+        ContentEdit->setFocus();
 }
 
 void SmsDialog::recipientBuddyChanged()
 {
-	RecipientEdit->setText(m_talkableConverter->toBuddy(RecipientComboBox->currentTalkable()).mobile());
+    RecipientEdit->setText(m_talkableConverter->toBuddy(RecipientComboBox->currentTalkable()).mobile());
 }
 
 void SmsDialog::recipientNumberChanged(const QString &number)
 {
-	QString gatewayId = m_mobileNumberManager->gatewayId(RecipientEdit->text());
-	ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
+    QString gatewayId = m_mobileNumberManager->gatewayId(RecipientEdit->text());
+    ProviderComboBox->setCurrentIndex(ProviderComboBox->findData(gatewayId));
 
-	if (-1 == ProviderComboBox->currentIndex())
-		ProviderComboBox->setCurrentIndex(0);
+    if (-1 == ProviderComboBox->currentIndex())
+        ProviderComboBox->setCurrentIndex(0);
 
-	if (number.isEmpty())
-	{
-		RecipientComboBox->setCurrentTalkable(Talkable());
-		return;
-	}
+    if (number.isEmpty())
+    {
+        RecipientComboBox->setCurrentTalkable(Talkable());
+        return;
+    }
 
-	foreach (const Buddy &buddy, m_buddyManager->items())
-		if (buddy.mobile() == number)
-		{
-			RecipientComboBox->setCurrentTalkable(buddy);
-			return;
-		}
+    foreach (const Buddy &buddy, m_buddyManager->items())
+        if (buddy.mobile() == number)
+        {
+            RecipientComboBox->setCurrentTalkable(buddy);
+            return;
+        }
 }
 
 void SmsDialog::editReturnPressed()
 {
-	if (ContentEdit->toPlainText().isEmpty())
-		ContentEdit->setFocus();
-	else
-		sendSms();
+    if (ContentEdit->toPlainText().isEmpty())
+        ContentEdit->setFocus();
+    else
+        sendSms();
 }
 
 void SmsDialog::gatewayActivated(int index)
 {
-	QString id = ProviderComboBox->itemData(index).toString();
-	const SmsGateway &gateway = m_smsGatewayManager->byId(id);
+    QString id = ProviderComboBox->itemData(index).toString();
+    const SmsGateway &gateway = m_smsGatewayManager->byId(id);
 
-	MaxLength = gateway.maxLength();
+    MaxLength = gateway.maxLength();
 
-	if (0 == MaxLength)
-		MaxLengthSuffixText.clear();
-	else
-		MaxLengthSuffixText = QString(" / %1").arg(gateway.maxLength());
+    if (0 == MaxLength)
+        MaxLengthSuffixText.clear();
+    else
+        MaxLengthSuffixText = QString(" / %1").arg(gateway.maxLength());
 
-	updateCounter();
+    updateCounter();
 }
 
 void SmsDialog::gatewayAssigned(const QString &number, const QString &gatewayId)
 {
-	m_mobileNumberManager->registerNumber(number, gatewayId);
+    m_mobileNumberManager->registerNumber(number, gatewayId);
 }
 
 void SmsDialog::sendSms()
 {
-	SmsSender *sender;
+    SmsSender *sender;
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
-	{
-		int gatewayIndex = ProviderComboBox->currentIndex();
-		QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
-		sender = m_pluginInjectedFactory->makeInjected<SmsInternalSender>(m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId), this);
-	}
-	else
-	{
-		if (m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
-		{
-			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
-					tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
-			return;
-		}
-		sender = m_pluginInjectedFactory->makeInjected<SmsExternalSender>(RecipientEdit->text(), this);
-	}
+    if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "BuiltInApp"))
+    {
+        int gatewayIndex = ProviderComboBox->currentIndex();
+        QString gatewayId = ProviderComboBox->itemData(gatewayIndex, Qt::UserRole).toString();
+        sender = m_pluginInjectedFactory->makeInjected<SmsInternalSender>(
+            m_smsGatewayManager, m_smsScriptsManager, RecipientEdit->text(), m_smsGatewayManager->byId(gatewayId),
+            this);
+    }
+    else
+    {
+        if (m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp").isEmpty())
+        {
+            MessageDialog::show(
+                m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+                tr("SMS application was not specified. Visit the configuration section"), QMessageBox::Ok, this);
+            return;
+        }
+        sender = m_pluginInjectedFactory->makeInjected<SmsExternalSender>(RecipientEdit->text(), this);
+    }
 
-	connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
-	sender->setSignature(SignatureEdit->text());
+    connect(sender, SIGNAL(gatewayAssigned(QString, QString)), this, SLOT(gatewayAssigned(QString, QString)));
+    sender->setSignature(SignatureEdit->text());
 
-	auto window = m_pluginInjectedFactory->makeInjected<ProgressWindow>(tr("Sending SMS..."));
-	window->setCancellable(true);
-	window->show();
+    auto window = m_pluginInjectedFactory->makeInjected<ProgressWindow>(tr("Sending SMS..."));
+    window->setCancellable(true);
+    window->show();
 
-	connect(window, SIGNAL(canceled()), sender, SLOT(cancel()));
-	connect(sender, SIGNAL(canceled()), window, SLOT(reject()));
+    connect(window, SIGNAL(canceled()), sender, SLOT(cancel()));
+    connect(sender, SIGNAL(canceled()), window, SLOT(reject()));
 
-	connect(sender, SIGNAL(progress(QString,QString)), window, SLOT(addProgressEntry(QString,QString)));
-	connect(sender, SIGNAL(finished(bool,QString,QString)), window, SLOT(progressFinished(bool,QString,QString)));
+    connect(sender, SIGNAL(progress(QString, QString)), window, SLOT(addProgressEntry(QString, QString)));
+    connect(sender, SIGNAL(finished(bool, QString, QString)), window, SLOT(progressFinished(bool, QString, QString)));
 
-	if (SaveInHistoryCheckBox->isChecked())
-		connect(sender, SIGNAL(smsSent(QString,QString)), this, SLOT(saveSmsInHistory(QString,QString)));
+    if (SaveInHistoryCheckBox->isChecked())
+        connect(sender, SIGNAL(smsSent(QString, QString)), this, SLOT(saveSmsInHistory(QString, QString)));
 
-	sender->sendMessage(ContentEdit->toPlainText());
+    sender->sendMessage(ContentEdit->toPlainText());
 }
 
 void SmsDialog::updateCounter()
 {
-	LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()) + MaxLengthSuffixText);
+    LengthLabel->setText(QString::number(ContentEdit->toPlainText().length()) + MaxLengthSuffixText);
 
-	validate();
+    validate();
 }
 
 void SmsDialog::saveSmsInHistory(const QString &number, const QString &message)
 {
-	if (m_history->currentStorage())
-		m_history->currentStorage()->appendSms(number, message);
+    if (m_history->currentStorage())
+        m_history->currentStorage()->appendSms(number, message);
 }
 
 void SmsDialog::clear()
 {
-	RecipientEdit->clear();
-	RecipientComboBox->clear();
-	ProviderComboBox->clear();
-	ContentEdit->clear();
-	SignatureEdit->clear();
+    RecipientEdit->clear();
+    RecipientComboBox->clear();
+    ProviderComboBox->clear();
+    ContentEdit->clear();
+    SignatureEdit->clear();
 }
 
 void SmsDialog::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
+    if (e->key() == Qt::Key_Escape)
+    {
+        e->accept();
+        close();
+    }
+    else
+        QWidget::keyPressEvent(e);
 }
 
 #include "moc_sms-dialog.cpp"

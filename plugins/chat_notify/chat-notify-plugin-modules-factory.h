@@ -23,14 +23,13 @@
 
 class ChatNotifyPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit ChatNotifyPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~ChatNotifyPluginModulesFactory();
+    explicit ChatNotifyPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~ChatNotifyPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

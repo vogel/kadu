@@ -33,35 +33,34 @@ class QSpinBox;
 
 class AntistringConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE AntistringConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~AntistringConfigurationUiHandler();
+    Q_INVOKABLE AntistringConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~AntistringConfigurationUiHandler();
 
-	QListWidget *ConditionListWidget;
-	QLineEdit *ConditionWidget;
-	QSpinBox *FactorWidget;
+    QListWidget *ConditionListWidget;
+    QLineEdit *ConditionWidget;
+    QSpinBox *FactorWidget;
 
-	void updateConditionList();
+    void updateConditionList();
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<AntistringConfiguration> m_antistringConfiguration;
+    QPointer<AntistringConfiguration> m_antistringConfiguration;
 
 private slots:
-	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
+    INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
 
-	void addCondition();
-	void changeCondition();
-	void deleteCondition();
+    void addCondition();
+    void changeCondition();
+    void deleteCondition();
 
-	void applyConfiguration();
+    void applyConfiguration();
 
-	void wordSelected(QListWidgetItem *item);
-
+    void wordSelected(QListWidgetItem *item);
 };

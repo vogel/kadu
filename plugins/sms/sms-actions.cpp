@@ -38,15 +38,14 @@
 
 #include "gui/windows/sms-dialog-repository.h"
 #include "gui/windows/sms-dialog.h"
-#include "scripts/sms-script-manager.h"
 #include "mobile-number-manager.h"
+#include "scripts/sms-script-manager.h"
 #include "send-sms-action.h"
 #include "sms-gateway-manager.h"
 
 #include "sms-actions.h"
 
-SmsActions::SmsActions(QObject *parent) :
-		QObject{parent}
+SmsActions::SmsActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -56,98 +55,88 @@ SmsActions::~SmsActions()
 
 void SmsActions::setHistory(History *history)
 {
-	m_history = history;
+    m_history = history;
 }
 
 void SmsActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SmsActions::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void SmsActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void SmsActions::setMobileNumberManager(MobileNumberManager *mobileNumberManager)
 {
-	m_mobileNumberManager = mobileNumberManager;
+    m_mobileNumberManager = mobileNumberManager;
 }
 
 void SmsActions::setSendSmsAction(SendSmsAction *sendSmsAction)
 {
-	m_sendSmsAction = sendSmsAction;
+    m_sendSmsAction = sendSmsAction;
 }
 
 void SmsActions::setSmsDialogRepository(SmsDialogRepository *smsDialogRepository)
 {
-	m_smsDialogRepository = smsDialogRepository;
+    m_smsDialogRepository = smsDialogRepository;
 }
 
 void SmsActions::setSmsGatewayManager(SmsGatewayManager *smsGatewayManager)
 {
-	m_smsGatewayManager = smsGatewayManager;
+    m_smsGatewayManager = smsGatewayManager;
 }
 
 void SmsActions::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 {
-	m_smsScriptsManager = smsScriptsManager;
+    m_smsScriptsManager = smsScriptsManager;
 }
 
 void SmsActions::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void SmsActions::init()
 {
-	connect(m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)),
-			this, SLOT(talkableActivated(Talkable)));
+    connect(
+        m_kaduWindowService->kaduWindow(), SIGNAL(talkableActivated(Talkable)), this,
+        SLOT(talkableActivated(Talkable)));
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_sendSmsAction, KaduMenu::SectionSend, 10)
-		->update();
-	m_menuInventory
-		->menu("buddy")
-		->addAction(m_sendSmsAction, KaduMenu::SectionBuddies, 5)
-		->update();
+    m_menuInventory->menu("buddy-list")->addAction(m_sendSmsAction, KaduMenu::SectionSend, 10)->update();
+    m_menuInventory->menu("buddy")->addAction(m_sendSmsAction, KaduMenu::SectionBuddies, 5)->update();
 }
 
 void SmsActions::done()
 {
-	disconnect(m_kaduWindowService->kaduWindow(), 0, this, 0);
+    disconnect(m_kaduWindowService->kaduWindow(), 0, this, 0);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->removeAction(m_sendSmsAction)
-		->update();
-	m_menuInventory
-		->menu("buddy")
-		->removeAction(m_sendSmsAction)
-		->update();
+    m_menuInventory->menu("buddy-list")->removeAction(m_sendSmsAction)->update();
+    m_menuInventory->menu("buddy")->removeAction(m_sendSmsAction)->update();
 }
 
 void SmsActions::newSms(const QString &mobile)
 {
-	auto smsDialog = m_pluginInjectedFactory->makeInjected<SmsDialog>(m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
-	if (m_smsDialogRepository)
-		m_smsDialogRepository->addDialog(smsDialog);
+    auto smsDialog = m_pluginInjectedFactory->makeInjected<SmsDialog>(
+        m_history, m_mobileNumberManager, m_smsGatewayManager, m_smsScriptsManager);
+    if (m_smsDialogRepository)
+        m_smsDialogRepository->addDialog(smsDialog);
 
-	smsDialog->setRecipient(mobile);
-	smsDialog->show();
+    smsDialog->setRecipient(mobile);
+    smsDialog->show();
 }
 
 void SmsActions::talkableActivated(const Talkable &talkable)
 {
-	const Buddy &buddy = m_talkableConverter->toBuddy(talkable);
-	if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
-		newSms(buddy.mobile());
+    const Buddy &buddy = m_talkableConverter->toBuddy(talkable);
+    if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
+        newSms(buddy.mobile());
 }
 
 #include "moc_sms-actions.cpp"

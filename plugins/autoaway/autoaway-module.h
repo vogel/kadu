@@ -23,9 +23,9 @@
 
 class AutoawayModule : public injeqt::module
 {
-
 public:
-	AutoawayModule();
-	virtual ~AutoawayModule() {}
-
+    AutoawayModule();
+    virtual ~AutoawayModule()
+    {
+    }
 };

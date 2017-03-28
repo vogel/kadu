@@ -30,81 +30,81 @@
 #include "widgets/configuration/config-tab.h"
 #include "widgets/configuration/kadu-scroll-area.h"
 
-ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget) :
-		QObject(configSection), MyName(name)
+ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget)
+        : QObject(configSection), MyName(name)
 {
-	MyScrollArea = new KaduScrollArea(mainWidget);
-	MyScrollArea->setFrameStyle(QFrame::NoFrame);
-	MyScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-	MyScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-	MyScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    MyScrollArea = new KaduScrollArea(mainWidget);
+    MyScrollArea->setFrameStyle(QFrame::NoFrame);
+    MyScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    MyScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    MyScrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	MyMainWidget = new QWidget(MyScrollArea);
-	MyMainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	MyMainLayout = new QVBoxLayout(MyMainWidget);
-	MyMainLayout->addStretch(1);
+    MyMainWidget = new QWidget(MyScrollArea);
+    MyMainWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    MyMainLayout = new QVBoxLayout(MyMainWidget);
+    MyMainLayout->addStretch(1);
 
-	MyScrollArea->setWidget(MyMainWidget);
-	MyScrollArea->setWidgetResizable(true);
+    MyScrollArea->setWidget(MyMainWidget);
+    MyScrollArea->setWidgetResizable(true);
 }
 
 ConfigTab::~ConfigTab()
 {
-	/* NOTE: It's needed to call ConfigSection::configTabDestroyed before this
-	 * ConfigSection will be destroyed. If we relied on QObject to send this signal,
-	 * it'd be called after destroying all ConfigTab data but we need that data.
-	 */
-	blockSignals(false);
-	emit destroyed(this);
+    /* NOTE: It's needed to call ConfigSection::configTabDestroyed before this
+     * ConfigSection will be destroyed. If we relied on QObject to send this signal,
+     * it'd be called after destroying all ConfigTab data but we need that data.
+     */
+    blockSignals(false);
+    emit destroyed(this);
 
-	// qDeleteAll() won't work here because of connection to destroyed() signal
-	foreach (const ConfigGroupBox *cgb, MyConfigGroupBoxes)
-	{
-		disconnect(cgb, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
-		delete cgb;
-	}
+    // qDeleteAll() won't work here because of connection to destroyed() signal
+    foreach (const ConfigGroupBox *cgb, MyConfigGroupBoxes)
+    {
+        disconnect(cgb, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+        delete cgb;
+    }
 
-	delete MyScrollArea;
-	MyScrollArea = 0;
+    delete MyScrollArea;
+    MyScrollArea = 0;
 }
 
 void ConfigTab::configGroupBoxDestroyed(QObject *obj)
 {
-	// see ConfigGroupBox::~ConfigGroupBox()
-	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+    // see ConfigGroupBox::~ConfigGroupBox()
+    disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
 
-	MyConfigGroupBoxes.remove(static_cast<ConfigGroupBox *>(obj)->name());
+    MyConfigGroupBoxes.remove(static_cast<ConfigGroupBox *>(obj)->name());
 
-	if (MyConfigGroupBoxes.isEmpty())
-		deleteLater();
+    if (MyConfigGroupBoxes.isEmpty())
+        deleteLater();
 }
 
 ConfigGroupBox *ConfigTab::configGroupBox(const QString &name, bool create)
 {
-	if (MyConfigGroupBoxes.contains(name))
-		return MyConfigGroupBoxes.value(name);
+    if (MyConfigGroupBoxes.contains(name))
+        return MyConfigGroupBoxes.value(name);
 
-	if (!create)
-		return 0;
+    if (!create)
+        return 0;
 
-	QGroupBox *groupBox = new QGroupBox(name, MyMainWidget);
-	QHBoxLayout *groupBoxLayout = new QHBoxLayout(groupBox);
-	groupBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
+    QGroupBox *groupBox = new QGroupBox(name, MyMainWidget);
+    QHBoxLayout *groupBoxLayout = new QHBoxLayout(groupBox);
+    groupBoxLayout->setSizeConstraint(QLayout::SetMinimumSize);
 
-	MyMainLayout->insertWidget(MyConfigGroupBoxes.count(), groupBox);
+    MyMainLayout->insertWidget(MyConfigGroupBoxes.count(), groupBox);
 
-	ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
-	MyConfigGroupBoxes.insert(name, newConfigGroupBox);
-	connect(newConfigGroupBox, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
+    ConfigGroupBox *newConfigGroupBox = new ConfigGroupBox(name, this, groupBox);
+    MyConfigGroupBoxes.insert(name, newConfigGroupBox);
+    connect(newConfigGroupBox, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
 
-	groupBox->show();
+    groupBox->show();
 
-	return newConfigGroupBox;
+    return newConfigGroupBox;
 }
 
-QWidget * ConfigTab::widget() const
+QWidget *ConfigTab::widget() const
 {
-	return MyScrollArea;
+    return MyScrollArea;
 }
 
 #include "moc_config-tab.cpp"

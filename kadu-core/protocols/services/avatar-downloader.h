@@ -36,44 +36,49 @@
  * @short Class for downloading avatars.
  * @author Rafał 'Vogel' Malinowski
  *
- * This class allows for downloading one avatar. To do that attach slot to avatarDownloaded() signal and call downloadAvatar()
+ * This class allows for downloading one avatar. To do that attach slot to avatarDownloaded() signal and call
+ * downloadAvatar()
  * method. After avatar is downloaded avatarDownloaded() signal is emitted and this object deletes itself.
  */
 class KADUAPI AvatarDownloader : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	explicit AvatarDownloader(QObject *parent = nullptr) : QObject(parent) {}
-	virtual ~AvatarDownloader() {}
+    explicit AvatarDownloader(QObject *parent = nullptr) : QObject(parent)
+    {
+    }
+    virtual ~AvatarDownloader()
+    {
+    }
 
 public:
-	/**
-	 * @short Downloads avatar for given id.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of contact to download avatar for
-	 *
-	 * Before calling this method attach to avatarDownloaded() signal to get informed about result. Please
-	 * note that this method can be only called once. After that this object emits avatarDownloaded() and
-	 * deletes itself.
-	 */
-	virtual void downloadAvatar(const QString &id) = 0;
+    /**
+     * @short Downloads avatar for given id.
+     * @author Rafał 'Vogel' Malinowski
+     * @param id id of contact to download avatar for
+     *
+     * Before calling this method attach to avatarDownloaded() signal to get informed about result. Please
+     * note that this method can be only called once. After that this object emits avatarDownloaded() and
+     * deletes itself.
+     */
+    virtual void downloadAvatar(const QString &id) = 0;
 
 signals:
-	/**
-	 * @short Signal emitted when job of this class is done.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param ok success flag
-	 * @param avatar downloaded avatar
-	 *
-	 * If ok is true then avatar downloading was successfull. If ok is false then operation failed.
-	 * If ok is true and avatar is empty then contact does not have an avatar.
-	 */
-	void avatarDownloaded(bool ok, QImage avatar);
+    /**
+     * @short Signal emitted when job of this class is done.
+     * @author Rafał 'Vogel' Malinowski
+     * @param ok success flag
+     * @param avatar downloaded avatar
+     *
+     * If ok is true then avatar downloading was successfull. If ok is false then operation failed.
+     * If ok is true and avatar is empty then contact does not have an avatar.
+     */
+    void avatarDownloaded(bool ok, QImage avatar);
 };
 
 /**
  * @}
  */
 
-#endif // AVATAR_DOWNLOADER_H
+#endif   // AVATAR_DOWNLOADER_H

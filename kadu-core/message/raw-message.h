@@ -25,18 +25,16 @@
 
 class KADUAPI RawMessage
 {
-
 public:
-	RawMessage();
-	RawMessage(const QByteArray &plainContent);
-	RawMessage(QByteArray rawPlainContent, QByteArray rawXmlContent);
+    RawMessage();
+    RawMessage(const QByteArray &plainContent);
+    RawMessage(QByteArray rawPlainContent, QByteArray rawXmlContent);
 
-	QByteArray rawContent() const;
-	QByteArray rawPlainContent() const;
-	QByteArray rawXmlContent() const;
+    QByteArray rawContent() const;
+    QByteArray rawPlainContent() const;
+    QByteArray rawXmlContent() const;
 
 private:
-	QByteArray m_rawPlainContent;
-	QByteArray m_rawXmlContent;
-
+    QByteArray m_rawPlainContent;
+    QByteArray m_rawXmlContent;
 };

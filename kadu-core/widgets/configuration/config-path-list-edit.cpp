@@ -27,54 +27,59 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-path-list-edit.h"
 
-ConfigPathListEdit::ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigPathListEdit::ConfigPathListEdit(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : PathListEdit(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
+    createWidgets();
 }
 
-ConfigPathListEdit::ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigPathListEdit::ConfigPathListEdit(
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : PathListEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigPathListEdit::~ConfigPathListEdit()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigPathListEdit::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigPathListEdit::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setPathList(dataManager->readEntry(section, item).toString().split(QRegExp("&"), QString::SkipEmptyParts));
+    if (!dataManager)
+        return;
+    setPathList(dataManager->readEntry(section, item).toString().split(QRegExp("&"), QString::SkipEmptyParts));
 }
 
 void ConfigPathListEdit::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QVariant(pathList().join("&")));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QVariant(pathList().join("&")));
 }
 
 void ConfigPathListEdit::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	PathListEdit::setVisible(visible);
+    label->setVisible(visible);
+    PathListEdit::setVisible(visible);
 }
 
 #include "moc_config-path-list-edit.cpp"

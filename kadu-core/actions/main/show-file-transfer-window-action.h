@@ -30,20 +30,19 @@ class FileTransferManager;
 
 class ShowFileTransferWindowAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowFileTransferWindowAction(QObject *parent = nullptr);
-	virtual ~ShowFileTransferWindowAction();
+    Q_INVOKABLE explicit ShowFileTransferWindowAction(QObject *parent = nullptr);
+    virtual ~ShowFileTransferWindowAction();
 
 protected:
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
 
 private:
-	QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<FileTransferManager> m_fileTransferManager;
 
 private slots:
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 };

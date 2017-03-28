@@ -23,15 +23,15 @@
 
 QFacebookDeviceId QFacebookDeviceId::random()
 {
-	auto const deviceUuid = QUuid::createUuid().toByteArray();
-	auto const deviceId = deviceUuid.mid(1, deviceUuid.length() - 2);
-	auto const clientId = QUuid::createUuid().toByteArray().replace("-", "").mid(1, 20);
-	auto mqttId = qrand();
+    auto const deviceUuid = QUuid::createUuid().toByteArray();
+    auto const deviceId = deviceUuid.mid(1, deviceUuid.length() - 2);
+    auto const clientId = QUuid::createUuid().toByteArray().replace("-", "").mid(1, 20);
+    auto mqttId = qrand();
 
-	return QFacebookDeviceId{deviceId, clientId, mqttId};
+    return QFacebookDeviceId{deviceId, clientId, mqttId};
 }
 
 bool QFacebookDeviceId::isValid() const
 {
-	return deviceId.size() == 36 && deviceId.size() == 20;
+    return deviceId.size() == 36 && deviceId.size() == 20;
 }

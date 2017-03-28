@@ -52,100 +52,100 @@ class PluginStateService;
  */
 class KADUAPI PluginActivationService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginActivationService(QObject *parent = nullptr);
-	virtual ~PluginActivationService();
+    Q_INVOKABLE explicit PluginActivationService(QObject *parent = nullptr);
+    virtual ~PluginActivationService();
 
-	/**
-	 * @short Activates given plugin and all its dependencies.
-	 * @param pluginName plugin to activate
-	 * @return list of activated plugins
-	 *
-	 * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
-	 * is found and all dependencies can be activated. Returned vector contains list of all plugins that were
-	 * in dependency set of given plugin (including this plugin) and were either already active or were successfully
-	 * activated.
-	 */
-	QVector<QString> activatePluginWithDependencies(const QString &pluginName);
+    /**
+     * @short Activates given plugin and all its dependencies.
+     * @param pluginName plugin to activate
+     * @return list of activated plugins
+     *
+     * This method activates given plugin and all its dependencies. Plugin can be activated only when no conflict
+     * is found and all dependencies can be activated. Returned vector contains list of all plugins that were
+     * in dependency set of given plugin (including this plugin) and were either already active or were successfully
+     * activated.
+     */
+    QVector<QString> activatePluginWithDependencies(const QString &pluginName);
 
-	/**
-	 * @short Deactivates given plugin and all its dependents.
-	 * @param pluginName plugin to deactivate
-	 * @return list of deactivated plugins
-	 *
-	 * This method deactivates given plugin and all its dependents. Returned vector contains list of all plugins that were
-	 * in dependents set of given plugin (including this plugin) and were either already inactive or were deactivated.
-	 */
-	QVector<QString> deactivatePluginWithDependents(const QString &pluginName);
+    /**
+     * @short Deactivates given plugin and all its dependents.
+     * @param pluginName plugin to deactivate
+     * @return list of deactivated plugins
+     *
+     * This method deactivates given plugin and all its dependents. Returned vector contains list of all plugins that
+     * were
+     * in dependents set of given plugin (including this plugin) and were either already inactive or were deactivated.
+     */
+    QVector<QString> deactivatePluginWithDependents(const QString &pluginName);
 
-	/**
-	 * @param pluginName name of plugin to check
-	 * @short True if plugin with \p pluginName is active.
-	 */
-	bool isActive(const QString &pluginName) const;
+    /**
+     * @param pluginName name of plugin to check
+     * @short True if plugin with \p pluginName is active.
+     */
+    bool isActive(const QString &pluginName) const;
 
-	/**
-	* @return Names of all currently active plugins.
-	*/
-	QSet<QString> activePlugins() const;
+    /**
+    * @return Names of all currently active plugins.
+    */
+    QSet<QString> activePlugins() const;
 
-	/**
-	 * @param pluginName name of plugin
-	 * @return plugin object for given name
-	 */
-	ActivePlugin * activePlugin(const QString &pluginName) const;
+    /**
+     * @param pluginName name of plugin
+     * @return plugin object for given name
+     */
+    ActivePlugin *activePlugin(const QString &pluginName) const;
 
 private:
-	using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
+    using map = std::map<QString, std::unique_ptr<ActivePlugin>>;
 
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
-	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
-	QPointer<PluginInjectorProvider> m_pluginInjectorProvider;
-	QPointer<PluginStateService> m_pluginStateService;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PluginActivationErrorHandler> m_pluginActivationErrorHandler;
+    QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+    QPointer<PluginInjectorProvider> m_pluginInjectorProvider;
+    QPointer<PluginStateService> m_pluginStateService;
 
-	map m_activePlugins;
+    map m_activePlugins;
 
-	/**
-	 * @short Activates plugin.
-	 * @param pluginName name of plugin to activate
-	 * @param firstTime if this plugin is activated for first firstTime
-	 * @throws PluginActivationErrorException
-	 *
-	 * Creates new instance of ActivePlugin and adds it to set of active plugins.
-	 * Throws PluginActivationErrorException. For more information about activation
-	 * process see ActivePlugin.
-	 */
-	void activatePlugin(const QString &pluginName);
+    /**
+     * @short Activates plugin.
+     * @param pluginName name of plugin to activate
+     * @param firstTime if this plugin is activated for first firstTime
+     * @throws PluginActivationErrorException
+     *
+     * Creates new instance of ActivePlugin and adds it to set of active plugins.
+     * Throws PluginActivationErrorException. For more information about activation
+     * process see ActivePlugin.
+     */
+    void activatePlugin(const QString &pluginName);
 
-	/**
-	 * @short Deactivates plugin.
-	 * @param pluginName name of plugin to deactivate
-	 *
-	 * Removes instance of ActivePlugin from set of active plugins. This triggers destruction
-	 * of ActivePlugin and unloads plugin from memory. For more information about deactivation
-	 * process see ActivePlugin.
-	 */
-	void deactivatePlugin(const QString &pluginName);
+    /**
+     * @short Deactivates plugin.
+     * @param pluginName name of plugin to deactivate
+     *
+     * Removes instance of ActivePlugin from set of active plugins. This triggers destruction
+     * of ActivePlugin and unloads plugin from memory. For more information about deactivation
+     * process see ActivePlugin.
+     */
+    void deactivatePlugin(const QString &pluginName);
 
-	/**
-	 * @short Returns name of active plugin that provides given feature.
-	 * @param feature feature to search
-	 * @return name of active plugins that conflicts provides given feature.
-	 */
-	QString findActiveProviding(const QString &feature) const;
+    /**
+     * @short Returns name of active plugin that provides given feature.
+     * @param feature feature to search
+     * @return name of active plugins that conflicts provides given feature.
+     */
+    QString findActiveProviding(const QString &feature) const;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
-	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	INJEQT_SET void setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider);
-	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler);
+    INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+    INJEQT_SET void setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider);
+    INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 };
 
 /**

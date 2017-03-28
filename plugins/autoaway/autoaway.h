@@ -45,70 +45,69 @@ class Parser;
  * @defgroup autoaway Autoaway
  * @{
  */
-class Autoaway : public QObject, ConfigurationAwareObject 
+class Autoaway : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Autoaway(QObject *pointer = nullptr);
-	virtual ~Autoaway();
+    Q_INVOKABLE explicit Autoaway(QObject *pointer = nullptr);
+    virtual ~Autoaway();
 
-	AutoawayStatusChanger::ChangeStatusTo changeStatusTo();
-	AutoawayStatusChanger::ChangeDescriptionTo changeDescriptionTo();
-	QString descriptionAddon() const;
+    AutoawayStatusChanger::ChangeStatusTo changeStatusTo();
+    AutoawayStatusChanger::ChangeDescriptionTo changeDescriptionTo();
+    QString descriptionAddon() const;
 
-	QString changeDescription(const QString &oldDescription);
+    QString changeDescription(const QString &oldDescription);
 
 private:
-	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
-	QPointer<Configuration> m_configuration;
-	QPointer<Idle> m_idle;
-	QPointer<Myself> m_myself;
-	QPointer<Parser> m_parser;
+    QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
+    QPointer<Configuration> m_configuration;
+    QPointer<Idle> m_idle;
+    QPointer<Myself> m_myself;
+    QPointer<Parser> m_parser;
 
-	owned_qptr<QTimer> m_timer;
+    owned_qptr<QTimer> m_timer;
 
-	unsigned int m_checkInterval;
+    unsigned int m_checkInterval;
 
-	unsigned int m_autoAwayTime;
-	unsigned int m_autoExtendedAwayTime;
-	unsigned int m_autoDisconnectTime;
-	unsigned int m_autoInvisibleTime;
+    unsigned int m_autoAwayTime;
+    unsigned int m_autoExtendedAwayTime;
+    unsigned int m_autoDisconnectTime;
+    unsigned int m_autoInvisibleTime;
 
-	bool m_autoAwayEnabled;
-	bool m_autoExtendedAwayEnabled;
-	bool m_autoInvisibleEnabled;
-	bool m_autoDisconnectEnabled;
-	bool m_parseAutoStatus;
+    bool m_autoAwayEnabled;
+    bool m_autoExtendedAwayEnabled;
+    bool m_autoInvisibleEnabled;
+    bool m_autoDisconnectEnabled;
+    bool m_parseAutoStatus;
 
-	bool m_statusChanged;
+    bool m_statusChanged;
 
-	unsigned int m_idleTime;
-	unsigned int m_refreshStatusTime;
-	unsigned int m_refreshStatusInterval;
+    unsigned int m_idleTime;
+    unsigned int m_refreshStatusTime;
+    unsigned int m_refreshStatusInterval;
 
-	QString m_autoStatusText;
-	QString m_descriptionAddon;
+    QString m_autoStatusText;
+    QString m_descriptionAddon;
 
-	AutoawayStatusChanger::ChangeDescriptionTo m_changeTo;
+    AutoawayStatusChanger::ChangeDescriptionTo m_changeTo;
 
-	QString parseDescription(const QString &parseDescription);
+    QString parseDescription(const QString &parseDescription);
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIdle(Idle *idle);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIdle(Idle *idle);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_INIT void init();
 
-	void checkIdleTime();
+    void checkIdleTime();
 
 protected:
-	virtual void configurationUpdated();
-
+    virtual void configurationUpdated();
 };
 
 /** @} */

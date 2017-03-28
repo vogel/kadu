@@ -32,9 +32,9 @@
 
 #include <QtCore/QFileInfo>
 
-SoundNotifier::SoundNotifier(QObject *parent) :
-		QObject{parent},
-		Notifier{"Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon{"audio-volume-high"}}
+SoundNotifier::SoundNotifier(QObject *parent)
+        : QObject{parent},
+          Notifier{"Sound", QT_TRANSLATE_NOOP("@default", "Play a sound"), KaduIcon{"audio-volume-high"}}
 {
 }
 
@@ -44,63 +44,61 @@ SoundNotifier::~SoundNotifier()
 
 void SoundNotifier::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationConfiguration = notificationConfiguration;
+    m_notificationConfiguration = notificationConfiguration;
 }
 
 void SoundNotifier::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void SoundNotifier::setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler)
 {
-	m_soundConfigurationUiHandler = soundConfigurationUiHandler;
+    m_soundConfigurationUiHandler = soundConfigurationUiHandler;
 }
 
 void SoundNotifier::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
 void SoundNotifier::notify(const Notification &notification)
 {
-	auto chat = notification.data["chat"].value<Chat>();
-	if (chat && chat.property("sound:use_custom_sound", false).toBool())
-	{
-		// we need abstraction for that
-		auto customSound = chat.property("sound:custom_sound", QString{}).toString();
-		auto fileInfo = QFileInfo{customSound};
-		if (fileInfo.exists())
-		{
-			m_soundManager->playFile(customSound);
-			return;
-		}
-	}
+    auto chat = notification.data["chat"].value<Chat>();
+    if (chat && chat.property("sound:use_custom_sound", false).toBool())
+    {
+        // we need abstraction for that
+        auto customSound = chat.property("sound:custom_sound", QString{}).toString();
+        auto fileInfo = QFileInfo{customSound};
+        if (fileInfo.exists())
+        {
+            m_soundManager->playFile(customSound);
+            return;
+        }
+    }
 
-	if (!chat.contacts().isEmpty())
-	{
-		auto buddy = chat.contacts().begin()->ownerBuddy();
-		if (buddy && buddy.property("sound:use_custom_sound", false).toBool())
-		{
-			auto customSound = buddy.property("sound:custom_sound", QString{}).toString();
-			auto fileInfo = QFileInfo{customSound};
-			if (fileInfo.exists())
-			{
-				m_soundManager->playFile(customSound);
-				return;
-			}
-		}
-	}
+    if (!chat.contacts().isEmpty())
+    {
+        auto buddy = chat.contacts().begin()->ownerBuddy();
+        if (buddy && buddy.property("sound:use_custom_sound", false).toBool())
+        {
+            auto customSound = buddy.property("sound:custom_sound", QString{}).toString();
+            auto fileInfo = QFileInfo{customSound};
+            if (fileInfo.exists())
+            {
+                m_soundManager->playFile(customSound);
+                return;
+            }
+        }
+    }
 
-	auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
-	m_soundManager->playSoundByName(key);
+    auto key = m_notificationConfiguration->notifyConfigurationKey(notification.type);
+    m_soundManager->playSoundByName(key);
 }
 
-NotifierConfigurationWidget * SoundNotifier::createConfigurationWidget(QWidget* parent)
+NotifierConfigurationWidget *SoundNotifier::createConfigurationWidget(QWidget *parent)
 {
-	return m_soundConfigurationUiHandler
-			? m_soundConfigurationUiHandler->createConfigurationWidget(parent)
-			: nullptr;
+    return m_soundConfigurationUiHandler ? m_soundConfigurationUiHandler->createConfigurationWidget(parent) : nullptr;
 }
 
 #include "moc_sound-notifier.cpp"

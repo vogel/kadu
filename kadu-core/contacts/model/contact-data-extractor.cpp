@@ -35,8 +35,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
-ContactDataExtractor::ContactDataExtractor(QObject *parent) :
-		QObject{parent}
+ContactDataExtractor::ContactDataExtractor(QObject *parent) : QObject{parent}
 {
 }
 
@@ -46,75 +45,77 @@ ContactDataExtractor::~ContactDataExtractor()
 
 void ContactDataExtractor::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBuddyData)
 {
-	if (contact.isNull())
-		return QVariant();
+    if (contact.isNull())
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return contact.display(useBuddyData);
-		case Qt::DecorationRole:
-		{
-			if (contact.ownerBuddy().isBlocked())
-				return m_iconsManager->iconByPath(KaduIcon("kadu_icons/blocked"));
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return contact.display(useBuddyData);
+    case Qt::DecorationRole:
+    {
+        if (contact.ownerBuddy().isBlocked())
+            return m_iconsManager->iconByPath(KaduIcon("kadu_icons/blocked"));
 
-			if (contact.isBlocking())
-				return m_iconsManager->iconByPath(KaduIcon("kadu_icons/blocking"));
+        if (contact.isBlocking())
+            return m_iconsManager->iconByPath(KaduIcon("kadu_icons/blocking"));
 
-			// TODO generic icon
-			return contact.contactAccount().statusContainer()
-					? m_iconsManager->iconByPath(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()))
-					: QIcon();
-		}
-		case StatusIconPath:
-		{
-			if (contact.ownerBuddy().isBlocked())
-				return m_iconsManager->iconPath(KaduIcon("kadu_icons/blocked"));
+        // TODO generic icon
+        return contact.contactAccount().statusContainer()
+                   ? m_iconsManager->iconByPath(
+                         contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()))
+                   : QIcon();
+    }
+    case StatusIconPath:
+    {
+        if (contact.ownerBuddy().isBlocked())
+            return m_iconsManager->iconPath(KaduIcon("kadu_icons/blocked"));
 
-			if (contact.isBlocking())
-				return m_iconsManager->iconPath(KaduIcon("kadu_icons/blocking"));
+        if (contact.isBlocking())
+            return m_iconsManager->iconPath(KaduIcon("kadu_icons/blocking"));
 
-			// TODO generic icon
-			return contact.contactAccount().statusContainer()
-					? m_iconsManager->iconPath(contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()))
-					: QString();
-		}
-		case BuddyRole:
-			return QVariant::fromValue(contact.ownerBuddy());
-		case ContactRole:
-			return QVariant::fromValue(contact);
-		case DescriptionRole:
-			if (contact.ownerBuddy() && contact.ownerBuddy().property("kadu:HideDescription", false).toBool())
-				return QVariant();
-			else
-				return contact.currentStatus().description();
-		case StatusRole:
-			return QVariant::fromValue(contact.currentStatus());
-		case AccountRole:
-			return QVariant::fromValue(contact.contactAccount());
-		case AvatarRole:
-			return contact.avatar(useBuddyData).pixmap();
-		case AvatarPathRole:
-		{
-			QFileInfo avatarInfo(contact.avatar(useBuddyData).filePath());
+        // TODO generic icon
+        return contact.contactAccount().statusContainer()
+                   ? m_iconsManager->iconPath(
+                         contact.contactAccount().statusContainer()->statusIcon(contact.currentStatus()))
+                   : QString();
+    }
+    case BuddyRole:
+        return QVariant::fromValue(contact.ownerBuddy());
+    case ContactRole:
+        return QVariant::fromValue(contact);
+    case DescriptionRole:
+        if (contact.ownerBuddy() && contact.ownerBuddy().property("kadu:HideDescription", false).toBool())
+            return QVariant();
+        else
+            return contact.currentStatus().description();
+    case StatusRole:
+        return QVariant::fromValue(contact.currentStatus());
+    case AccountRole:
+        return QVariant::fromValue(contact.contactAccount());
+    case AvatarRole:
+        return contact.avatar(useBuddyData).pixmap();
+    case AvatarPathRole:
+    {
+        QFileInfo avatarInfo(contact.avatar(useBuddyData).filePath());
 
-			if (avatarInfo.exists() && avatarInfo.isReadable() && avatarInfo.isFile())
-				return avatarInfo.filePath();
-			else
-				return QString();
-		}
-		case ItemTypeRole:
-			return ContactRole;
-		case TalkableRole:
-			return QVariant::fromValue(Talkable(contact));
-		default:
-			return QVariant();
-	}
+        if (avatarInfo.exists() && avatarInfo.isReadable() && avatarInfo.isFile())
+            return avatarInfo.filePath();
+        else
+            return QString();
+    }
+    case ItemTypeRole:
+        return ContactRole;
+    case TalkableRole:
+        return QVariant::fromValue(Talkable(contact));
+    default:
+        return QVariant();
+    }
 }
 
 #include "moc_contact-data-extractor.cpp"

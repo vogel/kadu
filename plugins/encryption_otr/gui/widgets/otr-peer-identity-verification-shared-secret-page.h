@@ -28,24 +28,23 @@ class OtrPeerIdentityVerificationService;
 
 class OtrPeerIdentityVerificationSharedSecretPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+    QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
-	Contact MyContact;
+    Contact MyContact;
 
-	void createGui();
+    void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationSharedSecretPage(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationSharedSecretPage();
+    explicit OtrPeerIdentityVerificationSharedSecretPage(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationSharedSecretPage();
 
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+    void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
-	virtual int nextId() const;
-	virtual void initializePage();
-	virtual bool validatePage();
-
+    virtual int nextId() const;
+    virtual void initializePage();
+    virtual bool validatePage();
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_SHARED_SECRET_PAGE_H

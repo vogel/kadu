@@ -32,20 +32,19 @@ class StoragePoint;
 
 class KADUAPI AvatarStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AvatarStorage(QObject *parent = nullptr);
-	virtual ~AvatarStorage();
+    Q_INVOKABLE explicit AvatarStorage(QObject *parent = nullptr);
+    virtual ~AvatarStorage();
 
-	Avatar create();
-	Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	Avatar loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Avatar create();
+    Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Avatar loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

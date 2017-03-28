@@ -26,8 +26,7 @@
 
 #include <qxmpp/QXmppClient.h>
 
-JabberRegisterAccountService::JabberRegisterAccountService(QObject *parent) :
-		QObject{parent}
+JabberRegisterAccountService::JabberRegisterAccountService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,19 +36,20 @@ JabberRegisterAccountService::~JabberRegisterAccountService()
 
 void JabberRegisterAccountService::setErrorService(JabberErrorService *errorService)
 {
-	m_errorService = errorService;
+    m_errorService = errorService;
 }
 
 void JabberRegisterAccountService::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
-JabberRegisterAccount * JabberRegisterAccountService::registerAccount(Jid jid, QString password, QString email)
+JabberRegisterAccount *JabberRegisterAccountService::registerAccount(Jid jid, QString password, QString email)
 {
-	auto result = m_pluginInjectedFactory->makeInjected<JabberRegisterAccount>(std::move(jid), std::move(password), std::move(email), this);
-	result->setErrorService(m_errorService);
-	return result;
+    auto result = m_pluginInjectedFactory->makeInjected<JabberRegisterAccount>(
+        std::move(jid), std::move(password), std::move(email), this);
+    result->setErrorService(m_errorService);
+    return result;
 }
 
 #include "moc_jabber-register-account-service.cpp"

@@ -24,91 +24,90 @@
 
 class PluginStateServiceTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void noDataServiceTest();
-	void setPluginStateTest();
-	void setPluginStatesTest();
-	void dynamicPluginStateTest();
-
+    void noDataServiceTest();
+    void setPluginStateTest();
+    void setPluginStatesTest();
+    void dynamicPluginStateTest();
 };
 
 void PluginStateServiceTest::noDataServiceTest()
 {
-	PluginStateService service{};
+    PluginStateService service{};
 
-	QCOMPARE(service.pluginStates().size(), 0);
-	QCOMPARE(service.pluginState("p1"), PluginState::New);
-	QCOMPARE(service.pluginState("p2"), PluginState::New);
-	QCOMPARE(service.enabledPlugins(), {});
+    QCOMPARE(service.pluginStates().size(), 0);
+    QCOMPARE(service.pluginState("p1"), PluginState::New);
+    QCOMPARE(service.pluginState("p2"), PluginState::New);
+    QCOMPARE(service.enabledPlugins(), {});
 }
 
 void PluginStateServiceTest::setPluginStateTest()
 {
-	PluginStateService service{};
+    PluginStateService service{};
 
-	service.setPluginState("p1", PluginState::New);
-	service.setPluginState("p2", PluginState::Enabled);
-	service.setPluginState("p3", PluginState::Disabled);
+    service.setPluginState("p1", PluginState::New);
+    service.setPluginState("p2", PluginState::Enabled);
+    service.setPluginState("p3", PluginState::Disabled);
 
-	auto pluginStates = service.pluginStates();
-	QCOMPARE(pluginStates.size(), 2);
-	QCOMPARE(pluginStates.value("p1"), PluginState::New);
-	QCOMPARE(pluginStates.value("p2"), PluginState::Enabled);
-	QCOMPARE(pluginStates.value("p3"), PluginState::Disabled);
-	QCOMPARE(service.pluginState("p1"), PluginState::New);
-	QCOMPARE(service.pluginState("p2"), PluginState::Enabled);
-	QCOMPARE(service.pluginState("p3"), PluginState::Disabled);
-	QCOMPARE(service.enabledPlugins(), {"p2"});
+    auto pluginStates = service.pluginStates();
+    QCOMPARE(pluginStates.size(), 2);
+    QCOMPARE(pluginStates.value("p1"), PluginState::New);
+    QCOMPARE(pluginStates.value("p2"), PluginState::Enabled);
+    QCOMPARE(pluginStates.value("p3"), PluginState::Disabled);
+    QCOMPARE(service.pluginState("p1"), PluginState::New);
+    QCOMPARE(service.pluginState("p2"), PluginState::Enabled);
+    QCOMPARE(service.pluginState("p3"), PluginState::Disabled);
+    QCOMPARE(service.enabledPlugins(), {"p2"});
 }
 
 void PluginStateServiceTest::setPluginStatesTest()
 {
-	PluginStateService service{};
+    PluginStateService service{};
 
-	auto setStates = QMap<QString, PluginState>{};
-	setStates.insert("p1", PluginState::New);
-	setStates.insert("p2", PluginState::Enabled);
-	setStates.insert("p3", PluginState::Disabled);
+    auto setStates = QMap<QString, PluginState>{};
+    setStates.insert("p1", PluginState::New);
+    setStates.insert("p2", PluginState::Enabled);
+    setStates.insert("p3", PluginState::Disabled);
 
-	service.setPluginStates(setStates);
+    service.setPluginStates(setStates);
 
-	auto pluginStates = service.pluginStates();
-	QCOMPARE(pluginStates.size(), 2);
-	QCOMPARE(pluginStates.value("p1"), PluginState::New);
-	QCOMPARE(pluginStates.value("p2"), PluginState::Enabled);
-	QCOMPARE(pluginStates.value("p3"), PluginState::Disabled);
-	QCOMPARE(service.pluginState("p1"), PluginState::New);
-	QCOMPARE(service.pluginState("p2"), PluginState::Enabled);
-	QCOMPARE(service.pluginState("p3"), PluginState::Disabled);
-	QCOMPARE(service.enabledPlugins(), {"p2"});
+    auto pluginStates = service.pluginStates();
+    QCOMPARE(pluginStates.size(), 2);
+    QCOMPARE(pluginStates.value("p1"), PluginState::New);
+    QCOMPARE(pluginStates.value("p2"), PluginState::Enabled);
+    QCOMPARE(pluginStates.value("p3"), PluginState::Disabled);
+    QCOMPARE(service.pluginState("p1"), PluginState::New);
+    QCOMPARE(service.pluginState("p2"), PluginState::Enabled);
+    QCOMPARE(service.pluginState("p3"), PluginState::Disabled);
+    QCOMPARE(service.enabledPlugins(), {"p2"});
 }
 
 void PluginStateServiceTest::dynamicPluginStateTest()
 {
-	PluginStateService service{};
+    PluginStateService service{};
 
-	service.setPluginState("p1", PluginState::New);
+    service.setPluginState("p1", PluginState::New);
 
-	QCOMPARE(service.pluginStates().size(), 0);
-	QCOMPARE(service.pluginStates().value("p1"), PluginState::New);
-	QCOMPARE(service.pluginState("p1"), PluginState::New);
-	QCOMPARE(service.enabledPlugins(), {});
+    QCOMPARE(service.pluginStates().size(), 0);
+    QCOMPARE(service.pluginStates().value("p1"), PluginState::New);
+    QCOMPARE(service.pluginState("p1"), PluginState::New);
+    QCOMPARE(service.enabledPlugins(), {});
 
-	service.setPluginState("p1", PluginState::Enabled);
+    service.setPluginState("p1", PluginState::Enabled);
 
-	QCOMPARE(service.pluginStates().size(), 1);
-	QCOMPARE(service.pluginStates().value("p1"), PluginState::Enabled);
-	QCOMPARE(service.pluginState("p1"), PluginState::Enabled);
-	QCOMPARE(service.enabledPlugins(), {"p1"});
+    QCOMPARE(service.pluginStates().size(), 1);
+    QCOMPARE(service.pluginStates().value("p1"), PluginState::Enabled);
+    QCOMPARE(service.pluginState("p1"), PluginState::Enabled);
+    QCOMPARE(service.enabledPlugins(), {"p1"});
 
-	service.setPluginState("p1", PluginState::Disabled);
+    service.setPluginState("p1", PluginState::Disabled);
 
-	QCOMPARE(service.pluginStates().size(), 1);
-	QCOMPARE(service.pluginStates().value("p1"), PluginState::Disabled);
-	QCOMPARE(service.pluginState("p1"), PluginState::Disabled);
-	QCOMPARE(service.enabledPlugins(), {});
+    QCOMPARE(service.pluginStates().size(), 1);
+    QCOMPARE(service.pluginStates().value("p1"), PluginState::Disabled);
+    QCOMPARE(service.pluginState("p1"), PluginState::Disabled);
+    QCOMPARE(service.enabledPlugins(), {});
 }
 
 QTEST_APPLESS_MAIN(PluginStateServiceTest)

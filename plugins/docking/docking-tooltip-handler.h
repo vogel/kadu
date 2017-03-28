@@ -34,29 +34,28 @@ class StatusTypeManager;
 
 class DockingTooltipHandler final : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit DockingTooltipHandler(QObject *parent = nullptr);
-	virtual ~DockingTooltipHandler();
+    Q_INVOKABLE explicit DockingTooltipHandler(QObject *parent = nullptr);
+    virtual ~DockingTooltipHandler();
 
 public slots:
-	void updateTooltip();
+    void updateTooltip();
 
 private:
-	DockingConfigurationProvider *m_dockingConfigurationProvider;
-	StatusContainerManager *m_statusContainerManager;
-	StatusNotifierItem *m_statusNotifierItem;
-	StatusTypeManager *m_statusTypeManager;
+    DockingConfigurationProvider *m_dockingConfigurationProvider;
+    StatusContainerManager *m_statusContainerManager;
+    StatusNotifierItem *m_statusNotifierItem;
+    StatusTypeManager *m_statusTypeManager;
 
-	QString tooltip() const;
+    QString tooltip() const;
 
 private slots:
-	INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setStatusNotifierItem(StatusNotifierItem *statusNotifierItem);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 };

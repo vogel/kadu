@@ -31,25 +31,24 @@ class PathsProvider;
 
 class FreedesktopNotifyPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit FreedesktopNotifyPluginObject(QObject *parent = nullptr);
-	virtual ~FreedesktopNotifyPluginObject();
+    Q_INVOKABLE explicit FreedesktopNotifyPluginObject(QObject *parent = nullptr);
+    virtual ~FreedesktopNotifyPluginObject();
 
 private:
-	QPointer<FreedesktopNotifier> m_freedesktopNotifier;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<NotifierRepository> m_notifierRepository;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<FreedesktopNotifier> m_freedesktopNotifier;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setFreedesktopNotifier(FreedesktopNotifier *freedesktopNotifier);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setFreedesktopNotifier(FreedesktopNotifier *freedesktopNotifier);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

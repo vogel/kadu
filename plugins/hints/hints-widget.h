@@ -33,41 +33,40 @@ class QVBoxLayout;
 
 class HintsWidget : public QFrame
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit HintsWidget(QWidget *parent = nullptr);
-	virtual ~HintsWidget();
+    Q_INVOKABLE explicit HintsWidget(QWidget *parent = nullptr);
+    virtual ~HintsWidget();
 
-	void addNotification(const Notification &notification);
+    void addNotification(const Notification &notification);
 
 signals:
-	void sizeChanged();
-	void shown();
+    void sizeChanged();
+    void shown();
 
 protected:
-	virtual void resizeEvent(QResizeEvent *) override;
-	virtual void showEvent(QShowEvent *) override;
+    virtual void resizeEvent(QResizeEvent *) override;
+    virtual void showEvent(QShowEvent *) override;
 
 private:
-	QPointer<HintsConfiguration> m_hintsConfiguration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<HintsConfiguration> m_hintsConfiguration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	QTimer m_timer;
-	QPointer<QVBoxLayout> m_layout;
+    QTimer m_timer;
+    QPointer<QVBoxLayout> m_layout;
 
-	void removeHint(Hint *hint);
-	void removeExpiredHints();
-	void updateTimer();
+    void removeHint(Hint *hint);
+    void removeExpiredHints();
+    void updateTimer();
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
 
-	void acceptHint(Hint *hint);
-	void discardHint(Hint *hint);
-	void discardAllHints();
-	void hintDestroyed(Hint *hint);
-	void updateHints();
-
+    void acceptHint(Hint *hint);
+    void discardHint(Hint *hint);
+    void discardAllHints();
+    void hintDestroyed(Hint *hint);
+    void updateHints();
 };

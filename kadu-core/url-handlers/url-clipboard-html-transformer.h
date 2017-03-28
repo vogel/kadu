@@ -36,18 +36,17 @@
  */
 class UrlClipboardHtmlTransformer : public ClipboardHtmlTransformer
 {
-	QRegExp UrlRegExp;
+    QRegExp UrlRegExp;
 
 public:
-	UrlClipboardHtmlTransformer();
-	virtual ~UrlClipboardHtmlTransformer();
+    UrlClipboardHtmlTransformer();
+    virtual ~UrlClipboardHtmlTransformer();
 
-	virtual QString transform(const QString &clipboardHtml);
-
+    virtual QString transform(const QString &clipboardHtml);
 };
 
 /**
  * @}
  */
 
-#endif // URL_CLIPBOARD_HTML_TRANSFORMER_H
+#endif   // URL_CLIPBOARD_HTML_TRANSFORMER_H

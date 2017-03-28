@@ -18,7 +18,7 @@
  */
 
 extern "C" {
-#   include <libotr/privkey.h>
+#include <libotr/privkey.h>
 }
 
 #include "accounts/account-manager.h"
@@ -35,15 +35,15 @@ extern "C" {
 
 void OtrPrivateKeyService::wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol)
 {
-	Q_UNUSED(accountName);
-	Q_UNUSED(protocol);
+    Q_UNUSED(accountName);
+    Q_UNUSED(protocol);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->privateKeyService())
-	{
-		Account account = opData->contact().contactAccount();
-		opData->privateKeyService()->createPrivateKey(account);
-	}
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->privateKeyService())
+    {
+        Account account = opData->contact().contactAccount();
+        opData->privateKeyService()->createPrivateKey(account);
+    }
 }
 
 OtrPrivateKeyService::OtrPrivateKeyService()
@@ -52,50 +52,50 @@ OtrPrivateKeyService::OtrPrivateKeyService()
 
 OtrPrivateKeyService::~OtrPrivateKeyService()
 {
-	qDeleteAll(CreateJobs);
+    qDeleteAll(CreateJobs);
 }
 
 void OtrPrivateKeyService::setPathService(OtrPathService *pathService)
 {
-	PathService = pathService;
+    PathService = pathService;
 }
 
 void OtrPrivateKeyService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 }
 
 void OtrPrivateKeyService::createPrivateKey(const Account &account)
 {
-	if (CreateJobs.contains(account))
-		return;
+    if (CreateJobs.contains(account))
+        return;
 
-	OtrCreatePrivateKeyJob *job = new OtrCreatePrivateKeyJob(this);
-	job->setAccount(account);
-	job->setPrivateStoreFileName(PathService->privateKeysStoreFilePath());
-	job->setUserStateService(UserStateService.data());
-	job->createPrivateKey();
+    OtrCreatePrivateKeyJob *job = new OtrCreatePrivateKeyJob(this);
+    job->setAccount(account);
+    job->setPrivateStoreFileName(PathService->privateKeysStoreFilePath());
+    job->setUserStateService(UserStateService.data());
+    job->createPrivateKey();
 
-	connect(job, SIGNAL(finished(Account, bool)), this, SLOT(jobFinished(Account, bool)));
+    connect(job, SIGNAL(finished(Account, bool)), this, SLOT(jobFinished(Account, bool)));
 
-	CreateJobs.insert(account, job);
-	emit createPrivateKeyStarted(account);
+    CreateJobs.insert(account, job);
+    emit createPrivateKeyStarted(account);
 }
 
 void OtrPrivateKeyService::jobFinished(const Account &account, bool ok)
 {
-	emit createPrivateKeyFinished(account, ok);
-	CreateJobs.value(account)->deleteLater();
-	CreateJobs.remove(account);
+    emit createPrivateKeyFinished(account, ok);
+    CreateJobs.value(account)->deleteLater();
+    CreateJobs.remove(account);
 }
 
 void OtrPrivateKeyService::readPrivateKeys()
 {
-	if (!UserStateService)
-		return;
+    if (!UserStateService)
+        return;
 
-	OtrlUserState userState = UserStateService->userState();
-	otrl_privkey_read(userState, PathService->privateKeysStoreFilePath().toUtf8().data());
+    OtrlUserState userState = UserStateService->userState();
+    otrl_privkey_read(userState, PathService->privateKeysStoreFilePath().toUtf8().data());
 }
 
 #include "moc_otr-private-key-service.cpp"

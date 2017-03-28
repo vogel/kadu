@@ -23,14 +23,14 @@
 
 #include "actions/actions.h"
 
-VolumeDownAction::VolumeDownAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+VolumeDownAction::VolumeDownAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"audio-volume-low"});
-	setName(QStringLiteral("mediaplayer_vol_down"));
-	setText(tr("Volume Down"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"audio-volume-low"});
+    setName(QStringLiteral("mediaplayer_vol_down"));
+    setText(tr("Volume Down"));
+    setType(ActionDescription::TypeChat);
 }
 
 VolumeDownAction::~VolumeDownAction()
@@ -39,12 +39,12 @@ VolumeDownAction::~VolumeDownAction()
 
 void VolumeDownAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void VolumeDownAction::actionTriggered(QAction *, bool)
 {
-	m_mediaPlayer->decrVolume();
+    m_mediaPlayer->decrVolume();
 }
 
 #include "moc_volume-down-action.cpp"

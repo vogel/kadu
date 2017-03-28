@@ -31,10 +31,11 @@
 
 #include "otr-peer-identity-verification-question-and-answer-page.h"
 
-OtrPeerIdentityVerificationQuestionAndAnswerPage::OtrPeerIdentityVerificationQuestionAndAnswerPage(const Contact &contact, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationQuestionAndAnswerPage::OtrPeerIdentityVerificationQuestionAndAnswerPage(
+    const Contact &contact, QWidget *parent)
+        : QWizardPage(parent), MyContact(contact)
 {
-	createGui();
+    createGui();
 }
 
 OtrPeerIdentityVerificationQuestionAndAnswerPage::~OtrPeerIdentityVerificationQuestionAndAnswerPage()
@@ -43,52 +44,54 @@ OtrPeerIdentityVerificationQuestionAndAnswerPage::~OtrPeerIdentityVerificationQu
 
 void OtrPeerIdentityVerificationQuestionAndAnswerPage::createGui()
 {
-	setButtonText(QWizard::CommitButton, tr("Ask Question"));
-	setCommitPage(true);
-	setTitle(tr("Question and Answer"));
+    setButtonText(QWizard::CommitButton, tr("Ask Question"));
+    setCommitPage(true);
+    setTitle(tr("Question and Answer"));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLineEdit *questionEdit = new QLineEdit();
-	QLineEdit *answerEdit = new QLineEdit();
+    QLineEdit *questionEdit = new QLineEdit();
+    QLineEdit *answerEdit = new QLineEdit();
 
-	layout->addWidget(new QLabel(tr("Question that only %1 can answer:").arg(MyContact.display(1))));
-	layout->addWidget(questionEdit);
-	layout->addWidget(new QLabel(tr("Answer:")));
-	layout->addWidget(answerEdit);
+    layout->addWidget(new QLabel(tr("Question that only %1 can answer:").arg(MyContact.display(1))));
+    layout->addWidget(questionEdit);
+    layout->addWidget(new QLabel(tr("Answer:")));
+    layout->addWidget(answerEdit);
 
-	registerField("question*", questionEdit);
-	registerField("answer*", answerEdit);
+    registerField("question*", questionEdit);
+    registerField("answer*", answerEdit);
 }
 
-void OtrPeerIdentityVerificationQuestionAndAnswerPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+void OtrPeerIdentityVerificationQuestionAndAnswerPage::setPeerIdentityVerificationService(
+    OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+    PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 int OtrPeerIdentityVerificationQuestionAndAnswerPage::nextId() const
 {
-	return OtrPeerIdentityVerificationWindow::ProgressPage;
+    return OtrPeerIdentityVerificationWindow::ProgressPage;
 }
 
 void OtrPeerIdentityVerificationQuestionAndAnswerPage::initializePage()
 {
-	setField("question", QString());
-	setField("answer", QString());
+    setField("question", QString());
+    setField("answer", QString());
 }
 
 bool OtrPeerIdentityVerificationQuestionAndAnswerPage::validatePage()
 {
-	QString question = field("question").toString();
-	QString answer = field("answer").toString();
+    QString question = field("question").toString();
+    QString answer = field("answer").toString();
 
-	if (question.isEmpty() || answer.isEmpty())
-		return false;
+    if (question.isEmpty() || answer.isEmpty())
+        return false;
 
-	if (PeerIdentityVerificationService)
-		PeerIdentityVerificationService.data()->startQuestionAndAnswerVerification(MyContact, field("question").toString(), field("answer").toString());
+    if (PeerIdentityVerificationService)
+        PeerIdentityVerificationService.data()->startQuestionAndAnswerVerification(
+            MyContact, field("question").toString(), field("answer").toString());
 
-	return true;
+    return true;
 }
 
 #include "moc_otr-peer-identity-verification-question-and-answer-page.cpp"

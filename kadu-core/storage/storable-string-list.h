@@ -25,8 +25,8 @@
 
 #include <QtCore/QStringList>
 
-#include "storage/storable-object.h"
 #include "exports.h"
+#include "storage/storable-object.h"
 
 /**
  * @addtogroup Storage
@@ -43,32 +43,30 @@
  */
 class KADUAPI StorableStringList : public StorableObject
 {
-
 protected:
-	QStringList StringList;
+    QStringList StringList;
 
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 public:
-	StorableStringList(QObject *parent = nullptr);
+    StorableStringList(QObject *parent = nullptr);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns name of subnodes that stores strings.
-	 * @return name of subnodes that stores strings
-	 *
-	 * All strings from list are stored into separate subnodes.
-	 * This method determines names of these subnodes.
-	 */
-	virtual QString storageItemNodeName() = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns name of subnodes that stores strings.
+     * @return name of subnodes that stores strings
+     *
+     * All strings from list are stored into separate subnodes.
+     * This method determines names of these subnodes.
+     */
+    virtual QString storageItemNodeName() = 0;
 
-	const QStringList & content() const;
-
+    const QStringList &content() const;
 };
 
 /**
  * @}
  */
 
-#endif // STORABLE_STRING_LIST_H
+#endif   // STORABLE_STRING_LIST_H

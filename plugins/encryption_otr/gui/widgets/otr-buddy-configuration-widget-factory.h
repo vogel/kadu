@@ -28,18 +28,19 @@ class OtrPolicyService;
 
 class OtrBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE OtrBuddyConfigurationWidgetFactory() {}
-	virtual ~OtrBuddyConfigurationWidgetFactory();
+    Q_INVOKABLE OtrBuddyConfigurationWidgetFactory()
+    {
+    }
+    virtual ~OtrBuddyConfigurationWidgetFactory();
 
-	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
+    virtual BuddyConfigurationWidget *createWidget(const Buddy &buddy, QWidget *parent);
 
 private slots:
-	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
+    INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
 
 private:
-	QPointer<OtrPolicyService> PolicyService;
-
+    QPointer<OtrPolicyService> PolicyService;
 };

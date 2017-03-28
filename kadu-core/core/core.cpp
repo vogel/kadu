@@ -31,6 +31,7 @@
 #include "core.h"
 
 #include "actions/actions.h"
+#include "activate.h"
 #include "avatars/avatar-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat/chat-manager.h"
@@ -48,6 +49,7 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "icons/icons-manager.h"
+#include "injeqt-type-roles.h"
 #include "message/message-html-renderer-service.h"
 #include "message/message-render-info.h"
 #include "misc/change-notifier-lock.h"
@@ -67,6 +69,7 @@
 #include "services/chat-image-request-service.h"
 #include "ssl/ssl-certificate-manager.h"
 #include "themes/icon-theme-manager.h"
+#include "updates.h"
 #include "url-handlers/url-handler-manager.h"
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget-container-handler-repository.h"
@@ -81,12 +84,9 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 #include "windows/search-window.h"
-#include "activate.h"
-#include "injeqt-type-roles.h"
-#include "updates.h"
 
 #ifndef Q_OS_WIN
-#	include "os/unix/unix-signal-handler.h"
+#include "os/unix/unix-signal-handler.h"
 #endif
 
 #include <QtCore/QDir>
@@ -95,443 +95,472 @@
 #include <QtWidgets/QApplication>
 
 #ifdef Q_OS_WIN
-#	include <QtCore/QSettings>
+#include <QtCore/QSettings>
 #endif
 
-Core::Core(injeqt::injector &&injector) :
-		m_injector{std::move(injector)}
+Core::Core(injeqt::injector &&injector) : m_injector{std::move(injector)}
 {
-	// must be created first
-	// TODO: should be maybe created by factory factory?
-	m_injector.get<InjectorProvider>()->setInjector(&m_injector);
-	m_injector.instantiate_all_with_type_role(STARTUP);
+    // must be created first
+    // TODO: should be maybe created by factory factory?
+    m_injector.get<InjectorProvider>()->setInjector(&m_injector);
+    m_injector.instantiate_all_with_type_role(STARTUP);
 
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 
-	m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("DATA_PATH"), m_injector.get<PathsProvider>()->dataPath());
-	m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("HOME"), PathsProvider::homePath());
-	m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("KADU_CONFIG"), m_injector.get<PathsProvider>()->profilePath());
-	DateTimeParserTags::registerParserTags(m_injector.get<Parser>());
+    m_injector.get<Parser>()->GlobalVariables.insert(
+        QStringLiteral("DATA_PATH"), m_injector.get<PathsProvider>()->dataPath());
+    m_injector.get<Parser>()->GlobalVariables.insert(QStringLiteral("HOME"), PathsProvider::homePath());
+    m_injector.get<Parser>()->GlobalVariables.insert(
+        QStringLiteral("KADU_CONFIG"), m_injector.get<PathsProvider>()->profilePath());
+    DateTimeParserTags::registerParserTags(m_injector.get<Parser>());
 
-	m_injector.get<NotifyConfigurationImporter>()->import();
+    m_injector.get<NotifyConfigurationImporter>()->import();
 
-	init();
+    init();
 }
 
 Core::~Core()
 {
-	m_injector.get<SessionService>()->setIsClosing(true);
+    m_injector.get<SessionService>()->setIsClosing(true);
 
-	m_injector.get<PluginStateManager>()->storePluginStates();
-	// CurrentPluginStateManager->storePluginStates();
+    m_injector.get<PluginStateManager>()->storePluginStates();
+    // CurrentPluginStateManager->storePluginStates();
 
-	// unloading modules does that
-	/*statusContainerManager()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
-	m_injector.get<SslCertificateManager>()->storePersistentSslCertificates();
-	m_injector.get<ChatWindowManager>()->storeOpenedChatWindows();
+    // unloading modules does that
+    /*statusContainerManager()->disconnectAndStoreLastStatus(disconnectWithCurrentDescription, disconnectDescription);*/
+    m_injector.get<SslCertificateManager>()->storePersistentSslCertificates();
+    m_injector.get<ChatWindowManager>()->storeOpenedChatWindows();
 
-	// some plugins crash on deactivation
-	// ensure we have at least some configuration stored
-	m_injector.get<ConfigurationManager>()->flush();
-	m_injector.get<Application>()->backupConfiguration();
+    // some plugins crash on deactivation
+    // ensure we have at least some configuration stored
+    m_injector.get<ConfigurationManager>()->flush();
+    m_injector.get<Application>()->backupConfiguration();
 
-	m_injector.get<PluginManager>()->deactivatePlugins();
-	// CurrentPluginManager->deactivatePlugins();
+    m_injector.get<PluginManager>()->deactivatePlugins();
+    // CurrentPluginManager->deactivatePlugins();
 
-	stopServices();
+    stopServices();
 
-	m_injector.get<ConfigurationManager>()->flush();
-	m_injector.get<Application>()->backupConfiguration();
+    m_injector.get<ConfigurationManager>()->flush();
+    m_injector.get<Application>()->backupConfiguration();
 }
 
 void Core::createDefaultConfiguration()
 {
-	QWidget w;
+    QWidget w;
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "AutoSend", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "BlinkChatTitle", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatCloseTimer", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatCloseTimerPeriod", 2);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatPrune", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatPruneLen", 0);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ConfirmChatClear", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousRichtext", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsers", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "NewMessagesInChatTitle", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ReceiveMessages", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "RememberPosition", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ShowEditWindowLabel", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "AutoSend", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "BlinkChatTitle", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatCloseTimer", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatCloseTimerPeriod", 2);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatPrune", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ChatPruneLen", 0);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ConfirmChatClear", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousRichtext", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsers", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "IgnoreAnonymousUsersInConferences", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "LastImagePath", QDir::homePath() + '/');
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "NewMessagesInChatTitle", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ReceiveMessages", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "RememberPosition", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ShowEditWindowLabel", true);
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "AllowExecutingFromParser", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "CheckUpdates", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "AllowExecutingFromParser", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "CheckUpdates", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DescriptionHeight", 60);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "DisconnectWithCurrentDescription", true);
 #ifdef Q_OS_WIN
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "HideMainWindowFromTaskbar", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "HideMainWindowFromTaskbar", false);
 #endif
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "Language",  QLocale::system().name().left(2));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "Nick", tr("Me"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "NumberOfDescriptions", 20);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ParseStatus", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowBlocked", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowBlocking", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowMyself", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowOffline", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowOnlineAndDescription", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowWithoutDescription", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "General", "Language", QLocale::system().name().left(2));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "Nick", tr("Me"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "NumberOfDescriptions", 20);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ParseStatus", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowBlocked", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowBlocking", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowMyself", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowOffline", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowOnlineAndDescription", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "ShowWithoutDescription", true);
 
-	if (m_injector.get<Configuration>()->deprecatedApi()->readBoolEntry("General", "AdvancedMode", false))
-	{
-		m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StatusContainerType", "Account");
-		m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", true);
-	}
-	else
-	{
-		m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StatusContainerType", "Identity");
-		m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", false);
-	}
+    if (m_injector.get<Configuration>()->deprecatedApi()->readBoolEntry("General", "AdvancedMode", false))
+    {
+        m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StatusContainerType", "Account");
+        m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", true);
+    }
+    else
+    {
+        m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StatusContainerType", "Identity");
+        m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowExpandingControl", false);
+    }
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StartupLastDescription", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StartupStatus", "LastStatus");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StartupStatusInvisibleWhenLastWasOffline", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "UserBoxHeight", 300);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "WindowActivationMethod", 0);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "MainConfiguration_Geometry", "50, 50, 790, 580");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StartupLastDescription", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "StartupStatus", "LastStatus");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "General", "StartupStatusInvisibleWhenLastWasOffline", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "UserBoxHeight", 300);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("General", "WindowActivationMethod", 0);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "General", "MainConfiguration_Geometry", "50, 50, 790, 580");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "General", "LookChatAdvanced_Geometry", "50, 50, 620, 540");
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "AlignUserboxIconsTop", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "AvatarBorder", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "AvatarGreyOut", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ForceCustomChatFont", false);
-	QFont chatFont = qApp->font();
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "AlignUserboxIconsTop", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "AvatarBorder", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "AvatarGreyOut", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ForceCustomChatFont", false);
+    QFont chatFont = qApp->font();
 #ifdef Q_OS_WIN
-	// On Windows default app font is often "MS Shell Dlg 2", and the default sans
-	// family (Arial, at least in Qt 4.8) is better. Though, on X11 the default
-	// sans family is the same while most users will have some nice default app
-	// font, like DejaVu, Ubuntu (the font, not the distro) or alike.
-	chatFont.setStyleHint(QFont::SansSerif);
-	chatFont.setFamily(chatFont.defaultFamily());
+    // On Windows default app font is often "MS Shell Dlg 2", and the default sans
+    // family (Arial, at least in Qt 4.8) is better. Though, on X11 the default
+    // sans family is the same while most users will have some nice default app
+    // font, like DejaVu, Ubuntu (the font, not the distro) or alike.
+    chatFont.setStyleHint(QFont::SansSerif);
+    chatFont.setFamily(chatFont.defaultFamily());
 #endif
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatFont", chatFont);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatBgFilled", // depends on configuration imported from older version
-		m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatBgColor").isValid() &&
-		m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatBgColor") != QColor("#ffffff"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatBgColor", QColor("#ffffff"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatMyFontColor", QColor("#000000"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatMyNickColor", QColor("#000000"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatTextCustomColors", // depends on configuration imported from older version
-		m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor").isValid() &&
-		m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor") != QColor("#ffffff"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatTextFontColor", QColor("#000000"));
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "DescriptionColor", w.palette().text().color());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "HeaderSeparatorHeight", 1);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "InfoPanelFgColor", w.palette().text().color());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "InfoPanelBgFilled", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "InfoPanelBgColor", w.palette().base().color());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "InfoPanelSyntaxFile", "ultr");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NiceDateFormat", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoHeaderInterval", 30);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoHeaderRepeat", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoServerTime", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoServerTimeDiff", 60);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "PanelFont", qApp->font());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "PanelVerticalScrollbar", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ParagraphSeparator", 4);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowAvatars", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "IconTheme", IconThemeManager::defaultTheme());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowBold", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowDesc", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowInfoPanel", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowMultilineDesc", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowStatusButton", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "Style", "Satin");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxTransparency", false);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxAlpha", 0);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxBlur", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxBgColor", w.palette().base().color());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserBoxColumnCount", 1);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxFgColor", w.palette().text().color());
-	QFont userboxfont(qApp->font());
-	userboxfont.setPointSize(qApp->font().pointSize() + 1);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxFont", userboxfont);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UseUserboxBackground", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatFont", chatFont);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look",
+        "ChatBgFilled",   // depends on configuration imported from older version
+        m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatBgColor").isValid() &&
+            m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatBgColor") !=
+                QColor("#ffffff"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatBgColor", QColor("#ffffff"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatMyBgColor", QColor("#E0E0E0"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatMyFontColor", QColor("#000000"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatMyNickColor", QColor("#000000"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatUsrBgColor", QColor("#F0F0F0"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatUsrFontColor", QColor("#000000"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatUsrNickColor", QColor("#000000"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look",
+        "ChatTextCustomColors",   // depends on configuration imported from older version
+        m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor").isValid() &&
+            m_injector.get<Configuration>()->deprecatedApi()->readColorEntry("Look", "ChatTextBgColor") !=
+                QColor("#ffffff"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatTextBgColor", QColor("#ffffff"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ChatTextFontColor", QColor("#000000"));
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look", "DescriptionColor", w.palette().text().color());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "DisplayGroupTabs", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "HeaderSeparatorHeight", 1);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look", "InfoPanelFgColor", w.palette().text().color());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "InfoPanelBgFilled", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look", "InfoPanelBgColor", w.palette().base().color());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "InfoPanelSyntaxFile", "ultr");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NiceDateFormat", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoHeaderInterval", 30);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoHeaderRepeat", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoServerTime", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "NoServerTimeDiff", 60);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "PanelFont", qApp->font());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "PanelVerticalScrollbar", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ParagraphSeparator", 4);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowAvatars", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look", "IconTheme", IconThemeManager::defaultTheme());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowGroupAll", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowBold", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowDesc", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowInfoPanel", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowMultilineDesc", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "ShowStatusButton", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "Style", "Satin");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxBackgroundDisplayStyle", "Stretched");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxTransparency", false);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxAlpha", 0);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxBlur", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxBgColor", w.palette().base().color());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Look", "UserboxAlternateBgColor", w.palette().alternateBase().color());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserBoxColumnCount", 1);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxFgColor", w.palette().text().color());
+    QFont userboxfont(qApp->font());
+    userboxfont.setPointSize(qApp->font().pointSize() + 1);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UserboxFont", userboxfont);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Look", "UseUserboxBackground", false);
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "F4");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "F9");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "F10");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_clear", "F9");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_configure", "F2");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_modulesmanager", "F4");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showoffline", "F9");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_showonlydesc", "F10");
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_bold", "Ctrl+B");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_close", "Esc");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_italic", "Ctrl+I");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_underline", "Ctrl+U");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_deleteuser", "Del");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_persinfo", "Ins");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_exit", "Ctrl+Q");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_bold", "Ctrl+B");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_close", "Esc");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_italic", "Ctrl+I");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "chat_underline", "Ctrl+U");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_adduser", "Ctrl+N");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_deleteuser", "Del");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_openchatwith", "Ctrl+L");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_persinfo", "Ins");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_searchuser", "Ctrl+F");
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("ShortCuts", "kadu_exit", "Ctrl+Q");
 
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "UseDefaultWebBrowser", m_injector.get<Configuration>()->deprecatedApi()->readEntry("Chat", "WebBrowser").isEmpty());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "UseDefaultEMailClient", m_injector.get<Configuration>()->deprecatedApi()->readEntry("Chat", "MailClient").isEmpty());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateChats", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitle", true);
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitleSyntax", QString());
-	m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitlePosition", 1);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Chat", "UseDefaultWebBrowser",
+        m_injector.get<Configuration>()->deprecatedApi()->readEntry("Chat", "WebBrowser").isEmpty());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable(
+        "Chat", "UseDefaultEMailClient",
+        m_injector.get<Configuration>()->deprecatedApi()->readEntry("Chat", "MailClient").isEmpty());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateChats", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitle", true);
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitleSyntax", QString());
+    m_injector.get<Configuration>()->deprecatedApi()->addVariable("Chat", "ContactStateWindowTitlePosition", 1);
 
-	createAllDefaultToolbars();
+    createAllDefaultToolbars();
 }
 
 void Core::createAllDefaultToolbars()
 {
-	// don't use getToolbarsConfigElement here, we have to be sure that this element don'e exists
-	QDomElement toolbarsConfig = m_injector.get<Configuration>()->api()->findElement(m_injector.get<Configuration>()->api()->rootElement(), "Toolbars");
+    // don't use getToolbarsConfigElement here, we have to be sure that this element don'e exists
+    QDomElement toolbarsConfig = m_injector.get<Configuration>()->api()->findElement(
+        m_injector.get<Configuration>()->api()->rootElement(), "Toolbars");
 
-	if (!toolbarsConfig.isNull())
-		return; // no need for defaults...
+    if (!toolbarsConfig.isNull())
+        return;   // no need for defaults...
 
-	toolbarsConfig = m_injector.get<Configuration>()->api()->createElement(m_injector.get<Configuration>()->api()->rootElement(), "Toolbars");
+    toolbarsConfig = m_injector.get<Configuration>()->api()->createElement(
+        m_injector.get<Configuration>()->api()->rootElement(), "Toolbars");
 
-	KaduWindow::createDefaultToolbars(m_injector.get<Configuration>(), toolbarsConfig);
-	ChatEditBox::createDefaultToolbars(m_injector.get<Configuration>(), toolbarsConfig);
-	SearchWindow::createDefaultToolbars(m_injector.get<Configuration>(), toolbarsConfig);
+    KaduWindow::createDefaultToolbars(m_injector.get<Configuration>(), toolbarsConfig);
+    ChatEditBox::createDefaultToolbars(m_injector.get<Configuration>(), toolbarsConfig);
+    SearchWindow::createDefaultToolbars(m_injector.get<Configuration>(), toolbarsConfig);
 
-	m_injector.get<Application>()->flushConfiguration();
+    m_injector.get<Application>()->flushConfiguration();
 }
 
 void Core::init()
 {
-	MessageRenderInfo::registerParserTags(m_injector.get<Parser>(), m_injector.get<ChatConfigurationHolder>(), m_injector.get<MessageHtmlRendererService>());
+    MessageRenderInfo::registerParserTags(
+        m_injector.get<Parser>(), m_injector.get<ChatConfigurationHolder>(),
+        m_injector.get<MessageHtmlRendererService>());
 
-	runServices();
+    runServices();
 
-	// protocol modules should be loaded before gui
-	// it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
-	{
-		auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
-		m_injector.get<PluginManager>()->activateProtocolPlugins();
-	}
+    // protocol modules should be loaded before gui
+    // it fixes crash on loading pending messages from config, contacts import from 0.6.5, and maybe other issues
+    {
+        auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
+        m_injector.get<PluginManager>()->activateProtocolPlugins();
+    }
 
-	m_injector.get<InjectedFactory>()->makeInjected<Updates>(this);
+    m_injector.get<InjectedFactory>()->makeInjected<Updates>(this);
 
-	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
-	connect(m_injector.get<IconsManager>(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
-	QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
+    QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
+    connect(m_injector.get<IconsManager>(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+    QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
 
-	// TODO: add some life-cycle management
-	m_injector.instantiate<AvatarManager>();
+    // TODO: add some life-cycle management
+    m_injector.instantiate<AvatarManager>();
 }
 
 void Core::deleteOldConfigurationFiles()
 {
-	QDir oldConfigs(m_injector.get<PathsProvider>()->profilePath(), "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files);
-	if (oldConfigs.count() > 20)
-		for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
-			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs[static_cast<int>(i)]);
+    QDir oldConfigs(
+        m_injector.get<PathsProvider>()->profilePath(), "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files);
+    if (oldConfigs.count() > 20)
+        for (unsigned int i = 0, max = oldConfigs.count() - 20; i < max; ++i)
+            QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs[static_cast<int>(i)]);
 
-	QDir oldConfigs1(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
-	if (oldConfigs1.count() > 20)
-		for (unsigned int i = 0, max = oldConfigs1.count() - 20; i < max; ++i)
-			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs1[static_cast<int>(i)]);
+    QDir oldConfigs1(
+        m_injector.get<PathsProvider>()->profilePath(), "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files);
+    if (oldConfigs1.count() > 20)
+        for (unsigned int i = 0, max = oldConfigs1.count() - 20; i < max; ++i)
+            QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs1[static_cast<int>(i)]);
 
-	QDir oldConfigs2(m_injector.get<PathsProvider>()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
-	if (oldConfigs2.count() > 20)
-		for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
-			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs2[static_cast<int>(i)]);
+    QDir oldConfigs2(
+        m_injector.get<PathsProvider>()->profilePath(), "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files);
+    if (oldConfigs2.count() > 20)
+        for (unsigned int i = 0, max = oldConfigs2.count() - 20; i < max; ++i)
+            QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs2[static_cast<int>(i)]);
 
-	QDir oldBacktraces(m_injector.get<PathsProvider>()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
-	if (oldBacktraces.count() > 20)
-		for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
-			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldBacktraces[static_cast<int>(i)]);
+    QDir oldBacktraces(m_injector.get<PathsProvider>()->profilePath(), "kadu.backtrace.*", QDir::Name, QDir::Files);
+    if (oldBacktraces.count() > 20)
+        for (unsigned int i = 0, max = oldBacktraces.count() - 20; i < max; ++i)
+            QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldBacktraces[static_cast<int>(i)]);
 
-	QDir oldDebugs(m_injector.get<PathsProvider>()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
-	if (oldDebugs.count() > 20)
-		for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
-			QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldDebugs[static_cast<int>(i)]);
+    QDir oldDebugs(m_injector.get<PathsProvider>()->profilePath(), "kadu.log.*", QDir::Name, QDir::Files);
+    if (oldDebugs.count() > 20)
+        for (unsigned int i = 0, max = oldDebugs.count() - 20; i < max; ++i)
+            QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldDebugs[static_cast<int>(i)]);
 }
 
 void Core::updateIcon()
 {
-	if (m_injector.get<SessionService>()->isClosing())
-		return;
+    if (m_injector.get<SessionService>()->isClosing())
+        return;
 
-	QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
+    QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
 }
 
 void Core::accountAdded(Account account)
 {
-	connect(account, SIGNAL(connecting()), this, SIGNAL(connecting()));
-	connect(account, SIGNAL(connected()), this, SIGNAL(connected()));
-	connect(account, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+    connect(account, SIGNAL(connecting()), this, SIGNAL(connecting()));
+    connect(account, SIGNAL(connected()), this, SIGNAL(connected()));
+    connect(account, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
 }
 
 void Core::accountRemoved(Account account)
 {
-	disconnect(account, 0, this, 0);
+    disconnect(account, 0, this, 0);
 }
 
 void Core::configurationUpdated()
 {
 #ifdef Q_OS_WIN
-	QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-		       QSettings::NativeFormat);
-	if(m_injector.get<Configuration>()->deprecatedApi()->readBoolEntry("General", "RunOnStartup"))
-		settings.setValue("Kadu",
-				QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
-	else
-		settings.remove("Kadu");
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+    if (m_injector.get<Configuration>()->deprecatedApi()->readBoolEntry("General", "RunOnStartup"))
+        settings.setValue("Kadu", QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
+    else
+        settings.remove("Kadu");
 #endif
 }
 
 int Core::executeSingle(const ExecutionArguments &executionArguments)
 {
 #ifndef Q_OS_WIN
-	m_injector.get<UnixSignalHandler>()->startSignalHandling();
+    m_injector.get<UnixSignalHandler>()->startSignalHandling();
 #endif
 
-	auto ret = 0;
-	auto applicationId = QString{"kadu-%1"}.arg(m_injector.get<PathsProvider>()->profilePath());
+    auto ret = 0;
+    auto applicationId = QString{"kadu-%1"}.arg(m_injector.get<PathsProvider>()->profilePath());
 
-	auto executeAsFirst = [&](){
-		execute(executionArguments.openIds(), executionArguments.openUuid());
-		ret = QApplication::exec();
-	};
+    auto executeAsFirst = [&]() {
+        execute(executionArguments.openIds(), executionArguments.openUuid());
+        ret = QApplication::exec();
+    };
 
-	auto executeAsNext = [&](SingleApplication &singleApplication){
-		if (!executionArguments.openIds().isEmpty() || !executionArguments.openUuid().isEmpty())
-		{
-			for (auto const &id : executionArguments.openIds())
-				singleApplication.sendMessage(id, 1000);
-			if (!executionArguments.openUuid().isEmpty())
-				singleApplication.sendMessage(executionArguments.openUuid(), 1000);
-		}
-		else
-			singleApplication.sendMessage("activate", 1000);
+    auto executeAsNext = [&](SingleApplication &singleApplication) {
+        if (!executionArguments.openIds().isEmpty() || !executionArguments.openUuid().isEmpty())
+        {
+            for (auto const &id : executionArguments.openIds())
+                singleApplication.sendMessage(id, 1000);
+            if (!executionArguments.openUuid().isEmpty())
+                singleApplication.sendMessage(executionArguments.openUuid(), 1000);
+        }
+        else
+            singleApplication.sendMessage("activate", 1000);
 
-		ret = 1;
-	};
+        ret = 1;
+    };
 
-	auto receivedMessage = [&](const QString &message){
-		executeRemoteCommand(message);
-	};
+    auto receivedMessage = [&](const QString &message) { executeRemoteCommand(message); };
 
-	SingleApplication singleApplication{applicationId, executeAsFirst, executeAsNext, receivedMessage};
+    SingleApplication singleApplication{applicationId, executeAsFirst, executeAsNext, receivedMessage};
 
-	return ret;
+    return ret;
 }
 
 void Core::execute(const QStringList &openIds, const QString &openUuid)
 {
-	createGui();
-	runGuiServices();
-	activatePlugins();
+    createGui();
+    runGuiServices();
+    activatePlugins();
 
-	for (auto const &id : openIds)
-		executeRemoteCommand(id);
-	if (!openUuid.isEmpty())
-		executeRemoteCommand(openUuid);
+    for (auto const &id : openIds)
+        executeRemoteCommand(id);
+    if (!openUuid.isEmpty())
+        executeRemoteCommand(openUuid);
 
-	// it has to be called after loading modules (docking might want to block showing the window)
-	m_injector.get<KaduWindowService>()->showMainWindow();
+    // it has to be called after loading modules (docking might want to block showing the window)
+    m_injector.get<KaduWindowService>()->showMainWindow();
 }
 
 void Core::createGui()
 {
-	m_injector.get<KaduWindowService>()->createWindow();
+    m_injector.get<KaduWindowService>()->createWindow();
 
-	// initialize file transfers
-	m_injector.instantiate<FileTransferHandlerManager>();
-	m_injector.instantiate<FileTransferManager>();
+    // initialize file transfers
+    m_injector.instantiate<FileTransferHandlerManager>();
+    m_injector.instantiate<FileTransferManager>();
 
-	m_injectorRegisteredActions = std::make_unique<InjectorRegisteredActions>(*m_injector.get<Actions>(), m_injector);
+    m_injectorRegisteredActions = std::make_unique<InjectorRegisteredActions>(*m_injector.get<Actions>(), m_injector);
 }
 
 void Core::runServices()
 {
-	m_injector.instantiate_all_with_type_role(SERVICE);
+    m_injector.instantiate_all_with_type_role(SERVICE);
 
-	m_injector.instantiate<ContactParserTags>();
+    m_injector.instantiate<ContactParserTags>();
 
-	auto rosterNotifier = m_injector.get<RosterNotifier>();
-	for (auto &&notifyEvent : rosterNotifier->notifyEvents())
-		m_injector.get<NotificationEventRepository>()->addNotificationEvent(notifyEvent);
+    auto rosterNotifier = m_injector.get<RosterNotifier>();
+    for (auto &&notifyEvent : rosterNotifier->notifyEvents())
+        m_injector.get<NotificationEventRepository>()->addNotificationEvent(notifyEvent);
 
-	auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
-	chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(m_injector.get<WindowChatWidgetContainerHandler>());
+    auto chatWidgetContainerHandlerRepository = m_injector.get<ChatWidgetContainerHandlerRepository>();
+    chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(
+        m_injector.get<WindowChatWidgetContainerHandler>());
 
-	m_injector.get<ChatWidgetMessageHandlerConfigurator>();
+    m_injector.get<ChatWidgetMessageHandlerConfigurator>();
 
-	auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(m_injector.get<Configuration>()); // this is basically a global so we do not care about relesing it
-	chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
+    auto chatWindowStorageConfigurator = new ChatWindowStorageConfigurator(
+        m_injector.get<Configuration>());   // this is basically a global so we do not care about relesing it
+    chatWindowStorageConfigurator->setChatWindowStorage(m_injector.get<ChatWindowStorage>());
 
-	// this instance lives forever
-	// TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
-	auto configurator = new ChatImageRequestServiceConfigurator(m_injector.get<Configuration>());
-	configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
+    // this instance lives forever
+    // TODO: maybe make it QObject and make CurrentChatImageRequestService its parent
+    auto configurator = new ChatImageRequestServiceConfigurator(m_injector.get<Configuration>());
+    configurator->setChatImageRequestService(m_injector.get<ChatImageRequestService>());
 
-	m_injector.get<PluginMetadataFinder>()->setDirectory(m_injector.get<PathsProvider>()->dataPath() + QStringLiteral("plugins"));
-	m_injector.get<PluginStateManager>()->loadPluginStates();
+    m_injector.get<PluginMetadataFinder>()->setDirectory(
+        m_injector.get<PathsProvider>()->dataPath() + QStringLiteral("plugins"));
+    m_injector.get<PluginStateManager>()->loadPluginStates();
 
-	m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+    m_injector.get<ConfigurationUiHandlerRepository>()->addConfigurationUiHandler(
+        m_injector.get<ChatStyleConfigurationUiHandler>());
 
-	m_injector.instantiate_all_with_type_role(LISTENER);
+    m_injector.instantiate_all_with_type_role(LISTENER);
 }
 
 void Core::runGuiServices()
 {
-	m_injector.get<ChatWindowManager>()->openStoredChatWindows();
-	m_injector.get<SslCertificateManager>()->loadPersistentSslCertificates();
+    m_injector.get<ChatWindowManager>()->openStoredChatWindows();
+    m_injector.get<SslCertificateManager>()->loadPersistentSslCertificates();
 }
 
 void Core::stopServices()
 {
-	m_injector.get<ConfigurationUiHandlerRepository>()->removeConfigurationUiHandler(m_injector.get<ChatStyleConfigurationUiHandler>());
+    m_injector.get<ConfigurationUiHandlerRepository>()->removeConfigurationUiHandler(
+        m_injector.get<ChatStyleConfigurationUiHandler>());
 
-	auto chatWidgetRepository = m_injector.get<ChatWidgetRepository>();
-	while (begin(chatWidgetRepository) != end(chatWidgetRepository))
-		chatWidgetRepository->removeChatWidget(*begin(chatWidgetRepository));
+    auto chatWidgetRepository = m_injector.get<ChatWidgetRepository>();
+    while (begin(chatWidgetRepository) != end(chatWidgetRepository))
+        chatWidgetRepository->removeChatWidget(*begin(chatWidgetRepository));
 }
 
 void Core::activatePlugins()
 {
-	auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
-	m_injector.get<PluginManager>()->activatePlugins();
-	m_injector.get<PluginManager>()->activateReplacementPlugins();
+    auto changeNotifierLock = ChangeNotifierLock{m_injector.get<PluginStateService>()->changeNotifier()};
+    m_injector.get<PluginManager>()->activatePlugins();
+    m_injector.get<PluginManager>()->activateReplacementPlugins();
 }
 
 void Core::executeRemoteCommand(const QString &remoteCommand)
 {
-	if ("activate" == remoteCommand)
-		_activateWindow(m_injector.get<Configuration>(), m_injector.get<KaduWindowService>()->mainWindowProvider()->provide());
-	else if (!remoteCommand.startsWith("{"))
-		m_injector.get<UrlHandlerManager>()->openUrl(remoteCommand.toUtf8(), true);
-	else
-	{
-		auto uuid = QUuid{remoteCommand};
-		if (uuid.isNull())
-			return;
-		auto chat = m_injector.get<ChatManager>()->byUuid(uuid);
-		if (!chat)
-			return;
-		m_injector.get<ChatWidgetManager>()->openChat(chat, OpenChatActivation::Activate);
-	}
+    if ("activate" == remoteCommand)
+        _activateWindow(
+            m_injector.get<Configuration>(), m_injector.get<KaduWindowService>()->mainWindowProvider()->provide());
+    else if (!remoteCommand.startsWith("{"))
+        m_injector.get<UrlHandlerManager>()->openUrl(remoteCommand.toUtf8(), true);
+    else
+    {
+        auto uuid = QUuid{remoteCommand};
+        if (uuid.isNull())
+            return;
+        auto chat = m_injector.get<ChatManager>()->byUuid(uuid);
+        if (!chat)
+            return;
+        m_injector.get<ChatWidgetManager>()->openChat(chat, OpenChatActivation::Activate);
+    }
 }
 
 #include "moc_core.cpp"

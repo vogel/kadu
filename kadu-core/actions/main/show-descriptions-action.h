@@ -29,21 +29,20 @@ class Configuration;
 
 class ShowDescriptionsAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowDescriptionsAction(QObject *parent = nullptr);
-	virtual ~ShowDescriptionsAction();
+    Q_INVOKABLE explicit ShowDescriptionsAction(QObject *parent = nullptr);
+    virtual ~ShowDescriptionsAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 };

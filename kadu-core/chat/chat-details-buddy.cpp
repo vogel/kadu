@@ -30,8 +30,7 @@
  *
  * Creates empty ChatDetailsBuddy object assigned to chatData object.
  */
-ChatDetailsBuddy::ChatDetailsBuddy(ChatShared *chatData) :
-		ChatDetails(chatData)
+ChatDetailsBuddy::ChatDetailsBuddy(ChatShared *chatData) : ChatDetails(chatData)
 {
 }
 
@@ -41,7 +40,7 @@ ChatDetailsBuddy::~ChatDetailsBuddy()
 
 void ChatDetailsBuddy::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 /**
@@ -53,7 +52,7 @@ void ChatDetailsBuddy::setChatTypeManager(ChatTypeManager *chatTypeManager)
  */
 bool ChatDetailsBuddy::shouldStore()
 {
-	return false;
+    return false;
 }
 
 /**
@@ -62,9 +61,9 @@ bool ChatDetailsBuddy::shouldStore()
  *
  * Returns type of this chat - 'Buddy'.
  */
-ChatType * ChatDetailsBuddy::type() const
+ChatType *ChatDetailsBuddy::type() const
 {
-	return m_chatTypeManager->chatType("Buddy");
+    return m_chatTypeManager->chatType("Buddy");
 }
 
 /**
@@ -76,7 +75,7 @@ ChatType * ChatDetailsBuddy::type() const
  */
 ContactSet ChatDetailsBuddy::contacts() const
 {
-	return m_chats.isEmpty() ? ContactSet() : m_chats.at(0).contacts();
+    return m_chats.isEmpty() ? ContactSet() : m_chats.at(0).contacts();
 }
 
 /**
@@ -88,22 +87,22 @@ ContactSet ChatDetailsBuddy::contacts() const
  */
 QString ChatDetailsBuddy::name() const
 {
-	return m_chats.isEmpty() ? m_buddy.isEmpty() ? QString() : m_buddy.display() : m_chats.at(0).name();
+    return m_chats.isEmpty() ? m_buddy.isEmpty() ? QString() : m_buddy.display() : m_chats.at(0).name();
 }
 
 bool ChatDetailsBuddy::isConnected() const
 {
-	return false;
+    return false;
 }
 
 void ChatDetailsBuddy::setBuddy(const Buddy &buddy)
 {
-	m_buddy = buddy;
+    m_buddy = buddy;
 }
 
 Buddy ChatDetailsBuddy::buddy() const
 {
-	return m_buddy;
+    return m_buddy;
 }
 
 /**
@@ -114,9 +113,9 @@ Buddy ChatDetailsBuddy::buddy() const
  */
 void ChatDetailsBuddy::setChats(const QVector<Chat> &chats)
 {
-	m_chats.clear();
-	for (auto &&chat : chats)
-		addChat(chat);
+    m_chats.clear();
+    for (auto &&chat : chats)
+        addChat(chat);
 }
 
 /**
@@ -125,22 +124,22 @@ void ChatDetailsBuddy::setChats(const QVector<Chat> &chats)
  *
  * Returns assigned aggregate chats to this chat.
  */
-const QVector<Chat> & ChatDetailsBuddy::chats() const
+const QVector<Chat> &ChatDetailsBuddy::chats() const
 {
-	return m_chats;
+    return m_chats;
 }
 
 void ChatDetailsBuddy::addChat(const Chat &chat)
 {
-	if (chat && !m_chats.contains(chat))
-		m_chats.append(chat);
+    if (chat && !m_chats.contains(chat))
+        m_chats.append(chat);
 }
 
 void ChatDetailsBuddy::removeChat(const Chat &chat)
 {
-	int indexOf = m_chats.indexOf(chat);
-	if (indexOf >= 0)
-		m_chats.remove(indexOf);
+    int indexOf = m_chats.indexOf(chat);
+    if (indexOf >= 0)
+        m_chats.remove(indexOf);
 }
 
 #include "moc_chat-details-buddy.cpp"

@@ -19,7 +19,7 @@
 
 #include "chat-widget-container-handler-repository.h"
 
-ChatWidgetContainerHandlerRepository::ChatWidgetContainerHandlerRepository(QObject *parent): QObject(parent)
+ChatWidgetContainerHandlerRepository::ChatWidgetContainerHandlerRepository(QObject *parent) : QObject(parent)
 {
 }
 
@@ -27,31 +27,33 @@ ChatWidgetContainerHandlerRepository::~ChatWidgetContainerHandlerRepository()
 {
 }
 
-void ChatWidgetContainerHandlerRepository::registerChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+void ChatWidgetContainerHandlerRepository::registerChatWidgetContainerHandler(
+    ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	m_chatWidgetContainerHandlers.prepend(chatWidgetContainerHandler);
-	emit chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
+    m_chatWidgetContainerHandlers.prepend(chatWidgetContainerHandler);
+    emit chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
 }
 
-void ChatWidgetContainerHandlerRepository::unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+void ChatWidgetContainerHandlerRepository::unregisterChatWidgetContainerHandler(
+    ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	m_chatWidgetContainerHandlers.removeAll(chatWidgetContainerHandler);
-	emit chatWidgetContainerHandlerUnregistered(chatWidgetContainerHandler);
+    m_chatWidgetContainerHandlers.removeAll(chatWidgetContainerHandler);
+    emit chatWidgetContainerHandlerUnregistered(chatWidgetContainerHandler);
 }
 
 ChatWidgetContainerHandlerRepository::iterator ChatWidgetContainerHandlerRepository::begin()
 {
-	return m_chatWidgetContainerHandlers.begin();
+    return m_chatWidgetContainerHandlers.begin();
 }
 
 ChatWidgetContainerHandlerRepository::iterator ChatWidgetContainerHandlerRepository::end()
 {
-	return m_chatWidgetContainerHandlers.end();
+    return m_chatWidgetContainerHandlers.end();
 }
 
 QList<ChatWidgetContainerHandler *> ChatWidgetContainerHandlerRepository::chatWidgetContainerHandlers() const
 {
-	return m_chatWidgetContainerHandlers;
+    return m_chatWidgetContainerHandlers;
 }
 
 #include "moc_chat-widget-container-handler-repository.cpp"

@@ -23,9 +23,8 @@
 
 #include "gadu-url-dom-visitor-provider.h"
 
-GaduUrlDomVisitorProvider::GaduUrlDomVisitorProvider(QObject *parent) :
-		QObject{parent},
-		m_ignoreLinks{std::make_unique<SimpleUrlExpander>(QRegExp{"\\bgg:(/){0,3}[0-9]{1,12}\\b"})}
+GaduUrlDomVisitorProvider::GaduUrlDomVisitorProvider(QObject *parent)
+        : QObject{parent}, m_ignoreLinks{std::make_unique<SimpleUrlExpander>(QRegExp{"\\bgg:(/){0,3}[0-9]{1,12}\\b"})}
 {
 }
 
@@ -33,9 +32,9 @@ GaduUrlDomVisitorProvider::~GaduUrlDomVisitorProvider()
 {
 }
 
-const DomVisitor * GaduUrlDomVisitorProvider::provide() const
+const DomVisitor *GaduUrlDomVisitorProvider::provide() const
 {
-	return &m_ignoreLinks;
+    return &m_ignoreLinks;
 }
 
 #include "moc_gadu-url-dom-visitor-provider.cpp"

@@ -24,9 +24,7 @@
 #include "misc/memory.h"
 #include "storage/storage-point.h"
 
-StoragePointFactoryImpl::StoragePointFactoryImpl(QObject *parent) :
-		StoragePointFactory{parent},
-		m_configurationFile{}
+StoragePointFactoryImpl::StoragePointFactoryImpl(QObject *parent) : StoragePointFactory{parent}, m_configurationFile{}
 {
 }
 
@@ -36,21 +34,21 @@ StoragePointFactoryImpl::~StoragePointFactoryImpl()
 
 void StoragePointFactoryImpl::setConfiguration(Configuration *configuration)
 {
-	m_configurationFile = configuration->api();
+    m_configurationFile = configuration->api();
 }
 
 std::unique_ptr<StoragePoint> StoragePointFactoryImpl::createStoragePoint(const QString &nodeName, StoragePoint *parent)
 {
-	if (!m_configurationFile || nodeName.isEmpty())
-		return {};
+    if (!m_configurationFile || nodeName.isEmpty())
+        return {};
 
-	if (!parent)
-		return std::make_unique<StoragePoint>(m_configurationFile, m_configurationFile->getNode(nodeName));
+    if (!parent)
+        return std::make_unique<StoragePoint>(m_configurationFile, m_configurationFile->getNode(nodeName));
 
-	Q_ASSERT(parent->storage() == m_configurationFile);
+    Q_ASSERT(parent->storage() == m_configurationFile);
 
-	auto node = m_configurationFile->getNode(parent->point(), nodeName);
-	return std::make_unique<StoragePoint>(m_configurationFile, node);
+    auto node = m_configurationFile->getNode(parent->point(), nodeName);
+    return std::make_unique<StoragePoint>(m_configurationFile, node);
 }
 
 #include "storage-point-factory-impl.moc"

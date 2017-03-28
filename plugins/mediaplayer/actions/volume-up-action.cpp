@@ -23,14 +23,14 @@
 
 #include "actions/actions.h"
 
-VolumeUpAction::VolumeUpAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+VolumeUpAction::VolumeUpAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"audio-volume-high"});
-	setName(QStringLiteral("mediaplayer_vol_up"));
-	setText(tr("Volume Up"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"audio-volume-high"});
+    setName(QStringLiteral("mediaplayer_vol_up"));
+    setText(tr("Volume Up"));
+    setType(ActionDescription::TypeChat);
 }
 
 VolumeUpAction::~VolumeUpAction()
@@ -39,12 +39,12 @@ VolumeUpAction::~VolumeUpAction()
 
 void VolumeUpAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void VolumeUpAction::actionTriggered(QAction *, bool)
 {
-	m_mediaPlayer->incrVolume();
+    m_mediaPlayer->incrVolume();
 }
 
 #include "moc_volume-up-action.cpp"

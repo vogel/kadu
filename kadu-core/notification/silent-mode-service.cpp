@@ -29,11 +29,8 @@
 #include "notification/full-screen-service.h"
 #include "status/status-container-manager.h"
 
-SilentModeService::SilentModeService(QObject *parent) :
-		QObject{parent},
-		m_silentModeWhenDnD{true},
-		m_silentModeWhenFullscreen{true},
-		m_silentMode{false}
+SilentModeService::SilentModeService(QObject *parent)
+        : QObject{parent}, m_silentModeWhenDnD{true}, m_silentModeWhenFullscreen{true}, m_silentMode{false}
 {
 }
 
@@ -43,101 +40,98 @@ SilentModeService::~SilentModeService()
 
 void SilentModeService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SilentModeService::setFullScreenService(FullScreenService *fullScreenService)
 {
-	m_fullScreenService = fullScreenService;
+    m_fullScreenService = fullScreenService;
 }
 
 void SilentModeService::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void SilentModeService::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void SilentModeService::setToggleSilentModeAction(ToggleSilentModeAction *toggleSilentModeAction)
 {
-	m_toggleSilentModeAction = toggleSilentModeAction;
+    m_toggleSilentModeAction = toggleSilentModeAction;
 }
 
 void SilentModeService::init()
 {
-	createActionDescriptions();
-	createDefaultConfiguration();
-	configurationUpdated();
+    createActionDescriptions();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void SilentModeService::done()
 {
-	destroyActionDescriptions();
+    destroyActionDescriptions();
 }
 
 void SilentModeService::createActionDescriptions()
 {
-	m_menuInventory
-		->menu("main")
-		->addAction(m_toggleSilentModeAction, KaduMenu::SectionMiscTools, 5);
+    m_menuInventory->menu("main")->addAction(m_toggleSilentModeAction, KaduMenu::SectionMiscTools, 5);
 }
 
 void SilentModeService::destroyActionDescriptions()
 {
-	m_menuInventory
-		->menu("main")
-		->removeAction(m_toggleSilentModeAction);
+    m_menuInventory->menu("main")->removeAction(m_toggleSilentModeAction);
 }
 
 bool SilentModeService::isSilentOrAutoSilent() const
 {
-	if (isSilent())
-		return true;
-	if (m_silentModeWhenFullscreen && m_fullScreenService->hasFullscreenApplication())
-		return true;
-	if (m_silentModeWhenDnD && m_statusContainerManager->status().type() == StatusType::DoNotDisturb)
-		return true;
+    if (isSilent())
+        return true;
+    if (m_silentModeWhenFullscreen && m_fullScreenService->hasFullscreenApplication())
+        return true;
+    if (m_silentModeWhenDnD && m_statusContainerManager->status().type() == StatusType::DoNotDisturb)
+        return true;
 
-	return false;
+    return false;
 }
 
 bool SilentModeService::isSilent() const
 {
-	return m_silentMode;
+    return m_silentMode;
 }
 
 void SilentModeService::setSilent(bool silent)
 {
-	if (m_silentMode == silent)
-		return;
+    if (m_silentMode == silent)
+        return;
 
-	m_silentMode = silent;
-	m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", m_silentMode);
+    m_silentMode = silent;
+    m_configuration->deprecatedApi()->writeEntry("Notify", "SilentMode", m_silentMode);
 
-	for (auto action : m_toggleSilentModeAction->actions())
-		action->setChecked(m_silentMode);
+    for (auto action : m_toggleSilentModeAction->actions())
+        action->setChecked(m_silentMode);
 
-	emit silentModeToggled(isSilentOrAutoSilent());
+    emit silentModeToggled(isSilentOrAutoSilent());
 }
 
 void SilentModeService::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Notify", "AwaySilentMode", false);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FullscreenSilentMode", false);
-	m_configuration->deprecatedApi()->addVariable("Notify", "SilentMode", false);
+    m_configuration->deprecatedApi()->addVariable("Notify", "AwaySilentMode", false);
+    m_configuration->deprecatedApi()->addVariable("Notify", "FullscreenSilentMode", false);
+    m_configuration->deprecatedApi()->addVariable("Notify", "SilentMode", false);
 }
 
 void SilentModeService::configurationUpdated()
 {
-	m_silentModeWhenDnD = m_configuration->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
-	m_silentModeWhenFullscreen = m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
-	m_silentMode = m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false);
+    m_silentModeWhenDnD = m_configuration->deprecatedApi()->readBoolEntry("Notify", "AwaySilentMode", false);
+    m_silentModeWhenFullscreen =
+        m_configuration->deprecatedApi()->readBoolEntry("Notify", "FullscreenSilentMode", false);
+    m_silentMode = m_configuration->deprecatedApi()->readBoolEntry("Notify", "SilentMode", false);
 
-	if (m_silentModeWhenFullscreen)
-		m_fullScreenServiceHandler = std::make_unique<FullScreenServiceHandler>(m_fullScreenService);
-	else
-		m_fullScreenServiceHandler.reset();
+    if (m_silentModeWhenFullscreen)
+        m_fullScreenServiceHandler = std::make_unique<FullScreenServiceHandler>(m_fullScreenService);
+    else
+        m_fullScreenServiceHandler.reset();
 }

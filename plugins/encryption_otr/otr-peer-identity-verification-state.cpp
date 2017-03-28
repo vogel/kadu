@@ -19,35 +19,36 @@
 
 #include "otr-peer-identity-verification-state.h"
 
-OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(State state, int percentCompleted) :
-		MyState(state), PercentCompleted(percentCompleted)
+OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(State state, int percentCompleted)
+        : MyState(state), PercentCompleted(percentCompleted)
 {
 }
 
 OtrPeerIdentityVerificationState::OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe)
 {
-	*this = copyMe;
+    *this = copyMe;
 }
 
-OtrPeerIdentityVerificationState & OtrPeerIdentityVerificationState::operator = (const OtrPeerIdentityVerificationState &copyMe)
+OtrPeerIdentityVerificationState &OtrPeerIdentityVerificationState::
+operator=(const OtrPeerIdentityVerificationState &copyMe)
 {
-	MyState = copyMe.MyState;
-	PercentCompleted = copyMe.PercentCompleted;
+    MyState = copyMe.MyState;
+    PercentCompleted = copyMe.PercentCompleted;
 
-	return *this;
+    return *this;
 }
 
 bool OtrPeerIdentityVerificationState::isFinished() const
 {
-	return (StateSucceeded == MyState) || (StateFailed == MyState);
+    return (StateSucceeded == MyState) || (StateFailed == MyState);
 }
 
 OtrPeerIdentityVerificationState::State OtrPeerIdentityVerificationState::state() const
 {
-	return MyState;
+    return MyState;
 }
 
 int OtrPeerIdentityVerificationState::percentCompleted() const
 {
-	return PercentCompleted;
+    return PercentCompleted;
 }

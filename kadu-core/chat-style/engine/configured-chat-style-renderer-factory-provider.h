@@ -37,23 +37,22 @@
  */
 class ConfiguredChatStyleRendererFactoryProvider : public ChatStyleRendererFactoryProvider
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfiguredChatStyleRendererFactoryProvider(QObject *parent = nullptr);
-	virtual ~ConfiguredChatStyleRendererFactoryProvider();
+    Q_INVOKABLE explicit ConfiguredChatStyleRendererFactoryProvider(QObject *parent = nullptr);
+    virtual ~ConfiguredChatStyleRendererFactoryProvider();
 
-	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const override;
+    virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const override;
 
-	/**
-	 * @short Set new instance of ChatStyleRendererFactory to be stored in this provider.
-	 * @param chatStyleRendererFactory New instance of ChatStyleRendererFactory.
-	 */
-	void setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
+    /**
+     * @short Set new instance of ChatStyleRendererFactory to be stored in this provider.
+     * @param chatStyleRendererFactory New instance of ChatStyleRendererFactory.
+     */
+    void setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory);
 
 private:
-	std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
-
+    std::shared_ptr<ChatStyleRendererFactory> m_chatStyleRendererFactory;
 };
 
 /**

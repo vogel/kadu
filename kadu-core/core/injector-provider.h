@@ -26,16 +26,15 @@
 
 class KADUAPI InjectorProvider : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit InjectorProvider(QObject *parent = nullptr);
-	virtual ~InjectorProvider();
+    Q_INVOKABLE explicit InjectorProvider(QObject *parent = nullptr);
+    virtual ~InjectorProvider();
 
-	void setInjector(injeqt::injector *injector);
-	injeqt::injector & injector();
+    void setInjector(injeqt::injector *injector);
+    injeqt::injector &injector();
 
 private:
-	injeqt::injector *m_injector;
-
+    injeqt::injector *m_injector;
 };

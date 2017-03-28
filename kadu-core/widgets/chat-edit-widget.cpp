@@ -21,10 +21,9 @@
 
 #include "chat-edit-widget.h"
 
-ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent) :
-		ModalConfigurationWidget{parent},
-		m_stateNotifier{make_owned<SimpleConfigurationValueStateNotifier>(this)},
-		m_chat{chat}
+ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent)
+        : ModalConfigurationWidget{parent}, m_stateNotifier{make_owned<SimpleConfigurationValueStateNotifier>(this)},
+          m_chat{chat}
 {
 }
 
@@ -34,15 +33,15 @@ ChatEditWidget::~ChatEditWidget()
 
 Chat ChatEditWidget::chat() const
 {
-	return m_chat;
+    return m_chat;
 }
 
-SimpleConfigurationValueStateNotifier * ChatEditWidget::simpleStateNotifier() const
+SimpleConfigurationValueStateNotifier *ChatEditWidget::simpleStateNotifier() const
 {
-	return m_stateNotifier.get();
+    return m_stateNotifier.get();
 }
 
-const ConfigurationValueStateNotifier * ChatEditWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *ChatEditWidget::stateNotifier() const
 {
-	return m_stateNotifier.get();
+    return m_stateNotifier.get();
 }

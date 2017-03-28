@@ -38,39 +38,39 @@ class Roster;
 
 class BuddyDeleteWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyAdditionalDataDeleteHandlerManager> m_buddyAdditionalDataDeleteHandlerManager;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<Roster> m_roster;
-	BuddySet BuddiesToDelete;
+    QPointer<BuddyAdditionalDataDeleteHandlerManager> m_buddyAdditionalDataDeleteHandlerManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<Roster> m_roster;
+    BuddySet BuddiesToDelete;
 
-	QListWidget *AdditionalDataListView;
-	Qt::CheckState ItemState;
+    QListWidget *AdditionalDataListView;
+    Qt::CheckState ItemState;
 
-	void createGui();
-	void fillAdditionalDataListView();
+    void createGui();
+    void fillAdditionalDataListView();
 
-	QString getBuddiesNames();
-	void deleteBuddy(Buddy buddy);
+    QString getBuddiesNames();
+    void deleteBuddy(Buddy buddy);
 
 private slots:
-	INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setRoster(Roster *roster);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(
+        BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setRoster(Roster *roster);
+    INJEQT_INIT void init();
 
-	void additionalDataListViewItemPressed(QListWidgetItem *item);
-	void additionalDataListViewItemClicked(QListWidgetItem *item);
+    void additionalDataListViewItemPressed(QListWidgetItem *item);
+    void additionalDataListViewItemClicked(QListWidgetItem *item);
 
 public:
-	explicit BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent = nullptr);
-	virtual ~BuddyDeleteWindow();
+    explicit BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent = nullptr);
+    virtual ~BuddyDeleteWindow();
 
 public slots:
-	virtual void accept();
-	virtual void reject();
-
+    virtual void accept();
+    virtual void reject();
 };

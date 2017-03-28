@@ -25,8 +25,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/paths-provider.h"
 
-ScreenShotConfiguration::ScreenShotConfiguration(QObject *parent) :
-		QObject{parent}
+ScreenShotConfiguration::ScreenShotConfiguration(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,52 +35,55 @@ ScreenShotConfiguration::~ScreenShotConfiguration()
 
 void ScreenShotConfiguration::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ScreenShotConfiguration::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void ScreenShotConfiguration::init()
 {
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void ScreenShotConfiguration::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "fileFormat", "PNG");
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "use_short_jpg", true);
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "quality", -1);
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "path", m_pathsProvider->profilePath() + QStringLiteral("images/"));
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "filenamePrefix", "shot");
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "paste_clause", true);
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "dir_size_warns", true);
-	m_configuration->deprecatedApi()->addVariable("ScreenShot", "dir_size_limit", 10000);
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "fileFormat", "PNG");
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "use_short_jpg", true);
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "quality", -1);
+    m_configuration->deprecatedApi()->addVariable(
+        "ScreenShot", "path", m_pathsProvider->profilePath() + QStringLiteral("images/"));
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "filenamePrefix", "shot");
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "paste_clause", true);
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "dir_size_warns", true);
+    m_configuration->deprecatedApi()->addVariable("ScreenShot", "dir_size_limit", 10000);
 }
 
 void ScreenShotConfiguration::configurationUpdated()
 {
-	FileFormat = m_configuration->deprecatedApi()->readEntry("ScreenShot", "fileFormat", "PNG");
-	UseShortJpgExtension = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "use_short_jpg", true);
-	Quality = m_configuration->deprecatedApi()->readNumEntry("ScreenShot", "quality", -1);
-	ImagePath = m_configuration->deprecatedApi()->readEntry("ScreenShot", "path", m_pathsProvider->profilePath() + QStringLiteral("images/"));
-	FileNamePrefix = m_configuration->deprecatedApi()->readEntry("ScreenShot", "filenamePrefix", "shot");
-	PasteImageClauseIntoChatWidget = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "paste_clause", true);
-	WarnAboutDirectorySize = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "dir_size_warns", true);
-	DirectorySizeLimit = m_configuration->deprecatedApi()->readNumEntry("ScreenShot", "dir_size_limit", 10000);
+    FileFormat = m_configuration->deprecatedApi()->readEntry("ScreenShot", "fileFormat", "PNG");
+    UseShortJpgExtension = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "use_short_jpg", true);
+    Quality = m_configuration->deprecatedApi()->readNumEntry("ScreenShot", "quality", -1);
+    ImagePath = m_configuration->deprecatedApi()->readEntry(
+        "ScreenShot", "path", m_pathsProvider->profilePath() + QStringLiteral("images/"));
+    FileNamePrefix = m_configuration->deprecatedApi()->readEntry("ScreenShot", "filenamePrefix", "shot");
+    PasteImageClauseIntoChatWidget =
+        m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "paste_clause", true);
+    WarnAboutDirectorySize = m_configuration->deprecatedApi()->readBoolEntry("ScreenShot", "dir_size_warns", true);
+    DirectorySizeLimit = m_configuration->deprecatedApi()->readNumEntry("ScreenShot", "dir_size_limit", 10000);
 }
 
 QString ScreenShotConfiguration::screenshotFileNameExtension()
 {
-	bool useShortJpg = useShortJpgExtension();
-	QString extension = fileFormat();
-	if (useShortJpg && extension == "jpeg")
-		return QStringLiteral("jpg");
+    bool useShortJpg = useShortJpgExtension();
+    QString extension = fileFormat();
+    if (useShortJpg && extension == "jpeg")
+        return QStringLiteral("jpg");
 
-	return extension;
+    return extension;
 }
 
 #include "moc_screen-shot-configuration.cpp"

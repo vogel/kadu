@@ -26,15 +26,14 @@
 
 class InsertImageAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit InsertImageAction(QObject *parent = nullptr);
-	virtual ~InsertImageAction();
+    Q_INVOKABLE explicit InsertImageAction(QObject *parent = nullptr);
+    virtual ~InsertImageAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action * action) override;
-
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 };

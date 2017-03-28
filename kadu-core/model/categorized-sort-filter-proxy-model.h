@@ -26,7 +26,6 @@
 
 // class QItemSelection;
 
-
 /**
   * This class lets you categorize a view. It is meant to be used along with
   * CategorizedView class.
@@ -40,21 +39,21 @@
   *
   * @author Rafael Fernández López <ereslibre@kde.org>
   */
-class CategorizedSortFilterProxyModel
-    : public QSortFilterProxyModel
+class CategorizedSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-    enum AdditionalRoles {
+    enum AdditionalRoles
+    {
         // Note: use printf "0x%08X\n" $(($RANDOM*$RANDOM))
         // to define additional roles.
-        CategoryDisplayRole = 0x17CE990A,  ///< This role is used for asking the category to a given index
+        CategoryDisplayRole = 0x17CE990A,   ///< This role is used for asking the category to a given index
 
-        CategorySortRole    = 0x27857E60   ///< This role is used for sorting categories. You can return a
-                                           ///< string or a long long value. Strings will be sorted alphabetically
-                                           ///< while long long will be sorted by their value. Please note that this
-                                           ///< value won't be shown on the view, is only for sorting purposes. What will
-                                           ///< be shown as "Category" on the view will be asked with the role
-                                           ///< CategoryDisplayRole.
+        CategorySortRole = 0x27857E60   ///< This role is used for sorting categories. You can return a
+                                        ///< string or a long long value. Strings will be sorted alphabetically
+                                        ///< while long long will be sorted by their value. Please note that this
+                                        ///< value won't be shown on the view, is only for sorting purposes. What will
+                                        ///< be shown as "Category" on the view will be asked with the role
+                                        ///< CategoryDisplayRole.
     };
 
     CategorizedSortFilterProxyModel(QObject *parent = nullptr);
@@ -176,16 +175,12 @@ private:
     Private *const d;
 };
 
-
-
 class CategorizedSortFilterProxyModel::Private
 {
 public:
     Private()
-        : sortColumn(0)
-        , sortOrder(Qt::AscendingOrder)
-        , categorizedModel(false)
-        , sortCategoriesByNaturalComparison(true)
+            : sortColumn(0), sortOrder(Qt::AscendingOrder), categorizedModel(false),
+              sortCategoriesByNaturalComparison(true)
     {
     }
 
@@ -199,5 +194,4 @@ public:
     bool sortCategoriesByNaturalComparison;
 };
 
-
-#endif // CATEGORIZEDSORT_FILTER_PROXY_MODEL_H
+#endif   // CATEGORIZEDSORT_FILTER_PROXY_MODEL_H

@@ -28,12 +28,11 @@
 
 #include "add-room-chat-action.h"
 
-AddRoomChatAction::AddRoomChatAction(QObject *parent) :
-		ActionDescription(parent)
+AddRoomChatAction::AddRoomChatAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeGlobal);
-	setName("addRoomChatAction");
-	setText(tr("Join Room..."));
+    setType(ActionDescription::TypeGlobal);
+    setName("addRoomChatAction");
+    setText(tr("Join Room..."));
 }
 
 AddRoomChatAction::~AddRoomChatAction()
@@ -42,38 +41,38 @@ AddRoomChatAction::~AddRoomChatAction()
 
 void AddRoomChatAction::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void AddRoomChatAction::init()
 {
-	connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(updateAddChatMenuItem()));
+    connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(updateAddChatMenuItem()));
 
-	updateAddChatMenuItem();
+    updateAddChatMenuItem();
 }
 
 void AddRoomChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(context)
-	Q_UNUSED(toggled)
+    Q_UNUSED(context)
+    Q_UNUSED(toggled)
 
-	(injectedFactory()->makeInjected<AddRoomChatWindow>(widget))->show();
+    (injectedFactory()->makeInjected<AddRoomChatWindow>(widget))->show();
 }
 
 void AddRoomChatAction::updateAddChatMenuItem()
 {
-	bool isRoomChatSupported = false;
+    bool isRoomChatSupported = false;
 
-	foreach (const Account &account, m_accountManager->items())
-	{
-		if (account.protocolHandler() && account.protocolName() == "jabber")
-			isRoomChatSupported = true;
-	}
+    foreach (const Account &account, m_accountManager->items())
+    {
+        if (account.protocolHandler() && account.protocolName() == "jabber")
+            isRoomChatSupported = true;
+    }
 
-	foreach (Action *action, actions())
-	{
-		action->setVisible(isRoomChatSupported);
-	}
+    foreach (Action *action, actions())
+    {
+        action->setVisible(isRoomChatSupported);
+    }
 }
 
 #include "moc_add-room-chat-action.cpp"

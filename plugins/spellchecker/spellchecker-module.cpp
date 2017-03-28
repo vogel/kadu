@@ -27,11 +27,11 @@
 
 SpellcheckerModule::SpellcheckerModule()
 {
-	add_type<SpellcheckerConfigurationUiHandler>();
-	add_type<SpellcheckerConfiguration>();
-	add_type<SpellcheckerPluginObject>();
-	add_type<SpellChecker>();
-	add_type<Suggester>();
+    add_type<SpellcheckerConfigurationUiHandler>();
+    add_type<SpellcheckerConfiguration>();
+    add_type<SpellcheckerPluginObject>();
+    add_type<SpellChecker>();
+    add_type<Suggester>();
 }
 
 SpellcheckerModule::~SpellcheckerModule()

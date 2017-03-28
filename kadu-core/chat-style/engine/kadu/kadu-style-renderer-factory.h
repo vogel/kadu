@@ -30,20 +30,20 @@ class KaduChatSyntax;
 
 class KaduStyleRendererFactory : public QObject, public ChatStyleRendererFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
-	virtual ~KaduStyleRendererFactory();
+    explicit KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent = nullptr);
+    virtual ~KaduStyleRendererFactory();
 
-	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
+    virtual not_owned_qptr<ChatStyleRenderer>
+    createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	std::shared_ptr<KaduChatSyntax> m_style;
+    std::shared_ptr<KaduChatSyntax> m_style;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

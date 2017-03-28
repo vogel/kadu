@@ -33,122 +33,122 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-BuddyAvatarWidget::BuddyAvatarWidget(Buddy buddy, QWidget *parent) :
-		QWidget(parent), MyBuddy(buddy), BuddyAvatar(false)
+BuddyAvatarWidget::BuddyAvatarWidget(Buddy buddy, QWidget *parent) : QWidget(parent), MyBuddy(buddy), BuddyAvatar(false)
 {
 }
 
 void BuddyAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void BuddyAvatarWidget::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void BuddyAvatarWidget::init()
 {
-	createGui();
+    createGui();
 }
 
 void BuddyAvatarWidget::showAvatar()
 {
-	if (MyBuddy.buddyAvatar().pixmap().isNull())
-		showContactAvatar();
-	else
-		showBuddyAvatar();
+    if (MyBuddy.buddyAvatar().pixmap().isNull())
+        showContactAvatar();
+    else
+        showBuddyAvatar();
 }
 
 void BuddyAvatarWidget::showAvatar(QPixmap pixmap)
 {
-	if (!pixmap.isNull())
-	{
-		if (pixmap.width() > 128 || pixmap.height() > 128)
-			pixmap = pixmap.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-	}
+    if (!pixmap.isNull())
+    {
+        if (pixmap.width() > 128 || pixmap.height() > 128)
+            pixmap = pixmap.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    }
 
-	AvatarLabel->setPixmap(pixmap);
+    AvatarLabel->setPixmap(pixmap);
 }
 
 void BuddyAvatarWidget::showBuddyAvatar()
 {
-	showAvatar(MyBuddy.buddyAvatar().pixmap());
-	BuddyAvatar = true;
+    showAvatar(MyBuddy.buddyAvatar().pixmap());
+    BuddyAvatar = true;
 }
 
 void BuddyAvatarWidget::showContactAvatar()
 {
-	auto preferredContact = m_buddyPreferredManager->preferredContact(MyBuddy);
-	showAvatar(m_avatarManager->byContact(preferredContact, ActionCreateAndAdd).pixmap());
-	BuddyAvatar = false;
+    auto preferredContact = m_buddyPreferredManager->preferredContact(MyBuddy);
+    showAvatar(m_avatarManager->byContact(preferredContact, ActionCreateAndAdd).pixmap());
+    BuddyAvatar = false;
 }
 
 void BuddyAvatarWidget::createGui()
 {
-	QVBoxLayout *photoLayout = new QVBoxLayout(this);
-	photoLayout->setSpacing(2);
+    QVBoxLayout *photoLayout = new QVBoxLayout(this);
+    photoLayout->setSpacing(2);
 
-	AvatarLabel = new QLabel(this);
-	showAvatar();
+    AvatarLabel = new QLabel(this);
+    showAvatar();
 
-	photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
+    photoLayout->addWidget(AvatarLabel, 0, Qt::AlignCenter);
 
-	ChangePhotoButton = new QPushButton(this);
-	connect(ChangePhotoButton, SIGNAL(clicked(bool)), this, SLOT(buttonClicked()));
-	photoLayout->addWidget(ChangePhotoButton);
+    ChangePhotoButton = new QPushButton(this);
+    connect(ChangePhotoButton, SIGNAL(clicked(bool)), this, SLOT(buttonClicked()));
+    photoLayout->addWidget(ChangePhotoButton);
 
-	setupChangeButton();
+    setupChangeButton();
 }
 
 void BuddyAvatarWidget::setupChangeButton()
 {
-	if (BuddyAvatar)
-		ChangePhotoButton->setText(tr("Remove Custom Photo..."));
-	else
-		ChangePhotoButton->setText(tr("Change Photo..."));
+    if (BuddyAvatar)
+        ChangePhotoButton->setText(tr("Remove Custom Photo..."));
+    else
+        ChangePhotoButton->setText(tr("Change Photo..."));
 }
 
 void BuddyAvatarWidget::buttonClicked()
 {
-	if (BuddyAvatar)
-		removeAvatar();
-	else
-		changeAvatar();
+    if (BuddyAvatar)
+        removeAvatar();
+    else
+        changeAvatar();
 }
 
 void BuddyAvatarWidget::changeAvatar()
 {
-	QString newAvatar = QFileDialog::getOpenFileName(this, tr("Select new photo"), QString(), tr("Images (*.png *.jpg *.bmp);;All Files (*)"), 0);
-	if (newAvatar.isEmpty())
-		return;
+    QString newAvatar = QFileDialog::getOpenFileName(
+        this, tr("Select new photo"), QString(), tr("Images (*.png *.jpg *.bmp);;All Files (*)"), 0);
+    if (newAvatar.isEmpty())
+        return;
 
-	QImageReader imageReader(newAvatar);
-	QPixmap pixmap = QPixmap::fromImageReader(&imageReader);
+    QImageReader imageReader(newAvatar);
+    QPixmap pixmap = QPixmap::fromImageReader(&imageReader);
 
-	if (!pixmap.isNull())
-	{
-		showAvatar(newAvatar);
-		BuddyAvatarPixmap = pixmap;
-		BuddyAvatar = true;
-	}
+    if (!pixmap.isNull())
+    {
+        showAvatar(newAvatar);
+        BuddyAvatarPixmap = pixmap;
+        BuddyAvatar = true;
+    }
 
-	setupChangeButton();
+    setupChangeButton();
 }
 
 void BuddyAvatarWidget::removeAvatar()
 {
-	showContactAvatar();
-	setupChangeButton();
+    showContactAvatar();
+    setupChangeButton();
 }
 
 const QPixmap BuddyAvatarWidget::avatarPixmap()
 {
-	if (BuddyAvatar && !BuddyAvatarPixmap.isNull())
-		return BuddyAvatarPixmap;
+    if (BuddyAvatar && !BuddyAvatarPixmap.isNull())
+        return BuddyAvatarPixmap;
 
-	return QPixmap();
+    return QPixmap();
 }
 
 #include "moc_buddy-avatar-widget.cpp"

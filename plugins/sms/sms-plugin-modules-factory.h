@@ -23,15 +23,14 @@
 
 class SmsPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit SmsPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~SmsPluginModulesFactory();
+    explicit SmsPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~SmsPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-	virtual QString parentInjectorName() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
+    virtual QString parentInjectorName() const override;
 };

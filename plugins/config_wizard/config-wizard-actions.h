@@ -32,21 +32,20 @@ class QAction;
 
 class ConfigWizardActions : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfigWizardActions(QObject *parent = nullptr);
-	virtual ~ConfigWizardActions();
+    Q_INVOKABLE explicit ConfigWizardActions(QObject *parent = nullptr);
+    virtual ~ConfigWizardActions();
 
-	void registerActions();
-	void unregisterActions();
+    void registerActions();
+    void unregisterActions();
 
 private:
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
 
 private slots:
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
-
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
 };

@@ -23,13 +23,12 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "windows/chat-window/chat-window.h"
 
-ChatWindow * ChatWindowRepository::converter(ChatWindowRepository::WrappedIterator iterator)
+ChatWindow *ChatWindowRepository::converter(ChatWindowRepository::WrappedIterator iterator)
 {
-	return iterator->second;
+    return iterator->second;
 }
 
-ChatWindowRepository::ChatWindowRepository(QObject *parent) :
-		QObject{parent}
+ChatWindowRepository::ChatWindowRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,52 +38,50 @@ ChatWindowRepository::~ChatWindowRepository()
 
 void ChatWindowRepository::done()
 {
-	// neeed to emit signals on finish
-	while (!m_windows.empty())
-		delete (*m_windows.begin()).second;
+    // neeed to emit signals on finish
+    while (!m_windows.empty())
+        delete (*m_windows.begin()).second;
 }
 
 ChatWindowRepository::Iterator ChatWindowRepository::begin()
 {
-	return Iterator{m_windows.begin(), converter};
+    return Iterator{m_windows.begin(), converter};
 }
 
 ChatWindowRepository::Iterator ChatWindowRepository::end()
 {
-	return Iterator{m_windows.end(), converter};
+    return Iterator{m_windows.end(), converter};
 }
 
 void ChatWindowRepository::addChatWindow(ChatWindow *chatWindow)
 {
-	if (!chatWindow || hasWindowForChat(chatWindow->chat()))
-		return;
+    if (!chatWindow || hasWindowForChat(chatWindow->chat()))
+        return;
 
-	m_windows.insert(std::make_pair(chatWindow->chat(), chatWindow));
-	connect(chatWindow, SIGNAL(windowDestroyed(ChatWindow*)), this, SLOT(removeChatWindow(ChatWindow*)));
+    m_windows.insert(std::make_pair(chatWindow->chat(), chatWindow));
+    connect(chatWindow, SIGNAL(windowDestroyed(ChatWindow *)), this, SLOT(removeChatWindow(ChatWindow *)));
 }
 
 void ChatWindowRepository::removeChatWindow(ChatWindow *chatWindow)
 {
-	if (!chatWindow || !hasWindowForChat(chatWindow->chat()))
-		return;
+    if (!chatWindow || !hasWindowForChat(chatWindow->chat()))
+        return;
 
-	m_windows.erase(chatWindow->chat());
+    m_windows.erase(chatWindow->chat());
 }
 
 bool ChatWindowRepository::hasWindowForChat(const Chat &chat) const
 {
-	return m_windows.end() != m_windows.find(chat);
+    return m_windows.end() != m_windows.find(chat);
 }
 
-ChatWindow * ChatWindowRepository::windowForChat(const Chat &chat)
+ChatWindow *ChatWindowRepository::windowForChat(const Chat &chat)
 {
-	if (!chat)
-		return nullptr;
+    if (!chat)
+        return nullptr;
 
-	auto it = m_windows.find(chat);
-	return it != m_windows.end()
-			? it->second
-			: nullptr;
+    auto it = m_windows.find(chat);
+    return it != m_windows.end() ? it->second : nullptr;
 }
 
 #include "moc_chat-window-repository.cpp"

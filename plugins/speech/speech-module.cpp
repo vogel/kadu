@@ -25,9 +25,9 @@
 
 SpeechModule::SpeechModule()
 {
-	add_type<SpeechConfigurationUiHandler>();
-	add_type<SpeechPluginObject>();
-	add_type<Speech>();
+    add_type<SpeechConfigurationUiHandler>();
+    add_type<SpeechPluginObject>();
+    add_type<Speech>();
 }
 
 SpeechModule::~SpeechModule()

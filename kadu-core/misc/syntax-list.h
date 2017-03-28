@@ -29,37 +29,37 @@ class PathsProvider;
 
 struct SyntaxInfo
 {
-	bool global;
+    bool global;
 };
 
 class SyntaxList : public QObject, public QMap<QString, SyntaxInfo>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static QString readSyntax(PathsProvider *pathsProvider, const QString &category, const QString &name, const QString &defaultSyntax);
+    static QString readSyntax(
+        PathsProvider *pathsProvider, const QString &category, const QString &name, const QString &defaultSyntax);
 
-	explicit SyntaxList(const QString &category, QObject *parent = nullptr);
-	virtual ~SyntaxList();
+    explicit SyntaxList(const QString &category, QObject *parent = nullptr);
+    virtual ~SyntaxList();
 
-	void reload();
+    void reload();
 
-	bool updateSyntax(const QString &name, const QString &syntax);
-	QString readSyntax(const QString &name);
-	bool deleteSyntax(const QString &name);
+    bool updateSyntax(const QString &name, const QString &syntax);
+    QString readSyntax(const QString &name);
+    bool deleteSyntax(const QString &name);
 
-	bool isGlobal(const QString &name);
+    bool isGlobal(const QString &name);
 
 signals:
-	void updated();
+    void updated();
 
 private:
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QString m_category;
+    QString m_category;
 
 private slots:
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

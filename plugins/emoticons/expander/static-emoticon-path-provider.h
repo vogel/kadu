@@ -35,20 +35,19 @@
 class StaticEmoticonPathProvider : public EmoticonPathProvider
 {
 public:
-	virtual ~StaticEmoticonPathProvider();
+    virtual ~StaticEmoticonPathProvider();
 
-	/**
-	 * @short Return path to static version of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param emoticon emoticon to get path for
-	 * @return path to static file of emoticon
-	 */
-	virtual QString emoticonPath(const Emoticon &emoticon);
-
+    /**
+     * @short Return path to static version of emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     * @param emoticon emoticon to get path for
+     * @return path to static file of emoticon
+     */
+    virtual QString emoticonPath(const Emoticon &emoticon);
 };
 
 /**
  * @}
  */
 
-#endif // STATIC_EMOTICON_PATH_PROVIDER_H
+#endif   // STATIC_EMOTICON_PATH_PROVIDER_H

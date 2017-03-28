@@ -47,53 +47,52 @@ class Myself;
  */
 class TalkableModel : public KaduMergedProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of TalkableModel with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit TalkableModel(QObject *parent = nullptr);
-	virtual ~TalkableModel();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of TalkableModel with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit TalkableModel(QObject *parent = nullptr);
+    virtual ~TalkableModel();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Change value of includeMyself property.
-	 * @param includeMyself new value of includeMyself property
-	 *
-	 * Change value of includeMyself property. If includeMyself is true, then Myself buddy will be
-	 * available in this model.
-	 */
-	void setIncludeMyself(bool includeMyself);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Change value of includeMyself property.
+     * @param includeMyself new value of includeMyself property
+     *
+     * Change value of includeMyself property. If includeMyself is true, then Myself buddy will be
+     * available in this model.
+     */
+    void setIncludeMyself(bool includeMyself);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return value of includeMyself property.
-	 * @return value of includeMyself property
-	 *
-	 * Returns value of includeMyself property. If includeMyself is true, then Myself buddy will be
-	 * available in this model.
-	 */
-	bool includeMyself() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return value of includeMyself property.
+     * @return value of includeMyself property
+     *
+     * Returns value of includeMyself property. If includeMyself is true, then Myself buddy will be
+     * available in this model.
+     */
+    bool includeMyself() const;
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Myself> m_myself;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Myself> m_myself;
 
-	owned_qptr<ChatListModel> m_chats;
-	owned_qptr<BuddyListModel> m_buddies;
-	owned_qptr<BuddyManagerAdapter> m_buddiesAdapter;
-	bool m_includeMyself;
+    owned_qptr<ChatListModel> m_chats;
+    owned_qptr<BuddyListModel> m_buddies;
+    owned_qptr<BuddyManagerAdapter> m_buddiesAdapter;
+    bool m_includeMyself;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_INIT void init();
 };
 
 /**

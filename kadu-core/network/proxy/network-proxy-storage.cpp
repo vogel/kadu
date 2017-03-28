@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-NetworkProxyStorage::NetworkProxyStorage(QObject *parent) :
-		QObject{parent}
+NetworkProxyStorage::NetworkProxyStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,29 +35,29 @@ NetworkProxyStorage::~NetworkProxyStorage()
 
 void NetworkProxyStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 NetworkProxy NetworkProxyStorage::create()
 {
-	return m_injectedFactory->makeInjected<NetworkProxyShared>();
+    return m_injectedFactory->makeInjected<NetworkProxyShared>();
 }
 
 NetworkProxy NetworkProxyStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<NetworkProxyShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<NetworkProxyShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 NetworkProxy NetworkProxyStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<NetworkProxyShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<NetworkProxyShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_network-proxy-storage.cpp"

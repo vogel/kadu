@@ -27,8 +27,8 @@
 
 #include "account-status-container.h"
 
-AccountStatusContainer::AccountStatusContainer(AccountShared *account) :
-		StorableStatusContainer(account), Account(account)
+AccountStatusContainer::AccountStatusContainer(AccountShared *account)
+        : StorableStatusContainer(account), Account(account)
 {
 }
 
@@ -38,66 +38,66 @@ AccountStatusContainer::~AccountStatusContainer()
 
 QString AccountStatusContainer::statusContainerName()
 {
-	return Account->Id;
+    return Account->Id;
 }
 
 void AccountStatusContainer::setStatus(Status newStatus, StatusChangeSource source)
 {
-	if (Account->ProtocolHandler)
-		Account->ProtocolHandler->setStatus(newStatus, source);
+    if (Account->ProtocolHandler)
+        Account->ProtocolHandler->setStatus(newStatus, source);
 
-	if (newStatus.isDisconnected() && !Account->rememberPassword())
-		Account->setPassword("");
+    if (newStatus.isDisconnected() && !Account->rememberPassword())
+        Account->setPassword("");
 }
 
 Status AccountStatusContainer::status()
 {
-	if (Account->ProtocolHandler)
-		return Account->ProtocolHandler->status();
-	else
-		return Status();
+    if (Account->ProtocolHandler)
+        return Account->ProtocolHandler->status();
+    else
+        return Status();
 }
 
 bool AccountStatusContainer::isStatusSettingInProgress()
 {
-	if (Account->ProtocolHandler)
-		return Account->ProtocolHandler->isConnecting();
-	else
-		return false;
+    if (Account->ProtocolHandler)
+        return Account->ProtocolHandler->isConnecting();
+    else
+        return false;
 }
 
 int AccountStatusContainer::maxDescriptionLength()
 {
-	if (Account->ProtocolHandler)
-		return Account->ProtocolHandler->maxDescriptionLength();
-	else
-		return 0;
+    if (Account->ProtocolHandler)
+        return Account->ProtocolHandler->maxDescriptionLength();
+    else
+        return 0;
 }
 
 KaduIcon AccountStatusContainer::statusIcon()
 {
-	return statusIcon(status());
+    return statusIcon(status());
 }
 
 KaduIcon AccountStatusContainer::statusIcon(const Status &status)
 {
-	if (Account->ProtocolHandler)
-		return Account->ProtocolHandler->statusIcon(status);
-	else
-		return KaduIcon();
+    if (Account->ProtocolHandler)
+        return Account->ProtocolHandler->statusIcon(status);
+    else
+        return KaduIcon();
 }
 
 QList<StatusType> AccountStatusContainer::supportedStatusTypes()
 {
-	if (Account->ProtocolHandler)
-		return Account->ProtocolHandler->protocolFactory()->supportedStatusTypes();
-	else
-		return QList<StatusType>();
+    if (Account->ProtocolHandler)
+        return Account->ProtocolHandler->protocolFactory()->supportedStatusTypes();
+    else
+        return QList<StatusType>();
 }
 
 void AccountStatusContainer::triggerStatusUpdated()
 {
-	emit statusUpdated(this);
+    emit statusUpdated(this);
 }
 
 #include "moc_account-status-container.cpp"

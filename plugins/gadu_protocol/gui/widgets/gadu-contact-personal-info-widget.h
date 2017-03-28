@@ -32,27 +32,26 @@ class QLabel;
 
 class GaduContactPersonalInfoWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *FirstNameText;
-	QLabel *LastNameText;
-	QLabel *NicknameText;
-	QLabel *GenderText;
-	QLabel *BirthdateText;
-	QLabel *CityText;
-	QLabel *StateProvinceText;
+    QLabel *FirstNameText;
+    QLabel *LastNameText;
+    QLabel *NicknameText;
+    QLabel *GenderText;
+    QLabel *BirthdateText;
+    QLabel *CityText;
+    QLabel *StateProvinceText;
 
-	Contact MyContact;
-	void createGui();
-	void reset();
+    Contact MyContact;
+    void createGui();
+    void reset();
 
 private slots:
-	void personalInfoAvailable(Buddy buddy);
+    void personalInfoAvailable(Buddy buddy);
 
 public:
-	explicit GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~GaduContactPersonalInfoWidget();
-
+    explicit GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~GaduContactPersonalInfoWidget();
 };
 
-#endif // GADU_CONTACT_PERSONAL_INFO_WIDGET_H
+#endif   // GADU_CONTACT_PERSONAL_INFO_WIDGET_H

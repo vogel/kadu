@@ -24,24 +24,23 @@
 
 class ProxyActionContext : public ActionContext
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	StatusContainer *m_statusContainer;
-	ActionContext *ForwardActionContext;
+    StatusContainer *m_statusContainer;
+    ActionContext *ForwardActionContext;
 
 public:
-	explicit ProxyActionContext(StatusContainer *statusContainer);
-	virtual ~ProxyActionContext();
+    explicit ProxyActionContext(StatusContainer *statusContainer);
+    virtual ~ProxyActionContext();
 
-	void setForwardActionContext(ActionContext *forwardActionContext);
+    void setForwardActionContext(ActionContext *forwardActionContext);
 
-	virtual QWidget * widget() override;
-	virtual ContactSet contacts() override;
-	virtual BuddySet buddies() override;
-	virtual Chat chat() override;
-	virtual StatusContainer * statusContainer() override;
-	virtual RoleSet roles() override;
-
+    virtual QWidget *widget() override;
+    virtual ContactSet contacts() override;
+    virtual BuddySet buddies() override;
+    virtual Chat chat() override;
+    virtual StatusContainer *statusContainer() override;
+    virtual RoleSet roles() override;
 };
 
-#endif // PROXY_ACTION_CONTEXT_H
+#endif   // PROXY_ACTION_CONTEXT_H

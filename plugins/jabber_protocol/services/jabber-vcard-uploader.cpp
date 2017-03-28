@@ -22,9 +22,8 @@
 
 #include <qxmpp/QXmppVCardManager.h>
 
-JabberVCardUploader::JabberVCardUploader(QXmppVCardManager *vcardManager, QObject *parent) :
-		QObject{parent},
-		m_vcardManager{vcardManager}
+JabberVCardUploader::JabberVCardUploader(QXmppVCardManager *vcardManager, QObject *parent)
+        : QObject{parent}, m_vcardManager{vcardManager}
 {
 }
 
@@ -34,9 +33,9 @@ JabberVCardUploader::~JabberVCardUploader()
 
 void JabberVCardUploader::uploadVCard(const QXmppVCardIq &vcard)
 {
-	m_vcardManager->setClientVCard(vcard);
-	emit vCardUploaded(true);
-	deleteLater();
+    m_vcardManager->setClientVCard(vcard);
+    emit vCardUploaded(true);
+    deleteLater();
 }
 
 #include "moc_jabber-vcard-uploader.cpp"

@@ -26,8 +26,7 @@
 #include "status/status-container-manager.h"
 #include "status/status-type-manager.h"
 
-StatusSetter::StatusSetter(QObject *parent) :
-		QObject{parent}
+StatusSetter::StatusSetter(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,77 +36,79 @@ StatusSetter::~StatusSetter()
 
 void StatusSetter::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void StatusSetter::setStatusChangerManager(StatusChangerManager *statusChangerManager)
 {
-	m_statusChangerManager = statusChangerManager;
+    m_statusChangerManager = statusChangerManager;
 }
 
 void StatusSetter::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void StatusSetter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void StatusSetter::init()
 {
-	configurationUpdated();
-	triggerAllStatusContainerRegistered(m_statusContainerManager);
+    configurationUpdated();
+    triggerAllStatusContainerRegistered(m_statusContainerManager);
 }
 
 void StatusSetter::setDefaultStatus(StatusContainer *statusContainer)
 {
-	Status status = statusContainer->loadStatus();
+    Status status = statusContainer->loadStatus();
 
-	if (!StartupLastDescription)
-		status.setDescription(StartupDescription);
+    if (!StartupLastDescription)
+        status.setDescription(StartupDescription);
 
-	if (StartupStatus != "LastStatus")
-		status.setType(m_statusTypeManager->fromName(StartupStatus));
+    if (StartupStatus != "LastStatus")
+        status.setType(m_statusTypeManager->fromName(StartupStatus));
 
-	if (StatusType::None == status.type())
-		status.setType(StatusType::Online);
-	else if (StatusType::Offline == status.type() && OfflineToInvisible)
-		status.setType(StatusType::Invisible);
+    if (StatusType::None == status.type())
+        status.setType(StatusType::Online);
+    else if (StatusType::Offline == status.type() && OfflineToInvisible)
+        status.setType(StatusType::Invisible);
 
-	setStatusManually(statusContainer, status);
+    setStatusManually(statusContainer, status);
 }
 
 void StatusSetter::configurationUpdated()
 {
-	StartupStatus = m_configuration->deprecatedApi()->readEntry("General", "StartupStatus");
-	StartupLastDescription = m_configuration->deprecatedApi()->readBoolEntry("General", "StartupLastDescription");
-	StartupDescription = m_configuration->deprecatedApi()->readEntry("General", "StartupDescription");
-	OfflineToInvisible = m_configuration->deprecatedApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") && StartupStatus != "Offline";
+    StartupStatus = m_configuration->deprecatedApi()->readEntry("General", "StartupStatus");
+    StartupLastDescription = m_configuration->deprecatedApi()->readBoolEntry("General", "StartupLastDescription");
+    StartupDescription = m_configuration->deprecatedApi()->readEntry("General", "StartupDescription");
+    OfflineToInvisible =
+        m_configuration->deprecatedApi()->readBoolEntry("General", "StartupStatusInvisibleWhenLastWasOffline") &&
+        StartupStatus != "Offline";
 
-	if (StartupStatus.isEmpty())
-		StartupStatus = "LastStatus";
-	else if (StartupStatus == "Busy")
-		StartupStatus =  "Away";
+    if (StartupStatus.isEmpty())
+        StartupStatus = "LastStatus";
+    else if (StartupStatus == "Busy")
+        StartupStatus = "Away";
 }
 
 void StatusSetter::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	setDefaultStatus(statusContainer);
+    setDefaultStatus(statusContainer);
 }
 
 void StatusSetter::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	Q_UNUSED(statusContainer);
+    Q_UNUSED(statusContainer);
 }
 
 void StatusSetter::setStatusManually(StatusContainer *statusContainer, Status status)
 {
-	m_statusChangerManager->setStatusManually(statusContainer, status);
+    m_statusChangerManager->setStatusManually(statusContainer, status);
 }
 
 Status StatusSetter::manuallySetStatus(StatusContainer *statusContainer)
 {
-	return m_statusChangerManager->manuallySetStatus(statusContainer);
+    return m_statusChangerManager->manuallySetStatus(statusContainer);
 }

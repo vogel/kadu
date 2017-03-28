@@ -31,14 +31,14 @@
 
 #include <QtCore/QCoreApplication>
 
-OpenInNewTabAction::OpenInNewTabAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenInNewTabAction::OpenInNewTabAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"internet-group-chat"});
-	setName(QStringLiteral("openInNewTabAction"));
-	setText(tr("Chat in New Tab"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"internet-group-chat"});
+    setName(QStringLiteral("openInNewTabAction"));
+    setText(tr("Chat in New Tab"));
+    setType(ActionDescription::TypeUser);
 }
 
 OpenInNewTabAction::~OpenInNewTabAction()
@@ -47,62 +47,62 @@ OpenInNewTabAction::~OpenInNewTabAction()
 
 void OpenInNewTabAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void OpenInNewTabAction::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void OpenInNewTabAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void OpenInNewTabAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto chat = action->context()->chat();
-	if (!chat)
-		return;
+    auto chat = action->context()->chat();
+    if (!chat)
+        return;
 
-	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
-	if (!chatWidget)
-	{
-		if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
-		{
-			chat.addProperty("tabs:tmp-detached", true, CustomProperties::NonStorable);
-		}
-		else
-		{
-			chat.addProperty("tabs:tmp-attached", true, CustomProperties::NonStorable);
-		}
-	}
+    auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
+    if (!chatWidget)
+    {
+        if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
+        {
+            chat.addProperty("tabs:tmp-detached", true, CustomProperties::NonStorable);
+        }
+        else
+        {
+            chat.addProperty("tabs:tmp-attached", true, CustomProperties::NonStorable);
+        }
+    }
 
-	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+    m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 
-	chat.removeProperty("tabs:tmp-attached");
-	chat.removeProperty("tabs:tmp-detached");
+    chat.removeProperty("tabs:tmp-attached");
+    chat.removeProperty("tabs:tmp-detached");
 }
 
 void OpenInNewTabAction::updateActionState(Action *action)
 {
-	if (action->context()->buddies().isAnyTemporary())
-	{
-		action->setEnabled(false);
-		return;
-	}
+    if (action->context()->buddies().isAnyTemporary())
+    {
+        action->setEnabled(false);
+        return;
+    }
 
-	action->setEnabled(action->context()->chat());
+    action->setEnabled(action->context()->chat());
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
-		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
-	else
-		action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
+    if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "DefaultTabs"))
+        action->setText(QCoreApplication::translate("TabsManager", "Chat in New Window"));
+    else
+        action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
 }
 
 #include "moc_open-in-new-tab-action.cpp"

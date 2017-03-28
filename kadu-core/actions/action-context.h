@@ -49,56 +49,55 @@ class StatusContainer;
  */
 class ActionContext : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns widget for given action data source.
-	 */
-	virtual QWidget * widget() = 0;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns widget for given action data source.
+     */
+    virtual QWidget *widget() = 0;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns contact set for given action data source.
-	 *
-	 * Returns contact set for given action data source. May return empty contact set.
-	 */
-	virtual ContactSet contacts() = 0;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns contact set for given action data source.
+     *
+     * Returns contact set for given action data source. May return empty contact set.
+     */
+    virtual ContactSet contacts() = 0;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns buddy set for given action data source.
-	 *
-	 * Returns buddy set for given action data source. May return empty buddy set.
-	 */
-	virtual BuddySet buddies() = 0;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns buddy set for given action data source.
+     *
+     * Returns buddy set for given action data source. May return empty buddy set.
+     */
+    virtual BuddySet buddies() = 0;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns chat for given action data source.
-	 *
-	 * Returns chat given action data source. May return empty chat.
-	 */
-	virtual Chat chat() = 0;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns chat for given action data source.
+     *
+     * Returns chat given action data source. May return empty chat.
+     */
+    virtual Chat chat() = 0;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns status container for given action data source.
-	 *
-	 * Returns status container for given action data source. May return null.
-	 */
-	virtual StatusContainer * statusContainer() = 0;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns status container for given action data source.
+     *
+     * Returns status container for given action data source. May return null.
+     */
+    virtual StatusContainer *statusContainer() = 0;
 
-	virtual RoleSet roles() = 0;
+    virtual RoleSet roles() = 0;
 
 signals:
-	void changed();
-
+    void changed();
 };
 
 /**
  * @}
  */
 
-#endif // ACTION_CONTEXT_H
+#endif   // ACTION_CONTEXT_H

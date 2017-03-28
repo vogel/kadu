@@ -30,20 +30,19 @@ class Group;
 
 class GroupList : public QListWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GroupList(QWidget *parent = nullptr);
-	virtual ~GroupList();
+    explicit GroupList(QWidget *parent = nullptr);
+    virtual ~GroupList();
 
-	void setCheckedGroups(const QSet<Group> groups);
-	QSet<Group> checkedGroups();
+    void setCheckedGroups(const QSet<Group> groups);
+    QSet<Group> checkedGroups();
 
 private:
-	QPointer<GroupManager> m_groupManager;
+    QPointer<GroupManager> m_groupManager;
 
 private slots:
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
+    INJEQT_INIT void init();
 };

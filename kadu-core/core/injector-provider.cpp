@@ -19,9 +19,7 @@
 
 #include "injector-provider.h"
 
-InjectorProvider::InjectorProvider(QObject *parent) :
-		QObject{parent},
-		m_injector{nullptr}
+InjectorProvider::InjectorProvider(QObject *parent) : QObject{parent}, m_injector{nullptr}
 {
 }
 
@@ -29,14 +27,14 @@ InjectorProvider::~InjectorProvider()
 {
 }
 
-injeqt::injector & InjectorProvider::injector()
+injeqt::injector &InjectorProvider::injector()
 {
-	return *m_injector;
+    return *m_injector;
 }
 
 void InjectorProvider::setInjector(injeqt::injector *injector)
 {
-	m_injector = injector;
+    m_injector = injector;
 }
 
 #include "moc_injector-provider.cpp"

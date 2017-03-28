@@ -31,29 +31,30 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;syntax-editro caption="caption" id="id" /&gt;
+        &lt;syntax-editro caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigSyntaxEditor : public SyntaxEditor, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigSyntaxEditor();
+    ConfigSyntaxEditor(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigSyntaxEditor();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 
-	virtual bool fromDomElement(QDomElement domElement);
-
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
-#endif // CONFIGURATION_WINDOW_WIDGETS_H
+#endif   // CONFIGURATION_WINDOW_WIDGETS_H

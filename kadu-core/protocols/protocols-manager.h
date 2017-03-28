@@ -30,32 +30,40 @@ class ProtocolFactory;
 
 class KADUAPI ProtocolsManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ProtocolsManager(QObject *parent = nullptr);
-	virtual ~ProtocolsManager();
+    Q_INVOKABLE explicit ProtocolsManager(QObject *parent = nullptr);
+    virtual ~ProtocolsManager();
 
-	void registerProtocolFactory(ProtocolFactory *Factory);
-	void unregisterProtocolFactory(ProtocolFactory *Factory);
+    void registerProtocolFactory(ProtocolFactory *Factory);
+    void unregisterProtocolFactory(ProtocolFactory *Factory);
 
-	const QList<ProtocolFactory *> & protocolFactories() const { return Factories; }
-	bool hasProtocolFactory(const QString &name);
+    const QList<ProtocolFactory *> &protocolFactories() const
+    {
+        return Factories;
+    }
+    bool hasProtocolFactory(const QString &name);
 
-	int count() { return Factories.count(); }
+    int count()
+    {
+        return Factories.count();
+    }
 
-	ProtocolFactory * byName(const QString &name);
-	ProtocolFactory * byIndex(int index);
+    ProtocolFactory *byName(const QString &name);
+    ProtocolFactory *byIndex(int index);
 
-	int indexOf(ProtocolFactory *protocolFactory) { return Factories.indexOf(protocolFactory); }
+    int indexOf(ProtocolFactory *protocolFactory)
+    {
+        return Factories.indexOf(protocolFactory);
+    }
 
 signals:
-	void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);
-	void protocolFactoryRegistered(ProtocolFactory *factory);
-	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *factory);
-	void protocolFactoryUnregistered(ProtocolFactory *factory);
+    void protocolFactoryAboutToBeRegistered(ProtocolFactory *factory);
+    void protocolFactoryRegistered(ProtocolFactory *factory);
+    void protocolFactoryAboutToBeUnregistered(ProtocolFactory *factory);
+    void protocolFactoryUnregistered(ProtocolFactory *factory);
 
 private:
-	QList<ProtocolFactory *> Factories;
-
+    QList<ProtocolFactory *> Factories;
 };

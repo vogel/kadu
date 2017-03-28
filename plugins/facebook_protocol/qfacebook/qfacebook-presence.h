@@ -23,12 +23,12 @@
 
 enum class QFacebookPresenceType
 {
-	Offline,
-	Online
+    Offline,
+    Online
 };
 
 struct QFacebookPresence
 {
-	QFacebookUid uid;
-	QFacebookPresenceType type;
+    QFacebookUid uid;
+    QFacebookPresenceType type;
 };

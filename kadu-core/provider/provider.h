@@ -34,21 +34,22 @@
  *
  * This interface should be used in places where an existing object of given type is required.
  */
-template<typename T>
+template <typename T>
 class Provider
 {
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Provide value of given type.
-	 */
-	virtual T provide() const = 0;
-	virtual ~Provider() {}
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Provide value of given type.
+     */
+    virtual T provide() const = 0;
+    virtual ~Provider()
+    {
+    }
 };
 
 /**
  * @}
  */
 
-#endif // PROVIDER_H
+#endif   // PROVIDER_H

@@ -29,23 +29,22 @@
 
 class KADUAPI CompositingAwareObject
 {
-	static bool CompositingEnabled;
-	static QList<CompositingAwareObject *> Objects;
+    static bool CompositingEnabled;
+    static QList<CompositingAwareObject *> Objects;
 
 protected:
-	virtual void compositingEnabled() = 0;
-	virtual void compositingDisabled() = 0;
+    virtual void compositingEnabled() = 0;
+    virtual void compositingDisabled() = 0;
 
 public:
-	static void compositingStateChanged();
+    static void compositingStateChanged();
 
-	CompositingAwareObject();
-	virtual ~CompositingAwareObject();
+    CompositingAwareObject();
+    virtual ~CompositingAwareObject();
 
-	void triggerCompositingStateChanged();
+    void triggerCompositingStateChanged();
 
-	bool isCompositingEnabled() const;
-
+    bool isCompositingEnabled() const;
 };
 
-#endif // COMPOSITING_AWARE_OBJECT
+#endif   // COMPOSITING_AWARE_OBJECT

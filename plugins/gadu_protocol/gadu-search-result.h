@@ -24,23 +24,24 @@
 
 struct SearchResult
 {
-	QString Uin;
-	QString First;
-	QString Last;
-	QString Nick;
-	QString Born;
-	QString City;
-	QString FamilyName;
-	QString FamilyCity;
-	int Gender;
-	Status Stat;
+    QString Uin;
+    QString First;
+    QString Last;
+    QString Nick;
+    QString Born;
+    QString City;
+    QString FamilyName;
+    QString FamilyCity;
+    int Gender;
+    Status Stat;
 
-	SearchResult();
-	SearchResult(const SearchResult &);
-	void setData(const char *uin, const char *first, const char *last, const char *nick, const char *born,
-		const char *city, const char *familyName, const char *familyCity, const char *gender, const char *status);
+    SearchResult();
+    SearchResult(const SearchResult &);
+    void setData(
+        const char *uin, const char *first, const char *last, const char *nick, const char *born, const char *city,
+        const char *familyName, const char *familyCity, const char *gender, const char *status);
 };
 
 typedef QList<SearchResult> SearchResults;
 
-#endif // GADU_SEARCH_RESULT_H
+#endif   // GADU_SEARCH_RESULT_H

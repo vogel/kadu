@@ -23,9 +23,9 @@
 
 class ChatNotifyModule : public injeqt::module
 {
-
 public:
-	ChatNotifyModule();
-	virtual ~ChatNotifyModule() {}
-
+    ChatNotifyModule();
+    virtual ~ChatNotifyModule()
+    {
+    }
 };

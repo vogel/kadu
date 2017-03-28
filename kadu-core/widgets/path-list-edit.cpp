@@ -36,46 +36,45 @@
 
 #include "path-list-edit.h"
 
-PathListEdit::PathListEdit(QWidget *parent)
-	: QPushButton(tr("Select"), parent)
+PathListEdit::PathListEdit(QWidget *parent) : QPushButton(tr("Select"), parent)
 {
-	connect(this, SIGNAL(clicked()), this, SLOT(showDialog()));
+    connect(this, SIGNAL(clicked()), this, SLOT(showDialog()));
 }
 
 void PathListEdit::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void PathListEdit::showDialog()
 {
-	if (!Dialog)
-	{
-		Dialog = m_injectedFactory->makeInjected<PathListEditWindow>(PathList);
-		connect(Dialog.data(), SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
-	}
-	Dialog->show();
+    if (!Dialog)
+    {
+        Dialog = m_injectedFactory->makeInjected<PathListEditWindow>(PathList);
+        connect(Dialog.data(), SIGNAL(changed(const QStringList &)), this, SLOT(pathListChanged(const QStringList &)));
+    }
+    Dialog->show();
 }
 
 void PathListEdit::pathListChanged(const QStringList &pathList)
 {
-	PathList = pathList;
-	emit changed();
+    PathList = pathList;
+    emit changed();
 }
 
 void PathListEdit::setPathList(const QStringList &pathList)
 {
-	PathList = pathList;
+    PathList = pathList;
 
-	if (Dialog)
-		Dialog->setPathList(PathList);
+    if (Dialog)
+        Dialog->setPathList(PathList);
 }
 
-PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent) :
-		QWidget(parent), PathList{pathList}
+PathListEditWindow::PathListEditWindow(const QStringList &pathList, QWidget *parent)
+        : QWidget(parent), PathList{pathList}
 {
-	setWindowTitle(tr("Select paths"));
-	setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Select paths"));
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 PathListEditWindow::~PathListEditWindow()
@@ -84,153 +83,156 @@ PathListEditWindow::~PathListEditWindow()
 
 void PathListEditWindow::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void PathListEditWindow::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void PathListEditWindow::init()
 {
-	createGui();
+    createGui();
 }
 
 void PathListEditWindow::createGui()
 {
-	QGridLayout *Layout = new QGridLayout(this);
-	Layout->setMargin(5);
-	Layout->setSpacing(5);
+    QGridLayout *Layout = new QGridLayout(this);
+    Layout->setMargin(5);
+    Layout->setSpacing(5);
 
-	PathListWidget = new QListWidget(this);
-	Layout->addWidget(PathListWidget, 0, 0, 4, 1);
+    PathListWidget = new QListWidget(this);
+    Layout->addWidget(PathListWidget, 0, 0, 4, 1);
 
-	QPushButton *add = new QPushButton(m_iconsManager->iconByPath(KaduIcon("list-add")), tr("Add"), this);
-	QPushButton *change = new QPushButton(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Change"), this);
-	QPushButton *remove = new QPushButton(m_iconsManager->iconByPath(KaduIcon("list-remove")), tr("Remove"), this);
+    QPushButton *add = new QPushButton(m_iconsManager->iconByPath(KaduIcon("list-add")), tr("Add"), this);
+    QPushButton *change = new QPushButton(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Change"), this);
+    QPushButton *remove = new QPushButton(m_iconsManager->iconByPath(KaduIcon("list-remove")), tr("Remove"), this);
 
-	Layout->addWidget(add, 0, 1);
-	Layout->addWidget(change, 1, 1);
-	Layout->addWidget(remove, 2, 1);
+    Layout->addWidget(add, 0, 1);
+    Layout->addWidget(change, 1, 1);
+    Layout->addWidget(remove, 2, 1);
 
-	connect(add, SIGNAL(clicked()), this, SLOT(addPathClicked()));
-	connect(change, SIGNAL(clicked()), this, SLOT(changePathClicked()));
-	connect(remove, SIGNAL(clicked()), this, SLOT(deletePathClicked()));
+    connect(add, SIGNAL(clicked()), this, SLOT(addPathClicked()));
+    connect(change, SIGNAL(clicked()), this, SLOT(changePathClicked()));
+    connect(remove, SIGNAL(clicked()), this, SLOT(deletePathClicked()));
 
-	QWidget* bottom = new QWidget;
-	bottom->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
-	QHBoxLayout* bottom_layout = new QHBoxLayout;
-	bottom_layout->setSpacing(5);
+    QWidget *bottom = new QWidget;
+    bottom->setSizePolicy(QSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed));
+    QHBoxLayout *bottom_layout = new QHBoxLayout;
+    bottom_layout->setSpacing(5);
 
-	QWidget *hm = new QWidget;
-	hm->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	QPushButton *ok = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
-	QPushButton *cancel = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Cancel"), this);
-	bottom_layout->addWidget(hm);
-	bottom_layout->addWidget(ok);
-	bottom_layout->addWidget(cancel);
-	bottom->setLayout(bottom_layout);
+    QWidget *hm = new QWidget;
+    hm->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+    QPushButton *ok = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
+    QPushButton *cancel =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("&Cancel"), this);
+    bottom_layout->addWidget(hm);
+    bottom_layout->addWidget(ok);
+    bottom_layout->addWidget(cancel);
+    bottom->setLayout(bottom_layout);
 
-	Layout->addWidget(bottom, 5, 0, 1, 2);
-	connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
-	connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
+    Layout->addWidget(bottom, 5, 0, 1, 2);
+    connect(ok, SIGNAL(clicked()), this, SLOT(okClicked()));
+    connect(cancel, SIGNAL(clicked()), this, SLOT(close()));
 
-	setPathList(PathList);
+    setPathList(PathList);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "SelectPathDialogGeometry"), QRect(0, 50, 330, 330), this);
+    new WindowGeometryManager(
+        new ConfigFileVariantWrapper(m_configuration, "General", "SelectPathDialogGeometry"), QRect(0, 50, 330, 330),
+        this);
 }
 
 void PathListEditWindow::setPathList(const QStringList &list)
 {
-	PathListWidget->clear();
-	PathListWidget->insertItems(0, list);
-	if (PathListWidget->item(0))
-		PathListWidget->item(0)->setSelected(true);
+    PathListWidget->clear();
+    PathListWidget->insertItems(0, list);
+    if (PathListWidget->item(0))
+        PathListWidget->item(0)->setSelected(true);
 }
 
 bool PathListEditWindow::validatePath(QString &path)
 {
-	if (path.isEmpty())
-		return false;
+    if (path.isEmpty())
+        return false;
 
-	QDir dir(path);
-	if (!dir.isReadable())
-		return false;
+    QDir dir(path);
+    if (!dir.isReadable())
+        return false;
 
-	if (!path.endsWith('/'))
-		path += '/';
+    if (!path.endsWith('/'))
+        path += '/';
 
-	if (!(PathListWidget->findItems(path, Qt::MatchExactly).isEmpty()))
-		return false;
+    if (!(PathListWidget->findItems(path, Qt::MatchExactly).isEmpty()))
+        return false;
 
-	return true;
+    return true;
 }
 
 void PathListEditWindow::addPathClicked()
 {
-	QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory"));
+    QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory"));
 
-	if (!validatePath(path))
-		return;
+    if (!validatePath(path))
+        return;
 
-	PathListWidget->insertItem(0, path);
+    PathListWidget->insertItem(0, path);
 }
 
 void PathListEditWindow::changePathClicked()
 {
-	if(!PathListWidget->currentItem())
-		return;
+    if (!PathListWidget->currentItem())
+        return;
 
-	if (!PathListWidget->currentItem()->isSelected())
-		return;
+    if (!PathListWidget->currentItem()->isSelected())
+        return;
 
-	QString path = QFileDialog::getExistingDirectory(this, tr("Choose a directory"),
-			PathListWidget->currentItem()->text());
+    QString path =
+        QFileDialog::getExistingDirectory(this, tr("Choose a directory"), PathListWidget->currentItem()->text());
 
-	if (!validatePath(path))
-		return;
+    if (!validatePath(path))
+        return;
 
-	QListWidgetItem *pathh = PathListWidget->currentItem();
-	pathh->setText(path);
+    QListWidgetItem *pathh = PathListWidget->currentItem();
+    pathh->setText(path);
 }
 
 void PathListEditWindow::deletePathClicked()
 {
-	if(!PathListWidget->currentItem())
-		return;
+    if (!PathListWidget->currentItem())
+        return;
 
-	if (!PathListWidget->currentItem()->isSelected())
-		return;
+    if (!PathListWidget->currentItem()->isSelected())
+        return;
 
-	delete PathListWidget->takeItem(PathListWidget->currentRow());
+    delete PathListWidget->takeItem(PathListWidget->currentRow());
 }
 
 void PathListEditWindow::okClicked()
 {
-	QStringList result;
+    QStringList result;
 
-	for (int i = 0, count = PathListWidget->count(); i < count; i++)
-		result.append(PathListWidget->item(i)->text());
+    for (int i = 0, count = PathListWidget->count(); i < count; i++)
+        result.append(PathListWidget->item(i)->text());
 
-	emit changed(result);
-	close();
+    emit changed(result);
+    close();
 }
 
 void PathListEditWindow::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Delete)
-	{
-		e->accept();
-		deletePathClicked();
-	}
-	else if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
+    if (e->key() == Qt::Key_Delete)
+    {
+        e->accept();
+        deletePathClicked();
+    }
+    else if (e->key() == Qt::Key_Escape)
+    {
+        e->accept();
+        close();
+    }
+    else
+        QWidget::keyPressEvent(e);
 }
 
 #include "moc_path-list-edit.cpp"

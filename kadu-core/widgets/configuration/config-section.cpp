@@ -34,131 +34,134 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QListWidget>
 
-ConfigSection::ConfigSection(const QString &name, ConfigurationWidget *configurationWidget,
-		QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget, const KaduIcon &icon) :
-		QObject(configurationWidget), Name(name), MyConfigurationWidget(configurationWidget), Icon(icon),
-		ListWidgetItem(listWidgetItem), Activated(false), ParentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
+ConfigSection::ConfigSection(
+    const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem,
+    QWidget *parentConfigGroupBoxWidget, const KaduIcon &icon)
+        : QObject(configurationWidget), Name(name), MyConfigurationWidget(configurationWidget), Icon(icon),
+          ListWidgetItem(listWidgetItem), Activated(false), ParentConfigGroupBoxWidget(parentConfigGroupBoxWidget)
 {
-	TabWidget = new KaduTabWidget(ParentConfigGroupBoxWidget);
-	ParentConfigGroupBoxWidget->layout()->addWidget(TabWidget);
-	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	TabWidget->hide();
+    TabWidget = new KaduTabWidget(ParentConfigGroupBoxWidget);
+    ParentConfigGroupBoxWidget->layout()->addWidget(TabWidget);
+    TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    TabWidget->hide();
 }
 
 ConfigSection::~ConfigSection()
 {
-	/* NOTE: It's needed to call ConfigurationWidget::configSectionDestroyed() before this
-	 * ConfigSection will be destroyed. If we relied on QObject to send this signal,
-	 * it'd be called after destroying all ConfigSection data but we need that data.
-	 */
-	blockSignals(false);
-	emit destroyed(this);
+    /* NOTE: It's needed to call ConfigurationWidget::configSectionDestroyed() before this
+     * ConfigSection will be destroyed. If we relied on QObject to send this signal,
+     * it'd be called after destroying all ConfigSection data but we need that data.
+     */
+    blockSignals(false);
+    emit destroyed(this);
 
-	m_configuration->deprecatedApi()->writeEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
-			TabWidget->tabText(TabWidget->currentIndex()));
+    m_configuration->deprecatedApi()->writeEntry(
+        "General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name,
+        TabWidget->tabText(TabWidget->currentIndex()));
 
-	// delete them here, since they manually delete child widgets of our TabWidget
-	// qDeleteAll() won't work here because of connection to destroyed() signal
-	foreach (const ConfigTab *ct, ConfigTabs)
-	{
-		disconnect(ct, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
-		delete ct;
-	}
+    // delete them here, since they manually delete child widgets of our TabWidget
+    // qDeleteAll() won't work here because of connection to destroyed() signal
+    foreach (const ConfigTab *ct, ConfigTabs)
+    {
+        disconnect(ct, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
+        delete ct;
+    }
 
-	delete ListWidgetItem;
-	ListWidgetItem = 0;
+    delete ListWidgetItem;
+    ListWidgetItem = 0;
 
-	delete TabWidget;
-	TabWidget = 0;
+    delete TabWidget;
+    TabWidget = 0;
 }
 
 void ConfigSection::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ConfigSection::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void ConfigSection::init()
 {
-	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+    connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
-ConfigGroupBox * ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
+ConfigGroupBox *ConfigSection::configGroupBox(const QString &tab, const QString &groupBox, bool create)
 {
-	ConfigTab *ct = configTab(tab, create);
-	if (!ct)
-		return 0;
+    ConfigTab *ct = configTab(tab, create);
+    if (!ct)
+        return 0;
 
-	return ct->configGroupBox(groupBox, create);
+    return ct->configGroupBox(groupBox, create);
 }
 
 void ConfigSection::activate()
 {
-	ListWidgetItem->listWidget()->setCurrentItem(ListWidgetItem);
+    ListWidgetItem->listWidget()->setCurrentItem(ListWidgetItem);
 
-	if (Activated)
-		return;
+    if (Activated)
+        return;
 
-	QString tab = m_configuration->deprecatedApi()->readEntry("General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
-	if (ConfigTabs.contains(tab))
-	{
-		auto configTab = ConfigTabs.value(tab);
-		if (configTab)
-		{
-			TabWidget->setCurrentWidget(configTab->widget());
-		}
-	}
-	Activated = true;
+    QString tab = m_configuration->deprecatedApi()->readEntry(
+        "General", "ConfigurationWindow_" + MyConfigurationWidget->name() + '_' + Name);
+    if (ConfigTabs.contains(tab))
+    {
+        auto configTab = ConfigTabs.value(tab);
+        if (configTab)
+        {
+            TabWidget->setCurrentWidget(configTab->widget());
+        }
+    }
+    Activated = true;
 }
 
-ConfigTab * ConfigSection::configTab(const QString &name, bool create)
+ConfigTab *ConfigSection::configTab(const QString &name, bool create)
 {
-	if (ConfigTabs.contains(name))
-		return ConfigTabs.value(name);
+    if (ConfigTabs.contains(name))
+        return ConfigTabs.value(name);
 
-	if (!create)
-		return 0;
+    if (!create)
+        return 0;
 
-	ConfigTab *newConfigTab = new ConfigTab(name, this, TabWidget);
-	ConfigTabs.insert(name, newConfigTab);
-	connect(newConfigTab, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
+    ConfigTab *newConfigTab = new ConfigTab(name, this, TabWidget);
+    ConfigTabs.insert(name, newConfigTab);
+    connect(newConfigTab, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
 
-	TabWidget->addTab(newConfigTab->widget(), newConfigTab->name());
+    TabWidget->addTab(newConfigTab->widget(), newConfigTab->name());
 
-	TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
+    TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
 
-	return newConfigTab;
+    return newConfigTab;
 }
 
 void ConfigSection::configTabDestroyed(QObject *obj)
 {
-	// see ConfigTab::~ConfigTab()
-	disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
+    // see ConfigTab::~ConfigTab()
+    disconnect(obj, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
 
-	QMap<QString, ConfigTab *>::iterator i = ConfigTabs.find(static_cast<ConfigTab *>(obj)->name());
+    QMap<QString, ConfigTab *>::iterator i = ConfigTabs.find(static_cast<ConfigTab *>(obj)->name());
 
-	if (TabWidget)
-		TabWidget->removeTab(TabWidget->indexOf((*i)->widget()));
-	ConfigTabs.erase(i);
-	if (TabWidget)
-		TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
+    if (TabWidget)
+        TabWidget->removeTab(TabWidget->indexOf((*i)->widget()));
+    ConfigTabs.erase(i);
+    if (TabWidget)
+        TabWidget->setTabBarVisible(ConfigTabs.count() > 1);
 
-	if (ConfigTabs.isEmpty())
-		deleteLater();
+    if (ConfigTabs.isEmpty())
+        deleteLater();
 }
 
 void ConfigSection::iconThemeChanged()
 {
-	ListWidgetItem->setIcon(m_iconsManager->iconByPath(Icon));
+    ListWidgetItem->setIcon(m_iconsManager->iconByPath(Icon));
 }
 
 void ConfigSection::addFullPageWidget(const QString &name, QWidget *widget)
 {
-	TabWidget->addTab(widget, name);
+    TabWidget->addTab(widget, name);
 }
 
 #include "moc_config-section.cpp"

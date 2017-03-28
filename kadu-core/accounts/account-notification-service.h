@@ -39,36 +39,35 @@ class Parser;
 
 class AccountNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit AccountNotificationService(QObject *parent = nullptr);
-	virtual ~AccountNotificationService();
+    Q_INVOKABLE explicit AccountNotificationService(QObject *parent = nullptr);
+    virtual ~AccountNotificationService();
 
 public slots:
-	void notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage);
+    void notifyConnectionError(const Account &account, const QString &errorServer, const QString &errorMessage);
 
 private:
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
-	QPointer<Parser> m_parser;
+    QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
+    QPointer<Parser> m_parser;
 
-	NotificationCallback m_ignoreErrorsCallback;
-	NotificationEvent m_connectionErrorEvent;
+    NotificationCallback m_ignoreErrorsCallback;
+    NotificationEvent m_connectionErrorEvent;
 
-	QString errorDetails(const QString &errorServer, const QString &errorMessage);
-	void ignoreErrors(const Notification &notification);
+    QString errorDetails(const QString &errorServer, const QString &errorMessage);
+    void ignoreErrors(const Notification &notification);
 
 private slots:
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void accountConnected();
-
+    void accountConnected();
 };

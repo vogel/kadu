@@ -23,8 +23,8 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
-#include "storage/manager.h"
 #include "exports.h"
+#include "storage/manager.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -40,62 +40,67 @@ class Contact;
 
 class KADUAPI AvatarManager : public Manager<Avatar>, AccountsAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AvatarManager(QObject *parent = nullptr);
-	virtual ~AvatarManager();
+    Q_INVOKABLE explicit AvatarManager(QObject *parent = nullptr);
+    virtual ~AvatarManager();
 
-	virtual QString storageNodeName() override { return QStringLiteral("Avatars"); }
-	virtual QString storageNodeItemName() override { return QStringLiteral("Avatar"); }
+    virtual QString storageNodeName() override
+    {
+        return QStringLiteral("Avatars");
+    }
+    virtual QString storageNodeItemName() override
+    {
+        return QStringLiteral("Avatar");
+    }
 
-	Avatar byBuddy(Buddy buddy, NotFoundAction action);
-	Avatar byContact(Contact contact, NotFoundAction action);
+    Avatar byBuddy(Buddy buddy, NotFoundAction action);
+    Avatar byContact(Contact contact, NotFoundAction action);
 
-	void updateAvatar(const Contact &contact, bool force = false);
-	void removeAvatar(const Contact &contact);
+    void updateAvatar(const Contact &contact, bool force = false);
+    void removeAvatar(const Contact &contact);
 
 signals:
-	void avatarAboutToBeAdded(Avatar avatar);
-	void avatarAdded(Avatar avatar);
-	void avatarAboutToBeRemoved(Avatar avatar);
-	void avatarRemoved(Avatar avatar);
+    void avatarAboutToBeAdded(Avatar avatar);
+    void avatarAdded(Avatar avatar);
+    void avatarAboutToBeRemoved(Avatar avatar);
+    void avatarRemoved(Avatar avatar);
 
-	void avatarUpdated(Avatar avatar);
+    void avatarUpdated(Avatar avatar);
 
 protected:
-	virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+    virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
 
-	virtual void itemAboutToBeAdded(Avatar item) override;
-	virtual void itemAdded(Avatar item) override;
-	virtual void itemAboutToBeRemoved(Avatar item) override;
-	virtual void itemRemoved(Avatar item) override;
+    virtual void itemAboutToBeAdded(Avatar item) override;
+    virtual void itemAdded(Avatar item) override;
+    virtual void itemAboutToBeRemoved(Avatar item) override;
+    virtual void itemRemoved(Avatar item) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<AvatarJobManager> m_avatarJobManager;
-	QPointer<AvatarStorage> m_avatarStorage;
-	QPointer<ContactManager> m_contactManager;
-	QTimer *UpdateTimer;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<AvatarJobManager> m_avatarJobManager;
+    QPointer<AvatarStorage> m_avatarStorage;
+    QPointer<ContactManager> m_contactManager;
+    QTimer *UpdateTimer;
 
-	bool needUpdate(const Contact &contact);
+    bool needUpdate(const Contact &contact);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
-	INJEQT_SET void setAvatarStorage(AvatarStorage *avatarStorage);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
+    INJEQT_SET void setAvatarStorage(AvatarStorage *avatarStorage);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void avatarDataUpdated();
-	void avatarPixmapUpdated();
+    void avatarDataUpdated();
+    void avatarPixmapUpdated();
 
-	void updateAvatars();
-	void updateAccountAvatars();
-	void contactAdded(Contact contact);
-
+    void updateAvatars();
+    void updateAccountAvatars();
+    void contactAdded(Contact contact);
 };

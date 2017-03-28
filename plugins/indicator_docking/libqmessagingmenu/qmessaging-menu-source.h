@@ -26,22 +26,23 @@ class QMessagingMenuApp;
 
 class QMessagingMenuSource : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QMessagingMenuSource(const QString &id, const QString &label, const QString &icon, QMessagingMenuApp *menuApp);
-	explicit QMessagingMenuSource(const QString &id, const QString &label, const QString &icon, int count, QMessagingMenuApp *menuApp);
-	virtual ~QMessagingMenuSource();
+    explicit QMessagingMenuSource(
+        const QString &id, const QString &label, const QString &icon, QMessagingMenuApp *menuApp);
+    explicit QMessagingMenuSource(
+        const QString &id, const QString &label, const QString &icon, int count, QMessagingMenuApp *menuApp);
+    virtual ~QMessagingMenuSource();
 
-	void setLabel(const QString &label);
-	void setIcon(const QString &icon);
-	void setCount(int count);
+    void setLabel(const QString &label);
+    void setIcon(const QString &icon);
+    void setCount(int count);
 
-	void drawAttention();
-	void removeAttention();
+    void drawAttention();
+    void removeAttention();
 
 private:
-	QMessagingMenuApp *m_menuApp;
-	QString m_id;
-
+    QMessagingMenuApp *m_menuApp;
+    QString m_id;
 };

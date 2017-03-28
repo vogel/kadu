@@ -24,6 +24,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
+#include "activate.h"
 #include "chat/buddy-chat-manager.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/session-service.h"
@@ -31,7 +32,6 @@
 #include "os/generic/window-geometry-manager.h"
 #include "plugin/plugin-injected-factory.h"
 #include "windows/message-dialog.h"
-#include "activate.h"
 
 #include "gui/widgets/chat-history-tab.h"
 #include "gui/widgets/search-tab.h"
@@ -40,9 +40,7 @@
 
 #include "history-window.h"
 
-HistoryWindow::HistoryWindow(QWidget *parent) :
-		QWidget(parent),
-		CurrentTab(-1)
+HistoryWindow::HistoryWindow(QWidget *parent) : QWidget(parent), CurrentTab(-1)
 {
 }
 
@@ -52,148 +50,148 @@ HistoryWindow::~HistoryWindow()
 
 void HistoryWindow::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void HistoryWindow::setHistory(History *history)
 {
-	m_history = history;
+    m_history = history;
 }
 
 void HistoryWindow::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void HistoryWindow::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistoryWindow::setSessionService(SessionService *sessionService)
 {
-	m_sessionService = sessionService;
+    m_sessionService = sessionService;
 }
 
 void HistoryWindow::init()
 {
-	setWindowRole("kadu-history");
-	setAttribute(Qt::WA_DeleteOnClose);
+    setWindowRole("kadu-history");
+    setAttribute(Qt::WA_DeleteOnClose);
 
-	setWindowTitle(tr("History"));
-	setWindowIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/history")));
+    setWindowTitle(tr("History"));
+    setWindowIcon(m_iconsManager->iconByPath(KaduIcon("kadu_icons/history")));
 
-	createGui();
+    createGui();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500), this);
+    new WindowGeometryManager(
+        new ConfigFileVariantWrapper(m_configuration, "History", "HistoryWindowGeometry"), QRect(200, 200, 750, 500),
+        this);
 
-	connect(m_history, SIGNAL(storageChanged(HistoryStorage*)), this, SLOT(storageChanged(HistoryStorage*)));
+    connect(m_history, SIGNAL(storageChanged(HistoryStorage *)), this, SLOT(storageChanged(HistoryStorage *)));
 }
 
 void HistoryWindow::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(0);
-	layout->setSpacing(0);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
-	TabWidget = new QTabWidget(this);
-	TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	TabWidget->setDocumentMode(true);
+    TabWidget = new QTabWidget(this);
+    TabWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    TabWidget->setDocumentMode(true);
 
-	connect(TabWidget, SIGNAL(currentChanged(int)),
-			this, SLOT(currentTabChanged(int)));
+    connect(TabWidget, SIGNAL(currentChanged(int)), this, SLOT(currentTabChanged(int)));
 
-	ChatTab = m_pluginInjectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
+    ChatTab = m_pluginInjectedFactory->makeInjected<ChatHistoryTab>(TabWidget);
 
-	StatusTab = m_pluginInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
-	StatusTab->timelineView()->setTalkableVisible(false);
-	StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
+    StatusTab = m_pluginInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
+    StatusTab->timelineView()->setTalkableVisible(false);
+    StatusTab->setClearHistoryMenuItemTitle(tr("&Clear Status History"));
 
-	SmsTab = m_pluginInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
-	SmsTab->timelineView()->setTalkableVisible(false);
-	SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
+    SmsTab = m_pluginInjectedFactory->makeInjected<HistoryMessagesTab>(TabWidget);
+    SmsTab->timelineView()->setTalkableVisible(false);
+    SmsTab->setClearHistoryMenuItemTitle(tr("&Clear SMS History"));
 
-	MySearchTab = m_pluginInjectedFactory->makeInjected<SearchTab>(TabWidget);
+    MySearchTab = m_pluginInjectedFactory->makeInjected<SearchTab>(TabWidget);
 
-	TabWidget->addTab(ChatTab, tr("Chats"));
-	TabWidget->addTab(StatusTab, tr("Statuses"));
-	TabWidget->addTab(SmsTab, tr("SMS"));
-	TabWidget->addTab(MySearchTab, tr("Search"));
+    TabWidget->addTab(ChatTab, tr("Chats"));
+    TabWidget->addTab(StatusTab, tr("Statuses"));
+    TabWidget->addTab(SmsTab, tr("SMS"));
+    TabWidget->addTab(MySearchTab, tr("Search"));
 
-	CurrentTab = 0;
+    CurrentTab = 0;
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
-	connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    QDialogButtonBox *buttons = new QDialogButtonBox(this);
+    QPushButton *closeButton = buttons->addButton(QDialogButtonBox::Close);
+    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
 
-	buttons->layout()->setMargin(5);
+    buttons->layout()->setMargin(5);
 
-	layout->addWidget(TabWidget);
-	layout->addWidget(buttons);
+    layout->addWidget(TabWidget);
+    layout->addWidget(buttons);
 
-	ChatTab->setFocus();
+    ChatTab->setFocus();
 }
 
 void HistoryWindow::keyPressEvent(QKeyEvent *event)
 {
-	QWidget::keyPressEvent(event);
+    QWidget::keyPressEvent(event);
 
-	if (event->key() == Qt::Key_Escape)
-		close();
+    if (event->key() == Qt::Key_Escape)
+        close();
 }
 
 void HistoryWindow::storageChanged(HistoryStorage *historyStorage)
 {
-	// TODO: fix it right, this is workaround only for crash when closing kadu with this window open
-	if (m_sessionService->isClosing())
-		return;
+    // TODO: fix it right, this is workaround only for crash when closing kadu with this window open
+    if (m_sessionService->isClosing())
+        return;
 
-	if (historyStorage)
-	{
-		ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
-		StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
-		SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
-		MySearchTab->setHistoryChatStorage(historyStorage->chatStorage());
-		MySearchTab->setStatusStorage(historyStorage->statusStorage());
-		MySearchTab->setSmsStorage(historyStorage->smsStorage());
-	}
-	else
-	{
-		ChatTab->setHistoryMessagesStorage(0);
-		StatusTab->setHistoryMessagesStorage(0);
-		SmsTab->setHistoryMessagesStorage(0);
-		MySearchTab->setHistoryChatStorage(0);
-		MySearchTab->setStatusStorage(0);
-		MySearchTab->setSmsStorage(0);
-	}
+    if (historyStorage)
+    {
+        ChatTab->setHistoryMessagesStorage(historyStorage->chatStorage());
+        StatusTab->setHistoryMessagesStorage(historyStorage->statusStorage());
+        SmsTab->setHistoryMessagesStorage(historyStorage->smsStorage());
+        MySearchTab->setHistoryChatStorage(historyStorage->chatStorage());
+        MySearchTab->setStatusStorage(historyStorage->statusStorage());
+        MySearchTab->setSmsStorage(historyStorage->smsStorage());
+    }
+    else
+    {
+        ChatTab->setHistoryMessagesStorage(0);
+        StatusTab->setHistoryMessagesStorage(0);
+        SmsTab->setHistoryMessagesStorage(0);
+        MySearchTab->setHistoryChatStorage(0);
+        MySearchTab->setStatusStorage(0);
+        MySearchTab->setSmsStorage(0);
+    }
 }
 
 void HistoryWindow::updateData()
 {
-	storageChanged(m_history->currentStorage());
+    storageChanged(m_history->currentStorage());
 }
 
 void HistoryWindow::selectChat(const Chat &chat)
 {
-	TabWidget->setCurrentIndex(0);
-	ChatTab->selectTalkable(chat);
+    TabWidget->setCurrentIndex(0);
+    ChatTab->selectTalkable(chat);
 }
 
 void HistoryWindow::currentTabChanged(int newTabIndex)
 {
-	if (CurrentTab < 0 || CurrentTab > TabWidget->count() ||
-	    newTabIndex < 0 || newTabIndex > TabWidget->count())
-	{
-		CurrentTab = newTabIndex;
-		return;
-	}
+    if (CurrentTab < 0 || CurrentTab > TabWidget->count() || newTabIndex < 0 || newTabIndex > TabWidget->count())
+    {
+        CurrentTab = newTabIndex;
+        return;
+    }
 
-	HistoryTab *previousTab = static_cast<HistoryTab *>(TabWidget->widget(CurrentTab));
-	HistoryTab *currentTab = static_cast<HistoryTab *>(TabWidget->widget(newTabIndex));
+    HistoryTab *previousTab = static_cast<HistoryTab *>(TabWidget->widget(CurrentTab));
+    HistoryTab *currentTab = static_cast<HistoryTab *>(TabWidget->widget(newTabIndex));
 
-	CurrentTab = newTabIndex;
+    CurrentTab = newTabIndex;
 
-	currentTab->setSizes(previousTab->sizes());
+    currentTab->setSizes(previousTab->sizes());
 }
 
 #include "moc_history-window.cpp"

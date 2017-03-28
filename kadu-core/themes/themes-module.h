@@ -25,9 +25,7 @@
 
 class KADUAPI ThemesModule : public injeqt::module
 {
-
 public:
-	explicit ThemesModule();
-	virtual ~ThemesModule();
-
+    explicit ThemesModule();
+    virtual ~ThemesModule();
 };

@@ -23,14 +23,13 @@
 
 class AutoHideConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutoHideConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~AutoHideConfigurationUiHandler();
+    Q_INVOKABLE explicit AutoHideConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~AutoHideConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };

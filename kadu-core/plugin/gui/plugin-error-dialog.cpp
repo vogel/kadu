@@ -28,14 +28,13 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QStyle>
 
-PluginErrorDialog::PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		QDialog(parent),
-		DesktopAwareObject(this),
-		m_pluginName(std::move(pluginName)),
-		m_text{text},
-		m_offerLoadInFutureChoice{offerLoadInFutureChoice},
-		LoadInFutureCheck(0)
+PluginErrorDialog::PluginErrorDialog(
+    QString pluginName, const QString &text, bool offerLoadInFutureChoice,
+    QWidget *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          QDialog(parent),
+          DesktopAwareObject(this), m_pluginName(std::move(pluginName)), m_text{text},
+          m_offerLoadInFutureChoice{offerLoadInFutureChoice}, LoadInFutureCheck(0)
 {
 }
 
@@ -45,53 +44,53 @@ PluginErrorDialog::~PluginErrorDialog()
 
 void PluginErrorDialog::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void PluginErrorDialog::init()
 {
-	setWindowRole("kadu-plugin-error");
-	setWindowTitle(tr("Kadu"));
-	setAttribute(Qt::WA_DeleteOnClose);
+    setWindowRole("kadu-plugin-error");
+    setWindowTitle(tr("Kadu"));
+    setAttribute(Qt::WA_DeleteOnClose);
 
-	QGridLayout *layout = new QGridLayout(this);
-	layout->setSizeConstraint(QLayout::SetFixedSize);
-	layout->setSpacing(6);
-	layout->setRowStretch(0, 100);
-	layout->setColumnStretch(1, 100);
+    QGridLayout *layout = new QGridLayout(this);
+    layout->setSizeConstraint(QLayout::SetFixedSize);
+    layout->setSpacing(6);
+    layout->setRowStretch(0, 100);
+    layout->setColumnStretch(1, 100);
 
-	int iconSize = style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, this);
-	QPixmap iconPixmap = m_iconsManager->iconByPath(KaduIcon("dialog-error")).pixmap(iconSize, iconSize);
-	if (!iconPixmap.isNull())
-	{
-		QLabel *iconLabel = new QLabel(this);
-		iconLabel->setPixmap(iconPixmap);
-		layout->addWidget(iconLabel, 0, 0, Qt::AlignTop);
-	}
+    int iconSize = style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, this);
+    QPixmap iconPixmap = m_iconsManager->iconByPath(KaduIcon("dialog-error")).pixmap(iconSize, iconSize);
+    if (!iconPixmap.isNull())
+    {
+        QLabel *iconLabel = new QLabel(this);
+        iconLabel->setPixmap(iconPixmap);
+        layout->addWidget(iconLabel, 0, 0, Qt::AlignTop);
+    }
 
-	QLabel *textLabel = new QLabel(m_text, this);
-	textLabel->setWordWrap(true);
-	layout->addWidget(textLabel, 0, 1);
+    QLabel *textLabel = new QLabel(m_text, this);
+    textLabel->setWordWrap(true);
+    layout->addWidget(textLabel, 0, 1);
 
-	if (m_offerLoadInFutureChoice)
-	{
-		LoadInFutureCheck = new QCheckBox(tr("Try to load this plugin on next Kadu run"), this);
-		LoadInFutureCheck->setChecked(true);
-		layout->addWidget(LoadInFutureCheck, 1, 1, Qt::AlignTop);
-	}
+    if (m_offerLoadInFutureChoice)
+    {
+        LoadInFutureCheck = new QCheckBox(tr("Try to load this plugin on next Kadu run"), this);
+        LoadInFutureCheck->setChecked(true);
+        layout->addWidget(LoadInFutureCheck, 1, 1, Qt::AlignTop);
+    }
 
-	QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, Qt::Horizontal, this);
-	connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-	layout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignCenter);
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, Qt::Horizontal, this);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    layout->addWidget(buttonBox, 2, 0, 1, 2, Qt::AlignCenter);
 }
 
 void PluginErrorDialog::accept()
 {
-	QDialog::accept();
-	close();
+    QDialog::accept();
+    close();
 
-	if (LoadInFutureCheck)
-		emit accepted(m_pluginName, LoadInFutureCheck->isChecked());
+    if (LoadInFutureCheck)
+        emit accepted(m_pluginName, LoadInFutureCheck->isChecked());
 }
 
 #include "moc_plugin-error-dialog.cpp"

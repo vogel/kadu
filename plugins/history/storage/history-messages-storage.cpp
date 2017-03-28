@@ -20,8 +20,7 @@
 
 #include "history-messages-storage.h"
 
-HistoryMessagesStorage::HistoryMessagesStorage(QObject *parent) :
-		QObject{parent}
+HistoryMessagesStorage::HistoryMessagesStorage(QObject *parent) : QObject{parent}
 {
 }
 

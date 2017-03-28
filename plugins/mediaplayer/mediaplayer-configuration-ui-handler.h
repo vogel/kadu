@@ -27,15 +27,14 @@
 
 class MediaplayerConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MediaplayerConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~MediaplayerConfigurationUiHandler();
+    Q_INVOKABLE explicit MediaplayerConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~MediaplayerConfigurationUiHandler();
 
 private:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };

@@ -33,8 +33,7 @@
 
 #include "groups-combo-box.h"
 
-GroupsComboBox::GroupsComboBox(QWidget *parent) :
-		ActionsComboBox(parent)
+GroupsComboBox::GroupsComboBox(QWidget *parent) : ActionsComboBox(parent)
 {
 }
 
@@ -44,60 +43,59 @@ GroupsComboBox::~GroupsComboBox()
 
 void GroupsComboBox::setGroupManager(GroupManager *groupManager)
 {
-	m_groupManager = groupManager;
+    m_groupManager = groupManager;
 }
 
 void GroupsComboBox::init()
 {
-	addBeforeAction(new QAction(tr(" - Do not add - "), this));
+    addBeforeAction(new QAction(tr(" - Do not add - "), this));
 
-	m_createNewGroupAction = new QAction(tr("Create a new group..."), this);
-	QFont createNewGroupActionFont = m_createNewGroupAction->font();
-	createNewGroupActionFont.setItalic(true);
-	m_createNewGroupAction->setFont(createNewGroupActionFont);
-	m_createNewGroupAction->setData(true);
-	connect(m_createNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
-	addAfterAction(m_createNewGroupAction);
+    m_createNewGroupAction = new QAction(tr("Create a new group..."), this);
+    QFont createNewGroupActionFont = m_createNewGroupAction->font();
+    createNewGroupActionFont.setItalic(true);
+    m_createNewGroupAction->setFont(createNewGroupActionFont);
+    m_createNewGroupAction->setData(true);
+    connect(m_createNewGroupAction, SIGNAL(triggered()), this, SLOT(createNewGroup()));
+    addAfterAction(m_createNewGroupAction);
 
-	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(new GroupsModel(m_groupManager, chain));
-	QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
-	chain->addProxyModel(proxyModel);
-	setUpModel(GroupRole, chain);
-	proxyModel->setDynamicSortFilter(true);
-	proxyModel->sort(0);
+    ModelChain *chain = new ModelChain(this);
+    chain->setBaseModel(new GroupsModel(m_groupManager, chain));
+    QSortFilterProxyModel *proxyModel = new QSortFilterProxyModel(this);
+    chain->addProxyModel(proxyModel);
+    setUpModel(GroupRole, chain);
+    proxyModel->setDynamicSortFilter(true);
+    proxyModel->sort(0);
 
-	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 void GroupsComboBox::setCurrentGroup(Group group)
 {
-	setCurrentValue(group);
+    setCurrentValue(group);
 }
 
 Group GroupsComboBox::currentGroup()
 {
-	return currentValue().value<Group>();
+    return currentValue().value<Group>();
 }
 
 void GroupsComboBox::createNewGroup()
 {
-	bool ok;
+    bool ok;
 
-	QString newGroupName = QInputDialog::getText(this, tr("New Group"),
-			tr("Please enter the name for the new group:"), QLineEdit::Normal,
-			QString(), &ok);
+    QString newGroupName = QInputDialog::getText(
+        this, tr("New Group"), tr("Please enter the name for the new group:"), QLineEdit::Normal, QString(), &ok);
 
-	if (!ok)
-		return;
+    if (!ok)
+        return;
 
-	ok = m_groupManager->acceptableGroupName(newGroupName, true);
-	if (!ok)
-		return;
+    ok = m_groupManager->acceptableGroupName(newGroupName, true);
+    if (!ok)
+        return;
 
-	Group newGroup = m_groupManager->byName(newGroupName, ok);
-	if (newGroup)
-		setCurrentGroup(newGroup);
+    Group newGroup = m_groupManager->byName(newGroupName, ok);
+    if (newGroup)
+        setCurrentGroup(newGroup);
 }
 
 #include "moc_groups-combo-box.cpp"

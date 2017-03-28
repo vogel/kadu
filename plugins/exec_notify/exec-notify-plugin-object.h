@@ -29,21 +29,20 @@ class NotifierRepository;
 
 class ExecNotifyPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ExecNotifyPluginObject(QObject *parent = nullptr);
-	virtual ~ExecNotifyPluginObject();
+    Q_INVOKABLE explicit ExecNotifyPluginObject(QObject *parent = nullptr);
+    virtual ~ExecNotifyPluginObject();
 
 private:
-	QPointer<ExecNotifier> m_execNotifier;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<ExecNotifier> m_execNotifier;
+    QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setExecNotifier(ExecNotifier *execNotifier);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setExecNotifier(ExecNotifier *execNotifier);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 };

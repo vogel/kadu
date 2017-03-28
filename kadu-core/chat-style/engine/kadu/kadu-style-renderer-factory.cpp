@@ -24,9 +24,8 @@
 
 #include <QtCore/QObject>
 
-KaduStyleRendererFactory::KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
-		QObject{parent},
-		m_style{std::move(style)}
+KaduStyleRendererFactory::KaduStyleRendererFactory(std::shared_ptr<KaduChatSyntax> style, QObject *parent)
+        : QObject{parent}, m_style{std::move(style)}
 {
 }
 
@@ -36,13 +35,14 @@ KaduStyleRendererFactory::~KaduStyleRendererFactory()
 
 void KaduStyleRendererFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-not_owned_qptr<ChatStyleRenderer> KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
+not_owned_qptr<ChatStyleRenderer>
+KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto renderer = m_injectedFactory->makeNotOwned<KaduStyleRenderer>(std::move(configuration), m_style);
-	return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
+    auto renderer = m_injectedFactory->makeNotOwned<KaduStyleRenderer>(std::move(configuration), m_style);
+    return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
 }
 
 #include "moc_kadu-style-renderer-factory.cpp"

@@ -19,8 +19,7 @@
 
 #include "jump-list.h"
 
-JumpList::JumpList(QObject *parent) :
-		QObject{parent}
+JumpList::JumpList(QObject *parent) : QObject{parent}
 {
 }
 

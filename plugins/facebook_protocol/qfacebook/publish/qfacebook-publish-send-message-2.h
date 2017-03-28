@@ -26,10 +26,10 @@
 
 struct QFacebookPublishSendMessage2
 {
-	QByteArray encode();
+    QByteArray encode();
 
-	QByteArray body;
-	QFacebookMsgId msgid;
-	QFacebookUid uid;
-	QFacebookUid to;
+    QByteArray body;
+    QFacebookMsgId msgid;
+    QFacebookUid uid;
+    QFacebookUid to;
 };

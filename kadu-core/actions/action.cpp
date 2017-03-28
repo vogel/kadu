@@ -34,93 +34,93 @@
 
 #include "action.h"
 
-Action::Action(ActionDescription *description, ActionContext *context, QObject *parent) :
-		QAction(parent), Description(description), Context(context)
+Action::Action(ActionDescription *description, ActionContext *context, QObject *parent)
+        : QAction(parent), Description(description), Context(context)
 {
-	setText(Description->Text);
-	setCheckable(Description->Checkable);
+    setText(Description->Text);
+    setCheckable(Description->Checkable);
 
-	connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
-	connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
-	connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
+    connect(this, SIGNAL(changed()), this, SLOT(changedSlot()));
+    connect(this, SIGNAL(hovered()), this, SLOT(hoveredSlot()));
+    connect(this, SIGNAL(triggered(bool)), this, SLOT(triggeredSlot(bool)));
 
-	connect(context, SIGNAL(changed()), this, SLOT(checkState()));
+    connect(context, SIGNAL(changed()), this, SLOT(checkState()));
 }
 
 Action::~Action()
 {
-	emit aboutToBeDestroyed(this);
+    emit aboutToBeDestroyed(this);
 
-	// we are real owner of this menu
-	if (menu())
-	{
-		delete menu();
-		setMenu(0);
-	}
+    // we are real owner of this menu
+    if (menu())
+    {
+        delete menu();
+        setMenu(0);
+    }
 }
 
 void Action::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void Action::init()
 {
-	if (!Description->icon().isNull())
-	{
-		connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(updateIcon()));
-		setIcon(Description->icon());
-	}
+    if (!Description->icon().isNull())
+    {
+        connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(updateIcon()));
+        setIcon(Description->icon());
+    }
 
-	checkState();
+    checkState();
 }
 
-ActionContext * Action::context()
+ActionContext *Action::context()
 {
-	return Context;
+    return Context;
 }
 
 void Action::changedSlot()
 {
-	if (isCheckable() && isChecked() && !isEnabled())
-		setChecked(false);
+    if (isCheckable() && isChecked() && !isEnabled())
+        setChecked(false);
 
-	emit changed(this);
+    emit changed(this);
 }
 
 void Action::hoveredSlot()
 {
-	emit hovered(this);
+    emit hovered(this);
 }
 
 void Action::triggeredSlot(bool checked)
 {
-	emit triggered(this, checked);
+    emit triggered(this, checked);
 }
 
 void Action::checkState()
 {
-	Description->updateActionState(this);
+    Description->updateActionState(this);
 }
 
 void Action::updateIcon()
 {
-	setIcon(Description->icon());
+    setIcon(Description->icon());
 }
 
 void Action::setIcon(const KaduIcon &icon)
 {
-	QAction::setIcon(m_iconsManager->iconByPath(icon));
+    QAction::setIcon(m_iconsManager->iconByPath(icon));
 }
 
 void disableEmptyContacts(Action *action)
 {
-	action->setEnabled(!action->context()->contacts().isEmpty());
+    action->setEnabled(!action->context()->contacts().isEmpty());
 }
 
 void disableNoChat(Action *action)
 {
-	action->setEnabled(action->context()->chat() && !action->context()->buddies().isAnyTemporary());
+    action->setEnabled(action->context()->chat() && !action->context()->buddies().isAnyTemporary());
 }
 
 #include "moc_action.cpp"

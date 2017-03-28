@@ -31,8 +31,7 @@
 #include "status/status-container.h"
 #include "talkable/talkable.h"
 
-TalkableConverter::TalkableConverter(QObject *parent) :
-		QObject{parent}
+TalkableConverter::TalkableConverter(QObject *parent) : QObject{parent}
 {
 }
 
@@ -42,117 +41,132 @@ TalkableConverter::~TalkableConverter()
 
 void TalkableConverter::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
-	m_buddyChatManager = buddyChatManager;
+    m_buddyChatManager = buddyChatManager;
 }
 
 void TalkableConverter::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void TalkableConverter::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void TalkableConverter::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
 {
-	m_chatDataExtractor = chatDataExtractor;
+    m_chatDataExtractor = chatDataExtractor;
 }
 
 void TalkableConverter::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void TalkableConverter::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 Account TalkableConverter::toAccount(const Talkable &talkable) const
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemChat: return talkable.chat().chatAccount();
-		default:
-			return toContact(talkable).contactAccount();
-	}
+    switch (talkable.type())
+    {
+    case Talkable::ItemChat:
+        return talkable.chat().chatAccount();
+    default:
+        return toContact(talkable).contactAccount();
+    }
 }
 
 Avatar TalkableConverter::toAvatar(const Talkable &talkable) const
 {
-	Avatar avatar;
-	if (Talkable::ItemBuddy == talkable.type())
-		avatar = toBuddy(talkable).buddyAvatar();
+    Avatar avatar;
+    if (Talkable::ItemBuddy == talkable.type())
+        avatar = toBuddy(talkable).buddyAvatar();
 
-	if (!avatar || avatar.pixmap().isNull())
-		avatar = toContact(talkable).avatar(true);
+    if (!avatar || avatar.pixmap().isNull())
+        avatar = toContact(talkable).avatar(true);
 
-	return avatar;
+    return avatar;
 }
 
 Buddy TalkableConverter::toBuddy(const Talkable &talkable) const
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy: return talkable.buddy();
-		case Talkable::ItemContact: return m_buddyManager->byContact(talkable.contact(), ActionCreateAndAdd);
-		case Talkable::ItemChat: return m_buddyManager->byContact(toContact(talkable), ActionCreateAndAdd);
-		default:
-			return Buddy::null;
-	}
+    switch (talkable.type())
+    {
+    case Talkable::ItemBuddy:
+        return talkable.buddy();
+    case Talkable::ItemContact:
+        return m_buddyManager->byContact(talkable.contact(), ActionCreateAndAdd);
+    case Talkable::ItemChat:
+        return m_buddyManager->byContact(toContact(talkable), ActionCreateAndAdd);
+    default:
+        return Buddy::null;
+    }
 }
 
 Contact TalkableConverter::toContact(const Talkable &talkable) const
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy: return m_buddyPreferredManager->preferredContact(talkable.buddy());
-		case Talkable::ItemContact: return talkable.contact();
-		case Talkable::ItemChat:
-			if (talkable.chat().contacts().size() == 1)
-				return *talkable.chat().contacts().begin();
-			else
-				return Contact::null;
-		default:
-			return Contact::null;
-	}
+    switch (talkable.type())
+    {
+    case Talkable::ItemBuddy:
+        return m_buddyPreferredManager->preferredContact(talkable.buddy());
+    case Talkable::ItemContact:
+        return talkable.contact();
+    case Talkable::ItemChat:
+        if (talkable.chat().contacts().size() == 1)
+            return *talkable.chat().contacts().begin();
+        else
+            return Contact::null;
+    default:
+        return Contact::null;
+    }
 }
 
 Chat TalkableConverter::toChat(const Talkable &talkable) const
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy:
-		{
-			auto const &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, m_buddyPreferredManager->preferredContact2(talkable.buddy()), ActionCreateAndAdd);
-			auto const &buddyChat = m_buddyChatManager->buddyChat(chat);
-			return buddyChat ? buddyChat : chat;
-		}
-		case Talkable::ItemContact: return ChatTypeContact::findChat(m_chatManager, m_chatStorage, talkable.contact(), ActionCreateAndAdd);
-		case Talkable::ItemChat: return talkable.chat();
-		default:
-			return Chat::null;
-	}
+    switch (talkable.type())
+    {
+    case Talkable::ItemBuddy:
+    {
+        auto const &chat = ChatTypeContact::findChat(
+            m_chatManager, m_chatStorage, m_buddyPreferredManager->preferredContact2(talkable.buddy()),
+            ActionCreateAndAdd);
+        auto const &buddyChat = m_buddyChatManager->buddyChat(chat);
+        return buddyChat ? buddyChat : chat;
+    }
+    case Talkable::ItemContact:
+        return ChatTypeContact::findChat(m_chatManager, m_chatStorage, talkable.contact(), ActionCreateAndAdd);
+    case Talkable::ItemChat:
+        return talkable.chat();
+    default:
+        return Chat::null;
+    }
 }
 
 QString TalkableConverter::toDisplay(const Talkable &talkable) const
 {
-	switch (talkable.type())
-	{
-		case Talkable::ItemBuddy: return talkable.buddy().display();
-		case Talkable::ItemContact: return talkable.contact().display(true);
-		case Talkable::ItemChat: return m_chatDataExtractor->data(talkable.chat(), Qt::DisplayRole).toString();
-		default:
-			return QString();
-	}
+    switch (talkable.type())
+    {
+    case Talkable::ItemBuddy:
+        return talkable.buddy().display();
+    case Talkable::ItemContact:
+        return talkable.contact().display(true);
+    case Talkable::ItemChat:
+        return m_chatDataExtractor->data(talkable.chat(), Qt::DisplayRole).toString();
+    default:
+        return QString();
+    }
 }
 
 Status TalkableConverter::toStatus(const Talkable &talkable) const
 {
-	if (talkable.isValidChat())
-		return talkable.chat().chatAccount().statusContainer() ? talkable.chat().chatAccount().statusContainer()->status() : Status();
-	else
-		return toContact(talkable).currentStatus();
+    if (talkable.isValidChat())
+        return talkable.chat().chatAccount().statusContainer()
+                   ? talkable.chat().chatAccount().statusContainer()->status()
+                   : Status();
+    else
+        return toContact(talkable).currentStatus();
 }

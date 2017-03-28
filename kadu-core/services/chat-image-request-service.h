@@ -51,77 +51,77 @@ class ImageStorageService;
  */
 class ChatImageRequestService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	ChatImageRequestServiceConfiguration Configuration;
+    ChatImageRequestServiceConfiguration Configuration;
 
-	static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
-	quint32 ReceivedImageKeysCount;
+    static const quint32 ReceivedImageKeysPerMinuteLimit = 10;
+    quint32 ReceivedImageKeysCount;
 
-	QPointer<AccountManager> CurrentAccountManager;
-	QPointer<ContactManager> CurrentContactManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ImageStorageService> CurrentImageStorageService;
+    QPointer<AccountManager> CurrentAccountManager;
+    QPointer<ContactManager> CurrentContactManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ImageStorageService> CurrentImageStorageService;
 
-	bool acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const;
+    bool acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const;
 
 private slots:
-	/**
-	 * @short Sets account manager to use by this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param accountManager account manager to use by this service
-	 *
-	 * This service will listen on registering/unregistering accounts to connect to ChatImageService instances
-	 * from these accounts.
-	 */
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    /**
+     * @short Sets account manager to use by this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param accountManager account manager to use by this service
+     *
+     * This service will listen on registering/unregistering accounts to connect to ChatImageService instances
+     * from these accounts.
+     */
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
 
-	/**
-	 * @short Sets contact manager to use by this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param contactManager contact manager to use by this service
-	 *
-	 * This service will use this manager to resolve names of contacts that ids are provided by ChatImageService signals.
-	 * Resolved names are used for asking end-user about images that are too big to be accepted without asking.
-	 * If no ContactManager is available then no asking will be done - too big images will be ignored.
-	 */
-	void setContactManager(ContactManager *contactManager);
+    /**
+     * @short Sets contact manager to use by this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param contactManager contact manager to use by this service
+     *
+     * This service will use this manager to resolve names of contacts that ids are provided by ChatImageService
+     * signals.
+     * Resolved names are used for asking end-user about images that are too big to be accepted without asking.
+     * If no ContactManager is available then no asking will be done - too big images will be ignored.
+     */
+    void setContactManager(ContactManager *contactManager);
 
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 
-	void connectAccount(Account account);
+    void connectAccount(Account account);
 
-	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
+    void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
     void chatImageAvailable(const ChatImage &chatImage, const QByteArray &imageData);
 
-	void resetReceivedImageKeysCount();
+    void resetReceivedImageKeysCount();
 
 public:
-	/**
-	 * @short Create new instance of ChatImageRequestService.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent
-	 */
-	Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
-	virtual ~ChatImageRequestService();
+    /**
+     * @short Create new instance of ChatImageRequestService.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent
+     */
+    Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
+    virtual ~ChatImageRequestService();
 
-	/**
-	 * @short Sets configuration to use by this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param configuration configuration to use by this service
-	 */
-	void setConfiguration(ChatImageRequestServiceConfiguration configuration);
+    /**
+     * @short Sets configuration to use by this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param configuration configuration to use by this service
+     */
+    void setConfiguration(ChatImageRequestServiceConfiguration configuration);
 
 signals:
-	/**
-	 * @short Signal emitted when chat image was received and stored as file.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageKey key of stored image
-	 * @param fullFilePath full file path of stored image
-	 */
-	void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
-
+    /**
+     * @short Signal emitted when chat image was received and stored as file.
+     * @author Rafał 'Vogel' Malinowski
+     * @param imageKey key of stored image
+     * @param fullFilePath full file path of stored image
+     */
+    void chatImageStored(const ChatImage &chatImage, const QString &fullFilePath);
 };
 
 /**

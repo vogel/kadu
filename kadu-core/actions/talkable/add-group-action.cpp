@@ -26,14 +26,14 @@
 #include "core/injected-factory.h"
 #include "windows/group-edit-window.h"
 
-AddGroupAction::AddGroupAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+AddGroupAction::AddGroupAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"group-new"});
-	setName(QStringLiteral("addGroupAction"));
-	setText(tr("Add Group..."));
-	setType(ActionDescription::TypeGlobal);
+    setIcon(KaduIcon{"group-new"});
+    setName(QStringLiteral("addGroupAction"));
+    setText(tr("Add Group..."));
+    setType(ActionDescription::TypeGlobal);
 }
 
 AddGroupAction::~AddGroupAction()
@@ -42,13 +42,13 @@ AddGroupAction::~AddGroupAction()
 
 void AddGroupAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AddGroupAction::actionTriggered(QAction *sender, bool)
 {
-	auto window = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, sender->parentWidget());
-	window->show();
+    auto window = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, sender->parentWidget());
+    window->show();
 }
 
 #include "moc_add-group-action.cpp"

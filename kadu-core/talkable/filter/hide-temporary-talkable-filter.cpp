@@ -23,8 +23,7 @@
 
 #include "hide-temporary-talkable-filter.h"
 
-HideTemporaryTalkableFilter::HideTemporaryTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), Enabled(true)
+HideTemporaryTalkableFilter::HideTemporaryTalkableFilter(QObject *parent) : TalkableFilter(parent), Enabled(true)
 {
 }
 
@@ -34,33 +33,33 @@ HideTemporaryTalkableFilter::~HideTemporaryTalkableFilter()
 
 TalkableFilter::FilterResult HideTemporaryTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (buddy.isTemporary())
-		return Rejected;
+    if (buddy.isTemporary())
+        return Rejected;
 
-	return Undecided;
+    return Undecided;
 }
 
 TalkableFilter::FilterResult HideTemporaryTalkableFilter::filterContact(const Contact &contact)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (contact.ownerBuddy().isTemporary())
-		return Rejected;
+    if (contact.ownerBuddy().isTemporary())
+        return Rejected;
 
-	return Undecided;
+    return Undecided;
 }
 
 void HideTemporaryTalkableFilter::setEnabled(bool enabled)
 {
-	if (Enabled == enabled)
-		return;
+    if (Enabled == enabled)
+        return;
 
-	Enabled = enabled;
-	emit filterChanged();
+    Enabled = enabled;
+    emit filterChanged();
 }
 
 #include "moc_hide-temporary-talkable-filter.cpp"

@@ -28,16 +28,22 @@ class ChatStyleRendererFactory;
 
 class ChatStyleEngine
 {
-
 public:
-	virtual ~ChatStyleEngine() {}
-	virtual QString defaultVariant(const QString &) { return {"Default"}; }
-	virtual QStringList styleVariants(QString) { return {}; }
+    virtual ~ChatStyleEngine()
+    {
+    }
+    virtual QString defaultVariant(const QString &)
+    {
+        return {"Default"};
+    }
+    virtual QStringList styleVariants(QString)
+    {
+        return {};
+    }
 
-	virtual bool supportVariants() = 0;
-	virtual QString isStyleValid(QString) = 0; //return QString(), if style is not valid
-	virtual bool styleUsesTransparencyByDefault(QString) = 0;
+    virtual bool supportVariants() = 0;
+    virtual QString isStyleValid(QString) = 0;   // return QString(), if style is not valid
+    virtual bool styleUsesTransparencyByDefault(QString) = 0;
 
-	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle) = 0;
-
+    virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle) = 0;
 };

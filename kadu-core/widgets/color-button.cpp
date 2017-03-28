@@ -24,34 +24,33 @@
 
 #include "color-button.h"
 
-ColorButton::ColorButton(QWidget *parent)
-	: QPushButton(parent)
+ColorButton::ColorButton(QWidget *parent) : QPushButton(parent)
 {
-	connect(this, SIGNAL(clicked()), this, SLOT(onClick()));
+    connect(this, SIGNAL(clicked()), this, SLOT(onClick()));
 }
 
 void ColorButton::onClick()
 {
-	if (setColor(QColorDialog::getColor(currentColor, this)))
-		emit changed(currentColor);
+    if (setColor(QColorDialog::getColor(currentColor, this)))
+        emit changed(currentColor);
 }
 
-const QColor & ColorButton::color() const
+const QColor &ColorButton::color() const
 {
-	return currentColor;
+    return currentColor;
 }
 
 bool ColorButton::setColor(const QColor &color)
 {
-	if (!color.isValid())
-		return false;
+    if (!color.isValid())
+        return false;
 
-	currentColor = color;
-	QPixmap pm(40, 20);
-	pm.fill(color);
-	setIcon(pm);
+    currentColor = color;
+    QPixmap pm(40, 20);
+    pm.fill(color);
+    setIcon(pm);
 
-	return true;
+    return true;
 }
 
 #include "moc_color-button.cpp"

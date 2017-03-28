@@ -21,12 +21,11 @@
 
 #include "protocols/services/subscription-service.h"
 
-AskForSubscriptionAction::AskForSubscriptionAction(QObject *parent) :
-		SubscriptionAction(parent)
+AskForSubscriptionAction::AskForSubscriptionAction(QObject *parent) : SubscriptionAction(parent)
 {
-	setType(ActionDescription::TypeUser);
-	setName("rosterAskForSubscription");
-	setText(tr("Ask for Subscription"));
+    setType(ActionDescription::TypeUser);
+    setName("rosterAskForSubscription");
+    setText(tr("Ask for Subscription"));
 }
 
 AskForSubscriptionAction::~AskForSubscriptionAction()
@@ -35,7 +34,7 @@ AskForSubscriptionAction::~AskForSubscriptionAction()
 
 void AskForSubscriptionAction::execute(SubscriptionService *subscriptionService, const Contact &contact)
 {
-	subscriptionService->requestSubscription(contact);
+    subscriptionService->requestSubscription(contact);
 }
 
 #include "moc_ask-for-subscription-action.cpp"

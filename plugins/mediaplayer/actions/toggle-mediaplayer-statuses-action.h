@@ -29,20 +29,19 @@ class MediaPlayer;
 
 class ToggleMediaplayerStatusesAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ToggleMediaplayerStatusesAction(QObject *parent = nullptr);
-	virtual ~ToggleMediaplayerStatusesAction();
+    Q_INVOKABLE explicit ToggleMediaplayerStatusesAction(QObject *parent = nullptr);
+    virtual ~ToggleMediaplayerStatusesAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<MediaPlayer> m_mediaPlayer;
+    QPointer<MediaPlayer> m_mediaPlayer;
 
 private slots:
-	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
-
+    INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 };

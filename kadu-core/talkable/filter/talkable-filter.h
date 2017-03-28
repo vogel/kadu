@@ -49,76 +49,75 @@ class Contact;
  */
 class KADUAPI TalkableFilter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @enum FilterResult
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Result of filtering operation.
-	 */
-	enum FilterResult
-	{
-		/**
-		 * Filtered object is accepted. No more checking is required.
-		 */
-		Accepted,
-		/**
-		 * Current filter haven't decided about given obejct. Another filter must do a decision.
-		 */
-		Undecided,
-		/**
-		 * Filtered object is rejected. No more checking is required.
-		 */
-		Rejected
-	};
+    /**
+     * @enum FilterResult
+     * @author Rafał 'Vogel' Malinowski
+     * @short Result of filtering operation.
+     */
+    enum FilterResult
+    {
+        /**
+         * Filtered object is accepted. No more checking is required.
+         */
+        Accepted,
+        /**
+         * Current filter haven't decided about given obejct. Another filter must do a decision.
+         */
+        Undecided,
+        /**
+         * Filtered object is rejected. No more checking is required.
+         */
+        Rejected
+    };
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of TalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit TalkableFilter(QObject *parent = nullptr);
-	virtual ~TalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of TalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit TalkableFilter(QObject *parent = nullptr);
+    virtual ~TalkableFilter();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Filter Chat object.
-	 * @param chat Chat obejct to filter.
-	 *
-	 * Filter Chat object. Default implementation returns Undecided.
-	 */
-	virtual FilterResult filterChat(const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Filter Chat object.
+     * @param chat Chat obejct to filter.
+     *
+     * Filter Chat object. Default implementation returns Undecided.
+     */
+    virtual FilterResult filterChat(const Chat &chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Filter Buddy object.
-	 * @param buddy Buddy obejct to filter.
-	 *
-	 * Filter Buddy object. Default implementation returns Undecided.
-	 */
-	virtual FilterResult filterBuddy(const Buddy &buddy);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Filter Buddy object.
+     * @param buddy Buddy obejct to filter.
+     *
+     * Filter Buddy object. Default implementation returns Undecided.
+     */
+    virtual FilterResult filterBuddy(const Buddy &buddy);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Filter Contact object.
-	 * @param contact Contact obejct to filter.
-	 *
-	 * Filter Contact object. Default implementation returns Undecided.
-	 */
-	virtual FilterResult filterContact(const Contact &contact);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Filter Contact object.
+     * @param contact Contact obejct to filter.
+     *
+     * Filter Contact object. Default implementation returns Undecided.
+     */
+    virtual FilterResult filterContact(const Contact &contact);
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when filter configuration has been changed.
-	 */
-	void filterChanged();
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when filter configuration has been changed.
+     */
+    void filterChanged();
 };
 
 /**
  * @}
  */
 
-#endif // TALKABLE_FILTER_H
+#endif   // TALKABLE_FILTER_H

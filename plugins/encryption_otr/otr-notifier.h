@@ -35,43 +35,42 @@ class NotificationService;
 
 class OtrNotifier : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	static QString OtrNotifyTopic;
-	static QString CreatePrivateKeyStartedNotifyTopic;
-	static QString CreatePrivateKeyFinishedNotifyTopic;
+    static QString OtrNotifyTopic;
+    static QString CreatePrivateKeyStartedNotifyTopic;
+    static QString CreatePrivateKeyFinishedNotifyTopic;
 
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetRepository> MyChatWidgetRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetRepository> MyChatWidgetRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent OtrNotificationEvent;
-	NotificationEvent CreatePrivateKeyStartedNotificationEvent;
-	NotificationEvent CreatePrivateKeyFinishedNotificationEvent;
+    NotificationEvent OtrNotificationEvent;
+    NotificationEvent CreatePrivateKeyStartedNotificationEvent;
+    NotificationEvent CreatePrivateKeyFinishedNotificationEvent;
 
-	void notify(const QString &topic, const Account &account, const NormalizedHtmlString &message);
-	void notify(const Contact &contact, const NormalizedHtmlString &message);
+    void notify(const QString &topic, const Account &account, const NormalizedHtmlString &message);
+    void notify(const Contact &contact, const NormalizedHtmlString &message);
 
 public:
-	Q_INVOKABLE OtrNotifier();
-	virtual ~OtrNotifier();
+    Q_INVOKABLE OtrNotifier();
+    virtual ~OtrNotifier();
 
-	QList<NotificationEvent> notifyEvents();
+    QList<NotificationEvent> notifyEvents();
 
 public slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
 
-	void notifyTryingToStartSession(const Contact &contact);
-	void notifyTryingToRefreshSession(const Contact &contact);
-	void notifyPeerEndedSession(const Contact &contact);
-	void notifyGoneSecure(const Contact &contact);
-	void notifyGoneInsecure(const Contact &contact);
-	void notifyStillSecure(const Contact &contact);
-	void notifyCreatePrivateKeyStarted(const Account &account);
-	void notifyCreatePrivateKeyFinished(const Account &account, bool ok);
-
+    void notifyTryingToStartSession(const Contact &contact);
+    void notifyTryingToRefreshSession(const Contact &contact);
+    void notifyPeerEndedSession(const Contact &contact);
+    void notifyGoneSecure(const Contact &contact);
+    void notifyGoneInsecure(const Contact &contact);
+    void notifyStillSecure(const Contact &contact);
+    void notifyCreatePrivateKeyStarted(const Account &account);
+    void notifyCreatePrivateKeyFinished(const Account &account, bool ok);
 };

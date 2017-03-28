@@ -24,36 +24,43 @@
 
 class ModelWatcher : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString Name;
+    QString Name;
 
-	QString indexToString(const QModelIndex &index);
+    QString indexToString(const QModelIndex &index);
 
 private slots:
-	void columnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-	void columnsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationColumn);
-	void columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-	void columnsInserted(const QModelIndex &parent, int start, int end);
-	void columnsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationColumn);
-	void columnsRemoved(const QModelIndex &parent, int start, int end);
-	void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-	void headerDataChanged(Qt::Orientation orientation, int first, int last);
-	void layoutAboutToBeChanged();
-	void layoutChanged();
-	void modelAboutToBeReset();
-	void modelReset();
-	void rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
-	void rowsAboutToBeMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationRow);
-	void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
-	void rowsInserted(const QModelIndex &parent, int start, int end);
-	void rowsMoved(const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent, int destinationRow);
-	void rowsRemoved(const QModelIndex &parent, int start, int end);
+    void columnsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void columnsAboutToBeMoved(
+        const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent,
+        int destinationColumn);
+    void columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void columnsInserted(const QModelIndex &parent, int start, int end);
+    void columnsMoved(
+        const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent,
+        int destinationColumn);
+    void columnsRemoved(const QModelIndex &parent, int start, int end);
+    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
+    void headerDataChanged(Qt::Orientation orientation, int first, int last);
+    void layoutAboutToBeChanged();
+    void layoutChanged();
+    void modelAboutToBeReset();
+    void modelReset();
+    void rowsAboutToBeInserted(const QModelIndex &parent, int start, int end);
+    void rowsAboutToBeMoved(
+        const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent,
+        int destinationRow);
+    void rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end);
+    void rowsInserted(const QModelIndex &parent, int start, int end);
+    void rowsMoved(
+        const QModelIndex &sourceParent, int sourceStart, int sourceEnd, const QModelIndex &destinationParent,
+        int destinationRow);
+    void rowsRemoved(const QModelIndex &parent, int start, int end);
 
 public:
-	explicit ModelWatcher(const QString &name, QAbstractItemModel *model);
-	virtual ~ModelWatcher();
-
+    explicit ModelWatcher(const QString &name, QAbstractItemModel *model);
+    virtual ~ModelWatcher();
 };
 
-#endif // MODEL_WATCHER_H
+#endif   // MODEL_WATCHER_H

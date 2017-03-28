@@ -21,8 +21,7 @@
 
 #include "idle.h"
 
-IdlePluginObject::IdlePluginObject(QObject *parent) :
-		QObject{parent}
+IdlePluginObject::IdlePluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,12 +31,12 @@ IdlePluginObject::~IdlePluginObject()
 
 void IdlePluginObject::setIdle(Idle *idle)
 {
-	m_idle = idle;
+    m_idle = idle;
 }
 
-Idle * IdlePluginObject::idle() const
+Idle *IdlePluginObject::idle() const
 {
-	return m_idle;
+    return m_idle;
 }
 
 void IdlePluginObject::init()

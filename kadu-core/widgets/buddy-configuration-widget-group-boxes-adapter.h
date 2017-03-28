@@ -29,17 +29,16 @@ class BuddyDataWindow;
 
 class KADUAPI BuddyConfigurationWidgetGroupBoxesAdapter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyConfigurationWidgetGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QWidget *widget);
-	virtual ~BuddyConfigurationWidgetGroupBoxesAdapter();
+    explicit BuddyConfigurationWidgetGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QWidget *widget);
+    virtual ~BuddyConfigurationWidgetGroupBoxesAdapter();
 
 private:
-	QPointer<BuddyDataWindow> m_buddyDataWindow;
-	QPointer<QWidget> m_widget;
+    QPointer<BuddyDataWindow> m_buddyDataWindow;
+    QPointer<QWidget> m_widget;
 
 private slots:
-	void widgetAdded(BuddyConfigurationWidget *widget);
-
+    void widgetAdded(BuddyConfigurationWidget *widget);
 };

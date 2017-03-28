@@ -24,17 +24,16 @@
 
 class OtrPeerIdentityVerificationSelectMethodPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	void createGui();
-	QLabel * createDescirptionLabel(const QString &text);
+    void createGui();
+    QLabel *createDescirptionLabel(const QString &text);
 
 public:
-	explicit OtrPeerIdentityVerificationSelectMethodPage(QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationSelectMethodPage();
+    explicit OtrPeerIdentityVerificationSelectMethodPage(QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationSelectMethodPage();
 
-	virtual int nextId() const;
-
+    virtual int nextId() const;
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_SELECT_METHOD_PAGE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_SELECT_METHOD_PAGE_H

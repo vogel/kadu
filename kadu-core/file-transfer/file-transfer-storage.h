@@ -32,20 +32,19 @@ class StoragePoint;
 
 class KADUAPI FileTransferStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FileTransferStorage(QObject *parent = nullptr);
-	virtual ~FileTransferStorage();
+    Q_INVOKABLE explicit FileTransferStorage(QObject *parent = nullptr);
+    virtual ~FileTransferStorage();
 
-	FileTransfer create();
-	FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	FileTransfer loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    FileTransfer create();
+    FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    FileTransfer loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

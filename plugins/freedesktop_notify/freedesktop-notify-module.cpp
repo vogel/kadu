@@ -24,6 +24,6 @@
 
 FreedesktopNotifyModule::FreedesktopNotifyModule()
 {
-	add_type<FreedesktopNotifier>();
-	add_type<FreedesktopNotifyPluginObject>();
+    add_type<FreedesktopNotifier>();
+    add_type<FreedesktopNotifyPluginObject>();
 }

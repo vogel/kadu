@@ -36,25 +36,24 @@ class QTranslator;
  */
 class PluginTranslationsLoader
 {
-
 public:
-	/**
-	 * @short Load plugin translation file.
-	 * @param pluginName name of plugin to load
-	 *
-	 * Loads and installs plugin translation file in application. If for some reason it
-	 * was impossible - this constructor does nothing.
-	 */
-	explicit PluginTranslationsLoader(const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept;
+    /**
+     * @short Load plugin translation file.
+     * @param pluginName name of plugin to load
+     *
+     * Loads and installs plugin translation file in application. If for some reason it
+     * was impossible - this constructor does nothing.
+     */
+    explicit PluginTranslationsLoader(
+        const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept;
 
-	/**
-	 * @short Unload plugin translation file.
-	 */
-	~PluginTranslationsLoader() noexcept;
+    /**
+     * @short Unload plugin translation file.
+     */
+    ~PluginTranslationsLoader() noexcept;
 
 private:
-	std::unique_ptr<QTranslator> m_translator;
-
+    std::unique_ptr<QTranslator> m_translator;
 };
 
 /**

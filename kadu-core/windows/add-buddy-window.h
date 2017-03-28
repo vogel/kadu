@@ -26,8 +26,8 @@
 
 #include "accounts/account.h"
 #include "buddies/buddy.h"
-#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include <QtWidgets/QDialog>
 #include <injeqt/injeqt.h>
@@ -55,93 +55,93 @@ class QRegExpValidator;
 
 class KADUAPI AddBuddyWindow : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AddBuddyWindow(QWidget *parent = nullptr, const Buddy &buddy = Buddy::null, bool forceBuddyAccount = false);
-	virtual ~AddBuddyWindow();
+    explicit AddBuddyWindow(
+        QWidget *parent = nullptr, const Buddy &buddy = Buddy::null, bool forceBuddyAccount = false);
+    virtual ~AddBuddyWindow();
 
-	void setGroup(Group group);
+    void setGroup(Group group);
 
 public slots:
-	virtual void accept();
+    virtual void accept();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Myself> m_myself;
-	QPointer<Roster> m_roster;
-	QPointer<TalkableConverter> m_talkableConverter;
-	QPointer<UrlHandlerManager> m_urlHandlerManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Myself> m_myself;
+    QPointer<Roster> m_roster;
+    QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<UrlHandlerManager> m_urlHandlerManager;
 
-	QFormLayout *Layout;
+    QFormLayout *Layout;
 
-	QLabel *UserNameLabel;
-	QLineEdit *UserNameEdit;
-	QAction *MobileAccountAction; // TODO: hack
-	QAction *EmailAccountAction; // TODO: hack
-	Account LastSelectedAccount;
-	AccountsComboBox *AccountCombo;
-	GroupsComboBox *GroupCombo;
-	QLineEdit *DisplayNameEdit;
-	QCheckBox *MergeBuddy;
-	SelectTalkableComboBox *SelectBuddy;
-	QCheckBox *AskForAuthorization;
-	QCheckBox *AllowToSeeMeCheck;
-	QLabel *ErrorLabel;
-	QPushButton *AddContactButton;
+    QLabel *UserNameLabel;
+    QLineEdit *UserNameEdit;
+    QAction *MobileAccountAction;   // TODO: hack
+    QAction *EmailAccountAction;    // TODO: hack
+    Account LastSelectedAccount;
+    AccountsComboBox *AccountCombo;
+    GroupsComboBox *GroupCombo;
+    QLineEdit *DisplayNameEdit;
+    QCheckBox *MergeBuddy;
+    SelectTalkableComboBox *SelectBuddy;
+    QCheckBox *AskForAuthorization;
+    QCheckBox *AllowToSeeMeCheck;
+    QLabel *ErrorLabel;
+    QPushButton *AddContactButton;
 
-	QList<QWidget *> NonMergeWidgets;
-	QList<QWidget *> MergeWidgets;
+    QList<QWidget *> NonMergeWidgets;
+    QList<QWidget *> MergeWidgets;
 
-	Buddy MyBuddy;
-	Account MyAccount;
-	bool ForceBuddyAccount;
+    Buddy MyBuddy;
+    Account MyAccount;
+    bool ForceBuddyAccount;
 
-	void createGui();
-	void addFakeAccountsToComboBox();
-	void displayErrorMessage(const QString &message);
+    void createGui();
+    void addFakeAccountsToComboBox();
+    void displayErrorMessage(const QString &message);
 
-	bool isMobileAccount();
-	bool isEmailAccount();
+    bool isMobileAccount();
+    bool isEmailAccount();
 
-	void updateAccountGui();
-	void updateMobileGui();
-	void updateEmailGui();
+    void updateAccountGui();
+    void updateMobileGui();
+    void updateEmailGui();
 
-	void validateData();
-	void validateMobileData();
-	void validateEmailData();
+    void validateData();
+    void validateMobileData();
+    void validateEmailData();
 
-	bool addContact();
-	bool addMobile();
-	bool addEmail();
+    bool addContact();
+    bool addMobile();
+    bool addEmail();
 
-	void askForAuthorization(const Contact &contact);
-	void sendAuthorization(const Contact &contact);
+    void askForAuthorization(const Contact &contact);
+    void sendAuthorization(const Contact &contact);
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setRoster(Roster *roster);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setRoster(Roster *roster);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+    INJEQT_INIT void init();
 
-	void accountChanged();
-	void updateGui();
-	void setAddContactEnabled();
-	void mergeToggled(bool toggled);
-
+    void accountChanged();
+    void updateGui();
+    void setAddContactEnabled();
+    void mergeToggled(bool toggled);
 };

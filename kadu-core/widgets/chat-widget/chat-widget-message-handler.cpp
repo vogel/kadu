@@ -39,8 +39,7 @@
 
 #include <QtWidgets/QApplication>
 
-ChatWidgetMessageHandler::ChatWidgetMessageHandler(QObject *parent) :
-		QObject{parent}
+ChatWidgetMessageHandler::ChatWidgetMessageHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -50,183 +49,196 @@ ChatWidgetMessageHandler::~ChatWidgetMessageHandler()
 
 void ChatWidgetMessageHandler::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
-	m_buddyChatManager = buddyChatManager;
+    m_buddyChatManager = buddyChatManager;
 }
 
 void ChatWidgetMessageHandler::setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService)
 {
-	m_chatWidgetActivationService = chatWidgetActivationService;
+    m_chatWidgetActivationService = chatWidgetActivationService;
 }
 
 void ChatWidgetMessageHandler::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void ChatWidgetMessageHandler::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void ChatWidgetMessageHandler::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ChatWidgetMessageHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ChatWidgetMessageHandler::setMessageManager(MessageManager *messageManager)
 {
-	m_messageManager = messageManager;
+    m_messageManager = messageManager;
 }
 
 void ChatWidgetMessageHandler::setSilentModeService(SilentModeService *silentModeService)
 {
-	m_silentModeService = silentModeService;
+    m_silentModeService = silentModeService;
 }
 
 void ChatWidgetMessageHandler::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void ChatWidgetMessageHandler::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void ChatWidgetMessageHandler::init()
 {
-	connect(m_chatWidgetActivationService, SIGNAL(chatWidgetActivated(ChatWidget*)), this, SLOT(chatWidgetActivated(ChatWidget*)));
+    connect(
+        m_chatWidgetActivationService, SIGNAL(chatWidgetActivated(ChatWidget *)), this,
+        SLOT(chatWidgetActivated(ChatWidget *)));
 
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(chatWidgetAdded(ChatWidget*)));
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
+    connect(
+        m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this,
+        SLOT(chatWidgetAdded(ChatWidget *)));
+    connect(
+        m_chatWidgetRepository.data(), SIGNAL(chatWidgetRemoved(ChatWidget *)), this,
+        SLOT(chatWidgetRemoved(ChatWidget *)));
 
-	for (auto chatWidget : m_chatWidgetRepository.data())
-		chatWidgetAdded(chatWidget);
+    for (auto chatWidget : m_chatWidgetRepository.data())
+        chatWidgetAdded(chatWidget);
 
-	// some other messageReceived slot may check if message chat is open and this
-	// slot can change this value, so let all other messageReceived be executed before this
-	connect(m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)), Qt::QueuedConnection);
-	connect(m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)), Qt::QueuedConnection);
+    // some other messageReceived slot may check if message chat is open and this
+    // slot can change this value, so let all other messageReceived be executed before this
+    connect(
+        m_messageManager.data(), SIGNAL(messageReceived(Message)), this, SLOT(messageReceived(Message)),
+        Qt::QueuedConnection);
+    connect(
+        m_messageManager.data(), SIGNAL(messageSent(Message)), this, SLOT(messageSent(Message)), Qt::QueuedConnection);
 }
 
-void ChatWidgetMessageHandler::setChatWidgetMessageHandlerConfiguration(ChatWidgetMessageHandlerConfiguration chatWidgetMessageHandlerConfiguration)
+void ChatWidgetMessageHandler::setChatWidgetMessageHandlerConfiguration(
+    ChatWidgetMessageHandlerConfiguration chatWidgetMessageHandlerConfiguration)
 {
-	m_chatWidgetMessageHandlerConfiguration = chatWidgetMessageHandlerConfiguration;
+    m_chatWidgetMessageHandlerConfiguration = chatWidgetMessageHandlerConfiguration;
 }
 
 void ChatWidgetMessageHandler::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	appendAllUnreadMessages(chatWidget);
+    appendAllUnreadMessages(chatWidget);
 }
 
 void ChatWidgetMessageHandler::chatWidgetRemoved(ChatWidget *chatWidget)
 {
-	auto chat = chatWidget->chat();
-	chat.removeProperty("message:unreadMessagesAppended");
+    auto chat = chatWidget->chat();
+    chat.removeProperty("message:unreadMessagesAppended");
 }
 
 void ChatWidgetMessageHandler::chatWidgetActivated(ChatWidget *chatWidget)
 {
-	appendAllUnreadMessages(chatWidget);
+    appendAllUnreadMessages(chatWidget);
 }
 
 void ChatWidgetMessageHandler::appendAllUnreadMessages(ChatWidget *chatWidget)
 {
-	if (!m_unreadMessageRepository)
-		return;
+    if (!m_unreadMessageRepository)
+        return;
 
-	auto chat = chatWidget->chat();
-	auto unreadMessagesAppended = chat.property("message:unreadMessagesAppended", false).toBool();
+    auto chat = chatWidget->chat();
+    auto unreadMessagesAppended = chat.property("message:unreadMessagesAppended", false).toBool();
 
-	auto messages = unreadMessagesAppended ? m_unreadMessageRepository.data()->unreadMessagesForChat(chat) : loadAllUnreadMessages(chat);
-	auto chatIsActive = m_chatWidgetActivationService ? m_chatWidgetActivationService.data()->isChatWidgetActive(chatWidget) : false;
-	if (chatIsActive)
-		m_unreadMessageRepository.data()->markMessagesAsRead(messages);
+    auto messages = unreadMessagesAppended ? m_unreadMessageRepository.data()->unreadMessagesForChat(chat)
+                                           : loadAllUnreadMessages(chat);
+    auto chatIsActive =
+        m_chatWidgetActivationService ? m_chatWidgetActivationService.data()->isChatWidgetActive(chatWidget) : false;
+    if (chatIsActive)
+        m_unreadMessageRepository.data()->markMessagesAsRead(messages);
 
-	if (!unreadMessagesAppended)
-	{
-		chatWidget->addMessages(messages);
-		chat.addProperty("message:unreadMessagesAppended", true, CustomProperties::NonStorable);
-	}
+    if (!unreadMessagesAppended)
+    {
+        chatWidget->addMessages(messages);
+        chat.addProperty("message:unreadMessagesAppended", true, CustomProperties::NonStorable);
+    }
 }
 
 SortedMessages ChatWidgetMessageHandler::loadAllUnreadMessages(const Chat &chat) const
 {
-	// TODO: BuddyChatManager cannot be injected here, because it crashes, find out why
-	auto buddyChat = m_buddyChatManager->buddyChat(chat);
-	auto unreadChat = buddyChat ? buddyChat : chat;
-	return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
+    // TODO: BuddyChatManager cannot be injected here, because it crashes, find out why
+    auto buddyChat = m_buddyChatManager->buddyChat(chat);
+    auto unreadChat = buddyChat ? buddyChat : chat;
+    return m_unreadMessageRepository.data()->unreadMessagesForChat(unreadChat);
 }
 
 void ChatWidgetMessageHandler::messageReceived(const Message &message)
 {
-	if (!m_chatWidgetRepository)
-		return;
+    if (!m_chatWidgetRepository)
+        return;
 
-	auto chat = message.messageChat();
-	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
-	auto chatIsActive = m_chatWidgetActivationService ? m_chatWidgetActivationService.data()->isChatWidgetActive(chatWidget) : false;
+    auto chat = message.messageChat();
+    auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+    auto chatIsActive =
+        m_chatWidgetActivationService ? m_chatWidgetActivationService.data()->isChatWidgetActive(chatWidget) : false;
 
-	if (m_unreadMessageRepository && !chatIsActive)
-		m_unreadMessageRepository.data()->addUnreadMessage(message);
+    if (m_unreadMessageRepository && !chatIsActive)
+        m_unreadMessageRepository.data()->addUnreadMessage(message);
 
-	if (chatWidget)
-	{
-		chatWidget->addMessage(message);
-		return;
-	}
+    if (chatWidget)
+    {
+        chatWidget->addMessage(message);
+        return;
+    }
 
-	if (shouldOpenChatWidget(chat))
-	{
-		auto activation = m_chatWidgetMessageHandlerConfiguration.openChatOnMessageMinimized()
-			? OpenChatActivation::Minimize
-			: OpenChatActivation::Activate;
-		m_chatWidgetManager.data()->openChat(chat, activation);
-	}
-	else
-	{
+    if (shouldOpenChatWidget(chat))
+    {
+        auto activation = m_chatWidgetMessageHandlerConfiguration.openChatOnMessageMinimized()
+                              ? OpenChatActivation::Minimize
+                              : OpenChatActivation::Activate;
+        m_chatWidgetManager.data()->openChat(chat, activation);
+    }
+    else
+    {
 #ifdef Q_OS_WIN
-		if (!m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
-			qApp->alert(m_kaduWindowService->kaduWindow());
+        if (!m_configuration->deprecatedApi()->readBoolEntry("General", "HideMainWindowFromTaskbar"))
+            qApp->alert(m_kaduWindowService->kaduWindow());
 #else
-		qApp->alert(m_kaduWindowService->kaduWindow());
+        qApp->alert(m_kaduWindowService->kaduWindow());
 #endif
-	}
+    }
 }
 
 bool ChatWidgetMessageHandler::shouldOpenChatWidget(const Chat &chat) const
 {
-	if (!m_chatWidgetMessageHandlerConfiguration.openChatOnMessage())
-		return false;
+    if (!m_chatWidgetMessageHandlerConfiguration.openChatOnMessage())
+        return false;
 
-	auto silentMode = m_silentModeService->isSilentOrAutoSilent();
-	if (silentMode)
-		return false;
+    auto silentMode = m_silentModeService->isSilentOrAutoSilent();
+    if (silentMode)
+        return false;
 
-	auto handler = chat.chatAccount().protocolHandler();
-	if (!handler)
-		return false;
+    auto handler = chat.chatAccount().protocolHandler();
+    if (!handler)
+        return false;
 
-	if (m_chatWidgetMessageHandlerConfiguration.openChatOnMessageOnlyWhenOnline())
-		return StatusTypeGroup::Online == m_statusTypeManager->statusTypeData(handler->status().type()).typeGroup();
-	else
-		return true;
+    if (m_chatWidgetMessageHandlerConfiguration.openChatOnMessageOnlyWhenOnline())
+        return StatusTypeGroup::Online == m_statusTypeManager->statusTypeData(handler->status().type()).typeGroup();
+    else
+        return true;
 }
 
 void ChatWidgetMessageHandler::messageSent(const Message &message)
 {
-	if (!m_chatWidgetRepository)
-		return;
+    if (!m_chatWidgetRepository)
+        return;
 
-	auto chat = message.messageChat();
-	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
-	if (chatWidget)
-		chatWidget->addMessage(message);
+    auto chat = message.messageChat();
+    auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+    if (chatWidget)
+        chatWidget->addMessage(message);
 }
 
 #include "moc_chat-widget-message-handler.cpp"

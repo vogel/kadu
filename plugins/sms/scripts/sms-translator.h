@@ -37,30 +37,29 @@
  */
 class SmsTranslator : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of SmsTranslator.
-	 * @param parent QObject parent of new instance of SmsTranslator
-	 */
-	explicit SmsTranslator(QObject *parent = nullptr);
-	virtual ~SmsTranslator();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of SmsTranslator.
+     * @param parent QObject parent of new instance of SmsTranslator
+     */
+    explicit SmsTranslator(QObject *parent = nullptr);
+    virtual ~SmsTranslator();
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Translate given text for script.
-	 * @param text text to translate
-	 * @return translated version of given text
-	 */
-	QScriptValue tr(const QString &text);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Translate given text for script.
+     * @param text text to translate
+     * @return translated version of given text
+     */
+    QScriptValue tr(const QString &text);
 };
 
 /**
  * @}
  */
 
-#endif // SMS_TRANSLATOR_H
+#endif   // SMS_TRANSLATOR_H

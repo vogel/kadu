@@ -19,53 +19,52 @@
 
 #include "emoticon-configuration.h"
 
-EmoticonConfiguration::EmoticonConfiguration() :
-		Enabled(true), Animate(true)
+EmoticonConfiguration::EmoticonConfiguration() : Enabled(true), Animate(true)
 {
 }
 
 EmoticonConfiguration::EmoticonConfiguration(const EmoticonConfiguration &copyMe)
 {
-	Enabled = copyMe.Enabled;
-	Animate = copyMe.Animate;
-	Emoticons = copyMe.Emoticons;
+    Enabled = copyMe.Enabled;
+    Animate = copyMe.Animate;
+    Emoticons = copyMe.Emoticons;
 }
 
-EmoticonConfiguration & EmoticonConfiguration::operator = (const EmoticonConfiguration &copyMe)
+EmoticonConfiguration &EmoticonConfiguration::operator=(const EmoticonConfiguration &copyMe)
 {
-	Enabled = copyMe.Enabled;
-	Animate = copyMe.Animate;
-	Emoticons = copyMe.Emoticons;
+    Enabled = copyMe.Enabled;
+    Animate = copyMe.Animate;
+    Emoticons = copyMe.Emoticons;
 
-	return *this;
+    return *this;
 }
 
 void EmoticonConfiguration::setEnabled(bool enabled)
 {
-	Enabled = enabled;
+    Enabled = enabled;
 }
 
 bool EmoticonConfiguration::enabled() const
 {
-	return Enabled;
+    return Enabled;
 }
 
 void EmoticonConfiguration::setAnimate(bool animate)
 {
-	Animate = animate;
+    Animate = animate;
 }
 
 bool EmoticonConfiguration::animate() const
 {
-	return Animate;
+    return Animate;
 }
 
 void EmoticonConfiguration::setEmoticonTheme(const EmoticonTheme &emoticonTheme)
 {
-	Emoticons = emoticonTheme;
+    Emoticons = emoticonTheme;
 }
 
 EmoticonTheme EmoticonConfiguration::emoticonTheme() const
 {
-	return Emoticons;
+    return Emoticons;
 }

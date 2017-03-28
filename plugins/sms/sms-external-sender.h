@@ -30,25 +30,24 @@ class QProcess;
 
 class SmsExternalSender : public SmsSender
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QProcess *Process;
+    QPointer<Configuration> m_configuration;
+    QProcess *Process;
 
-	QStringList buildProgramArguments(const QString &message);
+    QStringList buildProgramArguments(const QString &message);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 
-	void processFinished();
+    void processFinished();
 
 public:
-	explicit SmsExternalSender(const QString &number, QObject *parent = nullptr);
-	virtual ~SmsExternalSender();
+    explicit SmsExternalSender(const QString &number, QObject *parent = nullptr);
+    virtual ~SmsExternalSender();
 
-	virtual void sendMessage(const QString& message);
+    virtual void sendMessage(const QString &message);
 
 public slots:
-	virtual void cancel();
-
+    virtual void cancel();
 };

@@ -41,35 +41,34 @@ class QTreeWidget;
  */
 class InfosDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	const LastSeen &m_lastSeen;
+    const LastSeen &m_lastSeen;
 
-	QTreeWidget *ListView;
+    QTreeWidget *ListView;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 
-	void customContextMenuRequested(const QPoint &point);
+    void customContextMenuRequested(const QPoint &point);
 
 public:
-	/*! Default constructor. */
-	explicit InfosDialog(const LastSeen &lastSeen, QWidget *parent = nullptr);
+    /*! Default constructor. */
+    explicit InfosDialog(const LastSeen &lastSeen, QWidget *parent = nullptr);
 
-	/*! Default destructor. */
-	virtual ~InfosDialog();
-
+    /*! Default destructor. */
+    virtual ~InfosDialog();
 };

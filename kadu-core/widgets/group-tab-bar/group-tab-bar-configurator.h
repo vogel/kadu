@@ -37,39 +37,38 @@ class QDomElement;
 
 class GroupTabBarConfigurator : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit GroupTabBarConfigurator(QObject *parent = nullptr);
-	virtual ~GroupTabBarConfigurator();
+    Q_INVOKABLE explicit GroupTabBarConfigurator(QObject *parent = nullptr);
+    virtual ~GroupTabBarConfigurator();
 
-	void setGroupTabBar(GroupTabBar *groupTabBar);
+    void setGroupTabBar(GroupTabBar *groupTabBar);
 
-	GroupTabBarConfiguration loadConfiguration() const;
-	void storeConfiguration();
+    GroupTabBarConfiguration loadConfiguration() const;
+    void storeConfiguration();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Application> m_application;
-	QPointer<Configuration> m_configuration;
-	QPointer<GroupManager> m_groupManager;
-	QPointer<GroupTabBar> ConfigurableGroupTabBar;
+    QPointer<Application> m_application;
+    QPointer<Configuration> m_configuration;
+    QPointer<GroupManager> m_groupManager;
+    QPointer<GroupTabBar> ConfigurableGroupTabBar;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
-	QVector<GroupFilter> loadGroupFilters(bool showGroupTabEverybody) const;
-	GroupFilter loadGroupFilter(QDomElement element) const;
-	QVector<GroupFilter> import_0_12_groupFilters(bool showGroupTabEverybody) const;
+    QVector<GroupFilter> loadGroupFilters(bool showGroupTabEverybody) const;
+    GroupFilter loadGroupFilter(QDomElement element) const;
+    QVector<GroupFilter> import_0_12_groupFilters(bool showGroupTabEverybody) const;
 
-	void storeGroupFilters(const QVector<GroupFilter> &groupFilters);
-	void storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter);
+    void storeGroupFilters(const QVector<GroupFilter> &groupFilters);
+    void storeGroupFilter(QDomElement parentElement, const GroupFilter &groupFilter);
 
 private slots:
-	INJEQT_SET void setApplication(Application *application);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setApplication(Application *application);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
+    INJEQT_INIT void init();
 };

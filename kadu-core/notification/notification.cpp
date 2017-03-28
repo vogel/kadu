@@ -27,62 +27,62 @@
 #include "protocols/protocol-factory.h"
 #include "protocols/protocol.h"
 
-static QString getAccountName(const ParserData * const object)
+static QString getAccountName(const ParserData *const object)
 {
-	auto notification = dynamic_cast<const Notification * const>(object);
-	if (!notification)
-		return QString{};
+    auto notification = dynamic_cast<const Notification *const>(object);
+    if (!notification)
+        return QString{};
 
-	auto account = notification->data["account"].value<Account>();
-	return account.accountIdentity().name();
+    auto account = notification->data["account"].value<Account>();
+    return account.accountIdentity().name();
 }
 
-static QString getProtocolName(const ParserData * const object)
+static QString getProtocolName(const ParserData *const object)
 {
-	auto notification = dynamic_cast<const Notification * const>(object);
-	if (!notification)
-		return QString{};
+    auto notification = dynamic_cast<const Notification *const>(object);
+    if (!notification)
+        return QString{};
 
-	auto account = notification->data["account"].value<Account>();
-	return account.protocolHandler() && account.protocolHandler()->protocolFactory()
-		? account.protocolHandler()->protocolFactory()->displayName()
-		: QString{};
+    auto account = notification->data["account"].value<Account>();
+    return account.protocolHandler() && account.protocolHandler()->protocolFactory()
+               ? account.protocolHandler()->protocolFactory()->displayName()
+               : QString{};
 }
 
-static QString getNotificationTitle(const ParserData * const object)
+static QString getNotificationTitle(const ParserData *const object)
 {
-	const Notification * const notification = dynamic_cast<const Notification * const>(object);
-	if (notification)
-		return notification->title;
-	else
-		return QString{};
+    const Notification *const notification = dynamic_cast<const Notification *const>(object);
+    if (notification)
+        return notification->title;
+    else
+        return QString{};
 }
 
 void Notification::registerParserTags(Parser *parser)
 {
-	parser->registerObjectTag("account", getAccountName);
-	parser->registerObjectTag("event", getNotificationTitle);
-	parser->registerObjectTag("protocol", getProtocolName);
+    parser->registerObjectTag("account", getAccountName);
+    parser->registerObjectTag("event", getNotificationTitle);
+    parser->registerObjectTag("protocol", getProtocolName);
 }
 
 void Notification::unregisterParserTags(Parser *parser)
 {
-	parser->unregisterObjectTag("account");
-	parser->unregisterObjectTag("event");
-	parser->unregisterObjectTag("protocol");
+    parser->unregisterObjectTag("account");
+    parser->unregisterObjectTag("event");
+    parser->unregisterObjectTag("protocol");
 }
 
-bool operator == (const Notification &x, const Notification &y)
+bool operator==(const Notification &x, const Notification &y)
 {
-	if (x.type != y.type)
-		return false;
-	if (x.title != y.title)
-		return false;
-	if (x.text != y.text)
-		return false;
-	if (x.details != y.details)
-		return false;
-	if (x.data != y.data)
-		return false;
-	return true;
+    if (x.type != y.type)
+        return false;
+    if (x.title != y.title)
+        return false;
+    if (x.text != y.text)
+        return false;
+    if (x.details != y.details)
+        return false;
+    if (x.data != y.data)
+        return false;
+    return true;
 }

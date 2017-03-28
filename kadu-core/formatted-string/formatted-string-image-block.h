@@ -42,69 +42,69 @@
  */
 class KADUAPI FormattedStringImageBlock : public FormattedString
 {
-	Q_DISABLE_COPY(FormattedStringImageBlock);
+    Q_DISABLE_COPY(FormattedStringImageBlock);
 
-	QString ImagePath;
-	ChatImage Image;
+    QString ImagePath;
+    ChatImage Image;
 
 public:
-	/**
-	 * @short Create empty FormattedStringImageBlock.
-	 */
-	FormattedStringImageBlock();
+    /**
+     * @short Create empty FormattedStringImageBlock.
+     */
+    FormattedStringImageBlock();
 
-	/**
-	 * @short Create FormattedStringImageBlock with image with given path.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imagePath path to image
-	 */
-	explicit FormattedStringImageBlock(QString imagePath);
+    /**
+     * @short Create FormattedStringImageBlock with image with given path.
+     * @author Rafał 'Vogel' Malinowski
+     * @param imagePath path to image
+     */
+    explicit FormattedStringImageBlock(QString imagePath);
 
-	/**
-	 * @short Create FormattedStringImageBlock with image with given chat image key.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chatImageKey chat image get of image
-	 *
-	 * Relative path of image will be generatted automatically from toString() method of passed ChatImage instance. This path can be invalid
-	 * if image was not downloaded from peer.
-	 */
-	explicit FormattedStringImageBlock(ChatImage image);
+    /**
+     * @short Create FormattedStringImageBlock with image with given chat image key.
+     * @author Rafał 'Vogel' Malinowski
+     * @param chatImageKey chat image get of image
+     *
+     * Relative path of image will be generatted automatically from toString() method of passed ChatImage instance. This
+     * path can be invalid
+     * if image was not downloaded from peer.
+     */
+    explicit FormattedStringImageBlock(ChatImage image);
 
-	virtual ~FormattedStringImageBlock();
+    virtual ~FormattedStringImageBlock();
 
-	virtual bool operator == (const FormattedString &compareTo);
+    virtual bool operator==(const FormattedString &compareTo);
 
-	virtual void accept(FormattedStringVisitor *visitor) const;
+    virtual void accept(FormattedStringVisitor *visitor) const;
 
-	/**
-	 * @short Return true if neither image path nor image key are provided.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if neither image path nor image key are provided
-	 */
-	virtual bool isEmpty() const;
+    /**
+     * @short Return true if neither image path nor image key are provided.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if neither image path nor image key are provided
+     */
+    virtual bool isEmpty() const;
 
-	/**
-	 * @short Return provided image path.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided image path
-	 *
-	 * If image path was not provided at construction time then it will be constructed from available chat image key.
-	 */
-	QString imagePath() const;
+    /**
+     * @short Return provided image path.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided image path
+     *
+     * If image path was not provided at construction time then it will be constructed from available chat image key.
+     */
+    QString imagePath() const;
 
-	/**
-	 * @short Return provided chat image key.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided chat image key
-	 *
-	 * If chat image key was not provided at construction time then empty chat image key will be returned.
-	 */
-	ChatImage image() const;
-
+    /**
+     * @short Return provided chat image key.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided chat image key
+     *
+     * If chat image key was not provided at construction time then empty chat image key will be returned.
+     */
+    ChatImage image() const;
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_IMAGE_BLOCK_H
+#endif   // FORMATTED_STRING_IMAGE_BLOCK_H

@@ -29,38 +29,37 @@ class ConfigurationApi;
 
 class KADUAPI DeprecatedConfigurationApi final
 {
-	bool changeEntry(const QString &group, const QString &name, const QString &value);
-	QString getEntry(const QString &group, const QString &name) const;
+    bool changeEntry(const QString &group, const QString &name, const QString &value);
+    QString getEntry(const QString &group, const QString &name) const;
 
-	ConfigurationApi *m_xmlConfigFile;
-	QString m_fileName;
+    ConfigurationApi *m_xmlConfigFile;
+    QString m_fileName;
 
 public:
-	DeprecatedConfigurationApi(ConfigurationApi *xmlConfigFile, const QString &fileName);
+    DeprecatedConfigurationApi(ConfigurationApi *xmlConfigFile, const QString &fileName);
 
-	void writeEntry(const QString &group, const QString &name, const QString &value);
-	void writeEntry(const QString &group, const QString &name, const char *value);
-	void writeEntry(const QString &group, const QString &name, const int value);
-	void writeEntry(const QString &group, const QString &name, const bool value);
-	void writeEntry(const QString &group, const QString &name, const QRect &value);
-	void writeEntry(const QString &group, const QString &name, const QColor &value);
-	void writeEntry(const QString &group, const QString &name, const QFont &value);
+    void writeEntry(const QString &group, const QString &name, const QString &value);
+    void writeEntry(const QString &group, const QString &name, const char *value);
+    void writeEntry(const QString &group, const QString &name, const int value);
+    void writeEntry(const QString &group, const QString &name, const bool value);
+    void writeEntry(const QString &group, const QString &name, const QRect &value);
+    void writeEntry(const QString &group, const QString &name, const QColor &value);
+    void writeEntry(const QString &group, const QString &name, const QFont &value);
 
-	QString readEntry(const QString &group, const QString &name, const QString &def = QString()) const;
-	int readNumEntry(const QString &group, const QString &name, int def = 0) const;
-	unsigned int readUnsignedNumEntry(const QString &group, const QString &name, unsigned int def = 0) const;
-	bool readBoolEntry(const QString &group, const QString &name, bool def = false) const;
-	QRect readRectEntry(const QString &group, const QString &name, const QRect *def = 0L) const;
-	QColor readColorEntry(const QString &group, const QString &name, const QColor *def = 0L) const;
-	QFont readFontEntry(const QString &group, const QString &name, const QFont *def = 0L) const;
+    QString readEntry(const QString &group, const QString &name, const QString &def = QString()) const;
+    int readNumEntry(const QString &group, const QString &name, int def = 0) const;
+    unsigned int readUnsignedNumEntry(const QString &group, const QString &name, unsigned int def = 0) const;
+    bool readBoolEntry(const QString &group, const QString &name, bool def = false) const;
+    QRect readRectEntry(const QString &group, const QString &name, const QRect *def = 0L) const;
+    QColor readColorEntry(const QString &group, const QString &name, const QColor *def = 0L) const;
+    QFont readFontEntry(const QString &group, const QString &name, const QFont *def = 0L) const;
 
-	void removeVariable(const QString &group, const QString &name);
+    void removeVariable(const QString &group, const QString &name);
 
-	void addVariable(const QString &group, const QString &name, const QString &value);
-	void addVariable(const QString &group, const QString &name, const char *value);
-	void addVariable(const QString &group, const QString &name, const int value);
-	void addVariable(const QString &group, const QString &name, const bool value);
-	void addVariable(const QString &group, const QString &name, const QColor &value);
-	void addVariable(const QString &group, const QString &name, const QFont &value);
-
+    void addVariable(const QString &group, const QString &name, const QString &value);
+    void addVariable(const QString &group, const QString &name, const char *value);
+    void addVariable(const QString &group, const QString &name, const int value);
+    void addVariable(const QString &group, const QString &name, const bool value);
+    void addVariable(const QString &group, const QString &name, const QColor &value);
+    void addVariable(const QString &group, const QString &name, const QFont &value);
 };

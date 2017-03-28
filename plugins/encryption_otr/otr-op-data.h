@@ -39,70 +39,69 @@ class OtrTrustLevelService;
 
 class OtrOpData
 {
-	QPointer<OtrErrorMessageService> ErrorMessageService;
-	QPointer<OtrFingerprintService> FingerprintService;
-	QPointer<OtrInstanceTagService> InstanceTagService;
-	QPointer<OtrIsLoggedInService> IsLoggedInService;
-	QPointer<OtrMessageEventService> MessageEventService;
-	QPointer<OtrMessageService> MessageService;
-	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
-	QPointer<OtrPolicyService> PolicyService;
-	QPointer<OtrPrivateKeyService> PrivateKeyService;
-	QPointer<OtrSessionService> SessionService;
-	QPointer<OtrTimerService> TimerService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
-	Contact MyContact;
-	QString PeerDisplay;
+    QPointer<OtrErrorMessageService> ErrorMessageService;
+    QPointer<OtrFingerprintService> FingerprintService;
+    QPointer<OtrInstanceTagService> InstanceTagService;
+    QPointer<OtrIsLoggedInService> IsLoggedInService;
+    QPointer<OtrMessageEventService> MessageEventService;
+    QPointer<OtrMessageService> MessageService;
+    QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+    QPointer<OtrPolicyService> PolicyService;
+    QPointer<OtrPrivateKeyService> PrivateKeyService;
+    QPointer<OtrSessionService> SessionService;
+    QPointer<OtrTimerService> TimerService;
+    QPointer<OtrTrustLevelService> TrustLevelService;
+    Contact MyContact;
+    QString PeerDisplay;
 
 public:
-	explicit OtrOpData();
-	OtrOpData(const OtrOpData &copyMe);
-	virtual ~OtrOpData();
+    explicit OtrOpData();
+    OtrOpData(const OtrOpData &copyMe);
+    virtual ~OtrOpData();
 
-	OtrOpData & operator = (const OtrOpData &copyMe);
+    OtrOpData &operator=(const OtrOpData &copyMe);
 
-	void setErrorMessageService(OtrErrorMessageService *errorMessageService);
-	OtrErrorMessageService * errorMessageService() const;
+    void setErrorMessageService(OtrErrorMessageService *errorMessageService);
+    OtrErrorMessageService *errorMessageService() const;
 
-	void setFingerprintService(OtrFingerprintService *fingerprintService);
-	OtrFingerprintService * fingerprintService() const;
+    void setFingerprintService(OtrFingerprintService *fingerprintService);
+    OtrFingerprintService *fingerprintService() const;
 
-	void setInstanceTagService(OtrInstanceTagService *instanceTagService);
-	OtrInstanceTagService * instanceTagService() const;
+    void setInstanceTagService(OtrInstanceTagService *instanceTagService);
+    OtrInstanceTagService *instanceTagService() const;
 
-	void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
-	OtrIsLoggedInService * isLoggedInService() const;
+    void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
+    OtrIsLoggedInService *isLoggedInService() const;
 
-	void setMessageEventService(OtrMessageEventService *messageEventService);
-	OtrMessageEventService * messageEventService() const;
+    void setMessageEventService(OtrMessageEventService *messageEventService);
+    OtrMessageEventService *messageEventService() const;
 
-	void setMessageService(OtrMessageService *messageService);
-	OtrMessageService * messageService() const;
+    void setMessageService(OtrMessageService *messageService);
+    OtrMessageService *messageService() const;
 
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	OtrPeerIdentityVerificationService * peerIdentityVerificationService() const;
+    void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+    OtrPeerIdentityVerificationService *peerIdentityVerificationService() const;
 
-	void setPolicyService(OtrPolicyService *policyService);
-	OtrPolicyService * policyService() const;
+    void setPolicyService(OtrPolicyService *policyService);
+    OtrPolicyService *policyService() const;
 
-	void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
-	OtrPrivateKeyService * privateKeyService() const;
+    void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+    OtrPrivateKeyService *privateKeyService() const;
 
-	void setSessionService(OtrSessionService *sessionService);
-	OtrSessionService * sessionService() const;
+    void setSessionService(OtrSessionService *sessionService);
+    OtrSessionService *sessionService() const;
 
-	void setTimerService(OtrTimerService *timerService);
-	OtrTimerService * timerService() const;
+    void setTimerService(OtrTimerService *timerService);
+    OtrTimerService *timerService() const;
 
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
-	OtrTrustLevelService * trustLevelService() const;
+    void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    OtrTrustLevelService *trustLevelService() const;
 
-	void setContact(const Contact &contact);
-	Contact contact() const;
+    void setContact(const Contact &contact);
+    Contact contact() const;
 
-	void setPeerDisplay(const QString &peerDisplay);
-	QString peerDisplay() const;
-
+    void setPeerDisplay(const QString &peerDisplay);
+    QString peerDisplay() const;
 };
 
-#endif // OTR_OP_DATA_H
+#endif   // OTR_OP_DATA_H

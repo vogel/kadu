@@ -23,13 +23,12 @@
 
 class HaveProtocolFilter : public AbstractAccountFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit HaveProtocolFilter(QObject *parent = nullptr);
-	virtual ~HaveProtocolFilter();
+    explicit HaveProtocolFilter(QObject *parent = nullptr);
+    virtual ~HaveProtocolFilter();
 
 protected:
-	virtual bool acceptAccount(Account account);
-
+    virtual bool acceptAccount(Account account);
 };

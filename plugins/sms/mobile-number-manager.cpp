@@ -30,118 +30,117 @@
 
 #include "mobile-number-manager.h"
 
-MobileNumberManager::MobileNumberManager(QObject *parent) :
-		StorableObject{parent}
+MobileNumberManager::MobileNumberManager(QObject *parent) : StorableObject{parent}
 {
-	setState(StateNotLoaded);
+    setState(StateNotLoaded);
 }
 
 MobileNumberManager::~MobileNumberManager()
 {
-	qDeleteAll(Numbers);
+    qDeleteAll(Numbers);
 }
 
 void MobileNumberManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void MobileNumberManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void MobileNumberManager::init()
 {
-	m_configurationManager->registerStorableObject(this);
+    m_configurationManager->registerStorableObject(this);
 }
 
 void MobileNumberManager::done()
 {
-	m_configurationManager->unregisterStorableObject(this);
+    m_configurationManager->unregisterStorableObject(this);
 }
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 {
-	foreach (MobileNumber *n, Numbers)
-		if (n->number() == number)
-		{
-			n->setGatewayId(gatewayId);
-			return;
-		}
+    foreach (MobileNumber *n, Numbers)
+        if (n->number() == number)
+        {
+            n->setGatewayId(gatewayId);
+            return;
+        }
 
-	Numbers.append(m_pluginInjectedFactory->makeInjected<MobileNumber>(this, number, gatewayId));
+    Numbers.append(m_pluginInjectedFactory->makeInjected<MobileNumber>(this, number, gatewayId));
 }
 
 void MobileNumberManager::unregisterNumber(QString number)
 {
-	foreach (MobileNumber *n, Numbers)
-		if (n->number() == number)
-		{
-			Numbers.removeAll(n);
-			delete n;
-			break;
-		}
+    foreach (MobileNumber *n, Numbers)
+        if (n->number() == number)
+        {
+            Numbers.removeAll(n);
+            delete n;
+            break;
+        }
 }
 
 std::shared_ptr<StoragePoint> MobileNumberManager::createStoragePoint()
 {
-	return storagePointFactory()->createStoragePoint("MobileNumbers");
+    return storagePointFactory()->createStoragePoint("MobileNumbers");
 }
 
-StorableObject * MobileNumberManager::storageParent()
+StorableObject *MobileNumberManager::storageParent()
 {
-	return 0;
+    return 0;
 }
 
 void MobileNumberManager::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	StorableObject::load();
+    StorableObject::load();
 
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement mobileNumbersNode = storage()->point();
-	if (mobileNumbersNode.isNull())
-		return;
+    ConfigurationApi *configurationStorage = storage()->storage();
+    QDomElement mobileNumbersNode = storage()->point();
+    if (mobileNumbersNode.isNull())
+        return;
 
-	QVector<QDomElement> mobileNumberNodes = storage()->storage()->getNodes(mobileNumbersNode, "MobileNumber");
-	foreach (QDomElement mobileNumberElement, mobileNumberNodes)
-	{
-		if (mobileNumberElement.isNull())
-			continue;
+    QVector<QDomElement> mobileNumberNodes = storage()->storage()->getNodes(mobileNumbersNode, "MobileNumber");
+    foreach (QDomElement mobileNumberElement, mobileNumberNodes)
+    {
+        if (mobileNumberElement.isNull())
+            continue;
 
-		auto numberStoragePoint = std::make_shared<StoragePoint>(configurationStorage, mobileNumberElement);
-		MobileNumber *number = m_pluginInjectedFactory->makeInjected<MobileNumber>(this);
-		number->setStorage(numberStoragePoint);
-		number->setState(StateNotLoaded);
-		number->ensureLoaded();
+        auto numberStoragePoint = std::make_shared<StoragePoint>(configurationStorage, mobileNumberElement);
+        MobileNumber *number = m_pluginInjectedFactory->makeInjected<MobileNumber>(this);
+        number->setStorage(numberStoragePoint);
+        number->setState(StateNotLoaded);
+        number->ensureLoaded();
 
-		Numbers.append(number);
-	}
+        Numbers.append(number);
+    }
 }
 
 void MobileNumberManager::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	StorableObject::store();
+    StorableObject::store();
 
-	foreach (MobileNumber *number, Numbers)
-		number->ensureStored();
+    foreach (MobileNumber *number, Numbers)
+        number->ensureStored();
 }
 
 QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	foreach (MobileNumber *number, Numbers)
-		if (number->number() == mobileNumber)
-			return number->gatewayId();
+    foreach (MobileNumber *number, Numbers)
+        if (number->number() == mobileNumber)
+            return number->gatewayId();
 
-	return QString();
+    return QString();
 }
 
 #include "moc_mobile-number-manager.cpp"

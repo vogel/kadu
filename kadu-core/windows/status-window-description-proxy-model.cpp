@@ -28,8 +28,7 @@
 
 #define DESCRIPTION_SELECT_DISPLAY_MAX_LENGTH 60
 
-StatusWindowDescriptionProxyModel::StatusWindowDescriptionProxyModel(QObject * parent) :
-		QSortFilterProxyModel(parent)
+StatusWindowDescriptionProxyModel::StatusWindowDescriptionProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
 }
 
@@ -39,17 +38,17 @@ StatusWindowDescriptionProxyModel::~StatusWindowDescriptionProxyModel()
 
 QVariant StatusWindowDescriptionProxyModel::data(const QModelIndex &index, int role) const
 {
-	if (Qt::DisplayRole != role)
-		return QSortFilterProxyModel::data(index, role);
+    if (Qt::DisplayRole != role)
+        return QSortFilterProxyModel::data(index, role);
 
-	QString text = QSortFilterProxyModel::data(index, DescriptionRole).toString();
-	// it'd be easier to type QString::fromUtf8(" \u21B5 ") but it doesn't work in MSVC...
-	QChar arrow21b5[] = { QChar(' '), QChar(0xb5, 0x21), QChar(' '), QChar(0) };
-	text = text.replace('\n', QString(arrow21b5));
-	text = text.replace(QRegExp(" +"), " ");
-	text = text.trimmed();
-	text = StringUtils::ellipsis(text, DESCRIPTION_SELECT_DISPLAY_MAX_LENGTH);
-	return QVariant(text);
+    QString text = QSortFilterProxyModel::data(index, DescriptionRole).toString();
+    // it'd be easier to type QString::fromUtf8(" \u21B5 ") but it doesn't work in MSVC...
+    QChar arrow21b5[] = {QChar(' '), QChar(0xb5, 0x21), QChar(' '), QChar(0)};
+    text = text.replace('\n', QString(arrow21b5));
+    text = text.replace(QRegExp(" +"), " ");
+    text = text.trimmed();
+    text = StringUtils::ellipsis(text, DESCRIPTION_SELECT_DISPLAY_MAX_LENGTH);
+    return QVariant(text);
 }
 
 #include "moc_status-window-description-proxy-model.cpp"

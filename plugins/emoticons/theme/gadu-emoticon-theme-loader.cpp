@@ -31,54 +31,54 @@
 
 bool GaduEmoticonThemeLoader::validGaduGaduEmoticonDirectory(const QString &dir)
 {
-	return QFileInfo(dir + "/emots.txt").exists();
+    return QFileInfo(dir + "/emots.txt").exists();
 }
 
 void GaduEmoticonThemeLoader::loadEmoticons(const QString &path)
 {
-	if (path.isEmpty())
-		return;
+    if (path.isEmpty())
+        return;
 
-	QString dir = path.endsWith('/') ? path : path + '/';
+    QString dir = path.endsWith('/') ? path : path + '/';
 
-	if (!validGaduGaduEmoticonDirectory(dir))
-		return;
+    if (!validGaduGaduEmoticonDirectory(dir))
+        return;
 
-	QFile emotsTxtFile(dir + "emots.txt");
-	if (!emotsTxtFile.open(QIODevice::ReadOnly))
-		return;
+    QFile emotsTxtFile(dir + "emots.txt");
+    if (!emotsTxtFile.open(QIODevice::ReadOnly))
+        return;
 
-	QTextStream emotsTxtStream(&emotsTxtFile);
-	emotsTxtStream.setCodec(QTextCodec::codecForName("CP1250"));
-	while (!emotsTxtStream.atEnd())
-	{
-		GaduEmoticonParser parser(dir, emotsTxtStream.readLine());
-		if (!parser.emoticon().isNull())
-			Emoticons.append(parser.emoticon());
-		foreach (const Emoticon &alias, parser.aliases())
-			if (!alias.isNull())
-				Aliases.append(alias);
-	}
+    QTextStream emotsTxtStream(&emotsTxtFile);
+    emotsTxtStream.setCodec(QTextCodec::codecForName("CP1250"));
+    while (!emotsTxtStream.atEnd())
+    {
+        GaduEmoticonParser parser(dir, emotsTxtStream.readLine());
+        if (!parser.emoticon().isNull())
+            Emoticons.append(parser.emoticon());
+        foreach (const Emoticon &alias, parser.aliases())
+            if (!alias.isNull())
+                Aliases.append(alias);
+    }
 
-	emotsTxtFile.close();
+    emotsTxtFile.close();
 }
 
 EmoticonTheme GaduEmoticonThemeLoader::loadEmoticonTheme(const QString &path)
 {
-	loadEmoticons(path);
+    loadEmoticons(path);
 
-	QDir themeDir(path);
-	QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
+    QDir themeDir(path);
+    QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
 
-	foreach (const QFileInfo &subDirInfo, subDirs)
-	{
-		if (subDirInfo.fileName().startsWith('.'))
-			continue;
+    foreach (const QFileInfo &subDirInfo, subDirs)
+    {
+        if (subDirInfo.fileName().startsWith('.'))
+            continue;
 
-		QString subDir = subDirInfo.canonicalFilePath();
-		if (validGaduGaduEmoticonDirectory(subDir))
-			loadEmoticons(subDir);
-	}
+        QString subDir = subDirInfo.canonicalFilePath();
+        if (validGaduGaduEmoticonDirectory(subDir))
+            loadEmoticons(subDir);
+    }
 
-	return EmoticonTheme(Emoticons, Aliases);
+    return EmoticonTheme(Emoticons, Aliases);
 }

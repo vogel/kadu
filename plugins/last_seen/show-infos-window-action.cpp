@@ -21,13 +21,13 @@
 
 #include "infos.h"
 
-ShowInfosWindowAction::ShowInfosWindowAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowInfosWindowAction::ShowInfosWindowAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setName(QStringLiteral("lastSeenAction"));
-	setText(tr("&Show infos about buddies"));
-	setType(ActionDescription::TypeMainMenu);
+    setName(QStringLiteral("lastSeenAction"));
+    setText(tr("&Show infos about buddies"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ShowInfosWindowAction::~ShowInfosWindowAction()
@@ -36,12 +36,12 @@ ShowInfosWindowAction::~ShowInfosWindowAction()
 
 void ShowInfosWindowAction::setInfos(Infos *infos)
 {
-	m_infos = infos;
+    m_infos = infos;
 }
 
 void ShowInfosWindowAction::actionTriggered(QAction *, bool)
 {
-	m_infos->onShowInfos();
+    m_infos->onShowInfos();
 }
 
 #include "moc_show-infos-window-action.cpp"

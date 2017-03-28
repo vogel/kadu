@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-ChatStorage::ChatStorage(QObject *parent) :
-		QObject{parent}
+ChatStorage::ChatStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,31 +35,31 @@ ChatStorage::~ChatStorage()
 
 void ChatStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Chat ChatStorage::create(const QString &type)
 {
-	auto result = Chat{m_injectedFactory->makeInjected<ChatShared>()};
-	result.setType(type);
-	return result;
+    auto result = Chat{m_injectedFactory->makeInjected<ChatShared>()};
+    result.setType(type);
+    return result;
 }
 
 Chat ChatStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<ChatShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<ChatShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Chat ChatStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<ChatShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<ChatShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_chat-storage.cpp"

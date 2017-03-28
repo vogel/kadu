@@ -23,30 +23,28 @@
 
 class Jid
 {
-
 public:
-	static Jid parse(QString jid);
+    static Jid parse(QString jid);
 
-	Jid();
-	explicit Jid(QString node, QString domain, QString resource);
+    Jid();
+    explicit Jid(QString node, QString domain, QString resource);
 
-	Jid withNode(QString node) const;
-	Jid withDomain(QString domain) const;
-	Jid withResource(QString resource) const;
+    Jid withNode(QString node) const;
+    Jid withDomain(QString domain) const;
+    Jid withResource(QString resource) const;
 
-	bool isEmpty() const;
+    bool isEmpty() const;
 
-	QString full() const;
-	QString bare() const;
-	QString node() const;
-	QString domain() const;
-	QString resource() const;
+    QString full() const;
+    QString bare() const;
+    QString node() const;
+    QString domain() const;
+    QString resource() const;
 
 private:
-	QString m_full;
-	QString m_bare;
-	QString m_node;
-	QString m_domain;
-	QString m_resource;
-
+    QString m_full;
+    QString m_bare;
+    QString m_node;
+    QString m_domain;
+    QString m_resource;
 };

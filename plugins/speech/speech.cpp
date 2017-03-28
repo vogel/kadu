@@ -42,12 +42,11 @@
 
 bool isFemale(const QString &s)
 {
-	return s.endsWith('a', Qt::CaseInsensitive);
+    return s.endsWith('a', Qt::CaseInsensitive);
 }
 
-Speech::Speech(QObject *parent) :
-		QObject{parent},
-		Notifier("Speech", QT_TRANSLATE_NOOP("@default", "Read a text"), KaduIcon()), lastSpeech()
+Speech::Speech(QObject *parent)
+        : QObject{parent}, Notifier("Speech", QT_TRANSLATE_NOOP("@default", "Read a text"), KaduIcon()), lastSpeech()
 {
 }
 
@@ -57,119 +56,120 @@ Speech::~Speech()
 
 void Speech::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void Speech::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void Speech::init()
 {
-	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Speech", true);
 }
 
-void Speech::say(const QString &s, const QString &path,
-		bool klatt, bool melody,
-		const QString &sound_system, const QString &device,
-		int freq, int tempo, int basefreq)
+void Speech::say(
+    const QString &s, const QString &path, bool klatt, bool melody, const QString &sound_system, const QString &device,
+    int freq, int tempo, int basefreq)
 {
-	QString t, dev, soundSystem;
-	QStringList list;
+    QString t, dev, soundSystem;
+    QStringList list;
 
-	if (path.isEmpty())
-	{
-		t = m_configuration->deprecatedApi()->readEntry("Speech","SpeechProgram", "powiedz");
-		klatt = m_configuration->deprecatedApi()->readBoolEntry("Speech", "KlattSynt");
-		melody = m_configuration->deprecatedApi()->readBoolEntry("Speech", "Melody");
-		soundSystem = m_configuration->deprecatedApi()->readBoolEntry("Speech", "SoundSystem");
-		dev = m_configuration->deprecatedApi()->readEntry("Speech", "DspDev", "/dev/dsp");
-		freq = m_configuration->deprecatedApi()->readNumEntry("Speech", "Frequency");
-		tempo = m_configuration->deprecatedApi()->readNumEntry("Speech", "Tempo");
-		basefreq = m_configuration->deprecatedApi()->readNumEntry("Speech", "BaseFrequency");
-	}
-	else
-	{
-		t = path;
-		dev = device;
-		soundSystem = sound_system;
-	}
+    if (path.isEmpty())
+    {
+        t = m_configuration->deprecatedApi()->readEntry("Speech", "SpeechProgram", "powiedz");
+        klatt = m_configuration->deprecatedApi()->readBoolEntry("Speech", "KlattSynt");
+        melody = m_configuration->deprecatedApi()->readBoolEntry("Speech", "Melody");
+        soundSystem = m_configuration->deprecatedApi()->readBoolEntry("Speech", "SoundSystem");
+        dev = m_configuration->deprecatedApi()->readEntry("Speech", "DspDev", "/dev/dsp");
+        freq = m_configuration->deprecatedApi()->readNumEntry("Speech", "Frequency");
+        tempo = m_configuration->deprecatedApi()->readNumEntry("Speech", "Tempo");
+        basefreq = m_configuration->deprecatedApi()->readNumEntry("Speech", "BaseFrequency");
+    }
+    else
+    {
+        t = path;
+        dev = device;
+        soundSystem = sound_system;
+    }
 
-	if (klatt && soundSystem == "Dsp")
-		list.append(" -L");
-	if (!melody)
-		list.append("-n");
-	if (soundSystem == "aRts")
-		list.append("-k");
-// TODO: dlaczego tak?
-//	if (esd)
-//		t.append(" -");
-	if (soundSystem == "Dsp")
-	{
-		list.append("-a");
-		list.append(dev);
-	}
-	list.append("-r");
-	list.append(QString::number(freq));
-	list.append("-t");
-	list.append(QString::number(tempo));
-	list.append("-f");
-	list.append(QString::number(basefreq));
+    if (klatt && soundSystem == "Dsp")
+        list.append(" -L");
+    if (!melody)
+        list.append("-n");
+    if (soundSystem == "aRts")
+        list.append("-k");
+    // TODO: dlaczego tak?
+    //	if (esd)
+    //		t.append(" -");
+    if (soundSystem == "Dsp")
+    {
+        list.append("-a");
+        list.append(dev);
+    }
+    list.append("-r");
+    list.append(QString::number(freq));
+    list.append("-t");
+    list.append(QString::number(tempo));
+    list.append("-f");
+    list.append(QString::number(basefreq));
 
-	QProcess *p = new QProcess();
-	QProcess::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
-	p->start(t, list);
-	p->write(s.toUtf8().constData());
-	p->closeWriteChannel();
+    QProcess *p = new QProcess();
+    QProcess::connect(p, SIGNAL(finished(int, QProcess::ExitStatus)), p, SLOT(deleteLater()));
+    p->start(t, list);
+    p->write(s.toUtf8().constData());
+    p->closeWriteChannel();
 }
 
 void Speech::notify(const Notification &notification)
 {
-	if (lastSpeech.elapsed() < 1500)
-	{
-		return;
-	}
+    if (lastSpeech.elapsed() < 1500)
+    {
+        return;
+    }
 
-	NormalizedHtmlString text;
-	QString sex = "Male";
+    NormalizedHtmlString text;
+    QString sex = "Male";
 
-	auto chat = notification.data["chat"].value<Chat>();
+    auto chat = notification.data["chat"].value<Chat>();
 
-	// TODO:
-	if (chat)
-	{
-		if (isFemale((*chat.contacts().begin()).ownerBuddy().firstName()))
-			sex = "Female";
-	}
+    // TODO:
+    if (chat)
+    {
+        if (isFemale((*chat.contacts().begin()).ownerBuddy().firstName()))
+            sex = "Female";
+    }
 
-	auto syntax = m_configuration->deprecatedApi()->readEntry("Speech", notification.type + "_Syntax/" + sex, QString());
-	if (syntax.isEmpty())
-		text = notification.text;
-	else
-	{
-		auto details = htmlToPlain(notification.details);
-		if (details.length() > m_configuration->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
-			syntax = m_configuration->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
+    auto syntax =
+        m_configuration->deprecatedApi()->readEntry("Speech", notification.type + "_Syntax/" + sex, QString());
+    if (syntax.isEmpty())
+        text = notification.text;
+    else
+    {
+        auto details = htmlToPlain(notification.details);
+        if (details.length() > m_configuration->deprecatedApi()->readNumEntry("Speech", "MaxLength"))
+            syntax = m_configuration->deprecatedApi()->readEntry("Speech", "MsgTooLong" + sex);
 
-		syntax = syntax.arg(details);
+        syntax = syntax.arg(details);
 
-		if (chat)
-		{
-			Contact contact = *chat.contacts().begin();
-			text = normalizeHtml(HtmlString{m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape)});
-		}
-		else
-			text = normalizeHtml(HtmlString{m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape)});
-	}
+        if (chat)
+        {
+            Contact contact = *chat.contacts().begin();
+            text = normalizeHtml(
+                HtmlString{m_parser->parse(syntax, Talkable(contact), &notification, ParserEscape::HtmlEscape)});
+        }
+        else
+            text = normalizeHtml(HtmlString{m_parser->parse(syntax, &notification, ParserEscape::HtmlEscape)});
+    }
 
-	say(htmlToPlain(text));
-	lastSpeech.restart();
+    say(htmlToPlain(text));
+    lastSpeech.restart();
 }
 
-NotifierConfigurationWidget * Speech::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget *Speech::createConfigurationWidget(QWidget *parent)
 {
-	return new SpeechConfigurationWidget(parent);
+    return new SpeechConfigurationWidget(parent);
 }
 
 /** @} */

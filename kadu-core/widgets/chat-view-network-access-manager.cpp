@@ -27,13 +27,13 @@
 
 #include "chat-view-network-access-manager.h"
 
-ChatViewNetworkAccessManager::ChatViewNetworkAccessManager(QNetworkAccessManager *manager, QObject *parent) :
-		QNetworkAccessManager(parent)
+ChatViewNetworkAccessManager::ChatViewNetworkAccessManager(QNetworkAccessManager *manager, QObject *parent)
+        : QNetworkAccessManager(parent)
 {
-	setCache(manager->cache());
-	setCookieJar(manager->cookieJar());
-	setProxy(manager->proxy());
-	setProxyFactory(manager->proxyFactory());
+    setCache(manager->cache());
+    setCookieJar(manager->cookieJar());
+    setProxy(manager->proxy());
+    setProxyFactory(manager->proxyFactory());
 }
 
 ChatViewNetworkAccessManager::~ChatViewNetworkAccessManager()
@@ -42,21 +42,22 @@ ChatViewNetworkAccessManager::~ChatViewNetworkAccessManager()
 
 void ChatViewNetworkAccessManager::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	CurrentImageStorageService = imageStorageService;
+    CurrentImageStorageService = imageStorageService;
 }
 
-QNetworkReply * ChatViewNetworkAccessManager::createRequest(QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *device)
+QNetworkReply *ChatViewNetworkAccessManager::createRequest(
+    QNetworkAccessManager::Operation operation, const QNetworkRequest &request, QIODevice *device)
 {
-	if (QNetworkAccessManager::GetOperation != operation && QNetworkAccessManager::HeadOperation != operation)
-		operation = QNetworkAccessManager::GetOperation;
+    if (QNetworkAccessManager::GetOperation != operation && QNetworkAccessManager::HeadOperation != operation)
+        operation = QNetworkAccessManager::GetOperation;
 
-	if (!CurrentImageStorageService)
-		return QNetworkAccessManager::createRequest(operation, request, device);
+    if (!CurrentImageStorageService)
+        return QNetworkAccessManager::createRequest(operation, request, device);
 
-	QNetworkRequest newRequest(request);
-	newRequest.setUrl(CurrentImageStorageService.data()->toFileUrl(request.url()));
+    QNetworkRequest newRequest(request);
+    newRequest.setUrl(CurrentImageStorageService.data()->toFileUrl(request.url()));
 
-	return QNetworkAccessManager::createRequest(operation, newRequest, device);
+    return QNetworkAccessManager::createRequest(operation, newRequest, device);
 }
 
 #include "moc_chat-view-network-access-manager.cpp"

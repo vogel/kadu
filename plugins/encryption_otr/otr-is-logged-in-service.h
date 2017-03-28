@@ -27,27 +27,26 @@ class ContactManager;
 
 class OtrIsLoggedInService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum IsLoggedInStatus
-	{
-		NotSure = -1,
-		NotLoggedIn = 0,
-		LoggedIn = 1
-	};
+    enum IsLoggedInStatus
+    {
+        NotSure = -1,
+        NotLoggedIn = 0,
+        LoggedIn = 1
+    };
 
-	static int wrapperOtrIsLoggedIn(void *data, const char *accountName, const char *protocol, const char *recipient);
+    static int wrapperOtrIsLoggedIn(void *data, const char *accountName, const char *protocol, const char *recipient);
 
-	Q_INVOKABLE explicit OtrIsLoggedInService(QObject *parent = nullptr);
-	virtual ~OtrIsLoggedInService();
+    Q_INVOKABLE explicit OtrIsLoggedInService(QObject *parent = nullptr);
+    virtual ~OtrIsLoggedInService();
 
-	IsLoggedInStatus isLoggedIn(const Account &account, const QString &contactId);
+    IsLoggedInStatus isLoggedIn(const Account &account, const QString &contactId);
 
 private:
-	QPointer<ContactManager> m_contactManager;
+    QPointer<ContactManager> m_contactManager;
 
 private slots:
-	void setContactManager(ContactManager *contactManager);
-
+    void setContactManager(ContactManager *contactManager);
 };

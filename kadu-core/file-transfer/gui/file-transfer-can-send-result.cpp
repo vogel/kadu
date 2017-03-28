@@ -19,18 +19,17 @@
 
 #include "file-transfer-can-send-result.h"
 
-FileTransferCanSendResult::FileTransferCanSendResult(bool canSend, QString reason) :
-		m_canSend{canSend},
-		m_reason{reason}
+FileTransferCanSendResult::FileTransferCanSendResult(bool canSend, QString reason)
+        : m_canSend{canSend}, m_reason{reason}
 {
 }
 
 bool FileTransferCanSendResult::canSend() const
 {
-	return m_canSend;
+    return m_canSend;
 }
 
 QString FileTransferCanSendResult::reason() const
 {
-	return m_reason;
+    return m_reason;
 }

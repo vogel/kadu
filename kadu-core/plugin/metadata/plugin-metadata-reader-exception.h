@@ -32,7 +32,10 @@
  */
 class PluginMetadataReaderException : public std::exception
 {
-	virtual const char *what() const noexcept { return "Unable to read plugin info"; }
+    virtual const char *what() const noexcept
+    {
+        return "Unable to read plugin info";
+    }
 };
 
 /**

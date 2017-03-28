@@ -24,18 +24,17 @@
 #include "qfacebook/http/qfacebook-http-api.h"
 #include "qfacebook/http/qfacebook-http-reply.h"
 #include "qfacebook/http/qfacebook-http-request.h"
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook/qfacebook-contact.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
 #include <QtCore/QJsonArray>
 
-QFacebookDownloadContactsJob::QFacebookDownloadContactsJob(QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QObject *parent) :
-		QObject{parent},
-		m_httpApi{httpApi},
-		m_facebookSession{std::move(facebookSessionToken)}
+QFacebookDownloadContactsJob::QFacebookDownloadContactsJob(
+    QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QObject *parent)
+        : QObject{parent}, m_httpApi{httpApi}, m_facebookSession{std::move(facebookSessionToken)}
 {
-	auto reply = m_httpApi.usersQuery(m_facebookSession.accessToken());
-	connect(reply, &QFacebookHttpReply::finished, this, &QFacebookDownloadContactsJob::replyFinished);
+    auto reply = m_httpApi.usersQuery(m_facebookSession.accessToken());
+    connect(reply, &QFacebookHttpReply::finished, this, &QFacebookDownloadContactsJob::replyFinished);
 }
 
 QFacebookDownloadContactsJob::~QFacebookDownloadContactsJob()
@@ -44,35 +43,36 @@ QFacebookDownloadContactsJob::~QFacebookDownloadContactsJob()
 
 void QFacebookDownloadContactsJob::replyFinished(const std::experimental::optional<QFacebookJsonReader> &result) try
 {
-	if (!result)
-	{
-		deleteLater();
-		return;
-	}
+    if (!result)
+    {
+        deleteLater();
+        return;
+    }
 
-	auto messengerContacts = result->readObject("viewer").readObject("messenger_contacts");
-	auto nodes = messengerContacts.readArray("nodes");
-	auto friends = std::vector<QFacebookJsonReader>{};
-	std::copy_if(std::begin(nodes), std::end(nodes), std::back_inserter(friends), [](const QFacebookJsonReader &v){
-		return v.readObject("represented_profile").readString("friendship_status") == "ARE_FRIENDS";
-	});
+    auto messengerContacts = result->readObject("viewer").readObject("messenger_contacts");
+    auto nodes = messengerContacts.readArray("nodes");
+    auto friends = std::vector<QFacebookJsonReader>{};
+    std::copy_if(std::begin(nodes), std::end(nodes), std::back_inserter(friends), [](const QFacebookJsonReader &v) {
+        return v.readObject("represented_profile").readString("friendship_status") == "ARE_FRIENDS";
+    });
 
-	std::transform(std::begin(friends), std::end(friends), std::back_inserter(m_contacts), [](const QFacebookJsonReader &v){
-		return QFacebookContact::fromJson(v);
-	});
+    std::transform(
+        std::begin(friends), std::end(friends), std::back_inserter(m_contacts),
+        [](const QFacebookJsonReader &v) { return QFacebookContact::fromJson(v); });
 
-	auto pageInfo = messengerContacts.readObject("page_info");
-	if (!pageInfo.readBool("has_next_page"))
-	{
-		emit finished(QFacebookDownloadContactsResult{pageInfo.readString("delta_cursor").toUtf8(), m_contacts});
-		deleteLater();
-		return;
-	}
+    auto pageInfo = messengerContacts.readObject("page_info");
+    if (!pageInfo.readBool("has_next_page"))
+    {
+        emit finished(QFacebookDownloadContactsResult{pageInfo.readString("delta_cursor").toUtf8(), m_contacts});
+        deleteLater();
+        return;
+    }
 
-	auto afterReply = m_httpApi.usersQueryAfter(m_facebookSession.accessToken(), pageInfo.readString("end_cursor").toUtf8());
-	connect(afterReply, &QFacebookHttpReply::finished, this, &QFacebookDownloadContactsJob::replyFinished);
+    auto afterReply =
+        m_httpApi.usersQueryAfter(m_facebookSession.accessToken(), pageInfo.readString("end_cursor").toUtf8());
+    connect(afterReply, &QFacebookHttpReply::finished, this, &QFacebookDownloadContactsJob::replyFinished);
 }
 catch (QFacebookInvalidDataException &)
 {
-	deleteLater();
+    deleteLater();
 }

@@ -26,15 +26,15 @@
 #include "widgets/chat-edit-box.h"
 #include "widgets/custom-input.h"
 
-UnderlineAction::UnderlineAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+UnderlineAction::UnderlineAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
     setCheckable(true);
-	setIcon(KaduIcon{"format-text-underline"});
-	setName(QStringLiteral("underlineAction"));
-	setText(tr("Underline"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"format-text-underline"});
+    setName(QStringLiteral("underlineAction"));
+    setText(tr("Underline"));
+    setType(ActionDescription::TypeChat);
 }
 
 UnderlineAction::~UnderlineAction()
@@ -43,29 +43,29 @@ UnderlineAction::~UnderlineAction()
 
 void UnderlineAction::actionTriggered(QAction *sender, bool toggled)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	chatEditBox->inputBox()->setFontUnderline(toggled);
+    chatEditBox->inputBox()->setFontUnderline(toggled);
 }
 
-void UnderlineAction::updateActionState(Action* action)
+void UnderlineAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	auto chat = action->context()->chat();
-	if (!chat)
-		return;
+    auto chat = action->context()->chat();
+    if (!chat)
+        return;
 
-	auto protocol = chat.chatAccount().protocolHandler();
-	if (!protocol)
-		return;
+    auto protocol = chat.chatAccount().protocolHandler();
+    if (!protocol)
+        return;
 
-	if (!protocol->protocolFactory())
-		return;
+    if (!protocol->protocolFactory())
+        return;
 
-	action->setEnabled(protocol->protocolFactory()->name() == "gadu");
+    action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
 
 #include "moc_underline-action.cpp"

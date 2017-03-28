@@ -51,34 +51,33 @@ class Roster;
 
 class KADUAPI RosterReplacer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit RosterReplacer(QObject *parent = nullptr);
-	virtual ~RosterReplacer();
+    Q_INVOKABLE explicit RosterReplacer(QObject *parent = nullptr);
+    virtual ~RosterReplacer();
 
-	QPair<QList<Contact>, QList<Contact>> replaceRoster(Account account, const BuddyList &buddies, bool ask);
+    QPair<QList<Contact>, QList<Contact>> replaceRoster(Account account, const BuddyList &buddies, bool ask);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<Myself> m_myself;
-	QPointer<Roster> m_roster;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<Myself> m_myself;
+    QPointer<Roster> m_roster;
 
-	bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
-	QList<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
-	void performRenames(const QMap<Buddy, Contact> &contactsToRename);
-	QPair<QList<Contact>, QList<Contact>> registerBuddies(Account account, const BuddyList &buddies, bool ask);
-	void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
+    bool askForAddingContacts(const QMap<Buddy, Contact> &contactsToAdd, const QMap<Buddy, Contact> &contactsToRename);
+    QList<Contact> performAdds(const QMap<Buddy, Contact> &contactsToAdd);
+    void performRenames(const QMap<Buddy, Contact> &contactsToRename);
+    QPair<QList<Contact>, QList<Contact>> registerBuddies(Account account, const BuddyList &buddies, bool ask);
+    void copySupportedBuddyInformation(const Buddy &destination, const Buddy &source);
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setRoster(Roster *roster);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setRoster(Roster *roster);
 };
 
 /**

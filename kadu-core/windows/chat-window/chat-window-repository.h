@@ -24,8 +24,8 @@
 #include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
-#include "misc/iterator.h"
 #include "exports.h"
+#include "misc/iterator.h"
 
 class ChatWidget;
 class ChatWindow;
@@ -49,75 +49,74 @@ class ChatWindow;
  */
 class KADUAPI ChatWindowRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Storage = std::map<Chat, ChatWindow *>;
-	using WrappedIterator = Storage::iterator;
+    using Storage = std::map<Chat, ChatWindow *>;
+    using WrappedIterator = Storage::iterator;
 
 public:
-	using Iterator = IteratorWrapper<WrappedIterator, ChatWindow *>;
+    using Iterator = IteratorWrapper<WrappedIterator, ChatWindow *>;
 
-	Q_INVOKABLE explicit ChatWindowRepository(QObject *parent = nullptr);
-	virtual ~ChatWindowRepository();
+    Q_INVOKABLE explicit ChatWindowRepository(QObject *parent = nullptr);
+    virtual ~ChatWindowRepository();
 
-	/**
-	 * @short Begin iterator that returns ChatWindow *.
-	 */
-	Iterator begin();
+    /**
+     * @short Begin iterator that returns ChatWindow *.
+     */
+    Iterator begin();
 
-	/**
-	 * @short Begin iterator that returns ChatWindow *.
-	 */
-	Iterator end();
+    /**
+     * @short Begin iterator that returns ChatWindow *.
+     */
+    Iterator end();
 
-	/**
-	 * @short Return true if repository has chat window for given chat.
-	 */
-	bool hasWindowForChat(const Chat &chat) const;
+    /**
+     * @short Return true if repository has chat window for given chat.
+     */
+    bool hasWindowForChat(const Chat &chat) const;
 
-	/**
-	 * @short Return ChatWindow for given chatWidget.
-	 * @param chat chat to get ChatWindow for
-	 * @return ChatWindow for given chat
-	 *
-	 * If chat is null then nullptr is returned. If repository does contain chat then
-	 * it is returned. Else nullptr is returned.
-	 */
-	ChatWindow * windowForChat(const Chat &chat);
+    /**
+     * @short Return ChatWindow for given chatWidget.
+     * @param chat chat to get ChatWindow for
+     * @return ChatWindow for given chat
+     *
+     * If chat is null then nullptr is returned. If repository does contain chat then
+     * it is returned. Else nullptr is returned.
+     */
+    ChatWindow *windowForChat(const Chat &chat);
 
 public slots:
-	/**
-	 * @short Add new chatWindow to repository.
-	 *
-	 * Add new chatWindow to repository only if it is valid and not already in repository.
-	 */
-	void addChatWindow(ChatWindow *chatWindow);
+    /**
+     * @short Add new chatWindow to repository.
+     *
+     * Add new chatWindow to repository only if it is valid and not already in repository.
+     */
+    void addChatWindow(ChatWindow *chatWindow);
 
-	/**
-	 * @short Remove chatWindow from repository.
-	 *
-	 * Remove chatWindow from repository only if it is  already in repository.
-	 */
-	void removeChatWindow(ChatWindow *chatWindow);
+    /**
+     * @short Remove chatWindow from repository.
+     *
+     * Remove chatWindow from repository only if it is  already in repository.
+     */
+    void removeChatWindow(ChatWindow *chatWindow);
 
 private:
-	static ChatWindow * converter(WrappedIterator iterator);
+    static ChatWindow *converter(WrappedIterator iterator);
 
-	Storage m_windows;
+    Storage m_windows;
 
 private slots:
-	INJEQT_DONE void done();
-
+    INJEQT_DONE void done();
 };
 
 inline ChatWindowRepository::Iterator begin(ChatWindowRepository *chatWindowRepository)
 {
-	return chatWindowRepository->begin();
+    return chatWindowRepository->begin();
 }
 
 inline ChatWindowRepository::Iterator end(ChatWindowRepository *chatWindowRepository)
 {
-	return chatWindowRepository->end();
+    return chatWindowRepository->end();
 }
 
 /**

@@ -20,8 +20,7 @@
 
 #include "dom-processor-service.h"
 
-DomProcessorService::DomProcessorService(QObject *parent) :
-		QObject(parent)
+DomProcessorService::DomProcessorService(QObject *parent) : QObject(parent)
 {
 }
 

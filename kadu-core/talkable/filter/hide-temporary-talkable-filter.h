@@ -23,8 +23,8 @@
 
 #include <QtCore/QMetaType>
 
-#include "talkable/filter/talkable-filter.h"
 #include "exports.h"
+#include "talkable/filter/talkable-filter.h"
 
 /**
  * @addtogroup Talkable
@@ -40,29 +40,28 @@
  */
 class KADUAPI HideTemporaryTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool Enabled;
+    bool Enabled;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of HideTemporaryTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit HideTemporaryTalkableFilter(QObject *parent = nullptr);
-	virtual ~HideTemporaryTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of HideTemporaryTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit HideTemporaryTalkableFilter(QObject *parent = nullptr);
+    virtual ~HideTemporaryTalkableFilter();
 
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Enable or disalbe filter.
-	 * @param enabled new value of enabled property
-	 */
-	void setEnabled(bool enabled);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Enable or disalbe filter.
+     * @param enabled new value of enabled property
+     */
+    void setEnabled(bool enabled);
 };
 
 /**
@@ -71,4 +70,4 @@ public:
 
 Q_DECLARE_METATYPE(HideTemporaryTalkableFilter *)
 
-#endif // HIDE_TEMPORARY_TALKABLE_FILTER_H
+#endif   // HIDE_TEMPORARY_TALKABLE_FILTER_H

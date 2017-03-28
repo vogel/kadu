@@ -22,36 +22,32 @@
 #ifndef NETWORK_PROXY_H
 #define NETWORK_PROXY_H
 
+#include "exports.h"
 #include "network/proxy/network-proxy-shared.h"
 #include "storage/shared-base.h"
-#include "exports.h"
 
 class KADUAPI NetworkProxy : public SharedBase<NetworkProxyShared>
 {
-	KaduSharedBaseClass(NetworkProxy)
+    KaduSharedBaseClass(NetworkProxy)
 
-public:
-	static NetworkProxy null;
+        public : static NetworkProxy null;
 
-	NetworkProxy();
-	NetworkProxy(NetworkProxyShared *data);
-	explicit NetworkProxy(QObject *data);
-	NetworkProxy(const NetworkProxy &copy);
+    NetworkProxy();
+    NetworkProxy(NetworkProxyShared *data);
+    explicit NetworkProxy(QObject *data);
+    NetworkProxy(const NetworkProxy &copy);
 
-	virtual ~NetworkProxy();
+    virtual ~NetworkProxy();
 
-	KaduSharedBase_PropertyCRW(QString, type, Type)
-	KaduSharedBase_PropertyCRW(QString, address, Address)
-	KaduSharedBase_Property(int, port, Port)
-	KaduSharedBase_PropertyCRW(QString, user, User)
-	KaduSharedBase_PropertyCRW(QString, password, Password)
-	KaduSharedBase_PropertyCRW(QString, pollingUrl, PollingUrl)
-	KaduSharedBase_PropertyRead(QString, displayName, DisplayName)
-
+    KaduSharedBase_PropertyCRW(QString, type, Type) KaduSharedBase_PropertyCRW(QString, address, Address)
+        KaduSharedBase_Property(int, port, Port) KaduSharedBase_PropertyCRW(QString, user, User)
+            KaduSharedBase_PropertyCRW(QString, password, Password)
+                KaduSharedBase_PropertyCRW(QString, pollingUrl, PollingUrl)
+                    KaduSharedBase_PropertyRead(QString, displayName, DisplayName)
 };
 
 KADUAPI QNetworkProxy toQNetworkProxy(const NetworkProxy &networkProxy);
 
 Q_DECLARE_METATYPE(NetworkProxy)
 
-#endif // NETWORK_PROXY_H
+#endif   // NETWORK_PROXY_H

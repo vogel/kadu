@@ -23,7 +23,7 @@
 #include <QtCore/QObject>
 
 extern "C" {
-#	include <libotr/proto.h>
+#include <libotr/proto.h>
 }
 
 class Account;
@@ -33,22 +33,21 @@ class OtrPolicy;
 
 class OtrPolicyService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static OtrlPolicy wrapperOtrPolicy(void *data, ConnContext *context);
+    static OtrlPolicy wrapperOtrPolicy(void *data, ConnContext *context);
 
-	Q_INVOKABLE OtrPolicyService();
-	virtual ~OtrPolicyService();
+    Q_INVOKABLE OtrPolicyService();
+    virtual ~OtrPolicyService();
 
-	void setAccountPolicy(const Account &account, const OtrPolicy &policy);
-	OtrPolicy accountPolicy(const Account &account) const;
+    void setAccountPolicy(const Account &account, const OtrPolicy &policy);
+    OtrPolicy accountPolicy(const Account &account) const;
 
-	void setBuddyPolicy(const Buddy &buddy, const OtrPolicy &policy);
-	OtrPolicy buddyPolicy(const Buddy &buddy) const;
+    void setBuddyPolicy(const Buddy &buddy, const OtrPolicy &policy);
+    OtrPolicy buddyPolicy(const Buddy &buddy) const;
 
-	OtrPolicy contactPolicy(const Contact &contact) const;
-
+    OtrPolicy contactPolicy(const Contact &contact) const;
 };
 
-#endif // OTR_POLICY_SERVICE_H
+#endif   // OTR_POLICY_SERVICE_H

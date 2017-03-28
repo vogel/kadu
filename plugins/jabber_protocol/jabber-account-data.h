@@ -28,69 +28,67 @@ class QString;
 
 class JabberAccountData final
 {
-
 public:
-	enum EncryptionFlag
-	{
-		Encryption_No = 0,
-		Encryption_Yes = 1,
-		Encryption_Auto = 2,
-		Encryption_Legacy = 3
-	};
+    enum EncryptionFlag
+    {
+        Encryption_No = 0,
+        Encryption_Yes = 1,
+        Encryption_Auto = 2,
+        Encryption_Legacy = 3
+    };
 
-	enum AllowPlainType
-	{
-		NoAllowPlain = 0,
-		AllowPlain = 1,
-		AllowPlainOverTLS = 2
-	};
+    enum AllowPlainType
+    {
+        NoAllowPlain = 0,
+        AllowPlain = 1,
+        AllowPlainOverTLS = 2
+    };
 
-	explicit JabberAccountData(AccountShared *data);
-	~JabberAccountData();
+    explicit JabberAccountData(AccountShared *data);
+    ~JabberAccountData();
 
-	int priority() const;
-	void setPriority(int priority) const;
+    int priority() const;
+    void setPriority(int priority) const;
 
-	QString resource(SystemInfo &systemInfo) const;
-	void setResource(const QString &resource) const;
+    QString resource(SystemInfo &systemInfo) const;
+    void setResource(const QString &resource) const;
 
-	bool autoResource() const;
-	void setAutoResource(bool autoResource) const;
+    bool autoResource() const;
+    void setAutoResource(bool autoResource) const;
 
-	bool useCustomHostPort() const;
-	void setUseCustomHostPort(bool useCustomHostPort) const;
+    bool useCustomHostPort() const;
+    void setUseCustomHostPort(bool useCustomHostPort) const;
 
-	QString customHost() const;
-	void setCustomHost(const QString &customHost) const;
+    QString customHost() const;
+    void setCustomHost(const QString &customHost) const;
 
-	int customPort() const;
-	void setCustomPort(int customPort) const;
+    int customPort() const;
+    void setCustomPort(int customPort) const;
 
-	EncryptionFlag encryptionMode() const;
-	void setEncryptionMode(EncryptionFlag encryptionMode) const;
+    EncryptionFlag encryptionMode() const;
+    void setEncryptionMode(EncryptionFlag encryptionMode) const;
 
-	AllowPlainType plainAuthMode() const;
-	void setPlainAuthMode(AllowPlainType plainAuthMode) const;
+    AllowPlainType plainAuthMode() const;
+    void setPlainAuthMode(AllowPlainType plainAuthMode) const;
 
-	QString tlsOverrideDomain() const;
-	void setTlsOverrideDomain(const QString &tlsOverrideDomain) const;
+    QString tlsOverrideDomain() const;
+    void setTlsOverrideDomain(const QString &tlsOverrideDomain) const;
 
-	bool sendTypingNotification() const;
-	void setSendTypingNotification(bool sendTypingNotification) const;
+    bool sendTypingNotification() const;
+    void setSendTypingNotification(bool sendTypingNotification) const;
 
-	bool sendGoneNotification() const;
-	void setSendGoneNotification(bool sendGoneNotification) const;
+    bool sendGoneNotification() const;
+    void setSendGoneNotification(bool sendGoneNotification) const;
 
-	bool publishSystemInfo() const;
-	void setPublishSystemInfo(bool publishSystemInfo) const;
+    bool publishSystemInfo() const;
+    void setPublishSystemInfo(bool publishSystemInfo) const;
 
-	QString dataTransferProxy() const;
-	void setDataTransferProxy(const QString &dataTransferProxy);
+    QString dataTransferProxy() const;
+    void setDataTransferProxy(const QString &dataTransferProxy);
 
-	bool requireDataTransferProxy() const;
-	void setRequireDataTransferProxy(bool requireDataTransferProxy);
+    bool requireDataTransferProxy() const;
+    void setRequireDataTransferProxy(bool requireDataTransferProxy);
 
 private:
-	AccountShared *m_data;
-
+    AccountShared *m_data;
 };

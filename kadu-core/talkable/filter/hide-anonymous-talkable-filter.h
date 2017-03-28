@@ -37,29 +37,28 @@
  */
 class HideAnonymousTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool Enabled;
+    bool Enabled;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of HideAnonymousTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit HideAnonymousTalkableFilter(QObject *parent = nullptr);
-	virtual ~HideAnonymousTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of HideAnonymousTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit HideAnonymousTalkableFilter(QObject *parent = nullptr);
+    virtual ~HideAnonymousTalkableFilter();
 
-	void setEnabled(bool enabled);
+    void setEnabled(bool enabled);
 
-	virtual FilterResult filterChat(const Chat &chat);
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
-
+    virtual FilterResult filterChat(const Chat &chat);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 };
 
 /**
  * @}
  */
 
-#endif // HIDE_ANONYMOUS_TALKABLE_FILTER_H
+#endif   // HIDE_ANONYMOUS_TALKABLE_FILTER_H

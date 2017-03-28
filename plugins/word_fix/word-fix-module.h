@@ -23,9 +23,9 @@
 
 class WordFixModule : public injeqt::module
 {
-
 public:
-	WordFixModule();
-	virtual ~WordFixModule() {}
-
+    WordFixModule();
+    virtual ~WordFixModule()
+    {
+    }
 };

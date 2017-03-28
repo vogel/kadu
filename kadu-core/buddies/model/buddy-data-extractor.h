@@ -33,22 +33,20 @@ class QVariant;
 
 class BuddyDataExtractor : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyDataExtractor(QObject *parent = nullptr);
-	virtual ~BuddyDataExtractor();
+    Q_INVOKABLE explicit BuddyDataExtractor(QObject *parent = nullptr);
+    virtual ~BuddyDataExtractor();
 
-	QVariant decoration(const Buddy &buddy);
-	QVariant data(const Buddy &buddy, int role);
+    QVariant decoration(const Buddy &buddy);
+    QVariant data(const Buddy &buddy, int role);
 
 private:
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };
-

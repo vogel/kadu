@@ -27,8 +27,7 @@
 #include "misc/paths-provider.h"
 #include "windows/main-configuration-window-service.h"
 
-MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) :
-		QObject{parent}
+MpdPlayerPluginObject::MpdPlayerPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,36 +35,39 @@ MpdPlayerPluginObject::~MpdPlayerPluginObject()
 {
 }
 
-void MpdPlayerPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void MpdPlayerPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void MpdPlayerPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void MpdPlayerPluginObject::setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer)
 {
-	m_mpdMediaPlayer = mpdMediaPlayer;
+    m_mpdMediaPlayer = mpdMediaPlayer;
 }
 
 void MpdPlayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void MpdPlayerPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mpd_config.ui"));
-	m_mediaPlayer->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mpd_config.ui"));
+    m_mediaPlayer->registerMediaPlayer(m_mpdMediaPlayer, m_mpdMediaPlayer);
 }
 
 void MpdPlayerPluginObject::done()
 {
-	m_mediaPlayer->unregisterMediaPlayer();
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mpd_config.ui"));
+    m_mediaPlayer->unregisterMediaPlayer();
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mpd_config.ui"));
 }
 
 #include "moc_mpd-player-plugin-object.cpp"

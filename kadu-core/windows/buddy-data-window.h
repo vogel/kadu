@@ -23,9 +23,9 @@
 #pragma once
 
 #include "buddies/buddy.h"
+#include "exports.h"
 #include "widgets/buddy-options-configuration-widget.h"
 #include "widgets/configuration-value-state-notifier.h"
-#include "exports.h"
 
 #include <QtCore/QMap>
 #include <QtWidgets/QWidget>
@@ -56,75 +56,84 @@ class Myself;
 
 class KADUAPI BuddyDataWindow : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Myself> m_myself;
+    QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Myself> m_myself;
 
-	QMap<BuddyConfigurationWidgetFactory *, BuddyConfigurationWidget *> BuddyConfigurationWidgets;
+    QMap<BuddyConfigurationWidgetFactory *, BuddyConfigurationWidget *> BuddyConfigurationWidgets;
 
-	Buddy MyBuddy;
-	BuddyGeneralConfigurationWidget *ContactTab;
-	BuddyGroupsConfigurationWidget *GroupsTab;
-	BuddyPersonalInfoConfigurationWidget *PersonalInfoTab;
-	BuddyOptionsConfigurationWidget *OptionsTab;
+    Buddy MyBuddy;
+    BuddyGeneralConfigurationWidget *ContactTab;
+    BuddyGroupsConfigurationWidget *GroupsTab;
+    BuddyPersonalInfoConfigurationWidget *PersonalInfoTab;
+    BuddyOptionsConfigurationWidget *OptionsTab;
 
-	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
+    CompositeConfigurationValueStateNotifier *ValueStateNotifier;
 
-	QTabWidget *TabWidget;
-	QPushButton *OkButton;
-	QPushButton *ApplyButton;
-	QPushButton *CancelButton;
+    QTabWidget *TabWidget;
+    QPushButton *OkButton;
+    QPushButton *ApplyButton;
+    QPushButton *CancelButton;
 
-	void createGui();
-	void createTabs(QLayout *layout);
-	void createGeneralTab(QTabWidget *tabWidget);
-	void createGroupsTab(QTabWidget *tabWidget);
-	void createPersonalInfoTab(QTabWidget *tabWidget);
-	void createOptionsTab(QTabWidget *tabWidget);
-	void createButtons(QLayout *layout);
+    void createGui();
+    void createTabs(QLayout *layout);
+    void createGeneralTab(QTabWidget *tabWidget);
+    void createGroupsTab(QTabWidget *tabWidget);
+    void createPersonalInfoTab(QTabWidget *tabWidget);
+    void createOptionsTab(QTabWidget *tabWidget);
+    void createButtons(QLayout *layout);
 
-	void applyBuddyConfigurationWidgets();
+    void applyBuddyConfigurationWidgets();
 
 private slots:
-	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(
+        BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_INIT void init();
 
-	void factoryRegistered(BuddyConfigurationWidgetFactory *factory);
-	void factoryUnregistered(BuddyConfigurationWidgetFactory *factory);
+    void factoryRegistered(BuddyConfigurationWidgetFactory *factory);
+    void factoryUnregistered(BuddyConfigurationWidgetFactory *factory);
 
-	void stateChangedSlot(ConfigurationValueState state);
+    void stateChangedSlot(ConfigurationValueState state);
 
-	void updateBuddy();
-	void updateBuddyAndClose();
-	void buddyRemoved(const Buddy &buddy);
+    void updateBuddy();
+    void updateBuddyAndClose();
+    void buddyRemoved(const Buddy &buddy);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit BuddyDataWindow(const Buddy &buddy);
-	virtual ~BuddyDataWindow();
+    explicit BuddyDataWindow(const Buddy &buddy);
+    virtual ~BuddyDataWindow();
 
-	QList<BuddyConfigurationWidget *> buddyConfigurationWidgets() const;
+    QList<BuddyConfigurationWidget *> buddyConfigurationWidgets() const;
 
-	void show();
+    void show();
 
-	Buddy buddy() const { return MyBuddy; }
-	QTabWidget * tabWidget() const { return TabWidget; }
-	QWidget * optionsTab() const { return OptionsTab; }
+    Buddy buddy() const
+    {
+        return MyBuddy;
+    }
+    QTabWidget *tabWidget() const
+    {
+        return TabWidget;
+    }
+    QWidget *optionsTab() const
+    {
+        return OptionsTab;
+    }
 
 signals:
-	void widgetAdded(BuddyConfigurationWidget *widget);
-	void widgetRemoved(BuddyConfigurationWidget *widget);
+    void widgetAdded(BuddyConfigurationWidget *widget);
+    void widgetRemoved(BuddyConfigurationWidget *widget);
 
-	void destroyed(const Buddy &buddy);
-
+    void destroyed(const Buddy &buddy);
 };

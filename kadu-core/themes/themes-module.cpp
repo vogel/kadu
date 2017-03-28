@@ -23,7 +23,7 @@
 
 ThemesModule::ThemesModule()
 {
-	add_type<IconThemeManager>();
+    add_type<IconThemeManager>();
 }
 
 ThemesModule::~ThemesModule()

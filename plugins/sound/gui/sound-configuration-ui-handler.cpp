@@ -27,14 +27,13 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"
+#include "themes.h"
 #include "widgets/configuration/config-combo-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/path-list-edit.h"
 #include "windows/main-configuration-window.h"
-#include "themes.h"
 
-SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) :
-		QObject{parent}
+SoundConfigurationUiHandler::SoundConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -44,94 +43,96 @@ SoundConfigurationUiHandler::~SoundConfigurationUiHandler()
 
 void SoundConfigurationUiHandler::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundConfigurationUiHandler::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
 void SoundConfigurationUiHandler::setSoundThemeManager(SoundThemeManager *soundThemeManager)
 {
-	m_soundThemeManager = soundThemeManager;
+    m_soundThemeManager = soundThemeManager;
 }
 
 void SoundConfigurationUiHandler::setSoundThemes()
 {
-	if (!m_themesComboBox)
-		return;
+    if (!m_themesComboBox)
+        return;
 
-	m_soundThemeManager->themes()->setPaths(m_themesPaths->pathList());
+    m_soundThemeManager->themes()->setPaths(m_themesPaths->pathList());
 
-	auto soundThemeNames = m_soundThemeManager->themes()->themes();
-	soundThemeNames.sort();
+    auto soundThemeNames = m_soundThemeManager->themes()->themes();
+    soundThemeNames.sort();
 
-	auto soundThemeValues = soundThemeNames;
+    auto soundThemeValues = soundThemeNames;
 
-	soundThemeNames.prepend(tr("Custom"));
-	soundThemeValues.prepend("Custom");
+    soundThemeNames.prepend(tr("Custom"));
+    soundThemeValues.prepend("Custom");
 
-	m_themesComboBox->setItems(soundThemeValues, soundThemeNames);
-	m_themesComboBox->setCurrentIndex(m_themesComboBox->findText(m_soundThemeManager->themes()->theme()));
+    m_themesComboBox->setItems(soundThemeValues, soundThemeNames);
+    m_themesComboBox->setCurrentIndex(m_themesComboBox->findText(m_soundThemeManager->themes()->theme()));
 }
 
 void SoundConfigurationUiHandler::connectWidgets()
 {
-	if (!m_themesComboBox || !m_configurationWidget)
-		return;
+    if (!m_themesComboBox || !m_configurationWidget)
+        return;
 
-	connect(m_themesComboBox, SIGNAL(activated(int)), m_configurationWidget, SLOT(themeChanged(int)));
-	connect(m_themesComboBox, SIGNAL(activated(const QString &)), this, SLOT(themeChanged(const QString &)));
-	m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
+    connect(m_themesComboBox, SIGNAL(activated(int)), m_configurationWidget, SLOT(themeChanged(int)));
+    connect(m_themesComboBox, SIGNAL(activated(const QString &)), this, SLOT(themeChanged(const QString &)));
+    m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
 }
 
 void SoundConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), m_soundManager, SLOT(testSoundPlaying()));
+    connect(
+        mainConfigurationWindow->widget()->widgetById("sound/testPlay"), SIGNAL(clicked()), m_soundManager,
+        SLOT(testSoundPlaying()));
 
-	m_themesComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
-	m_themesPaths = static_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
-	//connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
+    m_themesComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("sound/themes"));
+    m_themesPaths = static_cast<PathListEdit *>(mainConfigurationWindow->widget()->widgetById("soundPaths"));
+    // connect(ThemesPaths, SIGNAL(changed()), SoundManager::instance(), SLOT(setSoundThemes()));
 
-	setSoundThemes();
+    setSoundThemes();
 
-	connectWidgets();
+    connectWidgets();
 }
 
 void SoundConfigurationUiHandler::mainConfigurationWindowDestroyed()
 {
-	m_themesComboBox = nullptr;
-	m_themesPaths = nullptr;
+    m_themesComboBox = nullptr;
+    m_themesPaths = nullptr;
 }
 
 void SoundConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-	if (m_themesComboBox->currentIndex() != 0)
-		m_soundThemeManager->applyTheme(m_themesComboBox->currentText());
+    if (m_themesComboBox->currentIndex() != 0)
+        m_soundThemeManager->applyTheme(m_themesComboBox->currentText());
 
-	m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
+    m_configurationWidget->themeChanged(m_themesComboBox->currentIndex());
 }
 
-NotifierConfigurationWidget * SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget *SoundConfigurationUiHandler::createConfigurationWidget(QWidget *parent)
 {
-	m_configurationWidget = m_pluginInjectedFactory->makeInjected<SoundConfigurationWidget>(m_soundManager, parent);
-	connect(m_configurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
+    m_configurationWidget = m_pluginInjectedFactory->makeInjected<SoundConfigurationWidget>(m_soundManager, parent);
+    connect(m_configurationWidget, SIGNAL(soundFileEdited()), this, SLOT(soundFileEdited()));
 
-	connectWidgets();
+    connectWidgets();
 
-	return m_configurationWidget;
+    return m_configurationWidget;
 }
 
 void SoundConfigurationUiHandler::themeChanged(const QString &theme)
 {
-	m_soundThemeManager->applyTheme(theme);
+    m_soundThemeManager->applyTheme(theme);
 }
 
 void SoundConfigurationUiHandler::soundFileEdited()
 {
-	if (m_themesComboBox->currentIndex() != 0)
-		m_themesComboBox->setCurrentIndex(0);
+    if (m_themesComboBox->currentIndex() != 0)
+        m_themesComboBox->setCurrentIndex(0);
 }
 
 #include "moc_sound-configuration-ui-handler.cpp"

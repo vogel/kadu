@@ -40,60 +40,59 @@ class MediaPlayer;
 
 class MPRISController : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum PlayerStatus
-	{
-		StatusPlaying,
-		StatusPaused,
-		StatusStopped
-	};
+    enum PlayerStatus
+    {
+        StatusPlaying,
+        StatusPaused,
+        StatusStopped
+    };
 
 private:
-	QPointer<MediaPlayer> m_mediaPlayer;
+    QPointer<MediaPlayer> m_mediaPlayer;
 
-	PlayerStatus CurrentStatus;
-	TrackInfo CurrentTrack;
+    PlayerStatus CurrentStatus;
+    TrackInfo CurrentTrack;
 
-	bool Active;
-	QString Service;
+    bool Active;
+    QString Service;
 
-	void activate();
-	void deactivate();
+    void activate();
+    void deactivate();
 
-	void updateStatus(const PlayerStatus newStatus);
-	void updateStatus(const QString &newStatus);
+    void updateStatus(const PlayerStatus newStatus);
+    void updateStatus(const QString &newStatus);
 
-	TrackInfo toTrackInfo(const QVariantMap &metadata) const;
-	void updateMetadata(const QVariantMap &metadata);
+    TrackInfo toTrackInfo(const QVariantMap &metadata) const;
+    void updateMetadata(const QVariantMap &metadata);
 
 private slots:
-	void nameOwnerChanged(const QString &service, const QString &previousOwner, const QString &currentOwner);
-	void propertiesChanged(const QDBusMessage &message);
+    void nameOwnerChanged(const QString &service, const QString &previousOwner, const QString &currentOwner);
+    void propertiesChanged(const QDBusMessage &message);
 
 public:
-	explicit MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent = nullptr);
-	virtual ~MPRISController();
+    explicit MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent = nullptr);
+    virtual ~MPRISController();
 
-	void call(const QString &methodName);
+    void call(const QString &methodName);
 
-	QString identity() const;
+    QString identity() const;
 
-	PlayerStatus status() const;
-	const TrackInfo & track() const;
-	bool active() const;
+    PlayerStatus status() const;
+    const TrackInfo &track() const;
+    bool active() const;
 
-	void fetchStatus();
-	void fetchMetadata();
+    void fetchStatus();
+    void fetchMetadata();
 
-	int getCurrentPosition() const;
+    int getCurrentPosition() const;
 
-	int getVolume() const;
-	void setVolume(int volume) const;
+    int getVolume() const;
+    void setVolume(int volume) const;
 
-	QList<TrackInfo> getTrackList() const;
-
+    QList<TrackInfo> getTrackList() const;
 };
 
 #endif

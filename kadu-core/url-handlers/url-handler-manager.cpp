@@ -33,90 +33,90 @@
 
 #include "url-handler-manager.h"
 
-UrlHandlerManager::UrlHandlerManager(QObject *parent) :
-		QObject{parent}
+UrlHandlerManager::UrlHandlerManager(QObject *parent) : QObject{parent}
 {
-	// NOTE: StandardUrlHandler has to be the first one to fix bug #1894
-	registerUrlHandler(&standardUrlHandler);
-	registerUrlHandler(&mailUrlHandler);
+    // NOTE: StandardUrlHandler has to be the first one to fix bug #1894
+    registerUrlHandler(&standardUrlHandler);
+    registerUrlHandler(&mailUrlHandler);
 }
 
 UrlHandlerManager::~UrlHandlerManager()
 {
 }
 
-void UrlHandlerManager::setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
+void UrlHandlerManager::setClipboardHtmlTransformerService(
+    ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
 {
-	m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
+    m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
 }
 
 void UrlHandlerManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void UrlHandlerManager::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domVisitorProviderRepository = domVisitorProviderRepository;
+    m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void UrlHandlerManager::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void UrlHandlerManager::init()
 {
-	ClipboardTransformer.reset(new UrlClipboardHtmlTransformer());
-	m_clipboardHtmlTransformerService->registerTransformer(ClipboardTransformer.data());
+    ClipboardTransformer.reset(new UrlClipboardHtmlTransformer());
+    m_clipboardHtmlTransformerService->registerTransformer(ClipboardTransformer.data());
 
-	StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider(m_configuration);
-	m_domVisitorProviderRepository->addVisitorProvider(StandardUrlVisitorProvider, 0);
+    StandardUrlVisitorProvider = new StandardUrlDomVisitorProvider(m_configuration);
+    m_domVisitorProviderRepository->addVisitorProvider(StandardUrlVisitorProvider, 0);
 
-	MailUrlVisitorProvider = new MailUrlDomVisitorProvider();
-	m_domVisitorProviderRepository->addVisitorProvider(MailUrlVisitorProvider, 500);
+    MailUrlVisitorProvider = new MailUrlDomVisitorProvider();
+    m_domVisitorProviderRepository->addVisitorProvider(MailUrlVisitorProvider, 500);
 }
 
 void UrlHandlerManager::done()
 {
-	m_clipboardHtmlTransformerService->unregisterTransformer(ClipboardTransformer.data());
-	ClipboardTransformer.reset();
+    m_clipboardHtmlTransformerService->unregisterTransformer(ClipboardTransformer.data());
+    ClipboardTransformer.reset();
 
-	m_domVisitorProviderRepository->removeVisitorProvider(StandardUrlVisitorProvider);
-	m_domVisitorProviderRepository->removeVisitorProvider(MailUrlVisitorProvider);
+    m_domVisitorProviderRepository->removeVisitorProvider(StandardUrlVisitorProvider);
+    m_domVisitorProviderRepository->removeVisitorProvider(MailUrlVisitorProvider);
 
-	delete StandardUrlVisitorProvider;
-	delete MailUrlVisitorProvider;
+    delete StandardUrlVisitorProvider;
+    delete MailUrlVisitorProvider;
 }
 
 void UrlHandlerManager::registerUrlHandler(UrlHandler *handler)
 {
-	RegisteredHandlers.append(handler);
+    RegisteredHandlers.append(handler);
 }
 
 void UrlHandlerManager::unregisterUrlHandler(UrlHandler *handler)
 {
-	RegisteredHandlers.removeAll(handler);
+    RegisteredHandlers.removeAll(handler);
 }
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
-	foreach (UrlHandler *handler, RegisteredHandlers)
-	{
-		if (handler->isUrlValid(url))
-		{
-			handler->openUrl(m_urlOpener, url, disableMenu);
-			return;
-		}
-	}
+    foreach (UrlHandler *handler, RegisteredHandlers)
+    {
+        if (handler->isUrlValid(url))
+        {
+            handler->openUrl(m_urlOpener, url, disableMenu);
+            return;
+        }
+    }
 }
 
-const QRegExp & UrlHandlerManager::mailRegExp()
+const QRegExp &UrlHandlerManager::mailRegExp()
 {
-	return mailUrlHandler.mailRegExp();
+    return mailUrlHandler.mailRegExp();
 }
 
-const QRegExp & UrlHandlerManager::urlRegExp()
+const QRegExp &UrlHandlerManager::urlRegExp()
 {
-	return standardUrlHandler.urlRegExp();
+    return standardUrlHandler.urlRegExp();
 }

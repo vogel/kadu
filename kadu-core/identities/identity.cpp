@@ -28,26 +28,24 @@
 
 KaduSharedBaseClassImpl(Identity)
 
-Identity Identity::null;
+    Identity Identity::null;
 
 Identity::Identity()
 {
 }
 
-Identity::Identity(IdentityShared *data) :
-		SharedBase<IdentityShared>(data)
+Identity::Identity(IdentityShared *data) : SharedBase<IdentityShared>(data)
 {
 }
 
 Identity::Identity(QObject *data)
 {
-	IdentityShared *shared = qobject_cast<IdentityShared *>(data);
-	if (shared)
-		setData(shared);
+    IdentityShared *shared = qobject_cast<IdentityShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
-Identity::Identity(const Identity &copy) :
-		SharedBase<IdentityShared>(copy)
+Identity::Identity(const Identity &copy) : SharedBase<IdentityShared>(copy)
 {
 }
 
@@ -57,43 +55,35 @@ Identity::~Identity()
 
 void Identity::addAccount(Account account)
 {
-	if (!isNull())
-		data()->addAccount(account);
+    if (!isNull())
+        data()->addAccount(account);
 }
 
 void Identity::removeAccount(Account account)
 {
-	if (!isNull())
-		data()->removeAccount(account);
+    if (!isNull())
+        data()->removeAccount(account);
 }
 
 bool Identity::hasAccount(Account account) const
 {
-	return !isNull()
-			? data()->hasAccount(account)
-			: false;
+    return !isNull() ? data()->hasAccount(account) : false;
 }
 
 bool Identity::hasAnyLoadedAccount() const
 {
-	return !isNull()
-			? data()->hasAnyLoadedAccount()
-			: false;
+    return !isNull() ? data()->hasAnyLoadedAccount() : false;
 }
 
 bool Identity::isEmpty() const
 {
-	return !isNull()
-			? data()->isEmpty()
-			: true;
+    return !isNull() ? data()->isEmpty() : true;
 }
 
-StatusContainer * Identity::statusContainer() const
+StatusContainer *Identity::statusContainer() const
 {
-	return !isNull()
-			? data()->statusContainer()
-			: nullptr;
+    return !isNull() ? data()->statusContainer() : nullptr;
 }
 
 KaduSharedBase_PropertyBoolDef(Identity, Permanent, false)
-KaduSharedBase_PropertyDefCRW(Identity, QString, name, Name, QString())
+    KaduSharedBase_PropertyDefCRW(Identity, QString, name, Name, QString())

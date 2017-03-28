@@ -23,13 +23,12 @@
 
 namespace QThrift
 {
-
 class Exception : public std::exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Generic Thrift Error"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Generic Thrift Error";
+    };
 };
-
 }

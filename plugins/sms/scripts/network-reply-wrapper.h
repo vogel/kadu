@@ -26,22 +26,21 @@ class QNetworkReply;
 
 class NetworkReplyWrapper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QNetworkReply *Reply;
+    QNetworkReply *Reply;
 
 public:
-	explicit NetworkReplyWrapper(QNetworkReply *reply);
-	virtual ~NetworkReplyWrapper();
+    explicit NetworkReplyWrapper(QNetworkReply *reply);
+    virtual ~NetworkReplyWrapper();
 
 public slots:
-	bool ok();
-	QString content();
-	QString redirect();
+    bool ok();
+    QString content();
+    QString redirect();
 
 signals:
-	void finished();
-
+    void finished();
 };
 
-#endif // NETWORK_REPLY_WRAPPER_H
+#endif   // NETWORK_REPLY_WRAPPER_H

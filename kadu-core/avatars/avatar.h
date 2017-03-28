@@ -26,36 +26,33 @@
 #include <QtGui/QPixmap>
 
 #include "avatars/avatar-shared.h"
-#include "storage/shared-base.h"
 #include "exports.h"
+#include "storage/shared-base.h"
 
 class Contact;
 class StoragePoint;
 
 class KADUAPI Avatar : public SharedBase<AvatarShared>
 {
-	KaduSharedBaseClass(Avatar)
+    KaduSharedBaseClass(Avatar)
 
-public:
-	static Avatar null;
+        public : static Avatar null;
 
-	Avatar();
-	Avatar(AvatarShared *data);
-	explicit Avatar(QObject *data);
-	Avatar(const Avatar &copy);
-	virtual ~Avatar();
+    Avatar();
+    Avatar(AvatarShared *data);
+    explicit Avatar(QObject *data);
+    Avatar(const Avatar &copy);
+    virtual ~Avatar();
 
-	virtual void storeAvatar();
+    virtual void storeAvatar();
 
-	KaduSharedBase_PropertyBoolRead(Empty)
-	KaduSharedBase_PropertyCRW(QDateTime, lastUpdated, LastUpdated)
-	KaduSharedBase_PropertyCRW(QDateTime, nextUpdate, NextUpdate)
-	KaduSharedBase_PropertyCRW(QPixmap, pixmap, Pixmap)
-	KaduSharedBase_PropertyRead(QString, smallFilePath, SmallFilePath)
-	KaduSharedBase_PropertyCRW(QString, filePath, FilePath)
-
+    KaduSharedBase_PropertyBoolRead(Empty) KaduSharedBase_PropertyCRW(QDateTime, lastUpdated, LastUpdated)
+        KaduSharedBase_PropertyCRW(QDateTime, nextUpdate, NextUpdate)
+            KaduSharedBase_PropertyCRW(QPixmap, pixmap, Pixmap)
+                KaduSharedBase_PropertyRead(QString, smallFilePath, SmallFilePath)
+                    KaduSharedBase_PropertyCRW(QString, filePath, FilePath)
 };
 
 Q_DECLARE_METATYPE(Avatar)
 
-#endif // AVATAR_H
+#endif   // AVATAR_H

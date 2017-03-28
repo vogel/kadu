@@ -31,30 +31,31 @@ class PluginInjectedFactory;
 
 class KADUAPI NotifierConfigurationDataManager : public ConfigurationWindowDataManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QString EventName;
-	int UsageCount;
+    QString EventName;
+    int UsageCount;
 
-	static QMap<QString, NotifierConfigurationDataManager*> DataManagers;
-	static void dataManagerDestroyed(const QString &eventName);
+    static QMap<QString, NotifierConfigurationDataManager *> DataManagers;
+    static void dataManagerDestroyed(const QString &eventName);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void configurationWindowDestroyed();
+    void configurationWindowDestroyed();
 
 public:
-	explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = nullptr);
+    explicit NotifierConfigurationDataManager(const QString &eventName, QObject *parent = nullptr);
 
-	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
-	virtual QVariant readEntry(const QString &section, const QString &name);
+    virtual void writeEntry(const QString &section, const QString &name, const QVariant &value);
+    virtual QVariant readEntry(const QString &section, const QString &name);
 
-	static NotifierConfigurationDataManager * dataManagerForEvent(PluginInjectedFactory *pluginInjectedFactory, const QString &eventName);
+    static NotifierConfigurationDataManager *
+    dataManagerForEvent(PluginInjectedFactory *pluginInjectedFactory, const QString &eventName);
 
-	void configurationWindowCreated(ConfigurationWindow *window);
+    void configurationWindowCreated(ConfigurationWindow *window);
 };

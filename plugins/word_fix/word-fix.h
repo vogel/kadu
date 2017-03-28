@@ -44,67 +44,69 @@ class UserGroup;
  */
 class WordFix : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<Configuration> m_configuration;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<FormattedStringFactory> m_formattedStringFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	/*!
-	 * \var QMap<QString,QString> wordsList
-	 * Contains whole list of words for replacing in form:
-	 * wordList["to_replace"] = "correct_word";
-	 */
-	QMap<QString,QString> m_wordsList;
+    /*!
+     * \var QMap<QString,QString> wordsList
+     * Contains whole list of words for replacing in form:
+     * wordList["to_replace"] = "correct_word";
+     */
+    QMap<QString, QString> m_wordsList;
 
-	QRegExp ExtractBody;
+    QRegExp ExtractBody;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 
-	/*!
-	 * \fn void chatCreated(ChatWidget *chat)
-	 * This slot calls connectToClass"("Chat* chat")" to connect
-	 * the object to chat "<i>send message</i>" signal.
-	 * \param chat Pointer to the created chat window.
-	 */
-	void chatWidgetAdded(ChatWidget *chat);
+    /*!
+     * \fn void chatCreated(ChatWidget *chat)
+     * This slot calls connectToClass"("Chat* chat")" to connect
+     * the object to chat "<i>send message</i>" signal.
+     * \param chat Pointer to the created chat window.
+     */
+    void chatWidgetAdded(ChatWidget *chat);
 
-	/*!
-	 * \fn void chatDestroying(ChatWidget *chat)
-	 * This slot calls disconnectFromClass"("Chat* chat")" to disconnect
-	 * the object from chat "<i>send message</i>" signal.
-	 * \param chat Pointer to the chat window.
-	 */
-	void chatWidgetRemoved(ChatWidget *chat);
+    /*!
+     * \fn void chatDestroying(ChatWidget *chat)
+     * This slot calls disconnectFromClass"("Chat* chat")" to disconnect
+     * the object from chat "<i>send message</i>" signal.
+     * \param chat Pointer to the chat window.
+     */
+    void chatWidgetRemoved(ChatWidget *chat);
 
-	/*!
-	 * \fn void sendRequest(Chat* chat)
-	 * Handles chat message send request.
-	 * It checks configuration if words fixing is enabled. If it's not,
-	 * then the method makes no changes in input text.
-	 * \param chat Chat window which sending request is invoked by.
-	 */
-	void sendRequest(ChatWidget *chat);
+    /*!
+     * \fn void sendRequest(Chat* chat)
+     * Handles chat message send request.
+     * It checks configuration if words fixing is enabled. If it's not,
+     * then the method makes no changes in input text.
+     * \param chat Chat window which sending request is invoked by.
+     */
+    void sendRequest(ChatWidget *chat);
 
 public:
-	/*!
-	 * \fn WordFix()
-	 * Default constructor. Reads words list or (if it's not defined yet) loads default list.
-	 */
-	Q_INVOKABLE explicit WordFix(QObject *parent = nullptr);
+    /*!
+     * \fn WordFix()
+     * Default constructor. Reads words list or (if it's not defined yet) loads default list.
+     */
+    Q_INVOKABLE explicit WordFix(QObject *parent = nullptr);
 
-	/*!
-	 * \fn ~WordFix()
-	 * Default destructor.
-	 */
-	virtual ~WordFix();
+    /*!
+     * \fn ~WordFix()
+     * Default destructor.
+     */
+    virtual ~WordFix();
 
-	QMap<QString,QString> & wordsList() { return m_wordsList; }
-
+    QMap<QString, QString> &wordsList()
+    {
+        return m_wordsList;
+    }
 };

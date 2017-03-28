@@ -20,8 +20,8 @@
 #pragma once
 
 #include "accounts/account.h"
-#include "misc/iterator.h"
 #include "exports.h"
+#include "misc/iterator.h"
 
 #include <QtCore/QObject>
 #include <map>
@@ -30,40 +30,41 @@ class ChatStateService;
 
 class KADUAPI ChatStateServiceRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	using Storage = std::map<Account, ChatStateService *>;
-	using WrappedIterator = Storage::iterator;
-	using Iterator = IteratorWrapper<WrappedIterator, ChatStateService *>;
+    using Storage = std::map<Account, ChatStateService *>;
+    using WrappedIterator = Storage::iterator;
+    using Iterator = IteratorWrapper<WrappedIterator, ChatStateService *>;
 
-	Q_INVOKABLE explicit ChatStateServiceRepository(QObject *parent = nullptr) : QObject{parent} {}
-	virtual ~ChatStateServiceRepository() = default;
+    Q_INVOKABLE explicit ChatStateServiceRepository(QObject *parent = nullptr) : QObject{parent}
+    {
+    }
+    virtual ~ChatStateServiceRepository() = default;
 
-	Iterator begin();
-	Iterator end();
+    Iterator begin();
+    Iterator end();
 
-	ChatStateService * chatStateService(const Account &account) const;
+    ChatStateService *chatStateService(const Account &account) const;
 
 public slots:
-	void addChatStateService(ChatStateService *chatStateService);
-	void removeChatStateService(ChatStateService *chatStateService);
+    void addChatStateService(ChatStateService *chatStateService);
+    void removeChatStateService(ChatStateService *chatStateService);
 
 signals:
-	void chatStateServiceAdded(ChatStateService *chatStateService);
-	void chatStateServiceRemoved(ChatStateService *chatStateService);
+    void chatStateServiceAdded(ChatStateService *chatStateService);
+    void chatStateServiceRemoved(ChatStateService *chatStateService);
 
 private:
-	Storage m_chatStateServices;
-
+    Storage m_chatStateServices;
 };
 
 inline ChatStateServiceRepository::Iterator begin(ChatStateServiceRepository *chatStateServiceRepository)
 {
-	return chatStateServiceRepository->begin();
+    return chatStateServiceRepository->begin();
 }
 
 inline ChatStateServiceRepository::Iterator end(ChatStateServiceRepository *chatStateServiceRepository)
 {
-	return chatStateServiceRepository->end();
+    return chatStateServiceRepository->end();
 }

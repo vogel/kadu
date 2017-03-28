@@ -22,9 +22,9 @@
 
 #include "file-transfer/jabber-outgoing-file-transfer-handler.h"
 #include "file-transfer/jabber-stream-incoming-file-transfer-handler.h"
-#include "services/jabber-resource-service.h"
 #include "jabber-account-data.h"
 #include "jid.h"
+#include "services/jabber-resource-service.h"
 
 #include "contacts/contact-manager.h"
 #include "core/myself.h"
@@ -37,15 +37,14 @@
 
 #include <qxmpp/QXmppTransferManager.h>
 
-JabberFileTransferService::JabberFileTransferService(QXmppTransferManager *transferManager, Account account, QObject *parent) :
-		FileTransferService{parent},
-		m_transferManager{transferManager},
-		m_account{account}
+JabberFileTransferService::JabberFileTransferService(
+    QXmppTransferManager *transferManager, Account account, QObject *parent)
+        : FileTransferService{parent}, m_transferManager{transferManager}, m_account{account}
 {
-	connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
-	accountUpdated();
+    connect(account, SIGNAL(updated()), this, SLOT(accountUpdated()));
+    accountUpdated();
 
-	connect(m_transferManager, SIGNAL(fileReceived(QXmppTransferJob*)), this, SLOT(fileReceived(QXmppTransferJob*)));
+    connect(m_transferManager, SIGNAL(fileReceived(QXmppTransferJob *)), this, SLOT(fileReceived(QXmppTransferJob *)));
 }
 
 JabberFileTransferService::~JabberFileTransferService()
@@ -54,82 +53,82 @@ JabberFileTransferService::~JabberFileTransferService()
 
 void JabberFileTransferService::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void JabberFileTransferService::setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager)
 {
-	m_fileTransferHandlerManager = fileTransferHandlerManager;
+    m_fileTransferHandlerManager = fileTransferHandlerManager;
 }
 
 void JabberFileTransferService::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
 {
-	m_fileTransferStorage = fileTransferStorage;
+    m_fileTransferStorage = fileTransferStorage;
 }
 
 void JabberFileTransferService::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void JabberFileTransferService::setResourceService(JabberResourceService *resourceService)
 {
-	m_resourceService = resourceService;
+    m_resourceService = resourceService;
 }
 
-FileTransferHandler * JabberFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
+FileTransferHandler *JabberFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	switch (fileTransfer.transferDirection())
-	{
-		case FileTransferDirection::Incoming:
-			return new JabberStreamIncomingFileTransferHandler{fileTransfer};
-		case FileTransferDirection::Outgoing:
-		{
-			auto handler = new JabberOutgoingFileTransferHandler{m_transferManager, fileTransfer};
-			handler->setResourceService(m_resourceService);
-			return handler;
-		}
-		default:
-			return nullptr;
-	}
+    switch (fileTransfer.transferDirection())
+    {
+    case FileTransferDirection::Incoming:
+        return new JabberStreamIncomingFileTransferHandler{fileTransfer};
+    case FileTransferDirection::Outgoing:
+    {
+        auto handler = new JabberOutgoingFileTransferHandler{m_transferManager, fileTransfer};
+        handler->setResourceService(m_resourceService);
+        return handler;
+    }
+    default:
+        return nullptr;
+    }
 }
 
 FileTransferCanSendResult JabberFileTransferService::canSend(Contact contact)
 {
-	if (m_myself->buddy() == contact.ownerBuddy())
-		return {false, {}};
+    if (m_myself->buddy() == contact.ownerBuddy())
+        return {false, {}};
 
-	return {true, {}};
+    return {true, {}};
 }
 
 void JabberFileTransferService::accountUpdated()
 {
-	auto accountData = JabberAccountData{m_account};
-	m_transferManager->setProxy(accountData.dataTransferProxy());
-	m_transferManager->setProxyOnly(accountData.requireDataTransferProxy());
+    auto accountData = JabberAccountData{m_account};
+    m_transferManager->setProxy(accountData.dataTransferProxy());
+    m_transferManager->setProxyOnly(accountData.requireDataTransferProxy());
 }
 
 void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)
 {
-	auto jid = Jid::parse(transferJob->jid());
-	auto peer = m_contactManager->byId(m_account, jid.bare(), ActionCreateAndAdd);
+    auto jid = Jid::parse(transferJob->jid());
+    auto peer = m_contactManager->byId(m_account, jid.bare(), ActionCreateAndAdd);
 
-	auto transfer = m_fileTransferStorage->create();
-	transfer.setPeer(peer);
-	transfer.setTransferDirection(FileTransferDirection::Incoming);
-	transfer.setTransferType(FileTransferType::Stream);
-	transfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
-	transfer.setRemoteFileName(transferJob->fileName());
-	transfer.setFileSize(transferJob->fileSize());
+    auto transfer = m_fileTransferStorage->create();
+    transfer.setPeer(peer);
+    transfer.setTransferDirection(FileTransferDirection::Incoming);
+    transfer.setTransferType(FileTransferType::Stream);
+    transfer.setTransferStatus(FileTransferStatus::WaitingForAccept);
+    transfer.setRemoteFileName(transferJob->fileName());
+    transfer.setFileSize(transferJob->fileSize());
 
-	if (!m_fileTransferHandlerManager->ensureHandler(transfer))
-		return;
+    if (!m_fileTransferHandlerManager->ensureHandler(transfer))
+        return;
 
-	auto handler = qobject_cast<JabberStreamIncomingFileTransferHandler *>(transfer.handler());
-	if (handler)
-		handler->setTransferJob(transferJob);
+    auto handler = qobject_cast<JabberStreamIncomingFileTransferHandler *>(transfer.handler());
+    if (handler)
+        handler->setTransferJob(transferJob);
 
-	emit incomingFileTransfer(transfer);
+    emit incomingFileTransfer(transfer);
 }
 
 #include "moc_jabber-file-transfer-service.cpp"

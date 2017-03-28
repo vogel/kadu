@@ -41,42 +41,42 @@ class ChatListModel;
  */
 class ChatManagerAdapter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
-	 * @param model model to adapt @link BuddiesManager @endlink to
-	 *
-	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
-	 * Non-managable buddies can be added or removed from this model.
-	 */
-	explicit ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model);
-	virtual ~ChatManagerAdapter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
+     * @param model model to adapt @link BuddiesManager @endlink to
+     *
+     * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink
+     * singleton.
+     * Non-managable buddies can be added or removed from this model.
+     */
+    explicit ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model);
+    virtual ~ChatManagerAdapter();
 
 private:
-	ChatListModel *m_model;
+    ChatListModel *m_model;
 
 private slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a chat is added to @link ChatManager @endlink singleton.
-	 * @param chat added chat
-	 *
-	 * Chat is added to @link ChatListModel @endlink instance.
-	 */
-	void chatAdded(const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called after a chat is added to @link ChatManager @endlink singleton.
+     * @param chat added chat
+     *
+     * Chat is added to @link ChatListModel @endlink instance.
+     */
+    void chatAdded(const Chat &chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a chat is removed from @link ChatManager @endlink singleton.
-	 * @param chat removed chat
-	 *
-	 * Chat is removed from @link ChatListModel @endlink instance.
-	 */
-	void chatRemoved(const Chat &chat);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called after a chat is removed from @link ChatManager @endlink singleton.
+     * @param chat removed chat
+     *
+     * Chat is removed from @link ChatListModel @endlink instance.
+     */
+    void chatRemoved(const Chat &chat);
 };
 
 /**

@@ -29,14 +29,12 @@
 
 #include <stdio.h>
 
-Status::Status(StatusType statusType, const QString &description) :
-		Description(description)
+Status::Status(StatusType statusType, const QString &description) : Description(description)
 {
-	setType(statusType);
+    setType(statusType);
 }
 
-Status::Status(const Status& copyme) :
-		Type(copyme.Type), Description(copyme.Description)
+Status::Status(const Status &copyme) : Type(copyme.Type), Description(copyme.Description)
 {
 }
 
@@ -46,31 +44,30 @@ Status::~Status()
 
 void Status::setType(StatusType type)
 {
-	Type = type;
+    Type = type;
 }
 
 bool Status::isDisconnected() const
 {
-	return StatusType::Offline == Type;
+    return StatusType::Offline == Type;
 }
 
-bool Status::operator < (const Status &compare) const
+bool Status::operator<(const Status &compare) const
 {
-	return Type < compare.Type;
+    return Type < compare.Type;
 }
 
-bool Status::operator == (const Status &compare) const
+bool Status::operator==(const Status &compare) const
 {
-	return Type == compare.Type
-	       && Description == compare.Description;
+    return Type == compare.Type && Description == compare.Description;
 }
 
-bool Status::operator != (const Status& compare) const
+bool Status::operator!=(const Status &compare) const
 {
-	return !(*this == compare);
+    return !(*this == compare);
 }
 
 bool Status::hasDescription() const
 {
-	return !Description.isEmpty();
+    return !Description.isEmpty();
 }

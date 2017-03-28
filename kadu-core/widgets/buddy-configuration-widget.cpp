@@ -19,8 +19,8 @@
 
 #include "buddy-configuration-widget.h"
 
-BuddyConfigurationWidget::BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		ModalConfigurationWidget(parent), MyBuddy(buddy)
+BuddyConfigurationWidget::BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent)
+        : ModalConfigurationWidget(parent), MyBuddy(buddy)
 {
 }
 
@@ -30,7 +30,7 @@ BuddyConfigurationWidget::~BuddyConfigurationWidget()
 
 Buddy BuddyConfigurationWidget::buddy() const
 {
-	return MyBuddy;
+    return MyBuddy;
 }
 
 #include "moc_buddy-configuration-widget.cpp"

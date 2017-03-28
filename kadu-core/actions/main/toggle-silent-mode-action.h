@@ -29,21 +29,20 @@ class SilentModeService;
 
 class ToggleSilentModeAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ToggleSilentModeAction(QObject *parent = nullptr);
-	virtual ~ToggleSilentModeAction();
+    Q_INVOKABLE explicit ToggleSilentModeAction(QObject *parent = nullptr);
+    virtual ~ToggleSilentModeAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<SilentModeService> m_silentModeService;
+    QPointer<SilentModeService> m_silentModeService;
 
 private slots:
-	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
-
+    INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
 };

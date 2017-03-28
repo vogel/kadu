@@ -29,24 +29,23 @@ class ListEditWidget;
 
 class CenzorConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit CenzorConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~CenzorConfigurationUiHandler();
+    Q_INVOKABLE explicit CenzorConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~CenzorConfigurationUiHandler();
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<CenzorConfiguration> m_cenzorConfiguration;
+    QPointer<CenzorConfiguration> m_cenzorConfiguration;
 
-	ListEditWidget *m_swearwordsWidget;
-	ListEditWidget *m_exclusionsWidget;
+    ListEditWidget *m_swearwordsWidget;
+    ListEditWidget *m_exclusionsWidget;
 
 private slots:
-	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
-
+    INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
 };

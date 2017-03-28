@@ -23,9 +23,7 @@
 
 class FirewallModule : public injeqt::module
 {
-
 public:
-	explicit FirewallModule();
-	virtual ~FirewallModule();
-
+    explicit FirewallModule();
+    virtual ~FirewallModule();
 };

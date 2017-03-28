@@ -35,68 +35,130 @@ class TalkableTreeView;
 
 class TalkableDelegateConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
 
-	TalkableTreeView *ListView;
+    TalkableTreeView *ListView;
 
-	QFont Font;
-	QFont BoldFont;
-	QFont DescriptionFont;
+    QFont Font;
+    QFont BoldFont;
+    QFont DescriptionFont;
 
-	bool AlignTop;
-	bool AlwaysShowIdentityName;
-	bool ShowIdentityName;
-	bool ShowBold;
-	bool ShowDescription;
-	bool ShowMultiLineDescription;
-	bool ShowAvatars;
-	bool ShowMessagePixmap;
-	bool UseConfigurationColors;
-	bool AvatarBorder;
-	bool AvatarGreyOut;
-	QColor DescriptionColor;
-	QColor FontColor;
+    bool AlignTop;
+    bool AlwaysShowIdentityName;
+    bool ShowIdentityName;
+    bool ShowBold;
+    bool ShowDescription;
+    bool ShowMultiLineDescription;
+    bool ShowAvatars;
+    bool ShowMessagePixmap;
+    bool UseConfigurationColors;
+    bool AvatarBorder;
+    bool AvatarGreyOut;
+    QColor DescriptionColor;
+    QColor FontColor;
 
-	QSize DefaultAvatarSize;
-	QPixmap MessagePixmap;
+    QSize DefaultAvatarSize;
+    QPixmap MessagePixmap;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
 public:
-	explicit TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent = nullptr);
-	virtual ~TalkableDelegateConfiguration();
+    explicit TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent = nullptr);
+    virtual ~TalkableDelegateConfiguration();
 
-	void setShowIdentityName(bool showIdentityName) { ShowIdentityName = showIdentityName; }
-	void setUseConfigurationColors(bool useConfigurationColors) { UseConfigurationColors = useConfigurationColors; }
-	void setShowMessagePixmap(bool showMessagePixmap) { ShowMessagePixmap = showMessagePixmap; }
+    void setShowIdentityName(bool showIdentityName)
+    {
+        ShowIdentityName = showIdentityName;
+    }
+    void setUseConfigurationColors(bool useConfigurationColors)
+    {
+        UseConfigurationColors = useConfigurationColors;
+    }
+    void setShowMessagePixmap(bool showMessagePixmap)
+    {
+        ShowMessagePixmap = showMessagePixmap;
+    }
 
-	const QFont & font() const { return Font; }
-	const QFont & boldFont() const { return BoldFont; }
-	const QFont & descriptionFont() const { return DescriptionFont; }
+    const QFont &font() const
+    {
+        return Font;
+    }
+    const QFont &boldFont() const
+    {
+        return BoldFont;
+    }
+    const QFont &descriptionFont() const
+    {
+        return DescriptionFont;
+    }
 
-	bool alignTop() const { return AlignTop; }
-	bool alwaysShowIdentityName() const { return AlwaysShowIdentityName; }
-	bool showIdentityName() const { return ShowIdentityName; }
-	bool showBold() const { return ShowBold; }
-	bool showDescription() const { return ShowDescription; }
-	bool showMultiLineDescription() const { return ShowMultiLineDescription; }
-	bool showAvatars() const { return ShowAvatars; }
-	bool showMessagePixmap() const { return ShowMessagePixmap; }
-	bool useConfigurationColors() const { return UseConfigurationColors; }
-	bool avatarBorder() const { return AvatarBorder; }
-	bool avatarGreyOut() const { return AvatarGreyOut; }
-	const QColor & descriptionColor() const { return DescriptionColor; }
-	const QColor & fontColor() const { return FontColor; }
+    bool alignTop() const
+    {
+        return AlignTop;
+    }
+    bool alwaysShowIdentityName() const
+    {
+        return AlwaysShowIdentityName;
+    }
+    bool showIdentityName() const
+    {
+        return ShowIdentityName;
+    }
+    bool showBold() const
+    {
+        return ShowBold;
+    }
+    bool showDescription() const
+    {
+        return ShowDescription;
+    }
+    bool showMultiLineDescription() const
+    {
+        return ShowMultiLineDescription;
+    }
+    bool showAvatars() const
+    {
+        return ShowAvatars;
+    }
+    bool showMessagePixmap() const
+    {
+        return ShowMessagePixmap;
+    }
+    bool useConfigurationColors() const
+    {
+        return UseConfigurationColors;
+    }
+    bool avatarBorder() const
+    {
+        return AvatarBorder;
+    }
+    bool avatarGreyOut() const
+    {
+        return AvatarGreyOut;
+    }
+    const QColor &descriptionColor() const
+    {
+        return DescriptionColor;
+    }
+    const QColor &fontColor() const
+    {
+        return FontColor;
+    }
 
-	const QSize & defaultAvatarSize() const { return DefaultAvatarSize; }
-	const QPixmap & messagePixmap() const { return MessagePixmap; }
+    const QSize &defaultAvatarSize() const
+    {
+        return DefaultAvatarSize;
+    }
+    const QPixmap &messagePixmap() const
+    {
+        return MessagePixmap;
+    }
 
-	virtual void configurationUpdated();
-
+    virtual void configurationUpdated();
 };

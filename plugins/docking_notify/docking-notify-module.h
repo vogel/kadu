@@ -23,9 +23,9 @@
 
 class DockingNotifyModule : public injeqt::module
 {
-
 public:
-	DockingNotifyModule();
-	virtual ~DockingNotifyModule() {}
-
+    DockingNotifyModule();
+    virtual ~DockingNotifyModule()
+    {
+    }
 };

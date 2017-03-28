@@ -29,24 +29,25 @@ class QXmppRegisterIq;
 
 class JabberChangePassword : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberChangePassword(const QString &jid, const QString &newPassword, JabberRegisterExtension *registerExtension, QObject *parent = nullptr);
-	virtual ~JabberChangePassword();
+    explicit JabberChangePassword(
+        const QString &jid, const QString &newPassword, JabberRegisterExtension *registerExtension,
+        QObject *parent = nullptr);
+    virtual ~JabberChangePassword();
 
-	void setErrorService(JabberErrorService *errorService);
+    void setErrorService(JabberErrorService *errorService);
 
 signals:
-	void error(const QString &error);
-	void passwordChanged();
+    void error(const QString &error);
+    void passwordChanged();
 
 private:
-	QPointer<JabberErrorService> m_errorService;
+    QPointer<JabberErrorService> m_errorService;
 
-	QString m_id;
+    QString m_id;
 
 private slots:
-	void registerIqReceived(const QXmppRegisterIq &registerIq);
-
+    void registerIqReceived(const QXmppRegisterIq &registerIq);
 };

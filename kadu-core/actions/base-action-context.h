@@ -35,40 +35,39 @@
 
 class KADUAPI BaseActionContext : public ActionContext
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	ChangeNotifier MyChangeNotifier;
+    ChangeNotifier MyChangeNotifier;
 
-	QWidget *Widget;
-	ContactSet Contacts;
-	BuddySet Buddies;
-	Chat CurrentChat;
-	StatusContainer *CurrentStatusContainer;
-	RoleSet Roles;
+    QWidget *Widget;
+    ContactSet Contacts;
+    BuddySet Buddies;
+    Chat CurrentChat;
+    StatusContainer *CurrentStatusContainer;
+    RoleSet Roles;
 
 public:
-	explicit BaseActionContext(QWidget *widget);
-	virtual ~BaseActionContext();
+    explicit BaseActionContext(QWidget *widget);
+    virtual ~BaseActionContext();
 
-	ChangeNotifier & changeNotifier();
+    ChangeNotifier &changeNotifier();
 
-	virtual QWidget * widget() override;
+    virtual QWidget *widget() override;
 
-	virtual ContactSet contacts() override;
-	void setContacts(const ContactSet &contacts);
+    virtual ContactSet contacts() override;
+    void setContacts(const ContactSet &contacts);
 
-	virtual BuddySet buddies() override;
-	void setBuddies(const BuddySet &buddies);
+    virtual BuddySet buddies() override;
+    void setBuddies(const BuddySet &buddies);
 
-	virtual Chat chat() override;
-	void setChat(const Chat &chat);
+    virtual Chat chat() override;
+    void setChat(const Chat &chat);
 
-	virtual StatusContainer * statusContainer() override;
-	void setStatusContainer(StatusContainer *statusContainer);
+    virtual StatusContainer *statusContainer() override;
+    void setStatusContainer(StatusContainer *statusContainer);
 
-	virtual RoleSet roles() override;
-	void setRoles(const RoleSet &roles);
-
+    virtual RoleSet roles() override;
+    void setRoles(const RoleSet &roles);
 };
 
-#endif // BASE_ACTION_CONTEXT_H
+#endif   // BASE_ACTION_CONTEXT_H

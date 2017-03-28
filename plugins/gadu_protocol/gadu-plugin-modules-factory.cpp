@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-GaduPluginModulesFactory::GaduPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+GaduPluginModulesFactory::GaduPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ GaduPluginModulesFactory::~GaduPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> GaduPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<GaduModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<GaduModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_gadu-plugin-modules-factory.cpp"

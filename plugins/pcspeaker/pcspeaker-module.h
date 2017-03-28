@@ -23,9 +23,7 @@
 
 class PCSpeakerModule : public injeqt::module
 {
-
 public:
-	explicit PCSpeakerModule();
-	virtual ~PCSpeakerModule();
-
+    explicit PCSpeakerModule();
+    virtual ~PCSpeakerModule();
 };

@@ -29,20 +29,19 @@ class AutostatusService;
 
 class ToggleAutostatusAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ToggleAutostatusAction(QObject *parent = nullptr);
-	virtual ~ToggleAutostatusAction();
+    Q_INVOKABLE explicit ToggleAutostatusAction(QObject *parent = nullptr);
+    virtual ~ToggleAutostatusAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<AutostatusService> m_autostatusService;
+    QPointer<AutostatusService> m_autostatusService;
 
 private slots:
-	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
-
+    INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
 };

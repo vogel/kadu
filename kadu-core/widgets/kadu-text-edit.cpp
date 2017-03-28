@@ -20,8 +20,7 @@
 
 #include "kadu-text-edit.h"
 
-KaduTextEdit::KaduTextEdit(QWidget *parent) :
-		QTextEdit(parent), PreferredLines(5)
+KaduTextEdit::KaduTextEdit(QWidget *parent) : QTextEdit(parent), PreferredLines(5)
 {
 }
 
@@ -31,13 +30,13 @@ KaduTextEdit::~KaduTextEdit()
 
 void KaduTextEdit::setPreferredLines(quint16 preferredLines)
 {
-	PreferredLines = preferredLines;
+    PreferredLines = preferredLines;
 }
 
 QSize KaduTextEdit::sizeHint() const
 {
-	QFontMetrics fontMetrics(font());
-	return QSize(256, PreferredLines * fontMetrics.lineSpacing());
+    QFontMetrics fontMetrics(font());
+    return QSize(256, PreferredLines * fontMetrics.lineSpacing());
 }
 
 #include "moc_kadu-text-edit.cpp"

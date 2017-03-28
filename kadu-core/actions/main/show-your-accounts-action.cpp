@@ -21,14 +21,14 @@
 
 #include "windows/your-accounts-window-service.h"
 
-ShowYourAccountsAction::ShowYourAccountsAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowYourAccountsAction::ShowYourAccountsAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"x-office-address-book"});
-	setName(QStringLiteral("yourAccountsAction"));
-	setText(tr("Your Accounts"));
-	setType(ActionDescription::TypeMainMenu);
+    setIcon(KaduIcon{"x-office-address-book"});
+    setName(QStringLiteral("yourAccountsAction"));
+    setText(tr("Your Accounts"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ShowYourAccountsAction::~ShowYourAccountsAction()
@@ -37,12 +37,12 @@ ShowYourAccountsAction::~ShowYourAccountsAction()
 
 void ShowYourAccountsAction::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
 {
-	m_yourAccountsWindowService = yourAccountsWindowService;
+    m_yourAccountsWindowService = yourAccountsWindowService;
 }
 
 void ShowYourAccountsAction::actionTriggered(QAction *, bool)
 {
-	m_yourAccountsWindowService->show();
+    m_yourAccountsWindowService->show();
 }
 
 #include "moc_show-your-accounts-action.cpp"

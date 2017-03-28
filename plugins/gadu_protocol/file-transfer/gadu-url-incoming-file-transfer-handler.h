@@ -30,23 +30,22 @@ class QNetworkReply;
 
 class GaduUrlIncomingFileTransferHandler : public UrlIncomingFileTransferHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduUrlIncomingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
-	virtual ~GaduUrlIncomingFileTransferHandler();
+    explicit GaduUrlIncomingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
+    virtual ~GaduUrlIncomingFileTransferHandler();
 
-	virtual void save(QIODevice *destination);
+    virtual void save(QIODevice *destination);
 
 private:
-	QPointer<GaduProtocol> m_protocol;
-	QPointer<GaduDriveGetTransfer> m_getTransfer;
-	QPointer<QIODevice> m_destination;
+    QPointer<GaduProtocol> m_protocol;
+    QPointer<GaduDriveGetTransfer> m_getTransfer;
+    QPointer<QIODevice> m_destination;
 
-	void clenaup();
+    void clenaup();
 
 private slots:
-	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	void downloadFinished(QNetworkReply*);
-
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void downloadFinished(QNetworkReply *);
 };

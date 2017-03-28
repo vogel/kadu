@@ -31,8 +31,7 @@
  *
  * Contructs empty object with state @link<StorableObject::StateNew StateNew @endlink.
  */
-StorableStringList::StorableStringList(QObject *parent) :
-		StorableObject{parent}
+StorableStringList::StorableStringList(QObject *parent) : StorableObject{parent}
 {
 }
 
@@ -47,13 +46,13 @@ StorableStringList::StorableStringList(QObject *parent) :
  */
 void StorableStringList::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	StorableObject::load();
+    StorableObject::load();
 
-	auto stringListStorage = StringListStorage(storage().get(), storageItemNodeName());
-	StringList = stringListStorage.load();
+    auto stringListStorage = StringListStorage(storage().get(), storageItemNodeName());
+    StringList = stringListStorage.load();
 }
 
 /**
@@ -65,11 +64,11 @@ void StorableStringList::load()
  */
 void StorableStringList::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	auto stringListStorage = StringListStorage(storage().get(), storageItemNodeName());
-	stringListStorage.store(content());
+    auto stringListStorage = StringListStorage(storage().get(), storageItemNodeName());
+    stringListStorage.store(content());
 }
 
 /**
@@ -79,7 +78,7 @@ void StorableStringList::store()
  *
  * Returns content of this string list.
  */
-const QStringList & StorableStringList::content() const
+const QStringList &StorableStringList::content() const
 {
-	return StringList;
+    return StringList;
 }

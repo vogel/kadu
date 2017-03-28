@@ -27,20 +27,19 @@ class Jid;
 
 class JabberRosterExtension : public QXmppClientExtension
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberRosterExtension();
-	virtual ~JabberRosterExtension();
+    explicit JabberRosterExtension();
+    virtual ~JabberRosterExtension();
 
-	void setJabberErrorService(JabberErrorService *jabberErrorService);
+    void setJabberErrorService(JabberErrorService *jabberErrorService);
 
-	virtual bool handleStanza(const QDomElement &stanza);
+    virtual bool handleStanza(const QDomElement &stanza);
 
 signals:
-	void rosterCancelationReceived(Jid jid);
+    void rosterCancelationReceived(Jid jid);
 
 private:
-	QPointer<JabberErrorService> m_errorService;
-
+    QPointer<JabberErrorService> m_errorService;
 };

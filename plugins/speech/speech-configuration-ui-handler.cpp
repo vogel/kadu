@@ -31,24 +31,17 @@
 #include "core/core.h"
 #include "misc/paths-provider.h"
 #include "parser/parser.h"
+#include "speech.h"
 #include "widgets/configuration/config-combo-box.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "widgets/select-file.h"
 #include "windows/main-configuration-window.h"
-#include "speech.h"
 
 #include "speech-configuration-ui-handler.h"
 
-SpeechConfigurationUiHandler::SpeechConfigurationUiHandler(QObject *parent) :
-	QObject{parent},
-	frequencySlider{},
-	tempoSlider{},
-	baseFrequencySlider{},
-	dspDeviceLineEdit{},
-	klattSyntCheckBox{},
-	melodyCheckBox{},
-	programSelectFile{},
-	soundSystemComboBox{}
+SpeechConfigurationUiHandler::SpeechConfigurationUiHandler(QObject *parent)
+        : QObject{parent}, frequencySlider{}, tempoSlider{}, baseFrequencySlider{}, dspDeviceLineEdit{},
+          klattSyntCheckBox{}, melodyCheckBox{}, programSelectFile{}, soundSystemComboBox{}
 {
 }
 
@@ -58,39 +51,41 @@ SpeechConfigurationUiHandler::~SpeechConfigurationUiHandler()
 
 void SpeechConfigurationUiHandler::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
 {
-	m_buddyDummyFactory = buddyDummyFactory;
+    m_buddyDummyFactory = buddyDummyFactory;
 }
 
 void SpeechConfigurationUiHandler::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SpeechConfigurationUiHandler::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void SpeechConfigurationUiHandler::setSpeech(Speech *speech)
 {
-	m_speech = speech;
+    m_speech = speech;
 }
 
 void SpeechConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	frequencySlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/frequency"));
-	tempoSlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/tempo"));
-	baseFrequencySlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/baseFrequency"));
-	melodyCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("spech/melody"));
+    frequencySlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/frequency"));
+    tempoSlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/tempo"));
+    baseFrequencySlider = static_cast<QSlider *>(mainConfigurationWindow->widget()->widgetById("speech/baseFrequency"));
+    melodyCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("spech/melody"));
 
-	programSelectFile = static_cast<SelectFile *>(mainConfigurationWindow->widget()->widgetById("speech/program"));;
+    programSelectFile = static_cast<SelectFile *>(mainConfigurationWindow->widget()->widgetById("speech/program"));
+    ;
 
-	soundSystemComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("speech/soundSystem"));
-	dspDeviceLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("speech/dspDevice"));
-	klattSyntCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("speech/klattSynt"));
+    soundSystemComboBox =
+        static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("speech/soundSystem"));
+    dspDeviceLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("speech/dspDevice"));
+    klattSyntCheckBox = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("speech/klattSynt"));
 
-	connect(soundSystemComboBox, SIGNAL(activated(int)), this, SLOT(soundSystemChanged(int)));
-	connect(mainConfigurationWindow->widget()->widgetById("speech/test"), SIGNAL(clicked()), this, SLOT(testSpeech()));
+    connect(soundSystemComboBox, SIGNAL(activated(int)), this, SLOT(soundSystemChanged(int)));
+    connect(mainConfigurationWindow->widget()->widgetById("speech/test"), SIGNAL(clicked()), this, SLOT(testSpeech()));
 }
 
 void SpeechConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -103,36 +98,38 @@ void SpeechConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void SpeechConfigurationUiHandler::soundSystemChanged(int index)
 {
-	Q_UNUSED(index)
-	bool dsp = soundSystemComboBox->currentItemValue() == "Dsp";
+    Q_UNUSED(index)
+    bool dsp = soundSystemComboBox->currentItemValue() == "Dsp";
 
-	dspDeviceLineEdit->setEnabled(dsp);
-	klattSyntCheckBox->setEnabled(dsp);
+    dspDeviceLineEdit->setEnabled(dsp);
+    klattSyntCheckBox->setEnabled(dsp);
 }
 
 void SpeechConfigurationUiHandler::testSpeech()
 {
-	if (!programSelectFile)
-		return;
+    if (!programSelectFile)
+        return;
 
-	QString program = programSelectFile->file();
-	// TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
-	QString formatM = m_configuration->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
-	QString formatF = m_configuration->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
-	QString device = dspDeviceLineEdit->text();
-	bool klatt = klattSyntCheckBox->isChecked();
-	bool mel = melodyCheckBox->isChecked();
+    QString program = programSelectFile->file();
+    // TODO: mo�e u�ywa� jakiego� normalnego tekstu ?
+    QString formatM = m_configuration->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Male");
+    QString formatF = m_configuration->deprecatedApi()->readEntry("Speech", "NewChat_Syntax/Female");
+    QString device = dspDeviceLineEdit->text();
+    bool klatt = klattSyntCheckBox->isChecked();
+    bool mel = melodyCheckBox->isChecked();
 
-	QString sound_system = soundSystemComboBox->currentItemValue();
+    QString sound_system = soundSystemComboBox->currentItemValue();
 
-	int frequency = frequencySlider->value();
-	int tempo = tempoSlider->value();
-	int baseFrequency = baseFrequencySlider->value();
+    int frequency = frequencySlider->value();
+    int tempo = tempoSlider->value();
+    int baseFrequency = baseFrequencySlider->value();
 
-	QString text;
-	text = m_parser->parse(formatF, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
+    QString text;
+    text = m_parser->parse(formatF, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
 
-	m_speech->say(text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency, tempo, baseFrequency);
+    m_speech->say(
+        text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency,
+        tempo, baseFrequency);
 }
 
 #include "moc_speech-configuration-ui-handler.cpp"

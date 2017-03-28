@@ -23,14 +23,13 @@
 
 class ImageLinkPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit ImageLinkPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~ImageLinkPluginModulesFactory();
+    explicit ImageLinkPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~ImageLinkPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

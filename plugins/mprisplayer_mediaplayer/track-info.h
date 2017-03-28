@@ -24,39 +24,38 @@
 
 class TrackInfo
 {
-	QString Title;
-	QString Artist;
-	QString Album;
-	uint TrackNumber;
-	QString File;
-	uint Length;
+    QString Title;
+    QString Artist;
+    QString Album;
+    uint TrackNumber;
+    QString File;
+    uint Length;
 
 public:
-	TrackInfo();
-	~TrackInfo();
+    TrackInfo();
+    ~TrackInfo();
 
-	TrackInfo(const TrackInfo &copyMe);
+    TrackInfo(const TrackInfo &copyMe);
 
-	TrackInfo & operator = (const TrackInfo &copyMe);
+    TrackInfo &operator=(const TrackInfo &copyMe);
 
-	void setTitle(const QString &title);
-	QString title() const;
+    void setTitle(const QString &title);
+    QString title() const;
 
-	void setArtist(const QString &artist);
-	QString artist() const;
+    void setArtist(const QString &artist);
+    QString artist() const;
 
-	void setAlbum(const QString &album);
-	QString album() const;
+    void setAlbum(const QString &album);
+    QString album() const;
 
-	void setTrackNumber(uint trackNumber);
-	uint trackNumber() const;
+    void setTrackNumber(uint trackNumber);
+    uint trackNumber() const;
 
-	void setFile(const QString &file);
-	QString file() const;
+    void setFile(const QString &file);
+    QString file() const;
 
-	void setLength(uint length);
-	uint length() const;
-
+    void setLength(uint length);
+    uint length() const;
 };
 
-#endif // TRACK_INFO_H
+#endif   // TRACK_INFO_H

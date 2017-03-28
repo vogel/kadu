@@ -25,69 +25,67 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDriveGetTransfer::GaduDriveGetTransfer(QString downloadId, QString fileName, QIODevice *destination,
-	QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent},
-		m_downloadId{downloadId},
-		m_fileName{fileName},
-		m_destination{destination},
-		m_networkAccessManager{networkAccessManager}
+GaduDriveGetTransfer::GaduDriveGetTransfer(
+    QString downloadId, QString fileName, QIODevice *destination, QNetworkAccessManager *networkAccessManager,
+    QObject *parent)
+        : QObject{parent}, m_downloadId{downloadId}, m_fileName{fileName}, m_destination{destination},
+          m_networkAccessManager{networkAccessManager}
 {
-	auto url = QString{"http://p.gg.pl/p/c/%1/%2"}.arg(m_downloadId).arg(m_fileName);
+    auto url = QString{"http://p.gg.pl/p/c/%1/%2"}.arg(m_downloadId).arg(m_fileName);
 
-	QNetworkRequest request;
-	request.setUrl(QUrl{url});
-	request.setRawHeader("Connection", "keep-alive");
+    QNetworkRequest request;
+    request.setUrl(QUrl{url});
+    request.setRawHeader("Connection", "keep-alive");
 
-	m_reply = networkAccessManager->get(request);
-	connect(m_reply, SIGNAL(finished()), this, SLOT(managedPageVisited()));
+    m_reply = networkAccessManager->get(request);
+    connect(m_reply, SIGNAL(finished()), this, SLOT(managedPageVisited()));
 }
 
 GaduDriveGetTransfer::~GaduDriveGetTransfer()
 {
-	if (m_reply)
-		m_reply->deleteLater();
+    if (m_reply)
+        m_reply->deleteLater();
 
-	if (m_destination)
-	{
-		m_destination->close();
-		m_destination->deleteLater();
-	}
+    if (m_destination)
+    {
+        m_destination->close();
+        m_destination->deleteLater();
+    }
 }
 
 void GaduDriveGetTransfer::readyRead()
 {
-	m_destination->write(m_reply->readAll());
+    m_destination->write(m_reply->readAll());
 }
 
 void GaduDriveGetTransfer::managedPageVisited()
 {
-	if (m_reply->error() != QNetworkReply::NoError)
-	{
-		emit finished(m_reply);
-		deleteLater();
-		return;
-	}
+    if (m_reply->error() != QNetworkReply::NoError)
+    {
+        emit finished(m_reply);
+        deleteLater();
+        return;
+    }
 
-	m_reply->deleteLater();
+    m_reply->deleteLater();
 
-	auto url = QString{"http://p.gg.pl/p/d/%1/%2"}.arg(m_downloadId).arg(m_fileName);
+    auto url = QString{"http://p.gg.pl/p/d/%1/%2"}.arg(m_downloadId).arg(m_fileName);
 
-	QNetworkRequest request;
-	request.setUrl(QUrl{url});
-	request.setRawHeader("Connection", "keep-alive");
+    QNetworkRequest request;
+    request.setUrl(QUrl{url});
+    request.setRawHeader("Connection", "keep-alive");
 
-	m_reply = m_networkAccessManager->get(request);
-	connect(m_reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
-	connect(m_reply, SIGNAL(downloadProgress(qint64,qint64)), this, SIGNAL(downloadProgress(qint64,qint64)));
-	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    m_reply = m_networkAccessManager->get(request);
+    connect(m_reply, SIGNAL(readyRead()), this, SLOT(readyRead()));
+    connect(m_reply, SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
+    connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void GaduDriveGetTransfer::requestFinished()
 {
-	emit finished(m_reply);
+    emit finished(m_reply);
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_gadu-drive-get-transfer.cpp"

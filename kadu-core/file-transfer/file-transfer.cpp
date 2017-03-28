@@ -43,26 +43,24 @@
 
 KaduSharedBaseClassImpl(FileTransfer)
 
-FileTransfer FileTransfer::null;
+    FileTransfer FileTransfer::null;
 
 FileTransfer::FileTransfer()
 {
 }
 
-FileTransfer::FileTransfer(FileTransferShared *data) :
-		SharedBase<FileTransferShared>{data}
+FileTransfer::FileTransfer(FileTransferShared *data) : SharedBase<FileTransferShared>{data}
 {
 }
 
 FileTransfer::FileTransfer(QObject *data)
 {
-	auto shared = qobject_cast<FileTransferShared *>(data);
-	if (shared)
-		setData(shared);
+    auto shared = qobject_cast<FileTransferShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
-FileTransfer::FileTransfer(const FileTransfer &copy) :
-		SharedBase<FileTransferShared>{copy}
+FileTransfer::FileTransfer(const FileTransfer &copy) : SharedBase<FileTransferShared>{copy}
 {
 }
 
@@ -72,19 +70,25 @@ FileTransfer::~FileTransfer()
 
 unsigned int FileTransfer::percent()
 {
-	if (fileSize() != 0)
-		return static_cast<unsigned int>((100 * transferredSize()) / fileSize());
-	else
-		return 0;
+    if (fileSize() != 0)
+        return static_cast<unsigned int>((100 * transferredSize()) / fileSize());
+    else
+        return 0;
 }
 
 KaduSharedBase_PropertyDefCRW(FileTransfer, Contact, peer, Peer, Contact::null)
-KaduSharedBase_PropertyDefCRW(FileTransfer, QString, localFileName, LocalFileName, QString())
-KaduSharedBase_PropertyDefCRW(FileTransfer, QString, remoteFileName, RemoteFileName, QString())
-KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)
-KaduSharedBase_PropertyDef(FileTransfer, unsigned long, transferredSize, TransferredSize, 0)
-KaduSharedBase_PropertyDef(FileTransfer, QString, error, Error, QString{})
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferDirection, transferDirection, TransferDirection, FileTransferDirection::Outgoing)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferHandler *, handler, Handler, 0)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferStatus, transferStatus, TransferStatus, FileTransferStatus::NotConnected)
-KaduSharedBase_PropertyDef(FileTransfer, FileTransferType, transferType, TransferType, FileTransferType::Unknown)
+    KaduSharedBase_PropertyDefCRW(FileTransfer, QString, localFileName, LocalFileName, QString())
+        KaduSharedBase_PropertyDefCRW(FileTransfer, QString, remoteFileName, RemoteFileName, QString())
+            KaduSharedBase_PropertyDef(FileTransfer, unsigned long, fileSize, FileSize, 0)
+                KaduSharedBase_PropertyDef(FileTransfer, unsigned long, transferredSize, TransferredSize, 0)
+                    KaduSharedBase_PropertyDef(FileTransfer, QString, error, Error, QString{})
+                        KaduSharedBase_PropertyDef(
+                            FileTransfer, FileTransferDirection, transferDirection, TransferDirection,
+                            FileTransferDirection::Outgoing)
+                            KaduSharedBase_PropertyDef(FileTransfer, FileTransferHandler *, handler, Handler, 0)
+                                KaduSharedBase_PropertyDef(
+                                    FileTransfer, FileTransferStatus, transferStatus, TransferStatus,
+                                    FileTransferStatus::NotConnected)
+                                    KaduSharedBase_PropertyDef(
+                                        FileTransfer, FileTransferType, transferType, TransferType,
+                                        FileTransferType::Unknown)

@@ -28,16 +28,16 @@ class GaduListHelper;
 
 class GADUAPI GaduBuddyListSerializationService : public BuddyListSerializationService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduBuddyListSerializationService(GaduListHelper *gaduListHelper, Account account, QObject *parent = nullptr);
-	virtual ~GaduBuddyListSerializationService();
+    explicit GaduBuddyListSerializationService(
+        GaduListHelper *gaduListHelper, Account account, QObject *parent = nullptr);
+    virtual ~GaduBuddyListSerializationService();
 
-	virtual BuddyList deserialize(QTextStream &dataStream) override;
-	virtual QByteArray serialize(const BuddyList &buddies) override;
+    virtual BuddyList deserialize(QTextStream &dataStream) override;
+    virtual QByteArray serialize(const BuddyList &buddies) override;
 
 private:
-	GaduListHelper *m_gaduListHelper;
-
+    GaduListHelper *m_gaduListHelper;
 };

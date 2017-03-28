@@ -22,8 +22,7 @@
 
 #include "gadu-servers-manager.h"
 
-GaduServersManager::GaduServersManager(QObject *parent) :
-		QObject{parent}
+GaduServersManager::GaduServersManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -33,32 +32,32 @@ GaduServersManager::~GaduServersManager()
 
 void GaduServersManager::init()
 {
-	GoodServers << GaduServer(QHostAddress((quint32)0), 0); // for GG hub
-	for (auto i = 108; i <= 123; i++)
-		GoodServers << GaduServer{QHostAddress{QString{"91.214.237.%1"}.arg(i)}, 443};
-	AllServers = GoodServers;
+    GoodServers << GaduServer(QHostAddress((quint32)0), 0);   // for GG hub
+    for (auto i = 108; i <= 123; i++)
+        GoodServers << GaduServer{QHostAddress{QString{"91.214.237.%1"}.arg(i)}, 443};
+    AllServers = GoodServers;
 }
 
 GaduServersManager::GaduServer GaduServersManager::getServer()
 {
-	if (GoodServers.isEmpty())
-	{
-		GoodServers = BadServers;
-		BadServers.clear();
-		return GaduServer(QHostAddress(), 0);
-	}
+    if (GoodServers.isEmpty())
+    {
+        GoodServers = BadServers;
+        BadServers.clear();
+        return GaduServer(QHostAddress(), 0);
+    }
 
-	if (GoodServers[0].second != 443 && GoodServers[0].second != 0)
-	{
-		markServerAsBad(GoodServers[0]);
-		return getServer();
-	}
+    if (GoodServers[0].second != 443 && GoodServers[0].second != 0)
+    {
+        markServerAsBad(GoodServers[0]);
+        return getServer();
+    }
 
-	return GoodServers[0];
+    return GoodServers[0];
 }
 
 void GaduServersManager::markServerAsBad(GaduServersManager::GaduServer server)
 {
-	GoodServers.removeAll(server);
-	BadServers.append(server);
+    GoodServers.removeAll(server);
+    BadServers.append(server);
 }

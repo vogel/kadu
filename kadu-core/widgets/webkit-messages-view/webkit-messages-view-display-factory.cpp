@@ -25,8 +25,7 @@
 #include "widgets/webkit-messages-view/webkit-messages-view-clearing-display.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-removing-display.h"
 
-WebkitMessagesViewDisplayFactory::WebkitMessagesViewDisplayFactory(QObject *parent):
-		QObject{parent}
+WebkitMessagesViewDisplayFactory::WebkitMessagesViewDisplayFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,27 +35,27 @@ WebkitMessagesViewDisplayFactory::~WebkitMessagesViewDisplayFactory()
 
 void WebkitMessagesViewDisplayFactory::setChatStyleManager(ChatStyleManager *chatStyleManager)
 {
-	m_chatStyleManager = chatStyleManager;
+    m_chatStyleManager = chatStyleManager;
 }
 
 void WebkitMessagesViewDisplayFactory::setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory)
 {
-	m_messageRenderInfoFactory = messageRenderInfoFactory;
+    m_messageRenderInfoFactory = messageRenderInfoFactory;
 }
 
-std::unique_ptr<WebkitMessagesViewDisplay> WebkitMessagesViewDisplayFactory::createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer)
+std::unique_ptr<WebkitMessagesViewDisplay>
+WebkitMessagesViewDisplayFactory::createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer)
 {
-	if (m_chatStyleManager && m_chatStyleManager->cfgNoHeaderRepeat())
-	{
-		auto result = std::make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
-		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
-		return std::move(result);
-	}
-	else
-	{
-		auto result = std::make_unique<WebkitMessagesViewRemovingDisplay>(chatStyleRenderer);
-		result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
-		return std::move(result);
-	}
-
+    if (m_chatStyleManager && m_chatStyleManager->cfgNoHeaderRepeat())
+    {
+        auto result = std::make_unique<WebkitMessagesViewClearingDisplay>(chatStyleRenderer);
+        result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
+        return std::move(result);
+    }
+    else
+    {
+        auto result = std::make_unique<WebkitMessagesViewRemovingDisplay>(chatStyleRenderer);
+        result->setMessageRenderInfoFactory(m_messageRenderInfoFactory);
+        return std::move(result);
+    }
 }

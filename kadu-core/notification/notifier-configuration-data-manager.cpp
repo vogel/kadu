@@ -28,62 +28,64 @@
 QMap<QString, NotifierConfigurationDataManager *> NotifierConfigurationDataManager::DataManagers;
 
 NotifierConfigurationDataManager::NotifierConfigurationDataManager(const QString &eventName, QObject *parent)
-	: ConfigurationWindowDataManager(parent), EventName(eventName), UsageCount(0)
+        : ConfigurationWindowDataManager(parent), EventName(eventName), UsageCount(0)
 {
 }
 
 void NotifierConfigurationDataManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void NotifierConfigurationDataManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void NotifierConfigurationDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
-	if (section.isEmpty() || name.isEmpty())
-		return;
+    if (section.isEmpty() || name.isEmpty())
+        return;
 
-	m_configuration->deprecatedApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
+    m_configuration->deprecatedApi()->writeEntry(section, QString("Event_") + EventName + name, value.toString());
 }
 
 QVariant NotifierConfigurationDataManager::readEntry(const QString &section, const QString &name)
 {
-	if (section.isEmpty() || name.isEmpty())
-		return QVariant(QString());
+    if (section.isEmpty() || name.isEmpty())
+        return QVariant(QString());
 
-	return m_configuration->deprecatedApi()->readEntry(section, QString("Event_") + EventName + name);
+    return m_configuration->deprecatedApi()->readEntry(section, QString("Event_") + EventName + name);
 }
 
-NotifierConfigurationDataManager * NotifierConfigurationDataManager::dataManagerForEvent(PluginInjectedFactory *pluginInjectedFactory, const QString &eventName)
+NotifierConfigurationDataManager *NotifierConfigurationDataManager::dataManagerForEvent(
+    PluginInjectedFactory *pluginInjectedFactory, const QString &eventName)
 {
-	if (DataManagers.contains(eventName))
-		return DataManagers.value(eventName);
-	else
-		return DataManagers[eventName] = pluginInjectedFactory->makeInjected<NotifierConfigurationDataManager>(eventName);
+    if (DataManagers.contains(eventName))
+        return DataManagers.value(eventName);
+    else
+        return DataManagers[eventName] =
+                   pluginInjectedFactory->makeInjected<NotifierConfigurationDataManager>(eventName);
 }
 
 void NotifierConfigurationDataManager::dataManagerDestroyed(const QString &eventName)
 {
-	DataManagers.remove(eventName);
+    DataManagers.remove(eventName);
 }
 
 void NotifierConfigurationDataManager::configurationWindowCreated(ConfigurationWindow *window)
 {
-	connect(window, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
-	++UsageCount;
+    connect(window, SIGNAL(destroyed()), this, SLOT(configurationWindowDestroyed()));
+    ++UsageCount;
 }
 
 void NotifierConfigurationDataManager::configurationWindowDestroyed()
 {
-	if (!--UsageCount)
-	{
-		NotifierConfigurationDataManager::dataManagerDestroyed(EventName);
-		deleteLater();
-	}
+    if (!--UsageCount)
+    {
+        NotifierConfigurationDataManager::dataManagerDestroyed(EventName);
+        deleteLater();
+    }
 }
 
 #include "moc_notifier-configuration-data-manager.cpp"

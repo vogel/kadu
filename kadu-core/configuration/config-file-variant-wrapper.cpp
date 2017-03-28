@@ -26,8 +26,9 @@
 
 #include "config-file-variant-wrapper.h"
 
-ConfigFileVariantWrapper::ConfigFileVariantWrapper(Configuration *configuration, const QString &group, const QString &name) :
-		m_configuration{configuration}, Group(group), Name(name)
+ConfigFileVariantWrapper::ConfigFileVariantWrapper(
+    Configuration *configuration, const QString &group, const QString &name)
+        : m_configuration{configuration}, Group(group), Name(name)
 {
 }
 
@@ -37,10 +38,10 @@ ConfigFileVariantWrapper::~ConfigFileVariantWrapper()
 
 QVariant ConfigFileVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return m_configuration->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
+    return m_configuration->deprecatedApi()->readEntry(Group, Name, defaultValue.toString());
 }
 
 void ConfigFileVariantWrapper::set(const QVariant &value)
 {
-	m_configuration->deprecatedApi()->writeEntry(Group, Name, value.toString());
+    m_configuration->deprecatedApi()->writeEntry(Group, Name, value.toString());
 }

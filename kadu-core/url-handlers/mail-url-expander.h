@@ -24,13 +24,11 @@
 
 class MailUrlExpander : public DomTextRegexpVisitor
 {
-
 public:
-	explicit MailUrlExpander(QRegExp regExp);
-	virtual ~MailUrlExpander();
+    explicit MailUrlExpander(QRegExp regExp);
+    virtual ~MailUrlExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
-
+    virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 };
 
-#endif // MAIL_URL_EXPANDER_H
+#endif   // MAIL_URL_EXPANDER_H

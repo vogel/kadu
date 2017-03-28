@@ -24,9 +24,9 @@
 #include <QtCore/QPointer>
 #include <QtCore/QString>
 
+#include "exports.h"
 #include "misc/variant-wrapper.h"
 #include "storage/custom-properties.h"
-#include "exports.h"
 
 /**
  * @addtogroup Storage
@@ -43,28 +43,29 @@
  */
 class KADUAPI CustomPropertiesVariantWrapper : public VariantWrapper
 {
-	QPointer<CustomProperties> MyCustomProperties;
-	QString Name;
-	CustomProperties::Storability Storability;
+    QPointer<CustomProperties> MyCustomProperties;
+    QString Name;
+    CustomProperties::Storability Storability;
 
 public:
-	/**
-	 * @short Constructs object wrapping a single CustomProperties entry.
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @param customProperties pointer to a CustomProperties object
-	 * @param name name of CustomProperties property which will be wrapped
-	 * @param storability CustomProperties::Storability parameter which will be passed to CustomProperties::addProperty() method by set() calls
-	 */
-	CustomPropertiesVariantWrapper(CustomProperties *customProperties, const QString &name, CustomProperties::Storability storability);
-	virtual ~CustomPropertiesVariantWrapper();
+    /**
+     * @short Constructs object wrapping a single CustomProperties entry.
+     * @author Bartosz 'beevvy' Brachaczek
+     * @param customProperties pointer to a CustomProperties object
+     * @param name name of CustomProperties property which will be wrapped
+     * @param storability CustomProperties::Storability parameter which will be passed to
+     * CustomProperties::addProperty() method by set() calls
+     */
+    CustomPropertiesVariantWrapper(
+        CustomProperties *customProperties, const QString &name, CustomProperties::Storability storability);
+    virtual ~CustomPropertiesVariantWrapper();
 
-	virtual QVariant get(const QVariant &defaultValue = QVariant()) const;
-	virtual void set(const QVariant &value);
-
+    virtual QVariant get(const QVariant &defaultValue = QVariant()) const;
+    virtual void set(const QVariant &value);
 };
 
 /**
  * @}
  */
 
-#endif // CUSTOM_PROPERTIES_VARIANT_WRAPPER_H
+#endif   // CUSTOM_PROPERTIES_VARIANT_WRAPPER_H

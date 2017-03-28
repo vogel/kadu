@@ -41,42 +41,46 @@
  */
 class KADUAPI AvatarUploader : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	explicit AvatarUploader(QObject *parent = nullptr) : QObject(parent) {}
-	virtual ~AvatarUploader() {}
+    explicit AvatarUploader(QObject *parent = nullptr) : QObject(parent)
+    {
+    }
+    virtual ~AvatarUploader()
+    {
+    }
 
 public:
-	/**
-	 * @short Uploads avatar with given authentication data.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of contact to upload avatar for
-	 * @param password password of contact to upload avatar for
-	 * @param avatar avatar to upload
-	 *
-	 * Before calling this method attach to avatarUploaded() signal to get informed about result. Please
-	 * note that this method can be only called once. After that this object emits avatarUploaded() and
-	 * deletes itself.
-	 */
-	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar) = 0;
+    /**
+     * @short Uploads avatar with given authentication data.
+     * @author Rafał 'Vogel' Malinowski
+     * @param id id of contact to upload avatar for
+     * @param password password of contact to upload avatar for
+     * @param avatar avatar to upload
+     *
+     * Before calling this method attach to avatarUploaded() signal to get informed about result. Please
+     * note that this method can be only called once. After that this object emits avatarUploaded() and
+     * deletes itself.
+     */
+    virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar) = 0;
 
 signals:
-	/**
-	 * @short Signal emitted when job of this class is done.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param ok success flag
-	 * @param avatar uploaded avatar
-	 *
-	 * If ok is true then avatar uploading was successfull. If ok is false then operation failed.
-	 * Second parameter is version of avatar that was uploaded. Some protocols may require resizing or
-	 * other operations that change avatar before uploading.
-	 */
-	void avatarUploaded(bool ok, QImage avatar);
+    /**
+     * @short Signal emitted when job of this class is done.
+     * @author Rafał 'Vogel' Malinowski
+     * @param ok success flag
+     * @param avatar uploaded avatar
+     *
+     * If ok is true then avatar uploading was successfull. If ok is false then operation failed.
+     * Second parameter is version of avatar that was uploaded. Some protocols may require resizing or
+     * other operations that change avatar before uploading.
+     */
+    void avatarUploaded(bool ok, QImage avatar);
 };
 
 /**
  * @}
  */
 
-#endif // AVATAR_UPLOADER_H
+#endif   // AVATAR_UPLOADER_H

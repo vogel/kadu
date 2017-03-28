@@ -19,22 +19,21 @@
 
 #include "qfacebook-download-threads-job.h"
 
-#include "qfacebook/exceptions/qfacebook-invalid-data-exception.h"
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook-download-threads-result.h"
 #include "qfacebook-http-api.h"
 #include "qfacebook-http-reply.h"
 #include "qfacebook-http-request.h"
+#include "qfacebook/exceptions/qfacebook-invalid-data-exception.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
 #include <QtCore/QJsonArray>
 
-QFacebookDownloadThreadsJob::QFacebookDownloadThreadsJob(QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QObject *parent) :
-		QObject{parent},
-		m_httpApi{httpApi},
-		m_facebookSession{std::move(facebookSessionToken)}
+QFacebookDownloadThreadsJob::QFacebookDownloadThreadsJob(
+    QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QObject *parent)
+        : QObject{parent}, m_httpApi{httpApi}, m_facebookSession{std::move(facebookSessionToken)}
 {
-	auto reply = m_httpApi.threadListQuery(m_facebookSession.accessToken());
-	connect(reply, &QFacebookHttpReply::finished, this, &QFacebookDownloadThreadsJob::replyFinished);
+    auto reply = m_httpApi.threadListQuery(m_facebookSession.accessToken());
+    connect(reply, &QFacebookHttpReply::finished, this, &QFacebookDownloadThreadsJob::replyFinished);
 }
 
 QFacebookDownloadThreadsJob::~QFacebookDownloadThreadsJob()
@@ -43,18 +42,16 @@ QFacebookDownloadThreadsJob::~QFacebookDownloadThreadsJob()
 
 void QFacebookDownloadThreadsJob::replyFinished(const std::experimental::optional<QFacebookJsonReader> &result) try
 {
-	deleteLater();
+    deleteLater();
 
-	if (!result)
-		return;
+    if (!result)
+        return;
 
-	auto messageThreads = result->readObject("viewer").readObject("message_threads");
-	emit finished(QFacebookDownloadThreadsResult{
-		messageThreads.readString("sync_sequence_id").toInt(),
-		messageThreads.readInt("unread_count")
-	});
+    auto messageThreads = result->readObject("viewer").readObject("message_threads");
+    emit finished(
+        QFacebookDownloadThreadsResult{messageThreads.readString("sync_sequence_id").toInt(),
+                                       messageThreads.readInt("unread_count")});
 }
 catch (QFacebookInvalidDataException &)
 {
 }
-

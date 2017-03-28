@@ -28,15 +28,15 @@ OtrAccountConfigurationWidgetFactory::~OtrAccountConfigurationWidgetFactory()
 
 void OtrAccountConfigurationWidgetFactory::setPolicyService(OtrPolicyService *policyService)
 {
-	PolicyService = policyService;
+    PolicyService = policyService;
 }
 
-AccountConfigurationWidget * OtrAccountConfigurationWidgetFactory::createWidget(const Account &account, QWidget *parent)
+AccountConfigurationWidget *OtrAccountConfigurationWidgetFactory::createWidget(const Account &account, QWidget *parent)
 {
-	OtrAccountConfigurationWidget *result = new OtrAccountConfigurationWidget(account, parent);
-	result->setPolicyService(PolicyService.data());
+    OtrAccountConfigurationWidget *result = new OtrAccountConfigurationWidget(account, parent);
+    result->setPolicyService(PolicyService.data());
 
-	return result;
+    return result;
 }
 
 #include "moc_otr-account-configuration-widget-factory.cpp"

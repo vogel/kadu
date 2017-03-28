@@ -34,30 +34,32 @@ class PathsProvider;
 
 class SmsScriptsManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SmsScriptsManager(QObject *parent = nullptr);
-	virtual ~SmsScriptsManager();
+    Q_INVOKABLE explicit SmsScriptsManager(QObject *parent = nullptr);
+    virtual ~SmsScriptsManager();
 
-	void loadScript(const QFileInfo &fileInfo);
+    void loadScript(const QFileInfo &fileInfo);
 
-	QScriptEngine * engine() { return Engine; }
+    QScriptEngine *engine()
+    {
+        return Engine;
+    }
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QScriptEngine *Engine;
-	NetworkAccessManagerWrapper *Network;
+    QScriptEngine *Engine;
+    NetworkAccessManagerWrapper *Network;
 
-	QList<QString> LoadedFiles;
+    QList<QString> LoadedFiles;
 
-	void loadScripts(const QDir &dir);
+    void loadScripts(const QDir &dir);
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

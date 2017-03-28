@@ -30,9 +30,9 @@
 #include <QtGui/QTextDocument>
 #include <QtWebKitWidgets/QWebFrame>
 
-KaduStyleRenderer::KaduStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent) :
-		ChatStyleRenderer{std::move(configuration), parent},
-		m_style{std::move(style)}
+KaduStyleRenderer::KaduStyleRenderer(
+    ChatStyleRendererConfiguration configuration, std::shared_ptr<KaduChatSyntax> style, QObject *parent)
+        : ChatStyleRenderer{std::move(configuration), parent}, m_style{std::move(style)}
 {
 }
 
@@ -42,89 +42,90 @@ KaduStyleRenderer::~KaduStyleRenderer()
 
 void KaduStyleRenderer::setChatStyleManager(ChatStyleManager *chatStyleManager)
 {
-	m_chatStyleManager = chatStyleManager;
+    m_chatStyleManager = chatStyleManager;
 }
 
 void KaduStyleRenderer::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void KaduStyleRenderer::init()
 {
-	auto top = m_parser->parse(m_style->top(), Talkable(configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
-	auto html = QString{
-		"<html>"
-		"	<head>"
-		"		<style type='text/css'>"
-		"			%1"
-		"		</style>"
-		"	</head>"
-		"	<body>"
-		"		<script>"
-		"			%2"
-		"		</script>"
-		"		%3"
-		"	</body>"
-		"</html>"
-	};
+    auto top = m_parser->parse(
+        m_style->top(), Talkable(configuration().chat().contacts().toContact()), ParserEscape::HtmlEscape);
+    auto html = QString{
+        "<html>"
+        "	<head>"
+        "		<style type='text/css'>"
+        "			%1"
+        "		</style>"
+        "	</head>"
+        "	<body>"
+        "		<script>"
+        "			%2"
+        "		</script>"
+        "		%3"
+        "	</body>"
+        "</html>"};
 
-	configuration().webFrame().setHtml(html
-		.arg(Qt::escape(m_chatStyleManager->mainStyle()))
-		.arg(configuration().javaScript())
-		.arg(top)
-	);
+    configuration().webFrame().setHtml(
+        html.arg(Qt::escape(m_chatStyleManager->mainStyle())).arg(configuration().javaScript()).arg(top));
 
-	setReady();
+    setReady();
 }
 
 void KaduStyleRenderer::clearMessages()
 {
-	configuration().webFrame().evaluateJavaScript("kadu_clearMessages()");
+    configuration().webFrame().evaluateJavaScript("kadu_clearMessages()");
 }
 
 void KaduStyleRenderer::removeFirstMessage()
 {
-	configuration().webFrame().evaluateJavaScript("kadu_removeFirstMessage()");
+    configuration().webFrame().evaluateJavaScript("kadu_removeFirstMessage()");
 }
 
 void KaduStyleRenderer::appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
-	QString html(replacedNewLine(formatMessage(message, messageRenderInfo), QStringLiteral(" ")));
-	html.replace('\\', QStringLiteral("\\\\"));
-	html.replace('\'', QStringLiteral("\\'"));
-	if (!message.id().isEmpty())
-		html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(Qt::escape(message.id())));
-	else
-		html.prepend("<span class=\"kadu_message\">");
-	html.append("</span>");
+    QString html(replacedNewLine(formatMessage(message, messageRenderInfo), QStringLiteral(" ")));
+    html.replace('\\', QStringLiteral("\\\\"));
+    html.replace('\'', QStringLiteral("\\'"));
+    if (!message.id().isEmpty())
+        html.prepend(QString("<span class=\"kadu_message\" id=\"message_%1\">").arg(Qt::escape(message.id())));
+    else
+        html.prepend("<span class=\"kadu_message\">");
+    html.append("</span>");
 
-	configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
+    configuration().webFrame().evaluateJavaScript("kadu_appendMessage('" + html + "')");
 }
 
 void KaduStyleRenderer::displayMessageStatus(const QString &id, MessageStatus status)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
+    configuration().webFrame().evaluateJavaScript(
+        QString("kadu_messageStatusChanged(\"%1\", %2);").arg(Qt::escape(id)).arg(static_cast<int>(status)));
 }
 
 void KaduStyleRenderer::displayChatState(ChatState state, const QString &message, const QString &name)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");").arg(static_cast<int>(state)).arg(Qt::escape(message)).arg(Qt::escape(name)));
+    configuration().webFrame().evaluateJavaScript(
+        QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");")
+            .arg(static_cast<int>(state))
+            .arg(Qt::escape(message))
+            .arg(Qt::escape(name)));
 }
 
 void KaduStyleRenderer::displayChatImage(const ChatImage &chatImage, const QString &fileName)
 {
-	configuration().webFrame().evaluateJavaScript(QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
+    configuration().webFrame().evaluateJavaScript(
+        QString("kadu_chatImageAvailable(\"%1\", \"%2\");").arg(Qt::escape(chatImage.key())).arg(Qt::escape(fileName)));
 }
 
 QString KaduStyleRenderer::formatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo)
 {
-	auto sender = message.messageSender();
-	auto format = messageRenderInfo.includeHeader()
-			? m_style->withHeader()
-			: m_style->withoutHeader();
+    auto sender = message.messageSender();
+    auto format = messageRenderInfo.includeHeader() ? m_style->withHeader() : m_style->withoutHeader();
 
-	return m_parser->parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
+    return m_parser->parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
 }
 
 #include "moc_kadu-style-renderer.cpp"

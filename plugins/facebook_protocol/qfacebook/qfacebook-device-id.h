@@ -23,10 +23,10 @@
 
 struct QFacebookDeviceId
 {
-	QByteArray deviceId;
-	QByteArray clientId;
-	int64_t mqttId;
+    QByteArray deviceId;
+    QByteArray clientId;
+    int64_t mqttId;
 
-	static QFacebookDeviceId random();
-	bool isValid() const;
+    static QFacebookDeviceId random();
+    bool isValid() const;
 };

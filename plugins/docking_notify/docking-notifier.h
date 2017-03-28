@@ -22,40 +22,39 @@ class Parser;
  */
 class DockingNotifier : public QObject, public Notifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit DockingNotifier(QObject *parent = nullptr);
-	virtual ~DockingNotifier();
+    Q_INVOKABLE explicit DockingNotifier(QObject *parent = nullptr);
+    virtual ~DockingNotifier();
 
-	virtual void notify(const Notification &notification);
+    virtual void notify(const Notification &notification);
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
+    virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
 
 public slots:
-	void messageClicked();
+    void messageClicked();
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<Docking> m_docking;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<Parser> m_parser;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<Docking> m_docking;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<Parser> m_parser;
 
-	void createDefaultConfiguration();
-	QString parseText(const QString &text, const Notification &notification, const NormalizedHtmlString &def);
-	Chat chat;
+    void createDefaultConfiguration();
+    QString parseText(const QString &text, const Notification &notification, const NormalizedHtmlString &def);
+    Chat chat;
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDocking(Docking *docking);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setDocking(Docking *docking);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_INIT void init();
 };
 
 /** @} */

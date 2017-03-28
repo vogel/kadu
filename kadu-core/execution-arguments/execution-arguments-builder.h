@@ -44,28 +44,26 @@ class ExecutionArguments;
  */
 class KADUAPI ExecutionArgumentsBuilder final
 {
-
 public:
-	ExecutionArgumentsBuilder();
+    ExecutionArgumentsBuilder();
 
-	ExecutionArgumentsBuilder & setQueryVersion(bool queryVersion);
-	ExecutionArgumentsBuilder & setQueryUsage(bool queryUsage);
-	ExecutionArgumentsBuilder & setProfileDirectory(QString profileDirectory);
-	ExecutionArgumentsBuilder & setOpenIds(QStringList openIds);
-	ExecutionArgumentsBuilder & setOpenUuid(QString openUuid);
+    ExecutionArgumentsBuilder &setQueryVersion(bool queryVersion);
+    ExecutionArgumentsBuilder &setQueryUsage(bool queryUsage);
+    ExecutionArgumentsBuilder &setProfileDirectory(QString profileDirectory);
+    ExecutionArgumentsBuilder &setOpenIds(QStringList openIds);
+    ExecutionArgumentsBuilder &setOpenUuid(QString openUuid);
 
-	/**
-	 * @short Create ExecutionArguments from values set before by setXXX methods.
-	 */
-	ExecutionArguments build() const;
+    /**
+     * @short Create ExecutionArguments from values set before by setXXX methods.
+     */
+    ExecutionArguments build() const;
 
 private:
-	bool m_queryVersion;
-	bool m_queryUsage;
-	QString m_profileDirectory;
-	QStringList m_openIds;
-	QString m_openUuid;
-
+    bool m_queryVersion;
+    bool m_queryUsage;
+    QString m_profileDirectory;
+    QStringList m_openIds;
+    QString m_openUuid;
 };
 
 /**

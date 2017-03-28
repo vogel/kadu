@@ -23,53 +23,51 @@
 
 std::experimental::optional<QMqttReader::QMqttHeader> QMqttReader::readHeader(const QByteArray &data)
 {
-	auto size = uint32_t{0};
-	auto m = uint32_t{1};
-	auto i = uint32_t{1};
-	auto byte = uint8_t{0};
-	do
-	{
-		if (data.size() < static_cast<int>(i + 1))
-			return std::experimental::nullopt;
+    auto size = uint32_t{0};
+    auto m = uint32_t{1};
+    auto i = uint32_t{1};
+    auto byte = uint8_t{0};
+    do
+    {
+        if (data.size() < static_cast<int>(i + 1))
+            return std::experimental::nullopt;
 
-		byte = static_cast<uint8_t>(data[i]);
-		size += (byte & 0x7F) * m;
-		m <<= 7;
-		i++;
-	}
-	while ((byte & 0x80) != 0);
+        byte = static_cast<uint8_t>(data[i]);
+        size += (byte & 0x7F) * m;
+        m <<= 7;
+        i++;
+    } while ((byte & 0x80) != 0);
 
-	return QMqttHeader{size, i};
+    return QMqttHeader{size, i};
 }
 
-QMqttReader::QMqttReader(const QByteArray &content) :
-		m_content{content}
+QMqttReader::QMqttReader(const QByteArray &content) : m_content{content}
 {
 }
 
 uint8_t QMqttReader::readUint8()
 {
-	return static_cast<uint8_t>(m_content[m_pos++]);
+    return static_cast<uint8_t>(m_content[m_pos++]);
 }
 
 uint16_t QMqttReader::readUint16()
 {
-	auto res = qFromBigEndian(*reinterpret_cast<const uint16_t *>(&(m_content.data()[m_pos])));
-	m_pos += 2;
-	return res;
+    auto res = qFromBigEndian(*reinterpret_cast<const uint16_t *>(&(m_content.data()[m_pos])));
+    m_pos += 2;
+    return res;
 }
 
 QByteArray QMqttReader::readData()
 {
-	auto size = readUint16();
-	auto res = m_content.mid(m_pos, size);
-	m_pos += size;
-	return res;
+    auto size = readUint16();
+    auto res = m_content.mid(m_pos, size);
+    m_pos += size;
+    return res;
 }
 
 QByteArray QMqttReader::readRaw()
 {
-	auto res = m_content.mid(m_pos);
-	m_pos = m_content.size();
-	return res;
+    auto res = m_content.mid(m_pos);
+    m_pos = m_content.size();
+    return res;
 }

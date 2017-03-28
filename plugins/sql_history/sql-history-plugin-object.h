@@ -29,21 +29,20 @@ class History;
 
 class SqlHistoryPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit SqlHistoryPluginObject(QObject *parent = nullptr);
-	virtual ~SqlHistoryPluginObject();
+    Q_INVOKABLE explicit SqlHistoryPluginObject(QObject *parent = nullptr);
+    virtual ~SqlHistoryPluginObject();
 
 private:
-	QPointer<HistorySqlStorage> m_historySqlStorage;
-	QPointer<History> m_history;
+    QPointer<HistorySqlStorage> m_historySqlStorage;
+    QPointer<History> m_history;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
-	INJEQT_SET void setHistory(History *history);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setHistorySqlStorage(HistorySqlStorage *historySqlStorage);
+    INJEQT_SET void setHistory(History *history);
 };

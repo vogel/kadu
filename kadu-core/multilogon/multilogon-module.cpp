@@ -23,7 +23,7 @@
 
 MultilogonModule::MultilogonModule()
 {
-	add_type<MultilogonNotificationService>();
+    add_type<MultilogonNotificationService>();
 }
 
 MultilogonModule::~MultilogonModule()

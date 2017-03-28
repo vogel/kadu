@@ -35,64 +35,68 @@ FormattedStringHtmlVisitor::~FormattedStringHtmlVisitor()
 {
 }
 
-void FormattedStringHtmlVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringHtmlVisitor::beginVisit(const CompositeFormattedString *const compositeFormattedString)
 {
-	Q_UNUSED(compositeFormattedString);
+    Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringHtmlVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringHtmlVisitor::endVisit(const CompositeFormattedString *const compositeFormattedString)
 {
-	Q_UNUSED(compositeFormattedString);
+    Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+void FormattedStringHtmlVisitor::visit(const FormattedStringImageBlock *const formattedStringImageBlock)
 {
-	auto imagePath = formattedStringImageBlock->imagePath();
-	auto escapedImagePath = Qt::escape(imagePath);
-	auto imageKey = formattedStringImageBlock->image().key();
-	auto escapedImageKey = imageKey;
+    auto imagePath = formattedStringImageBlock->imagePath();
+    auto escapedImagePath = Qt::escape(imagePath);
+    auto imageKey = formattedStringImageBlock->image().key();
+    auto escapedImageKey = imageKey;
 
-	append(QFileInfo(imagePath).isAbsolute()
-			? QString("<img class=\"scalable\" src=\"file://%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey)
-			: imagePath.startsWith("kaduimg:///")
-			? QString("<img class=\"scalable\" src=\"%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey)
-			: QString("<img class=\"scalable\" src=\"kaduimg:///%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey));
+    append(
+        QFileInfo(imagePath).isAbsolute()
+            ? QString("<img class=\"scalable\" src=\"file://%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey)
+            : imagePath.startsWith("kaduimg:///")
+                  ? QString("<img class=\"scalable\" src=\"%1\" name=\"%2\" />").arg(imagePath).arg(escapedImageKey)
+                  : QString("<img class=\"scalable\" src=\"kaduimg:///%1\" name=\"%2\" />")
+                        .arg(imagePath)
+                        .arg(escapedImageKey));
 }
 
-void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+void FormattedStringHtmlVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-	QString content(replacedNewLine(Qt::escape(formattedStringTextBlock->content()), QStringLiteral("<br/>")));
+    QString content(replacedNewLine(Qt::escape(formattedStringTextBlock->content()), QStringLiteral("<br/>")));
 
-	if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() && !formattedStringTextBlock->underline())
-	{
-		append(content);
-		return;
-	}
+    if (!formattedStringTextBlock->bold() && !formattedStringTextBlock->italic() &&
+        !formattedStringTextBlock->underline())
+    {
+        append(content);
+        return;
+    }
 
-	QString span = "<span style=\"";
-	if (formattedStringTextBlock->bold())
-		span += "font-weight:600;";
-	if (formattedStringTextBlock->italic())
-		span += "font-style:italic;";
-	if (formattedStringTextBlock->underline())
-		span += "text-decoration:underline;";
+    QString span = "<span style=\"";
+    if (formattedStringTextBlock->bold())
+        span += "font-weight:600;";
+    if (formattedStringTextBlock->italic())
+        span += "font-style:italic;";
+    if (formattedStringTextBlock->underline())
+        span += "text-decoration:underline;";
 
-//  TODO: Ignore colors settings for now. Many clients send black as default color.
-//	This breaks all dark chat themes. We have to find better solution for post 0.9.0 versions
-//	if (Color.isValid())
-//		span += QString("color:%1;").arg(Color.name());
+    //  TODO: Ignore colors settings for now. Many clients send black as default color.
+    //	This breaks all dark chat themes. We have to find better solution for post 0.9.0 versions
+    //	if (Color.isValid())
+    //		span += QString("color:%1;").arg(Color.name());
 
-	span += "\">";
+    span += "\">";
 
-	append(span + content + "</span>");
+    append(span + content + "</span>");
 }
 
 void FormattedStringHtmlVisitor::append(QString content)
 {
-	m_result.append(std::move(content));
+    m_result.append(std::move(content));
 }
 
 HtmlString FormattedStringHtmlVisitor::result() const
 {
-	return HtmlString{m_result};
+    return HtmlString{m_result};
 }

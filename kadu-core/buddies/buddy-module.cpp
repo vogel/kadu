@@ -32,16 +32,16 @@
 
 BuddyModule::BuddyModule()
 {
-	add_type<BuddyAdditionalDataDeleteHandlerManager>();
-	add_type<BuddyConfigurationWidgetFactoryRepository>();
-	add_type<BuddyDataExtractor>();
-	add_type<BuddyDummyFactory>();
-	add_type<BuddyListMimeDataService>();
-	add_type<BuddyManager>();
-	add_type<BuddyPreferredManager>();
-	add_type<BuddyStorage>();
-	add_type<GroupManager>();
-	add_type<GroupStorage>();
+    add_type<BuddyAdditionalDataDeleteHandlerManager>();
+    add_type<BuddyConfigurationWidgetFactoryRepository>();
+    add_type<BuddyDataExtractor>();
+    add_type<BuddyDummyFactory>();
+    add_type<BuddyListMimeDataService>();
+    add_type<BuddyManager>();
+    add_type<BuddyPreferredManager>();
+    add_type<BuddyStorage>();
+    add_type<GroupManager>();
+    add_type<GroupStorage>();
 }
 
 BuddyModule::~BuddyModule()

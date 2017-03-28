@@ -27,8 +27,7 @@
 
 #include <QtXml/QDomDocument>
 
-DomProcessorServiceImpl::DomProcessorServiceImpl(QObject *parent) :
-		DomProcessorService{parent}
+DomProcessorServiceImpl::DomProcessorServiceImpl(QObject *parent) : DomProcessorService{parent}
 {
 }
 
@@ -36,33 +35,35 @@ DomProcessorServiceImpl::~DomProcessorServiceImpl()
 {
 }
 
-void DomProcessorServiceImpl::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
+void DomProcessorServiceImpl::setDomVisitorProviderRepository(
+    DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domVisitorProviderRepository = domVisitorProviderRepository;
+    m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void DomProcessorServiceImpl::process(QDomDocument &domDocument)
 {
-	auto visitors = std::vector<const DomVisitor *>();
-	for (auto visitorProvider : m_domVisitorProviderRepository)
-		if (auto visitor = visitorProvider->provide())
-			visitors.push_back(visitor);
+    auto visitors = std::vector<const DomVisitor *>();
+    for (auto visitorProvider : m_domVisitorProviderRepository)
+        if (auto visitor = visitorProvider->provide())
+            visitors.push_back(visitor);
 
-	auto domProcessor = DomProcessor{domDocument};
-	domProcessor.accept(std::begin(visitors), std::end(visitors));
+    auto domProcessor = DomProcessor{domDocument};
+    domProcessor.accept(std::begin(visitors), std::end(visitors));
 }
 
 QString DomProcessorServiceImpl::process(const QString &xml)
 {
-	try {
-		auto domDocument = toDomDocument(xml);
-		process(domDocument);
-		return toString(domDocument);
-	}
-	catch (invalid_xml &)
-	{
-		return xml;
-	}
+    try
+    {
+        auto domDocument = toDomDocument(xml);
+        process(domDocument);
+        return toString(domDocument);
+    }
+    catch (invalid_xml &)
+    {
+        return xml;
+    }
 }
 
 #include "dom-processor-service-impl.moc"

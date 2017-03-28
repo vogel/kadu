@@ -37,36 +37,35 @@ class QComboBox;
 
 class MPRISPlayerConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
-	
-	QPointer<Configuration> m_configuration;
-	QPointer<MPRISPlayer> m_mprisPlayer;
-	QPointer<PathsProvider> m_pathsProvider;
+    Q_OBJECT
 
-	QMap<QString, QString> PlayersMap;
-	QComboBox *PlayersBox;
+    QPointer<Configuration> m_configuration;
+    QPointer<MPRISPlayer> m_mprisPlayer;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	void loadPlayersListFromFile();
-	void fillPlayersBox();
+    QMap<QString, QString> PlayersMap;
+    QComboBox *PlayersBox;
+
+    void loadPlayersListFromFile();
+    void fillPlayersBox();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setMPRISPlayer(MPRISPlayer *mprisPlayer);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
-	void configurationApplied();
+    void configurationApplied();
 
 public:
-	Q_INVOKABLE explicit MPRISPlayerConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~MPRISPlayerConfigurationUiHandler();
+    Q_INVOKABLE explicit MPRISPlayerConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~MPRISPlayerConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 public slots:
-	void addPlayer();
-	void editPlayer();
-	void delPlayer();
-
+    void addPlayer();
+    void editPlayer();
+    void delPlayer();
 };

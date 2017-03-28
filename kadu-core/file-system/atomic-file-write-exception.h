@@ -26,5 +26,8 @@
 
 class KADUAPI AtomicFileWriteException : public std::exception
 {
-	virtual const char * what() const noexcept { return "Atomic file write failure"; }
+    virtual const char *what() const noexcept
+    {
+        return "Atomic file write failure";
+    }
 };

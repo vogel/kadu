@@ -28,19 +28,18 @@ class UnityIntegration;
 
 class UnityIntegrationPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit UnityIntegrationPluginObject(QObject *parent = nullptr);
-	virtual ~UnityIntegrationPluginObject();
+    Q_INVOKABLE explicit UnityIntegrationPluginObject(QObject *parent = nullptr);
+    virtual ~UnityIntegrationPluginObject();
 
 private:
-	QPointer<UnityIntegration> m_unityIntegration;
+    QPointer<UnityIntegration> m_unityIntegration;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setUnityIntegration(UnityIntegration *unityIntegration);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setUnityIntegration(UnityIntegration *unityIntegration);
 };

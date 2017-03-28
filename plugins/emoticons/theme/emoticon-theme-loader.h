@@ -35,22 +35,22 @@ class Theme;
  */
 class EmoticonThemeLoader
 {
-
 public:
-	virtual ~EmoticonThemeLoader() {}
+    virtual ~EmoticonThemeLoader()
+    {
+    }
 
-	/**
-	 * @short Load emoticon theme from given path.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param path path of file or directory to load emoticon theme from
-	 * @return loaded emoticon theme
-	 */
-	virtual EmoticonTheme loadEmoticonTheme(const QString &path) = 0;
-
+    /**
+     * @short Load emoticon theme from given path.
+     * @author Rafał 'Vogel' Malinowski
+     * @param path path of file or directory to load emoticon theme from
+     * @return loaded emoticon theme
+     */
+    virtual EmoticonTheme loadEmoticonTheme(const QString &path) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // EMOTICON_THEME_LOADER
+#endif   // EMOTICON_THEME_LOADER

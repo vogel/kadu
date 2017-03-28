@@ -27,10 +27,7 @@
 #include "notification/screen-mode-checker.h"
 #endif
 
-FullScreenService::FullScreenService(QObject *parent) :
-		QObject{parent},
-		m_hasFullscreenApplication{false},
-		m_started{0}
+FullScreenService::FullScreenService(QObject *parent) : QObject{parent}, m_hasFullscreenApplication{false}, m_started{0}
 {
 }
 
@@ -40,42 +37,43 @@ FullScreenService::~FullScreenService()
 
 bool FullScreenService::hasFullscreenApplication() const
 {
-	return m_hasFullscreenApplication;
+    return m_hasFullscreenApplication;
 }
 
 void FullScreenService::start()
 {
-	m_started++;
-	
-	if (m_fullscreenChecker)
-		return;
+    m_started++;
+
+    if (m_fullscreenChecker)
+        return;
 
 #if defined(Q_OS_UNIX)
-	m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new X11ScreenModeChecker{});
+    m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new X11ScreenModeChecker{});
 #elif defined(Q_OS_WIN)
-	m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new WindowsScreenModeChecker{});
+    m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new WindowsScreenModeChecker{});
 #else
-	m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new ScreenModeChecker{});
+    m_fullscreenChecker = not_owned_qptr<ScreenModeChecker>(new ScreenModeChecker{});
 #endif
-	connect(m_fullscreenChecker, &ScreenModeChecker::fullscreenToggled, this, &FullScreenService::fullscreenToggledSlot);
+    connect(
+        m_fullscreenChecker, &ScreenModeChecker::fullscreenToggled, this, &FullScreenService::fullscreenToggledSlot);
 }
 
 void FullScreenService::stop()
 {
-	m_started--;
+    m_started--;
 
-	if (m_started == 0)
-	{
-		m_fullscreenChecker.reset();
-		fullscreenToggledSlot(false);
-	}
+    if (m_started == 0)
+    {
+        m_fullscreenChecker.reset();
+        fullscreenToggledSlot(false);
+    }
 }
 
 void FullScreenService::fullscreenToggledSlot(bool fullscreen)
 {
-	if (m_hasFullscreenApplication == fullscreen)
-		return;
+    if (m_hasFullscreenApplication == fullscreen)
+        return;
 
-	m_hasFullscreenApplication = fullscreen;
-	emit fullscreenToggled(fullscreen);
+    m_hasFullscreenApplication = fullscreen;
+    emit fullscreenToggled(fullscreen);
 }

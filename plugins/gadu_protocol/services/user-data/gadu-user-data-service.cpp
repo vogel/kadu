@@ -26,8 +26,7 @@
 
 #include <libgadu.h>
 
-GaduUserDataService::GaduUserDataService(Account account, QObject *parent) :
-		AccountService{account, parent}
+GaduUserDataService::GaduUserDataService(Account account, QObject *parent) : AccountService{account, parent}
 {
 }
 
@@ -37,46 +36,46 @@ GaduUserDataService::~GaduUserDataService()
 
 void GaduUserDataService::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void GaduUserDataService::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void GaduUserDataService::handleUserDataEvent(const gg_event_user_data &userData)
 {
-	auto update = userData.type == static_cast<int>(GaduUserDataType::Update);
-	for (decltype(userData.user_count) i = 0; i < userData.user_count; i++)
-		handleUserDataItem(userData.users[i], update);
+    auto update = userData.type == static_cast<int>(GaduUserDataType::Update);
+    for (decltype(userData.user_count) i = 0; i < userData.user_count; i++)
+        handleUserDataItem(userData.users[i], update);
 }
 
 void GaduUserDataService::handleUserDataItem(const gg_event_user_data_user &userDataUser, bool update)
 {
-	auto contact = m_contactManager->byId(account(), QString::number(userDataUser.uin), ActionReturnNull);
-	if (!contact)
-		return;
+    auto contact = m_contactManager->byId(account(), QString::number(userDataUser.uin), ActionReturnNull);
+    if (!contact)
+        return;
 
-	auto gotAvatar = false;
-	for (decltype(userDataUser.attr_count) i = 0; i < userDataUser.attr_count; i++)
-	{
-		auto key = QString::fromLatin1(userDataUser.attrs[i].key);
-		if (key != "avatar")
-			continue;
+    auto gotAvatar = false;
+    for (decltype(userDataUser.attr_count) i = 0; i < userDataUser.attr_count; i++)
+    {
+        auto key = QString::fromLatin1(userDataUser.attrs[i].key);
+        if (key != "avatar")
+            continue;
 
-		auto ok = false;
-		auto timestamp = QString::fromLatin1(userDataUser.attrs[i].value).toInt(&ok);
+        auto ok = false;
+        auto timestamp = QString::fromLatin1(userDataUser.attrs[i].value).toInt(&ok);
 
-		if (userDataUser.attrs[i].type == 0 || !ok || timestamp <= 0)
-			m_avatarManager->removeAvatar(contact);
+        if (userDataUser.attrs[i].type == 0 || !ok || timestamp <= 0)
+            m_avatarManager->removeAvatar(contact);
 
-		m_avatarManager->updateAvatar(contact, true);
-		gotAvatar = true;
-	}
+        m_avatarManager->updateAvatar(contact, true);
+        gotAvatar = true;
+    }
 
-	if (!update && !gotAvatar)
-		m_avatarManager->removeAvatar(contact);
+    if (!update && !gotAvatar)
+        m_avatarManager->removeAvatar(contact);
 }
 
 #include "moc_gadu-user-data-service.cpp"

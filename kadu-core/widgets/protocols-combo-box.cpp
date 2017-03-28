@@ -31,8 +31,7 @@
 
 #include <QtWidgets/QAction>
 
-ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) :
-		ActionsComboBox(parent)
+ProtocolsComboBox::ProtocolsComboBox(QWidget *parent) : ActionsComboBox(parent)
 {
 }
 
@@ -42,43 +41,43 @@ ProtocolsComboBox::~ProtocolsComboBox()
 
 void ProtocolsComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ProtocolsComboBox::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void ProtocolsComboBox::init()
 {
-	addBeforeAction(make_owned<QAction>(tr(" - Select network - "), this), NotVisibleWithOneRowSourceModel);
+    addBeforeAction(make_owned<QAction>(tr(" - Select network - "), this), NotVisibleWithOneRowSourceModel);
 
-	m_proxyModel = make_owned<ProtocolsModelProxy>(this);
-	auto chain = make_owned<ModelChain>(this);
-	chain->setBaseModel(m_injectedFactory->makeOwned<ProtocolsModel>(m_protocolsManager, chain));
-	chain->addProxyModel(m_proxyModel);
-	setUpModel(ProtocolRole, chain);
+    m_proxyModel = make_owned<ProtocolsModelProxy>(this);
+    auto chain = make_owned<ModelChain>(this);
+    chain->setBaseModel(m_injectedFactory->makeOwned<ProtocolsModel>(m_protocolsManager, chain));
+    chain->addProxyModel(m_proxyModel);
+    setUpModel(ProtocolRole, chain);
 }
 
 void ProtocolsComboBox::setCurrentProtocol(ProtocolFactory *protocol)
 {
-	setCurrentValue(QVariant::fromValue<ProtocolFactory *>(protocol));
+    setCurrentValue(QVariant::fromValue<ProtocolFactory *>(protocol));
 }
 
-ProtocolFactory * ProtocolsComboBox::currentProtocol()
+ProtocolFactory *ProtocolsComboBox::currentProtocol()
 {
-	return currentValue().value<ProtocolFactory *>();
+    return currentValue().value<ProtocolFactory *>();
 }
 
 void ProtocolsComboBox::addFilter(AbstractProtocolFilter *filter)
 {
-	m_proxyModel->addFilter(filter);
+    m_proxyModel->addFilter(filter);
 }
 
 void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
 {
-	m_proxyModel->removeFilter(filter);
+    m_proxyModel->removeFilter(filter);
 }
 
 #include "moc_protocols-combo-box.cpp"

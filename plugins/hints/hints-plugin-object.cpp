@@ -26,8 +26,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-HintsPluginObject::HintsPluginObject(QObject *parent) :
-		QObject{parent}
+HintsPluginObject::HintsPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,34 +36,37 @@ HintsPluginObject::~HintsPluginObject()
 
 void HintsPluginObject::setHintsNotifier(HintsNotifier *hintsNotifier)
 {
-	m_hintsNotifier = hintsNotifier;
+    m_hintsNotifier = hintsNotifier;
 }
 
-void HintsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void HintsPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void HintsPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void HintsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void HintsPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
-	m_notifierRepository->registerNotifier(m_hintsNotifier);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
+    m_notifierRepository->registerNotifier(m_hintsNotifier);
 }
 
 void HintsPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_hintsNotifier);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
+    m_notifierRepository->unregisterNotifier(m_hintsNotifier);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
 }
 
 #include "moc_hints-plugin-object.cpp"

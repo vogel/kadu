@@ -33,28 +33,27 @@ class Myself;
 
 class GaduFileTransferService : public FileTransferService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduFileTransferService(GaduProtocol *protocol);
-	virtual ~GaduFileTransferService();
+    explicit GaduFileTransferService(GaduProtocol *protocol);
+    virtual ~GaduFileTransferService();
 
-	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
+    void setGaduIMTokenService(GaduIMTokenService *imTokenService);
 
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) override;
-	virtual FileTransferCanSendResult canSend(Contact contact) override;
+    virtual FileTransferHandler *createFileTransferHandler(FileTransfer fileTransfer) override;
+    virtual FileTransferCanSendResult canSend(Contact contact) override;
 
-	void fileTransferReceived(Contact peer, QString downloadId, QString fileName);
+    void fileTransferReceived(Contact peer, QString downloadId, QString fileName);
 
 private:
-	QPointer<FileTransferStorage> m_fileTransferStorage;
-	QPointer<GaduIMTokenService> m_imTokenService;
-	QPointer<Myself> m_myself;
+    QPointer<FileTransferStorage> m_fileTransferStorage;
+    QPointer<GaduIMTokenService> m_imTokenService;
+    QPointer<Myself> m_myself;
 
-	GaduProtocol *Protocol;
+    GaduProtocol *Protocol;
 
 private slots:
-	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
+    INJEQT_SET void setMyself(Myself *myself);
 };

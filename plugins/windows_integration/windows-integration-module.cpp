@@ -20,9 +20,9 @@
 #include "windows-integration-module.h"
 
 #ifdef Q_OS_WIN
-#	include "windows-jump-list.h"
+#include "windows-jump-list.h"
 #else
-#	include "console-jump-list.h"
+#include "console-jump-list.h"
 #endif
 
 #include "windows-integration-plugin-object.h"
@@ -31,13 +31,13 @@
 
 WindowsIntegrationModule::WindowsIntegrationModule()
 {
-	add_type<WindowsIntegrationPluginObject>();
-	add_type<WindowsIntegration>();
-	add_type<WindowsJumpListService>();
+    add_type<WindowsIntegrationPluginObject>();
+    add_type<WindowsIntegration>();
+    add_type<WindowsJumpListService>();
 
 #ifdef Q_OS_WIN
-	add_type<WindowsJumpList>();
+    add_type<WindowsJumpList>();
 #else
-	add_type<ConsoleJumpList>();
+    add_type<ConsoleJumpList>();
 #endif
 }

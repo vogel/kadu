@@ -28,8 +28,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QSettings>
 
-PluginMetadataReader::PluginMetadataReader(QObject *parent) noexcept :
-		QObject(parent)
+PluginMetadataReader::PluginMetadataReader(QObject *parent) noexcept : QObject(parent)
 {
 }
 
@@ -39,39 +38,39 @@ PluginMetadataReader::~PluginMetadataReader() noexcept
 
 void PluginMetadataReader::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void PluginMetadataReader::setVersionService(VersionService *versionService)
 {
-	m_versionService = versionService;
+    m_versionService = versionService;
 }
 
-PluginMetadata PluginMetadataReader::readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false)
+PluginMetadata
+PluginMetadataReader::readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false)
 {
-	auto fileInfo = QFileInfo{filePath};
-	if (!fileInfo.exists() || !fileInfo.isReadable())
-		throw PluginMetadataReaderException{};
+    auto fileInfo = QFileInfo{filePath};
+    if (!fileInfo.exists() || !fileInfo.isReadable())
+        throw PluginMetadataReaderException{};
 
-	auto const lang = m_configuration->deprecatedApi()->readEntry("General", "Language");
-	QSettings file{filePath, QSettings::IniFormat};
-	file.setIniCodec("UTF-8");
+    auto const lang = m_configuration->deprecatedApi()->readEntry("General", "Language");
+    QSettings file{filePath, QSettings::IniFormat};
+    file.setIniCodec("UTF-8");
 
-	auto result = PluginMetadata{};
-	result.name = pluginName;
-	result.displayName = file.value("Module/DisplayName[" + lang + ']', file.value("Module/DisplayName")).toString();
-	result.category = file.value("Module/Category").toString();
-	result.type = file.value("Module/Type").toString();
-	result.description = file.value("Module/Description[" + lang + ']', file.value("Module/Description")).toString();
-	result.author = file.value("Module/Author").toString();
-	result.version = file.value("Module/Version").toString() == "core"
-			? m_versionService->version()
-			: file.value("Module/Version").toString();
-	result.provides = file.value("Module/Provides").toString();
-	result.dependencies = file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts);
-	result.replaces = file.value("Module/Replaces").toString().split(' ', QString::SkipEmptyParts);
-	result.loadByDefault = file.value("Module/LoadByDefault").toBool();
-	result.internal = file.value("Module/Internal").toBool();
+    auto result = PluginMetadata{};
+    result.name = pluginName;
+    result.displayName = file.value("Module/DisplayName[" + lang + ']', file.value("Module/DisplayName")).toString();
+    result.category = file.value("Module/Category").toString();
+    result.type = file.value("Module/Type").toString();
+    result.description = file.value("Module/Description[" + lang + ']', file.value("Module/Description")).toString();
+    result.author = file.value("Module/Author").toString();
+    result.version = file.value("Module/Version").toString() == "core" ? m_versionService->version()
+                                                                       : file.value("Module/Version").toString();
+    result.provides = file.value("Module/Provides").toString();
+    result.dependencies = file.value("Module/Dependencies").toString().split(' ', QString::SkipEmptyParts);
+    result.replaces = file.value("Module/Replaces").toString().split(' ', QString::SkipEmptyParts);
+    result.loadByDefault = file.value("Module/LoadByDefault").toBool();
+    result.internal = file.value("Module/Internal").toBool();
 
-	return result;
+    return result;
 }

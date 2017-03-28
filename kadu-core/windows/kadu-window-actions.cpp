@@ -49,99 +49,79 @@ KaduWindowActions::~KaduWindowActions()
 
 void KaduWindowActions::setBlockUserAction(BlockUserAction *blockUserAction)
 {
-	m_blockUserAction = blockUserAction;
+    m_blockUserAction = blockUserAction;
 }
 
 void KaduWindowActions::setCollapseAction(CollapseAction *collapseAction)
 {
-	m_collapseAction = collapseAction;
+    m_collapseAction = collapseAction;
 }
 
 void KaduWindowActions::setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction)
 {
-	m_copyDescriptionAction = copyDescriptionAction;
+    m_copyDescriptionAction = copyDescriptionAction;
 }
 
 void KaduWindowActions::setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction)
 {
-	m_copyPersonalInfoAction = copyPersonalInfoAction;
+    m_copyPersonalInfoAction = copyPersonalInfoAction;
 }
 
 void KaduWindowActions::setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction)
 {
-	m_deleteTalkableAction = deleteTalkableAction;
+    m_deleteTalkableAction = deleteTalkableAction;
 }
 
 void KaduWindowActions::setEditTalkableAction(EditTalkableAction *editTalkableAction)
 {
-	m_editTalkableAction = editTalkableAction;
+    m_editTalkableAction = editTalkableAction;
 }
 
 void KaduWindowActions::setExpandAction(ExpandAction *expandAction)
 {
-	m_expandAction = expandAction;
+    m_expandAction = expandAction;
 }
 
 void KaduWindowActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void KaduWindowActions::setMergeBuddiesAction(MergeBuddiesAction *mergeBuddiesAction)
 {
-	m_mergeBuddiesAction = mergeBuddiesAction;
+    m_mergeBuddiesAction = mergeBuddiesAction;
 }
 
 void KaduWindowActions::setOpenBuddyEmailAction(OpenBuddyEmailAction *openBuddyEmailAction)
 {
-	m_openBuddyEmailAction = openBuddyEmailAction;
+    m_openBuddyEmailAction = openBuddyEmailAction;
 }
 
 void KaduWindowActions::setOpenDescriptionLinkAction(OpenDescriptionLinkAction *openDescriptionLinkAction)
 {
-	m_openDescriptionLinkAction = openDescriptionLinkAction;
+    m_openDescriptionLinkAction = openDescriptionLinkAction;
 }
 
 void KaduWindowActions::init()
 {
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_collapseAction, KaduMenu::SectionActionsGui, 1);
+    m_menuInventory->menu("buddy-list")->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
+    m_menuInventory->menu("buddy-list")->addAction(m_collapseAction, KaduMenu::SectionActionsGui, 1);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_copyDescriptionAction, KaduMenu::SectionActions, 10);
+    m_menuInventory->menu("buddy-list")->addAction(m_copyDescriptionAction, KaduMenu::SectionActions, 10);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_copyPersonalInfoAction, KaduMenu::SectionActions, 20);
+    m_menuInventory->menu("buddy-list")->addAction(m_copyPersonalInfoAction, KaduMenu::SectionActions, 20);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_openDescriptionLinkAction, KaduMenu::SectionActions, 30);
+    m_menuInventory->menu("buddy-list")->addAction(m_openDescriptionLinkAction, KaduMenu::SectionActions, 30);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
+    m_menuInventory->menu("buddy-list")->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_editTalkableAction, KaduMenu::SectionView);
+    m_menuInventory->menu("buddy-list")->addAction(m_editTalkableAction, KaduMenu::SectionView);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_mergeBuddiesAction, KaduMenu::SectionManagement, 100);
+    m_menuInventory->menu("buddy-list")->addAction(m_mergeBuddiesAction, KaduMenu::SectionManagement, 100);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_blockUserAction, KaduMenu::SectionManagement, 500);
+    m_menuInventory->menu("buddy-list")->addAction(m_blockUserAction, KaduMenu::SectionManagement, 500);
 
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_deleteTalkableAction, KaduMenu::SectionManagement, 1000);
+    m_menuInventory->menu("buddy-list")->addAction(m_deleteTalkableAction, KaduMenu::SectionManagement, 1000);
 }
 
 #include "moc_kadu-window-actions.cpp"

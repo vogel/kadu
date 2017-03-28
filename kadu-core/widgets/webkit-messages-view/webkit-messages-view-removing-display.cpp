@@ -23,8 +23,8 @@
 #include "message/message-render-header-behavior.h"
 #include "misc/algorithm.h"
 
-WebkitMessagesViewRemovingDisplay::WebkitMessagesViewRemovingDisplay(ChatStyleRenderer &chatStyleRenderer) :
-		WebkitMessagesViewDisplay{chatStyleRenderer}
+WebkitMessagesViewRemovingDisplay::WebkitMessagesViewRemovingDisplay(ChatStyleRenderer &chatStyleRenderer)
+        : WebkitMessagesViewDisplay{chatStyleRenderer}
 {
 }
 
@@ -34,22 +34,23 @@ WebkitMessagesViewRemovingDisplay::~WebkitMessagesViewRemovingDisplay()
 
 void WebkitMessagesViewRemovingDisplay::displayMessages(SortedMessages messages)
 {
-	auto overlapping = find_overlapping_region(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
-	auto previousMessage = Message::null;
+    auto overlapping =
+        find_overlapping_region(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
+    auto previousMessage = Message::null;
 
-	if (!m_currentMessages.empty())
-	{
-		if (end(m_currentMessages) == overlapping.first)
-			chatStyleRenderer().clearMessages();
-		else if (begin(m_currentMessages) != overlapping.first)
-		{
-			auto toRemove = std::distance(begin(m_currentMessages), overlapping.first);
-			for (auto i = 0; i < toRemove; i++)
-				chatStyleRenderer().removeFirstMessage();
-			previousMessage = m_currentMessages.last();
-		}
-	}
+    if (!m_currentMessages.empty())
+    {
+        if (end(m_currentMessages) == overlapping.first)
+            chatStyleRenderer().clearMessages();
+        else if (begin(m_currentMessages) != overlapping.first)
+        {
+            auto toRemove = std::distance(begin(m_currentMessages), overlapping.first);
+            for (auto i = 0; i < toRemove; i++)
+                chatStyleRenderer().removeFirstMessage();
+            previousMessage = m_currentMessages.last();
+        }
+    }
 
-	appendMessagesRange(overlapping.second, end(messages), previousMessage, MessageRenderHeaderBehavior::Always);
-	m_currentMessages = std::move(messages);
+    appendMessagesRange(overlapping.second, end(messages), previousMessage, MessageRenderHeaderBehavior::Always);
+    m_currentMessages = std::move(messages);
 }

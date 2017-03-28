@@ -27,81 +27,85 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-slider.h"
 
-ConfigSlider::ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget()),
-		ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigSlider::ConfigSlider(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, int minValue,
+    int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QSlider(Qt::Horizontal, parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	setMinimum(minValue);
-	setMaximum(maxValue);
-	setPageStep(pageStep);
+    setMinimum(minValue);
+    setMaximum(maxValue);
+    setPageStep(pageStep);
 }
 
 ConfigSlider::ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QSlider(Qt::Horizontal, parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+        : QSlider(Qt::Horizontal, parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager),
+          label(0)
 {
 }
 
 ConfigSlider::~ConfigSlider()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigSlider::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigSlider::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setValue(dataManager->readEntry(section, item).toInt());
-	emit valueChanged(value());
+    if (!dataManager)
+        return;
+    setValue(dataManager->readEntry(section, item).toInt());
+    emit valueChanged(value());
 }
 
 void ConfigSlider::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QString::number(value()));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QString::number(value()));
 }
 
 void ConfigSlider::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	QSlider::setVisible(visible);
+    label->setVisible(visible);
+    QSlider::setVisible(visible);
 }
 
 bool ConfigSlider::fromDomElement(QDomElement domElement)
 {
-	QString minValue = domElement.attribute("min-value");
-	QString maxValue = domElement.attribute("max-value");
-	QString pageStep = domElement.attribute("page-step");
+    QString minValue = domElement.attribute("min-value");
+    QString maxValue = domElement.attribute("max-value");
+    QString pageStep = domElement.attribute("page-step");
 
-	bool ok;
+    bool ok;
 
-	setMinimum(minValue.toInt(&ok));
-	if (!ok)
-		return false;
+    setMinimum(minValue.toInt(&ok));
+    if (!ok)
+        return false;
 
-	setMaximum(maxValue.toInt(&ok));
-	if (!ok)
-		return false;
+    setMaximum(maxValue.toInt(&ok));
+    if (!ok)
+        return false;
 
-	setPageStep(pageStep.toInt(&ok));
-	if (!ok)
-		return false;
+    setPageStep(pageStep.toInt(&ok));
+    if (!ok)
+        return false;
 
-	return ConfigWidgetValue::fromDomElement(domElement);
+    return ConfigWidgetValue::fromDomElement(domElement);
 }
 
 #include "moc_config-slider.cpp"

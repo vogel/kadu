@@ -18,13 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "server/gadu-writable-session-token.h"
 #include "gadu-protocol.h"
+#include "server/gadu-writable-session-token.h"
 
 #include "protocol-gadu-connection.h"
 
-ProtocolGaduConnection::ProtocolGaduConnection(QObject *parent) :
-		GaduConnection(parent)
+ProtocolGaduConnection::ProtocolGaduConnection(QObject *parent) : GaduConnection(parent)
 {
 }
 
@@ -34,46 +33,46 @@ ProtocolGaduConnection::~ProtocolGaduConnection()
 
 void ProtocolGaduConnection::setConnectionProtocol(GaduProtocol *protocol)
 {
-	ConnectionProtocol = protocol;
+    ConnectionProtocol = protocol;
 }
 
 bool ProtocolGaduConnection::hasSession()
 {
-	if (ConnectionProtocol)
-		return 0 != ConnectionProtocol->gaduSession();
-	else
-		return false;
+    if (ConnectionProtocol)
+        return 0 != ConnectionProtocol->gaduSession();
+    else
+        return false;
 }
 
-gg_session * ProtocolGaduConnection::rawSession()
+gg_session *ProtocolGaduConnection::rawSession()
 {
-	if (ConnectionProtocol)
-		return ConnectionProtocol->gaduSession();
-	else
-		return 0;
+    if (ConnectionProtocol)
+        return ConnectionProtocol->gaduSession();
+    else
+        return 0;
 }
 
 bool ProtocolGaduConnection::beginWrite()
 {
-	if (!ConnectionProtocol)
-		return false;
+    if (!ConnectionProtocol)
+        return false;
 
-	ConnectionProtocol->disableSocketNotifiers();
-	return true;
+    ConnectionProtocol->disableSocketNotifiers();
+    return true;
 }
 
 bool ProtocolGaduConnection::endWrite()
 {
-	if (!ConnectionProtocol)
-		return false;
+    if (!ConnectionProtocol)
+        return false;
 
-	ConnectionProtocol->enableSocketNotifiers();
-	return true;
+    ConnectionProtocol->enableSocketNotifiers();
+    return true;
 }
 
 GaduWritableSessionToken ProtocolGaduConnection::writableSessionToken()
 {
-	return {this};
+    return {this};
 }
 
 #include "moc_protocol-gadu-connection.cpp"

@@ -20,8 +20,7 @@
 
 #include "network-manager-dummy.h"
 
-NetworkManagerDummy::NetworkManagerDummy(QObject *parent) :
-		QObject{parent}
+NetworkManagerDummy::NetworkManagerDummy(QObject *parent) : QObject{parent}
 {
 }
 
@@ -31,7 +30,7 @@ NetworkManagerDummy::~NetworkManagerDummy()
 
 bool NetworkManagerDummy::isOnline()
 {
-	return true;
+    return true;
 }
 
 void NetworkManagerDummy::forceOnline()

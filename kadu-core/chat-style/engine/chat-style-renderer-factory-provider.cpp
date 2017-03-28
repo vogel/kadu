@@ -19,8 +19,7 @@
 
 #include "chat-style-renderer-factory-provider.h"
 
-ChatStyleRendererFactoryProvider::ChatStyleRendererFactoryProvider(QObject *parent) :
-		QObject{parent}
+ChatStyleRendererFactoryProvider::ChatStyleRendererFactoryProvider(QObject *parent) : QObject{parent}
 {
 }
 

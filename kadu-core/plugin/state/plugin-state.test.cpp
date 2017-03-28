@@ -23,33 +23,32 @@
 
 class PluginStateTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void newTest();
-	void enabledTest();
-	void disabledTest();
-
+    void newTest();
+    void enabledTest();
+    void disabledTest();
 };
 
 void PluginStateTest::newTest()
 {
-	QCOMPARE(pluginStateToString(PluginState::New), {});
-	QCOMPARE(stringToPluginState(""), PluginState::New);
-	QCOMPARE(stringToPluginState("New"), PluginState::New);
-	QCOMPARE(stringToPluginState("Invalid"), PluginState::New);
+    QCOMPARE(pluginStateToString(PluginState::New), {});
+    QCOMPARE(stringToPluginState(""), PluginState::New);
+    QCOMPARE(stringToPluginState("New"), PluginState::New);
+    QCOMPARE(stringToPluginState("Invalid"), PluginState::New);
 }
 
 void PluginStateTest::enabledTest()
 {
-	QCOMPARE(pluginStateToString(PluginState::Enabled), QString{"Loaded"});
-	QCOMPARE(stringToPluginState("Loaded"), PluginState::Enabled);
+    QCOMPARE(pluginStateToString(PluginState::Enabled), QString{"Loaded"});
+    QCOMPARE(stringToPluginState("Loaded"), PluginState::Enabled);
 }
 
 void PluginStateTest::disabledTest()
 {
-	QCOMPARE(pluginStateToString(PluginState::Disabled), QString{"NotLoaded"});
-	QCOMPARE(stringToPluginState("NotLoaded"), PluginState::Disabled);
+    QCOMPARE(pluginStateToString(PluginState::Disabled), QString{"NotLoaded"});
+    QCOMPARE(stringToPluginState("NotLoaded"), PluginState::Disabled);
 }
 
 QTEST_APPLESS_MAIN(PluginStateTest)

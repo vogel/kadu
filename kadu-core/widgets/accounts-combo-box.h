@@ -34,30 +34,29 @@ class InjectedFactory;
 
 class AccountsComboBox : public ActionsComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent = nullptr);
-	virtual ~AccountsComboBox();
+    explicit AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent = nullptr);
+    virtual ~AccountsComboBox();
 
-	void setCurrentAccount(Account account);
-	Account currentAccount();
+    void setCurrentAccount(Account account);
+    Account currentAccount();
 
-	void setIncludeIdInDisplay(bool includeIdInDisplay);
+    void setIncludeIdInDisplay(bool includeIdInDisplay);
 
-	void addFilter(AbstractAccountFilter *filter);
-	void removeFilter(AbstractAccountFilter *filter);
+    void addFilter(AbstractAccountFilter *filter);
+    void removeFilter(AbstractAccountFilter *filter);
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	AccountsModel *Model;
-	AccountsProxyModel *ProxyModel;
+    AccountsModel *Model;
+    AccountsProxyModel *ProxyModel;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 };

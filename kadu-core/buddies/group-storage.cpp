@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-GroupStorage::GroupStorage(QObject *parent) :
-		QObject{parent}
+GroupStorage::GroupStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,29 +35,29 @@ GroupStorage::~GroupStorage()
 
 void GroupStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Group GroupStorage::create()
 {
-	return m_injectedFactory->makeInjected<GroupShared>();
+    return m_injectedFactory->makeInjected<GroupShared>();
 }
 
 Group GroupStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<GroupShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<GroupShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Group GroupStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<GroupShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<GroupShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_group-storage.cpp"

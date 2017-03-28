@@ -23,5 +23,5 @@
 
 PluginInjectedFactoryModule::PluginInjectedFactoryModule()
 {
-	add_type<PluginInjectedFactory>();
+    add_type<PluginInjectedFactory>();
 }

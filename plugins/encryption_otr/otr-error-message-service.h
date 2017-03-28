@@ -23,23 +23,22 @@
 #include <QtCore/QObject>
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
 }
 
 class OtrErrorMessageService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static const char * wrapperOtrErrorMessage(void *data, ConnContext *context, OtrlErrorCode errorCode);
-	static void wrapperOtrErrorMessageFree(void *data, const char *errorMessage);
+    static const char *wrapperOtrErrorMessage(void *data, ConnContext *context, OtrlErrorCode errorCode);
+    static void wrapperOtrErrorMessageFree(void *data, const char *errorMessage);
 
-	Q_INVOKABLE OtrErrorMessageService();
-	virtual ~OtrErrorMessageService();
+    Q_INVOKABLE OtrErrorMessageService();
+    virtual ~OtrErrorMessageService();
 
-	QString errorMessage(const QString &peerDisplay, OtrlErrorCode errorCode) const;
-
+    QString errorMessage(const QString &peerDisplay, OtrlErrorCode errorCode) const;
 };
 
-#endif // OTR_ERROR_MESSAGE_SERVICE_H
+#endif   // OTR_ERROR_MESSAGE_SERVICE_H

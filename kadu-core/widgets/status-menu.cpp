@@ -38,8 +38,8 @@
 
 #include "status-menu.h"
 
-StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu) :
-		QObject(menu), Menu(menu), Container(statusContainer), m_includePrefix{includePrefix}
+StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu)
+        : QObject(menu), Menu(menu), Container(statusContainer), m_includePrefix{includePrefix}
 {
 }
 
@@ -49,67 +49,67 @@ StatusMenu::~StatusMenu()
 
 void StatusMenu::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void StatusMenu::setStatusSetter(StatusSetter *statusSetter)
 {
-	m_statusSetter = statusSetter;
+    m_statusSetter = statusSetter;
 }
 
 void StatusMenu::setStatusWindowService(StatusWindowService *statusWindowService)
 {
-	m_statusWindowService = statusWindowService;
+    m_statusWindowService = statusWindowService;
 }
 
 void StatusMenu::setWindowManager(WindowManager *windowManager)
 {
-	m_windowManager = windowManager;
+    m_windowManager = windowManager;
 }
 
 void StatusMenu::init()
 {
-	Actions = m_injectedFactory->makeInjected<StatusActions>(Container, m_includePrefix, false, this);
+    Actions = m_injectedFactory->makeInjected<StatusActions>(Container, m_includePrefix, false, this);
 
-	connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
-	connect(Actions, SIGNAL(statusActionsRecreated()), this, SIGNAL(menuRecreated()));
-	connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
-	connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
+    connect(Actions, SIGNAL(statusActionsRecreated()), this, SLOT(addStatusActions()));
+    connect(Actions, SIGNAL(statusActionsRecreated()), this, SIGNAL(menuRecreated()));
+    connect(Actions, SIGNAL(statusActionTriggered(QAction *)), this, SLOT(changeStatus(QAction *)));
+    connect(Actions, SIGNAL(changeDescriptionActionTriggered(bool)), this, SLOT(changeDescription()));
 
-	connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
+    connect(Menu, SIGNAL(aboutToHide()), this, SLOT(aboutToHide()));
 
-	addStatusActions();
+    addStatusActions();
 }
 
 void StatusMenu::addStatusActions()
 {
-	foreach (QAction *action, Actions->actions())
-		Menu->addAction(action);
+    foreach (QAction *action, Actions->actions())
+        Menu->addAction(action);
 }
 
 void StatusMenu::aboutToHide()
 {
-	MousePositionBeforeMenuHide = Menu->pos();
+    MousePositionBeforeMenuHide = Menu->pos();
 }
 
 void StatusMenu::changeStatus(QAction *action)
 {
-	StatusType statusType = action->data().value<StatusType>();
+    StatusType statusType = action->data().value<StatusType>();
 
-	for (auto &&container : Container->subStatusContainers())
-	{
-		Status status(m_statusSetter->manuallySetStatus(container));
-		status.setType(statusType);
+    for (auto &&container : Container->subStatusContainers())
+    {
+        Status status(m_statusSetter->manuallySetStatus(container));
+        status.setType(statusType);
 
-		m_statusSetter->setStatusManually(container, status);
-		container->storeStatus(status);
-	}
+        m_statusSetter->setStatusManually(container, status);
+        container->storeStatus(status);
+    }
 }
 
 void StatusMenu::changeDescription()
 {
-	auto statusWindow = m_statusWindowService->showDialog(Container, Menu);
-	m_windowManager->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
+    auto statusWindow = m_statusWindowService->showDialog(Container, Menu);
+    m_windowManager->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
 }
 
 #include "moc_status-menu.cpp"

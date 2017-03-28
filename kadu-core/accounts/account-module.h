@@ -25,9 +25,7 @@
 
 class KADUAPI AccountModule : public injeqt::module
 {
-
 public:
-	explicit AccountModule();
-	virtual ~AccountModule();
-
+    explicit AccountModule();
+    virtual ~AccountModule();
 };

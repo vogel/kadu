@@ -23,10 +23,10 @@
 
 #pragma once
 
+#include "exports.h"
 #include "misc/memory.h"
 #include "protocols/protocol-factory.h"
 #include "widgets/actions-combo-box.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -38,28 +38,27 @@ class ProtocolsModelProxy;
 
 class KADUAPI ProtocolsComboBox : public ActionsComboBox
 {
-	Q_OBJECT
-	Q_PROPERTY(ProtocolFactory* currentProtocol READ currentProtocol WRITE setCurrentProtocol)
+    Q_OBJECT
+    Q_PROPERTY(ProtocolFactory *currentProtocol READ currentProtocol WRITE setCurrentProtocol)
 
 public:
-	explicit ProtocolsComboBox(QWidget *parent = nullptr);
-	virtual ~ProtocolsComboBox();
+    explicit ProtocolsComboBox(QWidget *parent = nullptr);
+    virtual ~ProtocolsComboBox();
 
-	void setCurrentProtocol(ProtocolFactory *protocol);
-	ProtocolFactory * currentProtocol();
+    void setCurrentProtocol(ProtocolFactory *protocol);
+    ProtocolFactory *currentProtocol();
 
-	void addFilter(AbstractProtocolFilter *filter);
-	void removeFilter(AbstractProtocolFilter *filter);
+    void addFilter(AbstractProtocolFilter *filter);
+    void removeFilter(AbstractProtocolFilter *filter);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ProtocolsManager> m_protocolsManager;
 
-	owned_qptr<ProtocolsModelProxy> m_proxyModel;
+    owned_qptr<ProtocolsModelProxy> m_proxyModel;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_INIT void init();
 };

@@ -30,32 +30,31 @@ class NetworkProxyManager;
 
 class NetworkProxyModel : public QAbstractListModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit NetworkProxyModel(QObject *parent = nullptr);
-	virtual ~NetworkProxyModel();
+    explicit NetworkProxyModel(QObject *parent = nullptr);
+    virtual ~NetworkProxyModel();
 
-	virtual int columnCount(const QModelIndex &parent) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	NetworkProxy networkProxy(const QModelIndex &index) const;
-	int networkProxyIndex(NetworkProxy networkProxy) const;
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+    NetworkProxy networkProxy(const QModelIndex &index) const;
+    int networkProxyIndex(NetworkProxy networkProxy) const;
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 private:
-	QPointer<NetworkProxyManager> m_networkProxyManager;
+    QPointer<NetworkProxyManager> m_networkProxyManager;
 
 private slots:
-	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+    INJEQT_INIT void init();
 
-	void networkProxyUpdated(NetworkProxy networkProxy);
-	void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
-	void networkProxyAdded(NetworkProxy networkProxy);
-	void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
-	void networkProxyRemoved(NetworkProxy networkProxy);
-
+    void networkProxyUpdated(NetworkProxy networkProxy);
+    void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
+    void networkProxyAdded(NetworkProxy networkProxy);
+    void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
+    void networkProxyRemoved(NetworkProxy networkProxy);
 };

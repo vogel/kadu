@@ -27,12 +27,12 @@ class BuddyConfigurationWidget;
 
 class BuddyConfigurationWidgetFactory
 {
-
 public:
-	virtual ~BuddyConfigurationWidgetFactory() {}
+    virtual ~BuddyConfigurationWidgetFactory()
+    {
+    }
 
-	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent) = 0;
-
+    virtual BuddyConfigurationWidget *createWidget(const Buddy &buddy, QWidget *parent) = 0;
 };
 
-#endif // BUDDY_CONFIGURATION_WIDGET_FACTORY_H
+#endif   // BUDDY_CONFIGURATION_WIDGET_FACTORY_H

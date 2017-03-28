@@ -22,36 +22,35 @@
 
 #include "buddy-additional-data-delete-handler-manager.h"
 
-BuddyAdditionalDataDeleteHandlerManager::BuddyAdditionalDataDeleteHandlerManager(QObject *parent) :
-		QObject(parent)
+BuddyAdditionalDataDeleteHandlerManager::BuddyAdditionalDataDeleteHandlerManager(QObject *parent) : QObject(parent)
 {
-
 }
 
 BuddyAdditionalDataDeleteHandlerManager::~BuddyAdditionalDataDeleteHandlerManager()
 {
-
 }
 
-BuddyAdditionalDataDeleteHandler * BuddyAdditionalDataDeleteHandlerManager::byName(const QString &name)
+BuddyAdditionalDataDeleteHandler *BuddyAdditionalDataDeleteHandlerManager::byName(const QString &name)
 {
-	for (auto handler : m_items)
-		if (name == handler->name())
-			return handler;
+    for (auto handler : m_items)
+        if (name == handler->name())
+            return handler;
 
-	return 0;
+    return 0;
 }
 
-void BuddyAdditionalDataDeleteHandlerManager::registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)
+void BuddyAdditionalDataDeleteHandlerManager::registerAdditionalDataDeleteHandler(
+    BuddyAdditionalDataDeleteHandler *handler)
 {
-	m_items.append(handler);
-	emit additionalDataDeleteHandlerRegistered(handler);
+    m_items.append(handler);
+    emit additionalDataDeleteHandlerRegistered(handler);
 }
 
-void BuddyAdditionalDataDeleteHandlerManager::unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler)
+void BuddyAdditionalDataDeleteHandlerManager::unregisterAdditionalDataDeleteHandler(
+    BuddyAdditionalDataDeleteHandler *handler)
 {
-	m_items.removeAll(handler);
-	emit additionalDataDeleteHandlerUnregistered(handler);
+    m_items.removeAll(handler);
+    emit additionalDataDeleteHandlerUnregistered(handler);
 }
 
 #include "moc_buddy-additional-data-delete-handler-manager.cpp"

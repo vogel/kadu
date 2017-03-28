@@ -26,12 +26,12 @@ class Chat;
 
 class ChatTopBarWidgetFactory
 {
-
 public:
-	virtual ~ChatTopBarWidgetFactory() {}
+    virtual ~ChatTopBarWidgetFactory()
+    {
+    }
 
-	virtual QWidget * createWidget(const Chat &chat, QWidget *parent) = 0;
-
+    virtual QWidget *createWidget(const Chat &chat, QWidget *parent) = 0;
 };
 
-#endif // CHAT_TOP_BAR_WIDGET_FACTORY_H
+#endif   // CHAT_TOP_BAR_WIDGET_FACTORY_H

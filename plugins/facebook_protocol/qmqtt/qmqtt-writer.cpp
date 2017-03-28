@@ -27,27 +27,27 @@ QMqttWriter::QMqttWriter()
 
 void QMqttWriter::write(uint8_t x)
 {
-	m_result.append(reinterpret_cast<char *>(&x), 1);
+    m_result.append(reinterpret_cast<char *>(&x), 1);
 }
 
 void QMqttWriter::write(uint16_t x)
 {
-	x = qToBigEndian(x);
-	m_result.append(reinterpret_cast<char *>(&x), 2);
+    x = qToBigEndian(x);
+    m_result.append(reinterpret_cast<char *>(&x), 2);
 }
 
 void QMqttWriter::write(const QByteArray &x)
 {
-	write(static_cast<uint16_t>(x.size()));
-	writeRaw(x);
+    write(static_cast<uint16_t>(x.size()));
+    writeRaw(x);
 }
 
 void QMqttWriter::writeRaw(const QByteArray &x)
 {
-	m_result.append(x);
+    m_result.append(x);
 }
 
 QByteArray QMqttWriter::result() const
 {
-	return m_result;
+    return m_result;
 }

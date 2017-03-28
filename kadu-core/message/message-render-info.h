@@ -23,9 +23,9 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
+#include "exports.h"
 #include "message/message.h"
 #include "protocols/protocol.h"
-#include "exports.h"
 
 #include <QtCore/QString>
 
@@ -35,30 +35,31 @@ class Parser;
 
 class KADUAPI MessageRenderInfo : public ParserData
 {
-
 public:
-	static void registerParserTags(Parser *parser, ChatConfigurationHolder *chatConfigurationHolder, MessageHtmlRendererService *messageHtmlRendererService);
-	static void unregisterParserTags(Parser *parser);
+    static void registerParserTags(
+        Parser *parser, ChatConfigurationHolder *chatConfigurationHolder,
+        MessageHtmlRendererService *messageHtmlRendererService);
+    static void unregisterParserTags(Parser *parser);
 
-	MessageRenderInfo(Message message, QString backgroundColor, QString fontColor, QString nickColor,
-			bool includeHeader, int separatorSize, bool showServerTime);
-	virtual ~MessageRenderInfo();
+    MessageRenderInfo(
+        Message message, QString backgroundColor, QString fontColor, QString nickColor, bool includeHeader,
+        int separatorSize, bool showServerTime);
+    virtual ~MessageRenderInfo();
 
-	Message message() const;
-	QString backgroundColor() const;
-	QString fontColor() const;
-	QString nickColor() const;
-	bool includeHeader() const;
-	int separatorSize() const;
-	bool showServerTime() const;
+    Message message() const;
+    QString backgroundColor() const;
+    QString fontColor() const;
+    QString nickColor() const;
+    bool includeHeader() const;
+    int separatorSize() const;
+    bool showServerTime() const;
 
 private:
-	Message m_message;
-	QString m_backgroundColor;
-	QString m_fontColor;
-	QString m_nickColor;
-	bool m_includeHeader;
-	int m_separatorSize;
-	bool m_showServerTime;
-
+    Message m_message;
+    QString m_backgroundColor;
+    QString m_fontColor;
+    QString m_nickColor;
+    bool m_includeHeader;
+    int m_separatorSize;
+    bool m_showServerTime;
 };

@@ -23,8 +23,7 @@
 #include "widgets/chat-widget/chat-widget-title.h"
 #include "widgets/chat-widget/chat-widget.h"
 
-ChatWidgetSetTitle::ChatWidgetSetTitle(QObject *parent) :
-		QObject{parent}
+ChatWidgetSetTitle::ChatWidgetSetTitle(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,117 +33,116 @@ ChatWidgetSetTitle::~ChatWidgetSetTitle()
 
 void ChatWidgetSetTitle::setDefaultTile(QString defaultTitle)
 {
-	m_defaultTitle = std::move(defaultTitle);
-	update();
+    m_defaultTitle = std::move(defaultTitle);
+    update();
 }
 
 void ChatWidgetSetTitle::setDefaultIcon(QIcon icon)
 {
-	m_defaultIcon = icon;
-	update();
+    m_defaultIcon = icon;
+    update();
 }
 
 void ChatWidgetSetTitle::setActiveChatWidget(ChatWidget *chatWidget)
 {
-	m_activeChatWidget = chatWidget;
-	if (!m_unreadMessagesChatWidget)
-		setCurrentChatWidget(m_activeChatWidget);
+    m_activeChatWidget = chatWidget;
+    if (!m_unreadMessagesChatWidget)
+        setCurrentChatWidget(m_activeChatWidget);
 }
 
 QString ChatWidgetSetTitle::fullTitle() const
 {
-	if (m_unreadMessagesChatWidget)
-		return m_unreadMessagesChatWidget->title()->blinkingFullTitle();
-	if (m_currentChatWidget)
-		return m_currentChatWidget->title()->blinkingFullTitle();
-	return m_defaultTitle;
+    if (m_unreadMessagesChatWidget)
+        return m_unreadMessagesChatWidget->title()->blinkingFullTitle();
+    if (m_currentChatWidget)
+        return m_currentChatWidget->title()->blinkingFullTitle();
+    return m_defaultTitle;
 }
 
 QIcon ChatWidgetSetTitle::icon() const
 {
-	if (m_unreadMessagesChatWidget)
-		return m_unreadMessagesChatWidget->title()->icon();
-	if (m_currentChatWidget)
-		return m_currentChatWidget->title()->icon();
-	return m_defaultIcon;
+    if (m_unreadMessagesChatWidget)
+        return m_unreadMessagesChatWidget->title()->icon();
+    if (m_currentChatWidget)
+        return m_currentChatWidget->title()->icon();
+    return m_defaultIcon;
 }
 
 void ChatWidgetSetTitle::addChatWidget(ChatWidget *chatWidget)
 {
-	m_chatWidgets.append(chatWidget);
-	connect(chatWidget->chat(), SIGNAL(updated()), this, SLOT(chatUpdated()));
-	connect(chatWidget, SIGNAL(widgetDestroyed(Chat)), this, SLOT(chatWidgetDestroyed(Chat)));
-	connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
+    m_chatWidgets.append(chatWidget);
+    connect(chatWidget->chat(), SIGNAL(updated()), this, SLOT(chatUpdated()));
+    connect(chatWidget, SIGNAL(widgetDestroyed(Chat)), this, SLOT(chatWidgetDestroyed(Chat)));
+    connect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget *)), this, SLOT(chatWidgetDestroyed(ChatWidget *)));
 
-	if (!m_unreadMessagesChatWidget)
-		selectNewUnreadMessagesChatWidget();
+    if (!m_unreadMessagesChatWidget)
+        selectNewUnreadMessagesChatWidget();
 }
 
 void ChatWidgetSetTitle::removeChatWidget(ChatWidget *chatWidget)
 {
-	disconnect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget*)), this, SLOT(chatWidgetDestroyed(ChatWidget*)));
-	disconnect(chatWidget->chat(), SIGNAL(updated()), this, SLOT(chatUpdated()));
-	m_chatWidgets.removeAll(chatWidget);
+    disconnect(chatWidget, SIGNAL(widgetDestroyed(ChatWidget *)), this, SLOT(chatWidgetDestroyed(ChatWidget *)));
+    disconnect(chatWidget->chat(), SIGNAL(updated()), this, SLOT(chatUpdated()));
+    m_chatWidgets.removeAll(chatWidget);
 
-	if (m_unreadMessagesChatWidget == chatWidget)
-		selectNewUnreadMessagesChatWidget();
+    if (m_unreadMessagesChatWidget == chatWidget)
+        selectNewUnreadMessagesChatWidget();
 }
 
 void ChatWidgetSetTitle::chatWidgetDestroyed(Chat chat)
 {
-	disconnect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
+    disconnect(chat, SIGNAL(updated()), this, SLOT(chatUpdated()));
 }
 
 void ChatWidgetSetTitle::chatWidgetDestroyed(ChatWidget *chatWidget)
 {
-	m_chatWidgets.removeAll(chatWidget);
-	if (m_unreadMessagesChatWidget == m_currentChatWidget)
-		selectNewUnreadMessagesChatWidget();
+    m_chatWidgets.removeAll(chatWidget);
+    if (m_unreadMessagesChatWidget == m_currentChatWidget)
+        selectNewUnreadMessagesChatWidget();
 }
 
 void ChatWidgetSetTitle::chatUpdated()
 {
-	auto chat = Chat{sender()};
-	if (!chat)
-		return;
+    auto chat = Chat{sender()};
+    if (!chat)
+        return;
 
-	if (chat.unreadMessagesCount() == 0 && m_unreadMessagesChatWidget && m_unreadMessagesChatWidget->chat() == chat)
-		selectNewUnreadMessagesChatWidget();
-	if (chat.unreadMessagesCount() > 0 && !m_unreadMessagesChatWidget)
-		selectNewUnreadMessagesChatWidget();
+    if (chat.unreadMessagesCount() == 0 && m_unreadMessagesChatWidget && m_unreadMessagesChatWidget->chat() == chat)
+        selectNewUnreadMessagesChatWidget();
+    if (chat.unreadMessagesCount() > 0 && !m_unreadMessagesChatWidget)
+        selectNewUnreadMessagesChatWidget();
 }
 
 void ChatWidgetSetTitle::selectNewUnreadMessagesChatWidget()
 {
-	auto withUnreadMessages = std::find_if(std::begin(m_chatWidgets), std::end(m_chatWidgets), [](ChatWidget *chatWidget){
-		return chatWidget->chat().unreadMessagesCount() > 0;
-	});
-	setUnreadMessagesChatWidget(withUnreadMessages != std::end(m_chatWidgets)
-			? *withUnreadMessages
-			: nullptr);
+    auto withUnreadMessages =
+        std::find_if(std::begin(m_chatWidgets), std::end(m_chatWidgets), [](ChatWidget *chatWidget) {
+            return chatWidget->chat().unreadMessagesCount() > 0;
+        });
+    setUnreadMessagesChatWidget(withUnreadMessages != std::end(m_chatWidgets) ? *withUnreadMessages : nullptr);
 }
 
 void ChatWidgetSetTitle::setUnreadMessagesChatWidget(ChatWidget *chatWidget)
 {
-	m_unreadMessagesChatWidget = chatWidget;
-	if (m_unreadMessagesChatWidget)
-		setCurrentChatWidget(m_unreadMessagesChatWidget);
-	else
-		setCurrentChatWidget(m_activeChatWidget);
+    m_unreadMessagesChatWidget = chatWidget;
+    if (m_unreadMessagesChatWidget)
+        setCurrentChatWidget(m_unreadMessagesChatWidget);
+    else
+        setCurrentChatWidget(m_activeChatWidget);
 }
 
 void ChatWidgetSetTitle::setCurrentChatWidget(ChatWidget *chatWidget)
 {
-	if (m_currentChatWidget)
-		disconnect(m_currentChatWidget->title(), SIGNAL(titleChanged(ChatWidget*)), this, SLOT(update()));
-	m_currentChatWidget = chatWidget;
-	if (m_currentChatWidget)
-		connect(m_currentChatWidget->title(), SIGNAL(titleChanged(ChatWidget*)), this, SLOT(update()));
+    if (m_currentChatWidget)
+        disconnect(m_currentChatWidget->title(), SIGNAL(titleChanged(ChatWidget *)), this, SLOT(update()));
+    m_currentChatWidget = chatWidget;
+    if (m_currentChatWidget)
+        connect(m_currentChatWidget->title(), SIGNAL(titleChanged(ChatWidget *)), this, SLOT(update()));
 
-	update();
+    update();
 }
 
 void ChatWidgetSetTitle::update()
 {
-	emit titleChanged();
+    emit titleChanged();
 }

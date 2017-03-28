@@ -26,17 +26,17 @@
 
 class KaduTabWidget : public QTabWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit KaduTabWidget(QWidget *parent = nullptr) :
-			QTabWidget(parent) {}
+    explicit KaduTabWidget(QWidget *parent = nullptr) : QTabWidget(parent)
+    {
+    }
 
-	void setTabBarVisible(bool visible)
-	{
-		tabBar()->setVisible(visible);
-	}
-
+    void setTabBarVisible(bool visible)
+    {
+        tabBar()->setVisible(visible);
+    }
 };
 
-#endif // KADU_TAB_WIDGET_H
+#endif   // KADU_TAB_WIDGET_H

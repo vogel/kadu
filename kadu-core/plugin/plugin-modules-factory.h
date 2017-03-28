@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QtPlugin>
 #include <injeqt/module.h>
@@ -39,15 +39,14 @@
  */
 class KADUAPI PluginModulesFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PluginModulesFactory(QObject *parent = nullptr);
-	virtual ~PluginModulesFactory();
+    explicit PluginModulesFactory(QObject *parent = nullptr);
+    virtual ~PluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const = 0;
-	virtual QString parentInjectorName() const;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const = 0;
+    virtual QString parentInjectorName() const;
 };
 
 Q_DECLARE_INTERFACE(PluginModulesFactory, "im.kadu.PluginModulesFactory")

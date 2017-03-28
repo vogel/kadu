@@ -19,9 +19,9 @@
 
 #pragma once
 
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook/qfacebook-json-reader.h"
 #include "qfacebook/qfacebook-uid.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
 #include <QtCore/QObject>
 #include <experimental/optional>
@@ -31,24 +31,20 @@ struct QFacebookDownloadUnreadMessagesResult;
 
 class QFacebookDownloadUnreadMessagesJob : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QFacebookDownloadUnreadMessagesJob(
-		QFacebookHttpApi &httpApi,
-		QFacebookSessionToken facebookSessionToken,
-		QFacebookUid uid,
-		int unreadCount,
-		QObject *parent = nullptr);
-	virtual ~QFacebookDownloadUnreadMessagesJob();
+    explicit QFacebookDownloadUnreadMessagesJob(
+        QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QFacebookUid uid, int unreadCount,
+        QObject *parent = nullptr);
+    virtual ~QFacebookDownloadUnreadMessagesJob();
 
 signals:
-	void finished(const QFacebookDownloadUnreadMessagesResult &result);
+    void finished(const QFacebookDownloadUnreadMessagesResult &result);
 
 private:
-	QFacebookHttpApi &m_httpApi;
-	QFacebookSessionToken m_facebookSession;
+    QFacebookHttpApi &m_httpApi;
+    QFacebookSessionToken m_facebookSession;
 
-	void replyFinished(const std::experimental::optional<QFacebookJsonReader> &result);
-
+    void replyFinished(const std::experimental::optional<QFacebookJsonReader> &result);
 };

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/change-notifier.h"
 #include "exports.h"
+#include "misc/change-notifier.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -48,74 +48,73 @@ enum class PluginState;
  */
 class KADUAPI PluginStateService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginStateService(QObject *parent = nullptr) noexcept;
-	virtual ~PluginStateService() noexcept;
+    Q_INVOKABLE explicit PluginStateService(QObject *parent = nullptr) noexcept;
+    virtual ~PluginStateService() noexcept;
 
-	/**
-	 * @return Plugin states for all known plugin names.
-	 */
-	QMap<QString, PluginState> pluginStates() const noexcept;
+    /**
+     * @return Plugin states for all known plugin names.
+     */
+    QMap<QString, PluginState> pluginStates() const noexcept;
 
-	/**
-	 * @short Change map of known plugin states.
-	 * @param pluginState new map of known plugin states
-	 *
-	 * This method removes all currently stored data and replaces it with \p pluginStates value.
-	 * Signal pluginStateChanged is emited for each plugin with new state different than previous.
-	 * It is also emited for removed plugins (with PluginState::New). In such cases @see changeNotifier()
-	 * is also notified.
-	 */
-	void setPluginStates(QMap<QString, PluginState> pluginStates) noexcept;
+    /**
+     * @short Change map of known plugin states.
+     * @param pluginState new map of known plugin states
+     *
+     * This method removes all currently stored data and replaces it with \p pluginStates value.
+     * Signal pluginStateChanged is emited for each plugin with new state different than previous.
+     * It is also emited for removed plugins (with PluginState::New). In such cases @see changeNotifier()
+     * is also notified.
+     */
+    void setPluginStates(QMap<QString, PluginState> pluginStates) noexcept;
 
-	/**
-	 * @param pluginName name of plugin
-	 * @return Plugin state for given plugin name.
-	 *
-	 * If no plugin state is known for this plugin name, PluginState::New is returned.
-	 */
-	PluginState pluginState(const QString &pluginName) const noexcept;
+    /**
+     * @param pluginName name of plugin
+     * @return Plugin state for given plugin name.
+     *
+     * If no plugin state is known for this plugin name, PluginState::New is returned.
+     */
+    PluginState pluginState(const QString &pluginName) const noexcept;
 
-	/**
-	 * @short Set new state for plugin.
-	 * @param pluginName name of plugin
-	 * @param state new state of plugin
-	 *
-	 * If new state is PluginState::New, entry is removed. Otherwise, if no state was known for this plugin
-	 * before, a new entry is added. Otherwise, existing entry is updated to match new value.
-	 *
-	 * If new state is different than previous, signal pluginStateChanged is emited and @see changeNotifier()
-	 * it notified.
-	 */
-	void setPluginState(const QString &pluginName, PluginState state) noexcept;
+    /**
+     * @short Set new state for plugin.
+     * @param pluginName name of plugin
+     * @param state new state of plugin
+     *
+     * If new state is PluginState::New, entry is removed. Otherwise, if no state was known for this plugin
+     * before, a new entry is added. Otherwise, existing entry is updated to match new value.
+     *
+     * If new state is different than previous, signal pluginStateChanged is emited and @see changeNotifier()
+     * it notified.
+     */
+    void setPluginState(const QString &pluginName, PluginState state) noexcept;
 
-	/**
-	 * @return All plugin with state PluginState::Enabled.
-	 * @param state state
-	 */
-	QList<QString> enabledPlugins() noexcept;
+    /**
+     * @return All plugin with state PluginState::Enabled.
+     * @param state state
+     */
+    QList<QString> enabledPlugins() noexcept;
 
-	/**
-	 * @return Change notifier called each time a plugin state changes.
-	 */
-	ChangeNotifier & changeNotifier();
+    /**
+     * @return Change notifier called each time a plugin state changes.
+     */
+    ChangeNotifier &changeNotifier();
 
 signals:
-	/**
-	 * @short Signal emited when plugin state changes for one plugin.
-	 * @param pluginName name of plugin with changed state
-	 * @param state new state of plugin
-	 *
-	 * This signal is not invoked after calling setPluginState with state equal to current state of plugin.
-	 */
-	void pluginStateChanged(const QString &pluginName, PluginState state);
+    /**
+     * @short Signal emited when plugin state changes for one plugin.
+     * @param pluginName name of plugin with changed state
+     * @param state new state of plugin
+     *
+     * This signal is not invoked after calling setPluginState with state equal to current state of plugin.
+     */
+    void pluginStateChanged(const QString &pluginName, PluginState state);
 
 private:
-	QMap<QString, PluginState> m_pluginStates;
-	ChangeNotifier m_changeNotifier;
-
+    QMap<QString, PluginState> m_pluginStates;
+    ChangeNotifier m_changeNotifier;
 };
 
 /**

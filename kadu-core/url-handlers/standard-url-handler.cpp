@@ -29,25 +29,24 @@
 
 StandardUrlHandler::StandardUrlHandler()
 {
-	UrlRegExp = QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)");
+    UrlRegExp = QRegExp("\\b(http://|https://|www\\.|ftp://)([^\\s]*)");
 }
 
 StandardUrlHandler::~StandardUrlHandler()
 {
 }
 
-
 bool StandardUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return UrlRegExp.exactMatch(QString::fromUtf8(url));
+    return UrlRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void StandardUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
-	Q_UNUSED(disableMenu)
+    Q_UNUSED(disableMenu)
 
-	if (!url.contains("://"))
-		urlOpener->openUrl("http://" + url);
-	else
-		urlOpener->openUrl(url);
+    if (!url.contains("://"))
+        urlOpener->openUrl("http://" + url);
+    else
+        urlOpener->openUrl(url);
 }

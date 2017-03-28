@@ -43,518 +43,514 @@
 #include <QtCore/QVariant>
 #include <QtXml/QDomNamedNodeMap>
 
-BuddyShared::BuddyShared(const QUuid &uuid) :
-		Shared(uuid), CollectingGarbage(false),
-		BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
-		Anonymous(true), Temporary(false), Blocked(false), OfflineTo(false)
+BuddyShared::BuddyShared(const QUuid &uuid)
+        : Shared(uuid), CollectingGarbage(false), BirthYear(0), Gender(GenderUnknown), PreferHigherStatuses(true),
+          Anonymous(true), Temporary(false), Blocked(false), OfflineTo(false)
 {
 }
 
 BuddyShared::~BuddyShared()
 {
-	ref.ref();
-	delete BuddyAvatar;
-	BuddyAvatar = 0;
+    ref.ref();
+    delete BuddyAvatar;
+    BuddyAvatar = 0;
 }
 
 void BuddyShared::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void BuddyShared::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void BuddyShared::setGroupManager(GroupManager *groupManager)
 {
-	m_groupManager = groupManager;
+    m_groupManager = groupManager;
 }
 
 void BuddyShared::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void BuddyShared::init()
 {
-	BuddyAvatar = new Avatar();
+    BuddyAvatar = new Avatar();
 
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+    connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 void BuddyShared::collectGarbage()
 {
-	if (CollectingGarbage)
-		return;
+    if (CollectingGarbage)
+        return;
 
-	CollectingGarbage = true;
+    CollectingGarbage = true;
 
-	// 1 is for current Buddy
-	const int numberOfReferences = 1 + Contacts.length();
-	if (numberOfReferences != ref.load())
-	{
-		CollectingGarbage = false;
-		return;
-	}
+    // 1 is for current Buddy
+    const int numberOfReferences = 1 + Contacts.length();
+    if (numberOfReferences != ref.load())
+    {
+        CollectingGarbage = false;
+        return;
+    }
 
-	for (auto &&contact : Contacts)
-	{
-		Q_ASSERT(!contact.isNull());
+    for (auto &&contact : Contacts)
+    {
+        Q_ASSERT(!contact.isNull());
 
-		// 1 is for current BuddyShared
-		const int contactNumberOfReferences = 1;
-		if (contactNumberOfReferences != contact.data()->ref.load())
-		{
-			CollectingGarbage = false;
-			return;
-		}
-	}
+        // 1 is for current BuddyShared
+        const int contactNumberOfReferences = 1;
+        if (contactNumberOfReferences != contact.data()->ref.load())
+        {
+            CollectingGarbage = false;
+            return;
+        }
+    }
 
-	for (auto &&contact : Contacts)
-		contact.setOwnerBuddy(Buddy::null);
+    for (auto &&contact : Contacts)
+        contact.setOwnerBuddy(Buddy::null);
 
-	CollectingGarbage = false;
+    CollectingGarbage = false;
 }
 
-StorableObject * BuddyShared::storageParent()
+StorableObject *BuddyShared::storageParent()
 {
-	return m_buddyManager;
+    return m_buddyManager;
 }
 
 QString BuddyShared::storageNodeName()
 {
-	return QStringLiteral("Buddy");
+    return QStringLiteral("Buddy");
 }
 
-#define ImportProperty(name, old_name) \
-	set##name(CustomData.value(#old_name)); \
-	CustomData.remove(#old_name);
+#define ImportProperty(name, old_name)      \
+    set##name(CustomData.value(#old_name)); \
+    CustomData.remove(#old_name);
 
 void BuddyShared::importConfiguration(const QDomElement &parent)
 {
-	QDomNamedNodeMap attributes = parent.attributes();
-	int count = attributes.count();
+    QDomNamedNodeMap attributes = parent.attributes();
+    int count = attributes.count();
 
-	for (int i = 0; i < count; i++)
-	{
-		QDomAttr attribute = attributes.item(i).toAttr();
-		CustomData.insert(attribute.name(), attribute.value());
-	}
+    for (int i = 0; i < count; i++)
+    {
+        QDomAttr attribute = attributes.item(i).toAttr();
+        CustomData.insert(attribute.name(), attribute.value());
+    }
 
-	Anonymous = false;
+    Anonymous = false;
 
-	importConfiguration();
+    importConfiguration();
 }
 
 void BuddyShared::importConfiguration()
 {
-	QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
-	for (auto &&group : groups)
-		doAddToGroup(m_groupManager->byName(group));
+    QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
+    for (auto &&group : groups)
+        doAddToGroup(m_groupManager->byName(group));
 
-	CustomData.remove("groups");
+    CustomData.remove("groups");
 
-	ImportProperty(Display, altnick)
-	ImportProperty(FirstName, first_name)
-	ImportProperty(LastName, last_name)
-	ImportProperty(NickName, nick_name)
-	ImportProperty(HomePhone, home_phone)
-	ImportProperty(Mobile, mobile)
-	ImportProperty(Email, email)
+    ImportProperty(Display, altnick) ImportProperty(FirstName, first_name) ImportProperty(LastName, last_name)
+        ImportProperty(NickName, nick_name) ImportProperty(HomePhone, home_phone) ImportProperty(Mobile, mobile)
+            ImportProperty(Email, email)
 }
 
 void BuddyShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement parent = storage()->point();
+    ConfigurationApi *configurationStorage = storage()->storage();
+    QDomElement parent = storage()->point();
 
-	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeFind);
-	QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
+    QDomElement customDataValues =
+        configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeFind);
+    QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
 
-	int count = customDataValuesList.count();
-	for (int i = 0; i < count; i++)
-	{
-		QDomNode customDataNode = customDataValuesList.at(i);
-		QDomElement customDataElement = customDataNode.toElement();
-		if (customDataElement.isNull())
-			continue;
+    int count = customDataValuesList.count();
+    for (int i = 0; i < count; i++)
+    {
+        QDomNode customDataNode = customDataValuesList.at(i);
+        QDomElement customDataElement = customDataNode.toElement();
+        if (customDataElement.isNull())
+            continue;
 
-		QString name = customDataElement.attribute("name");
-		if (!name.isEmpty())
-			CustomData[name] = customDataElement.text();
-	}
+        QString name = customDataElement.attribute("name");
+        if (!name.isEmpty())
+            CustomData[name] = customDataElement.text();
+    }
 
-	Groups.clear();
-	QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeFind);
-	if (!groupsNode.isNull())
-	{
-		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
+    Groups.clear();
+    QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeFind);
+    if (!groupsNode.isNull())
+    {
+        QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
 
-		count = groupsList.count();
-		for (int i = 0; i < count; i++)
-		{
-			QDomElement groupElement = groupsList.at(i).toElement();
-			if (groupElement.isNull())
-				continue;
-			doAddToGroup(m_groupManager->byUuid(groupElement.text()));
-		}
-	}
+        count = groupsList.count();
+        for (int i = 0; i < count; i++)
+        {
+            QDomElement groupElement = groupsList.at(i).toElement();
+            if (groupElement.isNull())
+                continue;
+            doAddToGroup(m_groupManager->byUuid(groupElement.text()));
+        }
+    }
 
-	setBuddyAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
-	Display = loadValue<QString>("Display");
-	FirstName = loadValue<QString>("FirstName");
-	LastName = loadValue<QString>("LastName");
-	NickName = loadValue<QString>("NickName");
-	HomePhone = loadValue<QString>("HomePhone");
-	Mobile = loadValue<QString>("Mobile");
-	Email = loadValue<QString>("Email");
-	Website = loadValue<QString>("Website");
-	Blocked = loadValue<bool>("Blocked", false);
-	OfflineTo = loadValue<bool>("OfflineTo", false);
-	Gender = (BuddyGender)loadValue<int>("Gender", 0);
-	PreferHigherStatuses = loadValue<bool>("PreferHigherStatuses", true);
+    setBuddyAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
+    Display = loadValue<QString>("Display");
+    FirstName = loadValue<QString>("FirstName");
+    LastName = loadValue<QString>("LastName");
+    NickName = loadValue<QString>("NickName");
+    HomePhone = loadValue<QString>("HomePhone");
+    Mobile = loadValue<QString>("Mobile");
+    Email = loadValue<QString>("Email");
+    Website = loadValue<QString>("Website");
+    Blocked = loadValue<bool>("Blocked", false);
+    OfflineTo = loadValue<bool>("OfflineTo", false);
+    Gender = (BuddyGender)loadValue<int>("Gender", 0);
+    PreferHigherStatuses = loadValue<bool>("PreferHigherStatuses", true);
 
-	// Some crazy bug causes entries like <Buddy uuid="xxx..."/> to be stored to the configuration file
-	// after using open-chat-with. We must not treat them as not anonymous (i.e., present on contact list) buddies,
-	// hence this workaround.
-	Anonymous = Display.isEmpty();
+    // Some crazy bug causes entries like <Buddy uuid="xxx..."/> to be stored to the configuration file
+    // after using open-chat-with. We must not treat them as not anonymous (i.e., present on contact list) buddies,
+    // hence this workaround.
+    Anonymous = Display.isEmpty();
 }
 
 void BuddyShared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::store();
+    Shared::store();
 
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement parent = storage()->point();
+    ConfigurationApi *configurationStorage = storage()->storage();
+    QDomElement parent = storage()->point();
 
-	QDomElement customDataValues = configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeCreate);
+    QDomElement customDataValues =
+        configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeCreate);
 
-	for (QMap<QString, QString>::const_iterator it = CustomData.constBegin(), end = CustomData.constEnd(); it != end; ++it)
-		configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", it.key(), it.value());
+    for (QMap<QString, QString>::const_iterator it = CustomData.constBegin(), end = CustomData.constEnd(); it != end;
+         ++it)
+        configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", it.key(), it.value());
 
-	if (!BuddyAvatar->uuid().isNull())
-		storeValue("Avatar", BuddyAvatar->uuid().toString());
-	else
-		removeValue("Avatar");
+    if (!BuddyAvatar->uuid().isNull())
+        storeValue("Avatar", BuddyAvatar->uuid().toString());
+    else
+        removeValue("Avatar");
 
-	// should not happen, but who knows...
-	if (Display.isEmpty())
-		Display = uuid().toString();
-	storeValue("Display", Display);
+    // should not happen, but who knows...
+    if (Display.isEmpty())
+        Display = uuid().toString();
+    storeValue("Display", Display);
 
-	storeValue("FirstName", FirstName);
-	storeValue("LastName", LastName);
-	storeValue("NickName", NickName);
-	storeValue("HomePhone", HomePhone);
-	storeValue("Mobile", Mobile);
-	storeValue("Email", Email);
-	storeValue("Website", Website);
-	storeValue("Blocked", Blocked);
-	storeValue("OfflineTo", OfflineTo);
-	storeValue("Gender", (int)Gender);
-	storeValue("PreferHigherStatuses", PreferHigherStatuses);
+    storeValue("FirstName", FirstName);
+    storeValue("LastName", LastName);
+    storeValue("NickName", NickName);
+    storeValue("HomePhone", HomePhone);
+    storeValue("Mobile", Mobile);
+    storeValue("Email", Email);
+    storeValue("Website", Website);
+    storeValue("Blocked", Blocked);
+    storeValue("OfflineTo", OfflineTo);
+    storeValue("Gender", (int)Gender);
+    storeValue("PreferHigherStatuses", PreferHigherStatuses);
 
-	// This buddy can't be anonymous, otherwise we wouldn't be storing them. Though,
-	// we need to store Anonymous=false, otherwise we will break downgrade to Kadu <0.11.0.
-	// TODO when we change configuration format (or just file name): remove it
-	storeValue("Anonymous", false);
+    // This buddy can't be anonymous, otherwise we wouldn't be storing them. Though,
+    // we need to store Anonymous=false, otherwise we will break downgrade to Kadu <0.11.0.
+    // TODO when we change configuration format (or just file name): remove it
+    storeValue("Anonymous", false);
 
-	if (!Groups.isEmpty())
-	{
-		QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeCreate);
-		for (auto &&group : Groups)
-			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
-	}
-	else
-		configurationStorage->removeNode(parent, "ContactGroups");
+    if (!Groups.isEmpty())
+    {
+        QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeCreate);
+        for (auto &&group : Groups)
+            configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
+    }
+    else
+        configurationStorage->removeNode(parent, "ContactGroups");
 }
 
 bool BuddyShared::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return UuidStorableObject::shouldStore() && !isAnonymous();
+    return UuidStorableObject::shouldStore() && !isAnonymous();
 }
 
 void BuddyShared::aboutToBeRemoved()
 {
-	setAnonymous(true);
+    setAnonymous(true);
 
-	Contacts.clear();
-	Groups.clear();
+    Contacts.clear();
+    Groups.clear();
 
-	m_avatarManager->removeItem(*BuddyAvatar);
-	setBuddyAvatar(Avatar::null);
+    m_avatarManager->removeItem(*BuddyAvatar);
+    setBuddyAvatar(Avatar::null);
 }
 
 int BuddyShared::priorityForNewContact()
 {
-	// anonymous (default) buddies should have only contacts without priority
-	if (isAnonymous())
-		return -1;
+    // anonymous (default) buddies should have only contacts without priority
+    if (isAnonymous())
+        return -1;
 
-	return Contacts.isEmpty()
-	        ? 0
-	        : Contacts.at(Contacts.count() - 1).priority() + 1;
+    return Contacts.isEmpty() ? 0 : Contacts.at(Contacts.count() - 1).priority() + 1;
 }
 
 void BuddyShared::addContact(const Contact &contact)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!contact || Contacts.contains(contact))
-		return;
+    if (!contact || Contacts.contains(contact))
+        return;
 
-	if (-1 == contact.priority())
-		contact.setPriority(priorityForNewContact());
+    if (-1 == contact.priority())
+        contact.setPriority(priorityForNewContact());
 
-	emit contactAboutToBeAdded(contact);
+    emit contactAboutToBeAdded(contact);
 
-	Contacts.append(contact);
-	sortContacts();
+    Contacts.append(contact);
+    sortContacts();
 
-	emit contactAdded(contact);
+    emit contactAdded(contact);
 
-	connect(contact, SIGNAL(priorityUpdated()), &changeNotifier(), SLOT(notify()));
-	changeNotifier().notify();
+    connect(contact, SIGNAL(priorityUpdated()), &changeNotifier(), SLOT(notify()));
+    changeNotifier().notify();
 }
 
 void BuddyShared::removeContact(const Contact &contact)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!contact || !Contacts.contains(contact))
-		return;
+    if (!contact || !Contacts.contains(contact))
+        return;
 
-	disconnect(contact, SIGNAL(priorityUpdated()), &changeNotifier(), SLOT(notify()));
+    disconnect(contact, SIGNAL(priorityUpdated()), &changeNotifier(), SLOT(notify()));
 
-	emit contactAboutToBeRemoved(contact);
-	Contacts.removeAll(contact);
-	emit contactRemoved(contact);
+    emit contactAboutToBeRemoved(contact);
+    Contacts.removeAll(contact);
+    emit contactRemoved(contact);
 
-	normalizePriorities();
+    normalizePriorities();
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 QVector<Contact> BuddyShared::contacts(const Account &account)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	QVector<Contact> contacts;
-	for (auto &&contact :  Contacts)
-		if (contact.contactAccount() == account)
-			contacts.append(contact);
+    QVector<Contact> contacts;
+    for (auto &&contact : Contacts)
+        if (contact.contactAccount() == account)
+            contacts.append(contact);
 
-	return contacts;
+    return contacts;
 }
 
-const QList<Contact> & BuddyShared::contacts()
+const QList<Contact> &BuddyShared::contacts()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Contacts;
+    return Contacts;
 }
 
 QString BuddyShared::id(const Account &account)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	QVector<Contact> contactslist;
-	contactslist = contacts(account);
-	if (!contactslist.isEmpty())
-		return contactslist.at(0).id();
+    QVector<Contact> contactslist;
+    contactslist = contacts(account);
+    if (!contactslist.isEmpty())
+        return contactslist.at(0).id();
 
-	return QString();
+    return QString();
 }
 
 static bool contactPriorityLessThan(const Contact &c1, const Contact &c2)
 {
-	return c1.priority() < c2.priority();
+    return c1.priority() < c2.priority();
 }
 
 void BuddyShared::sortContacts()
 {
-	qStableSort(Contacts.begin(), Contacts.end(), contactPriorityLessThan);
+    qStableSort(Contacts.begin(), Contacts.end(), contactPriorityLessThan);
 }
 
 void BuddyShared::normalizePriorities()
 {
-	int priority = 0;
-	for (auto &&contact : Contacts)
-		contact.setPriority(priority++);
+    int priority = 0;
+    for (auto &&contact : Contacts)
+        contact.setPriority(priority++);
 }
 
 void BuddyShared::avatarUpdated()
 {
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
 {
-	if (*BuddyAvatar == buddyAvatar)
-		return;
+    if (*BuddyAvatar == buddyAvatar)
+        return;
 
-	if (*BuddyAvatar)
-		disconnect(*BuddyAvatar, 0, this, 0);
+    if (*BuddyAvatar)
+        disconnect(*BuddyAvatar, 0, this, 0);
 
-	*BuddyAvatar = buddyAvatar;
-	changeNotifier().notify();
+    *BuddyAvatar = buddyAvatar;
+    changeNotifier().notify();
 
-	if (*BuddyAvatar)
-		connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+    if (*BuddyAvatar)
+        connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 }
 
 void BuddyShared::setDisplay(const QString &display)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Display != display)
-	{
-		Display = display;
-		changeNotifier().notify();
-		markContactsDirty();
+    if (Display != display)
+    {
+        Display = display;
+        changeNotifier().notify();
+        markContactsDirty();
 
-		emit displayUpdated();
-	}
+        emit displayUpdated();
+    }
 }
 
 void BuddyShared::setGroups(const QSet<Group> &groups)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Groups == groups)
-		return;
+    if (Groups == groups)
+        return;
 
-	QSet<Group> groupsToRemove = Groups;
+    QSet<Group> groupsToRemove = Groups;
 
-	for (auto &&group : groups)
-		if (!groupsToRemove.remove(group))
-			doAddToGroup(group);
+    for (auto &&group : groups)
+        if (!groupsToRemove.remove(group))
+            doAddToGroup(group);
 
-	for (auto &&group : groupsToRemove)
-		doRemoveFromGroup(group);
+    for (auto &&group : groupsToRemove)
+        doRemoveFromGroup(group);
 
-	changeNotifier().notify();
-	markContactsDirty();
+    changeNotifier().notify();
+    markContactsDirty();
 }
 
 bool BuddyShared::isInGroup(const Group &group)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Groups.contains(group);
+    return Groups.contains(group);
 }
 
 bool BuddyShared::showInAllGroup()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	for (auto &&group : Groups)
-		if (group && !group.showInAllGroup())
-			return false;
+    for (auto &&group : Groups)
+        if (group && !group.showInAllGroup())
+            return false;
 
-	return true;
+    return true;
 }
 
 bool BuddyShared::doAddToGroup(const Group &group)
 {
-	if (!group || Groups.contains(group))
-		return false;
+    if (!group || Groups.contains(group))
+        return false;
 
-	Groups.insert(group);
-	connect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
-	connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+    Groups.insert(group);
+    connect(group, SIGNAL(nameChanged()), this, SLOT(markContactsDirty()));
+    connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
 
-	return true;
+    return true;
 }
 
 bool BuddyShared::doRemoveFromGroup(const Group &group)
 {
-	if (!Groups.remove(group))
-		return false;
+    if (!Groups.remove(group))
+        return false;
 
-	disconnect(group, 0, this, 0);
+    disconnect(group, 0, this, 0);
 
-	return true;
+    return true;
 }
 
 void BuddyShared::addToGroup(const Group &group)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (doAddToGroup(group))
-	{
-		changeNotifier().notify();
-		markContactsDirty();
-	}
+    if (doAddToGroup(group))
+    {
+        changeNotifier().notify();
+        markContactsDirty();
+    }
 }
 
 void BuddyShared::removeFromGroup(const Group &group)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (doRemoveFromGroup(group))
-	{
-		changeNotifier().notify();
-		markContactsDirty();
-	}
+    if (doRemoveFromGroup(group))
+    {
+        changeNotifier().notify();
+        markContactsDirty();
+    }
 }
 
 void BuddyShared::groupAboutToBeRemoved()
 {
-	Group group(sender());
-	if (!group.isNull())
-		removeFromGroup(group);
+    Group group(sender());
+    if (!group.isNull())
+        removeFromGroup(group);
 }
 
 bool BuddyShared::isEmpty(bool checkOnlyForContacts)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (checkOnlyForContacts)
-		return Contacts.isEmpty();
-	else
-		return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
+    if (checkOnlyForContacts)
+        return Contacts.isEmpty();
+    else
+        return Contacts.isEmpty() && HomePhone.isEmpty() && Mobile.isEmpty() && Website.isEmpty() && Email.isEmpty();
 }
 
 void BuddyShared::markContactsDirty()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	for (auto &&contact : Contacts)
-		if (contact.rosterEntry())
-			contact.rosterEntry()->setHasLocalChanges();
+    for (auto &&contact : Contacts)
+        if (contact.rosterEntry())
+            contact.rosterEntry()->setHasLocalChanges();
 }
 
 quint16 BuddyShared::unreadMessagesCount()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	quint16 result = 0;
-	for (auto &&contact : Contacts)
-		result += contact.unreadMessagesCount();
+    quint16 result = 0;
+    for (auto &&contact : Contacts)
+        result += contact.unreadMessagesCount();
 
-	return result;
+    return result;
 }
 
 std::shared_ptr<StoragePoint> BuddyShared::createStoragePoint()
 {
-	// TODO: fix this, it is only a workaround for an empty buddy on list
-	if (m_myself->buddy() == Buddy(this))
-		return {};
-	else
-		return Shared::createStoragePoint();
+    // TODO: fix this, it is only a workaround for an empty buddy on list
+    if (m_myself->buddy() == Buddy(this))
+        return {};
+    else
+        return Shared::createStoragePoint();
 }
 
 KaduShared_PropertyPtrReadDef(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)

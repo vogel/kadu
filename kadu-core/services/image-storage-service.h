@@ -47,67 +47,70 @@ class QUrl;
  */
 class KADUAPI ImageStorageService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ImageStorageService(QObject *parent = nullptr);
-	virtual ~ImageStorageService();
+    explicit ImageStorageService(QObject *parent = nullptr);
+    virtual ~ImageStorageService();
 
-	/**
-	 * @short Returns full path to image storage directory.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return full path to image storage directory
-	 */
-	virtual QString storagePath() const = 0;
+    /**
+     * @short Returns full path to image storage directory.
+     * @author Rafał 'Vogel' Malinowski
+     * @return full path to image storage directory
+     */
+    virtual QString storagePath() const = 0;
 
-	/**
-	 * @short Returns full path to given image.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageFilePath image to get full path
-	 * @return full path to given image
-	 *
-	 * If imageFilePath is absolute path then imageFilePath is returned. In other case result is imageFilePath concatenated
-	 * with storagePath() result.
-	 */
-	virtual QString fullPath(const QString &imageFilePath) = 0;
+    /**
+     * @short Returns full path to given image.
+     * @author Rafał 'Vogel' Malinowski
+     * @param imageFilePath image to get full path
+     * @return full path to given image
+     *
+     * If imageFilePath is absolute path then imageFilePath is returned. In other case result is imageFilePath
+     * concatenated
+     * with storagePath() result.
+     */
+    virtual QString fullPath(const QString &imageFilePath) = 0;
 
-	/**
-	 * @short Store image under given path to image storage and return new file path relative to image storage directory.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageFilePath image to save under image storage
-	 * @return relative path to new image
-	 *
-	 * If storing image in image storage is not possible (for example directory is not writable) then this method does
-	 * nothing and returns original imageFilePath value. If storing was done properly then file path relative to image
-	 * storage directory is returned. It can be then passed to fullPath() method to obtain full path.
-	 */
-	virtual QString storeImage(const QString &imageFilePath) = 0;
+    /**
+     * @short Store image under given path to image storage and return new file path relative to image storage
+     * directory.
+     * @author Rafał 'Vogel' Malinowski
+     * @param imageFilePath image to save under image storage
+     * @return relative path to new image
+     *
+     * If storing image in image storage is not possible (for example directory is not writable) then this method does
+     * nothing and returns original imageFilePath value. If storing was done properly then file path relative to image
+     * storage directory is returned. It can be then passed to fullPath() method to obtain full path.
+     */
+    virtual QString storeImage(const QString &imageFilePath) = 0;
 
-	/**
-	 * @short Store image under given path to image storage and return new file path relative to image storage directory.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param imageFileName name of file to create
-	 * @param content content of file to create
-	 * @return relative path to new image
-	 *
-	 * If storing image in image storage is not possible (for example directory is not writable) then this method does
-	 * nothing and empty QString(). If storing was done properly then file path relative to image storage directory is
-	 * returned. It can be then passed to fullPath() method to obtain full path.
-	 */
-	virtual QString storeImage(const QString &imageFileName, const QByteArray &content) = 0;
+    /**
+     * @short Store image under given path to image storage and return new file path relative to image storage
+     * directory.
+     * @author Rafał 'Vogel' Malinowski
+     * @param imageFileName name of file to create
+     * @param content content of file to create
+     * @return relative path to new image
+     *
+     * If storing image in image storage is not possible (for example directory is not writable) then this method does
+     * nothing and empty QString(). If storing was done properly then file path relative to image storage directory is
+     * returned. It can be then passed to fullPath() method to obtain full path.
+     */
+    virtual QString storeImage(const QString &imageFileName, const QByteArray &content) = 0;
 
-	/**
-	 * @short Return QUrl with file:// scheme for given kaduimg:// QUrl.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param url url to convert
-	 * @return converted url
-	 *
-	 * If passed url is not of kaduimg:// scheme then it is returned without changes. In other case its path() property is
-	 * expanded to full path and returned as new file:// url. If destination file does not exists then url pointing to
-	 * wait animation is returned.
-	 */
-	virtual QUrl toFileUrl(const QUrl &url) = 0;
-
+    /**
+     * @short Return QUrl with file:// scheme for given kaduimg:// QUrl.
+     * @author Rafał 'Vogel' Malinowski
+     * @param url url to convert
+     * @return converted url
+     *
+     * If passed url is not of kaduimg:// scheme then it is returned without changes. In other case its path() property
+     * is
+     * expanded to full path and returned as new file:// url. If destination file does not exists then url pointing to
+     * wait animation is returned.
+     */
+    virtual QUrl toFileUrl(const QUrl &url) = 0;
 };
 
 /**

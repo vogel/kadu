@@ -24,8 +24,8 @@
 
 #include "notifier.h"
 
-Notifier::Notifier(const QString& name, const QString& description, const KaduIcon& icon) :
-		Name(name), Description(description), Icon(icon)
+Notifier::Notifier(const QString &name, const QString &description, const KaduIcon &icon)
+        : Name(name), Description(description), Icon(icon)
 {
 }
 

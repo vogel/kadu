@@ -21,10 +21,8 @@
 
 #include "status/status.h"
 
-MediaPlayerStatusChanger::MediaPlayerStatusChanger(QObject *parent) :
-		StatusChanger{900, parent},
-		_disabled{true},
-		_mediaPlayerStatusPosition{DescriptionReplace}
+MediaPlayerStatusChanger::MediaPlayerStatusChanger(QObject *parent)
+        : StatusChanger{900, parent}, _disabled{true}, _mediaPlayerStatusPosition{DescriptionReplace}
 {
 }
 
@@ -34,70 +32,70 @@ MediaPlayerStatusChanger::~MediaPlayerStatusChanger()
 
 void MediaPlayerStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
-	Q_UNUSED(container)
+    Q_UNUSED(container)
 
-	if (_disabled || status.isDisconnected())
-		return;
+    if (_disabled || status.isDisconnected())
+        return;
 
-	QString description = status.description();
-	switch (_mediaPlayerStatusPosition)
-	{
-		case DescriptionReplace:
-			description = _title;
-			break;
+    QString description = status.description();
+    switch (_mediaPlayerStatusPosition)
+    {
+    case DescriptionReplace:
+        description = _title;
+        break;
 
-		case DescriptionPrepend:
-			description = _title + description;
-			break;
+    case DescriptionPrepend:
+        description = _title + description;
+        break;
 
-		case DescriptionAppend:
-			description = description + _title;
-			break;
+    case DescriptionAppend:
+        description = description + _title;
+        break;
 
-		case PlayerTagReplace:
-			if (description.indexOf("%player%") > -1)
-				description.replace("%player%", _title);
-			break;
-	}
+    case PlayerTagReplace:
+        if (description.indexOf("%player%") > -1)
+            description.replace("%player%", _title);
+        break;
+    }
 
-	status.setDescription(description);
+    status.setDescription(description);
 }
 
 void MediaPlayerStatusChanger::setTitle(const QString &newTitle)
 {
-	_disabled = false;
+    _disabled = false;
 
-	if (newTitle != _title)
-	{
-		_title = newTitle;
-		emit statusChanged(0);
-	}
+    if (newTitle != _title)
+    {
+        _title = newTitle;
+        emit statusChanged(0);
+    }
 }
 
 void MediaPlayerStatusChanger::setDisable(bool disable)
 {
-	_disabled = disable;
-	emit statusChanged(0);
+    _disabled = disable;
+    emit statusChanged(0);
 }
 
 bool MediaPlayerStatusChanger::isDisabled() const
 {
-	return _disabled;
+    return _disabled;
 }
 
 void MediaPlayerStatusChanger::changePositionInStatus(ChangeDescriptionTo newSongInfoPlace)
 {
-	if (_mediaPlayerStatusPosition != newSongInfoPlace)
-	{
-		_mediaPlayerStatusPosition = newSongInfoPlace;
-		if (!_disabled)
-			emit statusChanged(0);
-	}
+    if (_mediaPlayerStatusPosition != newSongInfoPlace)
+    {
+        _mediaPlayerStatusPosition = newSongInfoPlace;
+        if (!_disabled)
+            emit statusChanged(0);
+    }
 }
 
 MediaPlayerStatusChanger::ChangeDescriptionTo MediaPlayerStatusChanger::changeDescriptionTo() const
 {
-	return _mediaPlayerStatusPosition;
+    return _mediaPlayerStatusPosition;
 }
 
 #include "moc_media-player-status-changer.cpp"

@@ -24,14 +24,14 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowAboutWindowAction::ShowAboutWindowAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowAboutWindowAction::ShowAboutWindowAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/about-kadu"});
-	setName(QStringLiteral("aboutAction"));
-	setText(tr("A&bout Kadu"));
-	setType(ActionDescription::TypeMainMenu);
+    setIcon(KaduIcon{"kadu_icons/about-kadu"});
+    setName(QStringLiteral("aboutAction"));
+    setText(tr("A&bout Kadu"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ShowAboutWindowAction::~ShowAboutWindowAction()
@@ -40,17 +40,17 @@ ShowAboutWindowAction::~ShowAboutWindowAction()
 
 void ShowAboutWindowAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ShowAboutWindowAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowAboutWindowAction::actionTriggered(QAction *, bool)
 {
-	m_injectedFactory->makeInjected<About>(m_kaduWindowService->kaduWindow())->show();
+    m_injectedFactory->makeInjected<About>(m_kaduWindowService->kaduWindow())->show();
 }
 
 #include "moc_show-about-window-action.cpp"

@@ -28,10 +28,9 @@
 
 #define ANIMATION_FRAMES_COUNT 255
 
-LineEditClearButton::LineEditClearButton(QWidget *parent) :
-		QWidget(parent)
+LineEditClearButton::LineEditClearButton(QWidget *parent) : QWidget(parent)
 {
-	setUpTimeLine();
+    setUpTimeLine();
 }
 
 LineEditClearButton::~LineEditClearButton()
@@ -40,87 +39,85 @@ LineEditClearButton::~LineEditClearButton()
 
 void LineEditClearButton::setUpTimeLine()
 {
-	  Timeline = new QTimeLine(200, this);
-	  Timeline->setFrameRange(0, ANIMATION_FRAMES_COUNT);
-	  Timeline->setCurveShape(QTimeLine::EaseInOutCurve);
-	  Timeline->setDirection(QTimeLine::Backward);
-	  connect(Timeline, SIGNAL(finished()), this, SLOT(animationFinished()));
-	  connect(Timeline, SIGNAL(frameChanged(int)), this, SLOT(update()));
+    Timeline = new QTimeLine(200, this);
+    Timeline->setFrameRange(0, ANIMATION_FRAMES_COUNT);
+    Timeline->setCurveShape(QTimeLine::EaseInOutCurve);
+    Timeline->setDirection(QTimeLine::Backward);
+    connect(Timeline, SIGNAL(finished()), this, SLOT(animationFinished()));
+    connect(Timeline, SIGNAL(frameChanged(int)), this, SLOT(update()));
 }
 
 void LineEditClearButton::animateVisible(bool visible)
 {
-	if (visible)
-	{
-		if (Timeline->direction() == QTimeLine::Forward)
-			return;
-		Timeline->setDirection(QTimeLine::Forward);
-		Timeline->setDuration(150);
-	}
-	else
-	{
-		if (Timeline->direction() == QTimeLine::Backward)
-			return;
-		Timeline->setDirection(QTimeLine::Backward);
-		Timeline->setDuration(250);
-	}
+    if (visible)
+    {
+        if (Timeline->direction() == QTimeLine::Forward)
+            return;
+        Timeline->setDirection(QTimeLine::Forward);
+        Timeline->setDuration(150);
+    }
+    else
+    {
+        if (Timeline->direction() == QTimeLine::Backward)
+            return;
+        Timeline->setDirection(QTimeLine::Backward);
+        Timeline->setDuration(250);
+    }
 
-	if (QTimeLine::Running != Timeline->state())
-		Timeline->start();
+    if (QTimeLine::Running != Timeline->state())
+        Timeline->start();
 
-	if (visible)
-		setCursor(Qt::ArrowCursor);
-	else
-		unsetCursor();
+    if (visible)
+        setCursor(Qt::ArrowCursor);
+    else
+        unsetCursor();
 
-	setAttribute(Qt::WA_TransparentForMouseEvents, !visible);
+    setAttribute(Qt::WA_TransparentForMouseEvents, !visible);
 
-	if (visible)
-		setVisible(true);
+    if (visible)
+        setVisible(true);
 }
 
 void LineEditClearButton::setPixmap(const QPixmap &pixmap)
 {
-	ButtonPixmap = pixmap;
-	ButtonIcon = QIcon(pixmap);
+    ButtonPixmap = pixmap;
+    ButtonIcon = QIcon(pixmap);
 }
 
 void LineEditClearButton::setAnimationsEnabled(bool animationsEnabled)
 {
-	// We need to set the current time in the case that we had the clear
-	// button shown, for it being painted on the paintEvent(). Otherwise
-	// it wont be painted, resulting (m->timeLine->currentTime() == 0) true,
-	// and therefore a bad painting. This is needed for the case that we
-	// come from a non animated widget and want it animated. (ereslibre)
-	if (animationsEnabled && Timeline->direction() == QTimeLine::Forward)
-	    Timeline->setCurrentTime(150);
+    // We need to set the current time in the case that we had the clear
+    // button shown, for it being painted on the paintEvent(). Otherwise
+    // it wont be painted, resulting (m->timeLine->currentTime() == 0) true,
+    // and therefore a bad painting. This is needed for the case that we
+    // come from a non animated widget and want it animated. (ereslibre)
+    if (animationsEnabled && Timeline->direction() == QTimeLine::Forward)
+        Timeline->setCurrentTime(150);
 }
 
 void LineEditClearButton::paintEvent(QPaintEvent *event)
 {
-	Q_UNUSED(event)
+    Q_UNUSED(event)
 
-	QPainter painter(this);
-	painter.setOpacity(1.0 * Timeline->currentFrame() / ANIMATION_FRAMES_COUNT);
-	painter.drawPixmap((width() - ButtonPixmap.width()) / 2,
-			(height() - ButtonPixmap.height()) / 2,
-			ButtonPixmap);
+    QPainter painter(this);
+    painter.setOpacity(1.0 * Timeline->currentFrame() / ANIMATION_FRAMES_COUNT);
+    painter.drawPixmap((width() - ButtonPixmap.width()) / 2, (height() - ButtonPixmap.height()) / 2, ButtonPixmap);
 }
 
 bool LineEditClearButton::event(QEvent *event)
 {
-	if (event->type() == QEvent::EnabledChange)
-		ButtonPixmap = ButtonIcon.pixmap(ButtonPixmap.size(), isEnabled() ? QIcon::Normal : QIcon::Disabled);
+    if (event->type() == QEvent::EnabledChange)
+        ButtonPixmap = ButtonIcon.pixmap(ButtonPixmap.size(), isEnabled() ? QIcon::Normal : QIcon::Disabled);
 
-	return QWidget::event(event);
+    return QWidget::event(event);
 }
 
 void LineEditClearButton::animationFinished()
 {
-	if (Timeline->direction() == QTimeLine::Forward)
-		update();
-	else
-		setVisible(false);
+    if (Timeline->direction() == QTimeLine::Forward)
+        update();
+    else
+        setVisible(false);
 }
 
 #include "moc_line-edit-clear-button.cpp"

@@ -25,7 +25,7 @@
 
 SslModule::SslModule()
 {
-	add_type<SslCertificateManager>();
-	add_type<SslCertificateRepository>();
-	add_type<SslCertificateStorage>();
+    add_type<SslCertificateManager>();
+    add_type<SslCertificateRepository>();
+    add_type<SslCertificateStorage>();
 }

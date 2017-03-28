@@ -36,28 +36,25 @@ class NormalizedHtmlString;
 
 class KADUAPI Message : public SharedBase<MessageShared>
 {
-	KaduSharedBaseClass(Message)
+    KaduSharedBaseClass(Message)
 
-public:
-	static Message null;
+        public : static Message null;
 
-	Message();
-	Message(MessageShared *data);
-	explicit Message(QObject *data);
-	Message(const Message &copy);
-	virtual ~Message();
+    Message();
+    Message(MessageShared *data);
+    explicit Message(QObject *data);
+    Message(const Message &copy);
+    virtual ~Message();
 
-	KaduSharedBase_PropertyCRW(Chat, messageChat, MessageChat)
-	KaduSharedBase_PropertyCRW(Contact, messageSender, MessageSender)
-	KaduSharedBase_PropertyCRW(NormalizedHtmlString, content, Content)
-	KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
-	KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
-	KaduSharedBase_Property(MessageStatus, status, Status)
-	KaduSharedBase_Property(MessageType, type, Type)
-	KaduSharedBase_PropertyCRW(QString, id, Id)
-
+    KaduSharedBase_PropertyCRW(Chat, messageChat, MessageChat)
+        KaduSharedBase_PropertyCRW(Contact, messageSender, MessageSender)
+            KaduSharedBase_PropertyCRW(NormalizedHtmlString, content, Content)
+                KaduSharedBase_PropertyCRW(QDateTime, receiveDate, ReceiveDate)
+                    KaduSharedBase_PropertyCRW(QDateTime, sendDate, SendDate)
+                        KaduSharedBase_Property(MessageStatus, status, Status)
+                            KaduSharedBase_Property(MessageType, type, Type) KaduSharedBase_PropertyCRW(QString, id, Id)
 };
 
 Q_DECLARE_METATYPE(Message)
 
-#endif // MESSAGE_H
+#endif   // MESSAGE_H

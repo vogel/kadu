@@ -33,24 +33,23 @@ class InjectedFactory;
 
 class KADUAPI ChatGroupsConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatGroupsConfigurationWidget(const Chat &chat, QWidget *parent = nullptr);
-	virtual ~ChatGroupsConfigurationWidget();
+    explicit ChatGroupsConfigurationWidget(const Chat &chat, QWidget *parent = nullptr);
+    virtual ~ChatGroupsConfigurationWidget();
 
-	void save();
+    void save();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	Chat m_chat;
-	GroupList *m_groupList;
+    Chat m_chat;
+    GroupList *m_groupList;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 };

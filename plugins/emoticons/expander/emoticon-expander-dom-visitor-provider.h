@@ -41,32 +41,31 @@ class IgnoreLinksDomVisitor;
  */
 class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE EmoticonExpanderDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~EmoticonExpanderDomVisitorProvider();
+    Q_INVOKABLE EmoticonExpanderDomVisitorProvider(QObject *parent = nullptr);
+    virtual ~EmoticonExpanderDomVisitorProvider();
 
-	virtual const DomVisitor * provide() const;
+    virtual const DomVisitor *provide() const;
 
-	/**
-	 * @short Update configuration of provided EmoticonExpander.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param configuration new configuration for provided EmoticonExpander
-	 */
-	void setConfiguration(const EmoticonConfiguration &configuration);
+    /**
+     * @short Update configuration of provided EmoticonExpander.
+     * @author Rafał 'Vogel' Malinowski
+     * @param configuration new configuration for provided EmoticonExpander
+     */
+    void setConfiguration(const EmoticonConfiguration &configuration);
 
 private:
-	EmoticonConfiguration m_configuration;
-	std::unique_ptr<IgnoreLinksDomVisitor> m_ignoreLinksVisitor;
-	std::unique_ptr<EmoticonPrefixTree> m_tree;
+    EmoticonConfiguration m_configuration;
+    std::unique_ptr<IgnoreLinksDomVisitor> m_ignoreLinksVisitor;
+    std::unique_ptr<EmoticonPrefixTree> m_tree;
 
-	/**
-	 * @short Create new EmoticonExpander with updated EmoticonConfiguration.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	void rebuildExpander();
-
+    /**
+     * @short Create new EmoticonExpander with updated EmoticonConfiguration.
+     * @author Rafał 'Vogel' Malinowski
+     */
+    void rebuildExpander();
 };
 
 /**

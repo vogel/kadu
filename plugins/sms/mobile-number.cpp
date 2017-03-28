@@ -21,18 +21,15 @@
 
 #include "mobile-number.h"
 
-MobileNumber::MobileNumber(MobileNumberManager *mobileNumberManager) :
-		m_mobileNumberManager{mobileNumberManager}
+MobileNumber::MobileNumber(MobileNumberManager *mobileNumberManager) : m_mobileNumberManager{mobileNumberManager}
 {
-	setUuid(QUuid::createUuid());
+    setUuid(QUuid::createUuid());
 }
 
-MobileNumber::MobileNumber(MobileNumberManager *mobileNumberManager, QString number, QString gatewayId) :
-		m_mobileNumberManager{mobileNumberManager},
-		m_number{number},
-		m_gatewayId{gatewayId}
+MobileNumber::MobileNumber(MobileNumberManager *mobileNumberManager, QString number, QString gatewayId)
+        : m_mobileNumberManager{mobileNumberManager}, m_number{number}, m_gatewayId{gatewayId}
 {
-	setUuid(QUuid::createUuid());
+    setUuid(QUuid::createUuid());
 }
 
 MobileNumber::~MobileNumber()
@@ -41,31 +38,31 @@ MobileNumber::~MobileNumber()
 
 void MobileNumber::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	UuidStorableObject::load();
+    UuidStorableObject::load();
 
-	setUuid(loadAttribute<QString>("uuid"));
-	m_number = loadValue<QString>("Number");
-	m_gatewayId = loadValue<QString>("Gateway");
+    setUuid(loadAttribute<QString>("uuid"));
+    m_number = loadValue<QString>("Number");
+    m_gatewayId = loadValue<QString>("Gateway");
 }
 
 void MobileNumber::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	UuidStorableObject::store();
+    UuidStorableObject::store();
 
-	storeAttribute("uuid", uuid().toString());
-	storeValue("Number", m_number);
-	storeValue("Gateway", m_gatewayId);
+    storeAttribute("uuid", uuid().toString());
+    storeValue("Number", m_number);
+    storeValue("Gateway", m_gatewayId);
 }
 
-StorableObject * MobileNumber::storageParent()
+StorableObject *MobileNumber::storageParent()
 {
-	return m_mobileNumberManager;
+    return m_mobileNumberManager;
 }

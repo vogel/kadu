@@ -23,9 +23,7 @@
 
 class KADUAPI WSAHandler final
 {
-
 public:
-	WSAHandler();
-	~WSAHandler();
-
+    WSAHandler();
+    ~WSAHandler();
 };

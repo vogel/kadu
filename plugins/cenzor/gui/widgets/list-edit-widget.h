@@ -29,26 +29,25 @@ class QListWidget;
 
 class ListEditWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QListWidget *ListWidget;
-	QLineEdit *LineEdit;
+    QListWidget *ListWidget;
+    QLineEdit *LineEdit;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	void selectedItemChanged(const QModelIndex &current, const QModelIndex &previous);
-	void addItem();
-	void changeItem();
-	void deleteItem();
+    void selectedItemChanged(const QModelIndex &current, const QModelIndex &previous);
+    void addItem();
+    void changeItem();
+    void deleteItem();
 
 public:
-	explicit ListEditWidget(QWidget *parent = nullptr);
-	virtual ~ListEditWidget();
+    explicit ListEditWidget(QWidget *parent = nullptr);
+    virtual ~ListEditWidget();
 
-	void setList(const QStringList &list);
-	QStringList list();
-
+    void setList(const QStringList &list);
+    QStringList list();
 };
 
-#endif // LIST_EDIT_WIDGET_H
+#endif   // LIST_EDIT_WIDGET_H

@@ -25,7 +25,7 @@
 
 AutoHideModule::AutoHideModule()
 {
-	add_type<AutoHide>();
-	add_type<AutoHideConfigurationUiHandler>();
-	add_type<AutoHidePluginObject>();
+    add_type<AutoHide>();
+    add_type<AutoHideConfigurationUiHandler>();
+    add_type<AutoHidePluginObject>();
 }

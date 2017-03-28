@@ -21,8 +21,7 @@
 
 #include "unity-integration.h"
 
-UnityIntegrationPluginObject::UnityIntegrationPluginObject(QObject *parent) :
-		QObject{parent}
+UnityIntegrationPluginObject::UnityIntegrationPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,7 +31,7 @@ UnityIntegrationPluginObject::~UnityIntegrationPluginObject()
 
 void UnityIntegrationPluginObject::setUnityIntegration(UnityIntegration *unityIntegration)
 {
-	m_unityIntegration = unityIntegration;
+    m_unityIntegration = unityIntegration;
 }
 
 void UnityIntegrationPluginObject::init()

@@ -49,35 +49,36 @@ class PluginInjectorProvider;
  */
 class PluginLoader : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Load plugin dynamic library file.
-	 * @param pluginDirPath path of directory containing plugins
-	 * @param pluginName name of plugin to load
-	 * @param pluginInjectorProvider provider for already loaded injectors
-	 * @param parent Qt parent object
-	 * @throws PluginActivationErrorException
-	 *
-	 * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
-	 */
-	explicit PluginLoader(const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider, QObject *parent = nullptr) noexcept(false);
+    /**
+     * @short Load plugin dynamic library file.
+     * @param pluginDirPath path of directory containing plugins
+     * @param pluginName name of plugin to load
+     * @param pluginInjectorProvider provider for already loaded injectors
+     * @param parent Qt parent object
+     * @throws PluginActivationErrorException
+     *
+     * Load plugin dynamic library file. In case load fails an PluginActivationErrorException exception is thrown.
+     */
+    explicit PluginLoader(
+        const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider,
+        QObject *parent = nullptr) noexcept(false);
 
-	/**
-	 * @short Unload plugin dynamic library file.
-	 */
-	virtual ~PluginLoader() noexcept;
+    /**
+     * @short Unload plugin dynamic library file.
+     */
+    virtual ~PluginLoader() noexcept;
 
 private:
-	std::unique_ptr<QPluginLoader> m_pluginLoader;
-	mutable injeqt::injector m_pluginInjector;
-	PluginInjectorProviderContainer m_pluginInjectorProviderContainer;
-	InjectorRegisteredActions m_injectorRegisteredActions;
+    std::unique_ptr<QPluginLoader> m_pluginLoader;
+    mutable injeqt::injector m_pluginInjector;
+    PluginInjectorProviderContainer m_pluginInjectorProviderContainer;
+    InjectorRegisteredActions m_injectorRegisteredActions;
 
-	std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const;
-	injeqt::injector createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
-
+    std::unique_ptr<QPluginLoader> createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const;
+    injeqt::injector createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
 };
 
 /**

@@ -33,31 +33,30 @@ class Parser;
 
 class ExecNotifier : public QObject, public Notifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ExecNotifier(QObject *parent = nullptr);
-	virtual ~ExecNotifier();
+    Q_INVOKABLE explicit ExecNotifier(QObject *parent = nullptr);
+    virtual ~ExecNotifier();
 
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
-	virtual void notify(const Notification &notification);
+    virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
+    virtual void notify(const Notification &notification);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotifierRepository> m_notifierRepository;
-	QPointer<Parser> m_parser;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<Parser> m_parser;
 
-	void createDefaultConfiguration();
-	void run(const QStringList &args);
+    void createDefaultConfiguration();
+    void run(const QStringList &args);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_INIT void init();
 };

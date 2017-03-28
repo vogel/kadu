@@ -43,40 +43,45 @@
  */
 class KADUAPI UuidStorableObject : public StorableObject
 {
-	QUuid Uuid;
+    QUuid Uuid;
 
 protected:
-	virtual std::shared_ptr<StoragePoint> createStoragePoint();
+    virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 public:
-	UuidStorableObject(QObject *parent = nullptr);
+    UuidStorableObject(QObject *parent = nullptr);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns unique identifier of this object.
-	 * @return unique identifier of this object
-	 *
-	 * This method returns object of type QUuid that represens unique ID for this object.
-	 * Each derivered class should ovveride that method to return really unique ID.
-	 */
-	const QUuid & uuid() const { return Uuid; }
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns unique identifier of this object.
+     * @return unique identifier of this object
+     *
+     * This method returns object of type QUuid that represens unique ID for this object.
+     * Each derivered class should ovveride that method to return really unique ID.
+     */
+    const QUuid &uuid() const
+    {
+        return Uuid;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Updates value of unique identifier of this object.
-	 * @return unique identifier of this object
-	 *
-	 * This method sets new unique ID for this object. Unique ID is
-	 * represented by object of type QUuid.
-	 */
-	void setUuid(const QUuid &uuid) { Uuid = uuid; }
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Updates value of unique identifier of this object.
+     * @return unique identifier of this object
+     *
+     * This method sets new unique ID for this object. Unique ID is
+     * represented by object of type QUuid.
+     */
+    void setUuid(const QUuid &uuid)
+    {
+        Uuid = uuid;
+    }
 
-	virtual bool shouldStore();
-
+    virtual bool shouldStore();
 };
 
 /**
  * @}
  */
 
-#endif // UUID_STORABLE_OBJECT_H
+#endif   // UUID_STORABLE_OBJECT_H

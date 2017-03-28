@@ -24,6 +24,6 @@
 
 ChatNotifyModule::ChatNotifyModule()
 {
-	add_type<ChatNotifier>();
-	add_type<ChatNotifyPluginObject>();
+    add_type<ChatNotifier>();
+    add_type<ChatNotifyPluginObject>();
 }

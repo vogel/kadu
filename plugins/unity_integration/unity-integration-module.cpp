@@ -24,6 +24,6 @@
 
 UnityIntegrationModule::UnityIntegrationModule()
 {
-	add_type<UnityIntegrationPluginObject>();
-	add_type<UnityIntegration>();
+    add_type<UnityIntegrationPluginObject>();
+    add_type<UnityIntegration>();
 }

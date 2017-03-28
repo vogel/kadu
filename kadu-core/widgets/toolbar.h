@@ -24,8 +24,8 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "misc/change-notifier.h"
 #include "exports.h"
+#include "misc/change-notifier.h"
 
 #include <QtCore/QPointer>
 #include <QtGui/QDrag>
@@ -46,271 +46,280 @@ class QToolButton;
 
 struct ToolBarDropMarker
 {
-	bool visible;
-	int x;
-	int y;
-	int size;
-	bool operator==(const ToolBarDropMarker &other) const
-	{
-		if (visible != other.visible) return false;
-		if (x != other.x) return false;
-		if (y != other.y) return false;
-		if (size != other.size) return false;
-		return true;
-	}
-	bool operator!=(const ToolBarDropMarker &other) const
-	{
-		return *this == other ? false : true;
-	}
+    bool visible;
+    int x;
+    int y;
+    int size;
+    bool operator==(const ToolBarDropMarker &other) const
+    {
+        if (visible != other.visible)
+            return false;
+        if (x != other.x)
+            return false;
+        if (y != other.y)
+            return false;
+        if (size != other.size)
+            return false;
+        return true;
+    }
+    bool operator!=(const ToolBarDropMarker &other) const
+    {
+        return *this == other ? false : true;
+    }
 };
 
 /**
-	Klasa tworząca pasek narzędziowy
-	\class ToolBar
-	\brief Pasek narzędziowy
+        Klasa tworząca pasek narzędziowy
+        \class ToolBar
+        \brief Pasek narzędziowy
 **/
 
 class KADUAPI ToolBar : public QToolBar, public ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	friend class DisabledActionsWatcher;
+    friend class DisabledActionsWatcher;
 
-	QPointer<Actions> m_actions;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<Actions> m_actions;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
 
-	ChangeNotifier MyChangeNotifier;
+    ChangeNotifier MyChangeNotifier;
 
-	// TODO: ugly hack
-	QWidget *currentWidget;
-	QAction *IconsOnly, *TextOnly, *Text, *TextUnder;
+    // TODO: ugly hack
+    QWidget *currentWidget;
+    QAction *IconsOnly, *TextOnly, *Text, *TextUnder;
 
-	struct ToolBarAction {
-		QString actionName;
-		QAction *action;
-		QWidget *widget;
-		Qt::ToolButtonStyle style;
-		bool operator == (struct ToolBarAction action) const {
-			return actionName == action.actionName;
-		}
-	};
+    struct ToolBarAction
+    {
+        QString actionName;
+        QAction *action;
+        QWidget *widget;
+        Qt::ToolButtonStyle style;
+        bool operator==(struct ToolBarAction action) const
+        {
+            return actionName == action.actionName;
+        }
+    };
 
-	QList<ToolBarAction> ToolBarActions;
+    QList<ToolBarAction> ToolBarActions;
 
-	static QMap<QString, QList<ToolBarAction> > DefaultActions;
+    static QMap<QString, QList<ToolBarAction>> DefaultActions;
 
-	// TODO: remove, used only when reading from config
-	int XOffset;
-	int YOffset;
+    // TODO: remove, used only when reading from config
+    int XOffset;
+    int YOffset;
 
-	QPoint MouseStart;
+    QPoint MouseStart;
 
-	Qt::ToolBarArea toolBarArea();
-	Qt::Orientation orientationByArea(Qt::ToolBarArea toolbararea);
+    Qt::ToolBarArea toolBarArea();
+    Qt::Orientation orientationByArea(Qt::ToolBarArea toolbararea);
 
-	bool dragging;
+    bool dragging;
 
-	QAction * findActionToDropBefore(const QPoint &pos);
-	QAction * actionNear(const QPoint &pos);
-	int rowCount();
-	int rowAt(const QPoint &pos);
-	QRect rowRect(int row);
-	QList<QAction *> actionsForRow(int row);
-	int actionRow(QAction *action);
+    QAction *findActionToDropBefore(const QPoint &pos);
+    QAction *actionNear(const QPoint &pos);
+    int rowCount();
+    int rowAt(const QPoint &pos);
+    QRect rowRect(int row);
+    QList<QAction *> actionsForRow(int row);
+    int actionRow(QAction *action);
 
-	ToolBarDropMarker dropmarker;
-	void updateDropMarker();
+    ToolBarDropMarker dropmarker;
+    void updateDropMarker();
 
-	void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before = 0);
+    void addAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before = 0);
 
-	int indexOf(QAction *action);
-	int indexOf(const QString &action);
+    int indexOf(QAction *action);
+    int indexOf(const QString &action);
 
-	ToolBarSeparator * createSeparator(QAction *before, ToolBarAction &action);
-	ToolBarSpacer * createSpacer(QAction *before, ToolBarAction &action);
-	QToolButton * createPushButton(QAction *before, ToolBarAction &action);
-	QWidget * createActionWidget(QAction *before, ToolBarAction &action);
+    ToolBarSeparator *createSeparator(QAction *before, ToolBarAction &action);
+    ToolBarSpacer *createSpacer(QAction *before, ToolBarAction &action);
+    QToolButton *createPushButton(QAction *before, ToolBarAction &action);
+    QWidget *createActionWidget(QAction *before, ToolBarAction &action);
 
-	QMenu * createContextMenu(QWidget *widget);
+    QMenu *createContextMenu(QWidget *widget);
 
-	void paintDropMarker();
+    void paintDropMarker();
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setActions(Actions *actions);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	/**
-		\fn void addButtonClicked()
-		Slot dodający wybrany przycisk
-	**/
-	void addButtonClicked(QAction *action);
-	void removeButton();
+    /**
+            \fn void addButtonClicked()
+            Slot dodający wybrany przycisk
+    **/
+    void addButtonClicked(QAction *action);
+    void removeButton();
 
-	/**
-		\fn void addSeparatorClicked()
-		Slot dodający separator
-	**/
-	void addSeparatorClicked();
+    /**
+            \fn void addSeparatorClicked()
+            Slot dodający separator
+    **/
+    void addSeparatorClicked();
 
-	/**
-		\fn void addSpacerClicked()
-		Slot dodający swobodny odstęp
-	**/
-	void addSpacerClicked();
+    /**
+            \fn void addSpacerClicked()
+            Slot dodający swobodny odstęp
+    **/
+    void addSpacerClicked();
 
-	void removeSeparator();
-	void removeSpacer();
+    void removeSeparator();
+    void removeSpacer();
 
-	/**
-		\fn void removeToolbar()
-		Slot obsługujący usuwanie paska narzędzi
-	**/
-	void removeToolbar();
+    /**
+            \fn void removeToolbar()
+            Slot obsługujący usuwanie paska narzędzi
+    **/
+    void removeToolbar();
 
-	void setBlockToolbars(bool checked);
+    void setBlockToolbars(bool checked);
 
-	void widgetPressed();
+    void widgetPressed();
 
-	void slotContextIcons();
-	void slotContextText();
-	void slotContextTextUnder();
-	void slotContextTextRight();
+    void slotContextIcons();
+    void slotContextText();
+    void slotContextTextUnder();
+    void slotContextTextRight();
 
-	void slotContextAboutToShow();
+    void slotContextAboutToShow();
 
 protected:
-	/**
-		\fn virtual void dragEnterEvent(QDragEnterEvent* event)
-		Funkcja obsługująca przeciąganie akcji między paskami
-	**/
-	virtual void dragEnterEvent(QDragEnterEvent *event);
+    /**
+            \fn virtual void dragEnterEvent(QDragEnterEvent* event)
+            Funkcja obsługująca przeciąganie akcji między paskami
+    **/
+    virtual void dragEnterEvent(QDragEnterEvent *event);
 
-	/**
-		\fn virtual void dropEvent(QDropEvent* event)
-		Funkcja obsługująca upuszczenie przycisku na pasku
-	**/
-	virtual void dropEvent(QDropEvent *event);
+    /**
+            \fn virtual void dropEvent(QDropEvent* event)
+            Funkcja obsługująca upuszczenie przycisku na pasku
+    **/
+    virtual void dropEvent(QDropEvent *event);
 
-	virtual bool event(QEvent *event);
+    virtual bool event(QEvent *event);
 
-	virtual void dragLeaveEvent(QDragLeaveEvent *event);
-	virtual void leaveEvent(QEvent *event);
+    virtual void dragLeaveEvent(QDragLeaveEvent *event);
+    virtual void leaveEvent(QEvent *event);
 
-	virtual void paintEvent(QPaintEvent *event);
+    virtual void paintEvent(QPaintEvent *event);
 
-	virtual void dragMoveEvent(QDragMoveEvent *event);
+    virtual void dragMoveEvent(QDragMoveEvent *event);
 
-	/**
-		\fn virtual void contextMenuEvent(QContextMenuEvent* e)
-		Funkcja obsługująca tworzenie menu kontekstowego paska
-	**/
-	virtual void contextMenuEvent(QContextMenuEvent *e);
+    /**
+            \fn virtual void contextMenuEvent(QContextMenuEvent* e)
+            Funkcja obsługująca tworzenie menu kontekstowego paska
+    **/
+    virtual void contextMenuEvent(QContextMenuEvent *e);
 
-	virtual void mouseMoveEvent(QMouseEvent *e);
+    virtual void mouseMoveEvent(QMouseEvent *e);
 
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	static bool isBlockToolbars(Configuration *configuration);
+    static bool isBlockToolbars(Configuration *configuration);
 
-	/**
-		Konstruktor paska narzędzi
-		\fn ToolBar(QWidget* parent, const char *name)
-		\param parent rodzic obiektu
-		\param name nazwa obiektu
-	**/
-	explicit ToolBar(QWidget *parent);
+    /**
+            Konstruktor paska narzędzi
+            \fn ToolBar(QWidget* parent, const char *name)
+            \param parent rodzic obiektu
+            \param name nazwa obiektu
+    **/
+    explicit ToolBar(QWidget *parent);
 
-	/**
-		\fn ~ToolBar()
-		Destruktor paska narzędzi
-	**/
-	virtual ~ToolBar();
+    /**
+            \fn ~ToolBar()
+            Destruktor paska narzędzi
+    **/
+    virtual ~ToolBar();
 
- 	void deleteAction(const QString &actionName);
-	void moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before);
+    void deleteAction(const QString &actionName);
+    void moveAction(const QString &actionName, Qt::ToolButtonStyle style, QAction *before);
 
-	/**
-		\fn void loadFromConfig(QDomElement parent_element)
-		\param parent_element rodzic obiektu
-		Wczytuje dane z pliku konfiguracyjnego
-	**/
-	void loadFromConfig(const QDomElement &parent_element);
+    /**
+            \fn void loadFromConfig(QDomElement parent_element)
+            \param parent_element rodzic obiektu
+            Wczytuje dane z pliku konfiguracyjnego
+    **/
+    void loadFromConfig(const QDomElement &parent_element);
 
-	/**
-		\fn hasAction(QString action_name)
-		\param action_name nazwa szukanej akcji
-		Funkcja zwraca wartość boolowską, okreslającą, czy akcja
-		o podanej nazwie znajduje się już na pasku narzędzi.
-	**/
-	bool hasAction(const QString &action_name);
-	bool windowHasAction(const QString &action_name, bool exclude);
+    /**
+            \fn hasAction(QString action_name)
+            \param action_name nazwa szukanej akcji
+            Funkcja zwraca wartość boolowską, okreslającą, czy akcja
+            o podanej nazwie znajduje się już na pasku narzędzi.
+    **/
+    bool hasAction(const QString &action_name);
+    bool windowHasAction(const QString &action_name, bool exclude);
 
-	int xOffset() { return XOffset; }
-	int yOffset() { return YOffset; }
+    int xOffset()
+    {
+        return XOffset;
+    }
+    int yOffset()
+    {
+        return YOffset;
+    }
 
 public slots:
-	/**
-		\fn writeToConfig(QDomElement parent_element)
-		\param parent_element rodzic obiektu
-		Zapisuje ustawienia paska (jak offset), oraz (pośrednio)
-		akcje znajdujące się na pasku.
-	**/
-	void writeToConfig(const QDomElement &parent_element);
+    /**
+            \fn writeToConfig(QDomElement parent_element)
+            \param parent_element rodzic obiektu
+            Zapisuje ustawienia paska (jak offset), oraz (pośrednio)
+            akcje znajdujące się na pasku.
+    **/
+    void writeToConfig(const QDomElement &parent_element);
 
 signals:
-	void updated();
-	void removed(ToolBar *toolbar);
-
+    void updated();
+    void removed(ToolBar *toolbar);
 };
 
 class KADUAPI ActionDrag : public QDrag
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static bool decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style);
+    static bool decode(QDropEvent *event, QString &actionName, Qt::ToolButtonStyle &style);
 
-	ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource = 0);
+    ActionDrag(const QString &actionName, Qt::ToolButtonStyle style, QWidget *dragSource = 0);
 };
 
 class ToolBarSeparator : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	static int Token;
+    static int Token;
 
 protected:
-	virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
 
 public:
-	static int token();
+    static int token();
 
-	explicit ToolBarSeparator(QWidget *parent = nullptr);
+    explicit ToolBarSeparator(QWidget *parent = nullptr);
 
 signals:
-	void pressed();
-
+    void pressed();
 };
 
 class ToolBarSpacer : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	static int Token;
+    static int Token;
 
 protected:
-	virtual void mousePressEvent(QMouseEvent *event);
+    virtual void mousePressEvent(QMouseEvent *event);
 
 public:
-	static int token();
+    static int token();
 
-	explicit ToolBarSpacer(QWidget *parent = nullptr);
+    explicit ToolBarSpacer(QWidget *parent = nullptr);
 
 signals:
-	void pressed();
-
+    void pressed();
 };

@@ -30,11 +30,10 @@
 class QMqttMessageReceiver
 {
 public:
-	void writeBytes(const QByteArray &bytes);
-	std::experimental::optional<QMqttMessage> readMessage();
+    void writeBytes(const QByteArray &bytes);
+    std::experimental::optional<QMqttMessage> readMessage();
 
 private:
-	QByteArray m_buffer;
-	std::experimental::optional<QMqttReader::QMqttHeader> m_header;
-
+    QByteArray m_buffer;
+    std::experimental::optional<QMqttReader::QMqttHeader> m_header;
 };

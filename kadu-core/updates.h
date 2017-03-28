@@ -40,42 +40,41 @@ class QNetworkReply;
 
 class Updates : public QObject, AccountsAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Updates(QObject *parent = nullptr);
-	virtual ~Updates();
+    explicit Updates(QObject *parent = nullptr);
+    virtual ~Updates();
 
 protected:
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<VersionService> m_versionService;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<VersionService> m_versionService;
 
-	bool UpdateChecked;
-	QString Query;
+    bool UpdateChecked;
+    QString Query;
 
-	void buildQuery();
+    void buildQuery();
 
-	bool isNewerVersionThan(const QString &version);
-	QString stripVersion(const QString &version);
+    bool isNewerVersionThan(const QString &version);
+    QString stripVersion(const QString &version);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMainWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMainWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setVersionService(VersionService *versionService);
+    INJEQT_INIT void init();
 
-	void gotUpdatesInfo(QNetworkReply *reply);
-	void run();
-
+    void gotUpdatesInfo(QNetworkReply *reply);
+    void run();
 };

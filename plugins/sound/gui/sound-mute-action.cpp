@@ -26,15 +26,15 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 
-SoundMuteAction::SoundMuteAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+SoundMuteAction::SoundMuteAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon("audio-volume-high"));
-	setName("muteSoundsAction");
-	setText(tr("Play Sounds"));
-	setType(ActionDescription::TypeGlobal);
+    setCheckable(true);
+    setIcon(KaduIcon("audio-volume-high"));
+    setName("muteSoundsAction");
+    setText(tr("Play Sounds"));
+    setType(ActionDescription::TypeGlobal);
 }
 
 SoundMuteAction::~SoundMuteAction()
@@ -43,21 +43,21 @@ SoundMuteAction::~SoundMuteAction()
 
 void SoundMuteAction::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
 void SoundMuteAction::actionTriggered(QAction *sender, bool toggled)
 {
-	Q_UNUSED(sender);
+    Q_UNUSED(sender);
 
-	m_soundManager->setMute(!toggled);
-	updateActionStates();
+    m_soundManager->setMute(!toggled);
+    updateActionStates();
 
-	configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
+    configuration()->deprecatedApi()->writeEntry("Sounds", "PlaySound", toggled);
 }
 
 void SoundMuteAction::updateActionState(Action *action)
 {
-	if (m_soundManager)
-		action->setChecked(!m_soundManager->isMuted());
+    if (m_soundManager)
+        action->setChecked(!m_soundManager->isMuted());
 }

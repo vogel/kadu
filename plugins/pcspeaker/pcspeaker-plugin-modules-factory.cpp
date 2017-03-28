@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-PCSpeakerPluginModulesFactory::PCSpeakerPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+PCSpeakerPluginModulesFactory::PCSpeakerPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ PCSpeakerPluginModulesFactory::~PCSpeakerPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> PCSpeakerPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<PCSpeakerModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<PCSpeakerModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_pcspeaker-plugin-modules-factory.cpp"

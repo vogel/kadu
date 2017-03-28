@@ -30,14 +30,14 @@
  */
 enum class MessageLimitPolicy
 {
-	/**
-	 * @short Messages will not be limited.
-	 */
-	None,
-	/**
-	 * @short Number of messages will be limited at provided value.
-	 */
-	Value
+    /**
+     * @short Messages will not be limited.
+     */
+    None,
+    /**
+     * @short Number of messages will be limited at provided value.
+     */
+    Value
 };
 
 /**

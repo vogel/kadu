@@ -29,21 +29,20 @@ class WinampMediaPlayer;
 
 class WinampPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit WinampPluginObject(QObject *parent = nullptr);
-	virtual ~WinampPluginObject();
+    Q_INVOKABLE explicit WinampPluginObject(QObject *parent = nullptr);
+    virtual ~WinampPluginObject();
 
 private:
-	QPointer<MediaPlayer> m_mediaPlayer;
-	QPointer<WinampMediaPlayer> m_winampMediaPlayer;
+    QPointer<MediaPlayer> m_mediaPlayer;
+    QPointer<WinampMediaPlayer> m_winampMediaPlayer;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
-	INJEQT_SET void setWinampMediaPlayer(WinampMediaPlayer *winampMediaPlayer);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
+    INJEQT_SET void setWinampMediaPlayer(WinampMediaPlayer *winampMediaPlayer);
 };

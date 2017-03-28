@@ -23,15 +23,15 @@
 
 #include "actions/actions.h"
 
-ToggleMediaplayerStatusesAction::ToggleMediaplayerStatusesAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ToggleMediaplayerStatusesAction::ToggleMediaplayerStatusesAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"});
-	setName(QStringLiteral("enableMediaPlayerStatusesAction"));
-	setText(tr("Enable MediaPlayer Statuses"));
-	setType(ActionDescription::TypeGlobal);
+    setCheckable(true);
+    setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"});
+    setName(QStringLiteral("enableMediaPlayerStatusesAction"));
+    setText(tr("Enable MediaPlayer Statuses"));
+    setType(ActionDescription::TypeGlobal);
 }
 
 ToggleMediaplayerStatusesAction::~ToggleMediaplayerStatusesAction()
@@ -40,12 +40,12 @@ ToggleMediaplayerStatusesAction::~ToggleMediaplayerStatusesAction()
 
 void ToggleMediaplayerStatusesAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void ToggleMediaplayerStatusesAction::actionTriggered(QAction *, bool toggled)
 {
-	m_mediaPlayer->toggleStatuses(toggled);
+    m_mediaPlayer->toggleStatuses(toggled);
 }
 
 #include "moc_toggle-mediaplayer-statuses-action.cpp"

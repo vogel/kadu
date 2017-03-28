@@ -39,24 +39,23 @@
  */
 class BlockedTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool Enabled;
+    bool Enabled;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of BlockedTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit BlockedTalkableFilter(QObject *parent = nullptr);
-	virtual ~BlockedTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of BlockedTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit BlockedTalkableFilter(QObject *parent = nullptr);
+    virtual ~BlockedTalkableFilter();
 
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 
-	void setEnabled(bool enabled);
-
+    void setEnabled(bool enabled);
 };
 
 /**
@@ -66,4 +65,4 @@ public:
 
 Q_DECLARE_METATYPE(BlockedTalkableFilter *)
 
-#endif // BLOCKED_TALKABLE_FILTER_H
+#endif   // BLOCKED_TALKABLE_FILTER_H

@@ -40,43 +40,42 @@ class StatusTypeManager;
 
 class StatusButton : public QToolButton, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = nullptr);
-	virtual ~StatusButton();
+    explicit StatusButton(StatusContainer *statusContainer, QWidget *parent = nullptr);
+    virtual ~StatusButton();
 
-	void setDisplayStatusName(bool displayStatusName);
-	bool eventFilter(QObject *object, QEvent *event);
+    void setDisplayStatusName(bool displayStatusName);
+    bool eventFilter(QObject *object, QEvent *event);
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	StatusContainer *MyStatusContainer;
-	bool DisplayStatusName;
-	StatusIcon *Icon;
-	QAction *MenuTitleAction;
+    StatusContainer *MyStatusContainer;
+    bool DisplayStatusName;
+    StatusIcon *Icon;
+    QAction *MenuTitleAction;
 
-	void createGui();
-	void updateStatus();
+    void createGui();
+    void updateStatus();
 
-	QString prepareDescription(const QString &description) const;
+    QString prepareDescription(const QString &description) const;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 
-	void iconUpdated(const KaduIcon &icon);
-	void statusUpdated(StatusContainer *container = 0);
-	void addTitleToMenu(const QString &title, QMenu *menu);
-
+    void iconUpdated(const KaduIcon &icon);
+    void statusUpdated(StatusContainer *container = 0);
+    void addTitleToMenu(const QString &title, QMenu *menu);
 };

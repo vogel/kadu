@@ -23,7 +23,7 @@ enum class StatusNotifierItemAttentionMode;
 
 struct DockingConfiguration
 {
-	bool RunDocked;
-	bool ShowTooltipInTray;
-	StatusNotifierItemAttentionMode NewMessageIcon;
+    bool RunDocked;
+    bool ShowTooltipInTray;
+    StatusNotifierItemAttentionMode NewMessageIcon;
 };

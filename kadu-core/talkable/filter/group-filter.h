@@ -25,23 +25,22 @@
 
 class GroupFilter
 {
-	GroupFilterType FilterType;
-	Group MyGroup;
+    GroupFilterType FilterType;
+    Group MyGroup;
 
 public:
-	GroupFilter();
-	explicit GroupFilter(GroupFilterType filterType);
-	explicit GroupFilter(const Group &group);
+    GroupFilter();
+    explicit GroupFilter(GroupFilterType filterType);
+    explicit GroupFilter(const Group &group);
 
-	bool operator == (const GroupFilter &groupFilter) const;
+    bool operator==(const GroupFilter &groupFilter) const;
 
-	bool isValid() const;
+    bool isValid() const;
 
-	GroupFilterType filterType() const;
-	Group group() const;
-
+    GroupFilterType filterType() const;
+    Group group() const;
 };
 
 Q_DECLARE_METATYPE(GroupFilter)
 
-#endif // GROUP_FILTER_H
+#endif   // GROUP_FILTER_H

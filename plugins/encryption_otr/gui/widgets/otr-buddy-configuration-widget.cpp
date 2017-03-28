@@ -28,12 +28,12 @@
 
 #include "otr-buddy-configuration-widget.h"
 
-OtrBuddyConfigurationWidget::OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
+OtrBuddyConfigurationWidget::OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent)
+        : BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("OTR Encryption"));
+    setWindowTitle(tr("OTR Encryption"));
 
-	createGui();
+    createGui();
 }
 
 OtrBuddyConfigurationWidget::~OtrBuddyConfigurationWidget()
@@ -42,136 +42,136 @@ OtrBuddyConfigurationWidget::~OtrBuddyConfigurationWidget()
 
 void OtrBuddyConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	UseAccountPolicyCheckBox = new QCheckBox(tr("Use account's policy"));
-	EnableCheckBox = new QCheckBox(tr("Enable private messaging"));
-	AutomaticallyInitiateCheckBox = new QCheckBox(tr("Automatically initiate private messaging"));
-	RequireCheckBox = new QCheckBox(tr("Require private messaging"));
+    UseAccountPolicyCheckBox = new QCheckBox(tr("Use account's policy"));
+    EnableCheckBox = new QCheckBox(tr("Enable private messaging"));
+    AutomaticallyInitiateCheckBox = new QCheckBox(tr("Automatically initiate private messaging"));
+    RequireCheckBox = new QCheckBox(tr("Require private messaging"));
 
-	connect(UseAccountPolicyCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
-	connect(EnableCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
-	connect(AutomaticallyInitiateCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
-	connect(RequireCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(UseAccountPolicyCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(EnableCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(AutomaticallyInitiateCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(RequireCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 
-	layout->addWidget(UseAccountPolicyCheckBox);
-	layout->addWidget(EnableCheckBox);
-	layout->addWidget(AutomaticallyInitiateCheckBox);
-	layout->addWidget(RequireCheckBox);
-	layout->addStretch(100);
+    layout->addWidget(UseAccountPolicyCheckBox);
+    layout->addWidget(EnableCheckBox);
+    layout->addWidget(AutomaticallyInitiateCheckBox);
+    layout->addWidget(RequireCheckBox);
+    layout->addStretch(100);
 }
 
 void OtrBuddyConfigurationWidget::setPolicyService(OtrPolicyService *policyService)
 {
-	PolicyService = policyService;
+    PolicyService = policyService;
 
-	loadValues();
-	updateState();
+    loadValues();
+    updateState();
 }
 
 OtrPolicy OtrBuddyConfigurationWidget::policy()
 {
-	if (UseAccountPolicyCheckBox->isChecked())
-		return OtrPolicy::PolicyUndefined;
-	if (!EnableCheckBox->isChecked())
-		return OtrPolicy::PolicyNever;
-	if (!AutomaticallyInitiateCheckBox->isChecked())
-		return OtrPolicy::PolicyManual;
-	if (!RequireCheckBox->isChecked())
-		return OtrPolicy::PolicyOpportunistic;
-	return OtrPolicy::PolicyAlways;
+    if (UseAccountPolicyCheckBox->isChecked())
+        return OtrPolicy::PolicyUndefined;
+    if (!EnableCheckBox->isChecked())
+        return OtrPolicy::PolicyNever;
+    if (!AutomaticallyInitiateCheckBox->isChecked())
+        return OtrPolicy::PolicyManual;
+    if (!RequireCheckBox->isChecked())
+        return OtrPolicy::PolicyOpportunistic;
+    return OtrPolicy::PolicyAlways;
 }
 
 void OtrBuddyConfigurationWidget::loadValues()
 {
-	if (!PolicyService)
-		return;
+    if (!PolicyService)
+        return;
 
-	OtrPolicy buddyPolicy = PolicyService.data()->buddyPolicy(buddy());
+    OtrPolicy buddyPolicy = PolicyService.data()->buddyPolicy(buddy());
 
-	if (buddyPolicy == OtrPolicy::PolicyUndefined)
-	{
-		UseAccountPolicyCheckBox->setChecked(true);
-		EnableCheckBox->setChecked(false);
-		AutomaticallyInitiateCheckBox->setChecked(false);
-		RequireCheckBox->setChecked(false);
-	}
-	else if (buddyPolicy == OtrPolicy::PolicyManual)
-	{
-		UseAccountPolicyCheckBox->setChecked(false);
-		EnableCheckBox->setChecked(true);
-		AutomaticallyInitiateCheckBox->setChecked(false);
-		RequireCheckBox->setChecked(false);
-	}
-	else if (buddyPolicy == OtrPolicy::PolicyOpportunistic)
-	{
-		UseAccountPolicyCheckBox->setChecked(false);
-		EnableCheckBox->setChecked(true);
-		AutomaticallyInitiateCheckBox->setChecked(true);
-		RequireCheckBox->setChecked(false);
-	}
-	else if (buddyPolicy == OtrPolicy::PolicyAlways)
-	{
-		UseAccountPolicyCheckBox->setChecked(false);
-		EnableCheckBox->setChecked(true);
-		AutomaticallyInitiateCheckBox->setChecked(true);
-		RequireCheckBox->setChecked(true);
-	}
-	else
-	{
-		UseAccountPolicyCheckBox->setChecked(false);
-		EnableCheckBox->setChecked(false);
-		AutomaticallyInitiateCheckBox->setChecked(false);
-		RequireCheckBox->setChecked(false);
-	}
+    if (buddyPolicy == OtrPolicy::PolicyUndefined)
+    {
+        UseAccountPolicyCheckBox->setChecked(true);
+        EnableCheckBox->setChecked(false);
+        AutomaticallyInitiateCheckBox->setChecked(false);
+        RequireCheckBox->setChecked(false);
+    }
+    else if (buddyPolicy == OtrPolicy::PolicyManual)
+    {
+        UseAccountPolicyCheckBox->setChecked(false);
+        EnableCheckBox->setChecked(true);
+        AutomaticallyInitiateCheckBox->setChecked(false);
+        RequireCheckBox->setChecked(false);
+    }
+    else if (buddyPolicy == OtrPolicy::PolicyOpportunistic)
+    {
+        UseAccountPolicyCheckBox->setChecked(false);
+        EnableCheckBox->setChecked(true);
+        AutomaticallyInitiateCheckBox->setChecked(true);
+        RequireCheckBox->setChecked(false);
+    }
+    else if (buddyPolicy == OtrPolicy::PolicyAlways)
+    {
+        UseAccountPolicyCheckBox->setChecked(false);
+        EnableCheckBox->setChecked(true);
+        AutomaticallyInitiateCheckBox->setChecked(true);
+        RequireCheckBox->setChecked(true);
+    }
+    else
+    {
+        UseAccountPolicyCheckBox->setChecked(false);
+        EnableCheckBox->setChecked(false);
+        AutomaticallyInitiateCheckBox->setChecked(false);
+        RequireCheckBox->setChecked(false);
+    }
 }
 
 void OtrBuddyConfigurationWidget::updateState()
 {
-	if (!PolicyService)
-	{
-		StateNotifier->setState(StateNotChanged);
-		return;
-	}
+    if (!PolicyService)
+    {
+        StateNotifier->setState(StateNotChanged);
+        return;
+    }
 
-	EnableCheckBox->setEnabled(false);
-	AutomaticallyInitiateCheckBox->setEnabled(false);
-	RequireCheckBox->setEnabled(false);
+    EnableCheckBox->setEnabled(false);
+    AutomaticallyInitiateCheckBox->setEnabled(false);
+    RequireCheckBox->setEnabled(false);
 
-	if (!UseAccountPolicyCheckBox->isChecked())
-	{
-		EnableCheckBox->setEnabled(true);
+    if (!UseAccountPolicyCheckBox->isChecked())
+    {
+        EnableCheckBox->setEnabled(true);
 
-		if (EnableCheckBox->isChecked())
-		{
-			AutomaticallyInitiateCheckBox->setEnabled(true);
-			if (AutomaticallyInitiateCheckBox->isChecked())
-				RequireCheckBox->setEnabled(true);
-		}
-	}
+        if (EnableCheckBox->isChecked())
+        {
+            AutomaticallyInitiateCheckBox->setEnabled(true);
+            if (AutomaticallyInitiateCheckBox->isChecked())
+                RequireCheckBox->setEnabled(true);
+        }
+    }
 
-	OtrPolicy accountPolicy = PolicyService.data()->buddyPolicy(buddy());
-	if (accountPolicy == policy())
-		StateNotifier->setState(StateNotChanged);
-	else
-		StateNotifier->setState(StateChangedDataValid);
+    OtrPolicy accountPolicy = PolicyService.data()->buddyPolicy(buddy());
+    if (accountPolicy == policy())
+        StateNotifier->setState(StateNotChanged);
+    else
+        StateNotifier->setState(StateChangedDataValid);
 }
 
-const ConfigurationValueStateNotifier * OtrBuddyConfigurationWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *OtrBuddyConfigurationWidget::stateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }
 
 void OtrBuddyConfigurationWidget::apply()
 {
-	if (PolicyService)
-		PolicyService.data()->setBuddyPolicy(buddy(), policy());
-	updateState();
+    if (PolicyService)
+        PolicyService.data()->setBuddyPolicy(buddy(), policy());
+    updateState();
 }
 
 void OtrBuddyConfigurationWidget::cancel()
 {
-	loadValues();
+    loadValues();
 }
 
 #include "moc_otr-buddy-configuration-widget.cpp"

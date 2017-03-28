@@ -21,7 +21,7 @@
 
 enum class GaduDriveSendTicketAckStatus
 {
-	Unknown,
-	Rejected,
-	Allowed
+    Unknown,
+    Rejected,
+    Allowed
 };

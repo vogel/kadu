@@ -28,19 +28,18 @@ class Infos;
 
 class LastSeenPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit LastSeenPluginObject(QObject *parent = nullptr);
-	virtual ~LastSeenPluginObject();
+    Q_INVOKABLE explicit LastSeenPluginObject(QObject *parent = nullptr);
+    virtual ~LastSeenPluginObject();
 
 private:
-	QPointer<Infos> m_infos;
+    QPointer<Infos> m_infos;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setInfos(Infos *infos);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setInfos(Infos *infos);
 };

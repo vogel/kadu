@@ -23,8 +23,7 @@
 #include "status/status-container-manager.h"
 #include "status/status-setter.h"
 
-RemoteStatusRequestHandler::RemoteStatusRequestHandler(QObject *parent) :
-		QObject{parent}
+RemoteStatusRequestHandler::RemoteStatusRequestHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,41 +33,43 @@ RemoteStatusRequestHandler::~RemoteStatusRequestHandler()
 
 void RemoteStatusRequestHandler::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void RemoteStatusRequestHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void RemoteStatusRequestHandler::setStatusSetter(StatusSetter *statusSetter)
 {
-	m_statusSetter = statusSetter;
+    m_statusSetter = statusSetter;
 }
 
 void RemoteStatusRequestHandler::init()
 {
-	connect(m_accountManager, &AccountManager::accountAdded, this, &RemoteStatusRequestHandler::accountAdded);
-	connect(m_accountManager, &AccountManager::accountRemoved, this, &RemoteStatusRequestHandler::accountRemoved);
+    connect(m_accountManager, &AccountManager::accountAdded, this, &RemoteStatusRequestHandler::accountAdded);
+    connect(m_accountManager, &AccountManager::accountRemoved, this, &RemoteStatusRequestHandler::accountRemoved);
 
-	for (auto account : m_accountManager->items())
-		accountAdded(account);
+    for (auto account : m_accountManager->items())
+        accountAdded(account);
 }
 
 void RemoteStatusRequestHandler::accountAdded(Account account)
 {
-	connect(account, &AccountShared::remoteStatusChangeRequest, this, &RemoteStatusRequestHandler::remoteStatusChangeRequest);
+    connect(
+        account, &AccountShared::remoteStatusChangeRequest, this,
+        &RemoteStatusRequestHandler::remoteStatusChangeRequest);
 }
 
 void RemoteStatusRequestHandler::accountRemoved(Account account)
 {
-	disconnect(account, nullptr, this, nullptr);
+    disconnect(account, nullptr, this, nullptr);
 }
 
 void RemoteStatusRequestHandler::remoteStatusChangeRequest(Account account, Status requestedStatus)
 {
-	auto statusContainer = m_statusContainerManager->statusContainerForAccount(account);
-	if (statusContainer)
-		m_statusSetter->setStatusManually(statusContainer, requestedStatus);
+    auto statusContainer = m_statusContainerManager->statusContainerForAccount(account);
+    if (statusContainer)
+        m_statusSetter->setStatusManually(statusContainer, requestedStatus);
 }

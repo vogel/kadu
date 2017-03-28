@@ -23,9 +23,9 @@
 
 class AutoresponderModule : public injeqt::module
 {
-
 public:
-	AutoresponderModule();
-	virtual ~AutoresponderModule() {}
-
+    AutoresponderModule();
+    virtual ~AutoresponderModule()
+    {
+    }
 };

@@ -18,4 +18,4 @@
 #define IDLEAPI Q_DECL_IMPORT
 #endif
 
-#endif // IDLE_EXPORTS_H
+#endif   // IDLE_EXPORTS_H

@@ -24,15 +24,14 @@
 
 class CollapseAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit CollapseAction(QObject *parent = nullptr);
-	virtual ~CollapseAction();
+    Q_INVOKABLE explicit CollapseAction(QObject *parent = nullptr);
+    virtual ~CollapseAction();
 
 protected:
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
-	virtual void updateActionState(Action *action);
-
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
+    virtual void updateActionState(Action *action);
 };

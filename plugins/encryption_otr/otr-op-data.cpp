@@ -17,13 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "otr-op-data.h"
 #include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
 #include "otr-is-logged-in-service.h"
 #include "otr-message-event-service.h"
 #include "otr-message-service.h"
-#include "otr-op-data.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"
@@ -39,170 +39,169 @@ OtrOpData::OtrOpData()
 
 OtrOpData::OtrOpData(const OtrOpData &copyMe)
 {
-	*this = copyMe;
+    *this = copyMe;
 }
-
 
 OtrOpData::~OtrOpData()
 {
 }
 
-OtrOpData & OtrOpData::operator = (const OtrOpData &copyMe)
+OtrOpData &OtrOpData::operator=(const OtrOpData &copyMe)
 {
-	ErrorMessageService = copyMe.ErrorMessageService;
-	FingerprintService = copyMe.FingerprintService;
-	InstanceTagService = copyMe.InstanceTagService;
-	IsLoggedInService = copyMe.IsLoggedInService;
-	MessageEventService = copyMe.MessageEventService;
-	MessageService = copyMe.MessageService;
-	PeerIdentityVerificationService = copyMe.PeerIdentityVerificationService;
-	PolicyService = copyMe.PolicyService;
-	PrivateKeyService = copyMe.PrivateKeyService;
-	SessionService = copyMe.SessionService;
-	TimerService = copyMe.TimerService;
-	TrustLevelService = copyMe.TrustLevelService;
-	MyContact = copyMe.MyContact;
-	PeerDisplay = copyMe.PeerDisplay;
+    ErrorMessageService = copyMe.ErrorMessageService;
+    FingerprintService = copyMe.FingerprintService;
+    InstanceTagService = copyMe.InstanceTagService;
+    IsLoggedInService = copyMe.IsLoggedInService;
+    MessageEventService = copyMe.MessageEventService;
+    MessageService = copyMe.MessageService;
+    PeerIdentityVerificationService = copyMe.PeerIdentityVerificationService;
+    PolicyService = copyMe.PolicyService;
+    PrivateKeyService = copyMe.PrivateKeyService;
+    SessionService = copyMe.SessionService;
+    TimerService = copyMe.TimerService;
+    TrustLevelService = copyMe.TrustLevelService;
+    MyContact = copyMe.MyContact;
+    PeerDisplay = copyMe.PeerDisplay;
 
-	return *this;
+    return *this;
 }
 
 void OtrOpData::setErrorMessageService(OtrErrorMessageService *errorMessageService)
 {
-	ErrorMessageService = errorMessageService;
+    ErrorMessageService = errorMessageService;
 }
 
-OtrErrorMessageService * OtrOpData::errorMessageService() const
+OtrErrorMessageService *OtrOpData::errorMessageService() const
 {
-	return ErrorMessageService.data();
+    return ErrorMessageService.data();
 }
 
 void OtrOpData::setFingerprintService(OtrFingerprintService *fingerprintService)
 {
-	FingerprintService = fingerprintService;
+    FingerprintService = fingerprintService;
 }
 
-OtrFingerprintService * OtrOpData::fingerprintService() const
+OtrFingerprintService *OtrOpData::fingerprintService() const
 {
-	return FingerprintService.data();
+    return FingerprintService.data();
 }
 
 void OtrOpData::setInstanceTagService(OtrInstanceTagService *instanceTagService)
 {
-	InstanceTagService = instanceTagService;
+    InstanceTagService = instanceTagService;
 }
 
-OtrInstanceTagService * OtrOpData::instanceTagService() const
+OtrInstanceTagService *OtrOpData::instanceTagService() const
 {
-	return InstanceTagService.data();
+    return InstanceTagService.data();
 }
 
 void OtrOpData::setIsLoggedInService(OtrIsLoggedInService *isLoggedInService)
 {
-	IsLoggedInService = isLoggedInService;
+    IsLoggedInService = isLoggedInService;
 }
 
-OtrIsLoggedInService * OtrOpData::isLoggedInService() const
+OtrIsLoggedInService *OtrOpData::isLoggedInService() const
 {
-	return IsLoggedInService.data();
+    return IsLoggedInService.data();
 }
 
 void OtrOpData::setMessageEventService(OtrMessageEventService *messageEventService)
 {
-	MessageEventService = messageEventService;
+    MessageEventService = messageEventService;
 }
 
-OtrMessageEventService * OtrOpData::messageEventService() const
+OtrMessageEventService *OtrOpData::messageEventService() const
 {
-	return MessageEventService.data();
+    return MessageEventService.data();
 }
 
 void OtrOpData::setMessageService(OtrMessageService *messageService)
 {
-	MessageService = messageService;
+    MessageService = messageService;
 }
 
-OtrMessageService * OtrOpData::messageService() const
+OtrMessageService *OtrOpData::messageService() const
 {
-	return MessageService.data();
+    return MessageService.data();
 }
 
 void OtrOpData::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+    PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
-OtrPeerIdentityVerificationService * OtrOpData::peerIdentityVerificationService() const
+OtrPeerIdentityVerificationService *OtrOpData::peerIdentityVerificationService() const
 {
-	return PeerIdentityVerificationService.data();
+    return PeerIdentityVerificationService.data();
 }
 
 void OtrOpData::setPolicyService(OtrPolicyService *policyService)
 {
-	PolicyService = policyService;
+    PolicyService = policyService;
 }
 
-OtrPolicyService * OtrOpData::policyService() const
+OtrPolicyService *OtrOpData::policyService() const
 {
-	return PolicyService.data();
+    return PolicyService.data();
 }
 
 void OtrOpData::setPrivateKeyService(OtrPrivateKeyService *privateKeyService)
 {
-	PrivateKeyService = privateKeyService;
+    PrivateKeyService = privateKeyService;
 }
 
-OtrPrivateKeyService * OtrOpData::privateKeyService() const
+OtrPrivateKeyService *OtrOpData::privateKeyService() const
 {
-	return PrivateKeyService.data();
+    return PrivateKeyService.data();
 }
 
 void OtrOpData::setSessionService(OtrSessionService *sessionService)
 {
-	SessionService = sessionService;
+    SessionService = sessionService;
 }
 
-OtrSessionService * OtrOpData::sessionService() const
+OtrSessionService *OtrOpData::sessionService() const
 {
-	return SessionService.data();
+    return SessionService.data();
 }
 
 void OtrOpData::setTimerService(OtrTimerService *timerService)
 {
-	TimerService = timerService;
+    TimerService = timerService;
 }
 
-OtrTimerService * OtrOpData::timerService() const
+OtrTimerService *OtrOpData::timerService() const
 {
-	return TimerService.data();
+    return TimerService.data();
 }
 
 void OtrOpData::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
-	TrustLevelService = trustLevelService;
+    TrustLevelService = trustLevelService;
 }
 
-OtrTrustLevelService * OtrOpData::trustLevelService() const
+OtrTrustLevelService *OtrOpData::trustLevelService() const
 {
-	return TrustLevelService.data();
+    return TrustLevelService.data();
 }
 
 void OtrOpData::setContact(const Contact &contact)
 {
-	MyContact = contact;
+    MyContact = contact;
 }
 
 Contact OtrOpData::contact() const
 {
-	return MyContact;
+    return MyContact;
 }
 
 void OtrOpData::setPeerDisplay(const QString &peerDisplay)
 {
-	PeerDisplay = peerDisplay;
+    PeerDisplay = peerDisplay;
 }
 
 QString OtrOpData::peerDisplay() const
 {
-	return PeerDisplay;
+    return PeerDisplay;
 }

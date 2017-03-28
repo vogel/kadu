@@ -26,8 +26,9 @@
 
 #include <QtCore/QFile>
 
-FormattedStringGaduHtmlVisitor::FormattedStringGaduHtmlVisitor(ChatImageService *chatImageService, ImageStorageService *imageStorageService) :
-		m_chatImageService(chatImageService), m_imageStorageService(imageStorageService)
+FormattedStringGaduHtmlVisitor::FormattedStringGaduHtmlVisitor(
+    ChatImageService *chatImageService, ImageStorageService *imageStorageService)
+        : m_chatImageService(chatImageService), m_imageStorageService(imageStorageService)
 {
 }
 
@@ -35,24 +36,24 @@ FormattedStringGaduHtmlVisitor::~FormattedStringGaduHtmlVisitor()
 {
 }
 
-void FormattedStringGaduHtmlVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+void FormattedStringGaduHtmlVisitor::visit(const FormattedStringImageBlock *const formattedStringImageBlock)
 {
-	if (!m_chatImageService || !m_imageStorageService)
-		return FormattedStringHtmlVisitor::visit(formattedStringImageBlock);
+    if (!m_chatImageService || !m_imageStorageService)
+        return FormattedStringHtmlVisitor::visit(formattedStringImageBlock);
 
-	auto imagePath = m_imageStorageService->fullPath(formattedStringImageBlock->imagePath());
-	QFile imageFile{imagePath};
-	if (!imageFile.open(QFile::ReadOnly))
-		return;
+    auto imagePath = m_imageStorageService->fullPath(formattedStringImageBlock->imagePath());
+    QFile imageFile{imagePath};
+    if (!imageFile.open(QFile::ReadOnly))
+        return;
 
-	auto content = imageFile.readAll();
-	auto image = m_chatImageService->prepareImageToBeSent(content);
-	imageFile.close();
+    auto content = imageFile.readAll();
+    auto image = m_chatImageService->prepareImageToBeSent(content);
+    imageFile.close();
 
-	append(QString{"<img name=\"%1\">"}.arg(image.key()));
+    append(QString{"<img name=\"%1\">"}.arg(image.key()));
 }
 
-void FormattedStringGaduHtmlVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+void FormattedStringGaduHtmlVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-	FormattedStringHtmlVisitor::visit(formattedStringTextBlock);
+    FormattedStringHtmlVisitor::visit(formattedStringTextBlock);
 }

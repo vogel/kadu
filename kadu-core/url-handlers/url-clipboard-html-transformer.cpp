@@ -26,8 +26,10 @@
 // If first display is different than the second, it means that the user selected only part of the link.
 // Source string is created in StandardUrlHandler::convertUrlsToHtml().
 // BTW, I know it is totally ugly.
-UrlClipboardHtmlTransformer::UrlClipboardHtmlTransformer() :
-		UrlRegExp("<a[^>]+folded\\s*=\\s*\"1\"[^>]+displaystr\\s*=\\s*\"([^\"]+)\"[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>([^<]*)<[^>]*>")
+UrlClipboardHtmlTransformer::UrlClipboardHtmlTransformer()
+        : UrlRegExp(
+              "<a[^>]+folded\\s*=\\s*\"1\"[^>]+displaystr\\s*=\\s*\"([^\"]+)\"[^>]+href\\s*=\\s*\"([^\"]+)\"[^>]*>([^<]"
+              "*)<[^>]*>")
 {
 }
 
@@ -37,26 +39,26 @@ UrlClipboardHtmlTransformer::~UrlClipboardHtmlTransformer()
 
 QString UrlClipboardHtmlTransformer::transform(const QString &clipboardHtml)
 {
-	QString result = clipboardHtml;
+    QString result = clipboardHtml;
 
-	int pos = 0;
-	while (-1 != (pos = UrlRegExp.indexIn(result, pos)))
-	{
-		int matchedLength = UrlRegExp.matchedLength();
-		QString displayStr = UrlRegExp.cap(1);
-		QString realDisplayStr = UrlRegExp.cap(3);
+    int pos = 0;
+    while (-1 != (pos = UrlRegExp.indexIn(result, pos)))
+    {
+        int matchedLength = UrlRegExp.matchedLength();
+        QString displayStr = UrlRegExp.cap(1);
+        QString realDisplayStr = UrlRegExp.cap(3);
 
-		if (displayStr == realDisplayStr) // i.e., we are copying the entire link, not a part of it
-		{
-			QString hRef = UrlRegExp.cap(2);
-			QString unfoldedLink = QString("<a href=\"%1\">%1</a>").arg(hRef);
-			result.replace(pos, matchedLength, unfoldedLink);
+        if (displayStr == realDisplayStr)   // i.e., we are copying the entire link, not a part of it
+        {
+            QString hRef = UrlRegExp.cap(2);
+            QString unfoldedLink = QString("<a href=\"%1\">%1</a>").arg(hRef);
+            result.replace(pos, matchedLength, unfoldedLink);
 
-			pos += unfoldedLink.length();
-		}
-		else
-			pos += matchedLength;
-	}
+            pos += unfoldedLink.length();
+        }
+        else
+            pos += matchedLength;
+    }
 
-	return result;
+    return result;
 }

@@ -20,9 +20,9 @@
 #pragma once
 
 #include "chat/chat.h"
+#include "exports.h"
 #include "misc/iterator.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
-#include "exports.h"
 
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
@@ -38,28 +38,27 @@ class ChatWidget;
 
 class KADUAPI ChatWidgetRepositoryImpl : public ChatWidgetRepository
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWidgetRepositoryImpl(QObject *parent = nullptr);
-	virtual ~ChatWidgetRepositoryImpl();
+    Q_INVOKABLE explicit ChatWidgetRepositoryImpl(QObject *parent = nullptr);
+    virtual ~ChatWidgetRepositoryImpl();
 
-	virtual Iterator begin() override;
-	virtual Iterator end() override;
+    virtual Iterator begin() override;
+    virtual Iterator end() override;
 
-	virtual void addChatWidget(ChatWidget *chatWidget) override;
-	virtual bool hasWidgetForChat(const Chat &chat) const override;
-	virtual ChatWidget * widgetForChat(const Chat &chat) override;
+    virtual void addChatWidget(ChatWidget *chatWidget) override;
+    virtual bool hasWidgetForChat(const Chat &chat) const override;
+    virtual ChatWidget *widgetForChat(const Chat &chat) override;
 
 public slots:
-	virtual void removeChatWidget(ChatWidget *chatWidget) override;
-	virtual void removeChatWidget(Chat chat) override;
+    virtual void removeChatWidget(ChatWidget *chatWidget) override;
+    virtual void removeChatWidget(Chat chat) override;
 
 private:
-	static ChatWidget * converter(WrappedIterator iterator);
+    static ChatWidget *converter(WrappedIterator iterator);
 
-	Storage m_widgets;
-
+    Storage m_widgets;
 };
 
 /**

@@ -27,23 +27,24 @@
 #include <QtWidgets/QWidget>
 
 #ifdef Q_OS_WIN
-#	include <QtWinExtras/QtWinExtras>
+#include <QtWinExtras/QtWinExtras>
 #endif
 
-WindowsThumbnailToolbar::WindowsThumbnailToolbar(not_owned_qptr<StatusActions> statusActions, QWidget *parent) :
-		QObject{parent},
-		m_statusActions{std::move(statusActions)}
+WindowsThumbnailToolbar::WindowsThumbnailToolbar(not_owned_qptr<StatusActions> statusActions, QWidget *parent)
+        : QObject{parent}, m_statusActions{std::move(statusActions)}
 {
-	parent->window()->winId(); // force windowHandle() to be valid
+    parent->window()->winId();   // force windowHandle() to be valid
 
 #ifdef Q_OS_WIN
-	m_toolbar = make_owned<QWinThumbnailToolBar>(parent->window());
-	m_toolbar->setWindow(parent->window()->windowHandle());
+    m_toolbar = make_owned<QWinThumbnailToolBar>(parent->window());
+    m_toolbar->setWindow(parent->window()->windowHandle());
 #endif
 
-	connect(m_statusActions, &StatusActions::statusActionsRecreated, this, &WindowsThumbnailToolbar::statusActionsRecreated);
-	connect(m_statusActions, &StatusActions::statusActionTriggered, this, &WindowsThumbnailToolbar::changeStatus);
-	statusActionsRecreated();
+    connect(
+        m_statusActions, &StatusActions::statusActionsRecreated, this,
+        &WindowsThumbnailToolbar::statusActionsRecreated);
+    connect(m_statusActions, &StatusActions::statusActionTriggered, this, &WindowsThumbnailToolbar::changeStatus);
+    statusActionsRecreated();
 }
 
 WindowsThumbnailToolbar::~WindowsThumbnailToolbar()
@@ -52,38 +53,38 @@ WindowsThumbnailToolbar::~WindowsThumbnailToolbar()
 
 void WindowsThumbnailToolbar::setStatusSetter(StatusSetter *statusSetter)
 {
-	m_statusSetter = statusSetter;
+    m_statusSetter = statusSetter;
 }
 
 void WindowsThumbnailToolbar::statusActionsRecreated()
 {
 #ifdef Q_OS_WIN
-	m_toolbar->clear();
+    m_toolbar->clear();
 
-	for (auto action : m_statusActions->actions())
-	{
-		auto button = make_owned<QWinThumbnailToolButton>(m_toolbar.get());
-		button->setToolTip(action->text());
-		button->setIcon(action->icon());
-		button->setDismissOnClick(true);
-		connect(button.get(), &QWinThumbnailToolButton::clicked, action, &QAction::trigger);
-		m_toolbar->addButton(button.get());
-	}
+    for (auto action : m_statusActions->actions())
+    {
+        auto button = make_owned<QWinThumbnailToolButton>(m_toolbar.get());
+        button->setToolTip(action->text());
+        button->setIcon(action->icon());
+        button->setDismissOnClick(true);
+        connect(button.get(), &QWinThumbnailToolButton::clicked, action, &QAction::trigger);
+        m_toolbar->addButton(button.get());
+    }
 #endif
 }
 
 void WindowsThumbnailToolbar::changeStatus(QAction *action)
 {
-	auto statusType = action->data().value<StatusType>();
+    auto statusType = action->data().value<StatusType>();
 
-	for (auto &&container : m_statusActions->statusContainer()->subStatusContainers())
-	{
-		auto status = Status{m_statusSetter->manuallySetStatus(container)};
-		status.setType(statusType);
+    for (auto &&container : m_statusActions->statusContainer()->subStatusContainers())
+    {
+        auto status = Status{m_statusSetter->manuallySetStatus(container)};
+        status.setType(statusType);
 
-		m_statusSetter->setStatusManually(container, status);
-		container->storeStatus(status);
-	}
+        m_statusSetter->setStatusManually(container, status);
+        container->storeStatus(status);
+    }
 }
 
 #include "windows-thumbnail-toolbar.moc"

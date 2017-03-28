@@ -33,8 +33,7 @@
 
 #include "emoticon-walker.h"
 
-EmoticonWalker::EmoticonWalker(EmoticonPrefixTree *tree) :
-		Tree(tree), PreviousWasLetter(false)
+EmoticonWalker::EmoticonWalker(EmoticonPrefixTree *tree) : Tree(tree), PreviousWasLetter(false)
 {
 }
 
@@ -44,84 +43,86 @@ EmoticonWalker::~EmoticonWalker()
 
 bool EmoticonWalker::possibleEmoticonStart(QChar c) const
 {
-	return !(PreviousWasLetter && c.isLetter());
+    return !(PreviousWasLetter && c.isLetter());
 }
 
 bool EmoticonWalker::possibleEmoticonEnd(QChar c, bool nextIsLetter) const
 {
-	return !(c.isLetter() && nextIsLetter);
+    return !(c.isLetter() && nextIsLetter);
 }
 
 void EmoticonWalker::addEmptyCandidate()
 {
-	EmoticonCandidate emptyCandidate;
-	emptyCandidate.EmoticonNode = Tree;
-	emptyCandidate.EmoticonLength = 0;
+    EmoticonCandidate emptyCandidate;
+    emptyCandidate.EmoticonNode = Tree;
+    emptyCandidate.EmoticonLength = 0;
 
-	Candidates.append(emptyCandidate);
+    Candidates.append(emptyCandidate);
 }
 
-EmoticonPrefixTree * EmoticonWalker::findCandidateExpansion(const EmoticonCandidate &candidate, QChar c)
+EmoticonPrefixTree *EmoticonWalker::findCandidateExpansion(const EmoticonCandidate &candidate, QChar c)
 {
-	return candidate.EmoticonNode->child(c);
+    return candidate.EmoticonNode->child(c);
 }
 
-EmoticonWalker::EmoticonCandidate EmoticonWalker::expandCandidate(const EmoticonCandidate &candidate, EmoticonPrefixTree *expansion)
+EmoticonWalker::EmoticonCandidate
+EmoticonWalker::expandCandidate(const EmoticonCandidate &candidate, EmoticonPrefixTree *expansion)
 {
-	EmoticonCandidate result;
-	result.EmoticonNode = expansion;
-	result.EmoticonLength = candidate.EmoticonLength + 1;
+    EmoticonCandidate result;
+    result.EmoticonNode = expansion;
+    result.EmoticonLength = candidate.EmoticonLength + 1;
 
-	return result;
+    return result;
 }
 
 void EmoticonWalker::removeCandidate(int i)
 {
-	if (i != Candidates.count() - 1)
-		Candidates.replace(i, Candidates.at(Candidates.count() - 1));
-	Candidates.removeLast();
+    if (i != Candidates.count() - 1)
+        Candidates.replace(i, Candidates.at(Candidates.count() - 1));
+    Candidates.removeLast();
 }
 
 void EmoticonWalker::tryExpandAllCandidates(QChar c)
 {
-	// iterate backward because removeCandidate can switch elements after current one
-	for (int i = Candidates.count() - 1; i >= 0; --i)
-	{
-		EmoticonPrefixTree *expansion = findCandidateExpansion(Candidates.at(i) , c);
-		if (expansion)
-			Candidates.replace(i, expandCandidate(Candidates.at(i), expansion));
-		else
-			removeCandidate(i);
-	}
+    // iterate backward because removeCandidate can switch elements after current one
+    for (int i = Candidates.count() - 1; i >= 0; --i)
+    {
+        EmoticonPrefixTree *expansion = findCandidateExpansion(Candidates.at(i), c);
+        if (expansion)
+            Candidates.replace(i, expandCandidate(Candidates.at(i), expansion));
+        else
+            removeCandidate(i);
+    }
 }
 
 Emoticon EmoticonWalker::findLongestCandidate() const
 {
-	Emoticon result;
-	int resultLength = -1;
+    Emoticon result;
+    int resultLength = -1;
 
-	foreach (const EmoticonCandidate &candidate, Candidates)
-		if (result.isNull() || (!candidate.EmoticonNode->nodeEmoticon().isNull() && resultLength < candidate.EmoticonLength))
-		{
-			result = candidate.EmoticonNode->nodeEmoticon();
-			resultLength = candidate.EmoticonLength;
-		}
+    foreach (const EmoticonCandidate &candidate, Candidates)
+        if (result.isNull() ||
+            (!candidate.EmoticonNode->nodeEmoticon().isNull() && resultLength < candidate.EmoticonLength))
+        {
+            result = candidate.EmoticonNode->nodeEmoticon();
+            resultLength = candidate.EmoticonLength;
+        }
 
-	return result;
+    return result;
 }
 
 Emoticon EmoticonWalker::matchEmoticon(QChar c, bool nextIsLetter)
 {
-	c = extractLetter(c);
+    c = extractLetter(c);
 
-	if (Candidates.isEmpty() && !possibleEmoticonStart(c))
-		return Emoticon();
+    if (Candidates.isEmpty() && !possibleEmoticonStart(c))
+        return Emoticon();
 
-	addEmptyCandidate();
-	tryExpandAllCandidates(c);
+    addEmptyCandidate();
+    tryExpandAllCandidates(c);
 
-	if (!possibleEmoticonEnd(c, nextIsLetter))
-		return Emoticon();
+    if (!possibleEmoticonEnd(c, nextIsLetter))
+        return Emoticon();
 
-	return findLongestCandidate();
+    return findLongestCandidate();
 }

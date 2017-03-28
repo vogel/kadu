@@ -27,25 +27,24 @@ class QAction;
 
 class DOCKINGAPI DockingMenuActionRepository final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit DockingMenuActionRepository(QObject *parent = nullptr);
-	virtual ~DockingMenuActionRepository();
+    Q_INVOKABLE explicit DockingMenuActionRepository(QObject *parent = nullptr);
+    virtual ~DockingMenuActionRepository();
 
-	void addAction(QAction *action);
-	void removeAction(QAction *action);
+    void addAction(QAction *action);
+    void removeAction(QAction *action);
 
-	QList<QAction *> actions() const;
+    QList<QAction *> actions() const;
 
 signals:
-	void actionAdded(QAction *action);
-	void actionRemoved(QAction *action);
+    void actionAdded(QAction *action);
+    void actionRemoved(QAction *action);
 
 private:
-	QList<QAction *> m_actions;
+    QList<QAction *> m_actions;
 
 private slots:
-	void actionDestroyed(QObject *action);
-
+    void actionDestroyed(QObject *action);
 };

@@ -46,63 +46,62 @@ class ShowInfosWindowAction;
  */
 class Infos : public QObject, AccountsAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<ShowInfosWindowAction> m_showInfosWindowAction;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<ShowInfosWindowAction> m_showInfosWindowAction;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setShowInfosWindowAction(ShowInfosWindowAction *showInfosWindowAction);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setShowInfosWindowAction(ShowInfosWindowAction *showInfosWindowAction);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void contactStatusChanged(Contact contact, Status status);
+    void contactStatusChanged(Contact contact, Status status);
 
 protected:
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
 
-	//! updates Last Seen times in lastSeen.
-	void updateTimes();
+    //! updates Last Seen times in lastSeen.
+    void updateTimes();
 
-	/*!
-	 * It holds the data file name. It's set to <i>profilePath + QStringLiteral("last_seen.data")</i>
-	 * in the constructor.
-	 */
-	QString fileName;
+    /*!
+     * It holds the data file name. It's set to <i>profilePath + QStringLiteral("last_seen.data")</i>
+     * in the constructor.
+     */
+    QString fileName;
 
-	/*!
-	 * List with "last seen on" time.
-	 * The keys are uins,
-	 * the values are "last seen" times.
-	 */
-	LastSeen lastSeen;
+    /*!
+     * List with "last seen on" time.
+     * The keys are uins,
+     * the values are "last seen" times.
+     */
+    LastSeen lastSeen;
 
-	//! Holds the "&Show infos about contacts" menu entry ID.
-	int menuID;
+    //! Holds the "&Show infos about contacts" menu entry ID.
+    int menuID;
 
 public:
-	/*!
-	 * \brief Default contructor.
-	 * \param parent - the parent object,
-	 * \param name - the object's name
-	 */
-	Q_INVOKABLE explicit Infos(QObject *parent = nullptr);
+    /*!
+     * \brief Default contructor.
+     * \param parent - the parent object,
+     * \param name - the object's name
+     */
+    Q_INVOKABLE explicit Infos(QObject *parent = nullptr);
 
-	//! Default destructor
-	virtual ~Infos();
+    //! Default destructor
+    virtual ~Infos();
 
 public slots:
-	//! This slot open InfosDialog dialog.
-	void onShowInfos();
-
+    //! This slot open InfosDialog dialog.
+    void onShowInfos();
 };

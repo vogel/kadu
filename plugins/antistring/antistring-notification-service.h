@@ -35,26 +35,25 @@ struct Notification;
 
 class AntistringNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit AntistringNotificationService(QObject *parent = nullptr);
-	virtual ~AntistringNotificationService();
+    Q_INVOKABLE explicit AntistringNotificationService(QObject *parent = nullptr);
+    virtual ~AntistringNotificationService();
 
 public slots:
-	void notifyStringReceived(const Chat &chat);
+    void notifyStringReceived(const Chat &chat);
 
 private:
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_stringReceivedEvent;
+    NotificationEvent m_stringReceivedEvent;
 
 private slots:
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

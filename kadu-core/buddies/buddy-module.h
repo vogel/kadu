@@ -25,9 +25,7 @@
 
 class KADUAPI BuddyModule : public injeqt::module
 {
-
 public:
-	explicit BuddyModule();
-	virtual ~BuddyModule();
-
+    explicit BuddyModule();
+    virtual ~BuddyModule();
 };

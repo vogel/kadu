@@ -26,9 +26,9 @@
 
 #include "accounts/account.h"
 #include "chat/chat.h"
+#include "exports.h"
 #include "status/status-change-source.h"
 #include "status/status.h"
-#include "exports.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QObject>
@@ -63,151 +63,191 @@ class KaduIcon;
 
 class KADUAPI Protocol : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Protocol(Account account, ProtocolFactory *factory);
-	virtual ~Protocol();
+    Protocol(Account account, ProtocolFactory *factory);
+    virtual ~Protocol();
 
-	ProtocolFactory * protocolFactory() const { return Factory; }
-	Account account() const { return CurrentAccount; }
+    ProtocolFactory *protocolFactory() const
+    {
+        return Factory;
+    }
+    Account account() const
+    {
+        return CurrentAccount;
+    }
 
-	virtual AvatarService * avatarService() { return 0; }
-	virtual BuddyListSerializationService * buddyListSerializationService() { return nullptr; }
-	virtual ChatImageService * chatImageService() { return 0; }
-	virtual ContactPersonalInfoService * contactPersonalInfoService() { return 0; }
-	virtual FileTransferService * fileTransferService() { return 0; }
-	virtual MultilogonService * multilogonService() { return 0; }
-	virtual PersonalInfoService * personalInfoService() { return 0; }
-	virtual RosterService * rosterService() const;
-	virtual SearchService * searchService() { return 0; }
-	virtual SubscriptionService * subscriptionService() { return 0; }
+    virtual AvatarService *avatarService()
+    {
+        return 0;
+    }
+    virtual BuddyListSerializationService *buddyListSerializationService()
+    {
+        return nullptr;
+    }
+    virtual ChatImageService *chatImageService()
+    {
+        return 0;
+    }
+    virtual ContactPersonalInfoService *contactPersonalInfoService()
+    {
+        return 0;
+    }
+    virtual FileTransferService *fileTransferService()
+    {
+        return 0;
+    }
+    virtual MultilogonService *multilogonService()
+    {
+        return 0;
+    }
+    virtual PersonalInfoService *personalInfoService()
+    {
+        return 0;
+    }
+    virtual RosterService *rosterService() const;
+    virtual SearchService *searchService()
+    {
+        return 0;
+    }
+    virtual SubscriptionService *subscriptionService()
+    {
+        return 0;
+    }
 
-	virtual bool contactsListReadOnly() = 0;
-	virtual bool supportsPrivateStatus() { return false; }
+    virtual bool contactsListReadOnly() = 0;
+    virtual bool supportsPrivateStatus()
+    {
+        return false;
+    }
 
-	bool isConnected() const;
-	bool isConnecting() const;
-	bool isDisconnecting() const;
+    bool isConnected() const;
+    bool isConnecting() const;
+    bool isDisconnecting() const;
 
-	// method called by user
-	void setStatus(Status status, StatusChangeSource source);
-	Status status() const;
-	virtual int maxDescriptionLength() { return -1; }
+    // method called by user
+    void setStatus(Status status, StatusChangeSource source);
+    Status status() const;
+    virtual int maxDescriptionLength()
+    {
+        return -1;
+    }
 
-	virtual void changePrivateMode() {};
+    virtual void changePrivateMode(){};
 
-	virtual QString statusPixmapPath() = 0;
+    virtual QString statusPixmapPath() = 0;
 
-	KaduIcon statusIcon();
-	KaduIcon statusIcon(const Status &status);
+    KaduIcon statusIcon();
+    KaduIcon statusIcon(const Status &status);
 
-	KaduIcon icon();
+    KaduIcon icon();
 
-	// TODO: workaround
-	void emitContactStatusChanged(Contact contact, Status oldStatus)
-	{
-		emit contactStatusChanged(contact, oldStatus);
-	}
+    // TODO: workaround
+    void emitContactStatusChanged(Contact contact, Status oldStatus)
+    {
+        emit contactStatusChanged(contact, oldStatus);
+    }
 
 public slots:
-	void passwordProvided();
+    void passwordProvided();
 
 signals:
-	void connecting(Account account);
-	void connected(Account account);
-	void disconnected(Account account);
+    void connecting(Account account);
+    void connected(Account account);
+    void disconnected(Account account);
 
-	void statusChanged(Account account, Status newStatus);
-	void remoteStatusChangeRequest(Account account, Status requestedStatus);
-	void contactStatusChanged(Contact contact, Status oldStatus);
+    void statusChanged(Account account, Status newStatus);
+    void remoteStatusChangeRequest(Account account, Status requestedStatus);
+    void contactStatusChanged(Contact contact, Status oldStatus);
 
-// TODO: REVIEW
-	void connectionError(Account account, const QString &server, const QString &reason);
-	void invalidPassword(Account account);
+    // TODO: REVIEW
+    void connectionError(Account account, const QString &server, const QString &reason);
+    void invalidPassword(Account account);
 
-// state machine signals
-	void stateMachineLoggedIn();
-	void stateMachineLoggedOut();
+    // state machine signals
+    void stateMachineLoggedIn();
+    void stateMachineLoggedOut();
 
-	void stateMachineChangeStatus();
-	void stateMachineLogout();
+    void stateMachineChangeStatus();
+    void stateMachineLogout();
 
-	void stateMachinePasswordRequired();
-	void stateMachinePasswordAvailable();
-	void stateMachinePasswordNotAvailable();
+    void stateMachinePasswordRequired();
+    void stateMachinePasswordAvailable();
+    void stateMachinePasswordNotAvailable();
 
-	void stateMachineConnectionError();
-	void stateMachineConnectionClosed();
+    void stateMachineConnectionError();
+    void stateMachineConnectionClosed();
 
-	void stateMachineSslError();
-	void stateMachineSslErrorResolved();
-	void stateMachineSslErrorNotResolved();
+    void stateMachineSslError();
+    void stateMachineSslErrorResolved();
+    void stateMachineSslErrorNotResolved();
 
 protected:
-	ContactManager * contactManager() const;
-	PluginInjectedFactory * pluginInjectedFactory() const;
-	StatusTypeManager * statusTypeManager() const;
+    ContactManager *contactManager() const;
+    PluginInjectedFactory *pluginInjectedFactory() const;
+    StatusTypeManager *statusTypeManager() const;
 
-	Status loginStatus() const;
+    Status loginStatus() const;
 
-	virtual void login() = 0;
-	virtual void afterLoggedIn() {}
-	virtual void logout() = 0;
-	virtual void sendStatusToServer() = 0;
+    virtual void login() = 0;
+    virtual void afterLoggedIn()
+    {
+    }
+    virtual void logout() = 0;
+    virtual void sendStatusToServer() = 0;
 
-	virtual void disconnectedCleanup();
-	void statusChanged(Status newStatus);
+    virtual void disconnectedCleanup();
+    void statusChanged(Status newStatus);
 
-	void doSetStatus(Status status);
+    void doSetStatus(Status status);
 
-	// services
-	void setRosterService(RosterService * const rosterService);
+    // services
+    void setRosterService(RosterService *const rosterService);
 
 protected slots:
-	void loggedIn();
-	void loggedOut();
-	void passwordRequired();
-	void connectionError();
-	void connectionClosed();
-	void sslError();
-	void reconnect();
+    void loggedIn();
+    void loggedOut();
+    void passwordRequired();
+    void connectionError();
+    void connectionClosed();
+    void sslError();
+    void reconnect();
 
 private:
-	QPointer<ContactManager> m_contactManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<RosterService> m_rosterService;
-	QPointer<SessionService> m_sessionService;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<RosterService> m_rosterService;
+    QPointer<SessionService> m_sessionService;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	ProtocolFactory *Factory;
-	ProtocolStateMachine *Machine;
+    ProtocolFactory *Factory;
+    ProtocolStateMachine *Machine;
 
-	Account CurrentAccount;
+    Account CurrentAccount;
 
-	// real status, can be offline after connection error
-	Status CurrentStatus;
-	// status used by user to login, after connection error its value does not change
-	// it can only by changed by user or status changer
-	Status LoginStatus;
+    // real status, can be offline after connection error
+    Status CurrentStatus;
+    // status used by user to login, after connection error its value does not change
+    // it can only by changed by user or status changer
+    Status LoginStatus;
 
-	void setAllOffline();
+    void setAllOffline();
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSessionService(SessionService *sessionService);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSessionService(SessionService *sessionService);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 
-	// state machine slots
-	void prepareStateMachine();
+    // state machine slots
+    void prepareStateMachine();
 
-	void loggingInStateEntered();
-	void loggedInStateEntered();
-	void loggingOutStateEntered();
-	void loggedOutAnyStateEntered();
-	void wantToLogInStateEntered();
-	void passwordRequiredStateEntered();
-
+    void loggingInStateEntered();
+    void loggedInStateEntered();
+    void loggingOutStateEntered();
+    void loggedOutAnyStateEntered();
+    void wantToLogInStateEntered();
+    void passwordRequiredStateEntered();
 };

@@ -21,9 +21,11 @@
 
 class ParserData
 {
-
 protected:
-	ParserData() {}
-	virtual ~ParserData() {}
-
+    ParserData()
+    {
+    }
+    virtual ~ParserData()
+    {
+    }
 };

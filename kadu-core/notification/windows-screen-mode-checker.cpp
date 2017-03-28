@@ -22,25 +22,24 @@
 
 #include "windows-screen-mode-checker.h"
 
-
 bool WindowsScreenModeChecker::isFullscreenAppActive()
 {
-	HWND hWnd = GetForegroundWindow();
-	if (NULL == hWnd)
-		return false;
+    HWND hWnd = GetForegroundWindow();
+    if (NULL == hWnd)
+        return false;
 
-	int cx = GetSystemMetrics(SM_CXSCREEN);
-	int cy = GetSystemMetrics(SM_CYSCREEN);
-	RECT r;
-	GetWindowRect(hWnd, &r);
+    int cx = GetSystemMetrics(SM_CXSCREEN);
+    int cy = GetSystemMetrics(SM_CYSCREEN);
+    RECT r;
+    GetWindowRect(hWnd, &r);
 
-	return (r.right - r.left == cx && r.bottom - r.top == cy);
+    return (r.right - r.left == cx && r.bottom - r.top == cy);
 }
 
 bool WindowsScreenModeChecker::isScreensaverActive()
 {
-	BOOL ret;
-	SystemParametersInfo(SPI_GETSCREENSAVERRUNNING, 0, &ret, 0);
+    BOOL ret;
+    SystemParametersInfo(SPI_GETSCREENSAVERRUNNING, 0, &ret, 0);
 
-	return (0 != ret);
+    return (0 != ret);
 }

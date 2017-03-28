@@ -43,36 +43,35 @@ class QNetworkReply;
  */
 class GaduAvatarDownloader : public AvatarDownloader
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QNetworkAccessManager *NetworkAccessManager;
-	QNetworkReply *Reply;
-	int RedirectCount;
+    QNetworkAccessManager *NetworkAccessManager;
+    QNetworkReply *Reply;
+    int RedirectCount;
 
-	void done(QImage avatar);
-	void failed();
+    void done(QImage avatar);
+    void failed();
 
-	void fetch(const QString &url);
-	void parseReply();
+    void fetch(const QString &url);
+    void parseReply();
 
 private slots:
-	void requestFinished();
+    void requestFinished();
 
 public:
-	/**
-	 * @short Create new GaduAvatarDownloader instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent
-	 */
-	explicit GaduAvatarDownloader(QObject *parent = nullptr);
-	virtual ~GaduAvatarDownloader();
+    /**
+     * @short Create new GaduAvatarDownloader instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent
+     */
+    explicit GaduAvatarDownloader(QObject *parent = nullptr);
+    virtual ~GaduAvatarDownloader();
 
-	virtual void downloadAvatar(const QString &id);
-
+    virtual void downloadAvatar(const QString &id);
 };
 
 /**
  * @}
  */
 
-#endif // GADU_AVATAR_DOWNLOADER_H
+#endif   // GADU_AVATAR_DOWNLOADER_H

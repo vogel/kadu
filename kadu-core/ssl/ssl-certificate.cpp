@@ -21,35 +21,34 @@
 
 #include <QtCore/QHash>
 
-SslCertificate::SslCertificate(QString hostName, QByteArray pemHexEncodedCertificate) :
-		m_hostName{std::move(hostName)},
-		m_pemHexEncodedCertificate{std::move(pemHexEncodedCertificate)}
+SslCertificate::SslCertificate(QString hostName, QByteArray pemHexEncodedCertificate)
+        : m_hostName{std::move(hostName)}, m_pemHexEncodedCertificate{std::move(pemHexEncodedCertificate)}
 {
 }
 
 QString SslCertificate::hostName() const
 {
-	return m_hostName;
+    return m_hostName;
 }
 
 QByteArray SslCertificate::pemHexEncodedCertificate() const
 {
-	return m_pemHexEncodedCertificate;
+    return m_pemHexEncodedCertificate;
 }
 
-bool operator == (const SslCertificate &x, const SslCertificate &y)
+bool operator==(const SslCertificate &x, const SslCertificate &y)
 {
-	if (x.hostName() != y.hostName())
-		return false;
-	if (x.pemHexEncodedCertificate() != y.pemHexEncodedCertificate())
-		return false;
-	return true;
+    if (x.hostName() != y.hostName())
+        return false;
+    if (x.pemHexEncodedCertificate() != y.pemHexEncodedCertificate())
+        return false;
+    return true;
 }
 
 uint qHash(const SslCertificate &key, uint seed)
 {
-	auto result = 0xcbf29ce484222325ULL;
-	result = (result ^ qHash(key.hostName(), seed)) * 0x100000001b3ULL;
-	result = (result ^ qHash(key.pemHexEncodedCertificate(), seed)) * 0x100000001b3ULL;
-	return result;
+    auto result = 0xcbf29ce484222325ULL;
+    result = (result ^ qHash(key.hostName(), seed)) * 0x100000001b3ULL;
+    result = (result ^ qHash(key.pemHexEncodedCertificate(), seed)) * 0x100000001b3ULL;
+    return result;
 }

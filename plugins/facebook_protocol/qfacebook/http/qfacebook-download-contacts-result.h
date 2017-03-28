@@ -26,6 +26,6 @@ class QFacebookContact;
 
 struct QFacebookDownloadContactsResult
 {
-	QByteArray deltaCursor;
-	std::vector<QFacebookContact> contacts;
+    QByteArray deltaCursor;
+    std::vector<QFacebookContact> contacts;
 };

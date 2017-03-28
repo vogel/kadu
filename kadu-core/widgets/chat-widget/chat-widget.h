@@ -39,51 +39,50 @@ enum class ChatState;
 
 class KADUAPI ChatWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatWidget(QWidget *parent = nullptr);
-	virtual ~ChatWidget();
+    explicit ChatWidget(QWidget *parent = nullptr);
+    virtual ~ChatWidget();
 
-	virtual Chat chat() const = 0;
-	virtual ChatState chatState() const = 0;
+    virtual Chat chat() const = 0;
+    virtual ChatState chatState() const = 0;
 
-	virtual void addMessages(const SortedMessages &messages) = 0;
-	virtual void addMessage(const Message &message) = 0;
-	virtual void appendSystemMessage(NormalizedHtmlString content) = 0;
-	virtual SortedMessages messages() const = 0;
+    virtual void addMessages(const SortedMessages &messages) = 0;
+    virtual void addMessage(const Message &message) = 0;
+    virtual void appendSystemMessage(NormalizedHtmlString content) = 0;
+    virtual SortedMessages messages() const = 0;
 
-	virtual const QDateTime & lastReceivedMessageTime() const = 0;
+    virtual const QDateTime &lastReceivedMessageTime() const = 0;
 
-	virtual void kaduStoreGeometry() = 0;
-	virtual void kaduRestoreGeometry() = 0;
+    virtual void kaduStoreGeometry() = 0;
+    virtual void kaduRestoreGeometry() = 0;
 
-	virtual ChatEditBox * getChatEditBox() const = 0;
-	virtual ChatWidgetTitle * title() const = 0;
-	virtual CustomInput * edit() const = 0;
-	virtual TalkableProxyModel * talkableProxyModel() const = 0;
-	virtual WebkitMessagesView * chatMessagesView() const = 0;
+    virtual ChatEditBox *getChatEditBox() const = 0;
+    virtual ChatWidgetTitle *title() const = 0;
+    virtual CustomInput *edit() const = 0;
+    virtual TalkableProxyModel *talkableProxyModel() const = 0;
+    virtual WebkitMessagesView *chatMessagesView() const = 0;
 
 public slots:
-	virtual void sendMessage() = 0;
-	virtual void colorSelectorAboutToClose() = 0;
-	virtual void clearChatWindow() = 0;
+    virtual void sendMessage() = 0;
+    virtual void colorSelectorAboutToClose() = 0;
+    virtual void clearChatWindow() = 0;
 
-	virtual void requestClose() = 0;
+    virtual void requestClose() = 0;
 
 signals:
-	void messageReceived(ChatWidget *chatWidget);
-	void messageSendRequested(ChatWidget *chat);
-	void messageSent(ChatWidget *chat);
+    void messageReceived(ChatWidget *chatWidget);
+    void messageSendRequested(ChatWidget *chat);
+    void messageSent(ChatWidget *chat);
 
-	void fileDropped(Chat chat, const QString &fileName);
+    void fileDropped(Chat chat, const QString &fileName);
 
-	void widgetDestroyed(Chat chat);
-	void widgetDestroyed(ChatWidget *widget);
+    void widgetDestroyed(Chat chat);
+    void widgetDestroyed(ChatWidget *widget);
 
-	void closeRequested(ChatWidget *chatWidget);
-	void chatStateChanged(ChatState state);
-
+    void closeRequested(ChatWidget *chatWidget);
+    void chatStateChanged(ChatState state);
 };
 
 Q_DECLARE_METATYPE(ChatWidget *);

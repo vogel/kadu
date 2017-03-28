@@ -24,8 +24,7 @@
 
 #include "action-list-model.h"
 
-ActionListModel::ActionListModel(QObject *parent) :
-		QAbstractItemModel(parent)
+ActionListModel::ActionListModel(QObject *parent) : QAbstractItemModel(parent)
 {
 }
 
@@ -35,123 +34,122 @@ ActionListModel::~ActionListModel()
 
 void ActionListModel::setActionList(const QList<QAction *> &actionList)
 {
-	beginResetModel();
-	ActionList = actionList;
-	endResetModel();
+    beginResetModel();
+    ActionList = actionList;
+    endResetModel();
 }
 
 void ActionListModel::appendAction(QAction *action)
 {
-	const int count = ActionList.count();
+    const int count = ActionList.count();
 
-	beginInsertRows(QModelIndex(), count, count);
-	ActionList.append(action);
-	endInsertRows();
+    beginInsertRows(QModelIndex(), count, count);
+    ActionList.append(action);
+    endInsertRows();
 }
 
 void ActionListModel::insertAction(int index, QAction *action)
 {
-	if (index < 0)
-		index = 0;
-	if (index > ActionList.count())
-		index = ActionList.count();
+    if (index < 0)
+        index = 0;
+    if (index > ActionList.count())
+        index = ActionList.count();
 
-	beginInsertRows(QModelIndex(), index, index);
-	ActionList.insert(index, action);
-	endInsertRows();
+    beginInsertRows(QModelIndex(), index, index);
+    ActionList.insert(index, action);
+    endInsertRows();
 }
 
 void ActionListModel::removeAction(QAction *action)
 {
-	int index = ActionList.indexOf(action);
-	if (index < 0)
-		return;
+    int index = ActionList.indexOf(action);
+    if (index < 0)
+        return;
 
-	beginRemoveRows(QModelIndex(), index, index);
-	ActionList.removeAt(index);
-	endRemoveRows();
+    beginRemoveRows(QModelIndex(), index, index);
+    ActionList.removeAt(index);
+    endRemoveRows();
 }
 
 QModelIndex ActionListModel::index(int row, int column, const QModelIndex &parent) const
 {
-	return hasIndex(row, column, parent)
-	        ? createIndex(row, column, parent.isValid() ? parent.row() : -1)
-	        : QModelIndex();
+    return hasIndex(row, column, parent) ? createIndex(row, column, parent.isValid() ? parent.row() : -1)
+                                         : QModelIndex();
 }
 
 QModelIndex ActionListModel::parent(const QModelIndex &child) const
 {
-	Q_UNUSED(child)
+    Q_UNUSED(child)
 
-	return QModelIndex();
+    return QModelIndex();
 }
 
 int ActionListModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 1;
+    return parent.isValid() ? 0 : 1;
 }
 
 int ActionListModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : ActionList.size();
+    return parent.isValid() ? 0 : ActionList.size();
 }
 
 Qt::ItemFlags ActionListModel::flags(const QModelIndex &index) const
 {
-	if (!index.isValid())
-		return Qt::ItemFlags();
+    if (!index.isValid())
+        return Qt::ItemFlags();
 
-	QAction *action = ActionList.at(index.row());
-	if (!action || action->isSeparator())
-		return Qt::ItemFlags();
+    QAction *action = ActionList.at(index.row());
+    if (!action || action->isSeparator())
+        return Qt::ItemFlags();
 
-	return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
 QVariant ActionListModel::data(const QModelIndex &index, int role) const
 {
-	if (index.parent().isValid())
-		return QVariant();
+    if (index.parent().isValid())
+        return QVariant();
 
-	if (index.row() < 0 || index.row() >= ActionList.size())
-		return QVariant();
+    if (index.row() < 0 || index.row() >= ActionList.size())
+        return QVariant();
 
-	QAction *action = ActionList.at(index.row());
-	if (!action)
-		return QVariant();
+    QAction *action = ActionList.at(index.row());
+    if (!action)
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return action->text();
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return action->text();
 
-		case Qt::DecorationRole:
-			return action->icon();
+    case Qt::DecorationRole:
+        return action->icon();
 
-		case Qt::FontRole:
-			return action->font();
+    case Qt::FontRole:
+        return action->font();
 
-		case ActionRole:
-			return QVariant::fromValue<QAction *>(action);
+    case ActionRole:
+        return QVariant::fromValue<QAction *>(action);
 
-		case ItemTypeRole:
-			return ActionRole;
-	}
+    case ItemTypeRole:
+        return ActionRole;
+    }
 
-	return QVariant();
+    return QVariant();
 }
 
 QModelIndexList ActionListModel::indexListForValue(const QVariant &value) const
 {
-	QModelIndexList result;
+    QModelIndexList result;
 
-	QAction *action = value.value<QAction *>();
-	int row = ActionList.indexOf(action);
+    QAction *action = value.value<QAction *>();
+    int row = ActionList.indexOf(action);
 
-	if (row >= 0)
-		result.append(index(row, 0));
+    if (row >= 0)
+        result.append(index(row, 0));
 
-	return result;
+    return result;
 }
 
 #include "moc_action-list-model.cpp"

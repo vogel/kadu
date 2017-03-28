@@ -22,8 +22,7 @@
 
 #include "accounts/account-shared.h"
 
-GaduAccountData::GaduAccountData(AccountShared *data) :
-		m_data{data}
+GaduAccountData::GaduAccountData(AccountShared *data) : m_data{data}
 {
 }
 
@@ -33,98 +32,84 @@ GaduAccountData::~GaduAccountData()
 
 bool GaduAccountData::receiveImagesDuringInvisibility() const
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("ReceiveImagesDuringInvisibility", true)
-		: true;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("ReceiveImagesDuringInvisibility", true) : true;
 }
 
 void GaduAccountData::setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("ReceiveImagesDuringInvisibility", receiveImagesDuringInvisibility);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("ReceiveImagesDuringInvisibility", receiveImagesDuringInvisibility);
 }
 
 bool GaduAccountData::chatImageSizeWarning() const
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("ChatImageSizeWarning", true)
-		: true;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("ChatImageSizeWarning", true) : true;
 }
 
 void GaduAccountData::setChatImageSizeWarning(bool chatImageSizeWarning) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("ChatImageSizeWarning", chatImageSizeWarning);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("ChatImageSizeWarning", chatImageSizeWarning);
 }
 
 bool GaduAccountData::initialRosterImport() const
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("InitialRosterImport", true)
-		: true;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("InitialRosterImport", true) : true;
 }
 
 void GaduAccountData::setInitialRosterImport(bool initialRosterImport) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("InitialRosterImport", initialRosterImport);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("InitialRosterImport", initialRosterImport);
 }
 
 bool GaduAccountData::sendTypingNotification() const
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("SendTypingNotification", true)
-		: true;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("SendTypingNotification", true) : true;
 }
 
 void GaduAccountData::setSendTypingNotification(bool sendTypingNotification) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("SendTypingNotification", sendTypingNotification);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("SendTypingNotification", sendTypingNotification);
 }
 
 int GaduAccountData::userlistVersion() const
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->loadValue<int>("UserlistVersion", -1)
-		: -1;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->loadValue<int>("UserlistVersion", -1) : -1;
 }
 
 void GaduAccountData::setUserlistVersion(int userlistVersion) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("UserlistVersion", userlistVersion);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("UserlistVersion", userlistVersion);
 }
 
 bool GaduAccountData::receiveSpam() const
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("ReceiveSpam", true)
-		: true;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("ReceiveSpam", true) : true;
 }
 
 void GaduAccountData::setReceiveSpam(bool receiveSpam) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("ReceiveSpam", receiveSpam);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("ReceiveSpam", receiveSpam);
 }
 
 UinType GaduAccountData::uin()
 {
-	m_data->ensureLoaded();
-	return m_data->isValidStorage()
-		? m_data->id().toULong()
-		: 0;
+    m_data->ensureLoaded();
+    return m_data->isValidStorage() ? m_data->id().toULong() : 0;
 }

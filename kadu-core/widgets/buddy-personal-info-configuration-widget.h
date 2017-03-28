@@ -37,27 +37,25 @@ class QLabel;
 
 class KADUAPI BuddyPersonalInfoConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~BuddyPersonalInfoConfigurationWidget();
+    explicit BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~BuddyPersonalInfoConfigurationWidget();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	Buddy MyBuddy;
-	QComboBox *ContactIdCombo;
-	QVBoxLayout *Layout;
-	QWidget *InfoWidget;
+    Buddy MyBuddy;
+    QComboBox *ContactIdCombo;
+    QVBoxLayout *Layout;
+    QWidget *InfoWidget;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void accountSelectionChanged(int index);
-
+    void accountSelectionChanged(int index);
 };
-

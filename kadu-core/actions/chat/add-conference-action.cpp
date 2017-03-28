@@ -28,12 +28,11 @@
 
 #include "add-conference-action.h"
 
-AddConferenceAction::AddConferenceAction(QObject *parent) :
-		ActionDescription(parent)
+AddConferenceAction::AddConferenceAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeGlobal);
-	setName("addConferenceAction");
-	setText(tr("Add Conference..."));
+    setType(ActionDescription::TypeGlobal);
+    setName("addConferenceAction");
+    setText(tr("Add Conference..."));
 }
 
 AddConferenceAction::~AddConferenceAction()
@@ -42,39 +41,38 @@ AddConferenceAction::~AddConferenceAction()
 
 void AddConferenceAction::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void AddConferenceAction::init()
 {
-	connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)),
-	        this, SLOT(updateAddChatMenuItem()));
+    connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(updateAddChatMenuItem()));
 
-	updateAddChatMenuItem();
+    updateAddChatMenuItem();
 }
 
 void AddConferenceAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(context)
-	Q_UNUSED(toggled)
+    Q_UNUSED(context)
+    Q_UNUSED(toggled)
 
-	(injectedFactory()->makeInjected<AddConferenceWindow>(widget))->show();
+    (injectedFactory()->makeInjected<AddConferenceWindow>(widget))->show();
 }
 
 void AddConferenceAction::updateAddChatMenuItem()
 {
-	bool isConferenceSupported = false;
+    bool isConferenceSupported = false;
 
-	foreach (const Account &account, m_accountManager->items())
-	{
-		if (account.protocolHandler() && account.protocolName() == "gadu")
-			isConferenceSupported = true;
-	}
+    foreach (const Account &account, m_accountManager->items())
+    {
+        if (account.protocolHandler() && account.protocolName() == "gadu")
+            isConferenceSupported = true;
+    }
 
-	foreach (Action *action, actions())
-	{
-		action->setVisible(isConferenceSupported);
-	}
+    foreach (Action *action, actions())
+    {
+        action->setVisible(isConferenceSupported);
+    }
 }
 
 #include "moc_add-conference-action.cpp"

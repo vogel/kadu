@@ -30,8 +30,7 @@
 
 #include "select-talkable-combo-box.h"
 
-SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) :
-		ActionsComboBox(parent)
+SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) : ActionsComboBox(parent)
 {
 }
 
@@ -41,77 +40,77 @@ SelectTalkableComboBox::~SelectTalkableComboBox()
 
 void SelectTalkableComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void SelectTalkableComboBox::init()
 {
-	Chain = new ModelChain(this);
-	ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(Chain);
-	ProxyModel->setSortByStatusAndUnreadMessages(false);
-	Chain->addProxyModel(ProxyModel);
-	setUpModel(TalkableRole, Chain);
+    Chain = new ModelChain(this);
+    ProxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(Chain);
+    ProxyModel->setSortByStatusAndUnreadMessages(false);
+    Chain->addProxyModel(ProxyModel);
+    setUpModel(TalkableRole, Chain);
 
-	Popup = m_injectedFactory->makeInjected<SelectTalkablePopup>(this);
+    Popup = m_injectedFactory->makeInjected<SelectTalkablePopup>(this);
 
-	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
-	addFilter(HideAnonymousFilter);
+    HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+    addFilter(HideAnonymousFilter);
 
-	connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
+    connect(Popup, SIGNAL(talkableSelected(Talkable)), this, SLOT(setCurrentTalkable(Talkable)));
 }
 
-InjectedFactory * SelectTalkableComboBox::injectedFactory() const
+InjectedFactory *SelectTalkableComboBox::injectedFactory() const
 {
-	return m_injectedFactory;
+    return m_injectedFactory;
 }
 
 void SelectTalkableComboBox::setBaseModel(QAbstractItemModel *model)
 {
-	Chain->setBaseModel(model);
-	Popup->setBaseModel(model);
+    Chain->setBaseModel(model);
+    Popup->setBaseModel(model);
 
-	setCurrentIndex(0);
+    setCurrentIndex(0);
 }
 
 void SelectTalkableComboBox::setShowAnonymous(bool showAnonymous)
 {
-	HideAnonymousFilter->setEnabled(!showAnonymous);
-	Popup->setShowAnonymous(showAnonymous);
+    HideAnonymousFilter->setEnabled(!showAnonymous);
+    Popup->setShowAnonymous(showAnonymous);
 }
 
 void SelectTalkableComboBox::setCurrentTalkable(const Talkable &talkable)
 {
-	setCurrentValue(QVariant::fromValue(talkable));
+    setCurrentValue(QVariant::fromValue(talkable));
 }
 
 Talkable SelectTalkableComboBox::currentTalkable() const
 {
-	return currentValue().value<Talkable>();
+    return currentValue().value<Talkable>();
 }
 
 void SelectTalkableComboBox::showPopup()
 {
-	QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->sizeHint().height()));
-	Popup->setGeometry(properGeometry(geom));
+    QRect geom(mapToGlobal(rect().bottomLeft()), QSize(geometry().width(), Popup->sizeHint().height()));
+    Popup->setGeometry(properGeometry(geom));
 
-	Popup->show(currentTalkable());
+    Popup->show(currentTalkable());
 }
 
 void SelectTalkableComboBox::hidePopup()
 {
-	Popup->hide();
+    Popup->hide();
 }
 
 void SelectTalkableComboBox::addFilter(TalkableFilter *filter)
 {
-	ProxyModel->addFilter(filter);
-	Popup->addFilter(filter);
+    ProxyModel->addFilter(filter);
+    Popup->addFilter(filter);
 }
 
 void SelectTalkableComboBox::removeFilter(TalkableFilter *filter)
 {
-	ProxyModel->removeFilter(filter);
-	Popup->removeFilter(filter);
+    ProxyModel->removeFilter(filter);
+    Popup->removeFilter(filter);
 }
 
 #include "moc_select-talkable-combo-box.cpp"

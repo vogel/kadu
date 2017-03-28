@@ -29,23 +29,25 @@ struct QMqttMessage;
 class QFacebookConnect : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::Connect; }
-	virtual QMqttMessage encode() const;
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::Connect;
+    }
+    virtual QMqttMessage encode() const;
 
-	QByteArray cid;
-	int64_t uid;
-	QByteArray information;
-	int64_t unknownCp {23};
-	int64_t unknownEcp {26};
-	int32_t unknown {1};
-	bool noAutoFg {true};
-	bool visible {false};
-	QByteArray did;
-	bool unknownFg {true};
-	int32_t unknownNwt {1};
-	int32_t unknownNwst {0};
-	int64_t mid;
-	QByteArray token;
-	uint16_t keepAlive;
-
+    QByteArray cid;
+    int64_t uid;
+    QByteArray information;
+    int64_t unknownCp{23};
+    int64_t unknownEcp{26};
+    int32_t unknown{1};
+    bool noAutoFg{true};
+    bool visible{false};
+    QByteArray did;
+    bool unknownFg{true};
+    int32_t unknownNwt{1};
+    int32_t unknownNwst{0};
+    int64_t mid;
+    QByteArray token;
+    uint16_t keepAlive;
 };

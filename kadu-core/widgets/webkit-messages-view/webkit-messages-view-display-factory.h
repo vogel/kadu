@@ -45,46 +45,45 @@ class WebkitMessagesViewDisplay;
  */
 class KADUAPI WebkitMessagesViewDisplayFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Create new instance of WebkitMessagesViewDisplayFactory.
-	 * @param parent QObject parent of service.
-	 */
-	Q_INVOKABLE explicit WebkitMessagesViewDisplayFactory(QObject *parent = nullptr);
-	virtual ~WebkitMessagesViewDisplayFactory();
+    /**
+     * @short Create new instance of WebkitMessagesViewDisplayFactory.
+     * @param parent QObject parent of service.
+     */
+    Q_INVOKABLE explicit WebkitMessagesViewDisplayFactory(QObject *parent = nullptr);
+    virtual ~WebkitMessagesViewDisplayFactory();
 
-	/**
-	 * @short Create new WebkitMessagesViewDisplay instance for given ChatStyleRenderer.
-	 * @param chatStyleRenderer ChatStyleRenderer to create WebkitMessagesViewDisplay for.
-	 *
-	 * Implementation of WebkitMessagesViewDisplay is selected based on configuration
-	 * read from ChatStyleManager service.
-	 */
-	std::unique_ptr<WebkitMessagesViewDisplay> createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
+    /**
+     * @short Create new WebkitMessagesViewDisplay instance for given ChatStyleRenderer.
+     * @param chatStyleRenderer ChatStyleRenderer to create WebkitMessagesViewDisplay for.
+     *
+     * Implementation of WebkitMessagesViewDisplay is selected based on configuration
+     * read from ChatStyleManager service.
+     */
+    std::unique_ptr<WebkitMessagesViewDisplay> createWebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
 
 private:
-	QPointer<ChatStyleManager> m_chatStyleManager;
-	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
+    QPointer<ChatStyleManager> m_chatStyleManager;
+    QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
 
 private slots:
-	/**
-	 * @short Set ChatStyleManager service instance.
-	 * @param chatStyleManager ChatStyleManager service instance.
-	 *
-	 * This service is used to select one of implementations of WebkitMessagesViewDisplay.
-	 */
-	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+    /**
+     * @short Set ChatStyleManager service instance.
+     * @param chatStyleManager ChatStyleManager service instance.
+     *
+     * This service is used to select one of implementations of WebkitMessagesViewDisplay.
+     */
+    INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
 
-	/**
-	 * @short Set MessageRenderInfoFactory service instance.
-	 * @param messageRenderInfoFactory MessageRenderInfoFactory service instance.
-	 *
-	 * This service is passed to created instances of WebkitMessagesViewDisplay.
-	 */
-	INJEQT_SET void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
-
+    /**
+     * @short Set MessageRenderInfoFactory service instance.
+     * @param messageRenderInfoFactory MessageRenderInfoFactory service instance.
+     *
+     * This service is passed to created instances of WebkitMessagesViewDisplay.
+     */
+    INJEQT_SET void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 };
 
 /**

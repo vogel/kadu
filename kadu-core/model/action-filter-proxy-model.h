@@ -52,58 +52,57 @@ class QAction;
  */
 class ActionFilterProxyModel : public QSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	int Size;
-	QAbstractItemModel *Model;
-	QList<QAction *> HideWhenModelEmpty;
-	QList<QAction *> HideWhenModelSingle;
+    int Size;
+    QAbstractItemModel *Model;
+    QList<QAction *> HideWhenModelEmpty;
+    QList<QAction *> HideWhenModelSingle;
 
 private slots:
-	void updateSize();
+    void updateSize();
 
 protected:
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of ActionFilterProxyModel
-	 * @param parent QObject parent of new model
-	 */
-	explicit ActionFilterProxyModel(QObject *parent = nullptr);
-	virtual ~ActionFilterProxyModel();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of ActionFilterProxyModel
+     * @param parent QObject parent of new model
+     */
+    explicit ActionFilterProxyModel(QObject *parent = nullptr);
+    virtual ~ActionFilterProxyModel();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets data model for filtering.
-	 * @param model data model for filtering
-	 *
-	 * This new model will be used as data source for filtering. When this model is empty, all actions
-	 * added by addHideWhenModelEmpty() and addHideWhenModelSingle() will be filered out from sourceModel().
-	 * When this model contains only one item, all actions added by addHideWhenModelSingle() will be
-	 * filered out from sourceModel().
-	 */
-	void setModel(QAbstractItemModel *model);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets data model for filtering.
+     * @param model data model for filtering
+     *
+     * This new model will be used as data source for filtering. When this model is empty, all actions
+     * added by addHideWhenModelEmpty() and addHideWhenModelSingle() will be filered out from sourceModel().
+     * When this model contains only one item, all actions added by addHideWhenModelSingle() will be
+     * filered out from sourceModel().
+     */
+    void setModel(QAbstractItemModel *model);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Adds new action to filter out when main model is empty.
-	 * @param action new action to filter out when main model is empty
-	 */
-	void addHideWhenModelEmpty(QAction *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Adds new action to filter out when main model is empty.
+     * @param action new action to filter out when main model is empty
+     */
+    void addHideWhenModelEmpty(QAction *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Adds new action to filter out when main model is empty or contains only one item.
-	 * @param action new action to filter out when main model is empty or contains only one item
-	 */
-	void addHideWhenModelSingle(QAction *action);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Adds new action to filter out when main model is empty or contains only one item.
+     * @param action new action to filter out when main model is empty or contains only one item
+     */
+    void addHideWhenModelSingle(QAction *action);
 };
 
 /**
  * @}
  */
 
-#endif // ACTION_FILTER_PROXY_MODEL_H
+#endif   // ACTION_FILTER_PROXY_MODEL_H

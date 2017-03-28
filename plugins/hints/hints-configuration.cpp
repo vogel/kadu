@@ -24,8 +24,7 @@
 
 #include <QtWidgets/QApplication>
 
-HintsConfiguration::HintsConfiguration(QObject *parent) :
-		QObject{parent}
+HintsConfiguration::HintsConfiguration(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,80 +34,84 @@ HintsConfiguration::~HintsConfiguration()
 
 void HintsConfiguration::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void HintsConfiguration::init()
 {
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void HintsConfiguration::createDefaultConfiguration()
 {
 #if !defined(Q_OS_UNIX)
-	m_configuration->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "ConnectionError_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "NewChat_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "NewMessage_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/Finished_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "multilogon_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionConnected_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "multilogon/sessionDisconnected_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_UseCustomSettings", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ImportFailed_Hints", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_UseCustomSettings", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "Roster/ExportFailed_Hints", true);
 #endif
 
-	m_configuration->deprecatedApi()->addVariable("Hints", "IconSize",
-		m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32));
-	m_configuration->deprecatedApi()->addVariable("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight));
-	m_configuration->deprecatedApi()->addVariable("Hints", "ShowAllNotificationActions",
-		m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowNotificationActions",
-			!m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", true)));
-	m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
+    m_configuration->deprecatedApi()->addVariable(
+        "Hints", "IconSize", m_configuration->deprecatedApi()->readNumEntry("Hints", "AllEvents_iconSize", 32));
+    m_configuration->deprecatedApi()->addVariable("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight));
+    m_configuration->deprecatedApi()->addVariable(
+        "Hints", "ShowAllNotificationActions",
+        m_configuration->deprecatedApi()->readBoolEntry(
+            "Hints", "ShowNotificationActions",
+            !m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowOnlyNecessaryButtons", true)));
+    m_configuration->deprecatedApi()->addVariable("Hints", "ShowContentMessage", true);
 }
 
 void HintsConfiguration::configurationUpdated()
 {
-	m_corner = static_cast<Corner>(m_configuration->deprecatedApi()->readNumEntry("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight)));
-	if (m_corner < Corner::TopLeft || m_corner > Corner::BottomRight)
-		m_corner = Corner::BottomRight;
+    m_corner = static_cast<Corner>(
+        m_configuration->deprecatedApi()->readNumEntry("Hints", "ScreenCorner", static_cast<int>(Corner::BottomRight)));
+    if (m_corner < Corner::TopLeft || m_corner > Corner::BottomRight)
+        m_corner = Corner::BottomRight;
 
-	m_iconSize = m_configuration->deprecatedApi()->readNumEntry("Hints", "IconSize", 32);
-	m_showAllNotificationActions = m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowAllNotificationActions", false);
-	m_showContentMessage = m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage", true);
+    m_iconSize = m_configuration->deprecatedApi()->readNumEntry("Hints", "IconSize", 32);
+    m_showAllNotificationActions =
+        m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowAllNotificationActions", false);
+    m_showContentMessage = m_configuration->deprecatedApi()->readBoolEntry("Hints", "ShowContentMessage", true);
 
-	emit updated();
+    emit updated();
 }
 
 HintsConfiguration::Corner HintsConfiguration::corner() const
 {
-	return m_corner;
+    return m_corner;
 }
 
 int HintsConfiguration::iconSize() const
 {
-	return m_iconSize;
+    return m_iconSize;
 }
 
 bool HintsConfiguration::showAllNotificationActions() const
 {
-	return m_showAllNotificationActions;
+    return m_showAllNotificationActions;
 }
 
 bool HintsConfiguration::showContentMessage() const
 {
-	return m_showContentMessage;
+    return m_showContentMessage;
 }
 
 #include "moc_hints-configuration.cpp"

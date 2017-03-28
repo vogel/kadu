@@ -39,35 +39,34 @@ class QTimer;
  */
 class AutostatusService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutostatusService(QObject *parent = nullptr);
-	virtual ~AutostatusService();
+    Q_INVOKABLE explicit AutostatusService(QObject *parent = nullptr);
+    virtual ~AutostatusService();
 
-	void toggle(bool toggled);
+    void toggle(bool toggled);
 
 private:
-	QPointer<AutostatusConfiguration> m_autostatusConfiguration;
-	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<AutostatusConfiguration> m_autostatusConfiguration;
+    QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
+    QPointer<IconsManager> m_iconsManager;
 
-	QTimer *Timer;
+    QTimer *Timer;
 
-	void on();
-	void off();
+    void on();
+    void off();
 
-	bool readDescriptionList();
+    bool readDescriptionList();
 
-	QStringList::ConstIterator CurrentDescription;
-	QStringList DescriptionList;
+    QStringList::ConstIterator CurrentDescription;
+    QStringList DescriptionList;
 
 private slots:
-	INJEQT_SET void setAutostatusConfiguration(AutostatusConfiguration *autostatusConfiguration);
-	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setAutostatusConfiguration(AutostatusConfiguration *autostatusConfiguration);
+    INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	//! This slot is called on timeout
-	void changeStatus();
-
+    //! This slot is called on timeout
+    void changeStatus();
 };

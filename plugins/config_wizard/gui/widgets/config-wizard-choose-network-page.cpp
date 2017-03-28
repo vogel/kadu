@@ -29,8 +29,8 @@
 
 #include "config-wizard-choose-network-page.h"
 
-ConfigWizardChooseNetworkPage::ConfigWizardChooseNetworkPage(QWidget *parent) :
-		ConfigWizardPage(parent), LastProtocol(0)
+ConfigWizardChooseNetworkPage::ConfigWizardChooseNetworkPage(QWidget *parent)
+        : ConfigWizardPage(parent), LastProtocol(0)
 {
 }
 
@@ -40,60 +40,62 @@ ConfigWizardChooseNetworkPage::~ConfigWizardChooseNetworkPage()
 
 void ConfigWizardChooseNetworkPage::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ConfigWizardChooseNetworkPage::init()
 {
-	setDescription(tr("<p>Please choose the network for the account that you would like to set up.</p><p>You can also create a new account in the wizard if you don't already have one</p>"));
-	createGui();
+    setDescription(
+        tr("<p>Please choose the network for the account that you would like to set up.</p><p>You can also create a "
+           "new account in the wizard if you don't already have one</p>"));
+    createGui();
 }
 
 void ConfigWizardChooseNetworkPage::createGui()
 {
-	formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
+    formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
 
-	SelectProtocol = m_pluginInjectedFactory->makeInjected<ProtocolsComboBox>(this);
-	connect(SelectProtocol, SIGNAL(currentIndexChanged(int)),
-			this, SLOT(protocolChanged()));
+    SelectProtocol = m_pluginInjectedFactory->makeInjected<ProtocolsComboBox>(this);
+    connect(SelectProtocol, SIGNAL(currentIndexChanged(int)), this, SLOT(protocolChanged()));
 
-	formLayout()->addRow(tr("IM Network"), SelectProtocol);
+    formLayout()->addRow(tr("IM Network"), SelectProtocol);
 
-	SetUpExisting = new QRadioButton(tr("I want to set up existing account for Kadu"), this);
-	SetUpNew = new QRadioButton(tr("I want to create new account for Kadu"), this);
-	Ignore = new QRadioButton(tr("I don't want to set up my account for Kadu now"), this);
+    SetUpExisting = new QRadioButton(tr("I want to set up existing account for Kadu"), this);
+    SetUpNew = new QRadioButton(tr("I want to create new account for Kadu"), this);
+    Ignore = new QRadioButton(tr("I don't want to set up my account for Kadu now"), this);
 
-	formLayout()->addRow(QString(), SetUpExisting);
-	formLayout()->addRow(QString(), SetUpNew);
-	formLayout()->addRow(QString(), Ignore);
+    formLayout()->addRow(QString(), SetUpExisting);
+    formLayout()->addRow(QString(), SetUpNew);
+    formLayout()->addRow(QString(), Ignore);
 
-	registerField("choose-network.protocol-factory", SelectProtocol, "currentProtocol", SIGNAL(currentIndexChanged(int)));
-	registerField("choose-network.existing", SetUpExisting);
-	registerField("choose-network.new", SetUpNew);
-	registerField("choose-network.ignore", Ignore);
+    registerField(
+        "choose-network.protocol-factory", SelectProtocol, "currentProtocol", SIGNAL(currentIndexChanged(int)));
+    registerField("choose-network.existing", SetUpExisting);
+    registerField("choose-network.new", SetUpNew);
+    registerField("choose-network.ignore", Ignore);
 
-	protocolChanged();
+    protocolChanged();
 }
 
 void ConfigWizardChooseNetworkPage::protocolChanged()
 {
-	ProtocolFactory *protocol = SelectProtocol->currentProtocol();
-	if (!protocol)
-	{
-		SetUpExisting->setEnabled(false);
-		SetUpNew->setEnabled(false);
-		Ignore->setChecked(true);
-	}
-	else
-	{
-		SetUpExisting->setEnabled(true);
-		SetUpNew->setEnabled(protocol->canRegister());
+    ProtocolFactory *protocol = SelectProtocol->currentProtocol();
+    if (!protocol)
+    {
+        SetUpExisting->setEnabled(false);
+        SetUpNew->setEnabled(false);
+        Ignore->setChecked(true);
+    }
+    else
+    {
+        SetUpExisting->setEnabled(true);
+        SetUpNew->setEnabled(protocol->canRegister());
 
-		if (!LastProtocol || (SetUpNew->isChecked() && !SetUpNew->isEnabled()))
-			SetUpExisting->setChecked(true);
-	}
+        if (!LastProtocol || (SetUpNew->isChecked() && !SetUpNew->isEnabled()))
+            SetUpExisting->setChecked(true);
+    }
 
-	LastProtocol = protocol;
+    LastProtocol = protocol;
 }
 
 #include "moc_config-wizard-choose-network-page.cpp"

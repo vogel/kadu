@@ -21,39 +21,36 @@
 
 #include "group-filter.h"
 
-GroupFilter::GroupFilter() :
-		FilterType(GroupFilterInvalid)
+GroupFilter::GroupFilter() : FilterType(GroupFilterInvalid)
 {
 }
 
-GroupFilter::GroupFilter(GroupFilterType filterType) :
-		FilterType(filterType)
+GroupFilter::GroupFilter(GroupFilterType filterType) : FilterType(filterType)
 {
 }
 
-GroupFilter::GroupFilter(const Group &group) :
-		FilterType(GroupFilterRegular), MyGroup(group)
+GroupFilter::GroupFilter(const Group &group) : FilterType(GroupFilterRegular), MyGroup(group)
 {
 }
 
-bool GroupFilter::operator == (const GroupFilter &groupFilter) const
+bool GroupFilter::operator==(const GroupFilter &groupFilter) const
 {
-	if (groupFilter.filterType() != FilterType)
-		return false;
-	return groupFilter.group() == MyGroup;
+    if (groupFilter.filterType() != FilterType)
+        return false;
+    return groupFilter.group() == MyGroup;
 }
 
 bool GroupFilter::isValid() const
 {
-	return GroupFilterInvalid != FilterType;
+    return GroupFilterInvalid != FilterType;
 }
 
 GroupFilterType GroupFilter::filterType() const
 {
-	return FilterType;
+    return FilterType;
 }
 
 Group GroupFilter::group() const
 {
-	return MyGroup;
+    return MyGroup;
 }

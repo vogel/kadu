@@ -33,34 +33,36 @@ class NetworkProxyManager;
 
 class NetworkAccessManagerWrapper : public QNetworkAccessManager, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = nullptr);
-	virtual ~NetworkAccessManagerWrapper();
+    explicit NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent = nullptr);
+    virtual ~NetworkAccessManagerWrapper();
 
 public slots:
-	void setUtf8(bool utf8) { Utf8 = utf8; }
-	void setHeader(const QString &headerName, const QString &headerValue);
-	void clearHeaders();
+    void setUtf8(bool utf8)
+    {
+        Utf8 = utf8;
+    }
+    void setHeader(const QString &headerName, const QString &headerValue);
+    void clearHeaders();
 
-	QScriptValue get(const QString &url);
-	QScriptValue post(const QString &url, const QString &data);
+    QScriptValue get(const QString &url);
+    QScriptValue post(const QString &url, const QString &data);
 
 protected:
-	void configurationUpdated();
+    void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<NetworkProxyManager> m_networkProxyManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<NetworkProxyManager> m_networkProxyManager;
 
-	QScriptEngine *Engine;
-	bool Utf8;
-	QMap<QByteArray, QByteArray> Headers;
+    QScriptEngine *Engine;
+    bool Utf8;
+    QMap<QByteArray, QByteArray> Headers;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+    INJEQT_INIT void init();
 };

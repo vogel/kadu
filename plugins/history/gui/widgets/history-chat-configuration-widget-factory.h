@@ -30,18 +30,17 @@ class PluginInjectedFactory;
 
 class HistoryChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
 {
-	Q_OBJECT
-	
-public:
-	Q_INVOKABLE explicit HistoryChatConfigurationWidgetFactory(QObject *parent = nullptr);
-	virtual ~HistoryChatConfigurationWidgetFactory();
+    Q_OBJECT
 
-	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
+public:
+    Q_INVOKABLE explicit HistoryChatConfigurationWidgetFactory(QObject *parent = nullptr);
+    virtual ~HistoryChatConfigurationWidgetFactory();
+
+    virtual ChatConfigurationWidget *createWidget(const Chat &chat, QWidget *parent);
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

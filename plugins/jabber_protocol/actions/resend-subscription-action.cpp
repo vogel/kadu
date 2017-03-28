@@ -21,12 +21,11 @@
 
 #include "protocols/services/subscription-service.h"
 
-ResendSubscriptionAction::ResendSubscriptionAction(QObject *parent) :
-		SubscriptionAction(parent)
+ResendSubscriptionAction::ResendSubscriptionAction(QObject *parent) : SubscriptionAction(parent)
 {
-	setType(ActionDescription::TypeUser);
-	setName("rosterResendSubscription");
-	setText(tr("Resend Subscription"));
+    setType(ActionDescription::TypeUser);
+    setName("rosterResendSubscription");
+    setText(tr("Resend Subscription"));
 }
 
 ResendSubscriptionAction::~ResendSubscriptionAction()
@@ -35,7 +34,7 @@ ResendSubscriptionAction::~ResendSubscriptionAction()
 
 void ResendSubscriptionAction::execute(SubscriptionService *subscriptionService, const Contact &contact)
 {
-	subscriptionService->resendSubscription(contact);
+    subscriptionService->resendSubscription(contact);
 }
 
 #include "moc_resend-subscription-action.cpp"

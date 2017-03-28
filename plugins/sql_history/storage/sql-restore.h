@@ -49,96 +49,95 @@ class QSqlDatabase;
  */
 class SqlRestore : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Restore process error.
-	 */
-	enum RestoreError
-	{
-		/**
-		 * Restore process was performed without errors
-		 */
-		ErrorNoError = 0,
-		/**
-		 * No sqlite3 executable was found.
-		 */
-		ErrorSqlite3NotExecutable = 1,
-		/**
-		 * Number of parameters passed to restore script is invalid.
-		 */
-		ErrorInvalidParameters = 2,
-		/**
-		 * Corrupted database cannot be read. It is signal of some deeper error.
-		 */
-		ErrorUnreadableCorruptedDatabase = 3,
-		/**
-		 * Directory with corrupted database is invalid. It is signal of some deeper error.
-		 */
-		ErrorInvalidDirectory = 4,
-		/**
-		 * Directory with corrupted database is invalid. It is signal of some deeper error.
-		 * Possibly disk is full.
-		 */
-		ErrorUnableToCreateBackup = 5,
-		/**
-		 * Unkown error during recovery.
-		 */
-		ErrorRecovering = 6,
-		/**
-		 * Restore script was not found.
-		 */
-		ErrorNoRestoreScriptExecutable = 100
-	};
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Restore process error.
+     */
+    enum RestoreError
+    {
+        /**
+         * Restore process was performed without errors
+         */
+        ErrorNoError = 0,
+        /**
+         * No sqlite3 executable was found.
+         */
+        ErrorSqlite3NotExecutable = 1,
+        /**
+         * Number of parameters passed to restore script is invalid.
+         */
+        ErrorInvalidParameters = 2,
+        /**
+         * Corrupted database cannot be read. It is signal of some deeper error.
+         */
+        ErrorUnreadableCorruptedDatabase = 3,
+        /**
+         * Directory with corrupted database is invalid. It is signal of some deeper error.
+         */
+        ErrorInvalidDirectory = 4,
+        /**
+         * Directory with corrupted database is invalid. It is signal of some deeper error.
+         * Possibly disk is full.
+         */
+        ErrorUnableToCreateBackup = 5,
+        /**
+         * Unkown error during recovery.
+         */
+        ErrorRecovering = 6,
+        /**
+         * Restore script was not found.
+         */
+        ErrorNoRestoreScriptExecutable = 100
+    };
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Check if database is corrupted.
-	 * @param database database to check
-	 * @return true, if database is corrupted
-	 *
-	 * This method uses simple heuristics to check if given database is corrupted.
-	 * Database must be open to perform valid check.
-	 *
-	 * If database was not properly opened (ie: QSqlDatabase::isOpenError() return true)
-	 * then it is marked as corrupted. If list of tables can not be read or is empty,
-	 * then database is marked as corrupted.
-	 *
-	 * Do not use this method on fresh databases without tables - invalid result will be
-	 * returned.
-	 */
-	static bool isCorrupted(const QSqlDatabase &database);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Check if database is corrupted.
+     * @param database database to check
+     * @return true, if database is corrupted
+     *
+     * This method uses simple heuristics to check if given database is corrupted.
+     * Database must be open to perform valid check.
+     *
+     * If database was not properly opened (ie: QSqlDatabase::isOpenError() return true)
+     * then it is marked as corrupted. If list of tables can not be read or is empty,
+     * then database is marked as corrupted.
+     *
+     * Do not use this method on fresh databases without tables - invalid result will be
+     * returned.
+     */
+    static bool isCorrupted(const QSqlDatabase &database);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Translate error enum to human-readable string.
-	 * @param error error number
-	 * @return human-readable string describing given error
-	 */
-	static QString errorMessage(RestoreError error);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Translate error enum to human-readable string.
+     * @param error error number
+     * @return human-readable string describing given error
+     */
+    static QString errorMessage(RestoreError error);
 
-	explicit SqlRestore(QObject *parent = nullptr);
-	virtual ~SqlRestore();
+    explicit SqlRestore(QObject *parent = nullptr);
+    virtual ~SqlRestore();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Try to restore database file.
-	 * @param databaseFilePath path to database file
-	 * @return error value of recovery process
-	 *
-	 * This method executes recovery script with given database file path as parameter. This methods
-	 * returns after script is finished, so executing this method is main thread is not a good idea.
-	 */
-	RestoreError performRestore(const QString &databaseFilePath);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Try to restore database file.
+     * @param databaseFilePath path to database file
+     * @return error value of recovery process
+     *
+     * This method executes recovery script with given database file path as parameter. This methods
+     * returns after script is finished, so executing this method is main thread is not a good idea.
+     */
+    RestoreError performRestore(const QString &databaseFilePath);
 
 private:
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 };
 
 /**

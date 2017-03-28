@@ -25,15 +25,15 @@
 #include "widgets/chat-edit-box.h"
 #include "widgets/custom-input.h"
 
-ItalicAction::ItalicAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ItalicAction::ItalicAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
     setCheckable(true);
-	setIcon(KaduIcon{"format-text-italic"});
-	setName(QStringLiteral("italicAction"));
-	setText(tr("Italic"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"format-text-italic"});
+    setName(QStringLiteral("italicAction"));
+    setText(tr("Italic"));
+    setType(ActionDescription::TypeChat);
 }
 
 ItalicAction::~ItalicAction()
@@ -42,29 +42,29 @@ ItalicAction::~ItalicAction()
 
 void ItalicAction::actionTriggered(QAction *sender, bool toggled)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	chatEditBox->inputBox()->setFontItalic(toggled);
+    chatEditBox->inputBox()->setFontItalic(toggled);
 }
 
-void ItalicAction::updateActionState(Action* action)
+void ItalicAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	auto chat = action->context()->chat();
-	if (!chat)
-		return;
+    auto chat = action->context()->chat();
+    if (!chat)
+        return;
 
-	auto protocol = chat.chatAccount().protocolHandler();
-	if (!protocol)
-		return;
+    auto protocol = chat.chatAccount().protocolHandler();
+    if (!protocol)
+        return;
 
-	if (!protocol->protocolFactory())
-		return;
+    if (!protocol->protocolFactory())
+        return;
 
-	action->setEnabled(protocol->protocolFactory()->name() == "gadu");
+    action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
 
 #include "moc_italic-action.cpp"

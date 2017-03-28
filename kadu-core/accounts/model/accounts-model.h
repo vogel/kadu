@@ -34,36 +34,35 @@ class IconsManager;
 
 class AccountsModel : public QAbstractListModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AccountsModel(AccountManager *accountManager, QObject *parent = nullptr);
-	virtual ~AccountsModel();
+    explicit AccountsModel(AccountManager *accountManager, QObject *parent = nullptr);
+    virtual ~AccountsModel();
 
-	virtual int columnCount(const QModelIndex &parent) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	Account account(const QModelIndex &index) const;
-	int accountIndex(Account account) const;
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+    Account account(const QModelIndex &index) const;
+    int accountIndex(Account account) const;
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
-	void setIncludeIdInDisplay(bool includeIdInDisplay);
+    void setIncludeIdInDisplay(bool includeIdInDisplay);
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	bool m_includeIdInDisplay;
+    bool m_includeIdInDisplay;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void accountUpdated(Account account);
-	void accountAboutToBeAdded(Account account);
-	void accountAdded(Account account);
-	void accountAboutToBeRemoved(Account account);
-	void accountRemoved(Account account);
-
+    void accountUpdated(Account account);
+    void accountAboutToBeAdded(Account account);
+    void accountAdded(Account account);
+    void accountAboutToBeRemoved(Account account);
+    void accountRemoved(Account account);
 };

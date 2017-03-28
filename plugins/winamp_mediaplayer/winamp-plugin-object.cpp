@@ -24,8 +24,7 @@
 #include "plugins/mediaplayer/mediaplayer-plugin-object.h"
 #include "plugins/mediaplayer/mediaplayer.h"
 
-WinampPluginObject::WinampPluginObject(QObject *parent) :
-		QObject{parent}
+WinampPluginObject::WinampPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,22 +34,22 @@ WinampPluginObject::~WinampPluginObject()
 
 void WinampPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void WinampPluginObject::setWinampMediaPlayer(WinampMediaPlayer *winampMediaPlayer)
 {
-	m_winampMediaPlayer = winampMediaPlayer;
+    m_winampMediaPlayer = winampMediaPlayer;
 }
 
 void WinampPluginObject::init()
 {
-	m_mediaPlayer->registerMediaPlayer(m_winampMediaPlayer, m_winampMediaPlayer);
+    m_mediaPlayer->registerMediaPlayer(m_winampMediaPlayer, m_winampMediaPlayer);
 }
 
 void WinampPluginObject::done()
 {
-	m_mediaPlayer->unregisterMediaPlayer();
+    m_mediaPlayer->unregisterMediaPlayer();
 }
 
 #include "moc_winamp-plugin-object.cpp"

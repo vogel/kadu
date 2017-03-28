@@ -23,15 +23,15 @@
 #include "actions/action.h"
 #include "buddies/buddy-set.h"
 
-NotifyAboutBuddyAction::NotifyAboutBuddyAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+NotifyAboutBuddyAction::NotifyAboutBuddyAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/notify-about-buddy"});
-	setName(QStringLiteral("notifyAboutUserAction"));
-	setText(tr("Notify About Buddy"));
-	setType(ActionDescription::TypeUser);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/notify-about-buddy"});
+    setName(QStringLiteral("notifyAboutUserAction"));
+    setText(tr("Notify About Buddy"));
+    setType(ActionDescription::TypeUser);
 }
 
 NotifyAboutBuddyAction::~NotifyAboutBuddyAction()
@@ -40,40 +40,40 @@ NotifyAboutBuddyAction::~NotifyAboutBuddyAction()
 
 void NotifyAboutBuddyAction::actionTriggered(QAction *sender, bool toggled)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto const &buddies = action->context()->buddies();
+    auto const &buddies = action->context()->buddies();
 
-	for (auto const &buddy : buddies)
-	{
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
+    for (auto const &buddy : buddies)
+    {
+        if (buddy.isNull() || buddy.isAnonymous())
+            continue;
 
-		if (toggled)
-			buddy.removeProperty("notify:Notify");
-		else
-			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
-	}
+        if (toggled)
+            buddy.removeProperty("notify:Notify");
+        else
+            buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
+    }
 
-	for (auto action : actions())
-		if (action->context()->contacts().toBuddySet() == buddies)
-			action->setChecked(toggled);
+    for (auto action : actions())
+        if (action->context()->contacts().toBuddySet() == buddies)
+            action->setChecked(toggled);
 }
 
 void NotifyAboutBuddyAction::updateActionState(Action *action)
 {
-	action->setEnabled(!action->context()->buddies().isEmpty());
+    action->setEnabled(!action->context()->buddies().isEmpty());
 
-	auto buddySet = action->context()->contacts().toBuddySet();
-	auto notifyAll = std::all_of(std::begin(buddySet), std::end(buddySet), [](auto const &buddy){
-		if (!buddy.data())
-			return true;
-		return buddy.data()->customProperties()->property("notify:Notify", true).toBool();
-	});
+    auto buddySet = action->context()->contacts().toBuddySet();
+    auto notifyAll = std::all_of(std::begin(buddySet), std::end(buddySet), [](auto const &buddy) {
+        if (!buddy.data())
+            return true;
+        return buddy.data()->customProperties()->property("notify:Notify", true).toBool();
+    });
 
-	action->setChecked(notifyAll);
+    action->setChecked(notifyAll);
 }
 
 #include "moc_notify-about-buddy-action.cpp"

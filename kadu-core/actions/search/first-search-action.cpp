@@ -24,36 +24,35 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QRadioButton>
 
-FirstSearchAction::FirstSearchAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+FirstSearchAction::FirstSearchAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"edit-find"});
-	setName(QStringLiteral("firstSearchAction"));
-	setText(tr("&Search"));
-	setType(ActionDescription::TypeSearch);
+    setIcon(KaduIcon{"edit-find"});
+    setName(QStringLiteral("firstSearchAction"));
+    setText(tr("&Search"));
+    setType(ActionDescription::TypeSearch);
 }
 
 FirstSearchAction::~FirstSearchAction()
 {
 }
 
-void FirstSearchAction::actionInstanceCreated(Action* action)
+void FirstSearchAction::actionInstanceCreated(Action *action)
 {
-	auto search = qobject_cast<SearchWindow *>(action->parentWidget());
+    auto search = qobject_cast<SearchWindow *>(action->parentWidget());
 
-	if (!search || search->SearchInProgress || !search->PersonalDataRadioButton ||
-			(search->PersonalDataRadioButton->isChecked() && search->isPersonalDataEmpty()) ||
-			!search->UinRadioButton || !search->UinEdit ||
-			(search->UinRadioButton->isChecked() && search->UinEdit->text().isEmpty()))
-		action->setEnabled(false);
+    if (!search || search->SearchInProgress || !search->PersonalDataRadioButton ||
+        (search->PersonalDataRadioButton->isChecked() && search->isPersonalDataEmpty()) || !search->UinRadioButton ||
+        !search->UinEdit || (search->UinRadioButton->isChecked() && search->UinEdit->text().isEmpty()))
+        action->setEnabled(false);
 }
 
 void FirstSearchAction::actionTriggered(QAction *sender, bool)
 {
-	auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
-	if (search)
-		search->firstSearch();
+    auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
+    if (search)
+        search->firstSearch();
 }
 
 #include "moc_first-search-action.cpp"

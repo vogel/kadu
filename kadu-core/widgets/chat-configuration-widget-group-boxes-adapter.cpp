@@ -26,18 +26,19 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-ChatConfigurationWidgetGroupBoxesAdapter::ChatConfigurationWidgetGroupBoxesAdapter(ChatDataWindow *chatDataWindow, QWidget *widget) :
-		QObject{chatDataWindow},
-		m_chatDataWindow{chatDataWindow},
-		m_widget{widget}
+ChatConfigurationWidgetGroupBoxesAdapter::ChatConfigurationWidgetGroupBoxesAdapter(
+    ChatDataWindow *chatDataWindow, QWidget *widget)
+        : QObject{chatDataWindow}, m_chatDataWindow{chatDataWindow}, m_widget{widget}
 {
-	if (!m_chatDataWindow || !m_widget)
-		return;
+    if (!m_chatDataWindow || !m_widget)
+        return;
 
-	connect(m_chatDataWindow, SIGNAL(widgetAdded(ChatConfigurationWidget*)), this, SLOT(widgetAdded(ChatConfigurationWidget*)));
+    connect(
+        m_chatDataWindow, SIGNAL(widgetAdded(ChatConfigurationWidget *)), this,
+        SLOT(widgetAdded(ChatConfigurationWidget *)));
 
-	for (auto chatConfigurationWidget : m_chatDataWindow->chatConfigurationWidgets())
-		widgetAdded(chatConfigurationWidget);
+    for (auto chatConfigurationWidget : m_chatDataWindow->chatConfigurationWidgets())
+        widgetAdded(chatConfigurationWidget);
 }
 
 ChatConfigurationWidgetGroupBoxesAdapter::~ChatConfigurationWidgetGroupBoxesAdapter()
@@ -46,19 +47,19 @@ ChatConfigurationWidgetGroupBoxesAdapter::~ChatConfigurationWidgetGroupBoxesAdap
 
 void ChatConfigurationWidgetGroupBoxesAdapter::widgetAdded(ChatConfigurationWidget *widget)
 {
-	auto groupBox = new QGroupBox{m_widget};
-	connect(widget, SIGNAL(destroyed(QObject*)), groupBox, SLOT(deleteLater()));
-	groupBox->setFlat(true);
-	groupBox->setTitle(widget->windowTitle());
+    auto groupBox = new QGroupBox{m_widget};
+    connect(widget, SIGNAL(destroyed(QObject *)), groupBox, SLOT(deleteLater()));
+    groupBox->setFlat(true);
+    groupBox->setTitle(widget->windowTitle());
 
-	auto groupBoxLayout = new QVBoxLayout{groupBox};
-	groupBoxLayout->setMargin(0);
-	groupBoxLayout->setSpacing(4);
-	groupBoxLayout->addWidget(widget);
+    auto groupBoxLayout = new QVBoxLayout{groupBox};
+    groupBoxLayout->setMargin(0);
+    groupBoxLayout->setSpacing(4);
+    groupBoxLayout->addWidget(widget);
 
-	auto layout = qobject_cast<QBoxLayout *>(m_widget->layout());
-	if (layout)
-		layout->insertWidget(layout->count() - 1, groupBox);
+    auto layout = qobject_cast<QBoxLayout *>(m_widget->layout());
+    if (layout)
+        layout->insertWidget(layout->count() - 1, groupBox);
 }
 
 #include "moc_chat-configuration-widget-group-boxes-adapter.cpp"

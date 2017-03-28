@@ -24,45 +24,45 @@
 
 #include <QtCore/QVector>
 
-ChatListStorage::ChatListStorage(StoragePoint *storagePoint, QString nodeName) :
-		m_storagePoint(storagePoint), m_nodeName(nodeName)
+ChatListStorage::ChatListStorage(StoragePoint *storagePoint, QString nodeName)
+        : m_storagePoint(storagePoint), m_nodeName(nodeName)
 {
 }
 
 void ChatListStorage::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 QVector<Chat> ChatListStorage::load() const
 {
-	auto stringListStorage = StringListStorage{m_storagePoint, m_nodeName};
-	return chatsFromUuids(stringListStorage.load());
+    auto stringListStorage = StringListStorage{m_storagePoint, m_nodeName};
+    return chatsFromUuids(stringListStorage.load());
 }
 
 QVector<Chat> ChatListStorage::chatsFromUuids(const QStringList &uuids) const
 {
-	if (!m_chatManager)
-		return {};
+    if (!m_chatManager)
+        return {};
 
-	auto result = QVector<Chat>{};
-	std::transform(uuids.begin(), uuids.end(), std::back_inserter(result), [this](const QString &uuid){
-		return m_chatManager.data()->byUuid(uuid);
-	});
-	return result;
+    auto result = QVector<Chat>{};
+    std::transform(uuids.begin(), uuids.end(), std::back_inserter(result), [this](const QString &uuid) {
+        return m_chatManager.data()->byUuid(uuid);
+    });
+    return result;
 }
 
 void ChatListStorage::store(const QVector<Chat> &chats) const
 {
-	auto stringListStorage = StringListStorage{m_storagePoint, m_nodeName};
-	stringListStorage.store(uuidsFromChats(chats));
+    auto stringListStorage = StringListStorage{m_storagePoint, m_nodeName};
+    stringListStorage.store(uuidsFromChats(chats));
 }
 
 QStringList ChatListStorage::uuidsFromChats(const QVector<Chat> &chats) const
 {
-	auto result = QStringList{};
-	std::transform(chats.begin(), chats.end(), std::back_inserter(result), [this](const Chat &chat){
-		return chat.uuid().toString();
-	});
-	return result;
+    auto result = QStringList{};
+    std::transform(chats.begin(), chats.end(), std::back_inserter(result), [this](const Chat &chat) {
+        return chat.uuid().toString();
+    });
+    return result;
 }

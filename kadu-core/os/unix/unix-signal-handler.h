@@ -31,20 +31,19 @@ class VersionService;
 
 class UnixSignalHandler : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit UnixSignalHandler(QObject *parent = nullptr);
-	virtual ~UnixSignalHandler();
+    Q_INVOKABLE explicit UnixSignalHandler(QObject *parent = nullptr);
+    virtual ~UnixSignalHandler();
 
-	void startSignalHandling();
+    void startSignalHandling();
 
 private slots:
-	INJEQT_SET void setApplication(Application *application);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-
+    INJEQT_SET void setApplication(Application *application);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+    INJEQT_SET void setVersionService(VersionService *versionService);
 };

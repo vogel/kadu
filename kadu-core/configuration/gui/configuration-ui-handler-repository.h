@@ -28,38 +28,45 @@ class ConfigurationUiHandler;
 
 class KADUAPI ConfigurationUiHandlerRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Storage = std::vector<ConfigurationUiHandler *>;
-	using WrappedIterator = Storage::iterator;
+    using Storage = std::vector<ConfigurationUiHandler *>;
+    using WrappedIterator = Storage::iterator;
 
 public:
-	using Iterator = Storage::iterator;
+    using Iterator = Storage::iterator;
 
-	Q_INVOKABLE explicit ConfigurationUiHandlerRepository(QObject *parent = nullptr);
-	virtual ~ConfigurationUiHandlerRepository();
+    Q_INVOKABLE explicit ConfigurationUiHandlerRepository(QObject *parent = nullptr);
+    virtual ~ConfigurationUiHandlerRepository();
 
-	Iterator begin() { return std::begin(m_configuratorUiHandlers); }
-	Iterator end() { return std::end(m_configuratorUiHandlers); }
+    Iterator begin()
+    {
+        return std::begin(m_configuratorUiHandlers);
+    }
+    Iterator end()
+    {
+        return std::end(m_configuratorUiHandlers);
+    }
 
-	void addConfigurationUiHandler(ConfigurationUiHandler *configurationUiHandler);
-	void removeConfigurationUiHandler(ConfigurationUiHandler *configurationUiHandler);
+    void addConfigurationUiHandler(ConfigurationUiHandler *configurationUiHandler);
+    void removeConfigurationUiHandler(ConfigurationUiHandler *configurationUiHandler);
 
 signals:
-	void configurationUiHandlerAdded(ConfigurationUiHandler *configurationUiHandler);
-	void configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler);
+    void configurationUiHandlerAdded(ConfigurationUiHandler *configurationUiHandler);
+    void configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler);
 
 private:
-	Storage m_configuratorUiHandlers;
-
+    Storage m_configuratorUiHandlers;
 };
 
-inline ConfigurationUiHandlerRepository::Iterator begin(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+inline ConfigurationUiHandlerRepository::Iterator
+begin(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	return configurationUiHandlerRepository->begin();
+    return configurationUiHandlerRepository->begin();
 }
 
-inline ConfigurationUiHandlerRepository::Iterator end(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+inline ConfigurationUiHandlerRepository::Iterator
+end(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	return configurationUiHandlerRepository->end();
+    return configurationUiHandlerRepository->end();
 }

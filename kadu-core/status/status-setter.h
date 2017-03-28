@@ -20,8 +20,8 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "status/status-container-aware-object.h"
 #include "exports.h"
+#include "status/status-container-aware-object.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -51,90 +51,89 @@ class Status;
  */
 class KADUAPI StatusSetter : public QObject, private StatusContainerAwareObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit StatusSetter(QObject *parent = nullptr);
-	virtual ~StatusSetter();
+    Q_INVOKABLE explicit StatusSetter(QObject *parent = nullptr);
+    virtual ~StatusSetter();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets status on given status container with modifications.
-	 * @param statusContainer StatusContainer to set status on.
-	 * @param status status to be modified and then set on statusContainer
-	 *
-	 * This methods stores given status as manually set status (to receive by manuallySetStatus) and then modifies
-	 * it using StatusChangersManager singleton. After all changes are done, new status is set on statusContainer
-	 * using StatusContainer::setStatus method.
-	 */
-	void setStatusManually(StatusContainer *statusContainer, Status status);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets status on given status container with modifications.
+     * @param statusContainer StatusContainer to set status on.
+     * @param status status to be modified and then set on statusContainer
+     *
+     * This methods stores given status as manually set status (to receive by manuallySetStatus) and then modifies
+     * it using StatusChangersManager singleton. After all changes are done, new status is set on statusContainer
+     * using StatusContainer::setStatus method.
+     */
+    void setStatusManually(StatusContainer *statusContainer, Status status);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns manually (unchanged) status from given StatusContainer.
-	 * @param statusContainer StatusContainer to get status from.
-	 *
-	 * This methods returns manually set status from given StatusContainer. This is the last status that was
-	 * set using StatusSetter::setStatus method.
-	 */
-	Status manuallySetStatus(StatusContainer *statusContainer);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns manually (unchanged) status from given StatusContainer.
+     * @param statusContainer StatusContainer to get status from.
+     *
+     * This methods returns manually set status from given StatusContainer. This is the last status that was
+     * set using StatusSetter::setStatus method.
+     */
+    Status manuallySetStatus(StatusContainer *statusContainer);
 
 protected:
-	void configurationUpdated();
+    void configurationUpdated();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Called on registration of new container, sets default status.
-	 * @param statusContainer new status container
-	 *
-	 * If core is initialized this method calls setDefaultStatus to set initial status on given status container.
-	 * If core is not initialized, this method does nothing. On core initialization this method will be called
-	 * for each status container.
-	 */
-	void statusContainerRegistered(StatusContainer *statusContainer);
-	void statusContainerUnregistered(StatusContainer *statusContainer);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Called on registration of new container, sets default status.
+     * @param statusContainer new status container
+     *
+     * If core is initialized this method calls setDefaultStatus to set initial status on given status container.
+     * If core is not initialized, this method does nothing. On core initialization this method will be called
+     * for each status container.
+     */
+    void statusContainerRegistered(StatusContainer *statusContainer);
+    void statusContainerUnregistered(StatusContainer *statusContainer);
 
 private:
-	friend class Core;
+    friend class Core;
 
-	QPointer<Configuration> m_configuration;
-	QPointer<StatusChangerManager> m_statusChangerManager;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<StatusChangerManager> m_statusChangerManager;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	QString StartupStatus;
-	QString StartupDescription;
-	bool StartupLastDescription;
-	bool OfflineToInvisible;
+    QString StartupStatus;
+    QString StartupDescription;
+    bool StartupLastDescription;
+    bool OfflineToInvisible;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Private method called by Core.
-	 *
-	 * This method is called by Core when all internals have been initialized. It allows StatusSetter
-	 * to set initial status on all registered status containers.
-	 */
-	void coreInitialized();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Private method called by Core.
+     *
+     * This method is called by Core when all internals have been initialized. It allows StatusSetter
+     * to set initial status on all registered status containers.
+     */
+    void coreInitialized();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets default status on given container.
-	 * @param statusContainer container to set default status on
-	 *
-	 * This method is internally called after new status container is registered. Stored status
-	 * is retreived from this container, then configuration is applied on this status (like:
-	 * default description), then this status is send to StatusChangerManager to get final version
-	 * to set on container.
-	 */
-	void setDefaultStatus(StatusContainer *statusContainer);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets default status on given container.
+     * @param statusContainer container to set default status on
+     *
+     * This method is internally called after new status container is registered. Stored status
+     * is retreived from this container, then configuration is applied on this status (like:
+     * default description), then this status is send to StatusChangerManager to get final version
+     * to set on container.
+     */
+    void setDefaultStatus(StatusContainer *statusContainer);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 };
 
 /**

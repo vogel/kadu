@@ -26,24 +26,19 @@
 
 #include <QtCore/QCoreApplication>
 
-const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP
-(
-	"@default",
-	"Syntax: %t - song title,\n%a - album, %r - artist, %f - file name,\n"
-	"%l - song length (MM:SS), %c - current song position (MM:SS),\n"
-	"%p - percents of played song, %n - player name, %v - player version\n"
-);
+const char *MediaPlayerSyntaxText = QT_TRANSLATE_NOOP(
+    "@default",
+    "Syntax: %t - song title,\n%a - album, %r - artist, %f - file name,\n"
+    "%l - song length (MM:SS), %c - current song position (MM:SS),\n"
+    "%p - percents of played song, %n - player name, %v - player version\n");
 
-const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP
-(
-	"@default",
-	"With this option enabled you'll be able to control\n"
-	"your MediaPlayer in chat window by keyboard shortcuts:\n"
-	"Win+ Enter/Backspace/Left/Right/Up/Down."
-);
+const char *MediaPlayerChatShortCutsText = QT_TRANSLATE_NOOP(
+    "@default",
+    "With this option enabled you'll be able to control\n"
+    "your MediaPlayer in chat window by keyboard shortcuts:\n"
+    "Win+ Enter/Backspace/Left/Right/Up/Down.");
 
-MediaplayerConfigurationUiHandler::MediaplayerConfigurationUiHandler(QObject *parent) :
-		QObject{parent}
+MediaplayerConfigurationUiHandler::MediaplayerConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -53,10 +48,15 @@ MediaplayerConfigurationUiHandler::~MediaplayerConfigurationUiHandler()
 
 void MediaplayerConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	connect(mainConfigurationWindow->widget()->widgetById("mediaplayer/signature"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("mediaplayer/signatures"), SLOT(setEnabled(bool)));
-	mainConfigurationWindow->widget()->widgetById("mediaplayer/syntax")->setToolTip(QCoreApplication::translate("@default", MediaPlayerSyntaxText));
-	mainConfigurationWindow->widget()->widgetById("mediaplayer/chatShortcuts")->setToolTip(QCoreApplication::translate("@default", MediaPlayerChatShortCutsText));
+    connect(
+        mainConfigurationWindow->widget()->widgetById("mediaplayer/signature"), SIGNAL(toggled(bool)),
+        mainConfigurationWindow->widget()->widgetById("mediaplayer/signatures"), SLOT(setEnabled(bool)));
+    mainConfigurationWindow->widget()
+        ->widgetById("mediaplayer/syntax")
+        ->setToolTip(QCoreApplication::translate("@default", MediaPlayerSyntaxText));
+    mainConfigurationWindow->widget()
+        ->widgetById("mediaplayer/chatShortcuts")
+        ->setToolTip(QCoreApplication::translate("@default", MediaPlayerChatShortCutsText));
 }
 
 void MediaplayerConfigurationUiHandler::mainConfigurationWindowDestroyed()

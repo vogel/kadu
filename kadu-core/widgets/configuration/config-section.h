@@ -45,47 +45,56 @@ class QListWidgetItem;
 
 class ConfigSection : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ConfigSection(const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem, QWidget *parentConfigGroupBoxWidget,
-		const KaduIcon &icon);
-	virtual ~ConfigSection();
+    ConfigSection(
+        const QString &name, ConfigurationWidget *configurationWidget, QListWidgetItem *listWidgetItem,
+        QWidget *parentConfigGroupBoxWidget, const KaduIcon &icon);
+    virtual ~ConfigSection();
 
-	const QString & name() const { return Name; }
+    const QString &name() const
+    {
+        return Name;
+    }
 
-	void activate();
+    void activate();
 
-	void show() { TabWidget->show(); }
-	void hide() { TabWidget->hide(); }
+    void show()
+    {
+        TabWidget->show();
+    }
+    void hide()
+    {
+        TabWidget->hide();
+    }
 
-	void addFullPageWidget(const QString &name, QWidget *widget);
+    void addFullPageWidget(const QString &name, QWidget *widget);
 
-	ConfigGroupBox * configGroupBox(const QString &tab, const QString &groupBox, bool create);
+    ConfigGroupBox *configGroupBox(const QString &tab, const QString &groupBox, bool create);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
 
-	QString Name;
-	ConfigurationWidget *MyConfigurationWidget;
-	KaduIcon Icon;
+    QString Name;
+    ConfigurationWidget *MyConfigurationWidget;
+    KaduIcon Icon;
 
-	QListWidgetItem *ListWidgetItem;
-	bool Activated;
-	QMap<QString, ConfigTab *> ConfigTabs;
+    QListWidgetItem *ListWidgetItem;
+    bool Activated;
+    QMap<QString, ConfigTab *> ConfigTabs;
 
-	QWidget *ParentConfigGroupBoxWidget;
-	KaduTabWidget *TabWidget;
+    QWidget *ParentConfigGroupBoxWidget;
+    KaduTabWidget *TabWidget;
 
-	ConfigTab * configTab(const QString &name, bool create);
+    ConfigTab *configTab(const QString &name, bool create);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void configTabDestroyed(QObject *obj);
-	void iconThemeChanged();
-
+    void configTabDestroyed(QObject *obj);
+    void iconThemeChanged();
 };

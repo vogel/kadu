@@ -23,19 +23,18 @@
 
 class GaduIMTokenService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduIMTokenService(QObject *parent = nullptr);
-	virtual ~GaduIMTokenService();
+    explicit GaduIMTokenService(QObject *parent = nullptr);
+    virtual ~GaduIMTokenService();
 
-	void setIMToken(QByteArray imToken);
-	QByteArray imToken() const;
+    void setIMToken(QByteArray imToken);
+    QByteArray imToken() const;
 
 signals:
-	void imTokenChanged(QByteArray imToken);
+    void imTokenChanged(QByteArray imToken);
 
 private:
-	QByteArray m_imToken;
-
+    QByteArray m_imToken;
 };

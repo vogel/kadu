@@ -19,31 +19,31 @@ class QPushButton;
 
 class PCSpeakerConfigurationWidget : public NotifierConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PCSpeakerNotifier> m_notifier;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PCSpeakerNotifier> m_notifier;
 
-	QLineEdit *soundEdit;
-	QPushButton *testButton;
-	QMap<QString, QString> Sounds;
-	QString CurrentNotificationEvent;
+    QLineEdit *soundEdit;
+    QPushButton *testButton;
+    QMap<QString, QString> Sounds;
+    QString CurrentNotificationEvent;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void test();
+    void test();
 
 public:
-	PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent = nullptr);
-	virtual ~PCSpeakerConfigurationWidget();
+    PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent = nullptr);
+    virtual ~PCSpeakerConfigurationWidget();
 
-	virtual void loadNotifyConfigurations() {};
-	virtual void saveNotifyConfigurations();
-	virtual void switchToEvent(const QString &event);
+    virtual void loadNotifyConfigurations(){};
+    virtual void saveNotifyConfigurations();
+    virtual void switchToEvent(const QString &event);
 };
 
 #endif

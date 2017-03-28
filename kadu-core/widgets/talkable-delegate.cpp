@@ -31,8 +31,7 @@
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QAbstractItemView>
 
-TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) :
-		KaduTreeViewDelegate(parent)
+TalkableDelegate::TalkableDelegate(TalkableTreeView *parent) : KaduTreeViewDelegate(parent)
 {
 }
 
@@ -42,114 +41,115 @@ TalkableDelegate::~TalkableDelegate()
 
 void TalkableDelegate::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void TalkableDelegate::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void TalkableDelegate::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void TalkableDelegate::init()
 {
-	connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
-	connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
+    connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
+    connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(messageStatusChanged(Message)));
+    connect(
+        m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(messageStatusChanged(Message)));
 }
 
 void TalkableDelegate::setChain(ModelChain *chain)
 {
-	Chain = chain;
+    Chain = chain;
 }
 
 void TalkableDelegate::contactUpdated(const Contact &contact)
 {
-	if (!Chain)
-		return;
+    if (!Chain)
+        return;
 
-	const QModelIndexList &contactsIndexList = Chain.data()->indexListForValue(contact);
-	foreach (const QModelIndex &contactIndex, contactsIndexList)
-		emit sizeHintChanged(contactIndex);
+    const QModelIndexList &contactsIndexList = Chain.data()->indexListForValue(contact);
+    foreach (const QModelIndex &contactIndex, contactsIndexList)
+        emit sizeHintChanged(contactIndex);
 }
 
 void TalkableDelegate::buddyUpdated(const Buddy &buddy)
 {
-	if (!Chain)
-		return;
+    if (!Chain)
+        return;
 
-	const QModelIndexList &buddyIndexList = Chain.data()->indexListForValue(buddy);
-	foreach (const QModelIndex &buddyIndex, buddyIndexList)
-		emit sizeHintChanged(buddyIndex);
+    const QModelIndexList &buddyIndexList = Chain.data()->indexListForValue(buddy);
+    foreach (const QModelIndex &buddyIndex, buddyIndexList)
+        emit sizeHintChanged(buddyIndex);
 }
 
 void TalkableDelegate::messageStatusChanged(Message message)
 {
-	Buddy buddy = message.messageSender().ownerBuddy();
-	buddyUpdated(buddy);
+    Buddy buddy = message.messageSender().ownerBuddy();
+    buddyUpdated(buddy);
 }
 
-bool TalkableDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option,
-                                   const QModelIndex &index)
+bool TalkableDelegate::editorEvent(
+    QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-	if (!event || !model)
-		return false;
+    if (!event || !model)
+        return false;
 
-	Qt::ItemFlags flags = model->flags(index);
-	if (!(flags & Qt::ItemIsUserCheckable) || !(option.state & QStyle::State_Enabled) || !(flags & Qt::ItemIsEnabled))
-		return false;
+    Qt::ItemFlags flags = model->flags(index);
+    if (!(flags & Qt::ItemIsUserCheckable) || !(option.state & QStyle::State_Enabled) || !(flags & Qt::ItemIsEnabled))
+        return false;
 
-	QVariant value = index.data(Qt::CheckStateRole);
-	if (!value.isValid())
-		return false;
+    QVariant value = index.data(Qt::CheckStateRole);
+    if (!value.isValid())
+        return false;
 
-	switch (event->type())
-	{
-		case QEvent::MouseButtonRelease:
-		{
-			TalkablePainter talkablePainter(configuration(), getOptions(index, option), index);
+    switch (event->type())
+    {
+    case QEvent::MouseButtonRelease:
+    {
+        TalkablePainter talkablePainter(configuration(), getOptions(index, option), index);
 
-			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-			if (Qt::LeftButton != mouseEvent->button())
-				return false;
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (Qt::LeftButton != mouseEvent->button())
+            return false;
 
-			const QRect &checkboxRect = talkablePainter.checkboxRect();
-			if (!checkboxRect.contains(mouseEvent->pos()))
-				return false;
+        const QRect &checkboxRect = talkablePainter.checkboxRect();
+        if (!checkboxRect.contains(mouseEvent->pos()))
+            return false;
 
-			break;
-		}
-		case QEvent::MouseButtonDblClick:
-		{
-			QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-			if (Qt::LeftButton != mouseEvent->button())
-				return false;
+        break;
+    }
+    case QEvent::MouseButtonDblClick:
+    {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (Qt::LeftButton != mouseEvent->button())
+            return false;
 
-			break;
-		}
+        break;
+    }
 
-		case QEvent::KeyPress:
-		{
-			QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-			if (Qt::Key_Space != keyEvent->key() && Qt::Key_Select != keyEvent->key())
-				return false;
+    case QEvent::KeyPress:
+    {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        if (Qt::Key_Space != keyEvent->key() && Qt::Key_Select != keyEvent->key())
+            return false;
 
-			break;
-		}
+        break;
+    }
 
-		default:
-			return false;
-	}
+    default:
+        return false;
+    }
 
-	Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
-	state = state == Qt::Checked ? Qt::Unchecked : Qt::Checked;
+    Qt::CheckState state = static_cast<Qt::CheckState>(value.toInt());
+    state = state == Qt::Checked ? Qt::Unchecked : Qt::Checked;
 
-	return model->setData(index, state, Qt::CheckStateRole);
+    return model->setData(index, state, Qt::CheckStateRole);
 }
 
 #include "moc_talkable-delegate.cpp"

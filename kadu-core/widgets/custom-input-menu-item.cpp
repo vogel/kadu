@@ -20,15 +20,15 @@
 
 #include "custom-input-menu-item.h"
 
-CustomInputMenuItem::CustomInputMenuItem(ActionDescription *action, CustomInputMenuCategory category, int priority) :
-	Action(action), Category(category), Priority(priority)
+CustomInputMenuItem::CustomInputMenuItem(ActionDescription *action, CustomInputMenuCategory category, int priority)
+        : Action(action), Category(category), Priority(priority)
 {
 }
 
-bool CustomInputMenuItem::operator < (const CustomInputMenuItem &compareTo) const
+bool CustomInputMenuItem::operator<(const CustomInputMenuItem &compareTo) const
 {
-	if (Category == compareTo.Category)
-		return Priority < compareTo.Priority;
+    if (Category == compareTo.Category)
+        return Priority < compareTo.Priority;
 
-	return Category < compareTo.Category;
+    return Category < compareTo.Category;
 }

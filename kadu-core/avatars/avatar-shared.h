@@ -34,59 +34,57 @@ class PathsProvider;
 
 class KADUAPI AvatarShared : public Shared
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AvatarShared(const QUuid &uuid = QUuid());
-	virtual ~AvatarShared();
+    explicit AvatarShared(const QUuid &uuid = QUuid());
+    virtual ~AvatarShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	virtual void storeAvatar();
-	virtual void aboutToBeRemoved();
+    virtual void storeAvatar();
+    virtual void aboutToBeRemoved();
 
-	QString filePath();
-	QString smallFilePath();
-	void setFilePath(const QString &filePath);
+    QString filePath();
+    QString smallFilePath();
+    void setFilePath(const QString &filePath);
 
-	bool isEmpty();
+    bool isEmpty();
 
-	void setPixmap(const QPixmap &pixmap);
-	KaduShared_PropertyRead(const QPixmap &, pixmap, Pixmap)
+    void setPixmap(const QPixmap &pixmap);
+    KaduShared_PropertyRead(const QPixmap &, pixmap, Pixmap)
 
-	KaduShared_Property(const QDateTime &, lastUpdated, LastUpdated)
-	KaduShared_Property(const QDateTime &, nextUpdate, NextUpdate)
+        KaduShared_Property(const QDateTime &, lastUpdated, LastUpdated)
+            KaduShared_Property(const QDateTime &, nextUpdate, NextUpdate)
 
-signals:
-	void updated();
-	void pixmapUpdated();
+                signals : void updated();
+    void pixmapUpdated();
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QDateTime LastUpdated;
-	QDateTime NextUpdate;
-	QString FilePath;
-	QString SmallFilePath;
-	QPixmap Pixmap;
+    QDateTime LastUpdated;
+    QDateTime NextUpdate;
+    QString FilePath;
+    QString SmallFilePath;
+    QPixmap Pixmap;
 
-	QString AvatarsDir;
+    QString AvatarsDir;
 
-	QString filePathToSmallFilePath(const QString &fileName);
-	void ensureSmallPixmapExists();
-	bool isPixmapSmall();
-	void storeSmallPixmap();
+    QString filePathToSmallFilePath(const QString &fileName);
+    void ensureSmallPixmapExists();
+    bool isPixmapSmall();
+    void storeSmallPixmap();
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

@@ -41,28 +41,30 @@
  */
 class KADUAPI IgnoreLinksDomVisitor : public DomVisitor
 {
-
 public:
-	/**
-	 * @short Create new IgnoreLinksDomVisitor over visitor.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitor this visitor will get all data about processed DOM document with exception of content of A elements
-	 *
-	 * IgnoreLinksDomVisitor takes care of deleting visitor instance when not needed anymore. Do not delete it manually.
-	 */
-	explicit IgnoreLinksDomVisitor(std::unique_ptr<DomVisitor> visitor);
-	virtual ~IgnoreLinksDomVisitor();
+    /**
+     * @short Create new IgnoreLinksDomVisitor over visitor.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitor this visitor will get all data about processed DOM document with exception of content of A
+     * elements
+     *
+     * IgnoreLinksDomVisitor takes care of deleting visitor instance when not needed anymore. Do not delete it manually.
+     */
+    explicit IgnoreLinksDomVisitor(std::unique_ptr<DomVisitor> visitor);
+    virtual ~IgnoreLinksDomVisitor();
 
-	DomVisitor * visitor() const { return m_visitor.get(); }
+    DomVisitor *visitor() const
+    {
+        return m_visitor.get();
+    }
 
-	virtual QDomNode visit(QDomText textNode) const;
-	virtual QDomNode beginVisit(QDomElement elementNode) const;
-	virtual QDomNode endVisit(QDomElement elementNode) const;
+    virtual QDomNode visit(QDomText textNode) const;
+    virtual QDomNode beginVisit(QDomElement elementNode) const;
+    virtual QDomNode endVisit(QDomElement elementNode) const;
 
 private:
-	std::unique_ptr<DomVisitor> m_visitor;
-	mutable int m_linksDepth;
-
+    std::unique_ptr<DomVisitor> m_visitor;
+    mutable int m_linksDepth;
 };
 
 /**

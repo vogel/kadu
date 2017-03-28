@@ -27,24 +27,28 @@
 #include "widgets/configuration/config-action-button.h"
 #include "widgets/configuration/config-group-box.h"
 
-ConfigActionButton::ConfigActionButton(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QPushButton(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigActionButton::ConfigActionButton(
+    const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+    ConfigurationWindowDataManager *dataManager)
+        : QPushButton(parentConfigGroupBox->widget()),
+          ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
-	createWidgets();
+    createWidgets();
 }
 
-ConfigActionButton::ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QPushButton(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
+ConfigActionButton::ConfigActionButton(
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QPushButton(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
 }
 
 void ConfigActionButton::createWidgets()
 {
-	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
-	parentConfigGroupBox->addWidgets(new QLabel(" "), this);
+    setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
+    parentConfigGroupBox->addWidgets(new QLabel(" "), this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    if (!ConfigWidget::toolTip.isEmpty())
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 #include "moc_config-action-button.cpp"

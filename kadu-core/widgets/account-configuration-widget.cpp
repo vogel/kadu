@@ -19,8 +19,8 @@
 
 #include "account-configuration-widget.h"
 
-AccountConfigurationWidget::AccountConfigurationWidget(const Account &account, QWidget *parent) :
-		ModalConfigurationWidget(parent), MyAccount(account)
+AccountConfigurationWidget::AccountConfigurationWidget(const Account &account, QWidget *parent)
+        : ModalConfigurationWidget(parent), MyAccount(account)
 {
 }
 
@@ -30,7 +30,7 @@ AccountConfigurationWidget::~AccountConfigurationWidget()
 
 Account AccountConfigurationWidget::account() const
 {
-	return MyAccount;
+    return MyAccount;
 }
 
 #include "moc_account-configuration-widget.cpp"

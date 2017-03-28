@@ -28,12 +28,11 @@ struct PluginMetadata;
 
 class KADUAPI PluginMetadataProvider : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PluginMetadataProvider(QObject *parent = nullptr);
-	virtual ~PluginMetadataProvider();
+    explicit PluginMetadataProvider(QObject *parent = nullptr);
+    virtual ~PluginMetadataProvider();
 
-	virtual std::map<QString, PluginMetadata> provide() noexcept = 0;
-
+    virtual std::map<QString, PluginMetadata> provide() noexcept = 0;
 };

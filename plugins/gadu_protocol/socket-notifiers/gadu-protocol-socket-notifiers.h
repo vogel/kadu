@@ -31,45 +31,44 @@ class GaduUserDataService;
 
 class GaduProtocolSocketNotifiers : public GaduSocketNotifiers
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol);
-	virtual ~GaduProtocolSocketNotifiers();
+    explicit GaduProtocolSocketNotifiers(Account account, GaduProtocol *protocol);
+    virtual ~GaduProtocolSocketNotifiers();
 
-	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
-	void setGaduUserDataService(GaduUserDataService *userDataService);
+    void setGaduIMTokenService(GaduIMTokenService *imTokenService);
+    void setGaduUserDataService(GaduUserDataService *userDataService);
 
-	void watchFor(gg_session *sess);
+    void watchFor(gg_session *sess);
 
 signals:
-	void msgEventReceived(struct gg_event *e);
-	void multilogonMsgEventReceived(struct gg_event *e);
-	void ackEventReceived(struct gg_event *e);
+    void msgEventReceived(struct gg_event *e);
+    void multilogonMsgEventReceived(struct gg_event *e);
+    void ackEventReceived(struct gg_event *e);
 
-	void typingNotificationEventReceived(struct gg_event *e);
+    void typingNotificationEventReceived(struct gg_event *e);
 
 protected:
-	virtual bool checkRead();
-	virtual bool checkWrite();
-	virtual void socketEvent();
-	virtual int timeout();
-	virtual bool handleSoftTimeout();
-	virtual void connectionTimeout();
+    virtual bool checkRead();
+    virtual bool checkWrite();
+    virtual void socketEvent();
+    virtual int timeout();
+    virtual bool handleSoftTimeout();
+    virtual void connectionTimeout();
 
 private:
-	Account m_account;
-	GaduProtocol *m_protocol;
-	gg_session *m_session;
-	QPointer<GaduIMTokenService> m_imTokenService;
-	QPointer<GaduUserDataService> m_userDataService;
+    Account m_account;
+    GaduProtocol *m_protocol;
+    gg_session *m_session;
+    QPointer<GaduIMTokenService> m_imTokenService;
+    QPointer<GaduUserDataService> m_userDataService;
 
-	void handleEventNotify(struct gg_event *e);
-	void handleEventNotify60(struct gg_event *e);
-	void handleEventStatus(struct gg_event *e);
-	void handleEventConnFailed(struct gg_event *e);
-	void handleEventConnSuccess(struct gg_event *e);
-	void handleEventDisconnect(struct gg_event *e);
-	void handleEventMultilogonInfo(struct gg_event *e);
-
+    void handleEventNotify(struct gg_event *e);
+    void handleEventNotify60(struct gg_event *e);
+    void handleEventStatus(struct gg_event *e);
+    void handleEventConnFailed(struct gg_event *e);
+    void handleEventConnSuccess(struct gg_event *e);
+    void handleEventDisconnect(struct gg_event *e);
+    void handleEventMultilogonInfo(struct gg_event *e);
 };

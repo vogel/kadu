@@ -39,40 +39,39 @@ class Status;
 
 class StatusNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit StatusNotificationService(QObject *parent = nullptr);
-	virtual ~StatusNotificationService();
+    Q_INVOKABLE explicit StatusNotificationService(QObject *parent = nullptr);
+    virtual ~StatusNotificationService();
 
 public slots:
-	void notifyStatusChanged(Contact contact, Status oldStatus);
+    void notifyStatusChanged(Contact contact, Status oldStatus);
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	NotificationEvent m_statusChangedEvent;
-	NotificationEvent m_statusChangedToFreeForChatEvent;
-	NotificationEvent m_statusChangedToOnlineEvent;
-	NotificationEvent m_statusChangedToAwayEvent;
-	NotificationEvent m_statusChangedToNotAvailableEvent;
-	NotificationEvent m_statusChangedToDoNotDisturbEvent;
-	NotificationEvent m_statusChangedToOfflineEvent;
+    NotificationEvent m_statusChangedEvent;
+    NotificationEvent m_statusChangedToFreeForChatEvent;
+    NotificationEvent m_statusChangedToOnlineEvent;
+    NotificationEvent m_statusChangedToAwayEvent;
+    NotificationEvent m_statusChangedToNotAvailableEvent;
+    NotificationEvent m_statusChangedToDoNotDisturbEvent;
+    NotificationEvent m_statusChangedToOfflineEvent;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

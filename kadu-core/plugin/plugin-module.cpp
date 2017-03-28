@@ -33,15 +33,15 @@
 
 PluginModule::PluginModule()
 {
-	add_type<PluginActivationErrorHandler>();
-	add_type<PluginActivationService>();
-	add_type<PluginConflictResolver>();
-	add_type<PluginDependencyHandler>();
-	add_type<PluginDependencyGraphBuilder>();
-	add_type<PluginInjectorProvider>();
-	add_type<PluginManager>();
-	add_type<PluginMetadataFinder>();
-	add_type<PluginMetadataReader>();
-	add_type<PluginStateManager>();
-	add_type<PluginStateService>();
+    add_type<PluginActivationErrorHandler>();
+    add_type<PluginActivationService>();
+    add_type<PluginConflictResolver>();
+    add_type<PluginDependencyHandler>();
+    add_type<PluginDependencyGraphBuilder>();
+    add_type<PluginInjectorProvider>();
+    add_type<PluginManager>();
+    add_type<PluginMetadataFinder>();
+    add_type<PluginMetadataReader>();
+    add_type<PluginStateManager>();
+    add_type<PluginStateService>();
 }

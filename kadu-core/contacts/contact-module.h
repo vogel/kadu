@@ -25,9 +25,7 @@
 
 class KADUAPI ContactModule : public injeqt::module
 {
-
 public:
-	explicit ContactModule();
-	virtual ~ContactModule();
-
+    explicit ContactModule();
+    virtual ~ContactModule();
 };

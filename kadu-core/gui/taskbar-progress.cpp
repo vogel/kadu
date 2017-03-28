@@ -24,25 +24,24 @@
 #include <QtWidgets/QWidget>
 
 #ifdef Q_OS_WIN
-#	include <QtWinExtras/QtWinExtras>
+#include <QtWinExtras/QtWinExtras>
 #endif
 
-TaskbarProgress::TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent) :
-		QObject{parent}
+TaskbarProgress::TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent) : QObject{parent}
 {
 #ifdef Q_OS_WIN
-	parent->window()->winId(); // force windowHandle() to be valid
+    parent->window()->winId();   // force windowHandle() to be valid
 
-	auto button = new QWinTaskbarButton{parent->window()};
-	button->setWindow(parent->window()->windowHandle());
+    auto button = new QWinTaskbarButton{parent->window()};
+    button->setWindow(parent->window()->windowHandle());
 
-	m_taskbarProgress = button->progress();
-	m_taskbarProgress->setRange(0, 100);
+    m_taskbarProgress = button->progress();
+    m_taskbarProgress->setRange(0, 100);
 
-	connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(progressChanged(int)));
-	progressChanged(fileTransferManager->totalProgress());
+    connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(progressChanged(int)));
+    progressChanged(fileTransferManager->totalProgress());
 #else
-	Q_UNUSED(fileTransferManager);
+    Q_UNUSED(fileTransferManager);
 #endif
 }
 
@@ -53,15 +52,15 @@ TaskbarProgress::~TaskbarProgress()
 void TaskbarProgress::progressChanged(int progress)
 {
 #ifdef Q_OS_WIN
-	if (progress < 100)
-	{
-		m_taskbarProgress->setVisible(true);
-		m_taskbarProgress->setValue(progress);
-	}
-	else
-		m_taskbarProgress->setVisible(false);
+    if (progress < 100)
+    {
+        m_taskbarProgress->setVisible(true);
+        m_taskbarProgress->setValue(progress);
+    }
+    else
+        m_taskbarProgress->setVisible(false);
 #else
-	Q_UNUSED(progress);
+    Q_UNUSED(progress);
 #endif
 }
 

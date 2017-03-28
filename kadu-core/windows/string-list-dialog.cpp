@@ -26,36 +26,37 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-StringListDialog::StringListDialog(QString message, QString okButtonTitle, QStringList stringList, QWidget *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		QDialog(parent)
+StringListDialog::StringListDialog(QString message, QString okButtonTitle, QStringList stringList, QWidget *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          QDialog(parent)
 {
-	setWindowRole("kadu-string-list-dialog");
-	setWindowTitle(tr("Kadu"));
-	setAttribute(Qt::WA_DeleteOnClose);
+    setWindowRole("kadu-string-list-dialog");
+    setWindowTitle(tr("Kadu"));
+    setAttribute(Qt::WA_DeleteOnClose);
 
-	auto layout = new QVBoxLayout{this};
-	layout->setMargin(8);
+    auto layout = new QVBoxLayout{this};
+    layout->setMargin(8);
 
-	auto messageLabel = new QLabel{std::move(message)};
-	messageLabel->setWordWrap(true);
-	layout->addWidget(messageLabel);
+    auto messageLabel = new QLabel{std::move(message)};
+    messageLabel->setWordWrap(true);
+    layout->addWidget(messageLabel);
 
-	auto pluginListWidget = new QListWidget{};
-	pluginListWidget->addItems(std::move(stringList));
-	layout->addWidget(pluginListWidget);
+    auto pluginListWidget = new QListWidget{};
+    pluginListWidget->addItems(std::move(stringList));
+    layout->addWidget(pluginListWidget);
 
-	layout->addSpacing(16);
+    layout->addSpacing(16);
 
-	auto buttonBox = new QDialogButtonBox{Qt::Horizontal, this};
-	auto okButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), std::move(okButtonTitle), this};
-	okButton->setDefault(true);
-	buttonBox->addButton(okButton, QDialogButtonBox::AcceptRole);
-	buttonBox->addButton(QDialogButtonBox::Cancel);
-	layout->addWidget(buttonBox);
+    auto buttonBox = new QDialogButtonBox{Qt::Horizontal, this};
+    auto okButton =
+        new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), std::move(okButtonTitle), this};
+    okButton->setDefault(true);
+    buttonBox->addButton(okButton, QDialogButtonBox::AcceptRole);
+    buttonBox->addButton(QDialogButtonBox::Cancel);
+    layout->addWidget(buttonBox);
 
-	connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-	connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 }
 
 StringListDialog::~StringListDialog()

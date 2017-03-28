@@ -27,40 +27,38 @@
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QTabBar>
 
-
-class TabBar: public QTabBar
+class TabBar : public QTabBar
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	/**
-	* Metoda wywoływana w momencie kliknięcia na tabbarze
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mousePressEvent(QMouseEvent *e);
+    /**
+    * Metoda wywoływana w momencie kliknięcia na tabbarze
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    */
+    virtual void mousePressEvent(QMouseEvent *e);
 
-	/**
-	* Metoda wywoływana w momencie puszczenia przycisku myszy
-	* po kliknięciu
-	* Tu odpowiada za zamknięcie karty środokowym przyciskiem myszy
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mouseReleaseEvent(QMouseEvent *e);
+    /**
+    * Metoda wywoływana w momencie puszczenia przycisku myszy
+    * po kliknięciu
+    * Tu odpowiada za zamknięcie karty środokowym przyciskiem myszy
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    */
+    virtual void mouseReleaseEvent(QMouseEvent *e);
 
-	/**
-	* Metoda wywoływana w momencie dwukliku myszy
-	* Tu powoduje otwarcie okna openChatWith;
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mouseDoubleClickEvent(QMouseEvent *e);
+    /**
+    * Metoda wywoływana w momencie dwukliku myszy
+    * Tu powoduje otwarcie okna openChatWith;
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    */
+    virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 public:
-	explicit TabBar(QWidget *parent = nullptr);
+    explicit TabBar(QWidget *parent = nullptr);
 
 signals:
-	void contextMenu(int id, const QPoint &pos);
-	void mouseDoubleClickEventSignal(QMouseEvent *e);
-
+    void contextMenu(int id, const QPoint &pos);
+    void mouseDoubleClickEventSignal(QMouseEvent *e);
 };
 
-#endif // TAB_BAR_H
+#endif   // TAB_BAR_H

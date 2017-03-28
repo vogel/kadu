@@ -34,20 +34,19 @@ class IconsManager;
 
 class KADUAPI ChatDataExtractor : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatDataExtractor(QObject *parent = nullptr);
-	virtual ~ChatDataExtractor();
+    Q_INVOKABLE explicit ChatDataExtractor(QObject *parent = nullptr);
+    virtual ~ChatDataExtractor();
 
-	QVariant data(const Chat &chat, int role);
+    QVariant data(const Chat &chat, int role);
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

@@ -27,8 +27,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
-ToolTipManager::ToolTipManager(QObject *parent) :
-		QObject{parent}
+ToolTipManager::ToolTipManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,28 +37,28 @@ ToolTipManager::~ToolTipManager()
 
 void ToolTipManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ToolTipManager::showToolTip(const QPoint &where, const Talkable &talkable)
 {
-	m_toolTipWidget = m_injectedFactory->makeNotOwned<ToolTipWidget>(talkable);
+    m_toolTipWidget = m_injectedFactory->makeNotOwned<ToolTipWidget>(talkable);
 
-	auto pos = where + QPoint{5, 5};
-	auto preferredSize = m_toolTipWidget->sizeHint();
-	auto desktopSize = QApplication::desktop()->screenGeometry(m_toolTipWidget).size();
-	if (pos.x() + preferredSize.width() > desktopSize.width())
-		pos.setX(pos.x() - preferredSize.width() - 10);
-	if (pos.y() + preferredSize.height() > desktopSize.height())
-		pos.setY(pos.y() - preferredSize.height() - 10);
+    auto pos = where + QPoint{5, 5};
+    auto preferredSize = m_toolTipWidget->sizeHint();
+    auto desktopSize = QApplication::desktop()->screenGeometry(m_toolTipWidget).size();
+    if (pos.x() + preferredSize.width() > desktopSize.width())
+        pos.setX(pos.x() - preferredSize.width() - 10);
+    if (pos.y() + preferredSize.height() > desktopSize.height())
+        pos.setY(pos.y() - preferredSize.height() - 10);
 
-	m_toolTipWidget->move(pos);
-	m_toolTipWidget->show();
+    m_toolTipWidget->move(pos);
+    m_toolTipWidget->show();
 }
 
 void ToolTipManager::hideToolTip()
 {
-	m_toolTipWidget.reset();
+    m_toolTipWidget.reset();
 }
 
 #include "moc_tool-tip-manager.cpp"

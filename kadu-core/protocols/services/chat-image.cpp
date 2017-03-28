@@ -21,45 +21,43 @@
 
 #include <QtCore/QString>
 
-ChatImage::ChatImage() :
-		m_size{}
+ChatImage::ChatImage() : m_size{}
 {
 }
 
-ChatImage::ChatImage(QString key, quint32 size) :
-		m_key{std::move(key)}, m_size{size}
+ChatImage::ChatImage(QString key, quint32 size) : m_key{std::move(key)}, m_size{size}
 {
 }
 
-bool ChatImage::operator == (const ChatImage &compareTo) const
+bool ChatImage::operator==(const ChatImage &compareTo) const
 {
-	if (m_size != compareTo.m_size)
-		return false;
-	if (m_key != compareTo.m_key)
-		return false;
-	return true;
+    if (m_size != compareTo.m_size)
+        return false;
+    if (m_key != compareTo.m_key)
+        return false;
+    return true;
 }
 
-bool ChatImage::operator < (const ChatImage &compareTo) const
+bool ChatImage::operator<(const ChatImage &compareTo) const
 {
-	if (m_size < compareTo.m_size)
-		return true;
-	if (m_size > compareTo.m_size)
-		return false;
-	return m_key < compareTo.m_key;
+    if (m_size < compareTo.m_size)
+        return true;
+    if (m_size > compareTo.m_size)
+        return false;
+    return m_key < compareTo.m_key;
 }
 
 bool ChatImage::isNull() const
 {
-	return m_key.isEmpty() || m_size == 0;
+    return m_key.isEmpty() || m_size == 0;
 }
 
 QString ChatImage::key() const
 {
-	return m_key;
+    return m_key;
 }
 
 quint32 ChatImage::size() const
 {
-	return m_size;
+    return m_size;
 }

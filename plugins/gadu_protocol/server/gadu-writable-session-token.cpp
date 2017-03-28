@@ -21,33 +21,32 @@
 
 #include "gadu-writable-session-token.h"
 
-GaduWritableSessionToken::GaduWritableSessionToken(GaduConnection *connection) :
-		Connection(connection)
+GaduWritableSessionToken::GaduWritableSessionToken(GaduConnection *connection) : Connection(connection)
 {
-	Connection->beginWrite();
+    Connection->beginWrite();
 }
 
 GaduWritableSessionToken::GaduWritableSessionToken(GaduWritableSessionToken &&moveMe)
 {
-	Connection = moveMe.Connection;
-	moveMe.Connection = nullptr;
+    Connection = moveMe.Connection;
+    moveMe.Connection = nullptr;
 }
 
 GaduWritableSessionToken::~GaduWritableSessionToken()
 {
-	if (Connection)
-		Connection->endWrite();
+    if (Connection)
+        Connection->endWrite();
 }
 
-GaduWritableSessionToken & GaduWritableSessionToken::operator = (GaduWritableSessionToken &&moveMe)
+GaduWritableSessionToken &GaduWritableSessionToken::operator=(GaduWritableSessionToken &&moveMe)
 {
-	Connection = moveMe.Connection;
-	moveMe.Connection = nullptr;
+    Connection = moveMe.Connection;
+    moveMe.Connection = nullptr;
 
-	return *this;
+    return *this;
 }
 
-gg_session * GaduWritableSessionToken::rawSession() const
+gg_session *GaduWritableSessionToken::rawSession() const
 {
-	return Connection ? Connection->rawSession() : nullptr;
+    return Connection ? Connection->rawSession() : nullptr;
 }

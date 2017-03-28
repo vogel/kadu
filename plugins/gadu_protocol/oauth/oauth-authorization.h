@@ -30,28 +30,28 @@ class QNetworkReply;
 
 class OAuthAuthorization : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	OAuthToken Token;
-	QString AuthorizationUrl;
-	QString CallbackUrl;
-	OAuthConsumer Consumer;
-	QNetworkAccessManager *NetworkAccessManager;
-	QNetworkReply *Reply;
+    OAuthToken Token;
+    QString AuthorizationUrl;
+    QString CallbackUrl;
+    OAuthConsumer Consumer;
+    QNetworkAccessManager *NetworkAccessManager;
+    QNetworkReply *Reply;
 
 private slots:
-	void requestFinished();
+    void requestFinished();
 
 public:
-	explicit OAuthAuthorization(OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
-			QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~OAuthAuthorization();
+    explicit OAuthAuthorization(
+        OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
+        QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+    virtual ~OAuthAuthorization();
 
-	void authorize();
+    void authorize();
 
 signals:
-	void authorized(bool ok);
-
+    void authorized(bool ok);
 };
 
-#endif // OAUTH_AUTHORIZATION_H
+#endif   // OAUTH_AUTHORIZATION_H

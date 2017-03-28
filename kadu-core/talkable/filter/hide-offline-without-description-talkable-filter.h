@@ -45,35 +45,34 @@ class BuddyPreferredManager;
  */
 class HideOfflineWithoutDescriptionTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of HideOfflineWithoutDescriptionTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit HideOfflineWithoutDescriptionTalkableFilter(QObject *parent = nullptr);
-	virtual ~HideOfflineWithoutDescriptionTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of HideOfflineWithoutDescriptionTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit HideOfflineWithoutDescriptionTalkableFilter(QObject *parent = nullptr);
+    virtual ~HideOfflineWithoutDescriptionTalkableFilter();
 
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Enable or disalbe filter.
-	 * @param enabled new value of enabled property
-	 */
-	void setEnabled(bool enabled);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Enable or disalbe filter.
+     * @param enabled new value of enabled property
+     */
+    void setEnabled(bool enabled);
 
 private:
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 
-	bool m_enabled;
+    bool m_enabled;
 
 private slots:
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
 };
 
 /**

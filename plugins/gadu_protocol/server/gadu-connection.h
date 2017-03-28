@@ -40,57 +40,56 @@ class GaduWritableSessionToken;
  */
 class GaduConnection : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	friend class GaduWritableSessionToken;
+    friend class GaduWritableSessionToken;
 
 protected:
-	/**
-	 * @short Return current libgadu session.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return libgadu session
-	 */
-	virtual gg_session * rawSession() = 0;
+    /**
+     * @short Return current libgadu session.
+     * @author Rafał 'Vogel' Malinowski
+     * @return libgadu session
+     */
+    virtual gg_session *rawSession() = 0;
 
-	/**
-	 * @short Call before writing to connection session.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if write can be performed
-	 */
-	virtual bool beginWrite() = 0;
+    /**
+     * @short Call before writing to connection session.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if write can be performed
+     */
+    virtual bool beginWrite() = 0;
 
-	/**
-	 * @short Call after writing to connection session.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if operation succeeded
-	 */
-	virtual bool endWrite() = 0;
+    /**
+     * @short Call after writing to connection session.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if operation succeeded
+     */
+    virtual bool endWrite() = 0;
 
 public:
-	explicit GaduConnection(QObject *parent = nullptr);
-	virtual ~GaduConnection();
+    explicit GaduConnection(QObject *parent = nullptr);
+    virtual ~GaduConnection();
 
-	/**
-	 * @short Return true if connection is valid and has session.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if connection is valid and has session
-	 */
-	virtual bool hasSession() = 0;
+    /**
+     * @short Return true if connection is valid and has session.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if connection is valid and has session
+     */
+    virtual bool hasSession() = 0;
 
-	/**
-	 * @short Return instance of writable session.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return libgadu session
-	 *
-	 * It is safe to send any message to session until object is valid. Sockets will be
-	 * handled properly in meantime.
-	 */
-	virtual GaduWritableSessionToken writableSessionToken() = 0;
-
+    /**
+     * @short Return instance of writable session.
+     * @author Rafał 'Vogel' Malinowski
+     * @return libgadu session
+     *
+     * It is safe to send any message to session until object is valid. Sockets will be
+     * handled properly in meantime.
+     */
+    virtual GaduWritableSessionToken writableSessionToken() = 0;
 };
 
 /**
  * @}
  */
 
-#endif // GADU_CONNECTION_H
+#endif   // GADU_CONNECTION_H

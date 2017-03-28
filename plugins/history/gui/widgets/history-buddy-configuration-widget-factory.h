@@ -30,18 +30,17 @@ class PluginInjectedFactory;
 
 class HistoryBuddyConfigurationWidgetFactory : public QObject, public BuddyConfigurationWidgetFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit HistoryBuddyConfigurationWidgetFactory(QObject *parent = nullptr);
-	virtual ~HistoryBuddyConfigurationWidgetFactory();
+    Q_INVOKABLE explicit HistoryBuddyConfigurationWidgetFactory(QObject *parent = nullptr);
+    virtual ~HistoryBuddyConfigurationWidgetFactory();
 
-	virtual BuddyConfigurationWidget * createWidget(const Buddy &buddy, QWidget *parent);
+    virtual BuddyConfigurationWidget *createWidget(const Buddy &buddy, QWidget *parent);
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

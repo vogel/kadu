@@ -20,13 +20,13 @@
 
 #pragma once
 
-#include "plugin/metadata/plugin-metadata.h"
 #include "exports.h"
+#include "plugin/metadata/plugin-metadata.h"
 
 #include <QtCore/QPointer>
 #include <QtCore/QVector>
-#include <injeqt/injeqt.h>
 #include <functional>
+#include <injeqt/injeqt.h>
 
 class PluginActivationService;
 class PluginDependencyHandler;
@@ -65,70 +65,72 @@ enum class PluginState;
  */
 class KADUAPI PluginManager : public QObject
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(PluginManager)
+    Q_OBJECT
+    Q_DISABLE_COPY(PluginManager)
 
 public:
-	Q_INVOKABLE explicit PluginManager(QObject *parent = nullptr);
-	virtual ~PluginManager();
+    Q_INVOKABLE explicit PluginManager(QObject *parent = nullptr);
+    virtual ~PluginManager();
 
-	/**
-	 * @short Activate all protocols plugins that are enabled.
-	 *
-	 * This method activates all plugins with type "protocol" that are either enabled (PluginState::Enabled)
-	 * or new (PluginState::New) with attribute "load by default" set. This method is generally called before
-	 * any other activation to ensure that all protocols and accounts are available for other plugins.
-	 */
-	void activateProtocolPlugins();
+    /**
+     * @short Activate all protocols plugins that are enabled.
+     *
+     * This method activates all plugins with type "protocol" that are either enabled (PluginState::Enabled)
+     * or new (PluginState::New) with attribute "load by default" set. This method is generally called before
+     * any other activation to ensure that all protocols and accounts are available for other plugins.
+     */
+    void activateProtocolPlugins();
 
-	/**
-	 * @short Activate all plugins that are enabled.
-	 *
-	 * This method activates all plugins that are either enabled (PluginState::Enabled) or new (PluginState::New)
-	 * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is searched
-	 * (by checking Plugin::replaces()). Any found replacement plugin is activated.
-	 */
-	void activatePlugins();
-	void activateReplacementPlugins();
+    /**
+     * @short Activate all plugins that are enabled.
+     *
+     * This method activates all plugins that are either enabled (PluginState::Enabled) or new (PluginState::New)
+     * with attribute "load by default" set. If given enabled plugin is no longer available replacement plugin is
+     * searched
+     * (by checking Plugin::replaces()). Any found replacement plugin is activated.
+     */
+    void activatePlugins();
+    void activateReplacementPlugins();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Activate all plugins that are enabled.
-	 *
-	 * This method deactivated all active plugins. First iteration of deactivation check Plugin::usageCounter() value
-	 * to check if given plugin can be safely removed (no other active plugins depends on it). This procedure is
-	 * performed for all active plugins until no more plugins can be deactivated. Then second iteration is performed.
-	 * This time no checks are performed.
-	 */
-	void deactivatePlugins();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Activate all plugins that are enabled.
+     *
+     * This method deactivated all active plugins. First iteration of deactivation check Plugin::usageCounter() value
+     * to check if given plugin can be safely removed (no other active plugins depends on it). This procedure is
+     * performed for all active plugins until no more plugins can be deactivated. Then second iteration is performed.
+     * This time no checks are performed.
+     */
+    void deactivatePlugins();
 
 private:
-	QPointer<PluginActivationService> m_pluginActivationService;
-	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
-	QPointer<PluginStateService> m_pluginStateService;
-	bool m_runningUnity;
+    QPointer<PluginActivationService> m_pluginActivationService;
+    QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+    QPointer<PluginStateService> m_pluginStateService;
+    bool m_runningUnity;
 
-	QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &){ return true; }) const;
+    QVector<QString> pluginsToActivate(std::function<bool(const PluginMetadata &)> filter = [](const PluginMetadata &) {
+        return true;
+    }) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if this plugin should be activated.
-	 * @return true if this plugin should be activated
-	 *
-	 * Module should be activated only if:
-	 * <ul>
-	 *   <li>it is valid (has .desc file associated with it)
-	 *   <li>is either PluginState::Enabled or PluginState::New with PluginMetadata::loadByDefault() set to true
-	 * </ul>
-	 */
-	bool shouldActivate(const PluginMetadata &pluginMetadata) const noexcept;
-	QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns true if this plugin should be activated.
+     * @return true if this plugin should be activated
+     *
+     * Module should be activated only if:
+     * <ul>
+     *   <li>it is valid (has .desc file associated with it)
+     *   <li>is either PluginState::Enabled or PluginState::New with PluginMetadata::loadByDefault() set to true
+     * </ul>
+     */
+    bool shouldActivate(const PluginMetadata &pluginMetadata) const noexcept;
+    QString findReplacementPlugin(const QString &pluginToReplace) const noexcept;
 
 private slots:
-	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
-	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
-
+    INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+    INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+    INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 };
 
 /**

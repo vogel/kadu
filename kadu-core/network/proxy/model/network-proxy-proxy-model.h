@@ -25,18 +25,17 @@
 
 class NetworkProxyProxyModel : public QSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool BrokenStringCompare;
-	int compareNames(const QString &n1, const QString &n2) const;
+    bool BrokenStringCompare;
+    int compareNames(const QString &n1, const QString &n2) const;
 
 protected:
-	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 public:
-	NetworkProxyProxyModel(QObject *parent = nullptr);
-	virtual ~NetworkProxyProxyModel();
-
+    NetworkProxyProxyModel(QObject *parent = nullptr);
+    virtual ~NetworkProxyProxyModel();
 };
 
-#endif // NETWORK_PROXY_PROXY_MODEL_H
+#endif   // NETWORK_PROXY_PROXY_MODEL_H

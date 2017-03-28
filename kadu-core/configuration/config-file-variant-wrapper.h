@@ -24,8 +24,8 @@
 #include <QtCore/QPointer>
 #include <QtCore/QString>
 
-#include "misc/variant-wrapper.h"
 #include "exports.h"
+#include "misc/variant-wrapper.h"
 
 class Configuration;
 
@@ -44,28 +44,27 @@ class Configuration;
  */
 class KADUAPI ConfigFileVariantWrapper : public VariantWrapper
 {
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	QString Group;
-	QString Name;
+    QString Group;
+    QString Name;
 
 public:
-	/**
-	 * @short Constructs object wrapping a single ConfigFile entry.
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @param group name of ConfigFile group
-	 * @param name name of ConfigFile field in @p group
-	 */
-	ConfigFileVariantWrapper(Configuration *configuration, const QString &group, const QString &name);
-	virtual ~ConfigFileVariantWrapper();
+    /**
+     * @short Constructs object wrapping a single ConfigFile entry.
+     * @author Bartosz 'beevvy' Brachaczek
+     * @param group name of ConfigFile group
+     * @param name name of ConfigFile field in @p group
+     */
+    ConfigFileVariantWrapper(Configuration *configuration, const QString &group, const QString &name);
+    virtual ~ConfigFileVariantWrapper();
 
-	virtual QVariant get(const QVariant &defaultValue = QVariant()) const;
-	virtual void set(const QVariant &value);
-
+    virtual QVariant get(const QVariant &defaultValue = QVariant()) const;
+    virtual void set(const QVariant &value);
 };
 
 /**
  * @}
  */
 
-#endif // CONFIG_FILE_VARIANT_WRAPPER_H
+#endif   // CONFIG_FILE_VARIANT_WRAPPER_H

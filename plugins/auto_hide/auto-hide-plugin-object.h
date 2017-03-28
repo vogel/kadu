@@ -34,27 +34,27 @@ class PathsProvider;
 
 class AutoHidePluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit AutoHidePluginObject(QObject *parent = nullptr);
-	virtual ~AutoHidePluginObject();
+    Q_INVOKABLE explicit AutoHidePluginObject(QObject *parent = nullptr);
+    virtual ~AutoHidePluginObject();
 
 private:
-	QPointer<AutoHide> m_autoHide;
-	QPointer<AutoHideConfigurationUiHandler> m_autoHideConfigurationUiHandler;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<AutoHide> m_autoHide;
+    QPointer<AutoHideConfigurationUiHandler> m_autoHideConfigurationUiHandler;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setAutoHide(AutoHide *autoHide);
-	INJEQT_SET void setAutoHideConfigurationUiHandler(AutoHideConfigurationUiHandler *autoHideConfigurationUiHandler);
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setAutoHide(AutoHide *autoHide);
+    INJEQT_SET void setAutoHideConfigurationUiHandler(AutoHideConfigurationUiHandler *autoHideConfigurationUiHandler);
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 };

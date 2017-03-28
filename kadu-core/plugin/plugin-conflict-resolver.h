@@ -30,18 +30,17 @@ class PluginDependencyHandler;
 
 class KADUAPI PluginConflictResolver : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginConflictResolver(QObject *parent = nullptr);
-	virtual ~PluginConflictResolver();
+    Q_INVOKABLE explicit PluginConflictResolver(QObject *parent = nullptr);
+    virtual ~PluginConflictResolver();
 
-	std::set<QString> conflictingPlugins(const std::set<QString> &activePluginSet, const QString &pluginName);
+    std::set<QString> conflictingPlugins(const std::set<QString> &activePluginSet, const QString &pluginName);
 
 private:
-	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+    QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
 
-public slots: // TODO: make private, public only because of tests, should be done by injector
-	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-
+public slots:   // TODO: make private, public only because of tests, should be done by injector
+    INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
 };

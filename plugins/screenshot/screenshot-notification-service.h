@@ -37,26 +37,25 @@ struct Notification;
 
 class ScreenshotNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit ScreenshotNotificationService(QObject *parent = nullptr);
-	virtual ~ScreenshotNotificationService();
+    Q_INVOKABLE explicit ScreenshotNotificationService(QObject *parent = nullptr);
+    virtual ~ScreenshotNotificationService();
 
 public slots:
-	void notifySizeLimit(long size);
+    void notifySizeLimit(long size);
 
 private:
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_sizeLimitEvent;
+    NotificationEvent m_sizeLimitEvent;
 
 private slots:
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

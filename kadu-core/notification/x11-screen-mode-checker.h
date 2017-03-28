@@ -25,25 +25,28 @@
 #include <time.h>
 
 #if defined(Q_OS_UNIX)
-#include "os/x11/x11tools.h" // this should be included as last one,
+#include "os/x11/x11tools.h"   // this should be included as last one,
 #undef KeyPress
-#undef Status            // and Status defined by Xlib.h must be undefined
+#undef Status   // and Status defined by Xlib.h must be undefined
 #include <storage/custom-properties.h>
 #endif
 
 #include "screen-mode-checker.h"
 
-
 class KADUAPI X11ScreenModeChecker : public ScreenModeChecker
 {
-	Display *x11display;
-public:
-	X11ScreenModeChecker();
-	virtual ~X11ScreenModeChecker();
+    Display *x11display;
 
-	bool isFullscreenAppActive();
-	bool isScreensaverActive();
-	bool isDummy() { return false; }
+public:
+    X11ScreenModeChecker();
+    virtual ~X11ScreenModeChecker();
+
+    bool isFullscreenAppActive();
+    bool isScreensaverActive();
+    bool isDummy()
+    {
+        return false;
+    }
 };
 
-#endif // X11_SCREEN_MODE_CHECKER_H
+#endif   // X11_SCREEN_MODE_CHECKER_H

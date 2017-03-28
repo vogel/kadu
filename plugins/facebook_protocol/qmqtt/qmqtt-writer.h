@@ -23,18 +23,16 @@
 
 class QMqttWriter
 {
-
 public:
-	explicit QMqttWriter();
+    explicit QMqttWriter();
 
-	void write(uint8_t x);
-	void write(uint16_t x);
-	void write(const QByteArray &x);
-	void writeRaw(const QByteArray &x);
+    void write(uint8_t x);
+    void write(uint16_t x);
+    void write(const QByteArray &x);
+    void writeRaw(const QByteArray &x);
 
-	QByteArray result() const;
+    QByteArray result() const;
 
 private:
-	QByteArray m_result;
-
+    QByteArray m_result;
 };

@@ -22,12 +22,11 @@
 #include "gui/windows/history-window.h"
 #include "history.h"
 
+#include "activate.h"
 #include "chat/buddy-chat-manager.h"
 #include "plugin/plugin-injected-factory.h"
-#include "activate.h"
 
-HistoryWindowService::HistoryWindowService(QObject *parent) :
-		QObject{parent}
+HistoryWindowService::HistoryWindowService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,36 +36,36 @@ HistoryWindowService::~HistoryWindowService()
 
 void HistoryWindowService::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
-	m_buddyChatManager = buddyChatManager;
+    m_buddyChatManager = buddyChatManager;
 }
 
 void HistoryWindowService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void HistoryWindowService::setHistory(History *history)
 {
-	m_history = history;
+    m_history = history;
 }
 
 void HistoryWindowService::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistoryWindowService::show(const Chat &chat)
 {
-	auto buddyChat = m_buddyChatManager->buddyChat(chat);
-	if (!buddyChat)
-		buddyChat = chat;
+    auto buddyChat = m_buddyChatManager->buddyChat(chat);
+    if (!buddyChat)
+        buddyChat = chat;
 
-	if (!m_historyWindow)
-		m_historyWindow = m_pluginInjectedFactory->makeInjected<HistoryWindow>();
+    if (!m_historyWindow)
+        m_historyWindow = m_pluginInjectedFactory->makeInjected<HistoryWindow>();
 
-	m_historyWindow->updateData();
-	m_historyWindow->selectChat(buddyChat);
+    m_historyWindow->updateData();
+    m_historyWindow->selectChat(buddyChat);
 
-	m_historyWindow->setVisible(true);
-	_activateWindow(m_configuration, m_historyWindow);
+    m_historyWindow->setVisible(true);
+    _activateWindow(m_configuration, m_historyWindow);
 }

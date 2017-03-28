@@ -30,17 +30,16 @@ class QNetworkReply;
 
 class QFacebookHttpReply : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QFacebookHttpReply(owned_qptr<QNetworkReply> networkReply);
-	virtual ~QFacebookHttpReply();
+    explicit QFacebookHttpReply(owned_qptr<QNetworkReply> networkReply);
+    virtual ~QFacebookHttpReply();
 
 signals:
-	void finished(const std::experimental::optional<QFacebookJsonReader> &result);
+    void finished(const std::experimental::optional<QFacebookJsonReader> &result);
 
 private:
-	owned_qptr<QNetworkReply> m_networkReply;
-	void httpReplyFinished();
-
+    owned_qptr<QNetworkReply> m_networkReply;
+    void httpReplyFinished();
 };

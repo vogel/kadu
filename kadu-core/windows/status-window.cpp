@@ -22,6 +22,7 @@
 
 #include "status-window.h"
 
+#include "activate.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/myself.h"
@@ -38,7 +39,6 @@
 #include "windows/kadu-window.h"
 #include "windows/message-dialog.h"
 #include "windows/status-window-description-proxy-model.h"
-#include "activate.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
@@ -51,373 +51,372 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextEdit>
 
-StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), Container(statusContainer), IgnoreNextTextChange(false)
+StatusWindow::StatusWindow(StatusContainer *statusContainer, QWidget *parent)
+        : QDialog(parent), DesktopAwareObject(this), Container(statusContainer), IgnoreNextTextChange(false)
 {
-	Q_ASSERT(Container);
+    Q_ASSERT(Container);
 }
 
 StatusWindow::~StatusWindow()
 {
-	emit statusWindowClosed(Container);
+    emit statusWindowClosed(Container);
 }
 
 void StatusWindow::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void StatusWindow::setDescriptionManager(DescriptionManager *descriptionManager)
 {
-	m_descriptionManager = descriptionManager;
+    m_descriptionManager = descriptionManager;
 }
 
 void StatusWindow::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void StatusWindow::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void StatusWindow::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void StatusWindow::setStatusSetter(StatusSetter *statusSetter)
 {
-	m_statusSetter = statusSetter;
+    m_statusSetter = statusSetter;
 }
 
 void StatusWindow::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void StatusWindow::init()
 {
-	setWindowRole("kadu-status-window");
+    setWindowRole("kadu-status-window");
 
-	QString windowTitle = Container->subStatusContainers().count() > 1
-		? tr("Change status")
-		: tr("Change account status: %1").arg(Container->statusContainerName());
-	setWindowTitle(windowTitle);
-	setAttribute(Qt::WA_DeleteOnClose);
+    QString windowTitle = Container->subStatusContainers().count() > 1
+                              ? tr("Change status")
+                              : tr("Change account status: %1").arg(Container->statusContainerName());
+    setWindowTitle(windowTitle);
+    setAttribute(Qt::WA_DeleteOnClose);
 
-	createLayout();
+    createLayout();
 
-	DescriptionCounter->setVisible(Container->maxDescriptionLength() > 0);
+    DescriptionCounter->setVisible(Container->maxDescriptionLength() > 0);
 
-	setupStatusSelect();
+    setupStatusSelect();
 
-	QString description = m_statusSetter->manuallySetStatus(Container->subStatusContainers().first()).description();
+    QString description = m_statusSetter->manuallySetStatus(Container->subStatusContainers().first()).description();
 
-	setupDescriptionSelect(description);
+    setupDescriptionSelect(description);
 
-	IgnoreNextTextChange = true;
-	DescriptionEdit->setPlainText(description);
-	descriptionEditTextChanged(); // not connected yet
-	IgnoreNextTextChange = false;
+    IgnoreNextTextChange = true;
+    DescriptionEdit->setPlainText(description);
+    descriptionEditTextChanged();   // not connected yet
+    IgnoreNextTextChange = false;
 
-	QTextCursor cursor = DescriptionEdit->textCursor();
-	cursor.movePosition(QTextCursor::End);
-	DescriptionEdit->setTextCursor(cursor);
+    QTextCursor cursor = DescriptionEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    DescriptionEdit->setTextCursor(cursor);
 
-	DescriptionEdit->setFocus();
+    DescriptionEdit->setFocus();
 
-	connect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
-	connect(ClearDescriptionsHistoryButton, SIGNAL(clicked(bool)), this, SLOT(clearDescriptionsHistory()));
-	connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(descriptionEditTextChanged()));
-	connect(EraseButton, SIGNAL(clicked(bool)), this, SLOT(eraseDescription()));
-	connect(SetStatusButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
-	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
-	connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
+    connect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
+    connect(ClearDescriptionsHistoryButton, SIGNAL(clicked(bool)), this, SLOT(clearDescriptionsHistory()));
+    connect(DescriptionEdit, SIGNAL(textChanged()), this, SLOT(descriptionEditTextChanged()));
+    connect(EraseButton, SIGNAL(clicked(bool)), this, SLOT(eraseDescription()));
+    connect(SetStatusButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(this, SIGNAL(accepted()), this, SLOT(applyStatus()));
 
-	setFixedSize(sizeHint().expandedTo(QSize(460, 1)));
+    setFixedSize(sizeHint().expandedTo(QSize(460, 1)));
 }
 
 void StatusWindow::createLayout()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QFormLayout *formLayout = new QFormLayout();
-	mainLayout->addLayout(formLayout);
-	formLayout->setMargin(0);
-	formLayout->setVerticalSpacing(0);
+    QFormLayout *formLayout = new QFormLayout();
+    mainLayout->addLayout(formLayout);
+    formLayout->setMargin(0);
+    formLayout->setVerticalSpacing(0);
 
-	// status combo box
+    // status combo box
 
-	StatusSelect = new QComboBox(this);
-	formLayout->addRow(new QLabel(tr("Status") + ':'), StatusSelect);
+    StatusSelect = new QComboBox(this);
+    formLayout->addRow(new QLabel(tr("Status") + ':'), StatusSelect);
 
-	// spacing
+    // spacing
 
-	formLayout->addItem(new QSpacerItem(0, 4));
+    formLayout->addItem(new QSpacerItem(0, 4));
 
-	// description combo box
+    // description combo box
 
-	QHBoxLayout *descriptionSelectLayout = new QHBoxLayout();
-	descriptionSelectLayout->setMargin(0);
-	descriptionSelectLayout->setSpacing(0);
+    QHBoxLayout *descriptionSelectLayout = new QHBoxLayout();
+    descriptionSelectLayout->setMargin(0);
+    descriptionSelectLayout->setSpacing(0);
 
-	DescriptionSelect = new QComboBox(this);
-	DescriptionSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-	DescriptionSelect->setToolTip(tr("Select Previously Used Description"));
-	descriptionSelectLayout->addWidget(DescriptionSelect);
+    DescriptionSelect = new QComboBox(this);
+    DescriptionSelect->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    DescriptionSelect->setToolTip(tr("Select Previously Used Description"));
+    descriptionSelectLayout->addWidget(DescriptionSelect);
 
-	ClearDescriptionsHistoryButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("edit-clear")), "", this);
-	ClearDescriptionsHistoryButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	ClearDescriptionsHistoryButton->setToolTip(tr("Clear Descriptions History"));
-	descriptionSelectLayout->addWidget(ClearDescriptionsHistoryButton);
+    ClearDescriptionsHistoryButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("edit-clear")), "", this);
+    ClearDescriptionsHistoryButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    ClearDescriptionsHistoryButton->setToolTip(tr("Clear Descriptions History"));
+    descriptionSelectLayout->addWidget(ClearDescriptionsHistoryButton);
 
-	formLayout->addRow(new QLabel(tr("Description") + ':'), descriptionSelectLayout);
+    formLayout->addRow(new QLabel(tr("Description") + ':'), descriptionSelectLayout);
 
-	// description edit field
+    // description edit field
 
-	QWidget *descriptionCounterLayoutWidget = new QWidget(this);
-	QVBoxLayout *descriptionCounterLayout = new QVBoxLayout(descriptionCounterLayoutWidget);
-	descriptionCounterLayout->setMargin(0);
-	descriptionCounterLayout->setSpacing(5);
+    QWidget *descriptionCounterLayoutWidget = new QWidget(this);
+    QVBoxLayout *descriptionCounterLayout = new QVBoxLayout(descriptionCounterLayoutWidget);
+    descriptionCounterLayout->setMargin(0);
+    descriptionCounterLayout->setSpacing(5);
 
-	descriptionCounterLayout->addStretch();
+    descriptionCounterLayout->addStretch();
 
-	DescriptionCounter = new QLabel(this);
-	DescriptionCounter->setAlignment(formLayout->labelAlignment());
-	descriptionCounterLayout->addWidget(DescriptionCounter);
+    DescriptionCounter = new QLabel(this);
+    DescriptionCounter->setAlignment(formLayout->labelAlignment());
+    descriptionCounterLayout->addWidget(DescriptionCounter);
 
-	descriptionCounterLayout->addSpacing(2); // 2 px bottom margin
+    descriptionCounterLayout->addSpacing(2);   // 2 px bottom margin
 
-	QWidget *descriptionEditLayoutWidget = new QWidget(this);
-	QHBoxLayout *descriptionEditLayout = new QHBoxLayout(descriptionEditLayoutWidget);
-	descriptionEditLayout->setMargin(0);
-	descriptionEditLayout->setSpacing(0);
+    QWidget *descriptionEditLayoutWidget = new QWidget(this);
+    QHBoxLayout *descriptionEditLayout = new QHBoxLayout(descriptionEditLayoutWidget);
+    descriptionEditLayout->setMargin(0);
+    descriptionEditLayout->setSpacing(0);
 
-	DescriptionEdit = new KaduTextEdit(this);
-	DescriptionEdit->installEventFilter(this);
-	DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	DescriptionEdit->setTabChangesFocus(true);
-	descriptionEditLayout->addWidget(DescriptionEdit);
+    DescriptionEdit = new KaduTextEdit(this);
+    DescriptionEdit->installEventFilter(this);
+    DescriptionEdit->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    DescriptionEdit->setTabChangesFocus(true);
+    descriptionEditLayout->addWidget(DescriptionEdit);
 
-	QVBoxLayout *descriptionEraseLayout = new QVBoxLayout();
-	descriptionEraseLayout->setMargin(0);
-	descriptionEraseLayout->setSpacing(0);
-	descriptionEraseLayout->addStretch();
-	EraseButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("edit-clear-locationbar-rtl")), "", this);
-	EraseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-	EraseButton->setToolTip(tr("Erase Description"));
-	descriptionEraseLayout->addWidget(EraseButton);
-	descriptionEditLayout->addLayout(descriptionEraseLayout);
+    QVBoxLayout *descriptionEraseLayout = new QVBoxLayout();
+    descriptionEraseLayout->setMargin(0);
+    descriptionEraseLayout->setSpacing(0);
+    descriptionEraseLayout->addStretch();
+    EraseButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("edit-clear-locationbar-rtl")), "", this);
+    EraseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    EraseButton->setToolTip(tr("Erase Description"));
+    descriptionEraseLayout->addWidget(EraseButton);
+    descriptionEditLayout->addLayout(descriptionEraseLayout);
 
-	formLayout->addRow(descriptionCounterLayoutWidget, descriptionEditLayoutWidget);
+    formLayout->addRow(descriptionCounterLayoutWidget, descriptionEditLayoutWidget);
 
-	mainLayout->addSpacing(16);
+    mainLayout->addSpacing(16);
 
-	// dialog buttons
+    // dialog buttons
 
-	QDialogButtonBox *buttonsBox = new QDialogButtonBox(Qt::Horizontal, this);
+    QDialogButtonBox *buttonsBox = new QDialogButtonBox(Qt::Horizontal, this);
 
-	SetStatusButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), this);
-	SetStatusButton->setDefault(true);
-	buttonsBox->addButton(SetStatusButton, QDialogButtonBox::AcceptRole);
+    SetStatusButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("&Set status"), this);
+    SetStatusButton->setDefault(true);
+    buttonsBox->addButton(SetStatusButton, QDialogButtonBox::AcceptRole);
 
-	CancelButton = new QPushButton(tr("&Cancel"), this);
-	CancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
-	buttonsBox->addButton(CancelButton, QDialogButtonBox::RejectRole);
+    CancelButton = new QPushButton(tr("&Cancel"), this);
+    CancelButton->setIcon(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton));
+    buttonsBox->addButton(CancelButton, QDialogButtonBox::RejectRole);
 
-	mainLayout->addWidget(buttonsBox);
+    mainLayout->addWidget(buttonsBox);
 }
 
 void StatusWindow::setupStatusSelect()
 {
-	StatusType commonStatusType = findCommonStatusType(Container->subStatusContainers());
-	if (commonStatusType == StatusType::None)
-		StatusSelect->addItem(tr("do not change"), QVariant(static_cast<int>(StatusType::None)));
+    StatusType commonStatusType = findCommonStatusType(Container->subStatusContainers());
+    if (commonStatusType == StatusType::None)
+        StatusSelect->addItem(tr("do not change"), QVariant(static_cast<int>(StatusType::None)));
 
-	foreach (StatusType statusType, Container->supportedStatusTypes())
-	{
-		if (StatusType::None == statusType)
-			continue;
-		const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
-		StatusSelect->addItem(m_iconsManager->iconByPath(Container->statusIcon(Status{typeData.type()})), typeData.displayName(), QVariant(static_cast<int>(typeData.type())));
-	}
+    foreach (StatusType statusType, Container->supportedStatusTypes())
+    {
+        if (StatusType::None == statusType)
+            continue;
+        const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
+        StatusSelect->addItem(
+            m_iconsManager->iconByPath(Container->statusIcon(Status{typeData.type()})), typeData.displayName(),
+            QVariant(static_cast<int>(typeData.type())));
+    }
 
-	StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(static_cast<int>(commonStatusType))));
+    StatusSelect->setCurrentIndex(StatusSelect->findData(QVariant(static_cast<int>(commonStatusType))));
 }
 
 void StatusWindow::setupDescriptionSelect(const QString &description)
 {
-	StatusWindowDescriptionProxyModel *proxyModel = new StatusWindowDescriptionProxyModel(this);
-	proxyModel->setSourceModel(m_descriptionManager->model());
+    StatusWindowDescriptionProxyModel *proxyModel = new StatusWindowDescriptionProxyModel(this);
+    proxyModel->setSourceModel(m_descriptionManager->model());
 
-	DescriptionSelect->setModel(proxyModel);
-	DescriptionSelect->setEnabled(false);
-	ClearDescriptionsHistoryButton->setEnabled(false);
+    DescriptionSelect->setModel(proxyModel);
+    DescriptionSelect->setEnabled(false);
+    ClearDescriptionsHistoryButton->setEnabled(false);
 
-	Q_ASSERT(Container->subStatusContainers().count() > 0);
+    Q_ASSERT(Container->subStatusContainers().count() > 0);
 
-	if (m_descriptionManager->model()->rowCount() > 0)
-	{
-		DescriptionSelect->setEnabled(true);
-		ClearDescriptionsHistoryButton->setEnabled(true);
+    if (m_descriptionManager->model()->rowCount() > 0)
+    {
+        DescriptionSelect->setEnabled(true);
+        ClearDescriptionsHistoryButton->setEnabled(true);
 
-		QModelIndexList matching = m_descriptionManager->model()->match(
-			m_descriptionManager->model()->index(0, 0),
-			DescriptionRole, QVariant(description),
-			1,
-			Qt::MatchFixedString | Qt::MatchCaseSensitive
-		);
-		if (matching.count() > 0)
-			DescriptionSelect->setCurrentIndex(matching.first().row());
-		else
-			DescriptionSelect->setCurrentIndex(-1);
-	}
+        QModelIndexList matching = m_descriptionManager->model()->match(
+            m_descriptionManager->model()->index(0, 0), DescriptionRole, QVariant(description), 1,
+            Qt::MatchFixedString | Qt::MatchCaseSensitive);
+        if (matching.count() > 0)
+            DescriptionSelect->setCurrentIndex(matching.first().row());
+        else
+            DescriptionSelect->setCurrentIndex(-1);
+    }
 }
 
 QSize StatusWindow::sizeHint() const
 {
-	return QDialog::sizeHint().expandedTo(QSize(400, 80));
+    return QDialog::sizeHint().expandedTo(QSize(400, 80));
 }
 
 StatusType StatusWindow::findCommonStatusType(const QList<StatusContainer *> &containers)
 {
-	StatusType commonStatusType = StatusType::None;
-	foreach (StatusContainer *container, containers)
-	{
-		StatusType statusType = container->status().type();
-		if (commonStatusType == StatusType::None)
-			commonStatusType = statusType;
-		else if (commonStatusType != statusType)
-		{
-			commonStatusType = StatusType::None;
-			break;
-		}
-	}
-	return commonStatusType;
+    StatusType commonStatusType = StatusType::None;
+    foreach (StatusContainer *container, containers)
+    {
+        StatusType statusType = container->status().type();
+        if (commonStatusType == StatusType::None)
+            commonStatusType = statusType;
+        else if (commonStatusType != statusType)
+        {
+            commonStatusType = StatusType::None;
+            break;
+        }
+    }
+    return commonStatusType;
 }
 
 void StatusWindow::applyStatus()
 {
-	disconnect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
+    disconnect(DescriptionSelect, SIGNAL(currentIndexChanged(int)), this, SLOT(descriptionSelected(int)));
 
-	QString description = DescriptionEdit->toPlainText();
-	m_descriptionManager->addDescription(description);
+    QString description = DescriptionEdit->toPlainText();
+    m_descriptionManager->addDescription(description);
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
-		description = m_parser->parse(description, Talkable(m_myself->buddy()), ParserEscape::NoEscape);
+    if (m_configuration->deprecatedApi()->readBoolEntry("General", "ParseStatus", false))
+        description = m_parser->parse(description, Talkable(m_myself->buddy()), ParserEscape::NoEscape);
 
-	for (auto &&container : Container->subStatusContainers())
-	{
-		Status status = m_statusSetter->manuallySetStatus(container);
-		status.setDescription(description);
+    for (auto &&container : Container->subStatusContainers())
+    {
+        Status status = m_statusSetter->manuallySetStatus(container);
+        status.setDescription(description);
 
-		StatusType statusType = static_cast<StatusType>(StatusSelect->itemData(StatusSelect->currentIndex()).toInt());
-		if (statusType != StatusType::None)
-			status.setType(statusType);
+        StatusType statusType = static_cast<StatusType>(StatusSelect->itemData(StatusSelect->currentIndex()).toInt());
+        if (statusType != StatusType::None)
+            status.setType(statusType);
 
-		m_statusSetter->setStatusManually(container, status);
-		container->storeStatus(status);
-	}
+        m_statusSetter->setStatusManually(container, status);
+        container->storeStatus(status);
+    }
 }
 
 void StatusWindow::descriptionSelected(int index)
 {
-	if (index < 0)
-		return;
+    if (index < 0)
+        return;
 
-	QString description = m_descriptionManager->model()->data(m_descriptionManager->model()->index(index, 0), DescriptionRole).toString();
+    QString description =
+        m_descriptionManager->model()->data(m_descriptionManager->model()->index(index, 0), DescriptionRole).toString();
 
-	IgnoreNextTextChange = true;
-	DescriptionEdit->setPlainText(description);
-	IgnoreNextTextChange = false;
+    IgnoreNextTextChange = true;
+    DescriptionEdit->setPlainText(description);
+    IgnoreNextTextChange = false;
 
-	QTextCursor cursor = DescriptionEdit->textCursor();
-	cursor.movePosition(QTextCursor::End);
-	DescriptionEdit->setTextCursor(cursor);
+    QTextCursor cursor = DescriptionEdit->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    DescriptionEdit->setTextCursor(cursor);
 
-	DescriptionEdit->setFocus();
+    DescriptionEdit->setFocus();
 }
 
 bool StatusWindow::eventFilter(QObject *source, QEvent *event)
 {
-	if (source != DescriptionEdit)
-		return false;
+    if (source != DescriptionEdit)
+        return false;
 
-	if (event->type() != QEvent::KeyPress)
-		return false;
+    if (event->type() != QEvent::KeyPress)
+        return false;
 
-	QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-	if (!keyEvent)
-		return false;
+    QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    if (!keyEvent)
+        return false;
 
-	if (Qt::ControlModifier == keyEvent->modifiers() &&
-	    (Qt::Key_Enter == keyEvent->key() || Qt::Key_Return == keyEvent->key()))
-	{
-		accept();
-		return true;
-	}
+    if (Qt::ControlModifier == keyEvent->modifiers() &&
+        (Qt::Key_Enter == keyEvent->key() || Qt::Key_Return == keyEvent->key()))
+    {
+        accept();
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 void StatusWindow::checkDescriptionLengthLimit()
 {
-	int length = DescriptionEdit->toPlainText().length();
-	int charactersLeft = Container->maxDescriptionLength() - length;
-	bool limitExceeded = charactersLeft < 0;
+    int length = DescriptionEdit->toPlainText().length();
+    int charactersLeft = Container->maxDescriptionLength() - length;
+    bool limitExceeded = charactersLeft < 0;
 
-	SetStatusButton->setEnabled(!limitExceeded);
+    SetStatusButton->setEnabled(!limitExceeded);
 
-	QString counterText = QString("%1").arg(charactersLeft);
-	QColor color;
-	if (charactersLeft >= 0)
-	{
-		color = palette().windowText().color();
-		color.setAlpha(128);
-	}
-	else
-		color = Qt::red;
-	QString counterStyle = QString("color:rgba(%1,%2,%3,%4);").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
-	DescriptionCounter->setText(QString("<span style='%1'>%2</span>").arg(counterStyle, counterText));
+    QString counterText = QString("%1").arg(charactersLeft);
+    QColor color;
+    if (charactersLeft >= 0)
+    {
+        color = palette().windowText().color();
+        color.setAlpha(128);
+    }
+    else
+        color = Qt::red;
+    QString counterStyle =
+        QString("color:rgba(%1,%2,%3,%4);").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+    DescriptionCounter->setText(QString("<span style='%1'>%2</span>").arg(counterStyle, counterText));
 }
 
 void StatusWindow::descriptionEditTextChanged()
 {
-	if (!IgnoreNextTextChange)
-		DescriptionSelect->setCurrentIndex(-1);
+    if (!IgnoreNextTextChange)
+        DescriptionSelect->setCurrentIndex(-1);
 
-	EraseButton->setEnabled(!DescriptionEdit->toPlainText().isEmpty());
+    EraseButton->setEnabled(!DescriptionEdit->toPlainText().isEmpty());
 
-	if (Container->maxDescriptionLength() > 0)
-		checkDescriptionLengthLimit();
+    if (Container->maxDescriptionLength() > 0)
+        checkDescriptionLengthLimit();
 }
 
 void StatusWindow::eraseDescription()
 {
-	DescriptionEdit->clear();
-	DescriptionEdit->setFocus();
+    DescriptionEdit->clear();
+    DescriptionEdit->setFocus();
 }
 
 void StatusWindow::clearDescriptionsHistory()
 {
-	MessageDialog *dialog = MessageDialog::create(
-		m_iconsManager->iconByPath(KaduIcon("dialog-warning")),
-		tr("Clear Descriptions History"),
-		tr("Do you really want to clear the descriptions history?"),
-		this);
-	dialog->addButton(QMessageBox::Yes, tr("Clear history"));
-	dialog->addButton(QMessageBox::No, tr("Cancel"));
+    MessageDialog *dialog = MessageDialog::create(
+        m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Clear Descriptions History"),
+        tr("Do you really want to clear the descriptions history?"), this);
+    dialog->addButton(QMessageBox::Yes, tr("Clear history"));
+    dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!dialog->ask())
-		return;
+    if (!dialog->ask())
+        return;
 
-	m_descriptionManager->clearDescriptions();
-	DescriptionSelect->setModel(m_descriptionManager->model());
-	DescriptionSelect->setCurrentIndex(-1);
-	DescriptionSelect->setEnabled(false);
-	ClearDescriptionsHistoryButton->setEnabled(false);
+    m_descriptionManager->clearDescriptions();
+    DescriptionSelect->setModel(m_descriptionManager->model());
+    DescriptionSelect->setCurrentIndex(-1);
+    DescriptionSelect->setEnabled(false);
+    ClearDescriptionsHistoryButton->setEnabled(false);
 }
 
 #include "moc_status-window.cpp"

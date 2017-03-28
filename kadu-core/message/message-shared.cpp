@@ -18,6 +18,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "message/message.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
@@ -26,113 +27,109 @@
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-manager.h"
-#include "message/message.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier.h"
 
 #include "message-shared.h"
 
-MessageShared::MessageShared(const QUuid &uuid) :
-		Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown)
+MessageShared::MessageShared(const QUuid &uuid) : Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown)
 {
-	MessageChat = new Chat();
-	MessageSender = new Contact();
+    MessageChat = new Chat();
+    MessageSender = new Contact();
 
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+    connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 MessageShared::~MessageShared()
 {
-	ref.ref();
+    ref.ref();
 
-	delete MessageSender;
-	delete MessageChat;
+    delete MessageSender;
+    delete MessageChat;
 }
 
 void MessageShared::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void MessageShared::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void MessageShared::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 }
 
-StorableObject * MessageShared::storageParent()
+StorableObject *MessageShared::storageParent()
 {
-	return m_unreadMessageRepository;
+    return m_unreadMessageRepository;
 }
 
 QString MessageShared::storageNodeName()
 {
-	return QStringLiteral("Message");
+    return QStringLiteral("Message");
 }
 
 void MessageShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	*MessageChat = m_chatManager->byUuid(loadValue<QString>("Chat"));
-	*MessageSender = m_contactManager->byUuid(loadValue<QString>("Sender"));
-	Content = normalizeHtml(HtmlString{loadValue<QString>("Content")});
-	ReceiveDate = loadValue<QDateTime>("ReceiveDate");
-	SendDate = loadValue<QDateTime>("SendDate");
-	Status = (MessageStatus)loadValue<int>("Status");
-	Type = (MessageType)loadValue<int>("Type");
-	Id = loadValue<QString>("Id");
+    *MessageChat = m_chatManager->byUuid(loadValue<QString>("Chat"));
+    *MessageSender = m_contactManager->byUuid(loadValue<QString>("Sender"));
+    Content = normalizeHtml(HtmlString{loadValue<QString>("Content")});
+    ReceiveDate = loadValue<QDateTime>("ReceiveDate");
+    SendDate = loadValue<QDateTime>("SendDate");
+    Status = (MessageStatus)loadValue<int>("Status");
+    Type = (MessageType)loadValue<int>("Type");
+    Id = loadValue<QString>("Id");
 }
 
 void MessageShared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::store();
+    Shared::store();
 
-	storeValue("Chat", MessageChat->uuid().toString());
-	storeValue("Sender", MessageSender->uuid().toString());
-	storeValue("Content", Content.string());
-	storeValue("ReceiveDate", ReceiveDate);
-	storeValue("SendDate", SendDate);
-	storeValue("Status", (int)Status);
-	storeValue("Type", (int)Type);
-	storeValue("Id", Id);
+    storeValue("Chat", MessageChat->uuid().toString());
+    storeValue("Sender", MessageSender->uuid().toString());
+    storeValue("Content", Content.string());
+    storeValue("ReceiveDate", ReceiveDate);
+    storeValue("SendDate", SendDate);
+    storeValue("Status", (int)Status);
+    storeValue("Type", (int)Type);
+    storeValue("Id", Id);
 }
 
 bool MessageShared::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	// only store pending messages
-	// all other messages are stored by history plugin
-	return UuidStorableObject::shouldStore()
-			&& !MessageSender->uuid().isNull()
-			&& !MessageChat->uuid().isNull();
+    // only store pending messages
+    // all other messages are stored by history plugin
+    return UuidStorableObject::shouldStore() && !MessageSender->uuid().isNull() && !MessageChat->uuid().isNull();
 }
 
 void MessageShared::setStatus(MessageStatus status)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (status != Status)
-	{
-		MessageStatus oldStatus = Status;
-		Status = status;
-		changeNotifier().notify();
-		emit statusChanged(oldStatus);
-	}
+    if (status != Status)
+    {
+        MessageStatus oldStatus = Status;
+        Status = status;
+        changeNotifier().notify();
+        emit statusChanged(oldStatus);
+    }
 }
 
 KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)
-KaduShared_PropertyPtrDefCRW(MessageShared, Contact, messageSender, MessageSender)
+    KaduShared_PropertyPtrDefCRW(MessageShared, Contact, messageSender, MessageSender)
 
 #include "moc_message-shared.cpp"

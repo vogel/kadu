@@ -10,21 +10,20 @@
 **/
 class KADUAPI ColorButton : public QPushButton
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QColor currentColor;
+    QColor currentColor;
 
 public:
-	ColorButton(QWidget *parent = nullptr);
-	const QColor &color() const;
-	bool setColor(const QColor &color);
+    ColorButton(QWidget *parent = nullptr);
+    const QColor &color() const;
+    bool setColor(const QColor &color);
 
 private slots:
-	void onClick();
+    void onClick();
 
 signals:
-	void changed(const QColor &color);
-
+    void changed(const QColor &color);
 };
 
-#endif // COLOR_BUTTON_H
+#endif   // COLOR_BUTTON_H

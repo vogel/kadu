@@ -31,23 +31,26 @@
 class ConfigGroupBox;
 
 /**
-	&lt;radio-button caption="caption" id="id" /&gt;
+        &lt;radio-button caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigRadioButton : public QRadioButton, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigRadioButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,  ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigRadioButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigRadioButton() {}
+    ConfigRadioButton(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigRadioButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigRadioButton()
+    {
+    }
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
-
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 };
 
 #endif

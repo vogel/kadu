@@ -19,8 +19,7 @@
 
 #include "chat-widget-container-handler.h"
 
-ChatWidgetContainerHandler::ChatWidgetContainerHandler(QObject *parent) :
-		QObject{parent}
+ChatWidgetContainerHandler::ChatWidgetContainerHandler(QObject *parent) : QObject{parent}
 {
 }
 

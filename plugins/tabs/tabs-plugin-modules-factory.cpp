@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-TabsPluginModulesFactory::TabsPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+TabsPluginModulesFactory::TabsPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ TabsPluginModulesFactory::~TabsPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> TabsPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<TabsModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<TabsModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_tabs-plugin-modules-factory.cpp"

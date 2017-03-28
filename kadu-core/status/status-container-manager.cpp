@@ -35,8 +35,7 @@
 
 #include "status-container-manager.h"
 
-StatusContainerManager::StatusContainerManager(QObject *parent) :
-		StatusContainer(parent), DefaultStatusContainer(0)
+StatusContainerManager::StatusContainerManager(QObject *parent) : StatusContainer(parent), DefaultStatusContainer(0)
 {
 }
 
@@ -46,280 +45,276 @@ StatusContainerManager::~StatusContainerManager()
 
 void StatusContainerManager::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void StatusContainerManager::setIdentityManager(IdentityManager *identityManager)
 {
-	m_identityManager = identityManager;
+    m_identityManager = identityManager;
 }
 
 void StatusContainerManager::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
+    m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
 void StatusContainerManager::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void StatusContainerManager::init()
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		triggerAllIdentitiesAdded(m_identityManager);
-	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-		triggerAllAccountsAdded(m_accountManager);
-	else
-		registerStatusContainer(m_allAccountsStatusContainer);
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+        triggerAllIdentitiesAdded(m_identityManager);
+    else if (m_statusConfigurationHolder->isSetStatusPerAccount())
+        triggerAllAccountsAdded(m_accountManager);
+    else
+        registerStatusContainer(m_allAccountsStatusContainer);
 
-	connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
-	connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
+    connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(setStatusModeChanged()));
+    connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateIdentities()));
 }
 
 void StatusContainerManager::done()
 {
-	if (m_statusConfigurationHolder)
-	{
-		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-			triggerAllIdentitiesRemoved(m_identityManager);
-		else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-			triggerAllAccountsRemoved(m_accountManager);
-		else
-			unregisterStatusContainer(m_allAccountsStatusContainer);
-	}
+    if (m_statusConfigurationHolder)
+    {
+        if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+            triggerAllIdentitiesRemoved(m_identityManager);
+        else if (m_statusConfigurationHolder->isSetStatusPerAccount())
+            triggerAllAccountsRemoved(m_accountManager);
+        else
+            unregisterStatusContainer(m_allAccountsStatusContainer);
+    }
 }
 
 void StatusContainerManager::updateIdentities()
 {
-	if (!m_statusConfigurationHolder->isSetStatusPerIdentity())
-		return;
+    if (!m_statusConfigurationHolder->isSetStatusPerIdentity())
+        return;
 
-	foreach (const Identity &identity, m_identityManager->items())
-		if (StatusContainers.contains(identity.statusContainer()) && !identity.hasAnyLoadedAccount())
-			unregisterStatusContainer(identity.statusContainer());
-		else if (!StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
-			registerStatusContainer(identity.statusContainer());
+    foreach (const Identity &identity, m_identityManager->items())
+        if (StatusContainers.contains(identity.statusContainer()) && !identity.hasAnyLoadedAccount())
+            unregisterStatusContainer(identity.statusContainer());
+        else if (!StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
+            registerStatusContainer(identity.statusContainer());
 }
 
 void StatusContainerManager::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
+    connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    protocolHandlerChanged(account);
 }
 
 void StatusContainerManager::accountRemoved(Account account)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
+    disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    protocolHandlerChanged(account);
 }
 
 void StatusContainerManager::protocolHandlerChanged(Account account)
 {
-	if (account.protocolHandler())
-	{
-		if (m_statusConfigurationHolder->isSetStatusPerAccount() && !StatusContainers.contains(account.statusContainer()))
-			registerStatusContainer(account.statusContainer());
-		if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(account.accountIdentity().statusContainer()))
-			updateIdentities();
-	}
-	else
-	{
-		if (m_statusConfigurationHolder->isSetStatusPerAccount() && StatusContainers.contains(account.statusContainer()))
-			unregisterStatusContainer(account.statusContainer());
-		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-			updateIdentities();
-	}
+    if (account.protocolHandler())
+    {
+        if (m_statusConfigurationHolder->isSetStatusPerAccount() &&
+            !StatusContainers.contains(account.statusContainer()))
+            registerStatusContainer(account.statusContainer());
+        if (m_statusConfigurationHolder->isSetStatusPerIdentity() &&
+            !StatusContainers.contains(account.accountIdentity().statusContainer()))
+            updateIdentities();
+    }
+    else
+    {
+        if (m_statusConfigurationHolder->isSetStatusPerAccount() &&
+            StatusContainers.contains(account.statusContainer()))
+            unregisterStatusContainer(account.statusContainer());
+        if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+            updateIdentities();
+    }
 }
 
 void StatusContainerManager::identityAdded(Identity identity)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && !StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
-		registerStatusContainer(identity.statusContainer());
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity() &&
+        !StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
+        registerStatusContainer(identity.statusContainer());
 }
 
 void StatusContainerManager::identityRemoved(Identity identity)
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity() && StatusContainers.contains(identity.statusContainer()))
-		unregisterStatusContainer(identity.statusContainer());
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity() && StatusContainers.contains(identity.statusContainer()))
+        unregisterStatusContainer(identity.statusContainer());
 }
 
 void StatusContainerManager::cleanStatusContainers()
 {
-	while (!StatusContainers.isEmpty())
-		unregisterStatusContainer(StatusContainers.at(0));
+    while (!StatusContainers.isEmpty())
+        unregisterStatusContainer(StatusContainers.at(0));
 }
 
 void StatusContainerManager::addAllAccounts()
 {
-	foreach (Account account, m_accountManager->items())
-		registerStatusContainer(account.statusContainer());
+    foreach (Account account, m_accountManager->items())
+        registerStatusContainer(account.statusContainer());
 }
 
 void StatusContainerManager::addAllIdentities()
 {
-	updateIdentities();
+    updateIdentities();
 }
 
 void StatusContainerManager::setAllAccountsStatusContainer(AllAccountsStatusContainer *allAccountsStatusContainer)
 {
-	m_allAccountsStatusContainer = allAccountsStatusContainer;
+    m_allAccountsStatusContainer = allAccountsStatusContainer;
 }
 
 void StatusContainerManager::setDefaultStatusContainer(StatusContainer *defaultStatusContainer)
 {
-	if (defaultStatusContainer == DefaultStatusContainer)
-		return;
+    if (defaultStatusContainer == DefaultStatusContainer)
+        return;
 
-	if (DefaultStatusContainer)
-		disconnect(DefaultStatusContainer, 0, this, 0);
+    if (DefaultStatusContainer)
+        disconnect(DefaultStatusContainer, 0, this, 0);
 
-	if (this != defaultStatusContainer)
-		DefaultStatusContainer = defaultStatusContainer;
-	else
-		DefaultStatusContainer = 0;
+    if (this != defaultStatusContainer)
+        DefaultStatusContainer = defaultStatusContainer;
+    else
+        DefaultStatusContainer = 0;
 
-	if (DefaultStatusContainer)
-		connect(DefaultStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
+    if (DefaultStatusContainer)
+        connect(
+            DefaultStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this,
+            SIGNAL(statusUpdated(StatusContainer *)));
 
-	emit statusUpdated(this);
+    emit statusUpdated(this);
 }
 
 void StatusContainerManager::setStatusModeChanged()
 {
-	cleanStatusContainers();
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		addAllIdentities();
-	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-		addAllAccounts();
-	else
-		registerStatusContainer(m_allAccountsStatusContainer);
+    cleanStatusContainers();
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+        addAllIdentities();
+    else if (m_statusConfigurationHolder->isSetStatusPerAccount())
+        addAllAccounts();
+    else
+        registerStatusContainer(m_allAccountsStatusContainer);
 }
 
 void StatusContainerManager::registerStatusContainer(StatusContainer *statusContainer)
 {
-	if (StatusContainers.isEmpty())
-		setDefaultStatusContainer(statusContainer);
+    if (StatusContainers.isEmpty())
+        setDefaultStatusContainer(statusContainer);
 
-	emit statusContainerAboutToBeRegistered(statusContainer);
-	StatusContainers.append(statusContainer);
-	emit statusContainerRegistered(statusContainer);
-	StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
+    emit statusContainerAboutToBeRegistered(statusContainer);
+    StatusContainers.append(statusContainer);
+    emit statusContainerRegistered(statusContainer);
+    StatusContainerAwareObject::notifyStatusContainerRegistered(statusContainer);
 
-	connect(statusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
+    connect(statusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
 }
 
 void StatusContainerManager::unregisterStatusContainer(StatusContainer *statusContainer)
 {
-	emit statusContainerAboutToBeUnregistered(statusContainer);
-	StatusContainers.removeAll(statusContainer);
-	emit statusContainerUnregistered(statusContainer);
-	StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
+    emit statusContainerAboutToBeUnregistered(statusContainer);
+    StatusContainers.removeAll(statusContainer);
+    emit statusContainerUnregistered(statusContainer);
+    StatusContainerAwareObject::notifyStatusContainerUnregistered(statusContainer);
 
-	if (statusContainer == DefaultStatusContainer)
-	{
-		if (StatusContainers.isEmpty())
-			setDefaultStatusContainer(0);
-		else
-			setDefaultStatusContainer(StatusContainers.at(0));
-	}
+    if (statusContainer == DefaultStatusContainer)
+    {
+        if (StatusContainers.isEmpty())
+            setDefaultStatusContainer(0);
+        else
+            setDefaultStatusContainer(StatusContainers.at(0));
+    }
 
-	disconnect(statusContainer, 0, this, 0);
+    disconnect(statusContainer, 0, this, 0);
 }
 
 bool StatusContainerManager::allStatusOfType(StatusType type)
 {
-	if (StatusType::None == type)
-		return false;
+    if (StatusType::None == type)
+        return false;
 
-	foreach (StatusContainer *container, StatusContainers)
-		if (container->status().type() != type)
-			return false;
-	return true;
+    foreach (StatusContainer *container, StatusContainers)
+        if (container->status().type() != type)
+            return false;
+    return true;
 }
 
 QString StatusContainerManager::statusContainerName()
 {
-	return tr("All");
+    return tr("All");
 }
 
 void StatusContainerManager::setStatus(Status status, StatusChangeSource source)
 {
-	foreach (StatusContainer *container, StatusContainers)
-		container->setStatus(status, source);
+    foreach (StatusContainer *container, StatusContainers)
+        container->setStatus(status, source);
 }
 
 Status StatusContainerManager::status()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->status()
-			: Status();
+    return DefaultStatusContainer ? DefaultStatusContainer->status() : Status();
 }
 
 bool StatusContainerManager::isStatusSettingInProgress()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->isStatusSettingInProgress()
-			: false;
+    return DefaultStatusContainer ? DefaultStatusContainer->isStatusSettingInProgress() : false;
 }
 
 KaduIcon StatusContainerManager::statusIcon()
 {
-	return statusIcon(status());
+    return statusIcon(status());
 }
 
 KaduIcon StatusContainerManager::statusIcon(const Status &status)
 {
-	if (!DefaultStatusContainer)
-		return m_statusTypeManager->statusIcon("common", Status{StatusType::Offline});
+    if (!DefaultStatusContainer)
+        return m_statusTypeManager->statusIcon("common", Status{StatusType::Offline});
 
-	return m_statusTypeManager->statusIcon("common", status);
+    return m_statusTypeManager->statusIcon("common", status);
 }
 
 QList<StatusType> StatusContainerManager::supportedStatusTypes()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->supportedStatusTypes()
-			: QList<StatusType>();
+    return DefaultStatusContainer ? DefaultStatusContainer->supportedStatusTypes() : QList<StatusType>();
 }
 
 int StatusContainerManager::maxDescriptionLength()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->maxDescriptionLength()
-			: -1;
+    return DefaultStatusContainer ? DefaultStatusContainer->maxDescriptionLength() : -1;
 }
 
 QString StatusContainerManager::statusNamePrefix()
 {
-	return tr("All") + ' ';
+    return tr("All") + ' ';
 }
 
 Status StatusContainerManager::loadStatus()
 {
-	return DefaultStatusContainer
-			? DefaultStatusContainer->loadStatus()
-			: Status();
+    return DefaultStatusContainer ? DefaultStatusContainer->loadStatus() : Status();
 }
 
 void StatusContainerManager::storeStatus(Status status)
 {
-	foreach (StatusContainer *statusContainer, StatusContainers)
-		statusContainer->storeStatus(status);
+    foreach (StatusContainer *statusContainer, StatusContainers)
+        statusContainer->storeStatus(status);
 }
 
 QList<StatusContainer *> StatusContainerManager::subStatusContainers()
 {
-	return StatusContainers;
+    return StatusContainers;
 }
 
-StatusContainer * StatusContainerManager::statusContainerForAccount(Account account) const
+StatusContainer *StatusContainerManager::statusContainerForAccount(Account account) const
 {
-	if (m_statusConfigurationHolder->isSetStatusPerAccount())
-		return account.statusContainer();
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		return account.accountIdentity().statusContainer();
-	return m_allAccountsStatusContainer;
+    if (m_statusConfigurationHolder->isSetStatusPerAccount())
+        return account.statusContainer();
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+        return account.accountIdentity().statusContainer();
+    return m_allAccountsStatusContainer;
 }
 
 #include "moc_status-container-manager.cpp"

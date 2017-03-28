@@ -38,22 +38,21 @@ class QProcess;
 
 class ExternalPlayer : public SoundPlayer
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ExternalPlayer(QObject *parent = nullptr);
-	virtual ~ExternalPlayer();
+    Q_INVOKABLE explicit ExternalPlayer(QObject *parent = nullptr);
+    virtual ~ExternalPlayer();
 
-	virtual QObject * playSound(const QString &path);
+    virtual QObject *playSound(const QString &path);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<QProcess> m_playerProcess;
+    QPointer<Configuration> m_configuration;
+    QPointer<QProcess> m_playerProcess;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

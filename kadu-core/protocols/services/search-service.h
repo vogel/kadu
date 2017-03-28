@@ -35,19 +35,22 @@
 
 class KADUAPI SearchService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SearchService(Account account, QObject *parent) : AccountService(account, parent) {}
-	virtual ~SearchService() {}
+    explicit SearchService(Account account, QObject *parent) : AccountService(account, parent)
+    {
+    }
+    virtual ~SearchService()
+    {
+    }
 
-	virtual void searchFirst(BuddySearchCriteria *criteria) = 0;
-	virtual void searchNext() = 0;
-	virtual void stop() = 0;
+    virtual void searchFirst(BuddySearchCriteria *criteria) = 0;
+    virtual void searchNext() = 0;
+    virtual void stop() = 0;
 
 signals:
-	void newResults(BuddyList buddies);
-
+    void newResults(BuddyList buddies);
 };
 
-#endif // SEARCH_SERVICE_H
+#endif   // SEARCH_SERVICE_H

@@ -26,8 +26,8 @@
 
 AutoawayModule::AutoawayModule()
 {
-	add_type<Autoaway>();
-	add_type<AutoawayConfigurationUiHandler>();
-	add_type<AutoawayPluginObject>();
-	add_type<AutoawayStatusChanger>();
+    add_type<Autoaway>();
+    add_type<AutoawayConfigurationUiHandler>();
+    add_type<AutoawayPluginObject>();
+    add_type<AutoawayStatusChanger>();
 }

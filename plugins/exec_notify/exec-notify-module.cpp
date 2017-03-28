@@ -24,8 +24,8 @@
 
 ExecNotifyModule::ExecNotifyModule()
 {
-	add_type<ExecNotifier>();
-	add_type<ExecNotifyPluginObject>();
+    add_type<ExecNotifier>();
+    add_type<ExecNotifyPluginObject>();
 }
 
 ExecNotifyModule::~ExecNotifyModule()

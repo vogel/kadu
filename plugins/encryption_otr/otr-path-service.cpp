@@ -23,8 +23,7 @@
 
 #include <QtCore/QDir>
 
-OtrPathService::OtrPathService(QObject *parent) :
-		QObject{parent}
+OtrPathService::OtrPathService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,26 +33,26 @@ OtrPathService::~OtrPathService()
 
 void OtrPathService::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_dir = pathsProvider->profilePath() + QString("/keys/");
+    m_dir = pathsProvider->profilePath() + QString("/keys/");
 
-	QDir dir{m_dir};
-	if (!dir.exists())
-		dir.mkpath(".");
+    QDir dir{m_dir};
+    if (!dir.exists())
+        dir.mkpath(".");
 }
 
 QString OtrPathService::fingerprintsStoreFilePath() const
 {
-	return m_dir + QString{"otr_fingerprints"};
+    return m_dir + QString{"otr_fingerprints"};
 }
 
 QString OtrPathService::instanceTagsStoreFilePath() const
 {
-	return m_dir + QString{"otr_instance_tags"};
+    return m_dir + QString{"otr_instance_tags"};
 }
 
 QString OtrPathService::privateKeysStoreFilePath() const
 {
-	return m_dir + QString{"otr_private"};
+    return m_dir + QString{"otr_private"};
 }
 
 #include "moc_otr-path-service.cpp"

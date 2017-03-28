@@ -26,15 +26,15 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/custom-input.h"
 
-BoldAction::BoldAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+BoldAction::BoldAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
     setCheckable(true);
-	setIcon(KaduIcon{"format-text-bold"});
-	setName(QStringLiteral("boldAction"));
-	setText(tr("Bold"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"format-text-bold"});
+    setName(QStringLiteral("boldAction"));
+    setText(tr("Bold"));
+    setType(ActionDescription::TypeChat);
 }
 
 BoldAction::~BoldAction()
@@ -43,29 +43,29 @@ BoldAction::~BoldAction()
 
 void BoldAction::actionTriggered(QAction *sender, bool toggled)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	chatEditBox->inputBox()->setFontWeight(toggled ? QFont::Bold : QFont::Normal);
+    chatEditBox->inputBox()->setFontWeight(toggled ? QFont::Bold : QFont::Normal);
 }
 
-void BoldAction::updateActionState(Action* action)
+void BoldAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	auto chat = action->context()->chat();
-	if (!chat)
-		return;
+    auto chat = action->context()->chat();
+    if (!chat)
+        return;
 
-	auto protocol = chat.chatAccount().protocolHandler();
-	if (!protocol)
-		return;
+    auto protocol = chat.chatAccount().protocolHandler();
+    if (!protocol)
+        return;
 
-	if (!protocol->protocolFactory())
-		return;
+    if (!protocol->protocolFactory())
+        return;
 
-	action->setEnabled(protocol->protocolFactory()->name() == "gadu");
+    action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
 
 #include "moc_bold-action.cpp"

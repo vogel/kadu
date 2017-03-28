@@ -20,8 +20,7 @@
 
 #include "modal-configuration-widget.h"
 
-ModalConfigurationWidget::ModalConfigurationWidget(QWidget *parent) :
-		QWidget(parent)
+ModalConfigurationWidget::ModalConfigurationWidget(QWidget *parent) : QWidget(parent)
 {
 }
 

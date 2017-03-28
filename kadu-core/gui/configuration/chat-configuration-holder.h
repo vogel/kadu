@@ -33,65 +33,121 @@ class Configuration;
 
 class KADUAPI ChatConfigurationHolder : public ConfigurationHolder
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatConfigurationHolder(QObject *parent = nullptr);
-	virtual ~ChatConfigurationHolder();
+    Q_INVOKABLE explicit ChatConfigurationHolder(QObject *parent = nullptr);
+    virtual ~ChatConfigurationHolder();
 
-	void configurationUpdated();
+    void configurationUpdated();
 
-	bool autoSend() const { return AutoSend; }
-	bool niceDateFormat() const { return NiceDateFormat; }
-	bool chatTextCustomColors() const { return ChatTextCustomColors; }
-	const QColor &chatTextBgColor() const { return ChatTextBgColor; }
-	const QColor &chatTextFontColor() const { return ChatTextFontColor; }
-	bool forceCustomChatFont() const { return ForceCustomChatFont; }
-	const QFont &chatFont() const { return ChatFont; }
-	const QString &myBackgroundColor() const { return MyBackgroundColor; }
-	const QString &myFontColor() const { return MyFontColor; }
-	const QString &myNickColor() const { return MyNickColor; }
-	const QString &usrBackgroundColor() const { return UsrBackgroundColor; }
-	const QString &usrFontColor() const { return UsrFontColor; }
-	const QString &usrNickColor() const { return UsrNickColor; }
-	bool chatBgFilled() const { return ChatBgFilled; }
-	const QColor &chatBgColor() const { return ChatBgColor; }
-	bool useTransparency() const { return UseTransparency; }
+    bool autoSend() const
+    {
+        return AutoSend;
+    }
+    bool niceDateFormat() const
+    {
+        return NiceDateFormat;
+    }
+    bool chatTextCustomColors() const
+    {
+        return ChatTextCustomColors;
+    }
+    const QColor &chatTextBgColor() const
+    {
+        return ChatTextBgColor;
+    }
+    const QColor &chatTextFontColor() const
+    {
+        return ChatTextFontColor;
+    }
+    bool forceCustomChatFont() const
+    {
+        return ForceCustomChatFont;
+    }
+    const QFont &chatFont() const
+    {
+        return ChatFont;
+    }
+    const QString &myBackgroundColor() const
+    {
+        return MyBackgroundColor;
+    }
+    const QString &myFontColor() const
+    {
+        return MyFontColor;
+    }
+    const QString &myNickColor() const
+    {
+        return MyNickColor;
+    }
+    const QString &usrBackgroundColor() const
+    {
+        return UsrBackgroundColor;
+    }
+    const QString &usrFontColor() const
+    {
+        return UsrFontColor;
+    }
+    const QString &usrNickColor() const
+    {
+        return UsrNickColor;
+    }
+    bool chatBgFilled() const
+    {
+        return ChatBgFilled;
+    }
+    const QColor &chatBgColor() const
+    {
+        return ChatBgColor;
+    }
+    bool useTransparency() const
+    {
+        return UseTransparency;
+    }
 
-	bool contactStateChats() const { return ContactStateChats; }
-	bool contactStateWindowTitle() const { return ContactStateWindowTitle; }
-	int contactStateWindowTitlePosition() const { return ContactStateWindowTitlePosition; }
-	ChatWidgetTitleComposingStatePosition composingStatePosition() const;
+    bool contactStateChats() const
+    {
+        return ContactStateChats;
+    }
+    bool contactStateWindowTitle() const
+    {
+        return ContactStateWindowTitle;
+    }
+    int contactStateWindowTitlePosition() const
+    {
+        return ContactStateWindowTitlePosition;
+    }
+    ChatWidgetTitleComposingStatePosition composingStatePosition() const;
 
 signals:
-	void chatConfigurationUpdated();
+    void chatConfigurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	bool AutoSend;
-	bool NiceDateFormat;
-	bool ChatTextCustomColors;
-	QColor ChatTextBgColor;
-	QColor ChatTextFontColor;
-	bool ForceCustomChatFont;
-	QFont ChatFont;
-	QString MyBackgroundColor;
-	QString MyFontColor;
-	QString MyNickColor;
-	QString UsrBackgroundColor;
-	QString UsrFontColor;
-	QString UsrNickColor;
-	bool ChatBgFilled;
-	QColor ChatBgColor;
-	bool UseTransparency;
+    bool AutoSend;
+    bool NiceDateFormat;
+    bool ChatTextCustomColors;
+    QColor ChatTextBgColor;
+    QColor ChatTextFontColor;
+    bool ForceCustomChatFont;
+    QFont ChatFont;
+    QString MyBackgroundColor;
+    QString MyFontColor;
+    QString MyNickColor;
+    QString UsrBackgroundColor;
+    QString UsrFontColor;
+    QString UsrNickColor;
+    bool ChatBgFilled;
+    QColor ChatBgColor;
+    bool UseTransparency;
 
-	bool ContactStateChats;
-	bool ContactStateWindowTitle;
-	int ContactStateWindowTitlePosition;
+    bool ContactStateChats;
+    bool ContactStateWindowTitle;
+    int ContactStateWindowTitlePosition;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

@@ -27,9 +27,7 @@ class PathsProvider;
 
 class KADUAPI GuiModule : public injeqt::module
 {
-
 public:
-	explicit GuiModule();
-	virtual ~GuiModule();
-
+    explicit GuiModule();
+    virtual ~GuiModule();
 };

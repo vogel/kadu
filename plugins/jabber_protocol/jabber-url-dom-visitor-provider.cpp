@@ -23,18 +23,16 @@
 
 #include "jabber-url-dom-visitor-provider.h"
 
-JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider(QObject *parent) :
-		QObject{parent},
-		m_ignoreLinks{std::make_unique<SimpleUrlExpander>(
-			QRegExp{"\\b"
-					"xmpp:"
-					"(?://([^@ ]+)@([^/?# ]+)/?)?"                 // auth-xmpp
-					"(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?" // path-xmpp
-					"(?:\\?([^&# ]+)"                              // querytype
-					"(&[^# ]+)?)?"                                 // pair, will need to be reparsed, later
-					"(?:#(\\S*))?"                                 // fragment
-					"\\b"}
-		)}
+JabberUrlDomVisitorProvider::JabberUrlDomVisitorProvider(QObject *parent)
+        : QObject{parent}, m_ignoreLinks{std::make_unique<SimpleUrlExpander>(
+                               QRegExp{"\\b"
+                                       "xmpp:"
+                                       "(?://([^@ ]+)@([^/?# ]+)/?)?"                   // auth-xmpp
+                                       "(?:(?:([^@ ]+)@)?([^/?# ]+)(?:/([^?# ]+))?)?"   // path-xmpp
+                                       "(?:\\?([^&# ]+)"                                // querytype
+                                       "(&[^# ]+)?)?"   // pair, will need to be reparsed, later
+                                       "(?:#(\\S*))?"   // fragment
+                                       "\\b"})}
 {
 }
 
@@ -42,9 +40,9 @@ JabberUrlDomVisitorProvider::~JabberUrlDomVisitorProvider()
 {
 }
 
-const DomVisitor * JabberUrlDomVisitorProvider::provide() const
+const DomVisitor *JabberUrlDomVisitorProvider::provide() const
 {
-	return &m_ignoreLinks;
+    return &m_ignoreLinks;
 }
 
 #include "moc_jabber-url-dom-visitor-provider.cpp"

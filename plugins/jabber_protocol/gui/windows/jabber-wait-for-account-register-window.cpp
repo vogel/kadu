@@ -24,49 +24,53 @@
 
 #include "icons/icons-manager.h"
 
-JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ProgressWindow(tr("Registering new XMPP account"), parent),
-		m_jabberRegisterAccount(jabberRegisterAccount)
+JabberWaitForAccountRegisterWindow::JabberWaitForAccountRegisterWindow(
+    JabberRegisterAccount *jabberRegisterAccount,
+    QWidget *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ProgressWindow(tr("Registering new XMPP account"), parent),
+          m_jabberRegisterAccount(jabberRegisterAccount)
 {
-	setCancellable(true);
+    setCancellable(true);
 
-	connect(m_jabberRegisterAccount, SIGNAL(statusMessage(QString)), this, SLOT(statusMessage(QString)));
-	connect(m_jabberRegisterAccount, SIGNAL(success()), this, SLOT(success()));
-	connect(m_jabberRegisterAccount, SIGNAL(error(QString)), this, SLOT(error(QString)));
+    connect(m_jabberRegisterAccount, SIGNAL(statusMessage(QString)), this, SLOT(statusMessage(QString)));
+    connect(m_jabberRegisterAccount, SIGNAL(success()), this, SLOT(success()));
+    connect(m_jabberRegisterAccount, SIGNAL(error(QString)), this, SLOT(error(QString)));
 
-	addProgressEntry("dialog-information", tr("Connecting with server."));
-	m_jabberRegisterAccount->start();
+    addProgressEntry("dialog-information", tr("Connecting with server."));
+    m_jabberRegisterAccount->start();
 }
 
 JabberWaitForAccountRegisterWindow::~JabberWaitForAccountRegisterWindow()
 {
-	if (m_jabberRegisterAccount)
-	{
-		disconnect(m_jabberRegisterAccount, nullptr, this, nullptr);
-		m_jabberRegisterAccount->deleteLater();
-	}
+    if (m_jabberRegisterAccount)
+    {
+        disconnect(m_jabberRegisterAccount, nullptr, this, nullptr);
+        m_jabberRegisterAccount->deleteLater();
+    }
 }
 
 void JabberWaitForAccountRegisterWindow::statusMessage(const QString &statusMessage)
 {
-	addProgressEntry("dialog-information", statusMessage);
+    addProgressEntry("dialog-information", statusMessage);
 }
 
 void JabberWaitForAccountRegisterWindow::success()
 {
-	auto message = tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the password.\n"
-		"Now please add your friends to the buddy list.");
+    auto message =
+        tr("Registration was successful. Your new XMPP username is %1.\nStore it in a safe place along with the "
+           "password.\n"
+           "Now please add your friends to the buddy list.");
 
-	progressFinished(true, "dialog-information", message);
-	emit jidRegistered(m_jabberRegisterAccount->jid());
+    progressFinished(true, "dialog-information", message);
+    emit jidRegistered(m_jabberRegisterAccount->jid());
 }
 
 void JabberWaitForAccountRegisterWindow::error(const QString &errorMessage)
 {
-	progressFinished(false, "dialog-error", tr("Registration failed.\n\nServer message: %1").arg(errorMessage));
-	emit jidRegistered(Jid());
-	deleteLater();
+    progressFinished(false, "dialog-error", tr("Registration failed.\n\nServer message: %1").arg(errorMessage));
+    emit jidRegistered(Jid());
+    deleteLater();
 }
 
 #include "moc_jabber-wait-for-account-register-window.cpp"

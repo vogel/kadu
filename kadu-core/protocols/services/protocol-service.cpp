@@ -21,20 +21,19 @@
 
 #include "protocols/protocol.h"
 
-ProtocolService::ProtocolService(Protocol *protocol, QObject *parent) :
-		AccountService{protocol->account(), parent},
-		m_protocol{protocol}
+ProtocolService::ProtocolService(Protocol *protocol, QObject *parent)
+        : AccountService{protocol->account(), parent}, m_protocol{protocol}
 {
-	Q_ASSERT(m_protocol);
+    Q_ASSERT(m_protocol);
 }
 
 ProtocolService::~ProtocolService()
 {
 }
 
-Protocol * ProtocolService::protocol() const
+Protocol *ProtocolService::protocol() const
 {
-	return m_protocol;
+    return m_protocol;
 }
 
 #include "moc_protocol-service.cpp"

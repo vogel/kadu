@@ -31,25 +31,24 @@ class SingleWindow;
 
 class SingleWindowPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit SingleWindowPluginObject(QObject *parent = nullptr);
-	virtual ~SingleWindowPluginObject();
+    Q_INVOKABLE explicit SingleWindowPluginObject(QObject *parent = nullptr);
+    virtual ~SingleWindowPluginObject();
 
 private:
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SingleWindowManager> m_singleWindowManager;
-	QPointer<SingleWindow> m_singleWindow;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<SingleWindowManager> m_singleWindowManager;
+    QPointer<SingleWindow> m_singleWindow;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSingleWindowManager(SingleWindowManager *singleWindowManager);
-	INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setSingleWindowManager(SingleWindowManager *singleWindowManager);
+    INJEQT_SET void setSingleWindow(SingleWindow *singleWindow);
 };

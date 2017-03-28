@@ -24,16 +24,12 @@
 
 QMqttMessage QFacebookPong::encode() const
 {
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		uint8_t{0},
-		{}
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), uint8_t{0}, {}};
 }
 
 QFacebookPong QFacebookPong::decode(const QMqttMessage &message)
 {
-	if (!message.content.isEmpty())
-		throw QFacebookInvalidDataException{};
-	return QFacebookPong{};
+    if (!message.content.isEmpty())
+        throw QFacebookInvalidDataException{};
+    return QFacebookPong{};
 }

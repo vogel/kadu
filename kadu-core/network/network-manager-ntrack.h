@@ -46,22 +46,21 @@
  */
 class KADUAPI NetworkManagerNTrack : public NetworkManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool isOnline(QNTrackState state) const;
+    bool isOnline(QNTrackState state) const;
 
 private slots:
-	void stateChanged(QNTrackState oldState, QNTrackState newState);
+    void stateChanged(QNTrackState oldState, QNTrackState newState);
 
 public:
-	Q_INVOKABLE explicit NetworkManagerNTrack(QObject *parent = nullptr);
-	virtual ~NetworkManagerNTrack();
+    Q_INVOKABLE explicit NetworkManagerNTrack(QObject *parent = nullptr);
+    virtual ~NetworkManagerNTrack();
 
-	virtual bool isOnline();
+    virtual bool isOnline();
 
 public slots:
-	virtual void forceOnline();
-
+    virtual void forceOnline();
 };
 
 /**

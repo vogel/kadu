@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-ImageLinkPluginModulesFactory::ImageLinkPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+ImageLinkPluginModulesFactory::ImageLinkPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ ImageLinkPluginModulesFactory::~ImageLinkPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> ImageLinkPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<ImageLinkModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<ImageLinkModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_image-link-plugin-modules-factory.cpp"

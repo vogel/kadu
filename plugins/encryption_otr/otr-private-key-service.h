@@ -32,32 +32,31 @@ class OtrUserStateService;
 
 class OtrPrivateKeyService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol);
+    static void wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol);
 
-	Q_INVOKABLE OtrPrivateKeyService();
-	virtual ~OtrPrivateKeyService();
+    Q_INVOKABLE OtrPrivateKeyService();
+    virtual ~OtrPrivateKeyService();
 
-	void createPrivateKey(const Account &account);
-	void readPrivateKeys();
+    void createPrivateKey(const Account &account);
+    void readPrivateKeys();
 
 signals:
-	void createPrivateKeyStarted(const Account &account);
-	void createPrivateKeyFinished(const Account &account, bool ok);
+    void createPrivateKeyStarted(const Account &account);
+    void createPrivateKeyFinished(const Account &account, bool ok);
 
 private slots:
-	INJEQT_SET void setPathService(OtrPathService *pathService);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setPathService(OtrPathService *pathService);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
-	void jobFinished(const Account &account, bool ok);
+    void jobFinished(const Account &account, bool ok);
 
 private:
-	QPointer<OtrPathService> PathService;
-	QPointer<OtrUserStateService> UserStateService;
-	QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
+    QPointer<OtrPathService> PathService;
+    QPointer<OtrUserStateService> UserStateService;
+    QMap<Account, OtrCreatePrivateKeyJob *> CreateJobs;
 
-	QString privateStoreFileName() const;
-
+    QString privateStoreFileName() const;
 };

@@ -58,316 +58,313 @@
  *
  * This class is thread-safe.
  */
-template<class Item>
+template <class Item>
 class Manager : public StorableObject
 {
-	QMutex Mutex;
+    QMutex Mutex;
 
-	QVector<Item> Items;
+    QVector<Item> Items;
 
 protected:
-	Manager(QObject *parent) :
-			StorableObject{parent},
-			Mutex{QMutex::Recursive}
-	{
-		setState(StateNotLoaded);
-	}
+    Manager(QObject *parent) : StorableObject{parent}, Mutex{QMutex::Recursive}
+    {
+        setState(StateNotLoaded);
+    }
 
-	virtual ~Manager()
-	{
-	}
+    virtual ~Manager()
+    {
+    }
 
-	QMutex & mutex()
-	{
-		return Mutex;
-	}
+    QMutex &mutex()
+    {
+        return Mutex;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns storage parent of this object.
-	 * @return storage parent of this object
-	 *
-	 * Returns NULL. This class stores configuration just under root node of
-	 * XML configuration file.
-	 */
-	virtual StorableObject * storageParent()
-	{
-		return 0;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns storage parent of this object.
+     * @return storage parent of this object
+     *
+     * Returns NULL. This class stores configuration just under root node of
+     * XML configuration file.
+     */
+    virtual StorableObject *storageParent()
+    {
+        return 0;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns node name for items stored in this class.
-	 * @return node name for items stored in this class
-	 *
-	 * Returns node name for items stored in this class.
-	 */
-	virtual QString storageNodeItemName() = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns node name for items stored in this class.
+     * @return node name for items stored in this class
+     *
+     * Returns node name for items stored in this class.
+     */
+    virtual QString storageNodeItemName() = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called just before item is added to manager.
-	 *
-	 * This method is called just before item is added to manager.
-	 * Can be used to send a signal in derivered classes.
-	 */
-	virtual void itemAboutToBeAdded(Item item)
-	{
-		Q_UNUSED(item)
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Method called just before item is added to manager.
+     *
+     * This method is called just before item is added to manager.
+     * Can be used to send a signal in derivered classes.
+     */
+    virtual void itemAboutToBeAdded(Item item)
+    {
+        Q_UNUSED(item)
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called just after item is added to manager.
-	 *
-	 * This method is called just after item is added to manager.
-	 * Can be used to send a signal in derivered classes.
-	 */
-	virtual void itemAdded(Item item)
-	{
-		Q_UNUSED(item)
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Method called just after item is added to manager.
+     *
+     * This method is called just after item is added to manager.
+     * Can be used to send a signal in derivered classes.
+     */
+    virtual void itemAdded(Item item)
+    {
+        Q_UNUSED(item)
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called just before item is removed from manager.
-	 *
-	 * This method is called just before item is removed from manager.
-	 * Can be used to send a signal in derivered classes.
-	 */
-	virtual void itemAboutToBeRemoved(Item item)
-	{
-		Q_UNUSED(item)
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Method called just before item is removed from manager.
+     *
+     * This method is called just before item is removed from manager.
+     * Can be used to send a signal in derivered classes.
+     */
+    virtual void itemAboutToBeRemoved(Item item)
+    {
+        Q_UNUSED(item)
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Method called just after item is removed from manager.
-	 *
-	 * This method is called just after item is removed from manager.
-	 * Can be used to send a signal in derivered classes.
-	 */
-	virtual void itemRemoved(Item item)
-	{
-		Q_UNUSED(item)
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Method called just after item is removed from manager.
+     *
+     * This method is called just after item is removed from manager.
+     * Can be used to send a signal in derivered classes.
+     */
+    virtual void itemRemoved(Item item)
+    {
+        Q_UNUSED(item)
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads all items from configuration file.
-	 *
-	 * Loads all items from configuration file. Uses @link storageNodeItemName @endlink
-	 * to get name of subnodes. Items are loaded by Item::loadFromStorage static method.
-	 * Every loads will cause @link itemAboutToBeAdded @endlink and @link itemAdded
-	 * @endlink methods to be called.
-	 */
-	virtual void load()
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads all items from configuration file.
+     *
+     * Loads all items from configuration file. Uses @link storageNodeItemName @endlink
+     * to get name of subnodes. Items are loaded by Item::loadFromStorage static method.
+     * Every loads will cause @link itemAboutToBeAdded @endlink and @link itemAdded
+     * @endlink methods to be called.
+     */
+    virtual void load()
+    {
+        QMutexLocker locker(&Mutex);
 
-		if (!isValidStorage())
-			return;
+        if (!isValidStorage())
+            return;
 
-		StorableObject::load();
+        StorableObject::load();
 
-		QDomElement itemsNode = storage()->point();
-		if (itemsNode.isNull())
-			return;
+        QDomElement itemsNode = storage()->point();
+        if (itemsNode.isNull())
+            return;
 
-		QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
-		Items.reserve(itemElements.count());
+        QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
+        Items.reserve(itemElements.count());
 
-		foreach (const QDomElement &itemElement, itemElements)
-		{
-			auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), itemElement);
-			QUuid uuid = storagePoint->point().attribute("uuid");
-			if (!uuid.isNull())
-			{
-				Item item = loadStubFromStorage(storagePoint);
-				Items.append(item);
-			}
-		}
+        foreach (const QDomElement &itemElement, itemElements)
+        {
+            auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), itemElement);
+            QUuid uuid = storagePoint->point().attribute("uuid");
+            if (!uuid.isNull())
+            {
+                Item item = loadStubFromStorage(storagePoint);
+                Items.append(item);
+            }
+        }
 
-		for (auto const &item : Items)
-		{
-			itemAboutToBeAdded(item);
-			itemAdded(item);
-		}
+        for (auto const &item : Items)
+        {
+            itemAboutToBeAdded(item);
+            itemAdded(item);
+        }
 
-		loaded();
-	}
+        loaded();
+    }
 
-	virtual Item loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) = 0;
+    virtual Item loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores all items to configuration file.
-	 *
-	 * Stores all items to configuration file. Items are stored by their
-	 * store method. If an item is new (was not loaded from storage) it creates its
-	 * own node by its createStoragePoint method.
-	 */
-	virtual void store()
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores all items to configuration file.
+     *
+     * Stores all items to configuration file. Items are stored by their
+     * store method. If an item is new (was not loaded from storage) it creates its
+     * own node by its createStoragePoint method.
+     */
+    virtual void store()
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
+        ensureLoaded();
 
-		foreach (Item item, Items)
-			item.ensureStored();
-	}
+        foreach (Item item, Items)
+            item.ensureStored();
+    }
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns item by index.
-	 * @param index index of item to return
-	 * @return item with given index
-	 *
-	 * Returns item with given index. Indexes are arbitrary and can
-	 * change when items are added or removed. This method returns the
-	 * same item as items().at(index) would return.
-	 *
-	 * When index is out of range Item::null value is returned.
-	 */
-	Item byIndex(int index)
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns item by index.
+     * @param index index of item to return
+     * @return item with given index
+     *
+     * Returns item with given index. Indexes are arbitrary and can
+     * change when items are added or removed. This method returns the
+     * same item as items().at(index) would return.
+     *
+     * When index is out of range Item::null value is returned.
+     */
+    Item byIndex(int index)
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
+        ensureLoaded();
 
-		if (index < 0 || index >= count())
-			return Item::null;
+        if (index < 0 || index >= count())
+            return Item::null;
 
-		return Items.at(index);
-	}
+        return Items.at(index);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns item by uuid.
-	 * @param uuid uuid of item to return
-	 * @return item with given uuid
-	 *
-	 * Returns item with given uuid. Uuid are arbitrary but can not
-	 * change (even between application restarts).
-	 */
-	Item byUuid(const QUuid &uuid)
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns item by uuid.
+     * @param uuid uuid of item to return
+     * @return item with given uuid
+     *
+     * Returns item with given uuid. Uuid are arbitrary but can not
+     * change (even between application restarts).
+     */
+    Item byUuid(const QUuid &uuid)
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
+        ensureLoaded();
 
-		if (uuid.isNull())
-			return Item::null;
+        if (uuid.isNull())
+            return Item::null;
 
-		foreach (const Item &item, Items)
-			if (item.uuid() == uuid)
-				return item;
+        foreach (const Item &item, Items)
+            if (item.uuid() == uuid)
+                return item;
 
-		return Item::null;
-	}
+        return Item::null;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns index of given item.
-	 * @param item item to find index
-	 * @return index of given item
-	 *
-	 * Returns index of given item (or -1, if item is not found).
-	 * Indexes are arbitrary and can change when items are added
-	 * or removed. This method returns the same index as
-	 * items().indexOf(item) would return.
-	 */
-	int indexOf(Item item)
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns index of given item.
+     * @param item item to find index
+     * @return index of given item
+     *
+     * Returns index of given item (or -1, if item is not found).
+     * Indexes are arbitrary and can change when items are added
+     * or removed. This method returns the same index as
+     * items().indexOf(item) would return.
+     */
+    int indexOf(Item item)
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
-		return Items.indexOf(item);
-	}
+        ensureLoaded();
+        return Items.indexOf(item);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns number of loaded items.
-	 * @return number of loaded items
-	 *
-	 * Return number of loaded items.
-	 */
-	int count()
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns number of loaded items.
+     * @return number of loaded items
+     *
+     * Return number of loaded items.
+     */
+    int count()
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
-		return Items.count();
-	}
+        ensureLoaded();
+        return Items.count();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns list of items.
-	 * @return list of items
-	 *
-	 * Return list of items.
-	 */
-	const QVector<Item> & items()
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns list of items.
+     * @return list of items
+     *
+     * Return list of items.
+     */
+    const QVector<Item> &items()
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
-		return Items;
-	}
+        ensureLoaded();
+        return Items;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Adds new item to list.
-	 * @param item new item to be added
-	 *
-	 * Adds new item to list. If item is already added this method does nothing.
-	 * This method calls @link itemAboutToBeAdded @endlink and @link itemAdded
-	 * @endlink virtual methods.
-	 */
-	void addItem(Item item)
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Adds new item to list.
+     * @param item new item to be added
+     *
+     * Adds new item to list. If item is already added this method does nothing.
+     * This method calls @link itemAboutToBeAdded @endlink and @link itemAdded
+     * @endlink virtual methods.
+     */
+    void addItem(Item item)
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
+        ensureLoaded();
 
-		if (Items.contains(item))
-			return;
+        if (Items.contains(item))
+            return;
 
-		itemAboutToBeAdded(item);
-		Items.append(item);
-		itemAdded(item);
-	}
+        itemAboutToBeAdded(item);
+        Items.append(item);
+        itemAdded(item);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removed item from list.
-	 * @param item item to be removed
-	 *
-	 * Removes item from list. If item is not on list this method does nothing.
-	 * This method calls @link itemAboutToBeRemoved @endlink and @link itemRemoved
-	 * @endlink virtual methods.
-	 *
-	 * Item is removed from storage.
-	 */
-	void removeItem(Item item)
-	{
-		QMutexLocker locker(&Mutex);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removed item from list.
+     * @param item item to be removed
+     *
+     * Removes item from list. If item is not on list this method does nothing.
+     * This method calls @link itemAboutToBeRemoved @endlink and @link itemRemoved
+     * @endlink virtual methods.
+     *
+     * Item is removed from storage.
+     */
+    void removeItem(Item item)
+    {
+        QMutexLocker locker(&Mutex);
 
-		ensureLoaded();
+        ensureLoaded();
 
-		if (!Items.contains(item))
-			return;
+        if (!Items.contains(item))
+            return;
 
-		itemAboutToBeRemoved(item);
-		item.aboutToBeRemoved();
+        itemAboutToBeRemoved(item);
+        item.aboutToBeRemoved();
 
-		Items.remove(Items.indexOf(item));
+        Items.remove(Items.indexOf(item));
 
-		item.remove();
-		itemRemoved(item);
-	}
-
+        item.remove();
+        itemRemoved(item);
+    }
 };
 
 /**

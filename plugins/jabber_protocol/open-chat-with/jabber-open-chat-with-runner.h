@@ -31,24 +31,23 @@ class ContactManager;
 
 class JabberOpenChatWithRunner : public QObject, public OpenChatWithRunner
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberOpenChatWithRunner(Account account, QObject *parent = nullptr);
-	virtual ~JabberOpenChatWithRunner();
+    explicit JabberOpenChatWithRunner(Account account, QObject *parent = nullptr);
+    virtual ~JabberOpenChatWithRunner();
 
-	virtual BuddyList matchingContacts(const QString &query) override;
+    virtual BuddyList matchingContacts(const QString &query) override;
 
-	void setAccount(Account account);
+    void setAccount(Account account);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
 
-	Account m_account;
+    Account m_account;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };

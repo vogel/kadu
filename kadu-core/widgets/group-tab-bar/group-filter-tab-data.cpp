@@ -26,43 +26,42 @@
 
 #include "group-filter-tab-data.h"
 
-GroupFilterTabData::GroupFilterTabData(const GroupFilter &filter) :
-		Filter(filter)
+GroupFilterTabData::GroupFilterTabData(const GroupFilter &filter) : Filter(filter)
 {
 }
 
 GroupFilter GroupFilterTabData::filter() const
 {
-	return Filter;
+    return Filter;
 }
 
 QString GroupFilterTabData::tabName() const
 {
-	switch (Filter.filterType())
-	{
-		case GroupFilterRegular:
-			return Filter.group().showName() ? Filter.group().name() : QString();
-		case GroupFilterEverybody:
-			return QCoreApplication::translate("GroupFilterTabData", "Everybody");
-		case GroupFilterUngroupped:
-			return QCoreApplication::translate("GroupFilterTabData", "Ungrouped");
-		case GroupFilterInvalid:
-		default:
-			return QString();
-	}
+    switch (Filter.filterType())
+    {
+    case GroupFilterRegular:
+        return Filter.group().showName() ? Filter.group().name() : QString();
+    case GroupFilterEverybody:
+        return QCoreApplication::translate("GroupFilterTabData", "Everybody");
+    case GroupFilterUngroupped:
+        return QCoreApplication::translate("GroupFilterTabData", "Ungrouped");
+    case GroupFilterInvalid:
+    default:
+        return QString();
+    }
 }
 
 QIcon GroupFilterTabData::tabIcon(IconsManager *iconsManager) const
 {
-	switch (Filter.filterType())
-	{
-		case GroupFilterRegular:
-			return Filter.group().showIcon() ? QIcon(Filter.group().icon()) : QIcon();
-		case GroupFilterEverybody:
-			return iconsManager->iconByPath(KaduIcon("x-office-address-book"));
-		case GroupFilterUngroupped:
-		case GroupFilterInvalid:
-		default:
-			return QIcon();
-	}
+    switch (Filter.filterType())
+    {
+    case GroupFilterRegular:
+        return Filter.group().showIcon() ? QIcon(Filter.group().icon()) : QIcon();
+    case GroupFilterEverybody:
+        return iconsManager->iconByPath(KaduIcon("x-office-address-book"));
+    case GroupFilterUngroupped:
+    case GroupFilterInvalid:
+    default:
+        return QIcon();
+    }
 }

@@ -53,365 +53,373 @@
 #if defined(HAVE_ENCHANT)
 typedef std::pair<const SpellChecker::Checkers *, QStringList *> DescWrapper;
 
-static void enchantDictDescribe(const char * const langTag, const char * const providerName,
-		const char * const providerDesc, const char * const providerFile, void *userData)
+static void enchantDictDescribe(
+    const char *const langTag, const char *const providerName, const char *const providerDesc,
+    const char *const providerFile, void *userData)
 {
-	Q_UNUSED(providerName)
-	Q_UNUSED(providerDesc)
-	Q_UNUSED(providerFile)
+    Q_UNUSED(providerName)
+    Q_UNUSED(providerDesc)
+    Q_UNUSED(providerFile)
 
-	DescWrapper *pWrapper = static_cast<DescWrapper *>(userData);
-	const SpellChecker::Checkers &checkers = *pWrapper->first;
-	QStringList &result = *pWrapper->second;
-	if (!checkers.contains(langTag))
-		result.append(langTag);
+    DescWrapper *pWrapper = static_cast<DescWrapper *>(userData);
+    const SpellChecker::Checkers &checkers = *pWrapper->first;
+    QStringList &result = *pWrapper->second;
+    if (!checkers.contains(langTag))
+        result.append(langTag);
 }
 
-static void enchantUsedDictDescribe(const char * const langTag, const char * const providerName,
-		const char * const providerDesc, const char * const providerFile, void *userData)
+static void enchantUsedDictDescribe(
+    const char *const langTag, const char *const providerName, const char *const providerDesc,
+    const char *const providerFile, void *userData)
 {
-	Q_UNUSED(providerName)
-	Q_UNUSED(providerDesc)
-	Q_UNUSED(providerFile)
+    Q_UNUSED(providerName)
+    Q_UNUSED(providerDesc)
+    Q_UNUSED(providerFile)
 
-	DescWrapper *pWrapper = static_cast<DescWrapper *>(userData);
-	const SpellChecker::Checkers &checkers = *pWrapper->first;
-	QStringList &result = *pWrapper->second;
-	if (checkers.contains(langTag))
-		result.append(langTag);
+    DescWrapper *pWrapper = static_cast<DescWrapper *>(userData);
+    const SpellChecker::Checkers &checkers = *pWrapper->first;
+    QStringList &result = *pWrapper->second;
+    if (checkers.contains(langTag))
+        result.append(langTag);
 }
 #endif
 
-SpellChecker::SpellChecker(QObject *parent) :
-		QObject{parent}
+SpellChecker::SpellChecker(QObject *parent) : QObject{parent}
 {
 }
 
 SpellChecker::~SpellChecker()
 {
-	if (m_chatWidgetRepository)
-		disconnect(m_chatWidgetRepository.data(), 0, this, 0);
+    if (m_chatWidgetRepository)
+        disconnect(m_chatWidgetRepository.data(), 0, this, 0);
 
-	Highlighter::removeAll();
+    Highlighter::removeAll();
 
 #if defined(HAVE_ASPELL)
-	foreach (AspellSpeller *speller, MyCheckers)
-		delete_aspell_speller(speller);
-	delete_aspell_config(SpellConfig);
+    foreach (AspellSpeller *speller, MyCheckers)
+        delete_aspell_speller(speller);
+    delete_aspell_config(SpellConfig);
 #elif defined(HAVE_ENCHANT)
-	foreach (EnchantDict *dict, MyCheckers)
-		enchant_broker_free_dict(Broker, dict);
-	enchant_broker_free(Broker);
+    foreach (EnchantDict *dict, MyCheckers)
+        enchant_broker_free_dict(Broker, dict);
+    enchant_broker_free(Broker);
 #endif
 }
 
 void SpellChecker::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void SpellChecker::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void SpellChecker::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SpellChecker::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
 {
-	m_spellcheckerConfiguration = spellcheckerConfiguration;
+    m_spellcheckerConfiguration = spellcheckerConfiguration;
 }
 
 void SpellChecker::setSuggester(Suggester *suggester)
 {
-	m_suggester = suggester;
+    m_suggester = suggester;
 }
 
 void SpellChecker::init()
 {
-	connect(m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
-	connect(m_spellcheckerConfiguration, SIGNAL(updated()), this, SLOT(configurationUpdated()));
+    connect(
+        m_chatWidgetRepository.data(), SIGNAL(chatWidgetAdded(ChatWidget *)), this,
+        SLOT(chatWidgetAdded(ChatWidget *)));
+    connect(m_spellcheckerConfiguration, SIGNAL(updated()), this, SLOT(configurationUpdated()));
 
 #if defined(HAVE_ASPELL)
-	// prepare configuration of spellchecker
-	SpellConfig = new_aspell_config();
-	aspell_config_replace(SpellConfig, "encoding", "utf-8");
-	aspell_config_replace(SpellConfig, "sug-mode", "ultra");
+    // prepare configuration of spellchecker
+    SpellConfig = new_aspell_config();
+    aspell_config_replace(SpellConfig, "encoding", "utf-8");
+    aspell_config_replace(SpellConfig, "sug-mode", "ultra");
 
-#	if defined(Q_OS_WIN)
-	aspell_config_replace(SpellConfig, "dict-dir", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("aspell")));
-	aspell_config_replace(SpellConfig, "data-dir", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("aspell")));
-	aspell_config_replace(SpellConfig, "prefix", qPrintable(m_pathsProvider->profilePath() + QStringLiteral("dicts")));
-#	endif
+#if defined(Q_OS_WIN)
+    aspell_config_replace(SpellConfig, "dict-dir", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("aspell")));
+    aspell_config_replace(SpellConfig, "data-dir", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("aspell")));
+    aspell_config_replace(SpellConfig, "prefix", qPrintable(m_pathsProvider->profilePath() + QStringLiteral("dicts")));
+#endif
 #elif defined(HAVE_ENCHANT)
-	Broker = enchant_broker_init();
-#	if defined(Q_OS_WIN)
-	enchant_broker_set_param(Broker, "enchant.myspell.dictionary.path", qPrintable(m_pathsProvider->dataPath() + QStringLiteral("share/enchant/myspell/")));
-#	endif
+    Broker = enchant_broker_init();
+#if defined(Q_OS_WIN)
+    enchant_broker_set_param(
+        Broker, "enchant.myspell.dictionary.path",
+        qPrintable(m_pathsProvider->dataPath() + QStringLiteral("share/enchant/myspell/")));
+#endif
 #endif
 
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void SpellChecker::configurationUpdated()
 {
-	buildCheckers();
-	buildMarkTag();
+    buildCheckers();
+    buildMarkTag();
 }
 
 void SpellChecker::buildCheckers()
 {
 #if defined(HAVE_ASPELL)
-	foreach (AspellSpeller *speller, MyCheckers)
-		delete_aspell_speller(speller);
+    foreach (AspellSpeller *speller, MyCheckers)
+        delete_aspell_speller(speller);
 #elif defined(HAVE_ENCHANT)
-	foreach (EnchantDict *dict, MyCheckers)
-		enchant_broker_free_dict(Broker, dict);
+    foreach (EnchantDict *dict, MyCheckers)
+        enchant_broker_free_dict(Broker, dict);
 #endif
-	MyCheckers.clear();
+    MyCheckers.clear();
 
 #if defined(HAVE_ASPELL)
-	if (m_spellcheckerConfiguration->accents())
-		aspell_config_replace(SpellConfig, "ignore-accents", "true");
-	else
-		aspell_config_replace(SpellConfig, "ignore-accents", "false");
+    if (m_spellcheckerConfiguration->accents())
+        aspell_config_replace(SpellConfig, "ignore-accents", "true");
+    else
+        aspell_config_replace(SpellConfig, "ignore-accents", "false");
 
-	if (m_spellcheckerConfiguration->casesens())
-		aspell_config_replace(SpellConfig, "ignore-case", "true");
-	else
-		aspell_config_replace(SpellConfig, "ignore-case", "false");
+    if (m_spellcheckerConfiguration->casesens())
+        aspell_config_replace(SpellConfig, "ignore-case", "true");
+    else
+        aspell_config_replace(SpellConfig, "ignore-case", "false");
 #endif
 
-	for (auto checked : m_spellcheckerConfiguration->checked())
-		addCheckedLang(checked);
+    for (auto checked : m_spellcheckerConfiguration->checked())
+        addCheckedLang(checked);
 }
 
 QStringList SpellChecker::checkedLanguages() const
 {
-	QStringList result;
+    QStringList result;
 
 #if defined(HAVE_ASPELL)
-	AspellDictInfoList *dlist;
-	AspellDictInfoEnumeration *dels;
-	const AspellDictInfo *entry;
+    AspellDictInfoList *dlist;
+    AspellDictInfoEnumeration *dels;
+    const AspellDictInfo *entry;
 
-	/* the returned pointer should _not_ need to be deleted */
-	dlist = get_aspell_dict_info_list(SpellConfig);
+    /* the returned pointer should _not_ need to be deleted */
+    dlist = get_aspell_dict_info_list(SpellConfig);
 
-	dels = aspell_dict_info_list_elements(dlist);
-	while ((entry = aspell_dict_info_enumeration_next(dels)))
-		if (MyCheckers.contains(entry->name))
-			result.push_back(entry->name);
-	delete_aspell_dict_info_enumeration(dels);
+    dels = aspell_dict_info_list_elements(dlist);
+    while ((entry = aspell_dict_info_enumeration_next(dels)))
+        if (MyCheckers.contains(entry->name))
+            result.push_back(entry->name);
+    delete_aspell_dict_info_enumeration(dels);
 #elif defined(HAVE_ENCHANT)
-	DescWrapper aWrapper(&MyCheckers, &result);
-	enchant_broker_list_dicts(Broker, enchantUsedDictDescribe, &aWrapper);
+    DescWrapper aWrapper(&MyCheckers, &result);
+    enchant_broker_list_dicts(Broker, enchantUsedDictDescribe, &aWrapper);
 #endif
 
-	return result;
+    return result;
 }
 
 QStringList SpellChecker::notCheckedLanguages() const
 {
-	QStringList result;
+    QStringList result;
 
 #if defined(HAVE_ASPELL)
-	AspellDictInfoList *dlist;
-	AspellDictInfoEnumeration *dels;
-	const AspellDictInfo *entry;
+    AspellDictInfoList *dlist;
+    AspellDictInfoEnumeration *dels;
+    const AspellDictInfo *entry;
 
-	/* the returned pointer should _not_ need to be deleted */
-	dlist = get_aspell_dict_info_list(SpellConfig);
+    /* the returned pointer should _not_ need to be deleted */
+    dlist = get_aspell_dict_info_list(SpellConfig);
 
-	dels = aspell_dict_info_list_elements(dlist);
-	while ((entry = aspell_dict_info_enumeration_next(dels)))
-		if (!MyCheckers.contains(entry->name))
-			result.push_back(entry->name);
-	delete_aspell_dict_info_enumeration(dels);
+    dels = aspell_dict_info_list_elements(dlist);
+    while ((entry = aspell_dict_info_enumeration_next(dels)))
+        if (!MyCheckers.contains(entry->name))
+            result.push_back(entry->name);
+    delete_aspell_dict_info_enumeration(dels);
 #elif defined(HAVE_ENCHANT)
-	DescWrapper aWrapper(&MyCheckers, &result);
-	enchant_broker_list_dicts(Broker, enchantDictDescribe, &aWrapper);
+    DescWrapper aWrapper(&MyCheckers, &result);
+    enchant_broker_list_dicts(Broker, enchantDictDescribe, &aWrapper);
 #endif
 
-	return result;
+    return result;
 }
 
 bool SpellChecker::addCheckedLang(const QString &name)
 {
-	if (MyCheckers.contains(name))
-		return true;
+    if (MyCheckers.contains(name))
+        return true;
 
-	bool ok = true;
-	const char *errorMsg = 0;
+    bool ok = true;
+    const char *errorMsg = 0;
 
 #if defined(HAVE_ASPELL)
-	aspell_config_replace(SpellConfig, "lang", name.toUtf8().constData());
+    aspell_config_replace(SpellConfig, "lang", name.toUtf8().constData());
 
-	// create spell checker using prepared configuration
-	AspellCanHaveError *possibleErr = new_aspell_speller(SpellConfig);
-	if (aspell_error_number(possibleErr) == 0)
-		MyCheckers.insert(name, to_aspell_speller(possibleErr));
-	else
-	{
-		errorMsg = aspell_error_message(possibleErr);
-		ok = false;
-	}
+    // create spell checker using prepared configuration
+    AspellCanHaveError *possibleErr = new_aspell_speller(SpellConfig);
+    if (aspell_error_number(possibleErr) == 0)
+        MyCheckers.insert(name, to_aspell_speller(possibleErr));
+    else
+    {
+        errorMsg = aspell_error_message(possibleErr);
+        ok = false;
+    }
 #elif defined(HAVE_ENCHANT)
-	EnchantDict *dict = enchant_broker_request_dict(Broker, name.toUtf8().constData());
-	if (dict)
-		MyCheckers.insert(name, dict);
-	else
-	{
-		errorMsg = enchant_broker_get_error(Broker);
-		ok = false;
-	}
+    EnchantDict *dict = enchant_broker_request_dict(Broker, name.toUtf8().constData());
+    if (dict)
+        MyCheckers.insert(name, dict);
+    else
+    {
+        errorMsg = enchant_broker_get_error(Broker);
+        ok = false;
+    }
 #endif
 
-	if (!ok)
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"), tr("Could not find dictionary for %1 language.").arg(name)
-				+ (qstrlen(errorMsg) > 0 ? QString(" %1: %2").arg(tr("Details"), errorMsg) : QString()));
-		return false;
-	}
+    if (!ok)
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"),
+            tr("Could not find dictionary for %1 language.").arg(name) +
+                (qstrlen(errorMsg) > 0 ? QString(" %1: %2").arg(tr("Details"), errorMsg) : QString()));
+        return false;
+    }
 
-	if ((MyCheckers.size() == 1) && m_chatWidgetRepository)
-		for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
-			chatWidgetAdded(chatWidget);
+    if ((MyCheckers.size() == 1) && m_chatWidgetRepository)
+        for (ChatWidget *chatWidget : m_chatWidgetRepository.data())
+            chatWidgetAdded(chatWidget);
 
-	return true;
+    return true;
 }
 
 void SpellChecker::removeCheckedLang(const QString &name)
 {
-	Checkers::iterator checker = MyCheckers.find(name);
-	if (checker != MyCheckers.end())
-	{
+    Checkers::iterator checker = MyCheckers.find(name);
+    if (checker != MyCheckers.end())
+    {
 #if defined(HAVE_ASPELL)
-		delete_aspell_speller(checker.value());
+        delete_aspell_speller(checker.value());
 #elif defined(HAVE_ENCHANT)
-		enchant_broker_free_dict(Broker, checker.value());
+        enchant_broker_free_dict(Broker, checker.value());
 #endif
-		MyCheckers.erase(checker);
-	}
+        MyCheckers.erase(checker);
+    }
 }
 
 void SpellChecker::buildMarkTag()
 {
-	if (!m_spellcheckerConfiguration)
-		return;
+    if (!m_spellcheckerConfiguration)
+        return;
 
-	QTextCharFormat format;
+    QTextCharFormat format;
 
-	if (m_spellcheckerConfiguration->bold())
-		format.setFontWeight(600);
-	if (m_spellcheckerConfiguration->italic())
-		format.setFontItalic(true);
-	if (m_spellcheckerConfiguration->underline())
-	{
-		format.setFontUnderline(true);
-		format.setUnderlineColor(m_spellcheckerConfiguration->color());
-		format.setUnderlineStyle(QTextCharFormat::SpellCheckUnderline);
-	}
-	format.setForeground(QBrush(m_spellcheckerConfiguration->color()));
+    if (m_spellcheckerConfiguration->bold())
+        format.setFontWeight(600);
+    if (m_spellcheckerConfiguration->italic())
+        format.setFontItalic(true);
+    if (m_spellcheckerConfiguration->underline())
+    {
+        format.setFontUnderline(true);
+        format.setUnderlineColor(m_spellcheckerConfiguration->color());
+        format.setUnderlineStyle(QTextCharFormat::SpellCheckUnderline);
+    }
+    format.setForeground(QBrush(m_spellcheckerConfiguration->color()));
 
-	Highlighter::setHighlightFormat(format);
-	Highlighter::rehighlightAll();
+    Highlighter::setHighlightFormat(format);
+    Highlighter::rehighlightAll();
 }
 
 void SpellChecker::chatWidgetAdded(ChatWidget *chat)
 {
-	if (!MyCheckers.isEmpty())
-	{
-		chat->getChatEditBox()->inputBox()->installEventFilter(m_suggester);
-		new Highlighter(this, chat->edit()->document());
-	}
+    if (!MyCheckers.isEmpty())
+    {
+        chat->getChatEditBox()->inputBox()->installEventFilter(m_suggester);
+        new Highlighter(this, chat->edit()->document());
+    }
 }
 
 bool SpellChecker::checkWord(const QString &word)
 {
-	bool isWordValid = false;
+    bool isWordValid = false;
 
-	if (MyCheckers.isEmpty())
-		return true;
+    if (MyCheckers.isEmpty())
+        return true;
 
-	if (!word.contains(QRegExp("\\D")))
-		isWordValid = true;
-	else
-		for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
-		{
+    if (!word.contains(QRegExp("\\D")))
+        isWordValid = true;
+    else
+        for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
+        {
 #if defined(HAVE_ASPELL)
-			if (aspell_speller_check(it.value(), word.toUtf8().constData(), -1))
+            if (aspell_speller_check(it.value(), word.toUtf8().constData(), -1))
 #elif defined(HAVE_ENCHANT)
-			QByteArray utf8Word = word.toUtf8();
-			if (0 == enchant_dict_check(it.value(), utf8Word.constData(), utf8Word.size()))
+            QByteArray utf8Word = word.toUtf8();
+            if (0 == enchant_dict_check(it.value(), utf8Word.constData(), utf8Word.size()))
 #endif
-			{
-				isWordValid = true;
-				break;
-			}
-		}
-	return isWordValid;
+            {
+                isWordValid = true;
+                break;
+            }
+        }
+    return isWordValid;
 }
 
 QStringList SpellChecker::buildSuggestList(const QString &word)
 {
-	QStringList suggestWordList;
+    QStringList suggestWordList;
 
-	int suggesterWordCount = m_spellcheckerConfiguration->suggesterWordCount();
-	if (MyCheckers.size() > suggesterWordCount)
-		suggesterWordCount = 1;
-	else
-		suggesterWordCount /= MyCheckers.size();
+    int suggesterWordCount = m_spellcheckerConfiguration->suggesterWordCount();
+    if (MyCheckers.size() > suggesterWordCount)
+        suggesterWordCount = 1;
+    else
+        suggesterWordCount /= MyCheckers.size();
 
-	int wordsForLanguage = 0;
-	for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
-	{
-		wordsForLanguage = suggesterWordCount;
+    int wordsForLanguage = 0;
+    for (Checkers::const_iterator it = MyCheckers.constBegin(); it != MyCheckers.constEnd(); ++it)
+    {
+        wordsForLanguage = suggesterWordCount;
 #if defined(HAVE_ASPELL)
-		const AspellWordList *aspellTmpList = aspell_speller_suggest(it.value(), word.toUtf8().constData(), -1);
+        const AspellWordList *aspellTmpList = aspell_speller_suggest(it.value(), word.toUtf8().constData(), -1);
 
-		if (!aspell_word_list_empty(aspellTmpList))
-		{
-			struct AspellStringEnumeration *aspellStringEnum = aspell_word_list_elements(aspellTmpList);
+        if (!aspell_word_list_empty(aspellTmpList))
+        {
+            struct AspellStringEnumeration *aspellStringEnum = aspell_word_list_elements(aspellTmpList);
 
-			while((!aspell_string_enumeration_at_end(aspellStringEnum)) && wordsForLanguage)
-			{
-				if (MyCheckers.size() > 1)
-					suggestWordList.append(QString::fromUtf8(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
-				else
-					suggestWordList.append(QString::fromUtf8(aspell_string_enumeration_next(aspellStringEnum)));
+            while ((!aspell_string_enumeration_at_end(aspellStringEnum)) && wordsForLanguage)
+            {
+                if (MyCheckers.size() > 1)
+                    suggestWordList.append(
+                        QString::fromUtf8(aspell_string_enumeration_next(aspellStringEnum)) + " (" + it.key() + ")");
+                else
+                    suggestWordList.append(QString::fromUtf8(aspell_string_enumeration_next(aspellStringEnum)));
 
-				--wordsForLanguage;
-			}
+                --wordsForLanguage;
+            }
 
-			delete_aspell_string_enumeration(aspellStringEnum);
-		}
+            delete_aspell_string_enumeration(aspellStringEnum);
+        }
 #elif defined(HAVE_ENCHANT)
-		size_t numberOfSuggs;
-		QByteArray utf8Word = word.toUtf8();
-		char **suggs = enchant_dict_suggest(it.value(), utf8Word.constData(), utf8Word.size(), &numberOfSuggs);
+        size_t numberOfSuggs;
+        QByteArray utf8Word = word.toUtf8();
+        char **suggs = enchant_dict_suggest(it.value(), utf8Word.constData(), utf8Word.size(), &numberOfSuggs);
 
-		if (suggs)
-		{
-			for (size_t i = 0; i < numberOfSuggs && wordsForLanguage; ++i)
-			{
-				if (MyCheckers.size() > 1)
-					suggestWordList.append(QString::fromUtf8(suggs[i]) + " (" + it.key() + ")");
-				else
-					suggestWordList.append(QString::fromUtf8(suggs[i]));
+        if (suggs)
+        {
+            for (size_t i = 0; i < numberOfSuggs && wordsForLanguage; ++i)
+            {
+                if (MyCheckers.size() > 1)
+                    suggestWordList.append(QString::fromUtf8(suggs[i]) + " (" + it.key() + ")");
+                else
+                    suggestWordList.append(QString::fromUtf8(suggs[i]));
 
-				--wordsForLanguage;
-			}
+                --wordsForLanguage;
+            }
 
-			enchant_dict_free_string_list(it.value(), suggs);
-		}
+            enchant_dict_free_string_list(it.value(), suggs);
+        }
 #endif
-	}
+    }
 
-	return suggestWordList;
+    return suggestWordList;
 }
 
 #include "moc_spellchecker.cpp"

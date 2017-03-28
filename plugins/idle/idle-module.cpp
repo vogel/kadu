@@ -24,6 +24,6 @@
 
 IdleModule::IdleModule()
 {
-	add_type<Idle>();
-	add_type<IdlePluginObject>();
+    add_type<Idle>();
+    add_type<IdlePluginObject>();
 }

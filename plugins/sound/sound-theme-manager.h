@@ -30,27 +30,26 @@ class Themes;
 
 class SoundThemeManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SoundThemeManager(QObject *parent = nullptr);
-	virtual ~SoundThemeManager();
+    Q_INVOKABLE explicit SoundThemeManager(QObject *parent = nullptr);
+    virtual ~SoundThemeManager();
 
-	void applyTheme(const QString &themeName);
+    void applyTheme(const QString &themeName);
 
-	Themes * themes();
+    Themes *themes();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	std::unique_ptr<Themes> m_themes;
+    std::unique_ptr<Themes> m_themes;
 
-	void loadThemes();
+    void loadThemes();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 };

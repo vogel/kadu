@@ -25,8 +25,8 @@
 
 #include "status-icon.h"
 
-StatusIcon::StatusIcon(StatusContainer *statusContainer, QObject *parent) :
-		QObject(parent), MyStatusContainer(statusContainer), BlinkTimer(0), BlinkOffline(true)
+StatusIcon::StatusIcon(StatusContainer *statusContainer, QObject *parent)
+        : QObject(parent), MyStatusContainer(statusContainer), BlinkTimer(0), BlinkOffline(true)
 {
 }
 
@@ -36,71 +36,71 @@ StatusIcon::~StatusIcon()
 
 void StatusIcon::init()
 {
-	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
+    statusUpdated();
+    connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 }
 
 void StatusIcon::enableBlink()
 {
-	if (BlinkTimer)
-		return;
+    if (BlinkTimer)
+        return;
 
-	BlinkTimer = new QTimer(this);
-	connect(BlinkTimer, SIGNAL(timeout()), this, SLOT(blink()));
-	BlinkTimer->start(500);
+    BlinkTimer = new QTimer(this);
+    connect(BlinkTimer, SIGNAL(timeout()), this, SLOT(blink()));
+    BlinkTimer->start(500);
 }
 
 void StatusIcon::disableBlink()
 {
-	if (!BlinkTimer)
-		return;
+    if (!BlinkTimer)
+        return;
 
-	delete BlinkTimer;
-	BlinkTimer = 0;
+    delete BlinkTimer;
+    BlinkTimer = 0;
 
-	setIcon(MyStatusContainer->statusIcon());
+    setIcon(MyStatusContainer->statusIcon());
 }
 
 void StatusIcon::blink()
 {
-	if (!MyStatusContainer->isStatusSettingInProgress())
-	{
-		disableBlink();
-		return;
-	}
+    if (!MyStatusContainer->isStatusSettingInProgress())
+    {
+        disableBlink();
+        return;
+    }
 
-	BlinkOffline = !BlinkOffline;
+    BlinkOffline = !BlinkOffline;
 
-	if (BlinkOffline)
-		setIcon(MyStatusContainer->statusIcon(Status{StatusType::Offline}));
-	else
-		setIcon(MyStatusContainer->statusIcon());
+    if (BlinkOffline)
+        setIcon(MyStatusContainer->statusIcon(Status{StatusType::Offline}));
+    else
+        setIcon(MyStatusContainer->statusIcon());
 }
 
 void StatusIcon::updateStatus()
 {
-	if (!MyStatusContainer->isStatusSettingInProgress())
-		setIcon(MyStatusContainer->statusIcon());
-	else
-		enableBlink();
+    if (!MyStatusContainer->isStatusSettingInProgress())
+        setIcon(MyStatusContainer->statusIcon());
+    else
+        enableBlink();
 }
 
 void StatusIcon::statusUpdated(StatusContainer *container)
 {
-	Q_UNUSED(container)
+    Q_UNUSED(container)
 
-	updateStatus();
+    updateStatus();
 }
 
 void StatusIcon::configurationUpdated()
 {
-	updateStatus();
+    updateStatus();
 }
 
 void StatusIcon::setIcon(const KaduIcon &icon)
 {
-	Icon = icon;
-	emit iconUpdated(Icon);
+    Icon = icon;
+    emit iconUpdated(Icon);
 }
 
 #include "moc_status-icon.cpp"

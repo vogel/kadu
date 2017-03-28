@@ -27,8 +27,7 @@
 
 #include "all-accounts-status-container.h"
 
-AllAccountsStatusContainer::AllAccountsStatusContainer(QObject *parent) :
-		StatusContainer(parent)
+AllAccountsStatusContainer::AllAccountsStatusContainer(QObject *parent) : StatusContainer(parent)
 {
 }
 
@@ -38,113 +37,116 @@ AllAccountsStatusContainer::~AllAccountsStatusContainer()
 
 void AllAccountsStatusContainer::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void AllAccountsStatusContainer::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
+    m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
 void AllAccountsStatusContainer::init()
 {
-	triggerAllAccountsAdded(m_accountManager);
+    triggerAllAccountsAdded(m_accountManager);
 }
 
 void AllAccountsStatusContainer::done()
 {
-	triggerAllAccountsRemoved(m_accountManager);
+    triggerAllAccountsRemoved(m_accountManager);
 }
 
 void AllAccountsStatusContainer::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	Accounts.append(account);
-	protocolHandlerChanged(account);
+    connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    Accounts.append(account);
+    protocolHandlerChanged(account);
 }
 
 void AllAccountsStatusContainer::accountRemoved(Account account)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
+    disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    protocolHandlerChanged(account);
 }
 
 void AllAccountsStatusContainer::protocolHandlerChanged(Account account)
 {
-	if (account.protocolHandler())
-	{
-		connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-		if (!m_statusConfigurationHolder->isSetStatusPerAccount() && !m_statusConfigurationHolder->isSetStatusPerIdentity())
-			account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
+    if (account.protocolHandler())
+    {
+        connect(
+            account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this,
+            SIGNAL(statusUpdated(StatusContainer *)));
+        if (!m_statusConfigurationHolder->isSetStatusPerAccount() &&
+            !m_statusConfigurationHolder->isSetStatusPerIdentity())
+            account.statusContainer()->setStatus(LastSetStatus, SourceStatusChanger);
 
-		emit statusUpdated(this);
-	}
-	else
-	{
-		if (Accounts.removeAll(account) > 0)
-		{
-			disconnect(account.statusContainer(), 0, this, 0);
-			emit statusUpdated(this);
-		}
-	}
+        emit statusUpdated(this);
+    }
+    else
+    {
+        if (Accounts.removeAll(account) > 0)
+        {
+            disconnect(account.statusContainer(), 0, this, 0);
+            emit statusUpdated(this);
+        }
+    }
 }
 
 Status AllAccountsStatusContainer::status()
 {
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->status() : Status();
+    Account account = AccountManager::bestAccount(Accounts);
+    return account ? account.statusContainer()->status() : Status();
 }
 
 bool AllAccountsStatusContainer::isStatusSettingInProgress()
 {
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->isStatusSettingInProgress() : false;
+    Account account = AccountManager::bestAccount(Accounts);
+    return account ? account.statusContainer()->isStatusSettingInProgress() : false;
 }
 
 KaduIcon AllAccountsStatusContainer::statusIcon()
 {
-	return statusIcon(status());
+    return statusIcon(status());
 }
 
 KaduIcon AllAccountsStatusContainer::statusIcon(const Status &status)
 {
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
+    Account account = AccountManager::bestAccount(Accounts);
+    return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
 }
 
 QList<StatusType> AllAccountsStatusContainer::supportedStatusTypes()
 {
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->supportedStatusTypes() : QList<StatusType>();
+    Account account = AccountManager::bestAccount(Accounts);
+    return account ? account.statusContainer()->supportedStatusTypes() : QList<StatusType>();
 }
 
 int AllAccountsStatusContainer::maxDescriptionLength()
 {
-	Account account = AccountManager::bestAccount(Accounts);
-	return account ? account.statusContainer()->maxDescriptionLength() : -1;
+    Account account = AccountManager::bestAccount(Accounts);
+    return account ? account.statusContainer()->maxDescriptionLength() : -1;
 }
 
 void AllAccountsStatusContainer::setStatus(Status status, StatusChangeSource source)
 {
-	LastSetStatus = status;
-	foreach (const Account &account, Accounts)
-		if (account)
-			account.statusContainer()->setStatus(status, source);
+    LastSetStatus = status;
+    foreach (const Account &account, Accounts)
+        if (account)
+            account.statusContainer()->setStatus(status, source);
 }
 
 Status AllAccountsStatusContainer::loadStatus()
 {
-	Account account = AccountManager::bestAccount(Accounts);
-	if (account)
-		return account.statusContainer()->loadStatus();
-	else
-		return Status();
+    Account account = AccountManager::bestAccount(Accounts);
+    if (account)
+        return account.statusContainer()->loadStatus();
+    else
+        return Status();
 }
 
 void AllAccountsStatusContainer::storeStatus(Status status)
 {
-	foreach (const Account &account, Accounts)
-		account.statusContainer()->storeStatus(status);
+    foreach (const Account &account, Accounts)
+        account.statusContainer()->storeStatus(status);
 }
 
 #include "moc_all-accounts-status-container.cpp"

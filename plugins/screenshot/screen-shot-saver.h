@@ -30,21 +30,24 @@ class ScreenShotConfiguration;
 
 class ScreenShotSaver : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
-	long int Size;
+    long int Size;
 
-	QString createScreenshotPath();
+    QString createScreenshotPath();
 
 public:
-	explicit ScreenShotSaver(IconsManager *iconsManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent = nullptr);
-	virtual ~ScreenShotSaver();
+    explicit ScreenShotSaver(
+        IconsManager *iconsManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent = nullptr);
+    virtual ~ScreenShotSaver();
 
-	QString saveScreenShot(QPixmap pixmap);
+    QString saveScreenShot(QPixmap pixmap);
 
-	long int size() { return Size; }
-
+    long int size()
+    {
+        return Size;
+    }
 };

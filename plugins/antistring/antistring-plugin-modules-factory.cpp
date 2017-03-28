@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-AntistringPluginModulesFactory::AntistringPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+AntistringPluginModulesFactory::AntistringPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ AntistringPluginModulesFactory::~AntistringPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> AntistringPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<AntistringModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<AntistringModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_antistring-plugin-modules-factory.cpp"

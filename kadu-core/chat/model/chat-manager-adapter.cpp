@@ -23,14 +23,12 @@
 
 #include "chat-manager-adapter.h"
 
-ChatManagerAdapter::ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model) :
-		QObject{model},
-		m_model{model}
+ChatManagerAdapter::ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model) : QObject{model}, m_model{model}
 {
-	m_model->setChats(chatManager->items());
+    m_model->setChats(chatManager->items());
 
-	connect(chatManager, SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
-	connect(chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)), Qt::DirectConnection);
+    connect(chatManager, SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)), Qt::DirectConnection);
+    connect(chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)), Qt::DirectConnection);
 }
 
 ChatManagerAdapter::~ChatManagerAdapter()
@@ -39,12 +37,12 @@ ChatManagerAdapter::~ChatManagerAdapter()
 
 void ChatManagerAdapter::chatAdded(const Chat &chat)
 {
-	m_model->addChat(chat);
+    m_model->addChat(chat);
 }
 
 void ChatManagerAdapter::chatRemoved(const Chat &chat)
 {
-	m_model->removeChat(chat);
+    m_model->removeChat(chat);
 }
 
 #include "moc_chat-manager-adapter.cpp"

@@ -24,9 +24,8 @@
 #include "core/core.h"
 #include "misc/paths-provider.h"
 
-StatusConfigurationHolder::StatusConfigurationHolder(QObject *parent) :
-		ConfigurationHolder{parent},
-		SetStatus{SetStatusPerIdentity}
+StatusConfigurationHolder::StatusConfigurationHolder(QObject *parent)
+        : ConfigurationHolder{parent}, SetStatus{SetStatusPerIdentity}
 {
 }
 
@@ -36,29 +35,30 @@ StatusConfigurationHolder::~StatusConfigurationHolder()
 
 void StatusConfigurationHolder::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void StatusConfigurationHolder::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void StatusConfigurationHolder::configurationUpdated()
 {
-	auto statusContainerType = m_configuration->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
+    auto statusContainerType =
+        m_configuration->deprecatedApi()->readEntry("General", "StatusContainerType", "Identity");
 
-	auto newStatus = SetStatusPerIdentity;
-	if (statusContainerType == "Account")
-		newStatus = SetStatusPerAccount;
-	else if (statusContainerType == "All")
-		newStatus = SetStatusForAll;
+    auto newStatus = SetStatusPerIdentity;
+    if (statusContainerType == "Account")
+        newStatus = SetStatusPerAccount;
+    else if (statusContainerType == "All")
+        newStatus = SetStatusForAll;
 
-	if (SetStatus != newStatus)
-	{
-		SetStatus = newStatus;
-		emit setStatusModeChanged();
-	}
+    if (SetStatus != newStatus)
+    {
+        SetStatus = newStatus;
+        emit setStatusModeChanged();
+    }
 }
 
 #include "moc_status-configuration-holder.cpp"

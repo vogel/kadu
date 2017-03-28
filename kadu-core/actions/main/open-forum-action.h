@@ -30,22 +30,21 @@ class UrlOpener;
 
 class OpenForumAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenForumAction(QObject *parent = nullptr);
-	virtual ~OpenForumAction();
+    Q_INVOKABLE explicit OpenForumAction(QObject *parent = nullptr);
+    virtual ~OpenForumAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<Configuration> m_configuration;
+    QPointer<UrlOpener> m_urlOpener;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 };

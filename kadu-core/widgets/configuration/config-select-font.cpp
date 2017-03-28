@@ -26,56 +26,60 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-select-font.h"
 
-ConfigSelectFont::ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigSelectFont::ConfigSelectFont(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : SelectFont(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
+    createWidgets();
 }
 
 ConfigSelectFont::ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+        : SelectFont(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigSelectFont::~ConfigSelectFont()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigSelectFont::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigSelectFont::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	QFont font;
-	if (font.fromString(dataManager->readEntry(section, item).toString()))
-		setFont(font);
+    if (!dataManager)
+        return;
+    QFont font;
+    if (font.fromString(dataManager->readEntry(section, item).toString()))
+        setFont(font);
 }
 
 void ConfigSelectFont::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QVariant(font().toString()));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QVariant(font().toString()));
 }
 
 void ConfigSelectFont::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	SelectFont::setVisible(visible);
+    label->setVisible(visible);
+    SelectFont::setVisible(visible);
 }
 
 #include "moc_config-select-font.cpp"

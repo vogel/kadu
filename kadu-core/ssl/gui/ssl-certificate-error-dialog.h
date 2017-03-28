@@ -31,24 +31,24 @@ class SslCertificateRepository;
 
 class KADUAPI SslCertificateErrorDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SslCertificateErrorDialog(SslCertificate certificate, const QList<QSslError> &errors, QWidget *parent = nullptr);
-	virtual ~SslCertificateErrorDialog();
+    explicit SslCertificateErrorDialog(
+        SslCertificate certificate, const QList<QSslError> &errors, QWidget *parent = nullptr);
+    virtual ~SslCertificateErrorDialog();
 
-	void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
+    void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
 
 private:
-	QPointer<SslCertificateRepository> m_sslCertificateRepository;
+    QPointer<SslCertificateRepository> m_sslCertificateRepository;
 
-	SslCertificate m_certificate;
+    SslCertificate m_certificate;
 
-	void createGui(const QList<QSslError> &errors);
+    void createGui(const QList<QSslError> &errors);
 
 private slots:
-	void increaseHeight();
-	void connectAnyway();
-	void trustCertificate();
-
+    void increaseHeight();
+    void connectAnyway();
+    void trustCertificate();
 };

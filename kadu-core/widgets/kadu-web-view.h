@@ -42,55 +42,55 @@ class UrlHandlerManager;
 
 class KADUAPI KaduWebView : public QWebView
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ImageStorageService> m_imageStorageService;
-	QPointer<UrlHandlerManager> m_urlHandlerManager;
+    QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ImageStorageService> m_imageStorageService;
+    QPointer<UrlHandlerManager> m_urlHandlerManager;
 
-	bool DraggingPossible;
-	bool IsLoading;
-	QPoint ContextMenuPos;
-	QPoint DragStartPosition;
-	QTimer *RefreshTimer;
+    bool DraggingPossible;
+    bool IsLoading;
+    QPoint ContextMenuPos;
+    QPoint DragStartPosition;
+    QTimer *RefreshTimer;
 
-	void convertClipboardHtml(QClipboard::Mode mode) const;
+    void convertClipboardHtml(QClipboard::Mode mode) const;
 
 private slots:
-	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
-	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+    INJEQT_SET void
+    setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+    INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 
-	void hyperlinkClicked(const QUrl &anchor) const;
-	void loadStarted();
-	void loadFinishedSlot(bool success);
-	void refreshLater();
-	void saveImage();
-	void textCopied() const;
+    void hyperlinkClicked(const QUrl &anchor) const;
+    void loadStarted();
+    void loadFinishedSlot(bool success);
+    void refreshLater();
+    void saveImage();
+    void textCopied() const;
 
 #ifdef DEBUG_ENABLED
-	void runInspector(bool toggled);
+    void runInspector(bool toggled);
 #endif
 
 protected:
-	Configuration * configuration();
+    Configuration *configuration();
 
-	virtual void contextMenuEvent(QContextMenuEvent *e);
-	virtual void mouseMoveEvent(QMouseEvent *e);
-	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *e);
+    virtual void contextMenuEvent(QContextMenuEvent *e);
+    virtual void mouseMoveEvent(QMouseEvent *e);
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	explicit KaduWebView(QWidget *parent = nullptr);
-	virtual ~KaduWebView();
+    explicit KaduWebView(QWidget *parent = nullptr);
+    virtual ~KaduWebView();
 
-	ImageStorageService * imageStorageService() const;
+    ImageStorageService *imageStorageService() const;
 
-	void setUserFont(const QString &fontString, bool force);
-	QString userFontStyle(const QFont &font, bool force);
-
+    void setUserFont(const QString &fontString, bool force);
+    QString userFontStyle(const QFont &font, bool force);
 };

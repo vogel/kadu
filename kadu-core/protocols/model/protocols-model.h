@@ -34,30 +34,29 @@ class ProtocolsManager;
 
 class ProtocolsModel : public QAbstractListModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ProtocolsModel(ProtocolsManager *protocolsManager, QObject *parent = nullptr);
-	virtual ~ProtocolsModel();
+    explicit ProtocolsModel(ProtocolsManager *protocolsManager, QObject *parent = nullptr);
+    virtual ~ProtocolsModel();
 
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	ProtocolFactory * protocolFactory(const QModelIndex &index) const;
-	int protocolFactoryIndex(ProtocolFactory *protocolFactory) const;
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+    ProtocolFactory *protocolFactory(const QModelIndex &index) const;
+    int protocolFactoryIndex(ProtocolFactory *protocolFactory) const;
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ProtocolsManager> m_protocolsManager;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
-
+    void protocolFactoryAboutToBeRegistered(ProtocolFactory *protocolFactory);
+    void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
+    void protocolFactoryAboutToBeUnregistered(ProtocolFactory *protocolFactory);
+    void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
 };

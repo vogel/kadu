@@ -29,18 +29,17 @@ class BuddyManager;
 
 class KADUAPI OpenChatWithContactListRunner : public QObject, public OpenChatWithRunner
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit OpenChatWithContactListRunner(QObject *parent = nullptr);
-	virtual ~OpenChatWithContactListRunner();
+    explicit OpenChatWithContactListRunner(QObject *parent = nullptr);
+    virtual ~OpenChatWithContactListRunner();
 
-	virtual BuddyList matchingContacts(const QString &query);
+    virtual BuddyList matchingContacts(const QString &query);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyManager> m_buddyManager;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
 };

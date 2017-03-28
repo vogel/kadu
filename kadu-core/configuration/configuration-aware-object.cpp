@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/misc.h"
 #include "configuration-holder.h"
+#include "misc/misc.h"
 
 #include "configuration-aware-object.h"
 
@@ -28,18 +28,18 @@ QList<ConfigurationAwareObject *> ConfigurationAwareObject::Objects;
 
 void ConfigurationAwareObject::notifyAll()
 {
-	foreach (ConfigurationHolder *configurationHolder, ConfigurationHolder::instances())
-		configurationHolder->configurationUpdated();
-	foreach (ConfigurationAwareObject *object, Objects)
-		object->configurationUpdated();
+    foreach (ConfigurationHolder *configurationHolder, ConfigurationHolder::instances())
+        configurationHolder->configurationUpdated();
+    foreach (ConfigurationAwareObject *object, Objects)
+        object->configurationUpdated();
 }
 
 ConfigurationAwareObject::ConfigurationAwareObject()
 {
-	Objects.append(this);
+    Objects.append(this);
 }
 
 ConfigurationAwareObject::~ConfigurationAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }

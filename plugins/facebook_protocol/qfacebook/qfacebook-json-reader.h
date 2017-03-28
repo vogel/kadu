@@ -30,28 +30,30 @@
 class QFacebookJsonReader
 {
 public:
-	explicit QFacebookJsonReader(const QByteArray &content);
+    explicit QFacebookJsonReader(const QByteArray &content);
 
-	QStringList keys() const { return m_object.keys(); }
+    QStringList keys() const
+    {
+        return m_object.keys();
+    }
 
-	bool hasObject(const QString &name) const;
-	QFacebookJsonReader readObject(const QString &name) const;
+    bool hasObject(const QString &name) const;
+    QFacebookJsonReader readObject(const QString &name) const;
 
-	std::vector<QFacebookJsonReader> readArray(const QString &name) const;
-	bool readBool(const QString &name) const;
+    std::vector<QFacebookJsonReader> readArray(const QString &name) const;
+    bool readBool(const QString &name) const;
 
-	bool hasInt(const QString &name) const;
-	int readInt(const QString &name) const;
+    bool hasInt(const QString &name) const;
+    int readInt(const QString &name) const;
 
-	long readLong(const QString &name) const;
-	long long readLongLong(const QString &name) const;
-	QString readString(const QString &name) const;
-	QFacebookMsgId readMsgId(const QString &name) const;
-	QFacebookUid readUid(const QString &name) const;
+    long readLong(const QString &name) const;
+    long long readLongLong(const QString &name) const;
+    QString readString(const QString &name) const;
+    QFacebookMsgId readMsgId(const QString &name) const;
+    QFacebookUid readUid(const QString &name) const;
 
 private:
-	QJsonObject m_object;
+    QJsonObject m_object;
 
-	explicit QFacebookJsonReader(const QJsonObject &object);
-
+    explicit QFacebookJsonReader(const QJsonObject &object);
 };

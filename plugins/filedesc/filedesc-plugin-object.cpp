@@ -26,8 +26,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-FiledescPluginObject::FiledescPluginObject(QObject *parent) :
-		QObject{parent}
+FiledescPluginObject::FiledescPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,34 +36,37 @@ FiledescPluginObject::~FiledescPluginObject()
 
 void FiledescPluginObject::setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger)
 {
-	m_fileDescStatusChanger = fileDescStatusChanger;
+    m_fileDescStatusChanger = fileDescStatusChanger;
 }
 
-void FiledescPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void FiledescPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void FiledescPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void FiledescPluginObject::setStatusChangerManager(StatusChangerManager *statusChangerManager)
 {
-	m_statusChangerManager = statusChangerManager;
+    m_statusChangerManager = statusChangerManager;
 }
 
 void FiledescPluginObject::init()
 {
-	m_statusChangerManager->registerStatusChanger(m_fileDescStatusChanger);
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
+    m_statusChangerManager->registerStatusChanger(m_fileDescStatusChanger);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
 }
 
 void FiledescPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
-	m_statusChangerManager->unregisterStatusChanger(m_fileDescStatusChanger);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
+    m_statusChangerManager->unregisterStatusChanger(m_fileDescStatusChanger);
 }
 
 #include "moc_filedesc-plugin-object.cpp"

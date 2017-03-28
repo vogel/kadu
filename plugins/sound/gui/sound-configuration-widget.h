@@ -34,35 +34,36 @@ class SoundSelectFile;
 
 class SoundConfigurationWidget : public NotifierConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SoundConfigurationWidget(SoundManager *manager, QWidget *parent = nullptr);
-	virtual ~SoundConfigurationWidget();
+    explicit SoundConfigurationWidget(SoundManager *manager, QWidget *parent = nullptr);
+    virtual ~SoundConfigurationWidget();
 
-	virtual void loadNotifyConfigurations() {}
-	virtual void saveNotifyConfigurations();
-	virtual void switchToEvent(const QString &event);
+    virtual void loadNotifyConfigurations()
+    {
+    }
+    virtual void saveNotifyConfigurations();
+    virtual void switchToEvent(const QString &event);
 
 public slots:
-	void themeChanged(int index);
+    void themeChanged(int index);
 
 signals:
-	void soundFileEdited();
+    void soundFileEdited();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SoundManager> m_manager;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SoundManager> m_manager;
 
-	QMap<QString, QString> m_soundFiles;
-	QString m_currentNotificationEvent;
+    QMap<QString, QString> m_soundFiles;
+    QString m_currentNotificationEvent;
 
-	SoundSelectFile *m_soundSelectFile;
+    SoundSelectFile *m_soundSelectFile;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 };

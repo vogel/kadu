@@ -24,6 +24,6 @@
 
 struct QFacebookDownloadThreadsResult
 {
-	int syncSequenceId;
-	int unreadCount;
+    int syncSequenceId;
+    int unreadCount;
 };

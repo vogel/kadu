@@ -28,8 +28,7 @@
 
 #include "identity-manager.h"
 
-IdentityManager::IdentityManager(QObject *parent) :
-		Manager<Identity>{parent}
+IdentityManager::IdentityManager(QObject *parent) : Manager<Identity>{parent}
 {
 }
 
@@ -39,130 +38,130 @@ IdentityManager::~IdentityManager()
 
 void IdentityManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void IdentityManager::setIdentityStorage(IdentityStorage *identityStorage)
 {
-	m_identityStorage = identityStorage;
+    m_identityStorage = identityStorage;
 }
 
 void IdentityManager::init()
 {
-	m_configurationManager->registerStorableObject(this);
+    m_configurationManager->registerStorableObject(this);
 }
 
 void IdentityManager::done()
 {
-	m_configurationManager->unregisterStorableObject(this);
+    m_configurationManager->unregisterStorableObject(this);
 }
 
 Identity IdentityManager::byName(const QString &name, bool create)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (name.isEmpty())
-		return Identity::null;
+    if (name.isEmpty())
+        return Identity::null;
 
-	foreach (const Identity &identity, items())
-	{
-		if (name == identity.name())
-			return identity;
-	}
+    foreach (const Identity &identity, items())
+    {
+        if (name == identity.name())
+            return identity;
+    }
 
-	if (!create)
-		return Identity::null;
+    if (!create)
+        return Identity::null;
 
-	auto newIdentity = m_identityStorage->create();
-	newIdentity.setName(name);
-	addItem(newIdentity);
+    auto newIdentity = m_identityStorage->create();
+    newIdentity.setName(name);
+    addItem(newIdentity);
 
-	return newIdentity;
+    return newIdentity;
 }
 
 Identity IdentityManager::identityForAcccount(Account account)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	foreach (const Identity &identity, items())
-		if (identity.hasAccount(account))
-			return identity;
+    foreach (const Identity &identity, items())
+        if (identity.hasAccount(account))
+            return identity;
 
-	return Identity::null;
+    return Identity::null;
 }
 
 void IdentityManager::removeUnused()
 {
-	QList<Identity> unused;
+    QList<Identity> unused;
 
-	foreach (const Identity &identity, items())
-		if (identity.isEmpty() && !identity.isPermanent())
-			unused.append(identity);
+    foreach (const Identity &identity, items())
+        if (identity.isEmpty() && !identity.isPermanent())
+            unused.append(identity);
 
-	foreach (const Identity &identity, unused)
-		removeItem(identity);
+    foreach (const Identity &identity, unused)
+        removeItem(identity);
 }
 
 void IdentityManager::itemAboutToBeAdded(Identity item)
 {
-	emit identityAboutToBeAdded(item);
+    emit identityAboutToBeAdded(item);
 }
 
 void IdentityManager::itemAdded(Identity item)
 {
-	IdentitiesAwareObject::notifyIdentityAdded(item);
+    IdentitiesAwareObject::notifyIdentityAdded(item);
 
-	emit identityAdded(item);
+    emit identityAdded(item);
 }
 
 void IdentityManager::itemAboutToBeRemoved(Identity item)
 {
-	IdentitiesAwareObject::notifyIdentityRemoved(item);
+    IdentitiesAwareObject::notifyIdentityRemoved(item);
 
-	emit identityAboutToBeRemoved(item);
+    emit identityAboutToBeRemoved(item);
 }
 
 void IdentityManager::itemRemoved(Identity item)
 {
-	emit identityRemoved(item);
+    emit identityRemoved(item);
 }
 
 void IdentityManager::addDefaultIdentities()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	auto friendsIdentity = m_identityStorage->create();
-	friendsIdentity.data()->setState(StateNew);
-	friendsIdentity.setPermanent(true);
-	friendsIdentity.setName(tr("Friends"));
-	addItem(friendsIdentity);
+    auto friendsIdentity = m_identityStorage->create();
+    friendsIdentity.data()->setState(StateNew);
+    friendsIdentity.setPermanent(true);
+    friendsIdentity.setName(tr("Friends"));
+    addItem(friendsIdentity);
 
-	auto workIdentity = m_identityStorage->create();
-	workIdentity.data()->setState(StateNew);
-	workIdentity.setPermanent(true);
-	workIdentity.setName(tr("Work"));
-	addItem(workIdentity);
+    auto workIdentity = m_identityStorage->create();
+    workIdentity.data()->setState(StateNew);
+    workIdentity.setPermanent(true);
+    workIdentity.setName(tr("Work"));
+    addItem(workIdentity);
 
-	auto schoolIdentity = m_identityStorage->create();
-	schoolIdentity.data()->setState(StateNew);
-	schoolIdentity.setPermanent(true);
-	schoolIdentity.setName(tr("School"));
-	addItem(schoolIdentity);
+    auto schoolIdentity = m_identityStorage->create();
+    schoolIdentity.data()->setState(StateNew);
+    schoolIdentity.setPermanent(true);
+    schoolIdentity.setName(tr("School"));
+    addItem(schoolIdentity);
 }
 
 void IdentityManager::load()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	Manager<Identity>::load();
+    Manager<Identity>::load();
 
-	if (items().isEmpty())
-		addDefaultIdentities();
+    if (items().isEmpty())
+        addDefaultIdentities();
 }
 
 Identity IdentityManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return m_identityStorage->loadStubFromStorage(storagePoint);
+    return m_identityStorage->loadStubFromStorage(storagePoint);
 }
 
 #include "moc_identity-manager.cpp"

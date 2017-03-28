@@ -19,8 +19,8 @@
 
 #include "simple-configuration-value-state-notifier.h"
 
-SimpleConfigurationValueStateNotifier::SimpleConfigurationValueStateNotifier(QObject *parent) :
-		ConfigurationValueStateNotifier(parent), CurrentState(StateNotChanged)
+SimpleConfigurationValueStateNotifier::SimpleConfigurationValueStateNotifier(QObject *parent)
+        : ConfigurationValueStateNotifier(parent), CurrentState(StateNotChanged)
 {
 }
 
@@ -30,14 +30,14 @@ SimpleConfigurationValueStateNotifier::~SimpleConfigurationValueStateNotifier()
 
 ConfigurationValueState SimpleConfigurationValueStateNotifier::state() const
 {
-	return CurrentState;
+    return CurrentState;
 }
 
 void SimpleConfigurationValueStateNotifier::setState(ConfigurationValueState state)
 {
-	if (CurrentState == state)
-		return;
+    if (CurrentState == state)
+        return;
 
-	CurrentState = state;
-	emit stateChanged(CurrentState);
+    CurrentState = state;
+    emit stateChanged(CurrentState);
 }

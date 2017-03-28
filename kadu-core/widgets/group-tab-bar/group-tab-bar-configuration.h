@@ -27,33 +27,32 @@
 
 class GroupTabBarConfiguration
 {
-	bool DisplayGroupTabs;
-	bool ShowGroupTabEverybody;
-	bool AlwaysShowGroupTabUngroupped;
-	int CurrentGroupTab;
-	QVector<GroupFilter> GroupFilters;
+    bool DisplayGroupTabs;
+    bool ShowGroupTabEverybody;
+    bool AlwaysShowGroupTabUngroupped;
+    int CurrentGroupTab;
+    QVector<GroupFilter> GroupFilters;
 
 public:
-	GroupTabBarConfiguration();
-	GroupTabBarConfiguration(const GroupTabBarConfiguration &) = default;
+    GroupTabBarConfiguration();
+    GroupTabBarConfiguration(const GroupTabBarConfiguration &) = default;
 
-	GroupTabBarConfiguration & operator = (const GroupTabBarConfiguration &) = default;
+    GroupTabBarConfiguration &operator=(const GroupTabBarConfiguration &) = default;
 
-	void setDisplayGroupTabs(bool displayGroupTabs);
-	bool displayGroupTabs() const;
+    void setDisplayGroupTabs(bool displayGroupTabs);
+    bool displayGroupTabs() const;
 
-	void setShowGroupTabEverybody(int showGroupTabEverybody);
-	int showGroupTabEverybody() const;
+    void setShowGroupTabEverybody(int showGroupTabEverybody);
+    int showGroupTabEverybody() const;
 
-	void setAlwaysShowGroupTabUngroupped(int alwaysShowGroupTabUngroupped);
-	bool alwaysShowGroupTabUngroupped() const;
+    void setAlwaysShowGroupTabUngroupped(int alwaysShowGroupTabUngroupped);
+    bool alwaysShowGroupTabUngroupped() const;
 
-	void setCurrentGroupTab(int currentGroupTab);
-	int currentGroupTab() const;
+    void setCurrentGroupTab(int currentGroupTab);
+    int currentGroupTab() const;
 
-	void setGroupFilters(QVector<GroupFilter> groupFilters);
-	QVector<GroupFilter> groupFilters() const;
-
+    void setGroupFilters(QVector<GroupFilter> groupFilters);
+    QVector<GroupFilter> groupFilters() const;
 };
 
-#endif // GROUP_TAB_BAR_CONFIGURATION_H
+#endif   // GROUP_TAB_BAR_CONFIGURATION_H

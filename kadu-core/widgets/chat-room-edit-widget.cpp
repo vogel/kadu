@@ -33,8 +33,7 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLineEdit>
 
-ChatRoomEditWidget::ChatRoomEditWidget(const Chat &chat, QWidget *parent) :
-		ChatEditWidget(chat, parent)
+ChatRoomEditWidget::ChatRoomEditWidget(const Chat &chat, QWidget *parent) : ChatEditWidget(chat, parent)
 {
 }
 
@@ -44,127 +43,127 @@ ChatRoomEditWidget::~ChatRoomEditWidget()
 
 void ChatRoomEditWidget::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void ChatRoomEditWidget::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void ChatRoomEditWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ChatRoomEditWidget::init()
 {
-	RoomDetails = qobject_cast<ChatDetailsRoom *>(chat().details());
+    RoomDetails = qobject_cast<ChatDetailsRoom *>(chat().details());
 
-	createGui();
-	loadChatData();
+    createGui();
+    loadChatData();
 }
 
 void ChatRoomEditWidget::createGui()
 {
-	QFormLayout *layout = new QFormLayout(this);
+    QFormLayout *layout = new QFormLayout(this);
 
-	AccountCombo = m_injectedFactory->makeInjected<AccountsComboBox>(true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
-	AccountCombo->setIncludeIdInDisplay(true);
+    AccountCombo = m_injectedFactory->makeInjected<AccountsComboBox>(
+        true, AccountsComboBox::NotVisibleWithOneRowSourceModel, this);
+    AccountCombo->setIncludeIdInDisplay(true);
 
-	// only xmpp rooms for now
-	// we need to add something like Protocol::supporterChatTypes()
-	ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
-	protocolFilter->setProtocolName("jabber");
-	AccountCombo->addFilter(protocolFilter);
-	connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
+    // only xmpp rooms for now
+    // we need to add something like Protocol::supporterChatTypes()
+    ProtocolFilter *protocolFilter = new ProtocolFilter(AccountCombo);
+    protocolFilter->setProtocolName("jabber");
+    AccountCombo->addFilter(protocolFilter);
+    connect(AccountCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
-	layout->addRow(tr("Account:"), AccountCombo);
+    layout->addRow(tr("Account:"), AccountCombo);
 
-	RoomEdit = new QLineEdit(this);
-	connect(RoomEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+    RoomEdit = new QLineEdit(this);
+    connect(RoomEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	layout->addRow(tr("Room:"), RoomEdit);
+    layout->addRow(tr("Room:"), RoomEdit);
 
-	NickEdit = new QLineEdit(this);
-	connect(NickEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+    NickEdit = new QLineEdit(this);
+    connect(NickEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	layout->addRow(tr("Nick:"), NickEdit);
+    layout->addRow(tr("Nick:"), NickEdit);
 
-	PasswordEdit = new QLineEdit(this);
-	PasswordEdit->setEchoMode(QLineEdit::Password);
-	connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
+    PasswordEdit = new QLineEdit(this);
+    PasswordEdit->setEchoMode(QLineEdit::Password);
+    connect(PasswordEdit, SIGNAL(textChanged(QString)), this, SLOT(dataChanged()));
 
-	layout->addRow(tr("Password:"), PasswordEdit);
+    layout->addRow(tr("Password:"), PasswordEdit);
 
-	StayInRoomAfterClosingWindowCheckBox = new QCheckBox{tr("Stay in chat room after closing chat window"), this};
-	connect(StayInRoomAfterClosingWindowCheckBox, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
+    StayInRoomAfterClosingWindowCheckBox = new QCheckBox{tr("Stay in chat room after closing chat window"), this};
+    connect(StayInRoomAfterClosingWindowCheckBox, SIGNAL(toggled(bool)), this, SLOT(dataChanged()));
 
-	layout->addRow(StayInRoomAfterClosingWindowCheckBox);
+    layout->addRow(StayInRoomAfterClosingWindowCheckBox);
 }
 
 void ChatRoomEditWidget::dataChanged()
 {
-	if (!RoomDetails)
-		return;
+    if (!RoomDetails)
+        return;
 
-	if (AccountCombo->currentAccount() == chat().chatAccount()
-			&& RoomEdit->text() == RoomDetails->room()
-			&& NickEdit->text() == RoomDetails->nick()
-			&& PasswordEdit->text() == RoomDetails->password()
-			&& StayInRoomAfterClosingWindowCheckBox->isChecked() == RoomDetails->stayInRoomAfterClosingWindow())
-	{
-		simpleStateNotifier()->setState(StateNotChanged);
-		return;
-	}
+    if (AccountCombo->currentAccount() == chat().chatAccount() && RoomEdit->text() == RoomDetails->room() &&
+        NickEdit->text() == RoomDetails->nick() && PasswordEdit->text() == RoomDetails->password() &&
+        StayInRoomAfterClosingWindowCheckBox->isChecked() == RoomDetails->stayInRoomAfterClosingWindow())
+    {
+        simpleStateNotifier()->setState(StateNotChanged);
+        return;
+    }
 
-	if (!AccountCombo->currentAccount() || RoomEdit->text().isEmpty() || NickEdit->text().isEmpty())
-	{
-		simpleStateNotifier()->setState(StateChangedDataInvalid);
-		return;
-	}
+    if (!AccountCombo->currentAccount() || RoomEdit->text().isEmpty() || NickEdit->text().isEmpty())
+    {
+        simpleStateNotifier()->setState(StateChangedDataInvalid);
+        return;
+    }
 
-	Chat sameChat = ChatTypeRoom::findChat(m_chatManager, m_chatStorage, AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
-	if (sameChat && (sameChat != chat()))
-	{
-		simpleStateNotifier()->setState(StateChangedDataInvalid);
-		return;
-	}
+    Chat sameChat = ChatTypeRoom::findChat(
+        m_chatManager, m_chatStorage, AccountCombo->currentAccount(), RoomEdit->text(), ActionReturnNull);
+    if (sameChat && (sameChat != chat()))
+    {
+        simpleStateNotifier()->setState(StateChangedDataInvalid);
+        return;
+    }
 
-	simpleStateNotifier()->setState(StateChangedDataValid);
+    simpleStateNotifier()->setState(StateChangedDataValid);
 }
 
 void ChatRoomEditWidget::loadChatData()
 {
-	if (!RoomDetails)
-		return;
+    if (!RoomDetails)
+        return;
 
-	AccountCombo->setCurrentAccount(chat().chatAccount());
-	RoomEdit->setText(RoomDetails->room());
-	NickEdit->setText(RoomDetails->nick());
-	PasswordEdit->setText(RoomDetails->password());
-	StayInRoomAfterClosingWindowCheckBox->setChecked(RoomDetails->stayInRoomAfterClosingWindow());
+    AccountCombo->setCurrentAccount(chat().chatAccount());
+    RoomEdit->setText(RoomDetails->room());
+    NickEdit->setText(RoomDetails->nick());
+    PasswordEdit->setText(RoomDetails->password());
+    StayInRoomAfterClosingWindowCheckBox->setChecked(RoomDetails->stayInRoomAfterClosingWindow());
 }
 
 void ChatRoomEditWidget::apply()
 {
-	if (!RoomDetails)
-		return;
+    if (!RoomDetails)
+        return;
 
-	chat().setChatAccount(AccountCombo->currentAccount());
-	RoomDetails->setRoom(RoomEdit->text());
-	RoomDetails->setNick(NickEdit->text());
-	RoomDetails->setPassword(PasswordEdit->text());
-	RoomDetails->setStayInRoomAfterClosingWindow(StayInRoomAfterClosingWindowCheckBox->isChecked());
+    chat().setChatAccount(AccountCombo->currentAccount());
+    RoomDetails->setRoom(RoomEdit->text());
+    RoomDetails->setNick(NickEdit->text());
+    RoomDetails->setPassword(PasswordEdit->text());
+    RoomDetails->setStayInRoomAfterClosingWindow(StayInRoomAfterClosingWindowCheckBox->isChecked());
 
-	simpleStateNotifier()->setState(StateNotChanged);
+    simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void ChatRoomEditWidget::cancel()
 {
-	loadChatData();
+    loadChatData();
 
-	simpleStateNotifier()->setState(StateNotChanged);
+    simpleStateNotifier()->setState(StateNotChanged);
 }
 
 #include "moc_chat-room-edit-widget.cpp"

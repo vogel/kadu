@@ -23,10 +23,10 @@
 
 class StringListDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StringListDialog(QString message, QString okButtonTitle, QStringList stringList, QWidget *parent = nullptr);
-	virtual ~StringListDialog();
-
+    explicit StringListDialog(
+        QString message, QString okButtonTitle, QStringList stringList, QWidget *parent = nullptr);
+    virtual ~StringListDialog();
 };

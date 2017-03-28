@@ -34,35 +34,34 @@ class IconsManager;
 
 class BuddyContactModel : public QAbstractListModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyContactModel(Buddy contact, QObject *parent = nullptr);
-	virtual ~BuddyContactModel();
+    explicit BuddyContactModel(Buddy contact, QObject *parent = nullptr);
+    virtual ~BuddyContactModel();
 
-	virtual int columnCount(const QModelIndex &parent) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	Contact contact(const QModelIndex &index) const;
-	int contactIndex(Contact data);
-	QModelIndex contactModelIndex(Contact data);
+    Contact contact(const QModelIndex &index) const;
+    int contactIndex(Contact data);
+    QModelIndex contactModelIndex(Contact data);
 
-	void setIncludeIdentityInDisplay(bool includeIdentityInDisplay);
+    void setIncludeIdentityInDisplay(bool includeIdentityInDisplay);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	Buddy SourceBuddy;
-	bool IncludeIdentityInDisplay;
+    Buddy SourceBuddy;
+    bool IncludeIdentityInDisplay;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void contactAboutToBeAdded(Contact data);
-	void contactAdded(Contact data);
-	void contactAboutToBeRemoved(Contact data);
-	void contactRemoved(Contact data);
-
+    void contactAboutToBeAdded(Contact data);
+    void contactAdded(Contact data);
+    void contactAboutToBeRemoved(Contact data);
+    void contactRemoved(Contact data);
 };

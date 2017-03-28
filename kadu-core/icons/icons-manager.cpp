@@ -34,8 +34,7 @@
 
 #include <QtCore/QFileInfo>
 
-IconsManager::IconsManager(QObject *parent) :
-		QObject{parent}
+IconsManager::IconsManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -45,209 +44,203 @@ IconsManager::~IconsManager()
 
 void IconsManager::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void IconsManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void IconsManager::setIconThemeManager(IconThemeManager *iconThemeManager)
 {
-	m_iconThemeManager = iconThemeManager;
+    m_iconThemeManager = iconThemeManager;
 }
 
 void IconsManager::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 
-	// TODO: localized protocol
-	localProtocolPath = "gadu-gadu";
+    // TODO: localized protocol
+    localProtocolPath = "gadu-gadu";
 }
 
 QString IconsManager::iconPath(const KaduIcon &icon, IconsManager::AllowEmpty allowEmpty) const
 {
-	QString path = icon.path();
-	QString size = icon.size();
+    QString path = icon.path();
+    QString size = icon.size();
 
-	QFileInfo fileInfo(path);
-	QString themePath = icon.themePath().isEmpty() ? m_iconThemeManager->currentTheme().path() : icon.themePath();
-	QString name = fileInfo.fileName();
-	QString realPath = fileInfo.path();
+    QFileInfo fileInfo(path);
+    QString themePath = icon.themePath().isEmpty() ? m_iconThemeManager->currentTheme().path() : icon.themePath();
+    QString name = fileInfo.fileName();
+    QString realPath = fileInfo.path();
 
-	fileInfo.setFile(themePath + realPath + '/' + size + '/' + name + ".png" );
-	if (fileInfo.isFile() && fileInfo.isReadable())
-		return fileInfo.canonicalFilePath();
+    fileInfo.setFile(themePath + realPath + '/' + size + '/' + name + ".png");
+    if (fileInfo.isFile() && fileInfo.isReadable())
+        return fileInfo.canonicalFilePath();
 
-	fileInfo.setFile(themePath + realPath + '/' + size + '/' + name + ".gif" );
-	if (fileInfo.isFile() && fileInfo.isReadable())
-		return fileInfo.canonicalFilePath();
+    fileInfo.setFile(themePath + realPath + '/' + size + '/' + name + ".gif");
+    if (fileInfo.isFile() && fileInfo.isReadable())
+        return fileInfo.canonicalFilePath();
 
-	fileInfo.setFile(themePath + realPath + "/svg/" + name + ".svg" );
-	if (fileInfo.isFile() && fileInfo.isReadable())
-		return fileInfo.canonicalFilePath();
+    fileInfo.setFile(themePath + realPath + "/svg/" + name + ".svg");
+    if (fileInfo.isFile() && fileInfo.isReadable())
+        return fileInfo.canonicalFilePath();
 
-	fileInfo.setFile(themePath + realPath + "/svg/" + name + ".svgz" );
-	if (fileInfo.isFile() && fileInfo.isReadable())
-		return fileInfo.canonicalFilePath();
+    fileInfo.setFile(themePath + realPath + "/svg/" + name + ".svgz");
+    if (fileInfo.isFile() && fileInfo.isReadable())
+        return fileInfo.canonicalFilePath();
 
-	if (realPath == QStringLiteral("protocols/common"))
-	{
-		QString protocolPath;
-		if (m_accountManager->defaultAccount().protocolHandler())
-			protocolPath = m_accountManager->defaultAccount().protocolHandler()->statusPixmapPath();
-		else
-			protocolPath = localProtocolPath;
+    if (realPath == QStringLiteral("protocols/common"))
+    {
+        QString protocolPath;
+        if (m_accountManager->defaultAccount().protocolHandler())
+            protocolPath = m_accountManager->defaultAccount().protocolHandler()->statusPixmapPath();
+        else
+            protocolPath = localProtocolPath;
 
-		KaduIcon protocolPathIcon = icon;
-		protocolPathIcon.setPath(QString("protocols/%1/%2").arg(protocolPath).arg(name));
-		return iconPath(protocolPathIcon, allowEmpty);
-	}
+        KaduIcon protocolPathIcon = icon;
+        protocolPathIcon.setPath(QString("protocols/%1/%2").arg(protocolPath).arg(name));
+        return iconPath(protocolPathIcon, allowEmpty);
+    }
 
-	if (EmptyAllowed == allowEmpty)
-		return QString();
-	else
-		return iconPath(KaduIcon("kadu_icons/0", size), EmptyAllowed);
+    if (EmptyAllowed == allowEmpty)
+        return QString();
+    else
+        return iconPath(KaduIcon("kadu_icons/0", size), EmptyAllowed);
 }
 
 QIcon IconsManager::buildPngIcon(const QString &themePath, const QString &path)
 {
-	static QString sizes [] = {
-		QStringLiteral("16x16"),
-		QStringLiteral("22x22"),
-		QStringLiteral("32x32"),
-		QStringLiteral("64x64"),
-		QStringLiteral("96x96"),
-		QStringLiteral("128x128"),
-		QStringLiteral("256x256")
-	};
-	static int sizes_count = 7;
+    static QString sizes[] = {QStringLiteral("16x16"),  QStringLiteral("22x22"), QStringLiteral("32x32"),
+                              QStringLiteral("64x64"),  QStringLiteral("96x96"), QStringLiteral("128x128"),
+                              QStringLiteral("256x256")};
+    static int sizes_count = 7;
 
-	QIcon icon;
-	for (int i = 0; i < sizes_count; i++)
-	{
-		KaduIcon kaduIcon(path, sizes[i]);
-		kaduIcon.setThemePath(themePath);
+    QIcon icon;
+    for (int i = 0; i < sizes_count; i++)
+    {
+        KaduIcon kaduIcon(path, sizes[i]);
+        kaduIcon.setThemePath(themePath);
 
-		QString fullPath = iconPath(kaduIcon, EmptyAllowed);
-		if (!fullPath.isEmpty())
-			icon.addFile(fullPath);
-	}
+        QString fullPath = iconPath(kaduIcon, EmptyAllowed);
+        if (!fullPath.isEmpty())
+            icon.addFile(fullPath);
+    }
 
-	return icon;
+    return icon;
 }
 
-QIcon IconsManager::buildSvgIcon(const QString &themePath, const QString& path)
+QIcon IconsManager::buildSvgIcon(const QString &themePath, const QString &path)
 {
-	Q_UNUSED(themePath);
-	Q_UNUSED(path);
+    Q_UNUSED(themePath);
+    Q_UNUSED(path);
 
-	return {};
-/*
-	QIcon icon;
-	QString theme = themePath.isEmpty() ? ThemeManager->currentTheme().path() : themePath;
-	QString realPath;
-	QString iconName;
+    return {};
+    /*
+            QIcon icon;
+            QString theme = themePath.isEmpty() ? ThemeManager->currentTheme().path() : themePath;
+            QString realPath;
+            QString iconName;
 
-	int lastHash = path.lastIndexOf('/');
-	if (lastHash != -1)
-	{
-		realPath = path.left(lastHash);
-		iconName = path.mid(lastHash + 1);
-	}
-	else
-		iconName = path;
+            int lastHash = path.lastIndexOf('/');
+            if (lastHash != -1)
+            {
+                    realPath = path.left(lastHash);
+                    iconName = path.mid(lastHash + 1);
+            }
+            else
+                    iconName = path;
 
-	QFileInfo fileInfo;
-	fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svgz");
-	if (fileInfo.isFile() && fileInfo.isReadable())
-	{
-		icon.addFile(fileInfo.canonicalFilePath());
-	}
-	else
-	{
-		fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svg" );
-		if (fileInfo.isFile() && fileInfo.isReadable())
-		{
-			icon.addFile(fileInfo.canonicalFilePath());
-		}
-	}
+            QFileInfo fileInfo;
+            fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svgz");
+            if (fileInfo.isFile() && fileInfo.isReadable())
+            {
+                    icon.addFile(fileInfo.canonicalFilePath());
+            }
+            else
+            {
+                    fileInfo.setFile(theme + realPath + "/svg/" + iconName + ".svg" );
+                    if (fileInfo.isFile() && fileInfo.isReadable())
+                    {
+                            icon.addFile(fileInfo.canonicalFilePath());
+                    }
+            }
 
-	return icon;
-*/
+            return icon;
+    */
 }
 
 QIcon IconsManager::iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty)
 {
-	if (!IconCache.contains(themePath + path))
-	{
-		QIcon icon;
+    if (!IconCache.contains(themePath + path))
+    {
+        QIcon icon;
 
-		QFileInfo fileInfo(path);
-		if (fileInfo.isAbsolute() && fileInfo.isReadable())
-			icon.addFile(path);
-		else
-		{
-			icon = buildSvgIcon(themePath, path);
+        QFileInfo fileInfo(path);
+        if (fileInfo.isAbsolute() && fileInfo.isReadable())
+            icon.addFile(path);
+        else
+        {
+            icon = buildSvgIcon(themePath, path);
 
-			if (icon.isNull())
-				icon = buildPngIcon(themePath, path);
+            if (icon.isNull())
+                icon = buildPngIcon(themePath, path);
 
-			if (icon.isNull())
-			{
-				QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
-				if (path.contains(commonRegexp))
-				{
-					QString protocolpath;
-					if (m_accountManager->defaultAccount().protocolHandler())
-						protocolpath = m_accountManager->defaultAccount().protocolHandler()->statusPixmapPath();
-					else
-						protocolpath = localProtocolPath;
-					return iconByPath(themePath, QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1)));
-				}
-			}
+            if (icon.isNull())
+            {
+                QRegExp commonRegexp = QRegExp("^protocols/common/(.+)$");
+                if (path.contains(commonRegexp))
+                {
+                    QString protocolpath;
+                    if (m_accountManager->defaultAccount().protocolHandler())
+                        protocolpath = m_accountManager->defaultAccount().protocolHandler()->statusPixmapPath();
+                    else
+                        protocolpath = localProtocolPath;
+                    return iconByPath(themePath, QString("protocols/%1/%2").arg(protocolpath, commonRegexp.cap(1)));
+                }
+            }
 
-			if (icon.isNull() && EmptyNotAllowed == allowEmpty)
-				icon = buildSvgIcon(themePath, "kadu_icons/0");
+            if (icon.isNull() && EmptyNotAllowed == allowEmpty)
+                icon = buildSvgIcon(themePath, "kadu_icons/0");
 
-			if (icon.isNull() && EmptyNotAllowed == allowEmpty)
-				icon = buildPngIcon(themePath, "kadu_icons/0");
+            if (icon.isNull() && EmptyNotAllowed == allowEmpty)
+                icon = buildPngIcon(themePath, "kadu_icons/0");
+        }
 
-		}
+        IconCache.insert(themePath + path, icon);
+    }
 
-		IconCache.insert(themePath + path, icon);
-	}
-
-	return IconCache.value(themePath + path);
+    return IconCache.value(themePath + path);
 }
 
 QIcon IconsManager::iconByPath(const KaduIcon &icon)
 {
-	return iconByPath(icon.themePath(), icon.path());
+    return iconByPath(icon.themePath(), icon.path());
 }
 
 void IconsManager::clearCache()
 {
-	IconCache.clear();
+    IconCache.clear();
 }
 
 void IconsManager::configurationUpdated()
 {
-	bool themeWasChanged = m_configuration->deprecatedApi()->readEntry("Look", "IconTheme") != m_iconThemeManager->currentTheme().name();
-	if (themeWasChanged)
-	{
-		clearCache();
-		m_iconThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
-		m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", m_iconThemeManager->currentTheme().name());
+    bool themeWasChanged =
+        m_configuration->deprecatedApi()->readEntry("Look", "IconTheme") != m_iconThemeManager->currentTheme().name();
+    if (themeWasChanged)
+    {
+        clearCache();
+        m_iconThemeManager->setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
+        m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", m_iconThemeManager->currentTheme().name());
 
-		emit themeChanged();
-	}
+        emit themeChanged();
+    }
 }
 
 QSize IconsManager::getIconsSize()
 {
-	return QSize(16, 16);
+    return QSize(16, 16);
 }
 
 #include "moc_icons-manager.cpp"

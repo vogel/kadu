@@ -29,9 +29,7 @@
 
 #include "gadu-open-chat-with-runner.h"
 
-GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account, QObject *parent) :
-		QObject{parent},
-		m_account{account}
+GaduOpenChatWithRunner::GaduOpenChatWithRunner(Account account, QObject *parent) : QObject{parent}, m_account{account}
 {
 }
 
@@ -41,25 +39,25 @@ GaduOpenChatWithRunner::~GaduOpenChatWithRunner()
 
 void GaduOpenChatWithRunner::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void GaduOpenChatWithRunner::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 BuddyList GaduOpenChatWithRunner::matchingContacts(const QString &query)
 {
-	BuddyList matchedContacts;
-	QString queryCopy(query);
-	int pos = 0;
-	if (createNotOwnedGaduIdValidator()->validate(queryCopy, pos) != QValidator::Acceptable)
-		return matchedContacts;
+    BuddyList matchedContacts;
+    QString queryCopy(query);
+    int pos = 0;
+    if (createNotOwnedGaduIdValidator()->validate(queryCopy, pos) != QValidator::Acceptable)
+        return matchedContacts;
 
-	auto contact = m_contactManager->byId(m_account, query, ActionCreate);
-	auto buddy = m_buddyManager->byContact(contact, ActionCreate);
-	matchedContacts.append(buddy);
+    auto contact = m_contactManager->byId(m_account, query, ActionCreate);
+    auto buddy = m_buddyManager->byContact(contact, ActionCreate);
+    matchedContacts.append(buddy);
 
-	return matchedContacts;
+    return matchedContacts;
 }

@@ -32,18 +32,19 @@
 
 class KADUAPI PersonalInfoService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PersonalInfoService(Account account, QObject *parent) : AccountService(account, parent) {}
+    explicit PersonalInfoService(Account account, QObject *parent) : AccountService(account, parent)
+    {
+    }
 
-	virtual void updatePersonalInfo(const QString &id, Buddy buddy) = 0;
-	virtual void fetchPersonalInfo(const QString &id) = 0;
+    virtual void updatePersonalInfo(const QString &id, Buddy buddy) = 0;
+    virtual void fetchPersonalInfo(const QString &id) = 0;
 
 signals:
-	void personalInfoAvailable(Buddy buddy);
-	void personalInfoUpdated(bool);
-
+    void personalInfoAvailable(Buddy buddy);
+    void personalInfoUpdated(bool);
 };
 
-#endif // PERSONAL_INFO_SERVICE_H
+#endif   // PERSONAL_INFO_SERVICE_H

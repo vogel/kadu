@@ -24,9 +24,8 @@
 #include "core/injected-factory.h"
 #include "message/message-html-renderer-service.h"
 
-AdiumStyleRendererFactory::AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style, QObject *parent) :
-		QObject{parent},
-		m_style{std::move(style)}
+AdiumStyleRendererFactory::AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style, QObject *parent)
+        : QObject{parent}, m_style{std::move(style)}
 {
 }
 
@@ -36,13 +35,14 @@ AdiumStyleRendererFactory::~AdiumStyleRendererFactory()
 
 void AdiumStyleRendererFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-not_owned_qptr<ChatStyleRenderer> AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
+not_owned_qptr<ChatStyleRenderer>
+AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration configuration)
 {
-	auto result = m_injectedFactory->makeNotOwned<AdiumStyleRenderer>(std::move(configuration), m_style);
-	return not_owned_qptr<ChatStyleRenderer>(result.release());
+    auto result = m_injectedFactory->makeNotOwned<AdiumStyleRenderer>(std::move(configuration), m_style);
+    return not_owned_qptr<ChatStyleRenderer>(result.release());
 }
 
 #include "moc_adium-style-renderer-factory.cpp"

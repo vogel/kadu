@@ -25,15 +25,15 @@
 #include "widgets/chat-edit-box.h"
 #include "widgets/chat-widget/chat-widget.h"
 
-AttachTabAction::AttachTabAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+AttachTabAction::AttachTabAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/tab-detach"});
-	setName(QStringLiteral("attachToTabsAction"));
-	setText(tr("Attach Chat to Tabs"));
-	setType(ActionDescription::TypeChat);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/tab-detach"});
+    setName(QStringLiteral("attachToTabsAction"));
+    setText(tr("Attach Chat to Tabs"));
+    setType(ActionDescription::TypeChat);
 }
 
 AttachTabAction::~AttachTabAction()
@@ -42,36 +42,36 @@ AttachTabAction::~AttachTabAction()
 
 void AttachTabAction::setTabsManager(TabsManager *tabsManager)
 {
-	m_tabsManager = tabsManager;
+    m_tabsManager = tabsManager;
 }
 
 void AttachTabAction::actionInstanceCreated(Action *action)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(action->parentWidget());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(action->parentWidget());
+    if (!chatEditBox)
+        return;
 
-	auto chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
+    auto chatWidget = chatEditBox->chatWidget();
+    if (!chatWidget)
+        return;
 
-	action->setChecked(m_tabsManager->tabWidget()->indexOf(chatWidget) != -1);
+    action->setChecked(m_tabsManager->tabWidget()->indexOf(chatWidget) != -1);
 }
 
 void AttachTabAction::actionTriggered(QAction *sender, bool toggled)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parentWidget());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parentWidget());
+    if (!chatEditBox)
+        return;
 
-	auto chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
+    auto chatWidget = chatEditBox->chatWidget();
+    if (!chatWidget)
+        return;
 
-	if (!toggled)
-		m_tabsManager->detachChat(chatWidget);
-	else
-		m_tabsManager->attachChat(chatWidget);
+    if (!toggled)
+        m_tabsManager->detachChat(chatWidget);
+    else
+        m_tabsManager->attachChat(chatWidget);
 }
 
 #include "moc_attach-tab-action.cpp"

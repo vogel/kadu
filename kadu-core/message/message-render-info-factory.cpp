@@ -27,8 +27,7 @@
 #include "message/message-render-info.h"
 #include "message/message.h"
 
-MessageRenderInfoFactory::MessageRenderInfoFactory(QObject *parent) :
-		QObject{parent}
+MessageRenderInfoFactory::MessageRenderInfoFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,84 +37,80 @@ MessageRenderInfoFactory::~MessageRenderInfoFactory()
 
 void MessageRenderInfoFactory::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatConfigurationHolder = chatConfigurationHolder;
+    m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
 void MessageRenderInfoFactory::setChatStyleManager(ChatStyleManager *chatStyleManager)
 {
-	m_chatStyleManager = chatStyleManager;
+    m_chatStyleManager = chatStyleManager;
 }
 
-MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior)
+MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(
+    const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior)
 {
-	auto builder = MessageRenderInfoBuilder{};
-	auto header = includeHeader(previous, message, renderHeaderBehavior);
-	return builder
-			.setMessage(message)
-			.setBackgroundColor(backgroundColor(message))
-			.setNickColor(nickColor(message))
-			.setFontColor(fontColor(message))
-			.setIncludeHeader(header)
-			.setSeparatorSize(header
-					? m_chatStyleManager->cfgHeaderSeparatorHeight()
-					: m_chatStyleManager->paragraphSeparator())
-			.setShowServerTime(showServerTime(message))
-			.create();
+    auto builder = MessageRenderInfoBuilder{};
+    auto header = includeHeader(previous, message, renderHeaderBehavior);
+    return builder.setMessage(message)
+        .setBackgroundColor(backgroundColor(message))
+        .setNickColor(nickColor(message))
+        .setFontColor(fontColor(message))
+        .setIncludeHeader(header)
+        .setSeparatorSize(
+            header ? m_chatStyleManager->cfgHeaderSeparatorHeight() : m_chatStyleManager->paragraphSeparator())
+        .setShowServerTime(showServerTime(message))
+        .create();
 }
 
 QString MessageRenderInfoFactory::backgroundColor(const Message &message) const
 {
-	return message.type() == MessageTypeSent
-			? m_chatConfigurationHolder->myBackgroundColor()
-			: m_chatConfigurationHolder->usrBackgroundColor();
+    return message.type() == MessageTypeSent ? m_chatConfigurationHolder->myBackgroundColor()
+                                             : m_chatConfigurationHolder->usrBackgroundColor();
 }
 
 QString MessageRenderInfoFactory::nickColor(const Message &message) const
 {
-	return message.type() == MessageTypeSent
-			? m_chatConfigurationHolder->myNickColor()
-			: m_chatConfigurationHolder->usrNickColor();
+    return message.type() == MessageTypeSent ? m_chatConfigurationHolder->myNickColor()
+                                             : m_chatConfigurationHolder->usrNickColor();
 }
 
 QString MessageRenderInfoFactory::fontColor(const Message &message) const
 {
-	return message.type() == MessageTypeSent
-			? m_chatConfigurationHolder->myFontColor()
-			: m_chatConfigurationHolder->usrFontColor();
+    return message.type() == MessageTypeSent ? m_chatConfigurationHolder->myFontColor()
+                                             : m_chatConfigurationHolder->usrFontColor();
 }
 
-bool MessageRenderInfoFactory::includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const
+bool MessageRenderInfoFactory::includeHeader(
+    const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const
 {
-	if (renderHeaderBehavior == MessageRenderHeaderBehavior::Always)
-		return true;
-	if (!previous || previous.type() == MessageTypeSystem || message.type() == MessageTypeSystem)
-		return true;
-	if (message.messageSender() != previous.messageSender())
-		return true;
+    if (renderHeaderBehavior == MessageRenderHeaderBehavior::Always)
+        return true;
+    if (!previous || previous.type() == MessageTypeSystem || message.type() == MessageTypeSystem)
+        return true;
+    if (message.messageSender() != previous.messageSender())
+        return true;
 
-	if (message.receiveDate().toTime_t() < previous.receiveDate().toTime_t())
-		qWarning("New message has earlier date than last message");
+    if (message.receiveDate().toTime_t() < previous.receiveDate().toTime_t())
+        qWarning("New message has earlier date than last message");
 
-	auto minimumInterval = m_chatStyleManager->cfgNoHeaderInterval() * 60;
-	auto actualInterval = static_cast<int>(message.receiveDate().toTime_t() - previous.receiveDate().toTime_t());
-	return actualInterval > minimumInterval;
+    auto minimumInterval = m_chatStyleManager->cfgNoHeaderInterval() * 60;
+    auto actualInterval = static_cast<int>(message.receiveDate().toTime_t() - previous.receiveDate().toTime_t());
+    return actualInterval > minimumInterval;
 }
 
 int MessageRenderInfoFactory::separatorSize(bool includeHeader) const
 {
-	return includeHeader
-			? m_chatStyleManager->cfgHeaderSeparatorHeight()
-			: m_chatStyleManager->paragraphSeparator();
+    return includeHeader ? m_chatStyleManager->cfgHeaderSeparatorHeight() : m_chatStyleManager->paragraphSeparator();
 }
 
 bool MessageRenderInfoFactory::showServerTime(const Message &message) const
 {
-	if (message.type() == MessageTypeSystem || !message.sendDate().isValid())
-		return false;
-	if (!m_chatStyleManager->noServerTime())
-		return true;
+    if (message.type() == MessageTypeSystem || !message.sendDate().isValid())
+        return false;
+    if (!m_chatStyleManager->noServerTime())
+        return true;
 
-	auto minimumInterval = m_chatStyleManager->noServerTimeDiff();
-	auto actuvalInterval = static_cast<int>(message.receiveDate().toTime_t()) - static_cast<int>(message.sendDate().toTime_t());
-	return abs(actuvalInterval) > minimumInterval;
+    auto minimumInterval = m_chatStyleManager->noServerTimeDiff();
+    auto actuvalInterval =
+        static_cast<int>(message.receiveDate().toTime_t()) - static_cast<int>(message.sendDate().toTime_t());
+    return abs(actuvalInterval) > minimumInterval;
 }

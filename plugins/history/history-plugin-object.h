@@ -38,37 +38,41 @@ class PathsProvider;
 
 class HISTORYAPI HistoryPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit HistoryPluginObject(QObject *parent = nullptr);
-	virtual ~HistoryPluginObject();
+    Q_INVOKABLE explicit HistoryPluginObject(QObject *parent = nullptr);
+    virtual ~HistoryPluginObject();
 
-	History * history() const;
+    History *history() const;
 
 private:
-	QPointer<BuddyAdditionalDataDeleteHandlerManager> m_buddyAdditionalDataDeleteHandlerManager;
-	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
-	QPointer<BuddyHistoryDeleteHandler> m_buddyHistoryDeleteHandler;
-	QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
-	QPointer<HistoryBuddyConfigurationWidgetFactory> m_historyBuddyConfigurationWidgetFactory;
-	QPointer<HistoryChatConfigurationWidgetFactory> m_historyChatConfigurationWidgetFactory;
-	QPointer<History> m_history;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<BuddyAdditionalDataDeleteHandlerManager> m_buddyAdditionalDataDeleteHandlerManager;
+    QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
+    QPointer<BuddyHistoryDeleteHandler> m_buddyHistoryDeleteHandler;
+    QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
+    QPointer<HistoryBuddyConfigurationWidgetFactory> m_historyBuddyConfigurationWidgetFactory;
+    QPointer<HistoryChatConfigurationWidgetFactory> m_historyChatConfigurationWidgetFactory;
+    QPointer<History> m_history;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
-	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setBuddyHistoryDeleteHandler(BuddyHistoryDeleteHandler *buddyHistoryDeleteHandler);
-	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setHistoryBuddyConfigurationWidgetFactory(HistoryBuddyConfigurationWidgetFactory *historyBuddyConfigurationWidgetFactory);
-	INJEQT_SET void setHistoryChatConfigurationWidgetFactory(HistoryChatConfigurationWidgetFactory *historyChatConfigurationWidgetFactory);
-	INJEQT_SET void setHistory(History *history);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setBuddyAdditionalDataDeleteHandlerManager(
+        BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager);
+    INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(
+        BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
+    INJEQT_SET void setBuddyHistoryDeleteHandler(BuddyHistoryDeleteHandler *buddyHistoryDeleteHandler);
+    INJEQT_SET void setChatConfigurationWidgetFactoryRepository(
+        ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
+    INJEQT_SET void setHistoryBuddyConfigurationWidgetFactory(
+        HistoryBuddyConfigurationWidgetFactory *historyBuddyConfigurationWidgetFactory);
+    INJEQT_SET void setHistoryChatConfigurationWidgetFactory(
+        HistoryChatConfigurationWidgetFactory *historyChatConfigurationWidgetFactory);
+    INJEQT_SET void setHistory(History *history);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

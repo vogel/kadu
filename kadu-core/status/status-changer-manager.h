@@ -43,7 +43,8 @@ class StatusContainer;
  * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for managing list of StatusChanger instnaces.
  *
- * Every Status in Kadu can be modified by plugins that registers instances of StatusChanger class in StatusChangerManager
+ * Every Status in Kadu can be modified by plugins that registers instances of StatusChanger class in
+ * StatusChangerManager
  * singleton.
  *
  * For example: media player plugin can register StatusChanger that adds title of currenly playing song at the beggining
@@ -62,86 +63,87 @@ class StatusContainer;
  */
 class KADUAPI StatusChangerManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QMap<StatusContainer *, Status> Statuses;
-	QList<StatusChanger *> StatusChangers;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QMap<StatusContainer *, Status> Statuses;
+    QList<StatusChanger *> StatusChangers;
 
 private slots:
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called when any of registered StatusChanger changes way it modifies status.
-	 * @param container change is touching this status container's status
-	 * @param source source of given status change
-	 *
-	 * This slot called when any of registered StatusChanger changes way it modifies status for given
-	 * statusContainer. If statusContainer is null, status for all registered status containers is
-	 * modified.
-	 *
-	 * By default source is set to SourceStatusChanger. Thanks to that this slot can be connected to signals from StatusChanger
-	 * instances with only one parameter.
-	 *
-	 * If source is set to SourceUser then status change is performed even if new status is the same as previous one.
-	 */
-	void statusChanged(StatusContainer *container = 0, StatusChangeSource source = SourceStatusChanger);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called when any of registered StatusChanger changes way it modifies status.
+     * @param container change is touching this status container's status
+     * @param source source of given status change
+     *
+     * This slot called when any of registered StatusChanger changes way it modifies status for given
+     * statusContainer. If statusContainer is null, status for all registered status containers is
+     * modified.
+     *
+     * By default source is set to SourceStatusChanger. Thanks to that this slot can be connected to signals from
+     * StatusChanger
+     * instances with only one parameter.
+     *
+     * If source is set to SourceUser then status change is performed even if new status is the same as previous one.
+     */
+    void statusChanged(StatusContainer *container = 0, StatusChangeSource source = SourceStatusChanger);
 
 public:
-	Q_INVOKABLE explicit StatusChangerManager(QObject *parent = nullptr);
-	virtual ~StatusChangerManager();
+    Q_INVOKABLE explicit StatusChangerManager(QObject *parent = nullptr);
+    virtual ~StatusChangerManager();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Registers new StatusChanger object.
-	 * @param statusChanger new statusChanger to register.
-	 *
-	 * Registers new StatusChanger instance. Calling this method causes recomputation of all status contaieners' statuses.
-	 */
-	void registerStatusChanger(StatusChanger *statusChanger);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Registers new StatusChanger object.
+     * @param statusChanger new statusChanger to register.
+     *
+     * Registers new StatusChanger instance. Calling this method causes recomputation of all status contaieners'
+     * statuses.
+     */
+    void registerStatusChanger(StatusChanger *statusChanger);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Unregisters StatusChanger object.
-	 * @param statusChanger statusChanger to unregister.
-	 *
-	 * Unregisters StatusChanger instance. Calling this method causes recomputation of all status contaieners' statuses.
-	 */
-	void unregisterStatusChanger(StatusChanger *statusChanger);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Unregisters StatusChanger object.
+     * @param statusChanger statusChanger to unregister.
+     *
+     * Unregisters StatusChanger instance. Calling this method causes recomputation of all status contaieners' statuses.
+     */
+    void unregisterStatusChanger(StatusChanger *statusChanger);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets status on given status container with modifications.
-	 * @param statusContainer StatusContainer to set status on.
-	 * @param status status to be modified and then set on statusContainer
-	 *
-	 * This methods stores given status as manually set status (to receive by manuallySetStatus) and then modifies
-	 * it using all registered StatusChangers. After all changes are done, new status is set on statusContainer
-	 * using StatusContainer::setStatus method.
-	 */
-	void setStatusManually(StatusContainer *statusContainer, Status status);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets status on given status container with modifications.
+     * @param statusContainer StatusContainer to set status on.
+     * @param status status to be modified and then set on statusContainer
+     *
+     * This methods stores given status as manually set status (to receive by manuallySetStatus) and then modifies
+     * it using all registered StatusChangers. After all changes are done, new status is set on statusContainer
+     * using StatusContainer::setStatus method.
+     */
+    void setStatusManually(StatusContainer *statusContainer, Status status);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns manually (unchanged) status from given StatusContainer.
-	 * @param statusContainer StatusContainer to get status from.
-	 *
-	 * This methods returns manually set status from given StatusContainer. This is the last status that was
-	 * set using StatusChangerManager::setStatus method.
-	 */
-	Status manuallySetStatus(StatusContainer *statusContainer);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns manually (unchanged) status from given StatusContainer.
+     * @param statusContainer StatusContainer to get status from.
+     *
+     * This methods returns manually set status from given StatusContainer. This is the last status that was
+     * set using StatusChangerManager::setStatus method.
+     */
+    Status manuallySetStatus(StatusContainer *statusContainer);
 
 signals:
-	/**
-	 * @short Emited just before status is changed by user.
-	 * @param statusContainer StatusContainer that changes status on.
-	 * @param status status to be set on given statusContainer
-	 *
-	 * This signal can be used by status changers to disable themself in case user changes status.
-	 */
-	void manualStatusAboutToBeChanged(StatusContainer *statusContainer, Status status);
-
+    /**
+     * @short Emited just before status is changed by user.
+     * @param statusContainer StatusContainer that changes status on.
+     * @param status status to be set on given statusContainer
+     *
+     * This signal can be used by status changers to disable themself in case user changes status.
+     */
+    void manualStatusAboutToBeChanged(StatusContainer *statusContainer, Status status);
 };
 
 /**

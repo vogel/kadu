@@ -31,13 +31,11 @@
 
 #include "select-file.h"
 
-SelectFile::SelectFile(const QString &type, QWidget *parent)
-	: QWidget(parent), Type(type)
+SelectFile::SelectFile(const QString &type, QWidget *parent) : QWidget(parent), Type(type)
 {
 }
 
-SelectFile::SelectFile(QWidget *parent)
-	: QWidget(parent)
+SelectFile::SelectFile(QWidget *parent) : QWidget(parent)
 {
 }
 
@@ -47,90 +45,94 @@ SelectFile::~SelectFile()
 
 void SelectFile::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void SelectFile::init()
 {
-	createGui();
+    createGui();
 }
 
 void SelectFile::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout;
+    QHBoxLayout *layout = new QHBoxLayout;
 
-	LineEdit = new QLineEdit(this);
-	connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
+    LineEdit = new QLineEdit(this);
+    connect(LineEdit, SIGNAL(editingFinished()), this, SLOT(fileEdited()));
 
-	QToolButton *selectFile = new QToolButton(this);
-	selectFile->setAutoRaise(true);
-	selectFile->setIcon(m_iconsManager->iconByPath(KaduIcon("document-open")));
-	selectFile->setIconSize(QSize{14, 14});
-	connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
+    QToolButton *selectFile = new QToolButton(this);
+    selectFile->setAutoRaise(true);
+    selectFile->setIcon(m_iconsManager->iconByPath(KaduIcon("document-open")));
+    selectFile->setIconSize(QSize{14, 14});
+    connect(selectFile, SIGNAL(clicked()), this, SLOT(selectFileClicked()));
 
-	layout->addWidget(LineEdit);
-	layout->addWidget(selectFile);
+    layout->addWidget(LineEdit);
+    layout->addWidget(selectFile);
 
-	setLayout(layout);
-	layout->setMargin(0);
-	layout->setSpacing(0);
+    setLayout(layout);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 }
 
 void SelectFile::selectFileClicked()
 {
-	if (Type == "image")
-	{
-		QString s(QFileDialog::getOpenFileName(this, tr("Insert image"), LineEdit->text(),
-					tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)"));
-		if (!s.isEmpty())
-		{
-			LineEdit->setText(s);
-			emit fileChanged();
-		}
-	}
-	else if (Type == "all")
-	{
-		QString s(QFileDialog::getOpenFileName(this, tr("Select File"), LineEdit->text(), tr("All Files (*)")));
-		if (!s.isEmpty())
-		{
-			LineEdit->setText(s);
-			emit fileChanged();
-		}
-	}
-	else if (Type == "audio")
-	{
-		QString s(QFileDialog::getOpenFileName(this, tr("Select audio File"), LineEdit->text(), tr("Audio Files (*.wav *.au *.raw);;All Files (*)")));
-		if (!s.isEmpty())
-		{
-			LineEdit->setText(s);
-			emit fileChanged();
-		}
-	}
-	else if (Type == "directory")
-	{
-		QString s(QFileDialog::getExistingDirectory(this, tr("Select folder"), LineEdit->text()));
-		if (!s.isEmpty())
-		{
-			LineEdit->setText(s);
-			emit fileChanged();
-		}
-	}
+    if (Type == "image")
+    {
+        QString s(
+            QFileDialog::getOpenFileName(
+                this, tr("Insert image"), LineEdit->text(),
+                tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)"));
+        if (!s.isEmpty())
+        {
+            LineEdit->setText(s);
+            emit fileChanged();
+        }
+    }
+    else if (Type == "all")
+    {
+        QString s(QFileDialog::getOpenFileName(this, tr("Select File"), LineEdit->text(), tr("All Files (*)")));
+        if (!s.isEmpty())
+        {
+            LineEdit->setText(s);
+            emit fileChanged();
+        }
+    }
+    else if (Type == "audio")
+    {
+        QString s(
+            QFileDialog::getOpenFileName(
+                this, tr("Select audio File"), LineEdit->text(), tr("Audio Files (*.wav *.au *.raw);;All Files (*)")));
+        if (!s.isEmpty())
+        {
+            LineEdit->setText(s);
+            emit fileChanged();
+        }
+    }
+    else if (Type == "directory")
+    {
+        QString s(QFileDialog::getExistingDirectory(this, tr("Select folder"), LineEdit->text()));
+        if (!s.isEmpty())
+        {
+            LineEdit->setText(s);
+            emit fileChanged();
+        }
+    }
 }
 
 QString SelectFile::file() const
 {
-	return LineEdit->text();
+    return LineEdit->text();
 }
 
 void SelectFile::setFile(const QString &file)
 {
-	LineEdit->setText(file);
+    LineEdit->setText(file);
 }
 
 void SelectFile::fileEdited()
 {
-	if (LineEdit->isModified())
-		emit fileChanged();
+    if (LineEdit->isModified())
+        emit fileChanged();
 }
 
 #include "moc_select-file.cpp"

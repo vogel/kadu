@@ -24,8 +24,7 @@
 
 #include <QtCore/QRegExp>
 
-JabberIdValidator::JabberIdValidator(QObject *parent) :
-		QValidator(parent)
+JabberIdValidator::JabberIdValidator(QObject *parent) : QValidator(parent)
 {
 }
 
@@ -35,18 +34,18 @@ JabberIdValidator::~JabberIdValidator()
 
 QValidator::State JabberIdValidator::validate(QString &input, int &pos) const
 {
-	QString mid(input.mid(pos));
-	if (mid.isEmpty())
-		return QValidator::Intermediate;
+    QString mid(input.mid(pos));
+    if (mid.isEmpty())
+        return QValidator::Intermediate;
 
-	auto jid = Jid::parse(input);
-	if (jid.isEmpty())
-		return QValidator::Invalid;
+    auto jid = Jid::parse(input);
+    if (jid.isEmpty())
+        return QValidator::Invalid;
 
-	if (jid.node().isEmpty() || jid.domain().isEmpty() || jid.domain().contains('@'))
-		return QValidator::Invalid;
+    if (jid.node().isEmpty() || jid.domain().isEmpty() || jid.domain().contains('@'))
+        return QValidator::Invalid;
 
-	return QValidator::Acceptable;
+    return QValidator::Acceptable;
 }
 
 #include "moc_jabber-id-validator.cpp"

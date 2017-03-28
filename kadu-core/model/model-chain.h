@@ -24,8 +24,8 @@
 #include <QtCore/QModelIndexList>
 #include <QtCore/QObject>
 
-#include "model/kadu-abstract-model.h"
 #include "exports.h"
+#include "model/kadu-abstract-model.h"
 
 class QAbstractItemModel;
 class QAbstractProxyModel;
@@ -48,76 +48,75 @@ class QAbstractProxyModel;
  */
 class KADUAPI ModelChain : public QObject, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QAbstractItemModel *Model;
-	QList<QAbstractProxyModel *> ProxyModels;
+    QAbstractItemModel *Model;
+    QList<QAbstractProxyModel *> ProxyModels;
 
-	KaduAbstractModel *KaduModel;
+    KaduAbstractModel *KaduModel;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new chain with given base model.
-	 * @param parent parent of chain
-	 *
-	 * This contructor creates new chain.
-	 */
-	explicit ModelChain(QObject *parent = nullptr);
-	virtual ~ModelChain();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new chain with given base model.
+     * @param parent parent of chain
+     *
+     * This contructor creates new chain.
+     */
+    explicit ModelChain(QObject *parent = nullptr);
+    virtual ~ModelChain();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets different base model for given chain.
-	 * @param model new base model
-	 *
-	 * Sets new default base model for chain. This model must be KaduAbstractModel.
-	 */
-	void setBaseModel(QAbstractItemModel *model);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets different base model for given chain.
+     * @param model new base model
+     *
+     * Sets new default base model for chain. This model must be KaduAbstractModel.
+     */
+    void setBaseModel(QAbstractItemModel *model);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new proxy model at the end of chain.
-	 * @param proxyModel new proxy model
-	 *
-	 * This metod adds new proxy model at the end of chain.
-	 */
-	void addProxyModel(QAbstractProxyModel *proxyModel);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add new proxy model at the end of chain.
+     * @param proxyModel new proxy model
+     *
+     * This metod adds new proxy model at the end of chain.
+     */
+    void addProxyModel(QAbstractProxyModel *proxyModel);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns base model of chain.
-	 * @return base model of chain
-	 *
-	 * Returns base model of chain.
-	 */
-	QAbstractItemModel * firstModel() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns base model of chain.
+     * @return base model of chain
+     *
+     * Returns base model of chain.
+     */
+    QAbstractItemModel *firstModel() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns last chain model.
-	 * @return last chain model
-	 *
-	 * Returns last chain model. When chain does not have any proxy model result of this method is identical
-	 * to firstModel. In other case last added proxy model is returned.
-	 */
-	QAbstractItemModel * lastModel() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns last chain model.
+     * @return last chain model
+     *
+     * Returns last chain model. When chain does not have any proxy model result of this method is identical
+     * to firstModel. In other case last added proxy model is returned.
+     */
+    QAbstractItemModel *lastModel() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns list of indexes of given value in last proxy model.
-	 * @return index of given value in last proxy model
-	 *
-	 * Returns list of indexes of given value in last proxy model. This method uses KaduAbstractModel::indexListForValue
-	 * on base model to get first list of indexes. Then it uses mapFromSource on each proxy model to finally
-	 * get indexes on last model in chain.
-	 */
-	QModelIndexList indexListForValue(const QVariant &value) const;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns list of indexes of given value in last proxy model.
+     * @return index of given value in last proxy model
+     *
+     * Returns list of indexes of given value in last proxy model. This method uses KaduAbstractModel::indexListForValue
+     * on base model to get first list of indexes. Then it uses mapFromSource on each proxy model to finally
+     * get indexes on last model in chain.
+     */
+    QModelIndexList indexListForValue(const QVariant &value) const;
 };
 
 /**
  * @}
  */
 
-#endif // MODEL_CHAIN_H
+#endif   // MODEL_CHAIN_H

@@ -30,9 +30,7 @@
 
 #include "recent-chats-menu.h"
 
-
-RecentChatsMenu::RecentChatsMenu(QWidget *parent) :
-		QMenu(parent)
+RecentChatsMenu::RecentChatsMenu(QWidget *parent) : QMenu(parent)
 {
 }
 
@@ -42,90 +40,90 @@ RecentChatsMenu::~RecentChatsMenu()
 
 void RecentChatsMenu::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
 {
-	m_chatDataExtractor = chatDataExtractor;
+    m_chatDataExtractor = chatDataExtractor;
 }
 
 void RecentChatsMenu::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void RecentChatsMenu::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void RecentChatsMenu::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void RecentChatsMenu::setRecentChatRepository(RecentChatRepository *recentChatRepository)
 {
-	m_recentChatRepository = recentChatRepository;
+    m_recentChatRepository = recentChatRepository;
 }
 
 void RecentChatsMenu::init()
 {
-	setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
-	setTitle(tr("Recent chats"));
+    setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
+    setTitle(tr("Recent chats"));
 
-	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget*)), this, SLOT(invalidate()));
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(invalidate()));
-	connect(m_recentChatRepository, SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
-	connect(m_recentChatRepository, SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
-	connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
+    connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+    connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(invalidate()));
+    connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(invalidate()));
+    connect(m_recentChatRepository, SIGNAL(recentChatAdded(Chat)), this, SLOT(invalidate()));
+    connect(m_recentChatRepository, SIGNAL(recentChatRemoved(Chat)), this, SLOT(invalidate()));
+    connect(this, SIGNAL(aboutToShow()), this, SLOT(update()));
 
-	invalidate();
+    invalidate();
 }
 
 void RecentChatsMenu::invalidate()
 {
-	m_recentChatsMenuNeedsUpdate = true;
+    m_recentChatsMenuNeedsUpdate = true;
 
-	checkIfListAvailable();
+    checkIfListAvailable();
 }
 
 void RecentChatsMenu::checkIfListAvailable()
 {
-	//check if all recent chats are opened -> disable button
-	for (auto const &chat : m_recentChatRepository)
-		if (!m_chatWidgetRepository->widgetForChat(chat))
-		{
-			emit chatsListAvailable(true);
-			return;
-		}
+    // check if all recent chats are opened -> disable button
+    for (auto const &chat : m_recentChatRepository)
+        if (!m_chatWidgetRepository->widgetForChat(chat))
+        {
+            emit chatsListAvailable(true);
+            return;
+        }
 
-	emit chatsListAvailable(false);
+    emit chatsListAvailable(false);
 }
 
 void RecentChatsMenu::update()
 {
-	if (!m_recentChatsMenuNeedsUpdate)
-		return;
+    if (!m_recentChatsMenuNeedsUpdate)
+        return;
 
-	clear();
+    clear();
 
-	for (auto const &chat : m_recentChatRepository)
-		if (!m_chatWidgetRepository->widgetForChat(chat))
-		{
-			ChatType *type = m_chatTypeManager->chatType(chat.type());
-			QAction *action = new QAction(type ? m_iconsManager->iconByPath(type->icon()) : QIcon(),
-			                              m_chatDataExtractor->data(chat, Qt::DisplayRole).toString(),
-			                              this);
-			action->setData(QVariant::fromValue<Chat>(chat));
-			this->addAction(action);
-		}
+    for (auto const &chat : m_recentChatRepository)
+        if (!m_chatWidgetRepository->widgetForChat(chat))
+        {
+            ChatType *type = m_chatTypeManager->chatType(chat.type());
+            QAction *action = new QAction(
+                type ? m_iconsManager->iconByPath(type->icon()) : QIcon(),
+                m_chatDataExtractor->data(chat, Qt::DisplayRole).toString(), this);
+            action->setData(QVariant::fromValue<Chat>(chat));
+            this->addAction(action);
+        }
 
-	emit chatsListAvailable(!actions().isEmpty());
+    emit chatsListAvailable(!actions().isEmpty());
 
-	m_recentChatsMenuNeedsUpdate = false;
+    m_recentChatsMenuNeedsUpdate = false;
 }
 
 void RecentChatsMenu::iconThemeChanged()
 {
-	setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
+    setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 }
 
 #include "moc_recent-chats-menu.cpp"

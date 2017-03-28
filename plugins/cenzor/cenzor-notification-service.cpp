@@ -28,9 +28,9 @@
 #include "notification/notification-service.h"
 #include "notification/notification.h"
 
-CenzorNotificationService::CenzorNotificationService(QObject *parent) :
-		QObject{parent},
-		m_cenzoredEvent{QStringLiteral("cenzorNotification"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Message was cenzored"))}
+CenzorNotificationService::CenzorNotificationService(QObject *parent)
+        : QObject{parent}, m_cenzoredEvent{QStringLiteral("cenzorNotification"),
+                                           QStringLiteral(QT_TRANSLATE_NOOP("@default", "Message was cenzored"))}
 {
 }
 
@@ -40,41 +40,40 @@ CenzorNotificationService::~CenzorNotificationService()
 
 void CenzorNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void CenzorNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void CenzorNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_cenzoredEvent);
+    m_notificationEventRepository->addNotificationEvent(m_cenzoredEvent);
 }
 
 void CenzorNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_cenzoredEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_cenzoredEvent);
 }
 
 void CenzorNotificationService::notifyCenzored(const Chat &chat)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
-	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
+    data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = Notification{};
-	notification.type = m_cenzoredEvent.name();
-	notification.icon = KaduIcon{"kadu_icons/blocking"};
-	notification.title = (tr("Cenzor"));
-	notification.text = normalizeHtml(HtmlString{tr("Message was cenzored")});
-	notification.details = normalizeHtml(HtmlString{tr("Your interlocutor used obscene word and became admonished")});
-	notification.callbacks.append("chat-open");
-	notification.callbacks.append("ignore");
+    auto notification = Notification{};
+    notification.type = m_cenzoredEvent.name();
+    notification.icon = KaduIcon{"kadu_icons/blocking"};
+    notification.title = (tr("Cenzor"));
+    notification.text = normalizeHtml(HtmlString{tr("Message was cenzored")});
+    notification.details = normalizeHtml(HtmlString{tr("Your interlocutor used obscene word and became admonished")});
+    notification.callbacks.append("chat-open");
+    notification.callbacks.append("ignore");
 
-	m_notificationService->notify(notification);
-
+    m_notificationService->notify(notification);
 }
 
 #include "moc_cenzor-notification-service.cpp"

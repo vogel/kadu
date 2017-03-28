@@ -23,9 +23,9 @@
 
 class CenzorModule : public injeqt::module
 {
-
 public:
-	CenzorModule();
-	virtual ~CenzorModule() {}
-
+    CenzorModule();
+    virtual ~CenzorModule()
+    {
+    }
 };

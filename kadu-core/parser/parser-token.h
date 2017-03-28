@@ -27,24 +27,32 @@
 
 class ParserToken
 {
-	ParserTokenType Type;
-	QString Content;
-	bool IsContentEncoded;
+    ParserTokenType Type;
+    QString Content;
+    bool IsContentEncoded;
 
 public:
-	ParserToken();
+    ParserToken();
 
-	ParserTokenType type() const { return Type; }
-	void setType(ParserTokenType type);
+    ParserTokenType type() const
+    {
+        return Type;
+    }
+    void setType(ParserTokenType type);
 
-	QString decodedContent() const;
-	const QString & rawContent() const { return Content; } 
-	void setContent(const QString &content);
+    QString decodedContent() const;
+    const QString &rawContent() const
+    {
+        return Content;
+    }
+    void setContent(const QString &content);
 
-	bool isEncoded() const { return IsContentEncoded; }
+    bool isEncoded() const
+    {
+        return IsContentEncoded;
+    }
 
-	void encodeContent(const QByteArray &exclude, const QByteArray &include);
-
+    void encodeContent(const QByteArray &exclude, const QByteArray &include);
 };
 
-#endif // PARSER_TOKEN_H
+#endif   // PARSER_TOKEN_H

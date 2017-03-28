@@ -25,28 +25,27 @@
 #include "icons/kadu-icon.h"
 #include "status/status-type.h"
 
+#include "gadu-id-validator.h"
+#include "gadu-protocol.h"
 #include "gui/widgets/gadu-add-account-widget.h"
 #include "gui/widgets/gadu-contact-personal-info-widget.h"
 #include "gui/widgets/gadu-edit-account-widget.h"
 #include "helpers/gadu-list-helper.h"
 #include "plugin/plugin-injected-factory.h"
-#include "gadu-id-validator.h"
-#include "gadu-protocol.h"
 
 #include "gadu-protocol-factory.h"
 
-GaduProtocolFactory::GaduProtocolFactory(QObject *parent) :
-		ProtocolFactory{}
+GaduProtocolFactory::GaduProtocolFactory(QObject *parent) : ProtocolFactory{}
 {
-	Q_UNUSED(parent);
+    Q_UNUSED(parent);
 
-	// already sorted
-	SupportedStatusTypes.append(StatusType::FreeForChat);
-	SupportedStatusTypes.append(StatusType::Online);
-	SupportedStatusTypes.append(StatusType::Away);
-	SupportedStatusTypes.append(StatusType::DoNotDisturb);
-	SupportedStatusTypes.append(StatusType::Invisible);
-	SupportedStatusTypes.append(StatusType::Offline);
+    // already sorted
+    SupportedStatusTypes.append(StatusType::FreeForChat);
+    SupportedStatusTypes.append(StatusType::Online);
+    SupportedStatusTypes.append(StatusType::Away);
+    SupportedStatusTypes.append(StatusType::DoNotDisturb);
+    SupportedStatusTypes.append(StatusType::Invisible);
+    SupportedStatusTypes.append(StatusType::Offline);
 }
 
 GaduProtocolFactory::~GaduProtocolFactory()
@@ -55,82 +54,82 @@ GaduProtocolFactory::~GaduProtocolFactory()
 
 void GaduProtocolFactory::setGaduListHelper(GaduListHelper *gaduListHelper)
 {
-	m_gaduListHelper = gaduListHelper;
+    m_gaduListHelper = gaduListHelper;
 }
 
 void GaduProtocolFactory::setGaduServersManager(GaduServersManager *gaduServersManager)
 {
-	m_gaduServersManager = gaduServersManager;
+    m_gaduServersManager = gaduServersManager;
 }
 
 void GaduProtocolFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
-Protocol * GaduProtocolFactory::createProtocolHandler(Account account)
+Protocol *GaduProtocolFactory::createProtocolHandler(Account account)
 {
-	return m_pluginInjectedFactory->makeInjected<GaduProtocol>(m_gaduListHelper, m_gaduServersManager, account, this);
+    return m_pluginInjectedFactory->makeInjected<GaduProtocol>(m_gaduListHelper, m_gaduServersManager, account, this);
 }
 
-AccountAddWidget * GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
+AccountAddWidget *GaduProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = m_pluginInjectedFactory->makeInjected<GaduAddAccountWidget>(showButtons, parent);
-	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
-	return result;
+    auto result = m_pluginInjectedFactory->makeInjected<GaduAddAccountWidget>(showButtons, parent);
+    connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+    return result;
 }
 
-AccountCreateWidget * GaduProtocolFactory::newCreateAccountWidget(bool, QWidget *)
+AccountCreateWidget *GaduProtocolFactory::newCreateAccountWidget(bool, QWidget *)
 {
-	return nullptr;
+    return nullptr;
 }
 
-AccountEditWidget * GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
+AccountEditWidget *GaduProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	auto result = m_pluginInjectedFactory->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
-	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
-	return result;
+    auto result = m_pluginInjectedFactory->makeInjected<GaduEditAccountWidget>(m_gaduServersManager, account, parent);
+    connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+    return result;
 }
 
 QList<StatusType> GaduProtocolFactory::supportedStatusTypes()
 {
-	return SupportedStatusTypes;
+    return SupportedStatusTypes;
 }
 
 Status GaduProtocolFactory::adaptStatus(Status status) const
 {
-	Status adapted = status;
+    Status adapted = status;
 
-	if (adapted.type() == StatusType::NotAvailable)
-		adapted.setType(StatusType::Away);
+    if (adapted.type() == StatusType::NotAvailable)
+        adapted.setType(StatusType::Away);
 
-	return adapted;
+    return adapted;
 }
 
 QString GaduProtocolFactory::idLabel()
 {
-	return tr("Gadu-Gadu number:");
+    return tr("Gadu-Gadu number:");
 }
 
 QValidator::State GaduProtocolFactory::validateId(QString id)
 {
-	int pos = 0;
-	return createNotOwnedGaduIdValidator()->validate(id, pos);
+    int pos = 0;
+    return createNotOwnedGaduIdValidator()->validate(id, pos);
 }
 
 bool GaduProtocolFactory::canRegister()
 {
-	return false;
+    return false;
 }
 
-QWidget * GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
+QWidget *GaduProtocolFactory::newContactPersonalInfoWidget(Contact contact, QWidget *parent)
 {
-	return new GaduContactPersonalInfoWidget(contact, parent);
+    return new GaduContactPersonalInfoWidget(contact, parent);
 }
 
 KaduIcon GaduProtocolFactory::icon()
 {
-	return KaduIcon("protocols/gadu-gadu/gadu-gadu");
+    return KaduIcon("protocols/gadu-gadu/gadu-gadu");
 }
 
 #include "moc_gadu-protocol-factory.cpp"

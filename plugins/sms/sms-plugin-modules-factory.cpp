@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SmsPluginModulesFactory::SmsPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SmsPluginModulesFactory::SmsPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ SmsPluginModulesFactory::~SmsPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SmsPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SmsModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SmsModule>());
 
-	return modules;
+    return modules;
 }
 
 QString SmsPluginModulesFactory::parentInjectorName() const
 {
-	return "history";
+    return "history";
 }
 
 #include "moc_sms-plugin-modules-factory.cpp"

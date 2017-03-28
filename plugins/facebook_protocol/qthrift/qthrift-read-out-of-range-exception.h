@@ -23,13 +23,12 @@
 
 namespace QThrift
 {
-
 class ReadOutOfRangeException : public Exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Read out of range in Thfift data"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Read out of range in Thfift data";
+    };
 };
-
 }

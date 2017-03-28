@@ -20,15 +20,9 @@
 #include "qfacebook-http-request.h"
 
 QFacebookHttpRequest::QFacebookHttpRequest(
-	QByteArray url,
-	std::experimental::optional<QByteArray> token,
-	QByteArray method,
-	QByteArray friendlyName,
-	std::map<QByteArray, QByteArray> parameters) :
-		m_url{std::move(url)},
-		m_token{std::move(token)},
-		m_method{std::move(method)},
-		m_friendlyName{std::move(friendlyName)},
-		m_parameters{std::move(parameters)}
+    QByteArray url, std::experimental::optional<QByteArray> token, QByteArray method, QByteArray friendlyName,
+    std::map<QByteArray, QByteArray> parameters)
+        : m_url{std::move(url)}, m_token{std::move(token)}, m_method{std::move(method)},
+          m_friendlyName{std::move(friendlyName)}, m_parameters{std::move(parameters)}
 {
 }

@@ -31,8 +31,7 @@
 
 #include <QtWidgets/QMenu>
 
-MenuInventory::MenuInventory(QObject *parent) :
-		QObject{parent}
+MenuInventory::MenuInventory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -42,25 +41,25 @@ MenuInventory::~MenuInventory()
 
 void MenuInventory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-KaduMenu * MenuInventory::menu(const QString &category)
+KaduMenu *MenuInventory::menu(const QString &category)
 {
-	if (!Menus.contains(category))
-		Menus.insert(category, m_injectedFactory->makeInjected<KaduMenu>(category));
+    if (!Menus.contains(category))
+        Menus.insert(category, m_injectedFactory->makeInjected<KaduMenu>(category));
 
-	return Menus.value(category);
+    return Menus.value(category);
 }
 
 void MenuInventory::registerProtocolMenuManager(ProtocolMenuManager *manager)
 {
-	ProtocolMenuManagers.append(manager);
+    ProtocolMenuManagers.append(manager);
 }
 
 void MenuInventory::unregisterProtocolMenuManager(ProtocolMenuManager *manager)
 {
-	ProtocolMenuManagers.removeAll(manager);
+    ProtocolMenuManagers.removeAll(manager);
 }
 
 #include "moc_menu-inventory.cpp"

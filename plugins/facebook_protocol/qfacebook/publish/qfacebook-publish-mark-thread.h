@@ -25,10 +25,10 @@
 
 struct QFacebookPublishMarkThread
 {
-	QByteArray encode();
+    QByteArray encode();
 
-	bool state;
-	int syncSeqId;
-	QByteArray mark;
-	QFacebookUid otherUserFbId;
+    bool state;
+    int syncSeqId;
+    QByteArray mark;
+    QFacebookUid otherUserFbId;
 };

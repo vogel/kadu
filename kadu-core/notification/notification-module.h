@@ -25,9 +25,7 @@
 
 class KADUAPI NotificationModule : public injeqt::module
 {
-
 public:
-	explicit NotificationModule();
-	virtual ~NotificationModule();
-
+    explicit NotificationModule();
+    virtual ~NotificationModule();
 };

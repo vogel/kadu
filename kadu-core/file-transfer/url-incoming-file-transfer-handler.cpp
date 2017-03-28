@@ -19,8 +19,8 @@
 
 #include "url-incoming-file-transfer-handler.h"
 
-UrlIncomingFileTransferHandler::UrlIncomingFileTransferHandler(FileTransfer transfer, QObject *parent) :
-		FileTransferHandler{transfer, parent}
+UrlIncomingFileTransferHandler::UrlIncomingFileTransferHandler(FileTransfer transfer, QObject *parent)
+        : FileTransferHandler{transfer, parent}
 {
 }
 

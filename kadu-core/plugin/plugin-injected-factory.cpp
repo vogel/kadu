@@ -21,8 +21,7 @@
 
 #include "plugin/plugin-injector-provider.h"
 
-PluginInjectedFactory::PluginInjectedFactory(QObject *parent) :
-		QObject{parent}
+PluginInjectedFactory::PluginInjectedFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,15 +31,15 @@ PluginInjectedFactory::~PluginInjectedFactory()
 
 void PluginInjectedFactory::setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider)
 {
-	m_pluginInjectorProvider = pluginInjectorProvider;
+    m_pluginInjectorProvider = pluginInjectorProvider;
 }
 
 void PluginInjectedFactory::setPluginName(QString pluginName)
 {
-	m_pluginName = std::move(pluginName);
+    m_pluginName = std::move(pluginName);
 }
 
 void PluginInjectedFactory::injectInto(QObject *object)
 {
-	m_pluginInjectorProvider->injector(m_pluginName).inject_into(object);
+    m_pluginInjectorProvider->injector(m_pluginName).inject_into(object);
 }

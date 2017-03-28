@@ -26,19 +26,18 @@ class SmsDialog;
 
 class SmsDialogRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SmsDialogRepository(QObject *parent = nullptr);
-	virtual ~SmsDialogRepository();
+    Q_INVOKABLE explicit SmsDialogRepository(QObject *parent = nullptr);
+    virtual ~SmsDialogRepository();
 
-	void addDialog(SmsDialog *dialog);
-	void removeDialog(SmsDialog *dialog);
+    void addDialog(SmsDialog *dialog);
+    void removeDialog(SmsDialog *dialog);
 
 private:
-	QVector<SmsDialog *> m_dialogs;
+    QVector<SmsDialog *> m_dialogs;
 
 private slots:
-	void dialogDestroyed(QObject *object);
-
+    void dialogDestroyed(QObject *object);
 };

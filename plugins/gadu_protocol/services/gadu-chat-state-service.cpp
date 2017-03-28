@@ -27,8 +27,8 @@
 
 #include "gadu-chat-state-service.h"
 
-GaduChatStateService::GaduChatStateService(Account account, QObject *parent) :
-		ChatStateService(account, parent), SendTypingNotifications(false)
+GaduChatStateService::GaduChatStateService(Account account, QObject *parent)
+        : ChatStateService(account, parent), SendTypingNotifications(false)
 {
 }
 
@@ -38,58 +38,59 @@ GaduChatStateService::~GaduChatStateService()
 
 void GaduChatStateService::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void GaduChatStateService::setConnection(GaduConnection *connection)
 {
-	Connection = connection;
+    Connection = connection;
 }
 
 void GaduChatStateService::setSendTypingNotifications(bool sendTypingNotifications)
 {
-	SendTypingNotifications = sendTypingNotifications;
+    SendTypingNotifications = sendTypingNotifications;
 }
 
 void GaduChatStateService::messageReceived(const Message &message)
 {
-	// it seems it is what is also done and expected by GG10
-	emit peerStateChanged(message.messageSender(), ChatState::Paused);
+    // it seems it is what is also done and expected by GG10
+    emit peerStateChanged(message.messageSender(), ChatState::Paused);
 }
 
 void GaduChatStateService::handleEventTypingNotify(struct gg_event *e)
 {
-	Contact contact = m_contactManager->byId(account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
-	if (!contact)
-		return;
+    Contact contact =
+        m_contactManager->byId(account(), QString::number(e->event.typing_notification.uin), ActionReturnNull);
+    if (!contact)
+        return;
 
-	if (e->event.typing_notification.length > 0x0000)
-		emit peerStateChanged(contact, ChatState::Composing);
-	else if (e->event.typing_notification.length == 0x0000)
-		emit peerStateChanged(contact, ChatState::Paused);
+    if (e->event.typing_notification.length > 0x0000)
+        emit peerStateChanged(contact, ChatState::Composing);
+    else if (e->event.typing_notification.length == 0x0000)
+        emit peerStateChanged(contact, ChatState::Paused);
 }
 
 void GaduChatStateService::sendState(const Contact &contact, ChatState state)
 {
-	if (!SendTypingNotifications || !contact)
-		return;
+    if (!SendTypingNotifications || !contact)
+        return;
 
-	if (!Connection || !Connection.data()->hasSession())
-		return;
+    if (!Connection || !Connection.data()->hasSession())
+        return;
 
-	auto writableSessionToken = Connection.data()->writableSessionToken();
-	switch (state)
-	{
-		case ChatState::Composing:
-			gg_typing_notification(writableSessionToken.rawSession(), GaduProtocolHelper::uin(contact), 0x0001);
-			break;
-		case ChatState::Paused:
-		case ChatState::Gone:
-			gg_typing_notification(writableSessionToken.rawSession(), GaduProtocolHelper::uin(contact), 0x0000);
-			break;
-		default:
-			break;
-	}
+    auto writableSessionToken = Connection.data()->writableSessionToken();
+    switch (state)
+    {
+    case ChatState::Composing:
+        gg_typing_notification(writableSessionToken.rawSession(), GaduProtocolHelper::uin(contact), 0x0001);
+        break;
+    case ChatState::Paused:
+    case ChatState::Gone:
+        gg_typing_notification(writableSessionToken.rawSession(), GaduProtocolHelper::uin(contact), 0x0000);
+        break;
+    default:
+        break;
+    }
 }
 
 #include "moc_gadu-chat-state-service.cpp"

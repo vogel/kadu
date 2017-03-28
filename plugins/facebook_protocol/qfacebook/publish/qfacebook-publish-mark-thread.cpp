@@ -24,14 +24,14 @@
 
 QByteArray QFacebookPublishMarkThread::encode()
 {
-	auto json = QJsonObject{};
-	json.insert("state", state);
-	json.insert("syncSeqId", syncSeqId);
-	json.insert("mark", QString::fromUtf8(mark));
-	json.insert("otherUserFbId", static_cast<double>(otherUserFbId));
+    auto json = QJsonObject{};
+    json.insert("state", state);
+    json.insert("syncSeqId", syncSeqId);
+    json.insert("mark", QString::fromUtf8(mark));
+    json.insert("otherUserFbId", static_cast<double>(otherUserFbId));
 
-	auto document = QJsonDocument{};
-	document.setObject(json);
+    auto document = QJsonDocument{};
+    document.setObject(json);
 
-	return document.toJson(QJsonDocument::Compact);
+    return document.toJson(QJsonDocument::Compact);
 }

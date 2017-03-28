@@ -31,8 +31,8 @@
 
 #include "composite-formatted-string.h"
 
-CompositeFormattedString::CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items) :
-		Items{std::move(items)}
+CompositeFormattedString::CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items)
+        : Items{std::move(items)}
 {
 }
 
@@ -40,43 +40,43 @@ CompositeFormattedString::~CompositeFormattedString()
 {
 }
 
-bool CompositeFormattedString::operator == (const FormattedString &compareTo)
+bool CompositeFormattedString::operator==(const FormattedString &compareTo)
 {
-	const CompositeFormattedString *compareToPointer = dynamic_cast<const CompositeFormattedString *>(&compareTo);
-	if (!compareToPointer)
-		return false;
+    const CompositeFormattedString *compareToPointer = dynamic_cast<const CompositeFormattedString *>(&compareTo);
+    if (!compareToPointer)
+        return false;
 
-	if (Items.size() != compareToPointer->Items.size())
-		return false;
+    if (Items.size() != compareToPointer->Items.size())
+        return false;
 
-	int size = Items.size();
-	for (int i = 0; i < size; i++)
-		if (*Items.at(i) != *compareToPointer->Items.at(i))
-			return false;
+    int size = Items.size();
+    for (int i = 0; i < size; i++)
+        if (*Items.at(i) != *compareToPointer->Items.at(i))
+            return false;
 
-	return true;
+    return true;
 }
 
 void CompositeFormattedString::accept(FormattedStringVisitor *visitor) const
 {
-	visitor->beginVisit(this);
+    visitor->beginVisit(this);
 
-	for (auto &&item : Items)
-		item->accept(visitor);
+    for (auto &&item : Items)
+        item->accept(visitor);
 
-	visitor->endVisit(this);
+    visitor->endVisit(this);
 }
 
-const std::vector<std::unique_ptr<FormattedString>> & CompositeFormattedString::items() const
+const std::vector<std::unique_ptr<FormattedString>> &CompositeFormattedString::items() const
 {
-	return Items;
+    return Items;
 }
 
 bool CompositeFormattedString::isEmpty() const
 {
-	for (auto &&item : Items)
-		if (!item->isEmpty())
-			return false;
+    for (auto &&item : Items)
+        if (!item->isEmpty())
+            return false;
 
-	return true;
+    return true;
 }

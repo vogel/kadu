@@ -36,18 +36,19 @@ class FileTransferHandler;
 
 class KADUAPI FileTransferService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FileTransferService(QObject *parent) : QObject(parent) {}
+    explicit FileTransferService(QObject *parent) : QObject(parent)
+    {
+    }
 
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) = 0;
-	virtual FileTransferCanSendResult canSend(Contact contact) = 0;
+    virtual FileTransferHandler *createFileTransferHandler(FileTransfer fileTransfer) = 0;
+    virtual FileTransferCanSendResult canSend(Contact contact) = 0;
 
 signals:
-	void canSendChanged();
-	void incomingFileTransfer(FileTransfer fileTransfer);
-
+    void canSendChanged();
+    void incomingFileTransfer(FileTransfer fileTransfer);
 };
 
-#endif // FILE_TRANSFER_SERVICE_H
+#endif   // FILE_TRANSFER_SERVICE_H

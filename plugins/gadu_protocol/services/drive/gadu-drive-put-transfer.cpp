@@ -28,39 +28,40 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDrivePutTransfer::GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString fileName, QIODevice *source,
-	QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent}
+GaduDrivePutTransfer::GaduDrivePutTransfer(
+    GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString fileName, QIODevice *source,
+    QNetworkAccessManager *networkAccessManager, QObject *parent)
+        : QObject{parent}
 {
-	auto metadata = QJsonObject{};
-	metadata["node_type"] = "file";
+    auto metadata = QJsonObject{};
+    metadata["node_type"] = "file";
 
-	// sigh, %2C inside string forbits me from using .arg().arg()
-	auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%2%3"}
-		.arg(ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(fileName)));
+    // sigh, %2C inside string forbits me from using .arg().arg()
+    auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%2%3"}.arg(
+        ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(fileName)));
 
-	QNetworkRequest request;
-	request.setUrl(QUrl{url});
-	request.setRawHeader("Connection", "keep-alive");
-	request.setRawHeader("X-gged-api-version", "6");
-	request.setRawHeader("X-gged-local-revision", "0");
-	request.setRawHeader("X-gged-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
-	request.setRawHeader("X-gged-security-token", sessionToken.securityToken().toAscii());
+    QNetworkRequest request;
+    request.setUrl(QUrl{url});
+    request.setRawHeader("Connection", "keep-alive");
+    request.setRawHeader("X-gged-api-version", "6");
+    request.setRawHeader("X-gged-local-revision", "0");
+    request.setRawHeader("X-gged-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
+    request.setRawHeader("X-gged-security-token", sessionToken.securityToken().toAscii());
 
-	m_reply = networkAccessManager->put(request, source);
-	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    m_reply = networkAccessManager->put(request, source);
+    connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 GaduDrivePutTransfer::~GaduDrivePutTransfer()
 {
-	if (m_reply)
-		m_reply->deleteLater();
+    if (m_reply)
+        m_reply->deleteLater();
 }
 
 void GaduDrivePutTransfer::requestFinished()
 {
-	emit finished();
-	deleteLater();
+    emit finished();
+    deleteLater();
 }
 
 #include "moc_gadu-drive-put-transfer.cpp"

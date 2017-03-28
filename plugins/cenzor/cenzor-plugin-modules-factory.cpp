@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-CenzorPluginModulesFactory::CenzorPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+CenzorPluginModulesFactory::CenzorPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ CenzorPluginModulesFactory::~CenzorPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> CenzorPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<CenzorModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<CenzorModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_cenzor-plugin-modules-factory.cpp"

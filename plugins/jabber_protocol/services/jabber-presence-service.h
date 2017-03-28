@@ -29,13 +29,12 @@ class QXmppPresence;
 
 class JabberPresenceService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberPresenceService(QObject *parent = nullptr);
-	virtual ~JabberPresenceService();
+    explicit JabberPresenceService(QObject *parent = nullptr);
+    virtual ~JabberPresenceService();
 
-	QXmppPresence statusToPresence(const Status &status);
-	Status presenceToStatus(const QXmppPresence &presence);
-
+    QXmppPresence statusToPresence(const Status &status);
+    Status presenceToStatus(const QXmppPresence &presence);
 };

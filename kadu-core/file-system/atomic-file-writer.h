@@ -25,8 +25,6 @@ class QString;
 
 class KADUAPI AtomicFileWriter
 {
-
 public:
-	static void write(const QString &fileName, const QString &content);
-
+    static void write(const QString &fileName, const QString &content);
 };

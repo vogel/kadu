@@ -37,68 +37,67 @@ class MenuItem;
 
 class KADUAPI KaduMenu : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum MenuSection
-	{
-		SectionConfig,
-		SectionRecentChats,
-		SectionMiscTools,
-		SectionQuit,
-		SectionBuddies,
-		SectionOpenChat,
-		SectionBuddyListFilters,
-		SectionTools,
-		SectionHelp,
-		SectionGetInvolved,
-		SectionAbout,
-		SectionChat,
-		SectionSend,
-		SectionActionsGui,
-		SectionActions,
-		SectionView,
-		SectionManagement,
-	};
+    enum MenuSection
+    {
+        SectionConfig,
+        SectionRecentChats,
+        SectionMiscTools,
+        SectionQuit,
+        SectionBuddies,
+        SectionOpenChat,
+        SectionBuddyListFilters,
+        SectionTools,
+        SectionHelp,
+        SectionGetInvolved,
+        SectionAbout,
+        SectionChat,
+        SectionSend,
+        SectionActionsGui,
+        SectionActions,
+        SectionView,
+        SectionManagement,
+    };
 
 public:
-	explicit KaduMenu(const QString &category, KaduMenu *parent = nullptr);
-	virtual ~KaduMenu();
+    explicit KaduMenu(const QString &category, KaduMenu *parent = nullptr);
+    virtual ~KaduMenu();
 
-	void attachToMenu(QMenu *menu);
-	void detachFromMenu(QMenu *menu);
+    void attachToMenu(QMenu *menu);
+    void detachFromMenu(QMenu *menu);
 
-	bool empty() const;
+    bool empty() const;
 
-	KaduMenu * addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
-	KaduMenu * removeAction(ActionDescription *actionDescription);
-	void updateGuiMenuLater();
-	void update();
+    KaduMenu *addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority = 0);
+    KaduMenu *removeAction(ActionDescription *actionDescription);
+    void updateGuiMenuLater();
+    void update();
 
-	static bool lessThan(const MenuItem *a, const MenuItem *b);
+    static bool lessThan(const MenuItem *a, const MenuItem *b);
 
-	QString Category;
-	QList<MenuItem *> Items;
-	bool IsSorted;
+    QString Category;
+    QList<MenuItem *> Items;
+    bool IsSorted;
 
-	QList<QObject *> Menus;
+    QList<QObject *> Menus;
 
-	void sort();
-	ActionContext * getActionContext();
+    void sort();
+    ActionContext *getActionContext();
 
-	void appendTo(QMenu *menu, ActionContext *context = 0);
-	void applyTo(QMenu *menu, ActionContext *context = 0);
+    void appendTo(QMenu *menu, ActionContext *context = 0);
+    void applyTo(QMenu *menu, ActionContext *context = 0);
 
 private:
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<MenuInventory> m_menuInventory;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<MenuInventory> m_menuInventory;
 
 private slots:
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
 
-	void menuDestroyed(QObject *object);
+    void menuDestroyed(QObject *object);
 
-	void updateGuiMenuSlot();
-
+    void updateGuiMenuSlot();
 };

@@ -27,8 +27,7 @@
 
 #include "video-expander.h"
 
-VideoExpander::VideoExpander() :
-		DomTextRegexpVisitor(QRegExp("https?://www.youtube.com/watch(.*)&?"))
+VideoExpander::VideoExpander() : DomTextRegexpVisitor(QRegExp("https?://www.youtube.com/watch(.*)&?"))
 {
 }
 
@@ -38,13 +37,13 @@ VideoExpander::~VideoExpander()
 
 QList<QDomNode> VideoExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
-	QDomElement embedElement = document.createElement("embed");
-	embedElement.setAttribute("src", QString("http://www.youtube.com/v/%1&autoplay=0").arg(regExp.cap(1)));
-	embedElement.setAttribute("type", "application/x-shockwave-flash");
-	embedElement.setAttribute("width", "640");
-	embedElement.setAttribute("height", "390");
+    QDomElement embedElement = document.createElement("embed");
+    embedElement.setAttribute("src", QString("http://www.youtube.com/v/%1&autoplay=0").arg(regExp.cap(1)));
+    embedElement.setAttribute("type", "application/x-shockwave-flash");
+    embedElement.setAttribute("width", "640");
+    embedElement.setAttribute("height", "390");
 
-	QDomText textElement = document.createTextNode(regExp.cap());
+    QDomText textElement = document.createTextNode(regExp.cap());
 
-	return QList<QDomNode>() << embedElement << document.createElement("br") << textElement;
+    return QList<QDomNode>() << embedElement << document.createElement("br") << textElement;
 }

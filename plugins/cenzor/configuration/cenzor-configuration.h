@@ -32,42 +32,53 @@ class PathsProvider;
 
 class CenzorConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static QStringList toStringList(const QList<QRegExp> &list);
-	static QList<QRegExp> toRegExpList(const QStringList &list);
+    static QStringList toStringList(const QList<QRegExp> &list);
+    static QList<QRegExp> toRegExpList(const QStringList &list);
 
-	Q_INVOKABLE explicit CenzorConfiguration(QObject *parent = nullptr);
-	virtual ~CenzorConfiguration();
+    Q_INVOKABLE explicit CenzorConfiguration(QObject *parent = nullptr);
+    virtual ~CenzorConfiguration();
 
-	void saveConfiguration();
+    void saveConfiguration();
 
-	bool enabled() { return Enabled; }
-	const NormalizedHtmlString & admonition() { return Admonition; }
-	const QList<QRegExp> & swearList() { return SwearList; }
-	const QList<QRegExp> & exclusionList() { return ExclusionList; }
+    bool enabled()
+    {
+        return Enabled;
+    }
+    const NormalizedHtmlString &admonition()
+    {
+        return Admonition;
+    }
+    const QList<QRegExp> &swearList()
+    {
+        return SwearList;
+    }
+    const QList<QRegExp> &exclusionList()
+    {
+        return ExclusionList;
+    }
 
-	void setSwearList(const QList<QRegExp> &swearList);
-	void setExclusionList(const QList<QRegExp> &exclusionList);
+    void setSwearList(const QList<QRegExp> &swearList);
+    void setExclusionList(const QList<QRegExp> &exclusionList);
 
 protected:
     virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	bool Enabled;
-	NormalizedHtmlString Admonition;
-	QList<QRegExp> SwearList;
-	QList<QRegExp> ExclusionList;
+    bool Enabled;
+    NormalizedHtmlString Admonition;
+    QList<QRegExp> SwearList;
+    QList<QRegExp> ExclusionList;
 
-	QList<QRegExp> loadRegExpList(const QString &itemName, const QString &fileName);
+    QList<QRegExp> loadRegExpList(const QString &itemName, const QString &fileName);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

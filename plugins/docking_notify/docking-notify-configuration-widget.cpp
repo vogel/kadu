@@ -22,6 +22,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QPushButton>
 
+#include "activate.h"
 #include "configuration/configuration.h"
 #include "misc/paths-provider.h"
 #include "notification/notifier-configuration-data-manager.h"
@@ -31,35 +32,34 @@
 #include "widgets/configuration/notify-group-box.h"
 #include "windows/configuration-window.h"
 #include "windows/main-configuration-window.h"
-#include "activate.h"
 
 #include "docking-notify-configuration-widget.h"
 
 DockingNotifyConfigurationWidget::DockingNotifyConfigurationWidget(QWidget *parent)
-	: NotifierConfigurationWidget(parent)
+        : NotifierConfigurationWidget(parent)
 {
-	QPushButton *configureButton = new QPushButton(tr("Configure"));
-	connect(configureButton, SIGNAL(clicked()), this, SLOT(showConfigurationWindow()));
+    QPushButton *configureButton = new QPushButton(tr("Configure"));
+    connect(configureButton, SIGNAL(clicked()), this, SLOT(showConfigurationWindow()));
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->addWidget(configureButton);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->addWidget(configureButton);
 
-	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
+    static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 void DockingNotifyConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void DockingNotifyConfigurationWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void DockingNotifyConfigurationWidget::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void DockingNotifyConfigurationWidget::saveNotifyConfigurations()
@@ -68,26 +68,31 @@ void DockingNotifyConfigurationWidget::saveNotifyConfigurations()
 
 void DockingNotifyConfigurationWidget::switchToEvent(const QString &event)
 {
-	currentNotificationEvent = event;
+    currentNotificationEvent = event;
 }
 
 void DockingNotifyConfigurationWidget::showConfigurationWindow()
 {
-	NotifierConfigurationDataManager *dataManager = NotifierConfigurationDataManager::dataManagerForEvent(m_pluginInjectedFactory, currentNotificationEvent);
-	ConfigurationWindow *configWindow = m_pluginInjectedFactory->makeInjected<ConfigurationWindow>("Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify", dataManager);
+    NotifierConfigurationDataManager *dataManager =
+        NotifierConfigurationDataManager::dataManagerForEvent(m_pluginInjectedFactory, currentNotificationEvent);
+    ConfigurationWindow *configWindow = m_pluginInjectedFactory->makeInjected<ConfigurationWindow>(
+        "Qt4DockingNotificationEventConfiguration", tr("Tray icon balloon's look configuration"), "Qt4DockingNotify",
+        dataManager);
 
-	dataManager->configurationWindowCreated(configWindow);
+    dataManager->configurationWindowCreated(configWindow);
 
-	configWindow->widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking-notify.ui"));
+    configWindow->widget()->appendUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking-notify.ui"));
 
-	QString tooltip = QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
-	tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - details (eg. message quotation),\n%&i - notification icon");
+    QString tooltip = QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify) +
+                      tr("\n%&t - title (eg. New message) %&m - notification text (eg. Message from Jim), %&d - "
+                         "details (eg. message quotation),\n%&i - notification icon");
 
-	configWindow->widget()->widgetById("Title")->setToolTip(tooltip);
-	configWindow->widget()->widgetById("Syntax")->setToolTip(tooltip);
+    configWindow->widget()->widgetById("Title")->setToolTip(tooltip);
+    configWindow->widget()->widgetById("Syntax")->setToolTip(tooltip);
 
-	configWindow->show();
-	_activateWindow(m_configuration, configWindow);
+    configWindow->show();
+    _activateWindow(m_configuration, configWindow);
 }
 
 #include "moc_docking-notify-configuration-widget.cpp"

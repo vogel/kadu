@@ -46,153 +46,157 @@ class KaduIcon;
 class PathsProvider;
 
 /**
-	@class ConfigurationWidget
-	@author Vogel
-	@short Widget okna konfigruacyjnego.
+        @class ConfigurationWidget
+        @author Vogel
+        @short Widget okna konfigruacyjnego.
 
-	Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.
-	Pierwszym stopniem są sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawierającego
-	ikony i opis tekstowy). Okno zawierające tylko jedną sekcję nie wyświetla ListWidget'a.
-	Drugim stopniem są karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
+        Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.
+        Pierwszym stopniem są sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawierającego
+        ikony i opis tekstowy). Okno zawierające tylko jedną sekcję nie wyświetla ListWidget'a.
+        Drugim stopniem są karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
 
-	Okno konfiguracyjne identyfikuje się przez jego nazwę podaną w konstruktorze
-	(dzięki tej nazwie każde okno może osobno zapamiętać swoją pozycję i ostatnio
-	otwartej karty).
+        Okno konfiguracyjne identyfikuje się przez jego nazwę podaną w konstruktorze
+        (dzięki tej nazwie każde okno może osobno zapamiętać swoją pozycję i ostatnio
+        otwartej karty).
 
-	Okna mogą teoretycznie zawierać dowolne widgety. Każdy z nich, który dodatkowo
-	dziedziczy z klasy ConfigWidget, traktowany jest w specjalny sposób. Jego
-	metody loadConfiguration i saveConfiguration są wywoływane automatycznie
-	przy otwieraniu okna i przy zapisywaniu konfiguracji, dzięki czemu nie jest
-	potrzebne żadne 'ręczne' podpinanie się do tych akcji.
+        Okna mogą teoretycznie zawierać dowolne widgety. Każdy z nich, który dodatkowo
+        dziedziczy z klasy ConfigWidget, traktowany jest w specjalny sposób. Jego
+        metody loadConfiguration i saveConfiguration są wywoływane automatycznie
+        przy otwieraniu okna i przy zapisywaniu konfiguracji, dzięki czemu nie jest
+        potrzebne żadne 'ręczne' podpinanie się do tych akcji.
 
-	W momencie zapisania konfiguracji wszystkie obiekty w programie będące instancajmi
-	klasy ConfigurationAwareObject zostaną o tym poinformowane i będą
-	mogły zaktualizować swój stan.
+        W momencie zapisania konfiguracji wszystkie obiekty w programie będące instancajmi
+        klasy ConfigurationAwareObject zostaną o tym poinformowane i będą
+        mogły zaktualizować swój stan.
 
-	Widgety w oknie mogą być tworzone na 2 sposoby. Pierwszym z nich jest
-	pobranie GroupBoxa za pomocą funkcji configGroupBox i dodawanie
-	do niego widgetów za pomocą jego funkcji addWidget i addWidgets.
-	Drugą jest stworzenie plików XML *.ui, które są wczytywane i usuwane dynamicznie
-	z pomocą metod appendUiFile i removeUiFile.
+        Widgety w oknie mogą być tworzone na 2 sposoby. Pierwszym z nich jest
+        pobranie GroupBoxa za pomocą funkcji configGroupBox i dodawanie
+        do niego widgetów za pomocą jego funkcji addWidget i addWidgets.
+        Drugą jest stworzenie plików XML *.ui, które są wczytywane i usuwane dynamicznie
+        z pomocą metod appendUiFile i removeUiFile.
 
-	W tym drugim przypadku stosuje się pliki *.ui o następującej strukturze:
+        W tym drugim przypadku stosuje się pliki *.ui o następującej strukturze:
 
-	&lt;configuration-ui&gt;
-		&lt;section caption="tytuł" icon="nazwa_ikony"&gt;
-			&lt;tab caption="tytuł"&gt;
-				&lt;group-box caption="tytuł" id="id"&gt;
-					&lt;widget ... /&gt;
-				&lt;/group-box&gt;
-			&lt;/tab&gt;
-		&lt;/section&gt;
-	&lt;/configuration-ui&gt;
+        &lt;configuration-ui&gt;
+                &lt;section caption="tytuł" icon="nazwa_ikony"&gt;
+                        &lt;tab caption="tytuł"&gt;
+                                &lt;group-box caption="tytuł" id="id"&gt;
+                                        &lt;widget ... /&gt;
+                                &lt;/group-box&gt;
+                        &lt;/tab&gt;
+                &lt;/section&gt;
+        &lt;/configuration-ui&gt;
 
-	Elementy zawierające atrybut id (nie wymagany) - czyli group-box i dowolny widget
-	mogą zostać pobrane przez aplikacje za pomocą metody widgetById.
-	Widgety z modułów powinny posiadać id w postaci: nazwaModułu/nazwaId.
+        Elementy zawierające atrybut id (nie wymagany) - czyli group-box i dowolny widget
+        mogą zostać pobrane przez aplikacje za pomocą metody widgetById.
+        Widgety z modułów powinny posiadać id w postaci: nazwaModułu/nazwaId.
 
-	Atrybut catpion jest wymagany. Możliwe tagi widget są opisane w dokumentacji
-	klas Config* (np.: ConfigComboBox).
+        Atrybut catpion jest wymagany. Możliwe tagi widget są opisane w dokumentacji
+        klas Config* (np.: ConfigComboBox).
  **/
 
 class KADUAPI ConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-		Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
-		jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
-		otwartej karty.
-	 **/
-	explicit ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = nullptr);
-	virtual ~ConfigurationWidget();
+    /**
+            Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
+            jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
+            otwartej karty.
+     **/
+    explicit ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent = nullptr);
+    virtual ~ConfigurationWidget();
 
-	const QString & name() const { return Name; }
+    const QString &name() const
+    {
+        return Name;
+    }
 
-	/**
-		Pobiera GroupBox'a zawartego w następującej ścieżce XPath:
-		/section[@caption=SECTION]/tab[@caption=TAB]/group-box[@caption=GROUPBOX]
+    /**
+            Pobiera GroupBox'a zawartego w następującej ścieżce XPath:
+            /section[@caption=SECTION]/tab[@caption=TAB]/group-box[@caption=GROUPBOX]
 
-		Jeżeli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
-		Dla create == false zostanie zwrócony NULL.
+            Jeżeli nie istnieje taki group-box to zostanie on stworzony, gdy create == true.
+            Dla create == false zostanie zwrócony NULL.
 
-		@note Stringi należy podawać w formie oryginalnej, nie przetłumaczonej.
-	 **/
-	ConfigGroupBox * configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = false);
+            @note Stringi należy podawać w formie oryginalnej, nie przetłumaczonej.
+     **/
+    ConfigGroupBox *
+    configGroupBox(const QString &section, const QString &tab, const QString &groupBox, bool create = false);
 
-	/**
-		Dodaje do okna konfiguracyjnego widgety wczytane z pliku fileName.
-		Gdy load == true wczytuje ich wartości z pliku konfiguracyjnego. W przeciwnym
-		wypadku wczytanie wartości nastąpi po wywołaniu metody show.
-	 **/
-	QList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
-	/**
-		Usuwa kontrolki wczytane z danego pliku *.ui.
-	 **/
-	void removeUiFile(const QString &fileName);
+    /**
+            Dodaje do okna konfiguracyjnego widgety wczytane z pliku fileName.
+            Gdy load == true wczytuje ich wartości z pliku konfiguracyjnego. W przeciwnym
+            wypadku wczytanie wartości nastąpi po wywołaniu metody show.
+     **/
+    QList<ConfigWidget *> appendUiFile(const QString &fileName, bool load = true);
+    /**
+            Usuwa kontrolki wczytane z danego pliku *.ui.
+     **/
+    void removeUiFile(const QString &fileName);
 
-	/**
-		Zwraca element opisane id="id" we wczytanych plikach *.ui. Możliwe
-		dowolne widgety konfiguracyjne i elementy group-box.
-	 **/
-	QWidget * widgetById(const QString &id);
+    /**
+            Zwraca element opisane id="id" we wczytanych plikach *.ui. Możliwe
+            dowolne widgety konfiguracyjne i elementy group-box.
+     **/
+    QWidget *widgetById(const QString &id);
 
-	ConfigSection * configSection(const QString &name);
+    ConfigSection *configSection(const QString &name);
 
-	void beforeShow();
+    void beforeShow();
 
-	void loadConfiguration();
-	void saveConfiguration();
+    void loadConfiguration();
+    void saveConfiguration();
 
 signals:
-	/**
-		Sygnał emitowany po naciśnięciu Ok lub Apply ale przed zapisaniem
-		wartości do pliku konfiguracyjnego. Nietypowe widgety konfiguracyjne
-		powinny się podpiąć pod ten sygnał i po jego uzyskaniu zapisać
-		nowe wartości do pliku.
-	 **/
-	void configurationWindowApplied();
+    /**
+            Sygnał emitowany po naciśnięciu Ok lub Apply ale przed zapisaniem
+            wartości do pliku konfiguracyjnego. Nietypowe widgety konfiguracyjne
+            powinny się podpiąć pod ten sygnał i po jego uzyskaniu zapisać
+            nowe wartości do pliku.
+     **/
+    void configurationWindowApplied();
 
 protected:
-	ConfigurationWindowDataManager *DataManager;
+    ConfigurationWindowDataManager *DataManager;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QString Name;
+    QString Name;
 
-	QWidget *LeftWidget;
-	QMap<QString, ConfigSection *> ConfigSections;
-	ConfigSection *CurrentSection;
+    QWidget *LeftWidget;
+    QMap<QString, ConfigSection *> ConfigSections;
+    ConfigSection *CurrentSection;
 
-	QMap<QString, QWidget *> Widgets;
+    QMap<QString, QWidget *> Widgets;
 
-	QListWidget *SectionsListWidget;
-	QWidget *ContainerWidget;
+    QListWidget *SectionsListWidget;
+    QWidget *ContainerWidget;
 
-	void loadConfiguration(QObject *object);
-	void saveConfiguration(QObject *object);
+    void loadConfiguration(QObject *object);
+    void saveConfiguration(QObject *object);
 
-	ConfigSection * configSection(const KaduIcon &icon, const QString &name, bool create);
+    ConfigSection *configSection(const KaduIcon &icon, const QString &name, bool create);
 
-	QList<ConfigWidget *> processUiFile(const QString &fileName, bool append);
-	QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append);
-	QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append);
-	QList<ConfigWidget *> processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append);
-	ConfigWidget * appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
-	void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
+    QList<ConfigWidget *> processUiFile(const QString &fileName, bool append);
+    QList<ConfigWidget *> processUiSectionFromDom(QDomNode sectionNode, bool append);
+    QList<ConfigWidget *> processUiTabFromDom(QDomNode tabNode, const QString &sectionName, bool append);
+    QList<ConfigWidget *>
+    processUiGroupBoxFromDom(QDomNode groupBoxNode, const QString &sectionName, const QString &tabName, bool append);
+    ConfigWidget *appendUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
+    void removeUiElementFromDom(QDomNode uiElementNode, ConfigGroupBox *configGroupBox);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
-	void changeSection(const QString &newSectionName);
-	void configSectionDestroyed(QObject *obj);
-
+    void changeSection(const QString &newSectionName);
+    void configSectionDestroyed(QObject *obj);
 };

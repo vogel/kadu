@@ -19,8 +19,7 @@
 
 #include "main-window-repository.h"
 
-MainWindowRepository::MainWindowRepository(QObject *parent) :
-		QObject{parent}
+MainWindowRepository::MainWindowRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -30,32 +29,32 @@ MainWindowRepository::~MainWindowRepository()
 
 void MainWindowRepository::addMainWindow(QWidget *mainWindow)
 {
-	auto it = std::find(begin(), end(), mainWindow);
-	if (it == end())
-	{
-		m_data.push_back(mainWindow);
-		emit mainWindowAdded(mainWindow);
-	}
+    auto it = std::find(begin(), end(), mainWindow);
+    if (it == end())
+    {
+        m_data.push_back(mainWindow);
+        emit mainWindowAdded(mainWindow);
+    }
 }
 
 void MainWindowRepository::removeMainWindow(QWidget *mainWindow)
 {
-	auto it = std::find(begin(), end(), mainWindow);
-	if (it != end())
-	{
-		m_data.erase(it);
-		emit mainWindowRemoved(mainWindow);
-	}
+    auto it = std::find(begin(), end(), mainWindow);
+    if (it != end())
+    {
+        m_data.erase(it);
+        emit mainWindowRemoved(mainWindow);
+    }
 }
 
 MainWindowRepository::Iterator MainWindowRepository::begin()
 {
-	return std::begin(m_data);
+    return std::begin(m_data);
 }
 
 MainWindowRepository::Iterator MainWindowRepository::end()
 {
-	return std::end(m_data);
+    return std::end(m_data);
 }
 
 #include "main-window-repository.moc"

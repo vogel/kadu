@@ -19,8 +19,7 @@
 
 #include "chat-top-bar-widget-factory-repository.h"
 
-ChatTopBarWidgetFactoryRepository::ChatTopBarWidgetFactoryRepository(QObject* parent) :
-		QObject(parent)
+ChatTopBarWidgetFactoryRepository::ChatTopBarWidgetFactoryRepository(QObject *parent) : QObject(parent)
 {
 }
 
@@ -30,25 +29,25 @@ ChatTopBarWidgetFactoryRepository::~ChatTopBarWidgetFactoryRepository()
 
 void ChatTopBarWidgetFactoryRepository::registerFactory(ChatTopBarWidgetFactory *factory)
 {
-	if (Factories.contains(factory))
-		return;
+    if (Factories.contains(factory))
+        return;
 
-	Factories.append(factory);
-	emit factoryRegistered(factory);
+    Factories.append(factory);
+    emit factoryRegistered(factory);
 }
 
 void ChatTopBarWidgetFactoryRepository::unregisterFactory(ChatTopBarWidgetFactory *factory)
 {
-	if (!Factories.contains(factory))
-		return;
+    if (!Factories.contains(factory))
+        return;
 
-	Factories.removeAll(factory);
-	emit factoryUnregistered(factory);
+    Factories.removeAll(factory);
+    emit factoryUnregistered(factory);
 }
 
 QList<ChatTopBarWidgetFactory *> ChatTopBarWidgetFactoryRepository::factories() const
 {
-	return Factories;
+    return Factories;
 }
 
 #include "moc_chat-top-bar-widget-factory-repository.cpp"

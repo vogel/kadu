@@ -33,32 +33,31 @@ class Myself;
 
 class ConfigWizardSetUpAccountPage : public ConfigWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ConfigWizardSetUpAccountPage(QWidget *parent = nullptr);
-	virtual ~ConfigWizardSetUpAccountPage();
+    explicit ConfigWizardSetUpAccountPage(QWidget *parent = nullptr);
+    virtual ~ConfigWizardSetUpAccountPage();
 
-	virtual bool isComplete() const;
+    virtual bool isComplete() const;
 
-	virtual void initializePage();
-	virtual void cleanupPage();
-	virtual bool validatePage();
+    virtual void initializePage();
+    virtual void cleanupPage();
+    virtual bool validatePage();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<ModalConfigurationWidget> AccountWidget;
-	QPointer<Myself> m_myself;
-	bool AccountSuccessfullyCreated;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<ModalConfigurationWidget> AccountWidget;
+    QPointer<Myself> m_myself;
+    bool AccountSuccessfullyCreated;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setMyself(Myself *myself);
 
-	void accountCreated(Account account);
-
+    void accountCreated(Account account);
 };

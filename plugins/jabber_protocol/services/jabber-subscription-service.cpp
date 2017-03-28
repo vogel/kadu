@@ -21,20 +21,18 @@
 
 #include "jabber-subscription-service.h"
 
+#include "jabber-protocol.h"
 #include "plugin/plugin-injected-factory.h"
 #include "windows/subscription-window.h"
-#include "jabber-protocol.h"
 
 #include "contacts/contact-manager.h"
 
 #include <qxmpp/QXmppRosterManager.h>
 
-JabberSubscriptionService::JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol) :
-		SubscriptionService{protocol},
-		m_roster{roster},
-		m_protocol{protocol}
+JabberSubscriptionService::JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol)
+        : SubscriptionService{protocol}, m_roster{roster}, m_protocol{protocol}
 {
-	connect(m_roster, SIGNAL(subscriptionReceived(QString)), this, SLOT(subscriptionReceived(QString)));
+    connect(m_roster, SIGNAL(subscriptionReceived(QString)), this, SLOT(subscriptionReceived(QString)));
 }
 
 JabberSubscriptionService::~JabberSubscriptionService()
@@ -43,41 +41,41 @@ JabberSubscriptionService::~JabberSubscriptionService()
 
 void JabberSubscriptionService::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void JabberSubscriptionService::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberSubscriptionService::subscriptionReceived(const QString &bareJid)
 {
-	auto contact = m_contactManager->byId(m_protocol->account(), bareJid, ActionCreate);
-	SubscriptionWindow::getSubscription(m_pluginInjectedFactory, contact, this, SLOT(authorizeContact(Contact, bool)));
+    auto contact = m_contactManager->byId(m_protocol->account(), bareJid, ActionCreate);
+    SubscriptionWindow::getSubscription(m_pluginInjectedFactory, contact, this, SLOT(authorizeContact(Contact, bool)));
 }
 
 void JabberSubscriptionService::authorizeContact(Contact contact, bool authorized)
 {
-	if (authorized)
-		resendSubscription(contact);
-	else
-		removeSubscription(contact);
+    if (authorized)
+        resendSubscription(contact);
+    else
+        removeSubscription(contact);
 }
 
 void JabberSubscriptionService::resendSubscription(const Contact &contact)
 {
-	m_roster->acceptSubscription(contact.id());
+    m_roster->acceptSubscription(contact.id());
 }
 
 void JabberSubscriptionService::removeSubscription(const Contact &contact)
 {
-	m_roster->refuseSubscription(contact.id());
+    m_roster->refuseSubscription(contact.id());
 }
 
 void JabberSubscriptionService::requestSubscription(const Contact &contact)
 {
-	m_roster->subscribe(contact.id());
+    m_roster->subscribe(contact.id());
 }
 
 #include "moc_jabber-subscription-service.cpp"

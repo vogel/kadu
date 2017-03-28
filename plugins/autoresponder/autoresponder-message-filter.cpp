@@ -42,8 +42,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-AutoresponderMessageFilter::AutoresponderMessageFilter(QObject *parent) :
-		QObject(parent)
+AutoresponderMessageFilter::AutoresponderMessageFilter(QObject *parent) : QObject(parent)
 {
 }
 
@@ -53,71 +52,76 @@ AutoresponderMessageFilter::~AutoresponderMessageFilter()
 
 void AutoresponderMessageFilter::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void AutoresponderMessageFilter::setMessageManager(MessageManager *messageManager)
 {
-	m_messageManager = messageManager;
+    m_messageManager = messageManager;
 }
 
 void AutoresponderMessageFilter::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void AutoresponderMessageFilter::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void AutoresponderMessageFilter::init()
 {
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)),
-			this, SLOT(chatWidgetClosed(ChatWidget *)));
+    connect(
+        m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetClosed(ChatWidget *)));
 }
 
 bool AutoresponderMessageFilter::acceptMessage(const Message &message)
 {
-	if (MessageTypeSent == message.type())
-		return true;
+    if (MessageTypeSent == message.type())
+        return true;
 
-	if (htmlToPlain(message.content()).left(5) == "KADU ") // ignore other kadu autoresponses
-		return true;
+    if (htmlToPlain(message.content()).left(5) == "KADU ")   // ignore other kadu autoresponses
+        return true;
 
-	if (!Configuration.respondConferences() && (message.messageChat().contacts().count() > 1))
-		return true;
+    if (!Configuration.respondConferences() && (message.messageChat().contacts().count() > 1))
+        return true;
 
-	if (Configuration.respondOnlyFirst() && RepliedChats.contains(message.messageChat()))
-		return true;
+    if (Configuration.respondOnlyFirst() && RepliedChats.contains(message.messageChat()))
+        return true;
 
-	Protocol *protocol = message.messageChat().chatAccount().protocolHandler();
-	if (!protocol)
-		return true;
+    Protocol *protocol = message.messageChat().chatAccount().protocolHandler();
+    if (!protocol)
+        return true;
 
-	// Na chwilę obecną busy == away
-	auto group = m_statusTypeManager->statusTypeData(protocol->status().type()).typeGroup();
-	if ((Configuration.statusAvailable() && group == StatusTypeGroup::Online)
-			|| (Configuration.statusInvisible() && group == StatusTypeGroup::Invisible)
-			|| (Configuration.statusBusy() && group == StatusTypeGroup::Away))
-	{
-		m_messageManager->sendMessage(message.messageChat(), normalizeHtml(HtmlString{tr("KADU AUTORESPONDER:") + '\n'
-				+ m_parser->parse(Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape)}), true);
+    // Na chwilę obecną busy == away
+    auto group = m_statusTypeManager->statusTypeData(protocol->status().type()).typeGroup();
+    if ((Configuration.statusAvailable() && group == StatusTypeGroup::Online) ||
+        (Configuration.statusInvisible() && group == StatusTypeGroup::Invisible) ||
+        (Configuration.statusBusy() && group == StatusTypeGroup::Away))
+    {
+        m_messageManager->sendMessage(
+            message.messageChat(), normalizeHtml(
+                                       HtmlString{tr("KADU AUTORESPONDER:") + '\n' +
+                                                  m_parser->parse(
+                                                      Configuration.autoRespondText(),
+                                                      Talkable(message.messageSender()), ParserEscape::HtmlEscape)}),
+            true);
 
-		RepliedChats.insert(message.messageChat());
-	}
+        RepliedChats.insert(message.messageChat());
+    }
 
-	return true;
+    return true;
 }
 
 void AutoresponderMessageFilter::chatWidgetClosed(ChatWidget *chatWidget)
 {
-	RepliedChats.remove(chatWidget->chat());
+    RepliedChats.remove(chatWidget->chat());
 }
 
 void AutoresponderMessageFilter::setConfiguration(const AutoresponderConfiguration &configuration)
 {
-	Configuration = configuration;
+    Configuration = configuration;
 }
 
 /** @} */

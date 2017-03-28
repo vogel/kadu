@@ -31,27 +31,26 @@ class ScreenShotConfiguration;
 
 class ScreenshotAction : public ActionDescription
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
-	ChatWidget * findChatWidget(QObject *obejct);
+    ChatWidget *findChatWidget(QObject *obejct);
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
-	void takeStandardShotSlot(ChatWidget *chatWidget = 0);
-	void takeShotWithChatWindowHiddenSlot();
-	void takeWindowShotSlot();
+    void takeStandardShotSlot(ChatWidget *chatWidget = 0);
+    void takeShotWithChatWindowHiddenSlot();
+    void takeWindowShotSlot();
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void actionTriggered(QAction *sender, bool toggled);
-	virtual void updateActionState(Action *action);
+    virtual void actionInstanceCreated(Action *action);
+    virtual void actionTriggered(QAction *sender, bool toggled);
+    virtual void updateActionState(Action *action);
 
 public:
-	explicit ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
-	virtual ~ScreenshotAction();
-
+    explicit ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent);
+    virtual ~ScreenshotAction();
 };

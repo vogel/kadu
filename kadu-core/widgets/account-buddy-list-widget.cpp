@@ -50,158 +50,162 @@
 
 #include "account-buddy-list-widget.h"
 
-AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent) :
-		QWidget(parent), CurrentAccount(account)
+AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
+        : QWidget(parent), CurrentAccount(account)
 {
 }
 
 void AccountBuddyListWidget::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void AccountBuddyListWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void AccountBuddyListWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AccountBuddyListWidget::setRosterReplacer(RosterReplacer *rosterReplacer)
 {
-	m_rosterReplacer = rosterReplacer;
+    m_rosterReplacer = rosterReplacer;
 }
 
 void AccountBuddyListWidget::setRoster(Roster *roster)
 {
-	m_roster = roster;
+    m_roster = roster;
 }
 
 void AccountBuddyListWidget::init()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setContentsMargins(0, 0, 0, 0);
-	layout->setSpacing(5);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    layout->setSpacing(5);
 
-	ModelChain *chain = new ModelChain(this);
+    ModelChain *chain = new ModelChain(this);
 
-	auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(chain);
-	m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
-	chain->setBaseModel(buddyListModel);
-	auto proxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
+    auto buddyListModel = m_injectedFactory->makeInjected<BuddyListModel>(chain);
+    m_injectedFactory->makeInjected<BuddyManagerAdapter>(buddyListModel);
+    chain->setBaseModel(buddyListModel);
+    auto proxyModel = m_injectedFactory->makeInjected<TalkableProxyModel>(chain);
 
-	AccountTalkableFilter *accountTalkableFilter = new AccountTalkableFilter(proxyModel);
-	accountTalkableFilter->setAccount(CurrentAccount);
-	proxyModel->addFilter(accountTalkableFilter);
+    AccountTalkableFilter *accountTalkableFilter = new AccountTalkableFilter(proxyModel);
+    accountTalkableFilter->setAccount(CurrentAccount);
+    proxyModel->addFilter(accountTalkableFilter);
 
-	proxyModel->addFilter(new HideAnonymousTalkableFilter(proxyModel));
-	chain->addProxyModel(proxyModel);
+    proxyModel->addFilter(new HideAnonymousTalkableFilter(proxyModel));
+    chain->addProxyModel(proxyModel);
 
-	BuddiesWidget = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, this);
+    BuddiesWidget = m_injectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, this);
 
-	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, proxyModel);
-	connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
-	proxyModel->addFilter(nameFilter);
+    NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, proxyModel);
+    connect(BuddiesWidget, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+    proxyModel->addFilter(nameFilter);
 
-	TalkableTreeView *view = m_injectedFactory->makeInjected<TalkableTreeView>(BuddiesWidget);
-	view->setChain(chain);
+    TalkableTreeView *view = m_injectedFactory->makeInjected<TalkableTreeView>(BuddiesWidget);
+    view->setChain(chain);
 
-	BuddiesWidget->setView(view);
-	BuddiesWidget->setMinimumSize(QSize(30, 30));
+    BuddiesWidget->setView(view);
+    BuddiesWidget->setMinimumSize(QSize(30, 30));
 
-	QWidget *buttons = new QWidget(this);
-	QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
-	buttonsLayout->setContentsMargins(0, 0, 0, 0);
-	buttonsLayout->setSpacing(5);
+    QWidget *buttons = new QWidget(this);
+    QHBoxLayout *buttonsLayout = new QHBoxLayout(buttons);
+    buttonsLayout->setContentsMargins(0, 0, 0, 0);
+    buttonsLayout->setSpacing(5);
 
-	QPushButton *restoreFromFile = new QPushButton(tr("Restore from file"), buttons);
-	connect(restoreFromFile, SIGNAL(clicked()), this, SLOT(restoreFromFile()));
-	buttonsLayout->addWidget(restoreFromFile);
+    QPushButton *restoreFromFile = new QPushButton(tr("Restore from file"), buttons);
+    connect(restoreFromFile, SIGNAL(clicked()), this, SLOT(restoreFromFile()));
+    buttonsLayout->addWidget(restoreFromFile);
 
-	QPushButton *storeToFile = new QPushButton(tr("Store to file"), buttons);
-	connect(storeToFile, SIGNAL(clicked()), this, SLOT(storeToFile()));
-	buttonsLayout->addWidget(storeToFile);
+    QPushButton *storeToFile = new QPushButton(tr("Store to file"), buttons);
+    connect(storeToFile, SIGNAL(clicked()), this, SLOT(storeToFile()));
+    buttonsLayout->addWidget(storeToFile);
 
-	layout->addWidget(BuddiesWidget);
-	layout->addWidget(buttons);
+    layout->addWidget(BuddiesWidget);
+    layout->addWidget(buttons);
 }
 
 void AccountBuddyListWidget::restoreFromFile()
 {
-	auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
-	if (!service)
-		return;
+    auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
+    if (!service)
+        return;
 
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt *.xml);;All Files (*)"), 0);
-	if (fileName.isEmpty())
-		return;
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("Select file"), QString(), tr("Contact List Files (*.txt *.xml);;All Files (*)"), 0);
+    if (fileName.isEmpty())
+        return;
 
-	QFile file(fileName);
+    QFile file(fileName);
 
-	if (file.exists() && file.open(QFile::ReadOnly))
-	{
-		QTextStream stream(file.readAll());
-		file.close();
+    if (file.exists() && file.open(QFile::ReadOnly))
+    {
+        QTextStream stream(file.readAll());
+        file.close();
 
-		auto list = service->deserialize(stream);
+        auto list = service->deserialize(stream);
 
-		if (list.isEmpty())
-		{
-			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"),
-							tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName));
-			return;
-		}
+        if (list.isEmpty())
+        {
+            MessageDialog::show(
+                m_iconsManager->iconByPath(KaduIcon("dialog-error")), tr("Kadu"),
+                tr("Contacts list couldn't be imported. File %0 doesn't contain correct contacts list.").arg(fileName));
+            return;
+        }
 
-		auto result = m_rosterReplacer->replaceRoster(CurrentAccount, list, false);
-		auto unImportedContacts = result.second;
-		auto contactsList = QStringList{};
-		for (auto &&contact : unImportedContacts)
-			contactsList.append(contact.display(true) + " (" + contact.id() + ')');
+        auto result = m_rosterReplacer->replaceRoster(CurrentAccount, list, false);
+        auto unImportedContacts = result.second;
+        auto contactsList = QStringList{};
+        for (auto &&contact : unImportedContacts)
+            contactsList.append(contact.display(true) + " (" + contact.id() + ')');
 
-		if (!unImportedContacts.isEmpty())
-		{
-			MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")),
-				tr("Kadu"),
-				tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
-				"Do you want to remove them from contact list?").arg(contactsList.join("</b>, <b>")));
-			dialog->addButton(QMessageBox::Yes, tr("Remove"));
-			dialog->addButton(QMessageBox::No, tr("Cancel"));
+        if (!unImportedContacts.isEmpty())
+        {
+            MessageDialog *dialog = MessageDialog::create(
+                m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"),
+                tr("The following contacts from your list were not found in file:<br/><b>%1</b>.<br/>"
+                   "Do you want to remove them from contact list?")
+                    .arg(contactsList.join("</b>, <b>")));
+            dialog->addButton(QMessageBox::Yes, tr("Remove"));
+            dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-			if (dialog->ask())
-			{
-				for (auto &&contact : unImportedContacts)
-				{
-					Buddy ownerBuddy = contact.ownerBuddy();
-					contact.setOwnerBuddy(Buddy::null);
-					// remove even if it still has some data, e.g. mobile number
-					m_buddyManager->removeBuddyIfEmpty(ownerBuddy, true);
-					m_roster->removeContact(contact);
-				}
-			}
-		}
-	}
+            if (dialog->ask())
+            {
+                for (auto &&contact : unImportedContacts)
+                {
+                    Buddy ownerBuddy = contact.ownerBuddy();
+                    contact.setOwnerBuddy(Buddy::null);
+                    // remove even if it still has some data, e.g. mobile number
+                    m_buddyManager->removeBuddyIfEmpty(ownerBuddy, true);
+                    m_roster->removeContact(contact);
+                }
+            }
+        }
+    }
 }
 
 void AccountBuddyListWidget::storeToFile()
 {
-	auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
-	if (!service)
-		return;
+    auto service = CurrentAccount.protocolHandler()->buddyListSerializationService();
+    if (!service)
+        return;
 
-	QString fileName = QFileDialog::getSaveFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt)"), 0);
-	if (fileName.isEmpty())
-		return;
+    QString fileName =
+        QFileDialog::getSaveFileName(this, tr("Select file"), QString(), tr("Contact List Files (*.txt)"), 0);
+    if (fileName.isEmpty())
+        return;
 
-	QFile file(fileName);
+    QFile file(fileName);
 
-	if (file.open(QFile::WriteOnly))
-	{
-		file.write(service->serialize(m_buddyManager->buddies(CurrentAccount)));
-		file.close();
-	}
+    if (file.open(QFile::WriteOnly))
+    {
+        file.write(service->serialize(m_buddyManager->buddies(CurrentAccount)));
+        file.close();
+    }
 }
 
 #include "moc_account-buddy-list-widget.cpp"

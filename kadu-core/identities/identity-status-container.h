@@ -30,34 +30,33 @@ class StatusConfigurationHolder;
 
 class IdentityStatusContainer : public StorableStatusContainer
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit IdentityStatusContainer(IdentityShared *identityShared);
-	virtual ~IdentityStatusContainer();
+    explicit IdentityStatusContainer(IdentityShared *identityShared);
+    virtual ~IdentityStatusContainer();
 
-	virtual QString statusContainerName() override;
+    virtual QString statusContainerName() override;
 
-	virtual Status status() override;
-	virtual void setStatus(Status status, StatusChangeSource source) override;
-	virtual bool isStatusSettingInProgress() override;
-	virtual int maxDescriptionLength() override;
+    virtual Status status() override;
+    virtual void setStatus(Status status, StatusChangeSource source) override;
+    virtual bool isStatusSettingInProgress() override;
+    virtual int maxDescriptionLength() override;
 
-	virtual KaduIcon statusIcon() override;
-	virtual KaduIcon statusIcon(const Status &status) override;
+    virtual KaduIcon statusIcon() override;
+    virtual KaduIcon statusIcon(const Status &status) override;
 
-	virtual QList<StatusType> supportedStatusTypes() override;
+    virtual QList<StatusType> supportedStatusTypes() override;
 
-	void addAccount(const Account &account);
-	void removeAccount(const Account &account);
+    void addAccount(const Account &account);
+    void removeAccount(const Account &account);
 
 private:
-	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+    QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
 
-	IdentityShared *m_identityShared;
-	Status m_lastSetStatus;
+    IdentityShared *m_identityShared;
+    Status m_lastSetStatus;
 
 private slots:
-	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-
+    INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
 };

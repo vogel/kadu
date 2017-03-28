@@ -23,13 +23,12 @@
 
 namespace QThrift
 {
-
 class SizeOutOfRangeException : public Exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Size out of range in Thfift data"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Size out of range in Thfift data";
+    };
 };
-
 }

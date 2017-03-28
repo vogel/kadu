@@ -44,47 +44,46 @@ class ModelChain;
 
 class AddRoomChatWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AddRoomChatWindow(QWidget *parent = nullptr);
-	virtual ~AddRoomChatWindow();
+    explicit AddRoomChatWindow(QWidget *parent = nullptr);
+    virtual ~AddRoomChatWindow();
 
 public slots:
-	void accept();
-	void start();
+    void accept();
+    void start();
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	AccountsComboBox *AccountCombo;
-	QLineEdit *DisplayNameEdit;
-	QLineEdit *RoomEdit;
-	QLineEdit *NickEdit;
-	QLineEdit *PasswordEdit;
-	QLabel *ErrorLabel;
-	QPushButton *AddButton;
-	QPushButton *StartButton;
+    AccountsComboBox *AccountCombo;
+    QLineEdit *DisplayNameEdit;
+    QLineEdit *RoomEdit;
+    QLineEdit *NickEdit;
+    QLineEdit *PasswordEdit;
+    QLabel *ErrorLabel;
+    QPushButton *AddButton;
+    QPushButton *StartButton;
 
-	void createGui();
-	void displayErrorMessage(const QString &message);
+    void createGui();
+    void displayErrorMessage(const QString &message);
 
-	Chat computeChat() const;
+    Chat computeChat() const;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void validateData();
-
+    void validateData();
 };

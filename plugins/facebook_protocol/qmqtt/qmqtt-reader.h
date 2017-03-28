@@ -27,25 +27,23 @@ enum class QMqttMessageType : uint8_t;
 
 class QMqttReader
 {
-
 public:
-	struct QMqttHeader
-	{
-		uint32_t size;
-		uint32_t offset;
-	};
+    struct QMqttHeader
+    {
+        uint32_t size;
+        uint32_t offset;
+    };
 
-	static std::experimental::optional<QMqttHeader> readHeader(const QByteArray &data);
+    static std::experimental::optional<QMqttHeader> readHeader(const QByteArray &data);
 
-	explicit QMqttReader(const QByteArray &content);
+    explicit QMqttReader(const QByteArray &content);
 
-	uint8_t readUint8();
-	uint16_t readUint16();
-	QByteArray readData();
-	QByteArray readRaw();
+    uint8_t readUint8();
+    uint16_t readUint16();
+    QByteArray readData();
+    QByteArray readRaw();
 
 private:
-	const QByteArray &m_content;
-	int m_pos {0};
-
+    const QByteArray &m_content;
+    int m_pos{0};
 };

@@ -32,46 +32,48 @@
 
 #include "buddy-list-background-colors-widget.h"
 
-BuddyListBackgroundColorsWidget::BuddyListBackgroundColorsWidget(MainConfigurationWindow* mainWindow) :
-		m_mainWindow{mainWindow}
+BuddyListBackgroundColorsWidget::BuddyListBackgroundColorsWidget(MainConfigurationWindow *mainWindow)
+        : m_mainWindow{mainWindow}
 {
-	createGui();
-	loadConfiguration();
+    createGui();
+    loadConfiguration();
 
-	connect(m_mainWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
+    connect(m_mainWindow, SIGNAL(configurationWindowApplied()), this, SLOT(configurationApplied()));
 }
 
 void BuddyListBackgroundColorsWidget::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
 
-	colorButton = new ColorButton(this);
-	alternateColorButton = new ColorButton(this);
+    colorButton = new ColorButton(this);
+    alternateColorButton = new ColorButton(this);
 
-	layout->addWidget(colorButton);
-	layout->addWidget(alternateColorButton);
+    layout->addWidget(colorButton);
+    layout->addWidget(alternateColorButton);
 
-	ConfigGroupBox *groupBox = m_mainWindow->widget()->configGroupBox("Look", "Buddies list", "Background");
+    ConfigGroupBox *groupBox = m_mainWindow->widget()->configGroupBox("Look", "Buddies list", "Background");
 
-	groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Background colors") + ':', this), this);
+    groupBox->addWidgets(new QLabel(QCoreApplication::translate("@default", "Background colors") + ':', this), this);
 }
 
 void BuddyListBackgroundColorsWidget::loadConfiguration()
 {
-	if (!m_mainWindow || m_mainWindow->dataManager())
-		return;
+    if (!m_mainWindow || m_mainWindow->dataManager())
+        return;
 
-	colorButton->setColor(m_mainWindow->dataManager()->readEntry("Look", "UserboxBgColor").value<QColor>());
-	alternateColorButton->setColor(m_mainWindow->dataManager()->readEntry("Look", "UserboxAlternateBgColor").value<QColor>());
+    colorButton->setColor(m_mainWindow->dataManager()->readEntry("Look", "UserboxBgColor").value<QColor>());
+    alternateColorButton->setColor(
+        m_mainWindow->dataManager()->readEntry("Look", "UserboxAlternateBgColor").value<QColor>());
 }
 
 void BuddyListBackgroundColorsWidget::configurationApplied()
 {
-	if (!m_mainWindow || m_mainWindow->dataManager())
-		return;
+    if (!m_mainWindow || m_mainWindow->dataManager())
+        return;
 
-	m_mainWindow->dataManager()->writeEntry("Look", "UserboxBgColor", QVariant(colorButton->color().name()));
-	m_mainWindow->dataManager()->writeEntry("Look", "UserboxAlternateBgColor", QVariant(alternateColorButton->color().name()));
+    m_mainWindow->dataManager()->writeEntry("Look", "UserboxBgColor", QVariant(colorButton->color().name()));
+    m_mainWindow->dataManager()->writeEntry(
+        "Look", "UserboxAlternateBgColor", QVariant(alternateColorButton->color().name()));
 }
 
 #include "moc_buddy-list-background-colors-widget.cpp"

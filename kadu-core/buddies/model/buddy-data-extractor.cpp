@@ -32,8 +32,7 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 
-BuddyDataExtractor::BuddyDataExtractor(QObject *parent) :
-		QObject{parent}
+BuddyDataExtractor::BuddyDataExtractor(QObject *parent) : QObject{parent}
 {
 }
 
@@ -43,43 +42,43 @@ BuddyDataExtractor::~BuddyDataExtractor()
 
 void BuddyDataExtractor::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void BuddyDataExtractor::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 QVariant BuddyDataExtractor::decoration(const Buddy &buddy)
 {
-	if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
-		return m_iconsManager->iconByPath(KaduIcon("phone"));
-	else if (!buddy.email().isEmpty())
-		return m_iconsManager->iconByPath(KaduIcon("mail-message-new"));
-	else
-		return m_iconsManager->iconByPath(KaduIcon("system-users"));
+    if (!buddy.homePhone().isEmpty() || !buddy.mobile().isEmpty())
+        return m_iconsManager->iconByPath(KaduIcon("phone"));
+    else if (!buddy.email().isEmpty())
+        return m_iconsManager->iconByPath(KaduIcon("mail-message-new"));
+    else
+        return m_iconsManager->iconByPath(KaduIcon("system-users"));
 }
 
 QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)
 {
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return buddy.display();
-		case Qt::DecorationRole:
-			return decoration(buddy);
-		case BuddyRole:
-			return QVariant::fromValue(buddy);
-		case AvatarRole:
-			return buddy.buddyAvatar().pixmap();
-		case StatusRole:
-			return QVariant::fromValue(m_buddyPreferredManager->preferredContact(buddy, false).currentStatus());
-		case ItemTypeRole:
-			return BuddyRole;
-		case TalkableRole:
-			return QVariant::fromValue(Talkable(buddy));
-		default:
-			return QVariant();
-	}
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return buddy.display();
+    case Qt::DecorationRole:
+        return decoration(buddy);
+    case BuddyRole:
+        return QVariant::fromValue(buddy);
+    case AvatarRole:
+        return buddy.buddyAvatar().pixmap();
+    case StatusRole:
+        return QVariant::fromValue(m_buddyPreferredManager->preferredContact(buddy, false).currentStatus());
+    case ItemTypeRole:
+        return BuddyRole;
+    case TalkableRole:
+        return QVariant::fromValue(Talkable(buddy));
+    default:
+        return QVariant();
+    }
 }

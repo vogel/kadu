@@ -35,7 +35,8 @@ class RosterService;
  * @class Roster
  * @short Generic interface to all RosterService objects
  *
- * This class allows adding, removing and updating contacts on remote roster. Adding contacts is done by addContact() method,
+ * This class allows adding, removing and updating contacts on remote roster. Adding contacts is done by addContact()
+ * method,
  * removing - by removeContact() method. This class searchs for suitable RosterService and uses it to perform its job.
  *
  * Use this class to manipulate rosters. After adding a contact to any roster, its data is updated automatically, until
@@ -43,31 +44,30 @@ class RosterService;
  */
 class KADUAPI Roster : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Roster(QObject *parent = nullptr);
-	virtual ~Roster();
+    Q_INVOKABLE explicit Roster(QObject *parent = nullptr);
+    virtual ~Roster();
 
-	/**
-	 * @return RosterService instance suitable to given @p contact
-	 */
-	static RosterService * rosterService(const Contact &contact);
+    /**
+     * @return RosterService instance suitable to given @p contact
+     */
+    static RosterService *rosterService(const Contact &contact);
 
 public slots:
-	/**
-	 * @short Add new @p contact to remote roster.
-	 *
-	 * Roster state of newly added contact is set to HasLocalChanges (if is not already Detached)
-	 * so it will be uploaded to server as soon as possible.
-	 */
-	void addContact(const Contact &contact) const;
+    /**
+     * @short Add new @p contact to remote roster.
+     *
+     * Roster state of newly added contact is set to HasLocalChanges (if is not already Detached)
+     * so it will be uploaded to server as soon as possible.
+     */
+    void addContact(const Contact &contact) const;
 
-	/**
-	 * @short Remove @p contact from remote roster.
-	 */
-	void removeContact(const Contact &contact) const;
-
+    /**
+     * @short Remove @p contact from remote roster.
+     */
+    void removeContact(const Contact &contact) const;
 };
 
 /**

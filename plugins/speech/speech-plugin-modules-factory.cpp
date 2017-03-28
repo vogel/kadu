@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SpeechPluginModulesFactory::SpeechPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SpeechPluginModulesFactory::SpeechPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ SpeechPluginModulesFactory::~SpeechPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SpeechPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SpeechModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SpeechModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_speech-plugin-modules-factory.cpp"

@@ -25,13 +25,11 @@
 
 class IDLEAPI Idle : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Idle(QObject *parent = nullptr);
-	virtual ~Idle();
+    Q_INVOKABLE explicit Idle(QObject *parent = nullptr);
+    virtual ~Idle();
 
-	long secondsIdle();
-
+    long secondsIdle();
 };
-

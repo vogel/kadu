@@ -19,8 +19,7 @@
 
 #include "status-notifier-item-attention.h"
 
-StatusNotifierItemAttention::StatusNotifierItemAttention(QObject *parent) :
-		QObject{parent}
+StatusNotifierItemAttention::StatusNotifierItemAttention(QObject *parent) : QObject{parent}
 {
 }
 

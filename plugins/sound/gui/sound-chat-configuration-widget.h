@@ -34,33 +34,32 @@ class QCheckBox;
 
 class SoundChatConfigurationWidget : public ChatConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SoundChatConfigurationWidget(const Chat &chat, SoundManager *soundManager, QWidget *parent = nullptr);
-	virtual ~SoundChatConfigurationWidget();
+    explicit SoundChatConfigurationWidget(const Chat &chat, SoundManager *soundManager, QWidget *parent = nullptr);
+    virtual ~SoundChatConfigurationWidget();
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const override;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const override;
 
-	virtual void apply() override;
-	virtual void cancel() override;
+    virtual void apply() override;
+    virtual void cancel() override;
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SoundManager> m_soundManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SoundManager> m_soundManager;
 
-	SimpleConfigurationValueStateNotifier *m_stateNotifier;
+    SimpleConfigurationValueStateNotifier *m_stateNotifier;
 
-	QCheckBox *m_useCustomSoundCheckBox;
-	SoundSelectFile *m_customSoundSelectFile;
+    QCheckBox *m_useCustomSoundCheckBox;
+    SoundSelectFile *m_customSoundSelectFile;
 
-	void createGui();
-	void loadValues();
+    void createGui();
+    void loadValues();
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 
-	void updateState();
-
+    void updateState();
 };

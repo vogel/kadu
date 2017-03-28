@@ -23,14 +23,13 @@
 
 class WordFixPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit WordFixPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~WordFixPluginModulesFactory();
+    explicit WordFixPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~WordFixPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

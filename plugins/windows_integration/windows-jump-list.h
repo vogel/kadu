@@ -27,18 +27,17 @@ class QWinJumpList;
 
 class WindowsJumpList : public JumpList
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit WindowsJumpList(QObject *parent = nullptr);
-	virtual ~WindowsJumpList();
+    Q_INVOKABLE explicit WindowsJumpList(QObject *parent = nullptr);
+    virtual ~WindowsJumpList();
 
 private:
-	owned_qptr<QWinJumpList> m_jumpList;
+    owned_qptr<QWinJumpList> m_jumpList;
 
-	virtual void clear() override;
-	virtual void addChat(Chat chat) override;
-	virtual void addSeparator() override;
-	virtual void setVisible(bool visible) override;
-
+    virtual void clear() override;
+    virtual void addChat(Chat chat) override;
+    virtual void addSeparator() override;
+    virtual void setVisible(bool visible) override;
 };

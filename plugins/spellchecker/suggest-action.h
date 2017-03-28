@@ -28,21 +28,20 @@ class Suggester;
 
 class SuggestAction : public ActionDescription
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SuggestAction(QString word, QObject *parent = nullptr);
-	virtual ~SuggestAction();
+    explicit SuggestAction(QString word, QObject *parent = nullptr);
+    virtual ~SuggestAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QString m_word;
+    QString m_word;
 
-	QPointer<Suggester> m_suggester;
+    QPointer<Suggester> m_suggester;
 
 private slots:
-	INJEQT_SET void setSuggester(Suggester *suggester);
-
+    INJEQT_SET void setSuggester(Suggester *suggester);
 };

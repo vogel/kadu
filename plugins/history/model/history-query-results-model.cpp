@@ -27,11 +27,10 @@
 
 #include "history-query-results-model.h"
 
-HistoryQueryResultsModel::HistoryQueryResultsModel(QObject *parent) :
-		QAbstractListModel(parent)
+HistoryQueryResultsModel::HistoryQueryResultsModel(QObject *parent) : QAbstractListModel(parent)
 {
-	TalkableHeader = tr("Chat");
-	LengthHeader = tr("Length");
+    TalkableHeader = tr("Chat");
+    LengthHeader = tr("Length");
 }
 
 HistoryQueryResultsModel::~HistoryQueryResultsModel()
@@ -40,116 +39,127 @@ HistoryQueryResultsModel::~HistoryQueryResultsModel()
 
 void HistoryQueryResultsModel::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 int HistoryQueryResultsModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 4;
+    return parent.isValid() ? 0 : 4;
 }
 
 int HistoryQueryResultsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Results.size();
+    return parent.isValid() ? 0 : Results.size();
 }
 
 QVariant HistoryQueryResultsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-	if (role != Qt::DisplayRole)
-		return QVariant();
+    if (role != Qt::DisplayRole)
+        return QVariant();
 
-	if (orientation != Qt::Horizontal)
-		return QVariant();
+    if (orientation != Qt::Horizontal)
+        return QVariant();
 
-	switch (section)
-	{
-		case 0: return TalkableHeader;
-		case 1: return tr("Date");
-		case 2: return LengthHeader;
-		case 3: return tr("Title");
-	}
+    switch (section)
+    {
+    case 0:
+        return TalkableHeader;
+    case 1:
+        return tr("Date");
+    case 2:
+        return LengthHeader;
+    case 3:
+        return tr("Title");
+    }
 
-	return QVariant();
+    return QVariant();
 }
 
 QVariant HistoryQueryResultsModel::data(const QModelIndex &index, int role) const
 {
-	int col = index.column();
-	int row = index.row();
+    int col = index.column();
+    int row = index.row();
 
-	if (row < 0 || row >= Results.size())
-		return QVariant();
+    if (row < 0 || row >= Results.size())
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-		{
-			switch (col)
-			{
-				case 0: return m_talkableConverter->toDisplay(Results.at(row).talkable());
-				case 1: return Results.at(row).date().toString("dd.MM.yyyy");
-				case 2: return Results.at(row).count();
-				case 3: return Results.at(row).title();
-			}
+    switch (role)
+    {
+    case Qt::DisplayRole:
+    {
+        switch (col)
+        {
+        case 0:
+            return m_talkableConverter->toDisplay(Results.at(row).talkable());
+        case 1:
+            return Results.at(row).date().toString("dd.MM.yyyy");
+        case 2:
+            return Results.at(row).count();
+        case 3:
+            return Results.at(row).title();
+        }
 
-			return QVariant();
-		}
+        return QVariant();
+    }
 
-		case DateRole: return Results.at(row).date();
-		case TalkableRole: return QVariant::fromValue(Results.at(row).talkable());
-	}
+    case DateRole:
+        return Results.at(row).date();
+    case TalkableRole:
+        return QVariant::fromValue(Results.at(row).talkable());
+    }
 
-	return QVariant();
+    return QVariant();
 }
 
 void HistoryQueryResultsModel::setTalkableHeader(const QString &talkableHeader)
 {
-	if (TalkableHeader == talkableHeader)
-		return;
+    if (TalkableHeader == talkableHeader)
+        return;
 
-	TalkableHeader = talkableHeader;
-	emit headerDataChanged(Qt::Horizontal, 0, 0);
+    TalkableHeader = talkableHeader;
+    emit headerDataChanged(Qt::Horizontal, 0, 0);
 }
 
-void HistoryQueryResultsModel::setLengthHeader (const QString &lengthHeader)
+void HistoryQueryResultsModel::setLengthHeader(const QString &lengthHeader)
 {
-	if (LengthHeader == lengthHeader)
-		return;
+    if (LengthHeader == lengthHeader)
+        return;
 
-	LengthHeader = lengthHeader;
-	emit headerDataChanged(Qt::Horizontal, 3, 3);
+    LengthHeader = lengthHeader;
+    emit headerDataChanged(Qt::Horizontal, 3, 3);
 }
 
 void HistoryQueryResultsModel::setResults(const QVector<HistoryQueryResult> &results)
 {
-	beginResetModel();
-	Results = results;
-	endResetModel();
+    beginResetModel();
+    Results = results;
+    endResetModel();
 }
 
-void HistoryQueryResultsModel::addEntry(const QDate& date, const Talkable &talkable, const QString &title)
+void HistoryQueryResultsModel::addEntry(const QDate &date, const Talkable &talkable, const QString &title)
 {
-	auto i = 0;
-	auto firstNotEarlier = std::find_if(std::begin(Results), std::end(Results), [&date, &i](const HistoryQueryResult &hqr){
-		i++;
-		return hqr.date() >= date;
-	});
-	if (firstNotEarlier != std::end(Results) && firstNotEarlier->date() == date)
-	{
-		firstNotEarlier->setCount(firstNotEarlier->count() + 1);
-		emit dataChanged(index(i - 1), index(i - 1));
-		return;
-	}
+    auto i = 0;
+    auto firstNotEarlier =
+        std::find_if(std::begin(Results), std::end(Results), [&date, &i](const HistoryQueryResult &hqr) {
+            i++;
+            return hqr.date() >= date;
+        });
+    if (firstNotEarlier != std::end(Results) && firstNotEarlier->date() == date)
+    {
+        firstNotEarlier->setCount(firstNotEarlier->count() + 1);
+        emit dataChanged(index(i - 1), index(i - 1));
+        return;
+    }
 
-	auto newItem = HistoryQueryResult{};
-	newItem.setCount(1);
-	newItem.setDate(date);
-	newItem.setTalkable(talkable);
-	newItem.setTitle(title);
+    auto newItem = HistoryQueryResult{};
+    newItem.setCount(1);
+    newItem.setDate(date);
+    newItem.setTalkable(talkable);
+    newItem.setTitle(title);
 
-	beginInsertRows(QModelIndex{}, i, i);
-	Results.insert(i, newItem);
-	endInsertRows();
+    beginInsertRows(QModelIndex{}, i, i);
+    Results.insert(i, newItem);
+    endInsertRows();
 }
 
 #include "moc_history-query-results-model.cpp"

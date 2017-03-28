@@ -33,25 +33,25 @@ class ChatTopBarWidgetFactoryRepository;
 
 class ChatTopBarContainerWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
+    QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
 
-	Chat MyChat;
-	QVBoxLayout *Layout;
-	QMap<ChatTopBarWidgetFactory *, QWidget *> TopBarWidgets;
+    Chat MyChat;
+    QVBoxLayout *Layout;
+    QMap<ChatTopBarWidgetFactory *, QWidget *> TopBarWidgets;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void
+    setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository);
+    INJEQT_INIT void init();
 
-	void factoryRegistered(ChatTopBarWidgetFactory *factory);
-	void factoryUnregistered(ChatTopBarWidgetFactory *factory);
+    void factoryRegistered(ChatTopBarWidgetFactory *factory);
+    void factoryUnregistered(ChatTopBarWidgetFactory *factory);
 
 public:
-	explicit ChatTopBarContainerWidget(const Chat &chat, QWidget *parent = nullptr);
-	virtual ~ChatTopBarContainerWidget();
-
+    explicit ChatTopBarContainerWidget(const Chat &chat, QWidget *parent = nullptr);
+    virtual ~ChatTopBarContainerWidget();
 };

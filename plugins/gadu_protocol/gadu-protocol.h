@@ -38,10 +38,10 @@
 #include "services/gadu-personal-info-service.h"
 #include "services/gadu-search-service.h"
 
-#include "server/gadu-servers-manager.h"
 #include "gadu-exports.h"
 #include "gadu-search-record.h"
 #include "gadu-search-result.h"
+#include "server/gadu-servers-manager.h"
 
 #include "protocols/protocol.h"
 
@@ -64,150 +64,188 @@ class VersionService;
 
 class GADUAPI GaduProtocol : public Protocol
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum GaduError
-	{
-		ConnectionServerNotFound,
-		ConnectionCannotConnect,
-		ConnectionNeedEmail,
-		ConnectionInvalidData,
-		ConnectionCannotRead,
-		ConnectionCannotWrite,
-		ConnectionIncorrectPassword,
-		ConnectionTlsError,
-		ConnectionIntruderError,
-		ConnectionUnavailableError,
-		ConnectionUnknow,
-		ConnectionTimeout,
-		Disconnected
-	};
+    enum GaduError
+    {
+        ConnectionServerNotFound,
+        ConnectionCannotConnect,
+        ConnectionNeedEmail,
+        ConnectionInvalidData,
+        ConnectionCannotRead,
+        ConnectionCannotWrite,
+        ConnectionIncorrectPassword,
+        ConnectionTlsError,
+        ConnectionIntruderError,
+        ConnectionUnavailableError,
+        ConnectionUnknow,
+        ConnectionTimeout,
+        Disconnected
+    };
 
-	typedef unsigned int UinType;
+    typedef unsigned int UinType;
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
-	QPointer<Configuration> m_configuration;
-	QPointer<GaduServersManager> m_gaduServersManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<NetworkProxyManager> m_networkProxyManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<VersionService> m_versionService;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<GaduServersManager> m_gaduServersManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<NetworkProxyManager> m_networkProxyManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<VersionService> m_versionService;
 
-	ProtocolGaduConnection *Connection;
-	GaduOpenChatWithRunner *OpenChatRunner;
+    ProtocolGaduConnection *Connection;
+    GaduOpenChatWithRunner *OpenChatRunner;
 
-	GaduAvatarService *CurrentAvatarService;
-	GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
-	GaduChatImageService *CurrentChatImageService;
-	GaduChatService *CurrentChatService;
-	GaduContactPersonalInfoService *CurrentContactPersonalInfoService;
-	GaduFileTransferService *CurrentFileTransferService;
-	GaduPersonalInfoService *CurrentPersonalInfoService;
-	GaduSearchService *CurrentSearchService;
-	GaduMultilogonService *CurrentMultilogonService;
-	GaduChatStateService *CurrentChatStateService;
-	GaduNotifyService *CurrentNotifyService;
-	GaduIMTokenService *CurrentImTokenService;
-	GaduDriveService *CurrentDriveService;
-	GaduUserDataService *CurrentUserDataService;
+    GaduAvatarService *CurrentAvatarService;
+    GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
+    GaduChatImageService *CurrentChatImageService;
+    GaduChatService *CurrentChatService;
+    GaduContactPersonalInfoService *CurrentContactPersonalInfoService;
+    GaduFileTransferService *CurrentFileTransferService;
+    GaduPersonalInfoService *CurrentPersonalInfoService;
+    GaduSearchService *CurrentSearchService;
+    GaduMultilogonService *CurrentMultilogonService;
+    GaduChatStateService *CurrentChatStateService;
+    GaduNotifyService *CurrentNotifyService;
+    GaduIMTokenService *CurrentImTokenService;
+    GaduDriveService *CurrentDriveService;
+    GaduUserDataService *CurrentUserDataService;
 
-	GaduServersManager::GaduServer ActiveServer;
+    GaduServersManager::GaduServer ActiveServer;
 
-	struct gg_login_params GaduLoginParams;
-	gg_session *GaduSession;
+    struct gg_login_params GaduLoginParams;
+    gg_session *GaduSession;
 
-	friend class GaduProtocolSocketNotifiers;
-	GaduProtocolSocketNotifiers *SocketNotifiers;
-	QElapsedTimer m_lastRemoteStatusRequest;
-	Status m_lastSentStatus;
+    friend class GaduProtocolSocketNotifiers;
+    GaduProtocolSocketNotifiers *SocketNotifiers;
+    QElapsedTimer m_lastRemoteStatusRequest;
+    Status m_lastSentStatus;
 
-	QTimer *PingTimer;
-	bool SecureConnection;
+    QTimer *PingTimer;
+    bool SecureConnection;
 
-	GaduListHelper *m_gaduListHelper;
+    GaduListHelper *m_gaduListHelper;
 
-	void setupLoginParams();
-	void cleanUpLoginParams();
+    void setupLoginParams();
+    void cleanUpLoginParams();
 
-	void connectSocketNotifiersToServices();
+    void connectSocketNotifiersToServices();
 
-	void startFileTransferService();
-	void stopFileTransferService();
+    void startFileTransferService();
+    void stopFileTransferService();
 
-	void socketContactStatusChanged(UinType uin, unsigned int ggStatusId, const QString &description, unsigned int maxImageSize);
-	void socketConnFailed(GaduError error);
-	void connectedToServer();
-	void disconnectedFromServer();
+    void socketContactStatusChanged(
+        UinType uin, unsigned int ggStatusId, const QString &description, unsigned int maxImageSize);
+    void socketConnFailed(GaduError error);
+    void connectedToServer();
+    void disconnectedFromServer();
 
-	void setStatusFlags();
-	void configureServices();
+    void setStatusFlags();
+    void configureServices();
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
-	INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setVersionService(VersionService *versionService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void accountUpdated();
+    void accountUpdated();
 
-	void connectionTimeoutTimerSlot();
-	void everyMinuteActions();
+    void connectionTimeoutTimerSlot();
+    void everyMinuteActions();
 
 protected:
-	virtual void login();
-	virtual void afterLoggedIn();
-	virtual void logout();
-	virtual void sendStatusToServer();
+    virtual void login();
+    virtual void afterLoggedIn();
+    virtual void logout();
+    virtual void sendStatusToServer();
 
-	virtual void disconnectedCleanup();
+    virtual void disconnectedCleanup();
 
 public:
-	explicit GaduProtocol(GaduListHelper *gaduListHelper, GaduServersManager *gaduServersManager, Account account, ProtocolFactory *factory);
-	virtual ~GaduProtocol();
+    explicit GaduProtocol(
+        GaduListHelper *gaduListHelper, GaduServersManager *gaduServersManager, Account account,
+        ProtocolFactory *factory);
+    virtual ~GaduProtocol();
 
-	virtual AvatarService * avatarService() { return CurrentAvatarService; }
-	virtual BuddyListSerializationService * buddyListSerializationService() { return CurrentBuddyListSerializationService; }
-	virtual ChatImageService * chatImageService() { return CurrentChatImageService; }
-	virtual ContactPersonalInfoService * contactPersonalInfoService() { return CurrentContactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() { return CurrentFileTransferService; }
-	virtual PersonalInfoService * personalInfoService() { return CurrentPersonalInfoService; }
-	virtual SearchService * searchService() { return CurrentSearchService; }
-	virtual MultilogonService * multilogonService() { return CurrentMultilogonService; }
+    virtual AvatarService *avatarService()
+    {
+        return CurrentAvatarService;
+    }
+    virtual BuddyListSerializationService *buddyListSerializationService()
+    {
+        return CurrentBuddyListSerializationService;
+    }
+    virtual ChatImageService *chatImageService()
+    {
+        return CurrentChatImageService;
+    }
+    virtual ContactPersonalInfoService *contactPersonalInfoService()
+    {
+        return CurrentContactPersonalInfoService;
+    }
+    virtual FileTransferService *fileTransferService()
+    {
+        return CurrentFileTransferService;
+    }
+    virtual PersonalInfoService *personalInfoService()
+    {
+        return CurrentPersonalInfoService;
+    }
+    virtual SearchService *searchService()
+    {
+        return CurrentSearchService;
+    }
+    virtual MultilogonService *multilogonService()
+    {
+        return CurrentMultilogonService;
+    }
 
-	GaduIMTokenService * gaduIMTokenService() const { return CurrentImTokenService; }
+    GaduIMTokenService *gaduIMTokenService() const
+    {
+        return CurrentImTokenService;
+    }
 
-	virtual bool contactsListReadOnly() { return false; }
-	virtual bool supportsPrivateStatus() { return true; }
+    virtual bool contactsListReadOnly()
+    {
+        return false;
+    }
+    virtual bool supportsPrivateStatus()
+    {
+        return true;
+    }
 
-	virtual void changePrivateMode();
+    virtual void changePrivateMode();
 
-	virtual QString statusPixmapPath();
+    virtual QString statusPixmapPath();
 
-	virtual int maxDescriptionLength();
+    virtual int maxDescriptionLength();
 
-	void enableSocketNotifiers();
-	void disableSocketNotifiers();
-	gg_session * gaduSession() { return GaduSession; }
+    void enableSocketNotifiers();
+    void disableSocketNotifiers();
+    gg_session *gaduSession()
+    {
+        return GaduSession;
+    }
 
-	GaduDriveService * driveService() const;
-	GaduUserDataService * userDataService() const;
+    GaduDriveService *driveService() const;
+    GaduUserDataService *userDataService() const;
 
 signals:
-	/**
-		Served sent information about status change for unknown user.
-	**/
-	void userStatusChangeIgnored(Buddy);
-
+    /**
+            Served sent information about status change for unknown user.
+    **/
+    void userStatusChangeIgnored(Buddy);
 };
 
-#endif // GADU_PROTOCOL_H
+#endif   // GADU_PROTOCOL_H

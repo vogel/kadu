@@ -24,8 +24,7 @@
 
 #include "group-talkable-filter.h"
 
-GroupTalkableFilter::GroupTalkableFilter(QObject *parent) :
-		TalkableFilter(parent)
+GroupTalkableFilter::GroupTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
 }
 
@@ -35,44 +34,44 @@ GroupTalkableFilter::~GroupTalkableFilter()
 
 bool GroupTalkableFilter::acceptGroupList(const QSet<Group> &groups, bool showInEverybodyGroup)
 {
-	switch (CurrentGroupFilter.filterType())
-	{
-		case GroupFilterInvalid:
-			return true;
-		case GroupFilterRegular:
-			return groups.contains(CurrentGroupFilter.group());
-		case GroupFilterEverybody:
-			return showInEverybodyGroup;
-		case GroupFilterUngroupped:
-			return groups.isEmpty();
-	}
+    switch (CurrentGroupFilter.filterType())
+    {
+    case GroupFilterInvalid:
+        return true;
+    case GroupFilterRegular:
+        return groups.contains(CurrentGroupFilter.group());
+    case GroupFilterEverybody:
+        return showInEverybodyGroup;
+    case GroupFilterUngroupped:
+        return groups.isEmpty();
+    }
 
-	return false;
+    return false;
 }
 
 TalkableFilter::FilterResult GroupTalkableFilter::filterChat(const Chat &chat)
 {
-	if (acceptGroupList(chat.groups(), chat.showInAllGroup()))
-		return Undecided;
-	else
-		return Rejected;
+    if (acceptGroupList(chat.groups(), chat.showInAllGroup()))
+        return Undecided;
+    else
+        return Rejected;
 }
 
 TalkableFilter::FilterResult GroupTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (acceptGroupList(buddy.groups(), buddy.showInAllGroup()))
-		return Undecided;
-	else
-		return Rejected;
+    if (acceptGroupList(buddy.groups(), buddy.showInAllGroup()))
+        return Undecided;
+    else
+        return Rejected;
 }
 
 void GroupTalkableFilter::setGroupFilter(const GroupFilter &groupFilter)
 {
-	if (CurrentGroupFilter == groupFilter)
-		return;
+    if (CurrentGroupFilter == groupFilter)
+        return;
 
-	CurrentGroupFilter = groupFilter;
-	emit filterChanged();
+    CurrentGroupFilter = groupFilter;
+    emit filterChanged();
 }
 
 #include "moc_group-talkable-filter.cpp"

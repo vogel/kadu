@@ -26,6 +26,5 @@
 class QMqttMessageSender
 {
 public:
-	static QByteArray writeMessage(const QMqttMessage &message);
-
+    static QByteArray writeMessage(const QMqttMessage &message);
 };

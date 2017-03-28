@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-ImageLinkPluginObject::ImageLinkPluginObject(QObject *parent) :
-		QObject{parent}
+ImageLinkPluginObject::ImageLinkPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,47 +38,52 @@ ImageLinkPluginObject::~ImageLinkPluginObject()
 
 void ImageLinkPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domVisitorProviderRepository = domVisitorProviderRepository;
+    m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
-void ImageLinkPluginObject::setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider)
+void ImageLinkPluginObject::setImageExpanderDomVisitorProvider(
+    ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider)
 {
-	m_imageExpanderDomVisitorProvider = imageExpanderDomVisitorProvider;
+    m_imageExpanderDomVisitorProvider = imageExpanderDomVisitorProvider;
 }
 
 void ImageLinkPluginObject::setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator)
 {
-	m_imageLinkConfigurator = imageLinkConfigurator;
+    m_imageLinkConfigurator = imageLinkConfigurator;
 }
 
-void ImageLinkPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void ImageLinkPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void ImageLinkPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
-void ImageLinkPluginObject::setVideoExpanderDomVisitorProvider(VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider)
+void ImageLinkPluginObject::setVideoExpanderDomVisitorProvider(
+    VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider)
 {
-	m_videoExpanderDomVisitorProvider = videoExpanderDomVisitorProvider;
+    m_videoExpanderDomVisitorProvider = videoExpanderDomVisitorProvider;
 }
 
 void ImageLinkPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
-	m_domVisitorProviderRepository->addVisitorProvider(m_imageExpanderDomVisitorProvider, -100);
-	m_domVisitorProviderRepository->addVisitorProvider(m_videoExpanderDomVisitorProvider, -50);
-	m_imageLinkConfigurator->configure();
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
+    m_domVisitorProviderRepository->addVisitorProvider(m_imageExpanderDomVisitorProvider, -100);
+    m_domVisitorProviderRepository->addVisitorProvider(m_videoExpanderDomVisitorProvider, -50);
+    m_imageLinkConfigurator->configure();
 }
 
 void ImageLinkPluginObject::done()
 {
-	m_domVisitorProviderRepository->removeVisitorProvider(m_videoExpanderDomVisitorProvider);
-	m_domVisitorProviderRepository->removeVisitorProvider(m_imageExpanderDomVisitorProvider);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
+    m_domVisitorProviderRepository->removeVisitorProvider(m_videoExpanderDomVisitorProvider);
+    m_domVisitorProviderRepository->removeVisitorProvider(m_imageExpanderDomVisitorProvider);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
 }
 
 #include "moc_image-link-plugin-object.cpp"

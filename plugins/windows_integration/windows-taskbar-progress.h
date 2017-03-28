@@ -30,16 +30,15 @@ class QWinTaskbarProgress;
 
 class WindowsTaskbarProgress : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit WindowsTaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent = nullptr);
-	virtual ~WindowsTaskbarProgress();
+    explicit WindowsTaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent = nullptr);
+    virtual ~WindowsTaskbarProgress();
 
 private:
-	QWinTaskbarProgress *m_taskbarProgress;
+    QWinTaskbarProgress *m_taskbarProgress;
 
 private slots:
-	void progressChanged(int progress);
-
+    void progressChanged(int progress);
 };

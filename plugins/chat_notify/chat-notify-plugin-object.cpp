@@ -26,8 +26,7 @@
 #include "core/core.h"
 #include "notification/notifier-repository.h"
 
-ChatNotifyPluginObject::ChatNotifyPluginObject(QObject *parent) :
-		QObject{parent}
+ChatNotifyPluginObject::ChatNotifyPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,43 +36,43 @@ ChatNotifyPluginObject::~ChatNotifyPluginObject()
 
 void ChatNotifyPluginObject::setChatNotifier(ChatNotifier *chatNotifier)
 {
-	m_chatNotifier = chatNotifier;
+    m_chatNotifier = chatNotifier;
 }
 
 void ChatNotifyPluginObject::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ChatNotifyPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void ChatNotifyPluginObject::init()
 {
-	createDefaultConfiguration();
-	
-	m_notifierRepository->registerNotifier(m_chatNotifier);
+    createDefaultConfiguration();
+
+    m_notifierRepository->registerNotifier(m_chatNotifier);
 }
 
 void ChatNotifyPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_chatNotifier);
+    m_notifierRepository->unregisterNotifier(m_chatNotifier);
 }
 
 void ChatNotifyPluginObject::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
-	m_configuration->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "FileTransfer/IncomingFile_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToAway_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToDoNotDisturb_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToFreeForChat_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToNotAvailable_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOffline_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
+    m_configuration->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
 }
 
 #include "moc_chat-notify-plugin-object.cpp"

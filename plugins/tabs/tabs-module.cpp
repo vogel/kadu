@@ -27,11 +27,11 @@
 
 TabsModule::TabsModule()
 {
-	add_type<AttachTabAction>();
-	add_type<OpenInNewTabAction>();
-	add_type<TabsChatWidgetContainerHandler>();
-	add_type<TabsManager>();
-	add_type<TabsPluginObject>();
+    add_type<AttachTabAction>();
+    add_type<OpenInNewTabAction>();
+    add_type<TabsChatWidgetContainerHandler>();
+    add_type<TabsManager>();
+    add_type<TabsPluginObject>();
 }
 
 TabsModule::~TabsModule()

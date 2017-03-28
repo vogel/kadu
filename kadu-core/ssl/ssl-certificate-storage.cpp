@@ -26,8 +26,7 @@
 
 #include <QtNetwork/QSslCertificate>
 
-SslCertificateStorage::SslCertificateStorage(QObject *parent) :
-		QObject{parent}
+SslCertificateStorage::SslCertificateStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,49 +36,49 @@ SslCertificateStorage::~SslCertificateStorage()
 
 void SslCertificateStorage::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
-	m_storagePointFactory = storagePointFactory;
+    m_storagePointFactory = storagePointFactory;
 }
 
 std::unique_ptr<StoragePoint> SslCertificateStorage::storagePoint() const
 {
-	if (!m_storagePointFactory)
-		return {};
-	return m_storagePointFactory.data()->createStoragePoint(QStringLiteral("SslCertificates"));
+    if (!m_storagePointFactory)
+        return {};
+    return m_storagePointFactory.data()->createStoragePoint(QStringLiteral("SslCertificates"));
 }
 
 QSet<SslCertificate> SslCertificateStorage::loadCertificates() const
 {
-	auto storage = storagePoint();
-	if (!storage)
-		return {};
+    auto storage = storagePoint();
+    if (!storage)
+        return {};
 
-	auto result = QSet<SslCertificate>{};
-	auto elements = storage->storage()->getNodes(storage->point(), QStringLiteral("Certificate"));
-	for (const auto &element : elements)
-	{
-		auto hostName = element.attribute("hostName");
-		auto pemHexEncodedCertificate = element.text().toUtf8();
-		if (!hostName.isEmpty() && !pemHexEncodedCertificate.isEmpty())
-			result.insert(SslCertificate{hostName, pemHexEncodedCertificate});
-	}
-	return result;
+    auto result = QSet<SslCertificate>{};
+    auto elements = storage->storage()->getNodes(storage->point(), QStringLiteral("Certificate"));
+    for (const auto &element : elements)
+    {
+        auto hostName = element.attribute("hostName");
+        auto pemHexEncodedCertificate = element.text().toUtf8();
+        if (!hostName.isEmpty() && !pemHexEncodedCertificate.isEmpty())
+            result.insert(SslCertificate{hostName, pemHexEncodedCertificate});
+    }
+    return result;
 }
 
 void SslCertificateStorage::storeCertificates(const QSet<SslCertificate> &certificates) const
 {
-	auto storage = storagePoint();
-	if (!storage)
-		return;
+    auto storage = storagePoint();
+    if (!storage)
+        return;
 
-	storage->storage()->removeChildren(storage->point());
+    storage->storage()->removeChildren(storage->point());
 
-	for (const auto &certificate : certificates)
-	{
-		auto element = storage->storage()->createElement(storage->point(), QStringLiteral("Certificate"));
-		auto textNode = element.ownerDocument().createTextNode(certificate.pemHexEncodedCertificate());
-		element.setAttribute("hostName", certificate.hostName());
-		element.appendChild(textNode);
-	}
+    for (const auto &certificate : certificates)
+    {
+        auto element = storage->storage()->createElement(storage->point(), QStringLiteral("Certificate"));
+        auto textNode = element.ownerDocument().createTextNode(certificate.pemHexEncodedCertificate());
+        element.setAttribute("hostName", certificate.hostName());
+        element.appendChild(textNode);
+    }
 }
 
 #include "moc_ssl-certificate-storage.cpp"

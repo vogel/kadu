@@ -24,8 +24,8 @@
 
 PCSpeakerModule::PCSpeakerModule()
 {
-	add_type<PCSpeakerNotifier>();
-	add_type<PCSpeakerPluginObject>();
+    add_type<PCSpeakerNotifier>();
+    add_type<PCSpeakerPluginObject>();
 }
 
 PCSpeakerModule::~PCSpeakerModule()

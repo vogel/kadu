@@ -35,18 +35,17 @@ class QVariant;
 
 class KADUAPI ContactDataExtractor : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ContactDataExtractor(QObject *parent = nullptr);
-	virtual ~ContactDataExtractor();
+    Q_INVOKABLE explicit ContactDataExtractor(QObject *parent = nullptr);
+    virtual ~ContactDataExtractor();
 
-	QVariant data(const Contact &contact, int role, bool useBuddyData);
+    QVariant data(const Contact &contact, int role, bool useBuddyData);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

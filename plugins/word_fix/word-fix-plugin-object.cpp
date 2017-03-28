@@ -27,8 +27,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-WordFixPluginObject::WordFixPluginObject(QObject *parent) :
-		QObject{parent}
+WordFixPluginObject::WordFixPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,41 +35,45 @@ WordFixPluginObject::~WordFixPluginObject()
 {
 }
 
-void WordFixPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void WordFixPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void WordFixPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void WordFixPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void WordFixPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void WordFixPluginObject::setWordFixConfigurationUiHandler(WordFixConfigurationUiHandler *wordFixConfigurationUiHandler)
 {
-	m_wordFixConfigurationUiHandler = wordFixConfigurationUiHandler;
+    m_wordFixConfigurationUiHandler = wordFixConfigurationUiHandler;
 }
 
 void WordFixPluginObject::setWordFix(WordFix *wordFix)
 {
-	m_wordFix = wordFix;
+    m_wordFix = wordFix;
 }
 
 void WordFixPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_wordFixConfigurationUiHandler);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_wordFixConfigurationUiHandler);
 }
 
 void WordFixPluginObject::done()
 {
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_wordFixConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_wordFixConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
 }
 
 #include "moc_word-fix-plugin-object.cpp"

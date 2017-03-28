@@ -26,15 +26,14 @@
 
 class FirstSearchAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit FirstSearchAction(QObject *parent = nullptr);
-	virtual ~FirstSearchAction();
+    Q_INVOKABLE explicit FirstSearchAction(QObject *parent = nullptr);
+    virtual ~FirstSearchAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 };

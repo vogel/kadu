@@ -34,26 +34,25 @@ class MessageManager;
 
 class CenzorMessageFilter : public QObject, public MessageFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit CenzorMessageFilter(QObject *parent = nullptr);
-	virtual ~CenzorMessageFilter();
+    Q_INVOKABLE explicit CenzorMessageFilter(QObject *parent = nullptr);
+    virtual ~CenzorMessageFilter();
 
 protected:
-	virtual bool acceptMessage(const Message &message);
+    virtual bool acceptMessage(const Message &message);
 
 private:
-	QPointer<CenzorConfiguration> m_cenzorConfiguration;
-	QPointer<CenzorNotificationService> m_cenzorNotificationService;
-	QPointer<MessageManager> m_messageManager;
+    QPointer<CenzorConfiguration> m_cenzorConfiguration;
+    QPointer<CenzorNotificationService> m_cenzorNotificationService;
+    QPointer<MessageManager> m_messageManager;
 
-	bool shouldIgnore(const QString &message);
-	bool isExclusion(const QString &word);
+    bool shouldIgnore(const QString &message);
+    bool isExclusion(const QString &word);
 
 private slots:
-	INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
-	INJEQT_SET void setCenzorNotificationService(CenzorNotificationService *cenzorNotificationService);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-
+    INJEQT_SET void setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration);
+    INJEQT_SET void setCenzorNotificationService(CenzorNotificationService *cenzorNotificationService);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
 };

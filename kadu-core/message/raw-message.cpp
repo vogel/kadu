@@ -23,31 +23,26 @@ RawMessage::RawMessage()
 {
 }
 
-RawMessage::RawMessage(QByteArray rawPlainContent, QByteArray rawXmlContent) :
-		m_rawPlainContent{std::move(rawPlainContent)},
-		m_rawXmlContent{std::move(rawXmlContent)}
+RawMessage::RawMessage(QByteArray rawPlainContent, QByteArray rawXmlContent)
+        : m_rawPlainContent{std::move(rawPlainContent)}, m_rawXmlContent{std::move(rawXmlContent)}
 {
 }
 
-RawMessage::RawMessage(const QByteArray &plainContent) :
-		m_rawPlainContent{plainContent},
-		m_rawXmlContent{plainContent}
+RawMessage::RawMessage(const QByteArray &plainContent) : m_rawPlainContent{plainContent}, m_rawXmlContent{plainContent}
 {
 }
 
 QByteArray RawMessage::rawContent() const
 {
-	return m_rawXmlContent.isEmpty()
-		? m_rawPlainContent
-		: m_rawXmlContent;
+    return m_rawXmlContent.isEmpty() ? m_rawPlainContent : m_rawXmlContent;
 }
 
 QByteArray RawMessage::rawPlainContent() const
 {
-	return m_rawPlainContent;
+    return m_rawPlainContent;
 }
 
 QByteArray RawMessage::rawXmlContent() const
 {
-	return m_rawXmlContent;
+    return m_rawXmlContent;
 }

@@ -31,17 +31,16 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLineEdit>
 
-ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent) :
-		NotifierConfigurationWidget(parent)
+ExecConfigurationWidget::ExecConfigurationWidget(QWidget *parent) : NotifierConfigurationWidget(parent)
 {
-	m_commandLineEdit = new QLineEdit(this);
-	m_commandLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify));
+    m_commandLineEdit = new QLineEdit(this);
+    m_commandLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxTextNotify));
 
-	auto layout = new QHBoxLayout(this);
-	layout->setMargin(0);
-	layout->addWidget(m_commandLineEdit);
+    auto layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->addWidget(m_commandLineEdit);
 
-	static_cast<NotifyGroupBox *>(parent)->addWidget(this);
+    static_cast<NotifyGroupBox *>(parent)->addWidget(this);
 }
 
 ExecConfigurationWidget::~ExecConfigurationWidget()
@@ -50,28 +49,29 @@ ExecConfigurationWidget::~ExecConfigurationWidget()
 
 void ExecConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ExecConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!m_currentNotificationEvent.isEmpty())
-		m_commands[m_currentNotificationEvent] = m_commandLineEdit->text();
+    if (!m_currentNotificationEvent.isEmpty())
+        m_commands[m_currentNotificationEvent] = m_commandLineEdit->text();
 
-	for (QMap<QString, QString>::const_iterator it = m_commands.constBegin(), end = m_commands.constEnd(); it != end; ++it)
-		m_configuration->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
+    for (QMap<QString, QString>::const_iterator it = m_commands.constBegin(), end = m_commands.constEnd(); it != end;
+         ++it)
+        m_configuration->deprecatedApi()->writeEntry("Exec Notify", it.key() + "Cmd", it.value());
 }
 
 void ExecConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!m_currentNotificationEvent.isEmpty())
-		m_commands[m_currentNotificationEvent] = m_commandLineEdit->text();
-	m_currentNotificationEvent = event;
+    if (!m_currentNotificationEvent.isEmpty())
+        m_commands[m_currentNotificationEvent] = m_commandLineEdit->text();
+    m_currentNotificationEvent = event;
 
-	if (m_commands.contains(event))
-		m_commandLineEdit->setText(m_commands[event]);
-	else
-		m_commandLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
+    if (m_commands.contains(event))
+        m_commandLineEdit->setText(m_commands[event]);
+    else
+        m_commandLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
 }
 
 #include "moc_exec-configuration-widget.cpp"

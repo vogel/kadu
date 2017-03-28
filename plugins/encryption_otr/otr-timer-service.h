@@ -31,29 +31,28 @@ class OtrUserStateService;
 
 class OtrTimerService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void otrTimerTimeout();
+    void otrTimerTimeout();
 
 public:
-	static void wrapperOtrTimerControl(void *data, unsigned int interval);
+    static void wrapperOtrTimerControl(void *data, unsigned int interval);
 
-	Q_INVOKABLE OtrTimerService();
-	virtual ~OtrTimerService();
+    Q_INVOKABLE OtrTimerService();
+    virtual ~OtrTimerService();
 
 private slots:
-	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
-	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+    INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
-	QPointer<OtrAppOpsService> AppOpsService;
-	QPointer<OtrOpDataFactory> OpDataFactory;
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrAppOpsService> AppOpsService;
+    QPointer<OtrOpDataFactory> OpDataFactory;
+    QPointer<OtrUserStateService> UserStateService;
 
-	QTimer *Timer;
+    QTimer *Timer;
 
-	void timerControl(unsigned int intervalInSeconds);
-
+    void timerControl(unsigned int intervalInSeconds);
 };

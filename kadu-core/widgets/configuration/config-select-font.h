@@ -31,27 +31,28 @@ class QLabel;
 class ConfigGroupBox;
 
 /**
-	&lt;select-font caption="caption" id="id" /&gt;
+        &lt;select-font caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigSelectFont : public SelectFont, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigSelectFont(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox0, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigSelectFont();
+    ConfigSelectFont(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigSelectFont(ConfigGroupBox *parentConfigGroupBox0, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigSelectFont();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
-
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 };
 
 #endif

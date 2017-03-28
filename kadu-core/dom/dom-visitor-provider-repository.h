@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/iterator.h"
 #include "exports.h"
+#include "misc/iterator.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -29,54 +29,53 @@ class DomVisitorProvider;
 
 class KADUAPI DomVisitorProviderRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Item = std::pair<int, DomVisitorProvider *>;
-	using Storage = std::vector<Item>;
+    using Item = std::pair<int, DomVisitorProvider *>;
+    using Storage = std::vector<Item>;
 
 public:
-	using WrappedIterator = Storage::const_iterator;
-	using Iterator = IteratorWrapper<WrappedIterator, DomVisitorProvider *>;
+    using WrappedIterator = Storage::const_iterator;
+    using Iterator = IteratorWrapper<WrappedIterator, DomVisitorProvider *>;
 
-	Q_INVOKABLE explicit DomVisitorProviderRepository(QObject *parent = nullptr);
-	virtual ~DomVisitorProviderRepository();
+    Q_INVOKABLE explicit DomVisitorProviderRepository(QObject *parent = nullptr);
+    virtual ~DomVisitorProviderRepository();
 
-	/**
-	 * @short Register new DomVisitorProvider with given priority.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitorProvider visitor provider to register
-	 * @param priority priority of new provider, smaller priorities are called first
-	 *
-	 * If given DomVisitorProvider is already registered, nothing will happen.
-	 */
-	void addVisitorProvider(DomVisitorProvider *visitorProvider, int priority);
+    /**
+     * @short Register new DomVisitorProvider with given priority.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitorProvider visitor provider to register
+     * @param priority priority of new provider, smaller priorities are called first
+     *
+     * If given DomVisitorProvider is already registered, nothing will happen.
+     */
+    void addVisitorProvider(DomVisitorProvider *visitorProvider, int priority);
 
-	/**
-	 * @short Unegister new DomVisitorProvider with given priority.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitorProvider visitor provider to unregister
-	 *
-	 * If given DomVisitorProvider is not registered, nothing will happen.
-	 */
-	void removeVisitorProvider(DomVisitorProvider *visitorProvider);
+    /**
+     * @short Unegister new DomVisitorProvider with given priority.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitorProvider visitor provider to unregister
+     *
+     * If given DomVisitorProvider is not registered, nothing will happen.
+     */
+    void removeVisitorProvider(DomVisitorProvider *visitorProvider);
 
-	Iterator begin() const;
-	Iterator end() const;
-	std::size_t size() const;
+    Iterator begin() const;
+    Iterator end() const;
+    std::size_t size() const;
 
 private:
-	Storage m_visitorProviders;
+    Storage m_visitorProviders;
 
-	void updateVisitors() const;
-
+    void updateVisitors() const;
 };
 
 inline DomVisitorProviderRepository::Iterator begin(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	return domVisitorProviderRepository->begin();
+    return domVisitorProviderRepository->begin();
 }
 
 inline DomVisitorProviderRepository::Iterator end(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	return domVisitorProviderRepository->end();
+    return domVisitorProviderRepository->end();
 }

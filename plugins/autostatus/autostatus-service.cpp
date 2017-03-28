@@ -27,106 +27,106 @@
 #include "status/status-changer-manager.h"
 #include "windows/message-dialog.h"
 
-#include "configuration/autostatus-configuration.h"
 #include "autostatus-status-changer.h"
+#include "configuration/autostatus-configuration.h"
 
 #include "autostatus-service.h"
 
-AutostatusService::AutostatusService(QObject *parent) :
-		QObject{parent}
+AutostatusService::AutostatusService(QObject *parent) : QObject{parent}
 {
-	Timer = new QTimer(this);
-	connect(Timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
+    Timer = new QTimer(this);
+    connect(Timer, SIGNAL(timeout()), this, SLOT(changeStatus()));
 }
 
 AutostatusService::~AutostatusService()
 {
-	Timer->stop();
+    Timer->stop();
 }
 
 void AutostatusService::setAutostatusConfiguration(AutostatusConfiguration *autostatusConfiguration)
 {
-	m_autostatusConfiguration = autostatusConfiguration;
+    m_autostatusConfiguration = autostatusConfiguration;
 }
 
 void AutostatusService::setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger)
 {
-	m_autostatusStatusChanger = autostatusStatusChanger;
+    m_autostatusStatusChanger = autostatusStatusChanger;
 }
 
 void AutostatusService::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void AutostatusService::on()
 {
-	m_autostatusStatusChanger->setEnabled(true);
-	Timer->start(m_autostatusConfiguration->autoTime() * 1000);
-	changeStatus();
+    m_autostatusStatusChanger->setEnabled(true);
+    Timer->start(m_autostatusConfiguration->autoTime() * 1000);
+    changeStatus();
 }
 
 void AutostatusService::off()
 {
-	Timer->stop();
-	m_autostatusStatusChanger->setEnabled(false);
+    Timer->stop();
+    m_autostatusStatusChanger->setEnabled(false);
 }
 
 void AutostatusService::changeStatus()
 {
-	if (CurrentDescription == DescriptionList.constEnd())
-		CurrentDescription = DescriptionList.constBegin();
+    if (CurrentDescription == DescriptionList.constEnd())
+        CurrentDescription = DescriptionList.constBegin();
 
-	m_autostatusStatusChanger->setConfiguration(m_autostatusConfiguration->autoStatus(), *CurrentDescription);
-	CurrentDescription++;
+    m_autostatusStatusChanger->setConfiguration(m_autostatusConfiguration->autoStatus(), *CurrentDescription);
+    CurrentDescription++;
 }
 
 bool AutostatusService::readDescriptionList()
 {
-	if (!QFile::exists(m_autostatusConfiguration->statusFilePath()))
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), "Autostatus", "File does not exist !");
-		return false;
-	}
+    if (!QFile::exists(m_autostatusConfiguration->statusFilePath()))
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-information")), "Autostatus", "File does not exist !");
+        return false;
+    }
 
-	DescriptionList.clear();
+    DescriptionList.clear();
 
-	QFile file(m_autostatusConfiguration->statusFilePath());
+    QFile file(m_autostatusConfiguration->statusFilePath());
 
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return false;
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
 
-	QTextStream stream(&file);
+    QTextStream stream(&file);
 
-	QString description;
-	while (!stream.atEnd())
-	{
-		description = stream.readLine();
-		if (!description.isEmpty())
-			DescriptionList += description;
-	}
+    QString description;
+    while (!stream.atEnd())
+    {
+        description = stream.readLine();
+        if (!description.isEmpty())
+            DescriptionList += description;
+    }
 
-	file.close();
+    file.close();
 
-	return !DescriptionList.isEmpty();
+    return !DescriptionList.isEmpty();
 }
 
 void AutostatusService::toggle(bool toggled)
 {
-	if (!toggled)
-	{
-		off();
-//		kadu->mainMenu()->setItemChecked(menuID, false);
-		DescriptionList.clear();
-		return;
-	}
+    if (!toggled)
+    {
+        off();
+        //		kadu->mainMenu()->setItemChecked(menuID, false);
+        DescriptionList.clear();
+        return;
+    }
 
-	if (readDescriptionList())
-	{
-		//	kadu->mainMenu()->setItemChecked(menuID, true);
-		CurrentDescription = DescriptionList.constBegin();
-		on();
-	}
+    if (readDescriptionList())
+    {
+        //	kadu->mainMenu()->setItemChecked(menuID, true);
+        CurrentDescription = DescriptionList.constBegin();
+        on();
+    }
 }
 
 #include "moc_autostatus-service.cpp"

@@ -31,25 +31,24 @@ class PathsProvider;
 
 class MpdPlayerPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);
-	virtual ~MpdPlayerPluginObject();
+    Q_INVOKABLE explicit MpdPlayerPluginObject(QObject *parent = nullptr);
+    virtual ~MpdPlayerPluginObject();
 
 private:
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<MediaPlayer> m_mediaPlayer;
-	QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<MediaPlayer> m_mediaPlayer;
+    QPointer<MPDMediaPlayer> m_mpdMediaPlayer;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
-	INJEQT_SET void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
+    INJEQT_SET void setMPDMediaPlayer(MPDMediaPlayer *mpdMediaPlayer);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

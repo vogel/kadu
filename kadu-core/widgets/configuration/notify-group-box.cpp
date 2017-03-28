@@ -26,17 +26,16 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHBoxLayout>
 
-NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QWidget *parent) :
-		QWidget{parent},
-		m_notificator{notificator}
+NotifyGroupBox::NotifyGroupBox(Notifier *notificator, const QString &caption, QWidget *parent)
+        : QWidget{parent}, m_notificator{notificator}
 {
-	auto layout = new QHBoxLayout(this);
-	layout->setMargin(0);
-	layout->setSpacing(0);
+    auto layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
-	m_notifierCheckBox = make_owned<QCheckBox>(caption, this);
-	layout->addWidget(m_notifierCheckBox);
-	connect(m_notifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
+    m_notifierCheckBox = make_owned<QCheckBox>(caption, this);
+    layout->addWidget(m_notifierCheckBox);
+    connect(m_notifierCheckBox, SIGNAL(clicked(bool)), this, SLOT(toggledSlot(bool)));
 }
 
 NotifyGroupBox::~NotifyGroupBox()
@@ -45,34 +44,34 @@ NotifyGroupBox::~NotifyGroupBox()
 
 void NotifyGroupBox::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void NotifyGroupBox::init()
 {
-	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+    connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 void NotifyGroupBox::setChecked(bool checked)
 {
-	m_notifierCheckBox->setChecked(checked);
+    m_notifierCheckBox->setChecked(checked);
 }
 
 void NotifyGroupBox::addWidget(QWidget *widget)
 {
-	layout()->addWidget(widget);
-	widget->setEnabled(m_notifierCheckBox->isChecked());
-	connect(m_notifierCheckBox, SIGNAL(toggled(bool)), widget, SLOT(setEnabled(bool)));
+    layout()->addWidget(widget);
+    widget->setEnabled(m_notifierCheckBox->isChecked());
+    connect(m_notifierCheckBox, SIGNAL(toggled(bool)), widget, SLOT(setEnabled(bool)));
 }
 
 void NotifyGroupBox::toggledSlot(bool toggle)
 {
-	emit toggled(m_notificator, toggle);
+    emit toggled(m_notificator, toggle);
 }
 
 void NotifyGroupBox::iconThemeChanged()
 {
-	m_notifierCheckBox->setIcon(m_iconsManager->iconByPath(m_notificator->icon()));
+    m_notifierCheckBox->setIcon(m_iconsManager->iconByPath(m_notificator->icon()));
 }
 
 #include "moc_notify-group-box.cpp"

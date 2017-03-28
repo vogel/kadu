@@ -28,13 +28,11 @@
 
 class VideoExpander : public DomTextRegexpVisitor
 {
-
 public:
-	VideoExpander();
-	virtual ~VideoExpander();
+    VideoExpander();
+    virtual ~VideoExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
-
+    virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 };
 
-#endif // VIDEO_EXPANDER_H
+#endif   // VIDEO_EXPANDER_H

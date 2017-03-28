@@ -23,9 +23,9 @@
 
 class WindowsIntegrationModule : public injeqt::module
 {
-
 public:
-	WindowsIntegrationModule();
-	virtual ~WindowsIntegrationModule() {}
-
+    WindowsIntegrationModule();
+    virtual ~WindowsIntegrationModule()
+    {
+    }
 };

@@ -38,75 +38,74 @@ class QToolButton;
 
 class FileTransferWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FileTransferWidget(FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
-	virtual ~FileTransferWidget();
+    explicit FileTransferWidget(FileTransfer transfer = FileTransfer::null, QWidget *parent = nullptr);
+    virtual ~FileTransferWidget();
 
-	FileTransfer fileTransfer() const;
+    FileTransfer fileTransfer() const;
 
 private:
-	QPointer<FileTransferManager> m_fileTransferManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	FileTransfer m_transfer;
+    FileTransfer m_transfer;
 
-	QDateTime m_lastUpdateTime;
-	unsigned long m_lastTransferredSize;
-	unsigned long m_speed;
+    QDateTime m_lastUpdateTime;
+    unsigned long m_lastTransferredSize;
+    unsigned long m_speed;
 
-	owned_qptr<QLabel> m_fileNameLabel;
-	owned_qptr<QLabel> m_statusLabel;
-	owned_qptr<QProgressBar> m_progressBar;
-	owned_qptr<QPushButton> m_sendButton;
-	owned_qptr<QAction> m_openFileAction;
-	owned_qptr<QAction> m_openFolderAction;
-	owned_qptr<QPushButton> m_acceptButton;
-	owned_qptr<QPushButton> m_rejectButton;
-	owned_qptr<QPushButton> m_saveButton;
-	owned_qptr<QPushButton> m_stopButton;
-	owned_qptr<QPushButton> m_openButton;
-	owned_qptr<QToolButton> m_removeButton;
+    owned_qptr<QLabel> m_fileNameLabel;
+    owned_qptr<QLabel> m_statusLabel;
+    owned_qptr<QProgressBar> m_progressBar;
+    owned_qptr<QPushButton> m_sendButton;
+    owned_qptr<QAction> m_openFileAction;
+    owned_qptr<QAction> m_openFolderAction;
+    owned_qptr<QPushButton> m_acceptButton;
+    owned_qptr<QPushButton> m_rejectButton;
+    owned_qptr<QPushButton> m_saveButton;
+    owned_qptr<QPushButton> m_stopButton;
+    owned_qptr<QPushButton> m_openButton;
+    owned_qptr<QToolButton> m_removeButton;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void update();
-	void updateButtons();
-	void updateFileNameLabel();
-	void updateStatusLabel();
-	void updateProgressBar();
-	void updateTransferData();
+    void update();
+    void updateButtons();
+    void updateFileNameLabel();
+    void updateStatusLabel();
+    void updateProgressBar();
+    void updateTransferData();
 
-	bool canAccept() const;
-	void accept();
+    bool canAccept() const;
+    void accept();
 
-	bool canReject() const;
-	void reject();
+    bool canReject() const;
+    void reject();
 
-	bool canSave() const;
-	void save();
+    bool canSave() const;
+    void save();
 
-	bool canSend() const;
-	void send();
+    bool canSend() const;
+    void send();
 
-	bool canStop() const;
-	void stop();
+    bool canStop() const;
+    void stop();
 
-	bool canOpenFile() const;
-	void openFile();
+    bool canOpenFile() const;
+    void openFile();
 
-	bool canOpenFolder() const;
-	void openFolder();
+    bool canOpenFolder() const;
+    void openFolder();
 
-	bool canRemove() const;
-	void remove();
-
+    bool canRemove() const;
+    void remove();
 };

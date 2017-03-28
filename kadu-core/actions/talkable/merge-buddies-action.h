@@ -29,21 +29,20 @@ class Myself;
 
 class MergeBuddiesAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit MergeBuddiesAction(QObject *parent = nullptr);
-	virtual ~MergeBuddiesAction();
+    Q_INVOKABLE explicit MergeBuddiesAction(QObject *parent = nullptr);
+    virtual ~MergeBuddiesAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<Myself> m_myself;
+    QPointer<Myself> m_myself;
 
 private slots:
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setMyself(Myself *myself);
 };

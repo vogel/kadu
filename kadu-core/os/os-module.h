@@ -25,9 +25,7 @@
 
 class KADUAPI OsModule : public injeqt::module
 {
-
 public:
-	explicit OsModule();
-	virtual ~OsModule();
-
+    explicit OsModule();
+    virtual ~OsModule();
 };

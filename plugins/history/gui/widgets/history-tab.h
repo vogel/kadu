@@ -41,43 +41,42 @@
  */
 class HistoryTab : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new HistoryTab widget.
-	 * @param parent parent widget
-	 */
-	explicit HistoryTab(QWidget *parent = nullptr);
-	virtual ~HistoryTab();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new HistoryTab widget.
+     * @param parent parent widget
+     */
+    explicit HistoryTab(QWidget *parent = nullptr);
+    virtual ~HistoryTab();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns sizes of subwidgets.
-	 * @return sizes of subwidgets
-	 *
-	 * This list contains 4 values: width of left widget, width of right widget, height
-	 * of top-right widget and height of bottom-right widget. It is enought to describe sizez
-	 * of whole widget.
-	 */
-	virtual QList<int> sizes() const = 0;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns sizes of subwidgets.
+     * @return sizes of subwidgets
+     *
+     * This list contains 4 values: width of left widget, width of right widget, height
+     * of top-right widget and height of bottom-right widget. It is enought to describe sizez
+     * of whole widget.
+     */
+    virtual QList<int> sizes() const = 0;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets sizes of subwidgets.
-	 * @param newSizes new sizes of subwidgets
-	 *
-	 * Passed list must contain 4 values: new width of left widget, new width of right widget,
-	 * new height of top-right widget and new height of bottom-right widget.
-	 * If it does not, assertion is thrown.
-	 */
-	virtual void setSizes(const QList<int> &newSizes) = 0;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets sizes of subwidgets.
+     * @param newSizes new sizes of subwidgets
+     *
+     * Passed list must contain 4 values: new width of left widget, new width of right widget,
+     * new height of top-right widget and new height of bottom-right widget.
+     * If it does not, assertion is thrown.
+     */
+    virtual void setSizes(const QList<int> &newSizes) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // HISTORY_TAB_H
+#endif   // HISTORY_TAB_H

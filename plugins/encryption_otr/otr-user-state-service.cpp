@@ -21,17 +21,17 @@
 
 OtrUserStateService::OtrUserStateService()
 {
-	UserState = otrl_userstate_create();
+    UserState = otrl_userstate_create();
 }
 
 OtrUserStateService::~OtrUserStateService()
 {
-	otrl_userstate_free(UserState);
+    otrl_userstate_free(UserState);
 }
 
 OtrlUserState OtrUserStateService::userState() const
 {
-	return UserState;
+    return UserState;
 }
 
 #include "moc_otr-user-state-service.cpp"

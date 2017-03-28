@@ -20,10 +20,10 @@
 
 #pragma once
 
+#include "exports.h"
 #include "misc/memory.h"
 #include "network/proxy/network-proxy.h"
 #include "widgets/actions-combo-box.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -34,32 +34,31 @@ class ProxyEditWindowService;
 
 class KADUAPI ProxyComboBox : public ActionsComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ProxyComboBox(QWidget *parent = nullptr);
-	virtual ~ProxyComboBox();
+    explicit ProxyComboBox(QWidget *parent = nullptr);
+    virtual ~ProxyComboBox();
 
-	void enableDefaultProxyAction();
-	void selectDefaultProxy();
-	bool isDefaultProxySelected();
+    void enableDefaultProxyAction();
+    void selectDefaultProxy();
+    bool isDefaultProxySelected();
 
-	void setCurrentProxy(const NetworkProxy &networkProxy);
-	NetworkProxy currentProxy();
+    void setCurrentProxy(const NetworkProxy &networkProxy);
+    NetworkProxy currentProxy();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<ProxyEditWindowService> m_proxyEditWindowService;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ProxyEditWindowService> m_proxyEditWindowService;
 
-	owned_qptr<NetworkProxyModel> m_model;
-	owned_qptr<QAction> m_editProxyAction;
-	owned_qptr<QAction> m_defaultProxyAction;
+    owned_qptr<NetworkProxyModel> m_model;
+    owned_qptr<QAction> m_editProxyAction;
+    owned_qptr<QAction> m_defaultProxyAction;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
+    INJEQT_INIT void init();
 
-	void editProxy();
-
+    void editProxy();
 };

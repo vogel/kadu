@@ -25,16 +25,15 @@
 
 class BuddyContactsTableModelProxy : public QSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
-	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
 public:
-	explicit BuddyContactsTableModelProxy(QObject *parent = nullptr);
-	virtual ~BuddyContactsTableModelProxy();
-
+    explicit BuddyContactsTableModelProxy(QObject *parent = nullptr);
+    virtual ~BuddyContactsTableModelProxy();
 };
 
-#endif // BUDDY_CONTACTS_TABLE_MODEL_PROXY_H
+#endif   // BUDDY_CONTACTS_TABLE_MODEL_PROXY_H

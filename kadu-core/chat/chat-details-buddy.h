@@ -42,38 +42,37 @@ class ChatTypeManager;
  */
 class KADUAPI ChatDetailsBuddy : public ChatDetails
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatDetailsBuddy(ChatShared *chatData);
-	virtual ~ChatDetailsBuddy();
+    explicit ChatDetailsBuddy(ChatShared *chatData);
+    virtual ~ChatDetailsBuddy();
 
-	virtual bool shouldStore();
+    virtual bool shouldStore();
 
-	virtual ChatType * type() const;
-	virtual ContactSet contacts() const;
-	virtual QString name() const;
+    virtual ChatType *type() const;
+    virtual ContactSet contacts() const;
+    virtual QString name() const;
 
-	virtual bool isConnected() const;
+    virtual bool isConnected() const;
 
-	void setBuddy(const Buddy &buddy);
-	Buddy buddy() const;
+    void setBuddy(const Buddy &buddy);
+    Buddy buddy() const;
 
-	void setChats(const QVector<Chat> &chats);
-	const QVector<Chat> & chats() const;
+    void setChats(const QVector<Chat> &chats);
+    const QVector<Chat> &chats() const;
 
-	void addChat(const Chat &chat);
-	void removeChat(const Chat &chat);
+    void addChat(const Chat &chat);
+    void removeChat(const Chat &chat);
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
 
-	Buddy m_buddy;
-	QVector<Chat> m_chats;
+    Buddy m_buddy;
+    QVector<Chat> m_chats;
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 };
 
 /**

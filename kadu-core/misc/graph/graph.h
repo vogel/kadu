@@ -19,65 +19,61 @@
 
 #pragma once
 
+#include "exports.h"
 #include "misc/algorithm.h"
 #include "misc/graph/graph-node.h"
 #include "misc/memory.h"
-#include "exports.h"
 
 #include <map>
 #include <memory>
 
-template<typename P, typename... SuccessorTypeTags>
+template <typename P, typename... SuccessorTypeTags>
 class Graph
 {
-
 public:
-	using Type = Graph<P, SuccessorTypeTags...>;
-	using Pointer = Type*;
-	using PayloadType = P;
-	using NodeType = GraphNode<P, SuccessorTypeTags...>;
-	using NodePointer = NodeType*;
-	using Storage = std::map<PayloadType, std::unique_ptr<NodeType>>;
+    using Type = Graph<P, SuccessorTypeTags...>;
+    using Pointer = Type *;
+    using PayloadType = P;
+    using NodeType = GraphNode<P, SuccessorTypeTags...>;
+    using NodePointer = NodeType *;
+    using Storage = std::map<PayloadType, std::unique_ptr<NodeType>>;
 
-	Graph() = default;
-	Graph(const Graph &) = delete;
-	Graph(Graph &&) = default;
-	Graph & operator = (const Graph &) = delete;
-	Graph & operator = (Graph &&) = default;
+    Graph() = default;
+    Graph(const Graph &) = delete;
+    Graph(Graph &&) = default;
+    Graph &operator=(const Graph &) = delete;
+    Graph &operator=(Graph &&) = default;
 
-	const Storage & nodes() const
-	{
-		return m_nodes;
-	}
+    const Storage &nodes() const
+    {
+        return m_nodes;
+    }
 
-	NodePointer addNode(PayloadType payload)
-	{
-		if (contains(m_nodes, payload))
-			return m_nodes.at(payload).get();
+    NodePointer addNode(PayloadType payload)
+    {
+        if (contains(m_nodes, payload))
+            return m_nodes.at(payload).get();
 
-		auto node = std::make_unique<NodeType>(payload);
-		auto result = node.get();
-		m_nodes.insert(std::make_pair(payload, std::move(node)));
-		return result;
-	}
+        auto node = std::make_unique<NodeType>(payload);
+        auto result = node.get();
+        m_nodes.insert(std::make_pair(payload, std::move(node)));
+        return result;
+    }
 
-	template<typename SuccessorTypeTag>
-	void addEdge(const PayloadType &from, const PayloadType &to)
-	{
-		auto nodeFrom = addNode(from);
-		auto nodeTo = addNode(to);
+    template <typename SuccessorTypeTag>
+    void addEdge(const PayloadType &from, const PayloadType &to)
+    {
+        auto nodeFrom = addNode(from);
+        auto nodeTo = addNode(to);
 
-		nodeFrom->template addSuccessor<SuccessorTypeTag>(nodeTo);
-	}
+        nodeFrom->template addSuccessor<SuccessorTypeTag>(nodeTo);
+    }
 
-	NodePointer node(const PayloadType &payload) const
-	{
-		return contains(m_nodes, payload)
-				? m_nodes.at(payload).get()
-				: nullptr;
-	}
+    NodePointer node(const PayloadType &payload) const
+    {
+        return contains(m_nodes, payload) ? m_nodes.at(payload).get() : nullptr;
+    }
 
 private:
-	Storage m_nodes;
-
+    Storage m_nodes;
 };

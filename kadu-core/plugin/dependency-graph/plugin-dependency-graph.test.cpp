@@ -17,295 +17,320 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "misc/algorithm.h"
 #include "misc/exception.h"
 #include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
-#include "plugin/dependency-graph/plugin-dependency-graph.h"
 
 #include <QtTest/QtTest>
 #include <algorithm>
 
 class PluginDependencyGraphTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	PluginDependencyGraph linearGraph();
-	PluginDependencyGraph treeGraph();
-	PluginDependencyGraph cycleGraph();
+    PluginDependencyGraph linearGraph();
+    PluginDependencyGraph treeGraph();
+    PluginDependencyGraph cycleGraph();
 
 private slots:
-	void invalidDirectDependencyTest();
-	void invalidDependencyTest();
-	void linearDependencyCycleTest();
-	void linearDirectDependencyTest();
-	void linearDependencyTest();
-	void treeCycleTest();
-	void treeDirectDependencyTest();
-	void treeDependencyTest();
-	void cycleCycleTest();
-	void cycleDirectDependencyTest();
-	void cycleDependencyTest();
-	void pluginsTest();
-
+    void invalidDirectDependencyTest();
+    void invalidDependencyTest();
+    void linearDependencyCycleTest();
+    void linearDirectDependencyTest();
+    void linearDependencyTest();
+    void treeCycleTest();
+    void treeDirectDependencyTest();
+    void treeDependencyTest();
+    void cycleCycleTest();
+    void cycleDirectDependencyTest();
+    void cycleDependencyTest();
+    void pluginsTest();
 };
 
 PluginDependencyGraph PluginDependencyGraphTest::linearGraph()
 {
-	auto graph = PluginDependencyGraph{};
+    auto graph = PluginDependencyGraph{};
 
-	graph.addPlugin("p1");
-	graph.addPlugin("p2");
-	graph.addPlugin("p3");
-	graph.addPlugin("p4");
+    graph.addPlugin("p1");
+    graph.addPlugin("p2");
+    graph.addPlugin("p3");
+    graph.addPlugin("p4");
 
-	graph.addDependency("p1", "p2");
-	graph.addDependency("p2", "p3");
-	graph.addDependency("p3", "p4");
+    graph.addDependency("p1", "p2");
+    graph.addDependency("p2", "p3");
+    graph.addDependency("p3", "p4");
 
-	return graph;
+    return graph;
 }
 
 PluginDependencyGraph PluginDependencyGraphTest::treeGraph()
 {
-	auto graph = PluginDependencyGraph{};
+    auto graph = PluginDependencyGraph{};
 
-	graph.addPlugin("p1");
-	graph.addPlugin("p2");
-	graph.addPlugin("p3");
-	graph.addPlugin("p4");
-	graph.addPlugin("p5");
-	graph.addPlugin("p6");
+    graph.addPlugin("p1");
+    graph.addPlugin("p2");
+    graph.addPlugin("p3");
+    graph.addPlugin("p4");
+    graph.addPlugin("p5");
+    graph.addPlugin("p6");
 
-	graph.addDependency("p1", "p2");
-	graph.addDependency("p2", "p3");
-	graph.addDependency("p2", "p4");
-	graph.addDependency("p3", "p5");
-	graph.addDependency("p4", "p5");
-	graph.addDependency("p5", "p6");
+    graph.addDependency("p1", "p2");
+    graph.addDependency("p2", "p3");
+    graph.addDependency("p2", "p4");
+    graph.addDependency("p3", "p5");
+    graph.addDependency("p4", "p5");
+    graph.addDependency("p5", "p6");
 
-	return graph;
+    return graph;
 }
 
 PluginDependencyGraph PluginDependencyGraphTest::cycleGraph()
 {
-	auto graph = PluginDependencyGraph{};
+    auto graph = PluginDependencyGraph{};
 
-	graph.addPlugin("p1");
-	graph.addPlugin("p2");
-	graph.addPlugin("p3");
-	graph.addPlugin("p4");
-	graph.addPlugin("p5");
-	graph.addPlugin("p6");
+    graph.addPlugin("p1");
+    graph.addPlugin("p2");
+    graph.addPlugin("p3");
+    graph.addPlugin("p4");
+    graph.addPlugin("p5");
+    graph.addPlugin("p6");
 
-	graph.addDependency("p1", "p2");
-	graph.addDependency("p2", "p3");
-	graph.addDependency("p2", "p4");
-	graph.addDependency("p3", "p5");
-	graph.addDependency("p4", "p5");
-	graph.addDependency("p5", "p2");
-	graph.addDependency("p5", "p6");
+    graph.addDependency("p1", "p2");
+    graph.addDependency("p2", "p3");
+    graph.addDependency("p2", "p4");
+    graph.addDependency("p3", "p5");
+    graph.addDependency("p4", "p5");
+    graph.addDependency("p5", "p2");
+    graph.addDependency("p5", "p6");
 
-	return graph;
+    return graph;
 }
 
 void PluginDependencyGraphTest::invalidDirectDependencyTest()
 {
-	auto graph = linearGraph();
+    auto graph = linearGraph();
 
-	QCOMPARE(graph.directDependencies("p8"), {});
-	QCOMPARE(graph.directDependents("p8"), {});
+    QCOMPARE(graph.directDependencies("p8"), {});
+    QCOMPARE(graph.directDependents("p8"), {});
 }
 
 void PluginDependencyGraphTest::invalidDependencyTest()
 {
-	auto graph = linearGraph();
+    auto graph = linearGraph();
 
-	QCOMPARE(graph.findDependencies("p8"), {});
-	QCOMPARE(graph.findDependents("p8"), {});
+    QCOMPARE(graph.findDependencies("p8"), {});
+    QCOMPARE(graph.findDependents("p8"), {});
 }
 
 void PluginDependencyGraphTest::linearDependencyCycleTest()
 {
-	QVERIFY(linearGraph().findPluginsInDependencyCycle().isEmpty());
+    QVERIFY(linearGraph().findPluginsInDependencyCycle().isEmpty());
 }
 
 void PluginDependencyGraphTest::linearDirectDependencyTest()
 {
-	auto graph = linearGraph();
+    auto graph = linearGraph();
 
-	QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
-	QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3");
-	QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
-	QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p4");
-	QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependencies("p4"), QSet<QString>{});
-	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p3");
+    QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
+    QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3");
+    QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
+    QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p4");
+    QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependencies("p4"), QSet<QString>{});
+    QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p3");
 }
 
 void PluginDependencyGraphTest::linearDependencyTest()
 {
-	auto graph = linearGraph();
+    auto graph = linearGraph();
 
-	QCOMPARE(graph.findDependencies("p1"), QVector<QString>{} << "p4" << "p3" << "p2");
-	QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
-	QCOMPARE(graph.findDependencies("p2"), QVector<QString>{} << "p4" << "p3");
-	QCOMPARE(graph.findDependents("p2"), QVector<QString>{} << "p1");
-	QCOMPARE(graph.findDependencies("p3"), QVector<QString>{} << "p4");
-	QCOMPARE(graph.findDependents("p3"), QVector<QString>{} << "p1" << "p2");
-	QCOMPARE(graph.findDependencies("p4"), QVector<QString>{});
-	QCOMPARE(graph.findDependents("p4"), QVector<QString>{} << "p1" << "p2" << "p3");
+    QCOMPARE(
+        graph.findDependencies("p1"), QVector<QString>{} << "p4"
+                                                         << "p3"
+                                                         << "p2");
+    QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
+    QCOMPARE(
+        graph.findDependencies("p2"), QVector<QString>{} << "p4"
+                                                         << "p3");
+    QCOMPARE(graph.findDependents("p2"), QVector<QString>{} << "p1");
+    QCOMPARE(graph.findDependencies("p3"), QVector<QString>{} << "p4");
+    QCOMPARE(
+        graph.findDependents("p3"), QVector<QString>{} << "p1"
+                                                       << "p2");
+    QCOMPARE(graph.findDependencies("p4"), QVector<QString>{});
+    QCOMPARE(
+        graph.findDependents("p4"), QVector<QString>{} << "p1"
+                                                       << "p2"
+                                                       << "p3");
 }
 
 void PluginDependencyGraphTest::treeCycleTest()
 {
-	QVERIFY(treeGraph().findPluginsInDependencyCycle().isEmpty());
+    QVERIFY(treeGraph().findPluginsInDependencyCycle().isEmpty());
 }
 
 void PluginDependencyGraphTest::treeDirectDependencyTest()
 {
-	auto graph = treeGraph();
+    auto graph = treeGraph();
 
-	QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
-	QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3" << "p4");
-	QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
-	QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
-	QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
-	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependencies("p5"), QSet<QString>{} << "p6");
-	QCOMPARE(graph.directDependents("p5"), QSet<QString>{} << "p3" << "p4");
-	QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
-	QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
+    QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
+    QCOMPARE(
+        graph.directDependencies("p2"), QSet<QString>{} << "p3"
+                                                        << "p4");
+    QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
+    QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
+    QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
+    QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependencies("p5"), QSet<QString>{} << "p6");
+    QCOMPARE(
+        graph.directDependents("p5"), QSet<QString>{} << "p3"
+                                                      << "p4");
+    QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
+    QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
 
 void PluginDependencyGraphTest::treeDependencyTest()
 {
-	auto graph = treeGraph();
+    auto graph = treeGraph();
 
-	auto p1Dependencies = graph.findDependencies("p1");
-	auto p1Dependents = graph.findDependents("p1");
+    auto p1Dependencies = graph.findDependencies("p1");
+    auto p1Dependents = graph.findDependents("p1");
 
-	auto p6Dependencies = graph.findDependencies("p6");
-	auto p6Dependents = graph.findDependents("p6");
+    auto p6Dependencies = graph.findDependencies("p6");
+    auto p6Dependents = graph.findDependents("p6");
 
-	QCOMPARE(p1Dependencies.size(), 5);
-	QVERIFY(!contains(p1Dependencies, "p1"));
-	QVERIFY(contains(p1Dependencies, "p2"));
-	QVERIFY(contains(p1Dependencies, "p3"));
-	QVERIFY(contains(p1Dependencies, "p4"));
-	QVERIFY(contains(p1Dependencies, "p5"));
-	QVERIFY(contains(p1Dependencies, "p6"));
-	QVERIFY(precedes(p1Dependencies, "p6", "p5"));
-	QVERIFY(precedes(p1Dependencies, "p5", "p4"));
-	QVERIFY(precedes(p1Dependencies, "p5", "p3"));
-	QVERIFY(precedes(p1Dependencies, "p4", "p2"));
-	QVERIFY(precedes(p1Dependencies, "p3", "p2"));
+    QCOMPARE(p1Dependencies.size(), 5);
+    QVERIFY(!contains(p1Dependencies, "p1"));
+    QVERIFY(contains(p1Dependencies, "p2"));
+    QVERIFY(contains(p1Dependencies, "p3"));
+    QVERIFY(contains(p1Dependencies, "p4"));
+    QVERIFY(contains(p1Dependencies, "p5"));
+    QVERIFY(contains(p1Dependencies, "p6"));
+    QVERIFY(precedes(p1Dependencies, "p6", "p5"));
+    QVERIFY(precedes(p1Dependencies, "p5", "p4"));
+    QVERIFY(precedes(p1Dependencies, "p5", "p3"));
+    QVERIFY(precedes(p1Dependencies, "p4", "p2"));
+    QVERIFY(precedes(p1Dependencies, "p3", "p2"));
 
-	QCOMPARE(p1Dependents.size(), 0);
-	QCOMPARE(p6Dependencies.size(), 0);
+    QCOMPARE(p1Dependents.size(), 0);
+    QCOMPARE(p6Dependencies.size(), 0);
 
-	QCOMPARE(p6Dependents.size(), 5);
-	QVERIFY(contains(p6Dependents, "p1"));
-	QVERIFY(contains(p6Dependents, "p2"));
-	QVERIFY(contains(p6Dependents, "p3"));
-	QVERIFY(contains(p6Dependents, "p4"));
-	QVERIFY(contains(p6Dependents, "p5"));
-	QVERIFY(!contains(p6Dependents, "p6"));
-	QVERIFY(precedes(p6Dependents, "p1", "p2"));
-	QVERIFY(precedes(p6Dependents, "p2", "p3"));
-	QVERIFY(precedes(p6Dependents, "p2", "p4"));
-	QVERIFY(precedes(p6Dependents, "p3", "p5"));
-	QVERIFY(precedes(p6Dependents, "p4", "p5"));
+    QCOMPARE(p6Dependents.size(), 5);
+    QVERIFY(contains(p6Dependents, "p1"));
+    QVERIFY(contains(p6Dependents, "p2"));
+    QVERIFY(contains(p6Dependents, "p3"));
+    QVERIFY(contains(p6Dependents, "p4"));
+    QVERIFY(contains(p6Dependents, "p5"));
+    QVERIFY(!contains(p6Dependents, "p6"));
+    QVERIFY(precedes(p6Dependents, "p1", "p2"));
+    QVERIFY(precedes(p6Dependents, "p2", "p3"));
+    QVERIFY(precedes(p6Dependents, "p2", "p4"));
+    QVERIFY(precedes(p6Dependents, "p3", "p5"));
+    QVERIFY(precedes(p6Dependents, "p4", "p5"));
 }
 
 void PluginDependencyGraphTest::cycleCycleTest()
 {
-	QCOMPARE(cycleGraph().findPluginsInDependencyCycle(), QSet<QString>{} << "p2" << "p3" << "p4" << "p5");
+    QCOMPARE(
+        cycleGraph().findPluginsInDependencyCycle(), QSet<QString>{} << "p2"
+                                                                     << "p3"
+                                                                     << "p4"
+                                                                     << "p5");
 }
 
 void PluginDependencyGraphTest::cycleDirectDependencyTest()
 {
-	auto graph = cycleGraph();
+    auto graph = cycleGraph();
 
-	QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
-	QCOMPARE(graph.directDependencies("p2"), QSet<QString>{} << "p3" << "p4");
-	QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1" << "p5");
-	QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
-	QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
-	QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
-	QCOMPARE(graph.directDependencies("p5"), QSet<QString>{} << "p6" << "p2");
-	QCOMPARE(graph.directDependents("p5"), QSet<QString>{} << "p3" << "p4");
-	QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
-	QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
+    QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
+    QCOMPARE(
+        graph.directDependencies("p2"), QSet<QString>{} << "p3"
+                                                        << "p4");
+    QCOMPARE(
+        graph.directDependents("p2"), QSet<QString>{} << "p1"
+                                                      << "p5");
+    QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
+    QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
+    QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
+    QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
+    QCOMPARE(
+        graph.directDependencies("p5"), QSet<QString>{} << "p6"
+                                                        << "p2");
+    QCOMPARE(
+        graph.directDependents("p5"), QSet<QString>{} << "p3"
+                                                      << "p4");
+    QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
+    QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
 
 void PluginDependencyGraphTest::cycleDependencyTest()
 {
-	auto graph = cycleGraph();
+    auto graph = cycleGraph();
 
-	graph.addDependency("p1", "p2");
-	graph.addDependency("p2", "p3");
-	graph.addDependency("p2", "p4");
-	graph.addDependency("p3", "p5");
-	graph.addDependency("p4", "p5");
-	graph.addDependency("p5", "p2");
-	graph.addDependency("p5", "p6");
+    graph.addDependency("p1", "p2");
+    graph.addDependency("p2", "p3");
+    graph.addDependency("p2", "p4");
+    graph.addDependency("p3", "p5");
+    graph.addDependency("p4", "p5");
+    graph.addDependency("p5", "p2");
+    graph.addDependency("p5", "p6");
 
-	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p1"); });
-	QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
-	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p2"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p2"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p3"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p3"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p4"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p4"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependencies("p5"); });
-	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p5"); });
-	QCOMPARE(graph.findDependencies("p6"), QVector<QString>{});
-	expect<PluginDependencyCycleException>([&]{ graph.findDependents("p6"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependencies("p1"); });
+    QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
+    expect<PluginDependencyCycleException>([&] { graph.findDependencies("p2"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependents("p2"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependencies("p3"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependents("p3"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependencies("p4"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependents("p4"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependencies("p5"); });
+    expect<PluginDependencyCycleException>([&] { graph.findDependents("p5"); });
+    QCOMPARE(graph.findDependencies("p6"), QVector<QString>{});
+    expect<PluginDependencyCycleException>([&] { graph.findDependents("p6"); });
 }
 
 void PluginDependencyGraphTest::pluginsTest()
 {
-	auto graph = PluginDependencyGraph{};
+    auto graph = PluginDependencyGraph{};
 
-	QCOMPARE(graph.size(), 0);
-	QCOMPARE(graph.plugins(), {});
+    QCOMPARE(graph.size(), 0);
+    QCOMPARE(graph.plugins(), {});
 
-	graph.addPlugin("p1");
+    graph.addPlugin("p1");
 
-	QCOMPARE(graph.size(), 1);
-	QCOMPARE(graph.plugins(), {"p1"});
+    QCOMPARE(graph.size(), 1);
+    QCOMPARE(graph.plugins(), {"p1"});
 
-	graph.addPlugin("p1");
+    graph.addPlugin("p1");
 
-	QCOMPARE(graph.size(), 1);
-	QCOMPARE(graph.plugins(), {"p1"});
+    QCOMPARE(graph.size(), 1);
+    QCOMPARE(graph.plugins(), {"p1"});
 
-	graph.addPlugin("p2");
+    graph.addPlugin("p2");
 
-	QCOMPARE(graph.size(), 2);
-	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2"}));
+    QCOMPARE(graph.size(), 2);
+    QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2"}));
 
-	graph.addDependency("p1", "p2");
+    graph.addDependency("p1", "p2");
 
-	QCOMPARE(graph.size(), 2);
-	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2"}));
+    QCOMPARE(graph.size(), 2);
+    QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2"}));
 
-	graph.addDependency("p3", "p4");
+    graph.addDependency("p3", "p4");
 
-	QCOMPARE(graph.size(), 4);
-	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4"}));
+    QCOMPARE(graph.size(), 4);
+    QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4"}));
 
-	graph.addDependency("p1", "p5");
+    graph.addDependency("p1", "p5");
 
-	QCOMPARE(graph.size(), 5);
-	QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4", "p5"}));
+    QCOMPARE(graph.size(), 5);
+    QCOMPARE(graph.plugins(), (std::set<QString>{"p1", "p2", "p3", "p4", "p5"}));
 }
 
 QTEST_APPLESS_MAIN(PluginDependencyGraphTest)

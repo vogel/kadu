@@ -49,32 +49,31 @@ class QLabel;
  */
 class KADUAPI WaitOverlay : public QLabel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new WaitOverlay widget.
-	 * @param parent parent widget
-	 *
-	 * This contructor creates WaitOverlay widget and attaches to given parent.
-	 * Overlay will follow target widget and resize with it.
-	 */
-	explicit WaitOverlay(QWidget *parent = nullptr);
-	virtual ~WaitOverlay();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new WaitOverlay widget.
+     * @param parent parent widget
+     *
+     * This contructor creates WaitOverlay widget and attaches to given parent.
+     * Overlay will follow target widget and resize with it.
+     */
+    explicit WaitOverlay(QWidget *parent = nullptr);
+    virtual ~WaitOverlay();
 
 protected:
-	virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual bool eventFilter(QObject *object, QEvent *event);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void timeoutPassed();
-
+    void timeoutPassed();
 };
 
 /**

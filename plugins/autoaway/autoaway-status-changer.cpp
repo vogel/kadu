@@ -26,8 +26,7 @@
 
 #include "autoaway-status-changer.h"
 
-AutoawayStatusChanger::AutoawayStatusChanger(QObject *parent) :
-		StatusChanger{900, parent}
+AutoawayStatusChanger::AutoawayStatusChanger(QObject *parent) : StatusChanger{900, parent}
 {
 }
 
@@ -37,86 +36,86 @@ AutoawayStatusChanger::~AutoawayStatusChanger()
 
 void AutoawayStatusChanger::setAutoaway(Autoaway *autoaway)
 {
-	m_autoaway = autoaway;
+    m_autoaway = autoaway;
 }
 
 void AutoawayStatusChanger::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void AutoawayStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
-	Q_UNUSED(container)
+    Q_UNUSED(container)
 
-	auto changeStatusTo = m_autoaway->changeStatusTo();
-	auto changeDescriptionTo = m_autoaway->changeDescriptionTo();
-	auto descriptionAddon = m_autoaway->descriptionAddon();
-	auto group = m_statusTypeManager->statusTypeData(status.type()).typeGroup();
+    auto changeStatusTo = m_autoaway->changeStatusTo();
+    auto changeDescriptionTo = m_autoaway->changeDescriptionTo();
+    auto descriptionAddon = m_autoaway->descriptionAddon();
+    auto group = m_statusTypeManager->statusTypeData(status.type()).typeGroup();
 
-	if (changeStatusTo == NoChangeStatus)
-		return;
+    if (changeStatusTo == NoChangeStatus)
+        return;
 
-	if (status.isDisconnected())
-		return;
+    if (status.isDisconnected())
+        return;
 
-	auto description = status.description();
-	switch (changeDescriptionTo)
-	{
-		case NoChangeDescription:
-			break;
+    auto description = status.description();
+    switch (changeDescriptionTo)
+    {
+    case NoChangeDescription:
+        break;
 
-		case ChangeDescriptionPrepend:
-			description = descriptionAddon + description;
-			break;
+    case ChangeDescriptionPrepend:
+        description = descriptionAddon + description;
+        break;
 
-		case ChangeDescriptionReplace:
-			description = descriptionAddon;
-			break;
+    case ChangeDescriptionReplace:
+        description = descriptionAddon;
+        break;
 
-		case ChangeDescriptionAppend:
-			description = description + descriptionAddon;
-			break;
-	}
+    case ChangeDescriptionAppend:
+        description = description + descriptionAddon;
+        break;
+    }
 
-	if (changeStatusTo == ChangeStatusToOffline)
-	{
-		status.setType(StatusType::Offline);
-		status.setDescription(description);
-		return;
-	}
+    if (changeStatusTo == ChangeStatusToOffline)
+    {
+        status.setType(StatusType::Offline);
+        status.setDescription(description);
+        return;
+    }
 
-	if (group == StatusTypeGroup::Invisible)
-		return;
+    if (group == StatusTypeGroup::Invisible)
+        return;
 
-	if (changeStatusTo == ChangeStatusToInvisible)
-	{
-		status.setType(StatusType::Invisible);
-		status.setDescription(description);
-		return;
-	}
+    if (changeStatusTo == ChangeStatusToInvisible)
+    {
+        status.setType(StatusType::Invisible);
+        status.setDescription(description);
+        return;
+    }
 
-	if (group == StatusTypeGroup::Away)
-		return;
+    if (group == StatusTypeGroup::Away)
+        return;
 
-	if (changeStatusTo == ChangeStatusToAway)
-	{
-		status.setType(StatusType::Away);
-		status.setDescription(description);
-		return;
-	}
+    if (changeStatusTo == ChangeStatusToAway)
+    {
+        status.setType(StatusType::Away);
+        status.setDescription(description);
+        return;
+    }
 
-	if (changeStatusTo == ChangeStatusToExtendedAway)
-	{
-		status.setType(StatusType::NotAvailable);
-		status.setDescription(description);
-		return;
-	}
+    if (changeStatusTo == ChangeStatusToExtendedAway)
+    {
+        status.setType(StatusType::NotAvailable);
+        status.setDescription(description);
+        return;
+    }
 }
 
 void AutoawayStatusChanger::update()
 {
-	emit statusChanged(0); // for all status containers
+    emit statusChanged(0);   // for all status containers
 }
 
 #include "moc_autoaway-status-changer.cpp"

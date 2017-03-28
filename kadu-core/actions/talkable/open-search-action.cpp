@@ -23,14 +23,14 @@
 #include "core/injected-factory.h"
 #include "windows/search-window.h"
 
-OpenSearchAction::OpenSearchAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenSearchAction::OpenSearchAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"edit-find"});
-	setName(QStringLiteral("openSearchAction"));
-	setText(tr("Search for Buddy..."));
-	setType(ActionDescription::TypeGlobal);
+    setIcon(KaduIcon{"edit-find"});
+    setName(QStringLiteral("openSearchAction"));
+    setText(tr("Search for Buddy..."));
+    setType(ActionDescription::TypeGlobal);
 }
 
 OpenSearchAction::~OpenSearchAction()
@@ -39,31 +39,31 @@ OpenSearchAction::~OpenSearchAction()
 
 void OpenSearchAction::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void OpenSearchAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void OpenSearchAction::actionInstanceCreated(Action *action)
 {
-	connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), action, SLOT(checkState()));
+    connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), action, SLOT(checkState()));
 }
 
 void OpenSearchAction::actionTriggered(QAction *sender, bool)
 {
-	auto window = m_injectedFactory->makeInjected<SearchWindow>(sender->parentWidget());
-	window->show();
+    auto window = m_injectedFactory->makeInjected<SearchWindow>(sender->parentWidget());
+    window->show();
 }
 
 void OpenSearchAction::updateActionState(Action *action)
 {
-	auto hasSearchServiceAccount = std::any_of(std::begin(m_accountManager->items()), std::end(m_accountManager->items()), [](auto const &account) {
-		return account.protocolHandler() && account.protocolHandler()->searchService();
-	});
-	action->setVisible(hasSearchServiceAccount);
+    auto hasSearchServiceAccount = std::any_of(
+        std::begin(m_accountManager->items()), std::end(m_accountManager->items()),
+        [](auto const &account) { return account.protocolHandler() && account.protocolHandler()->searchService(); });
+    action->setVisible(hasSearchServiceAccount);
 }
 
 #include "moc_open-search-action.cpp"

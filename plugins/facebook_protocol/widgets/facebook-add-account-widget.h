@@ -36,40 +36,39 @@ class QPushButton;
 
 class FacebookAddAccountWidget : public AccountAddWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FacebookAddAccountWidget(bool showButtons, QWidget *parent = nullptr);
-	virtual ~FacebookAddAccountWidget();
+    explicit FacebookAddAccountWidget(bool showButtons, QWidget *parent = nullptr);
+    virtual ~FacebookAddAccountWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<AccountStorage> m_accountStorage;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<AccountStorage> m_accountStorage;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	bool m_showButtons;
+    bool m_showButtons;
 
-	owned_qptr<QLineEdit> m_username;
-	owned_qptr<QLineEdit> m_password;
-	owned_qptr<QCheckBox> m_rememberPassword;
-	owned_qptr<IdentitiesComboBox> m_identity;
-	owned_qptr<QPushButton> m_addAccountButton;
+    owned_qptr<QLineEdit> m_username;
+    owned_qptr<QLineEdit> m_password;
+    owned_qptr<QCheckBox> m_rememberPassword;
+    owned_qptr<IdentitiesComboBox> m_identity;
+    owned_qptr<QPushButton> m_addAccountButton;
 
-	void createGui(bool showButtons);
-	void resetGui();
+    void createGui(bool showButtons);
+    void resetGui();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 
-	void dataChanged();
-
+    void dataChanged();
 };

@@ -29,4 +29,4 @@
 #define SMSAPI Q_DECL_IMPORT
 #endif
 
-#endif // SMS_EXPORTS_H
+#endif   // SMS_EXPORTS_H

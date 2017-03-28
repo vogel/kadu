@@ -26,41 +26,40 @@
 
 enum HandlerType
 {
-	HandlerTopLeft,
-	HandlerTop,
-	HandlerTopRight,
-	HandlerLeft,
-	HandlerRight,
-	HandlerBottomLeft,
-	HandlerBottom,
-	HandlerBottomRight
+    HandlerTopLeft,
+    HandlerTop,
+    HandlerTopRight,
+    HandlerLeft,
+    HandlerRight,
+    HandlerBottomLeft,
+    HandlerBottom,
+    HandlerBottomRight
 };
 
 class HandlerRectItem : public QGraphicsWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	HandlerType Type;
-	int Size;
+    HandlerType Type;
+    int Size;
 
-	bool IsMouseButtonPressed;
-	QPointF LastMousePosition;
+    bool IsMouseButtonPressed;
+    QPointF LastMousePosition;
 
 protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
-	virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
 
-	virtual QRectF boundingRect() const;
-	virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+    virtual QRectF boundingRect() const;
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
 
 public:
-	explicit HandlerRectItem(HandlerType type, int size = 10, QGraphicsItem *parent = 0);
-	virtual ~HandlerRectItem();
+    explicit HandlerRectItem(HandlerType type, int size = 10, QGraphicsItem *parent = 0);
+    virtual ~HandlerRectItem();
 
 signals:
-	void movedTo(HandlerType type, int x, int y);
-
+    void movedTo(HandlerType type, int x, int y);
 };
 
-#endif // HANDLER_RECT_ITEM_H
+#endif   // HANDLER_RECT_ITEM_H

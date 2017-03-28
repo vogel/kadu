@@ -21,7 +21,7 @@
 
 enum class StatusNotifierItemAttentionMode
 {
-	BlinkingIcon = 0,
-	StaticIcon = 1,
-	Movie = 2
+    BlinkingIcon = 0,
+    StaticIcon = 1,
+    Movie = 2
 };

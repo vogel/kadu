@@ -25,19 +25,21 @@
 #include "widgets/configuration/config-widget-value.h"
 
 ConfigWidgetValue::ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: ConfigWidget(parentConfigGroupBox, dataManager)
+        : ConfigWidget(parentConfigGroupBox, dataManager)
 {
 }
 
-ConfigWidgetValue::ConfigWidgetValue(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), section(section), item(item)
+ConfigWidgetValue::ConfigWidgetValue(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), section(section), item(item)
 {
 }
 
 bool ConfigWidgetValue::fromDomElement(QDomElement domElement)
 {
-	section = domElement.attribute("config-section");
-	item = domElement.attribute("config-item");
+    section = domElement.attribute("config-section");
+    item = domElement.attribute("config-item");
 
-	return ConfigWidget::fromDomElement(domElement);
+    return ConfigWidget::fromDomElement(domElement);
 }

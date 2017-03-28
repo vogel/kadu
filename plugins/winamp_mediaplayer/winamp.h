@@ -18,43 +18,42 @@
 
 class WinampMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit WinampMediaPlayer(QObject *parent = nullptr);
-	virtual ~WinampMediaPlayer();
+    Q_INVOKABLE explicit WinampMediaPlayer(QObject *parent = nullptr);
+    virtual ~WinampMediaPlayer();
 
-	// PlayerInfo
-	QString getTitle();
-	QString getAlbum();
-	QString getArtist();
-	QString getFile();
-	int getLength();
-	int getCurrentPos();
-	bool isPlaying();
-	bool isActive();
-	QStringList getPlayListTitles();
-	QStringList getPlayListFiles();
-	uint getPlayListLength();
-	QString getPlayerName();
-	QString getPlayerVersion();
+    // PlayerInfo
+    QString getTitle();
+    QString getAlbum();
+    QString getArtist();
+    QString getFile();
+    int getLength();
+    int getCurrentPos();
+    bool isPlaying();
+    bool isActive();
+    QStringList getPlayListTitles();
+    QStringList getPlayListFiles();
+    uint getPlayListLength();
+    QString getPlayerName();
+    QString getPlayerVersion();
 
-	// PlayerCommands
-	void nextTrack();
-	void prevTrack();
-	void play();
-	void stop();
-	void pause();
-	void setVolume(int vol);
-	void incrVolume();
-	void decrVolume();
+    // PlayerCommands
+    void nextTrack();
+    void prevTrack();
+    void play();
+    void stop();
+    void pause();
+    void setVolume(int vol);
+    void incrVolume();
+    void decrVolume();
 
 private:
-	HWND findWinamp();
-	QString getFileImpl(int position);
-	QString readWinampMemory(quint32 command, quint32 arg, bool unicode=false);
-	QString getFileTagW(int position, QString tag);
-	QString getFileTagA(int position, QString tag);
-	HANDLE hProcess;
-
+    HWND findWinamp();
+    QString getFileImpl(int position);
+    QString readWinampMemory(quint32 command, quint32 arg, bool unicode = false);
+    QString getFileTagW(int position, QString tag);
+    QString getFileTagA(int position, QString tag);
+    HANDLE hProcess;
 };

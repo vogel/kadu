@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-ChatNotifyPluginModulesFactory::ChatNotifyPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+ChatNotifyPluginModulesFactory::ChatNotifyPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ ChatNotifyPluginModulesFactory::~ChatNotifyPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> ChatNotifyPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<ChatNotifyModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<ChatNotifyModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_chat-notify-plugin-modules-factory.cpp"

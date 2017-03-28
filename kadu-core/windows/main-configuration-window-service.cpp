@@ -28,8 +28,7 @@
 #include "windows/kadu-window.h"
 #include "windows/main-configuration-window.h"
 
-MainConfigurationWindowService::MainConfigurationWindowService(QObject *parent) :
-		QObject{parent}
+MainConfigurationWindowService::MainConfigurationWindowService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,47 +36,48 @@ MainConfigurationWindowService::~MainConfigurationWindowService()
 {
 }
 
-
-void MainConfigurationWindowService::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void MainConfigurationWindowService::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
 void MainConfigurationWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void MainConfigurationWindowService::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void MainConfigurationWindowService::registerUiFile(const QString &uiFile)
 {
-	m_uiFiles.append(uiFile);
-	if (m_mainConfigurationWindow)
-		m_mainConfigurationWindow->widget()->appendUiFile(uiFile);
+    m_uiFiles.append(uiFile);
+    if (m_mainConfigurationWindow)
+        m_mainConfigurationWindow->widget()->appendUiFile(uiFile);
 }
 
 void MainConfigurationWindowService::unregisterUiFile(const QString &uiFile)
 {
-	m_uiFiles.removeAll(uiFile);
-	if (m_mainConfigurationWindow)
-		m_mainConfigurationWindow->widget()->removeUiFile(uiFile);
+    m_uiFiles.removeAll(uiFile);
+    if (m_mainConfigurationWindow)
+        m_mainConfigurationWindow->widget()->removeUiFile(uiFile);
 }
 
 void MainConfigurationWindowService::show()
 {
-	if (!m_mainConfigurationWindow)
-	{
-		auto dataManager = m_injectedFactory->makeInjected<ConfigFileDataManager>();
-		m_mainConfigurationWindow = m_injectedFactory->makeInjected<MainConfigurationWindow>(dataManager, m_kaduWindowService->kaduWindow());
-		for (auto const &uiFile : m_uiFiles)
-			m_mainConfigurationWindow->widget()->appendUiFile(uiFile);
-		for (auto configurationUiHandler : m_configurationUiHandlerRepository)
-			configurationUiHandler->mainConfigurationWindowCreated(m_mainConfigurationWindow);
-	}
+    if (!m_mainConfigurationWindow)
+    {
+        auto dataManager = m_injectedFactory->makeInjected<ConfigFileDataManager>();
+        m_mainConfigurationWindow =
+            m_injectedFactory->makeInjected<MainConfigurationWindow>(dataManager, m_kaduWindowService->kaduWindow());
+        for (auto const &uiFile : m_uiFiles)
+            m_mainConfigurationWindow->widget()->appendUiFile(uiFile);
+        for (auto configurationUiHandler : m_configurationUiHandlerRepository)
+            configurationUiHandler->mainConfigurationWindowCreated(m_mainConfigurationWindow);
+    }
 
-	m_mainConfigurationWindow->show();
+    m_mainConfigurationWindow->show();
 }

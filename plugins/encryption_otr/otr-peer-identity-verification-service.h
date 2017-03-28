@@ -25,8 +25,8 @@
 #include <injeqt/injeqt.h>
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
 }
 
 class Contact;
@@ -39,38 +39,38 @@ class OtrPeerIdentityVerificationState;
 
 class OtrPeerIdentityVerificationService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperHandleSmpEvent(void *data, OtrlSMPEvent smpEvent, ConnContext *context, unsigned short progressPercent, char *question);
+    static void wrapperHandleSmpEvent(
+        void *data, OtrlSMPEvent smpEvent, ConnContext *context, unsigned short progressPercent, char *question);
 
-	Q_INVOKABLE OtrPeerIdentityVerificationService();
-	virtual ~OtrPeerIdentityVerificationService();
+    Q_INVOKABLE OtrPeerIdentityVerificationService();
+    virtual ~OtrPeerIdentityVerificationService();
 
 public slots:
-	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
-	void startQuestionAndAnswerVerification(const Contact &contact, const QString &question, const QString &answer);
-	void startSharedSecretVerficiation(const Contact &contact, const QString &sharedSecret);
-	void respondVerification(const Contact &contact, const QString &answer);
-	void cancelVerification(const Contact &contact);
+    void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+    void startQuestionAndAnswerVerification(const Contact &contact, const QString &question, const QString &answer);
+    void startSharedSecretVerficiation(const Contact &contact, const QString &sharedSecret);
+    void respondVerification(const Contact &contact, const QString &answer);
+    void cancelVerification(const Contact &contact);
 
 signals:
-	void questionAnswerRequested(const Contact &contact, const QString &question);
-	void sharedSecretRequested(const Contact &contact);
-	void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+    void questionAnswerRequested(const Contact &contact, const QString &question);
+    void sharedSecretRequested(const Contact &contact);
+    void contactStateUpdated(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
 private slots:
-	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
-	INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
-	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+    INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
+    INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
-	QPointer<OtrAppOpsService> AppOpsService;
-	QPointer<OtrContextConverter> ContextConverter;
-	QPointer<OtrOpDataFactory> OpDataFactory;
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrAppOpsService> AppOpsService;
+    QPointer<OtrContextConverter> ContextConverter;
+    QPointer<OtrOpDataFactory> OpDataFactory;
+    QPointer<OtrUserStateService> UserStateService;
 
-	void handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question);
-
+    void handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question);
 };

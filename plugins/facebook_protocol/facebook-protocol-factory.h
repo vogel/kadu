@@ -28,31 +28,36 @@ class PluginInjectedFactory;
 
 class FacebookProtocolFactory : public ProtocolFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FacebookProtocolFactory(QObject *parent = nullptr);
-	virtual ~FacebookProtocolFactory();
+    Q_INVOKABLE explicit FacebookProtocolFactory(QObject *parent = nullptr);
+    virtual ~FacebookProtocolFactory();
 
-	virtual Protocol * createProtocolHandler(Account account) override;
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent) override;
-	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget *parent) override;
-	virtual QList<StatusType> supportedStatusTypes() override;
-	virtual Status adaptStatus(Status) const override;
-	virtual QString idLabel() override;
-	virtual bool canRegister() override;
+    virtual Protocol *createProtocolHandler(Account account) override;
+    virtual AccountAddWidget *newAddAccountWidget(bool showButtons, QWidget *parent) override;
+    virtual AccountEditWidget *newEditAccountWidget(Account, QWidget *parent) override;
+    virtual QList<StatusType> supportedStatusTypes() override;
+    virtual Status adaptStatus(Status) const override;
+    virtual QString idLabel() override;
+    virtual bool canRegister() override;
 
-	virtual QString name() override { return "facebook"; }
-	virtual QString displayName() override { return "Facebook"; }
+    virtual QString name() override
+    {
+        return "facebook";
+    }
+    virtual QString displayName() override
+    {
+        return "Facebook";
+    }
 
-	virtual KaduIcon icon() override;
+    virtual KaduIcon icon() override;
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	QList<StatusType> m_supportedStatusTypes;
+    QList<StatusType> m_supportedStatusTypes;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

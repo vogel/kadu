@@ -24,8 +24,7 @@
 #include "chat/open-chat-repository.h"
 #include "chat/recent-chat-repository.h"
 
-WindowsJumpListService::WindowsJumpListService(QObject *parent) :
-		QObject{parent}
+WindowsJumpListService::WindowsJumpListService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,55 +34,58 @@ WindowsJumpListService::~WindowsJumpListService()
 
 void WindowsJumpListService::setJumpList(JumpList *jumpList)
 {
-	m_jumpList = jumpList;
+    m_jumpList = jumpList;
 }
 
 void WindowsJumpListService::setOpenChatRepository(OpenChatRepository *openChatRepository)
 {
-	m_openChatRepository = openChatRepository;
+    m_openChatRepository = openChatRepository;
 }
 
 void WindowsJumpListService::setRecentChatRepository(RecentChatRepository *recentChatRepository)
 {
-	m_recentChatRepository = recentChatRepository;
+    m_recentChatRepository = recentChatRepository;
 }
 
 void WindowsJumpListService::init()
 {
-	connect(m_recentChatRepository, &RecentChatRepository::recentChatAdded, this, &WindowsJumpListService::updateJumpList);
-	connect(m_recentChatRepository, &RecentChatRepository::recentChatRemoved, this, &WindowsJumpListService::updateJumpList);
-	connect(m_openChatRepository, &OpenChatRepository::openChatAdded, this, &WindowsJumpListService::updateJumpList);
-	connect(m_openChatRepository, &OpenChatRepository::openChatRemoved, this, &WindowsJumpListService::updateJumpList);
+    connect(
+        m_recentChatRepository, &RecentChatRepository::recentChatAdded, this, &WindowsJumpListService::updateJumpList);
+    connect(
+        m_recentChatRepository, &RecentChatRepository::recentChatRemoved, this,
+        &WindowsJumpListService::updateJumpList);
+    connect(m_openChatRepository, &OpenChatRepository::openChatAdded, this, &WindowsJumpListService::updateJumpList);
+    connect(m_openChatRepository, &OpenChatRepository::openChatRemoved, this, &WindowsJumpListService::updateJumpList);
 
-	updateJumpList();
+    updateJumpList();
 }
 
 void WindowsJumpListService::updateJumpList()
 {
-	auto needSeparator = false;
-	auto any = false;
+    auto needSeparator = false;
+    auto any = false;
 
-	m_jumpList->clear();
-	for (auto const &chat : m_recentChatRepository)
-		if (std::find(begin(m_openChatRepository), end(m_openChatRepository), chat) == end(m_openChatRepository))
-		{
-			needSeparator = true;
-			m_jumpList->addChat(chat);
-			any = true;
-		}
+    m_jumpList->clear();
+    for (auto const &chat : m_recentChatRepository)
+        if (std::find(begin(m_openChatRepository), end(m_openChatRepository), chat) == end(m_openChatRepository))
+        {
+            needSeparator = true;
+            m_jumpList->addChat(chat);
+            any = true;
+        }
 
-	for (auto const &chat : m_openChatRepository)
-	{
-		if (needSeparator)
-		{
-			m_jumpList->addSeparator();
-			needSeparator = false;
-		}
-		m_jumpList->addChat(chat);
-		any = true;
-	}
+    for (auto const &chat : m_openChatRepository)
+    {
+        if (needSeparator)
+        {
+            m_jumpList->addSeparator();
+            needSeparator = false;
+        }
+        m_jumpList->addChat(chat);
+        any = true;
+    }
 
-	m_jumpList->setVisible(any);
+    m_jumpList->setVisible(any);
 }
 
 #include "windows-jump-list-service.moc"

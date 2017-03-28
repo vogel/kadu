@@ -37,41 +37,40 @@
  */
 class KADUAPI RecentChatRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Storage = std::set<Chat>;
+    using Storage = std::set<Chat>;
 
 public:
-	using Iterator = Storage::const_iterator;
+    using Iterator = Storage::const_iterator;
 
-	Q_INVOKABLE explicit RecentChatRepository(QObject *parent = nullptr);
-	virtual ~RecentChatRepository();
+    Q_INVOKABLE explicit RecentChatRepository(QObject *parent = nullptr);
+    virtual ~RecentChatRepository();
 
-	Iterator begin() const;
-	Iterator end() const;
-	size_t size() const;
+    Iterator begin() const;
+    Iterator end() const;
+    size_t size() const;
 
 public slots:
-	void addRecentChat(Chat chat);
-	void removeRecentChat(Chat chat);
+    void addRecentChat(Chat chat);
+    void removeRecentChat(Chat chat);
 
 signals:
-	void recentChatAdded(Chat chat);
-	void recentChatRemoved(Chat chat);
+    void recentChatAdded(Chat chat);
+    void recentChatRemoved(Chat chat);
 
 private:
-	Storage m_chats;
-
+    Storage m_chats;
 };
 
 inline RecentChatRepository::Iterator begin(RecentChatRepository *recentChatRepository)
 {
-	return recentChatRepository->begin();
+    return recentChatRepository->begin();
 }
 
 inline RecentChatRepository::Iterator end(RecentChatRepository *recentChatRepository)
 {
-	return recentChatRepository->end();
+    return recentChatRepository->end();
 }
 
 /**

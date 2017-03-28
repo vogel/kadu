@@ -34,16 +34,16 @@
 
 JabberModule::JabberModule()
 {
-	add_type<AskForSubscriptionAction>();
-	add_type<FacebookDepreceatedMessage>();
-	add_type<GTalkProtocolFactory>();
-	add_type<JabberActions>();
-	add_type<JabberPluginObject>();
-	add_type<JabberProtocolFactory>();
-	add_type<JabberProtocolMenuManager>();
-	add_type<JabberUrlDomVisitorProvider>();
-	add_type<JabberUrlHandler>();
-	add_type<RemoveSubscriptionAction>();
-	add_type<ResendSubscriptionAction>();
-	add_type<ShowXmlConsoleAction>();
+    add_type<AskForSubscriptionAction>();
+    add_type<FacebookDepreceatedMessage>();
+    add_type<GTalkProtocolFactory>();
+    add_type<JabberActions>();
+    add_type<JabberPluginObject>();
+    add_type<JabberProtocolFactory>();
+    add_type<JabberProtocolMenuManager>();
+    add_type<JabberUrlDomVisitorProvider>();
+    add_type<JabberUrlHandler>();
+    add_type<RemoveSubscriptionAction>();
+    add_type<ResendSubscriptionAction>();
+    add_type<ShowXmlConsoleAction>();
 }

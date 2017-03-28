@@ -42,44 +42,44 @@ class ContactListModel;
  */
 class ChatAdapter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	ContactListModel *Model;
+    ContactListModel *Model;
 
 private slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a contact is added to @link Chat @endlink.
-	 * @param contact added contact
-	 *
-	 * Contact is added to @link ContactListModel @endlink instance.
-	 */
-	void contactAdded(const Contact &contact);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called after a contact is added to @link Chat @endlink.
+     * @param contact added contact
+     *
+     * Contact is added to @link ContactListModel @endlink instance.
+     */
+    void contactAdded(const Contact &contact);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a contact is removed from @link Chat @endlink.
-	 * @param contact removed contact
-	 *
-	 * Contact is removed from @link ContactListModel @endlink instance.
-	 */
-	void contactRemoved(const Contact &contact);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called after a contact is removed from @link Chat @endlink.
+     * @param contact removed contact
+     *
+     * Contact is removed from @link ContactListModel @endlink instance.
+     */
+    void contactRemoved(const Contact &contact);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new ChatAdapter on given @link ContactListModel @endlink for given @link Chat @endlink.
-	 * @param model model to adapt @link Chat @endlink to
-	 *
-	 * Given @link ContactListModel @endlink will now have exactly the same list of contacts as given @link Chat @endlink.
-	 */
-	explicit ChatAdapter(ContactListModel *model, const Chat &chat);
-	virtual ~ChatAdapter();
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new ChatAdapter on given @link ContactListModel @endlink for given @link Chat @endlink.
+     * @param model model to adapt @link Chat @endlink to
+     *
+     * Given @link ContactListModel @endlink will now have exactly the same list of contacts as given @link Chat
+     * @endlink.
+     */
+    explicit ChatAdapter(ContactListModel *model, const Chat &chat);
+    virtual ~ChatAdapter();
 };
 
 /**
  * @}
  */
 
-#endif // CHAT_ADAPTER_H
+#endif   // CHAT_ADAPTER_H

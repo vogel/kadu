@@ -19,10 +19,10 @@
 
 #include "gadu-plugin-object.h"
 
-#include "protocols/protocols-manager.h"
 #include "gadu-protocol-factory.h"
 #include "gadu-url-dom-visitor-provider.h"
 #include "gadu-url-handler.h"
+#include "protocols/protocols-manager.h"
 
 #include "accounts/account-manager.h"
 #include "dom/dom-visitor-provider-repository.h"
@@ -32,8 +32,7 @@
 
 #include <libgadu.h>
 
-GaduPluginObject::GaduPluginObject(QObject *parent) :
-		QObject{parent}
+GaduPluginObject::GaduPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -43,65 +42,66 @@ GaduPluginObject::~GaduPluginObject()
 
 void GaduPluginObject::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void GaduPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domVisitorProviderRepository = domVisitorProviderRepository;
+    m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void GaduPluginObject::setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory)
 {
-	m_gaduProtocolFactory = gaduProtocolFactory;
+    m_gaduProtocolFactory = gaduProtocolFactory;
 }
 
 void GaduPluginObject::setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider)
 {
-	m_gaduUrlDomVisitorProvider = gaduUrlDomVisitorProvider;
+    m_gaduUrlDomVisitorProvider = gaduUrlDomVisitorProvider;
 }
 
 void GaduPluginObject::setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler)
 {
-	m_gaduUrlHandler = gaduUrlHandler;
+    m_gaduUrlHandler = gaduUrlHandler;
 }
 
 void GaduPluginObject::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void GaduPluginObject::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 {
-	m_urlHandlerManager = urlHandlerManager;
+    m_urlHandlerManager = urlHandlerManager;
 }
 
 void GaduPluginObject::init()
 {
 #ifdef DEBUG_OUTPUT_ENABLED
-	// 8 bits for gadu debug
-	gg_debug_level = 255;
+    // 8 bits for gadu debug
+    gg_debug_level = 255;
 #else
-	gg_debug_level = 0;
+    gg_debug_level = 0;
 #endif
 
-	if (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_USERLIST100))
-		throw PluginActivationErrorException("gadu_protocol", tr("Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support."));
+    if (!gg_libgadu_check_feature(GG_LIBGADU_FEATURE_USERLIST100))
+        throw PluginActivationErrorException(
+            "gadu_protocol", tr("Cannot load Gadu-Gadu Protocol plugin. Please compile libgadu with zlib support."));
 
-	gg_proxy_host = 0;
-	gg_proxy_username = 0;
-	gg_proxy_password = 0;
+    gg_proxy_host = 0;
+    gg_proxy_username = 0;
+    gg_proxy_password = 0;
 
-	m_protocolsManager->registerProtocolFactory(m_gaduProtocolFactory);
-	m_urlHandlerManager->registerUrlHandler(m_gaduUrlHandler);
-	m_domVisitorProviderRepository->addVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
+    m_protocolsManager->registerProtocolFactory(m_gaduProtocolFactory);
+    m_urlHandlerManager->registerUrlHandler(m_gaduUrlHandler);
+    m_domVisitorProviderRepository->addVisitorProvider(m_gaduUrlDomVisitorProvider, 1000);
 }
 
 void GaduPluginObject::done()
 {
-	m_domVisitorProviderRepository->removeVisitorProvider(m_gaduUrlDomVisitorProvider);
-	m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
-	m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);
+    m_domVisitorProviderRepository->removeVisitorProvider(m_gaduUrlDomVisitorProvider);
+    m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
+    m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);
 }
 
 #include "moc_gadu-plugin-object.cpp"

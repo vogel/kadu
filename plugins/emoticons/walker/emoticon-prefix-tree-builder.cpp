@@ -23,34 +23,33 @@
 
 #include "emoticon-prefix-tree-builder.h"
 
-EmoticonPrefixTreeBuilder::EmoticonPrefixTreeBuilder() :
-		Root(new EmoticonPrefixTree())
+EmoticonPrefixTreeBuilder::EmoticonPrefixTreeBuilder() : Root(new EmoticonPrefixTree())
 {
 }
 
 void EmoticonPrefixTreeBuilder::addEmoticon(const Emoticon &emoticon)
 {
-	Q_ASSERT(Root);
+    Q_ASSERT(Root);
 
-	QString text = emoticon.triggerText().toLower();
-	int length = text.length();
+    QString text = emoticon.triggerText().toLower();
+    int length = text.length();
 
-	EmoticonPrefixTree *node = Root.data();
-	for (int i = 0; i < length; i++)
-	{
-		QChar c = extractLetter(text.at(i));
+    EmoticonPrefixTree *node = Root.data();
+    for (int i = 0; i < length; i++)
+    {
+        QChar c = extractLetter(text.at(i));
 
-		EmoticonPrefixTree *child = node->child(c);
-		if (!child)
-			child = node->createChild(c);
-		node = child;
-	}
+        EmoticonPrefixTree *child = node->child(c);
+        if (!child)
+            child = node->createChild(c);
+        node = child;
+    }
 
-	if (node->nodeEmoticon().isNull())
-		node->setNodeEmoticon(emoticon);
+    if (node->nodeEmoticon().isNull())
+        node->setNodeEmoticon(emoticon);
 }
 
-EmoticonPrefixTree * EmoticonPrefixTreeBuilder::tree()
+EmoticonPrefixTree *EmoticonPrefixTreeBuilder::tree()
 {
-	return Root.take();
+    return Root.take();
 }

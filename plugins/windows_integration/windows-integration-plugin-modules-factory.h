@@ -23,14 +23,13 @@
 
 class WindowsIntegrationPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit WindowsIntegrationPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~WindowsIntegrationPluginModulesFactory();
+    explicit WindowsIntegrationPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~WindowsIntegrationPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

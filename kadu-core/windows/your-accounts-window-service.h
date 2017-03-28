@@ -31,21 +31,20 @@ class YourAccounts;
 
 class KADUAPI YourAccountsWindowService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit YourAccountsWindowService(QObject *parent = nullptr);
-	virtual ~YourAccountsWindowService();
+    Q_INVOKABLE explicit YourAccountsWindowService(QObject *parent = nullptr);
+    virtual ~YourAccountsWindowService();
 
-	void show();
+    void show();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<YourAccounts> m_yourAccounts;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<YourAccounts> m_yourAccounts;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

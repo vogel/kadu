@@ -27,26 +27,25 @@ struct MultilogonSession;
 
 class MultilogonModel : public QAbstractTableModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	MultilogonService *Service;
+    MultilogonService *Service;
 
 private slots:
-	void multilogonSessionAboutToBeConnected(MultilogonSession session);
-	void multilogonSessionConnected(MultilogonSession session);
-	void multilogonSessionAboutToBeDisconnected(MultilogonSession session);
-	void multilogonSessionDisconnected(MultilogonSession session);
+    void multilogonSessionAboutToBeConnected(MultilogonSession session);
+    void multilogonSessionConnected(MultilogonSession session);
+    void multilogonSessionAboutToBeDisconnected(MultilogonSession session);
+    void multilogonSessionDisconnected(MultilogonSession session);
 
 public:
-	explicit MultilogonModel(MultilogonService *service, QObject *parent);
-	virtual ~MultilogonModel();
+    explicit MultilogonModel(MultilogonService *service, QObject *parent);
+    virtual ~MultilogonModel();
 
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 };
 
-#endif // MULTILOGON_MODEL_H
+#endif   // MULTILOGON_MODEL_H

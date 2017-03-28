@@ -28,16 +28,16 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowOfflineBuddiesAction::ShowOfflineBuddiesAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowOfflineBuddiesAction::ShowOfflineBuddiesAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/show-offline-buddies"});
-	setName(QStringLiteral("inactiveUsersAction"));
-	setShortcut("kadu_showoffline");
-	setText(tr("Show Offline Buddies"));
-	setType(ActionDescription::TypeUserList);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/show-offline-buddies"});
+    setName(QStringLiteral("inactiveUsersAction"));
+    setShortcut("kadu_showoffline");
+    setText(tr("Show Offline Buddies"));
+    setType(ActionDescription::TypeUserList);
 }
 
 ShowOfflineBuddiesAction::~ShowOfflineBuddiesAction()
@@ -46,53 +46,54 @@ ShowOfflineBuddiesAction::~ShowOfflineBuddiesAction()
 
 void ShowOfflineBuddiesAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowOfflineBuddiesAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowOfflineBuddiesAction::actionInstanceCreated(Action *action)
 {
-	auto window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
+    auto window = qobject_cast<MainWindow *>(action->parentWidget());
+    if (!window)
+        return;
+    if (!window->talkableProxyModel())
+        return;
 
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline");
-	auto filter = injectedFactory()->makeInjected<HideOfflineTalkableFilter>(action);
-	filter->setEnabled(!enabled);
+    auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline");
+    auto filter = injectedFactory()->makeInjected<HideOfflineTalkableFilter>(action);
+    filter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(filter));
-	action->setChecked(enabled);
+    action->setData(QVariant::fromValue(filter));
+    action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(filter);
+    window->talkableProxyModel()->addFilter(filter);
 }
 
 void ShowOfflineBuddiesAction::actionTriggered(QAction *action, bool toggled)
 {
-	auto v = action->data();
-	if (v.canConvert<HideOfflineTalkableFilter *>())
-	{
-		auto filter = v.value<HideOfflineTalkableFilter *>();
-		filter->setEnabled(!toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowOffline", toggled);
-	}
+    auto v = action->data();
+    if (v.canConvert<HideOfflineTalkableFilter *>())
+    {
+        auto filter = v.value<HideOfflineTalkableFilter *>();
+        filter->setEnabled(!toggled);
+        m_configuration->deprecatedApi()->writeEntry("General", "ShowOffline", toggled);
+    }
 }
 
 void ShowOfflineBuddiesAction::configurationUpdated()
 {
-	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
-		return;
+    if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+        return;
 
-	ActionDescription::configurationUpdated();
+    ActionDescription::configurationUpdated();
 
-	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) && action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
-		action(context)->trigger();
+    auto context = m_kaduWindowService->kaduWindow()->actionContext();
+    if (action(context) &&
+        action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
+        action(context)->trigger();
 }
 
 #include "moc_show-offline-buddies-action.cpp"

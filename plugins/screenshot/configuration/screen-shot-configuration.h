@@ -31,44 +31,67 @@ class PathsProvider;
 
 class ScreenShotConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ScreenShotConfiguration(QObject *parent = nullptr);
-	virtual ~ScreenShotConfiguration();
+    Q_INVOKABLE explicit ScreenShotConfiguration(QObject *parent = nullptr);
+    virtual ~ScreenShotConfiguration();
 
-	const QString & fileFormat() const { return FileFormat; }
-	bool useShortJpgExtension() { return UseShortJpgExtension; }
-	int quality() { return Quality; }
-	const QString & imagePath() const { return ImagePath; }
-	const QString & fileNamePrefix() const { return FileNamePrefix; }
-	bool pasteImageClauseIntoChatWidget() { return PasteImageClauseIntoChatWidget; }
-	bool warnAboutDirectorySize() { return WarnAboutDirectorySize; }
-	long directorySizeLimit() { return DirectorySizeLimit; }
+    const QString &fileFormat() const
+    {
+        return FileFormat;
+    }
+    bool useShortJpgExtension()
+    {
+        return UseShortJpgExtension;
+    }
+    int quality()
+    {
+        return Quality;
+    }
+    const QString &imagePath() const
+    {
+        return ImagePath;
+    }
+    const QString &fileNamePrefix() const
+    {
+        return FileNamePrefix;
+    }
+    bool pasteImageClauseIntoChatWidget()
+    {
+        return PasteImageClauseIntoChatWidget;
+    }
+    bool warnAboutDirectorySize()
+    {
+        return WarnAboutDirectorySize;
+    }
+    long directorySizeLimit()
+    {
+        return DirectorySizeLimit;
+    }
 
-	QString screenshotFileNameExtension();
+    QString screenshotFileNameExtension();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QString FileFormat;
-	bool UseShortJpgExtension;
-	int Quality;
-	QString ImagePath;
-	QString FileNamePrefix;
-	bool PasteImageClauseIntoChatWidget;
-	bool WarnAboutDirectorySize;
-	long DirectorySizeLimit;
+    QString FileFormat;
+    bool UseShortJpgExtension;
+    int Quality;
+    QString ImagePath;
+    QString FileNamePrefix;
+    bool PasteImageClauseIntoChatWidget;
+    bool WarnAboutDirectorySize;
+    long DirectorySizeLimit;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

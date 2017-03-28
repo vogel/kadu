@@ -22,8 +22,8 @@
 #pragma once
 
 #include "buddies/group.h"
-#include "storage/manager.h"
 #include "exports.h"
+#include "storage/manager.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -38,56 +38,61 @@ class GroupStorage;
 
 class KADUAPI GroupManager : public Manager<Group>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit GroupManager(QObject *parent = nullptr);
-	virtual ~GroupManager();
+    Q_INVOKABLE explicit GroupManager(QObject *parent = nullptr);
+    virtual ~GroupManager();
 
-	virtual QString storageNodeName() override { return QStringLiteral("Groups"); }
-	virtual QString storageNodeItemName() override { return QStringLiteral("Group"); }
+    virtual QString storageNodeName() override
+    {
+        return QStringLiteral("Groups");
+    }
+    virtual QString storageNodeItemName() override
+    {
+        return QStringLiteral("Group");
+    }
 
-	Group byName(const QString &name, bool create = true);
+    Group byName(const QString &name, bool create = true);
 
-	QString validateGroupName(Group group, const QString &newName);
-	bool acceptableGroupName(const QString &groupName, bool acceptExistingGroupName = false);
+    QString validateGroupName(Group group, const QString &newName);
+    bool acceptableGroupName(const QString &groupName, bool acceptExistingGroupName = false);
 
 signals:
-	void groupAboutToBeAdded(Group group);
-	void groupAdded(Group group);
-	void groupAboutToBeRemoved(Group group);
-	void groupRemoved(Group group);
+    void groupAboutToBeAdded(Group group);
+    void groupAdded(Group group);
+    void groupAboutToBeRemoved(Group group);
+    void groupRemoved(Group group);
 
-	void groupUpdated(Group group);
+    void groupUpdated(Group group);
 
-	void saveGroupData();
+    void saveGroupData();
 
 protected:
-	virtual void load() override;
-	virtual void store() override;
-	virtual Group loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+    virtual void load() override;
+    virtual void store() override;
+    virtual Group loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeAdded(Group item) override;
-	virtual void itemAdded(Group item) override;
-	virtual void itemAboutToBeRemoved(Group item) override;
-	virtual void itemRemoved(Group item) override;
+    virtual void itemAboutToBeAdded(Group item) override;
+    virtual void itemAdded(Group item) override;
+    virtual void itemAboutToBeRemoved(Group item) override;
+    virtual void itemRemoved(Group item) override;
 
 private:
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<GroupStorage> m_groupStorage;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<GroupStorage> m_groupStorage;
 
-	void importConfiguration();
+    void importConfiguration();
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setGroupStorage(GroupStorage *groupStorage);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setGroupStorage(GroupStorage *groupStorage);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void groupDataUpdated();
-
+    void groupDataUpdated();
 };

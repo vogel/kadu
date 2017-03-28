@@ -23,15 +23,14 @@
 
 class MpdPlayerPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit MpdPlayerPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~MpdPlayerPluginModulesFactory();
+    explicit MpdPlayerPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~MpdPlayerPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-	virtual QString parentInjectorName() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
+    virtual QString parentInjectorName() const override;
 };

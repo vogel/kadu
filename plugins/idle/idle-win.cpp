@@ -26,77 +26,76 @@
 #if defined(Q_OS_WIN) && !defined(Q_CC_GNU) && (_WIN32_WINNT < 0x0500)
 typedef struct tagLASTINPUTINFO
 {
-	UINT cbSize;
-	DWORD dwTime;
+    UINT cbSize;
+    DWORD dwTime;
 } LASTINPUTINFO, *PLASTINPUTINFO;
 #endif
 
-BOOL (__stdcall * GetLastInputInfoFun)(PLASTINPUTINFO);
-DWORD (__stdcall * IdleUIGetLastInputTime)(void);
+BOOL(__stdcall *GetLastInputInfoFun)(PLASTINPUTINFO);
+DWORD(__stdcall *IdleUIGetLastInputTime)(void);
 QLibrary *lib;
 
-Idle::Idle(QObject *parent) :
-		QObject(parent)
+Idle::Idle(QObject *parent) : QObject(parent)
 {
-	QFunctionPointer p;
+    QFunctionPointer p;
 
-	GetLastInputInfoFun = 0;
-	IdleUIGetLastInputTime = 0;
-	lib = 0;
+    GetLastInputInfoFun = 0;
+    IdleUIGetLastInputTime = 0;
+    lib = 0;
 
-	if (lib == 0)
-	{
-		// try to find the built-in Windows 2000 function
-		lib = new QLibrary("user32");
-		if(lib->load() && (p = lib->resolve("GetLastInputInfo")))
-		{
-			GetLastInputInfoFun = (BOOL (__stdcall *)(PLASTINPUTINFO))p;
-		}
-		else
-		{
-			delete lib;
+    if (lib == 0)
+    {
+        // try to find the built-in Windows 2000 function
+        lib = new QLibrary("user32");
+        if (lib->load() && (p = lib->resolve("GetLastInputInfo")))
+        {
+            GetLastInputInfoFun = (BOOL(__stdcall *)(PLASTINPUTINFO))p;
+        }
+        else
+        {
+            delete lib;
 
-			// fall back on idleui
-			lib = new QLibrary("idleui");
-			if(lib->load() && (p = lib->resolve("IdleUIGetLastInputTime")))
-			{
-				IdleUIGetLastInputTime = (DWORD (__stdcall *)(void))p;
-			}
-			else
-			{
-				delete lib;
-				lib = 0;
-			}
-		}
-	}
+            // fall back on idleui
+            lib = new QLibrary("idleui");
+            if (lib->load() && (p = lib->resolve("IdleUIGetLastInputTime")))
+            {
+                IdleUIGetLastInputTime = (DWORD(__stdcall *)(void))p;
+            }
+            else
+            {
+                delete lib;
+                lib = 0;
+            }
+        }
+    }
 }
 
 Idle::~Idle()
 {
-	delete lib;
-	lib = 0;
+    delete lib;
+    lib = 0;
 }
 
 long Idle::secondsIdle()
 {
-	int i;
-	if (GetLastInputInfoFun != 0)
-	{
-		LASTINPUTINFO li;
-		li.cbSize = sizeof(LASTINPUTINFO);
-		bool ok = GetLastInputInfoFun(&li);
-		if (!ok)
-			return -1;
-		i = li.dwTime;
-	}
-	else if (IdleUIGetLastInputTime)
-	{
-		i = IdleUIGetLastInputTime();
-	}
-	else
-		return -1;
+    int i;
+    if (GetLastInputInfoFun != 0)
+    {
+        LASTINPUTINFO li;
+        li.cbSize = sizeof(LASTINPUTINFO);
+        bool ok = GetLastInputInfoFun(&li);
+        if (!ok)
+            return -1;
+        i = li.dwTime;
+    }
+    else if (IdleUIGetLastInputTime)
+    {
+        i = IdleUIGetLastInputTime();
+    }
+    else
+        return -1;
 
-	return (GetTickCount() - i) / 1000;
+    return (GetTickCount() - i) / 1000;
 }
 
 #include "moc_idle.cpp"

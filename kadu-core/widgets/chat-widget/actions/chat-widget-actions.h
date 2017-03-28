@@ -30,20 +30,19 @@ class OpenChatAction;
 
 class ChatWidgetActions : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit ChatWidgetActions(QObject *parent = nullptr);
-	virtual ~ChatWidgetActions();
+    Q_INVOKABLE explicit ChatWidgetActions(QObject *parent = nullptr);
+    virtual ~ChatWidgetActions();
 
 private:
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<OpenChatAction> m_openChatAction;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<OpenChatAction> m_openChatAction;
 
 private slots:
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setOpenChatAction(OpenChatAction *openChatAction);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setOpenChatAction(OpenChatAction *openChatAction);
+    INJEQT_INIT void init();
 };

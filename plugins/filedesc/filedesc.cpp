@@ -31,75 +31,76 @@
 #include <QtCore/QTextStream>
 #include <QtCore/QTimer>
 
-FileDescription::FileDescription(QObject *parent) :
-		QObject(parent)
+FileDescription::FileDescription(QObject *parent) : QObject(parent)
 {
-	m_timer = new QTimer{this};
-	m_timer->setSingleShot(false);
-	m_timer->setInterval(500);
-	connect(m_timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
-	m_timer->start();
+    m_timer = new QTimer{this};
+    m_timer->setSingleShot(false);
+    m_timer->setInterval(500);
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(checkTitle()));
+    m_timer->start();
 }
 
 FileDescription::~FileDescription()
 {
-	m_timer->stop();
+    m_timer->stop();
 }
 
 void FileDescription::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void FileDescription::setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger)
 {
-	m_fileDescStatusChanger = fileDescStatusChanger;
+    m_fileDescStatusChanger = fileDescStatusChanger;
 }
 
 void FileDescription::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void FileDescription::init()
 {
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void FileDescription::configurationUpdated()
 {
-	m_file = m_configuration->deprecatedApi()->readEntry("FileDesc", "file", m_pathsProvider->profilePath() + QStringLiteral("description.txt"));
-	m_forceDesc = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
-	m_allowOther = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
+    m_file = m_configuration->deprecatedApi()->readEntry(
+        "FileDesc", "file", m_pathsProvider->profilePath() + QStringLiteral("description.txt"));
+    m_forceDesc = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "forceDescr", true);
+    m_allowOther = m_configuration->deprecatedApi()->readBoolEntry("FileDesc", "allowOther", true);
 
-	checkTitle();
+    checkTitle();
 }
 
 void FileDescription::checkTitle()
 {
-	QFile file{m_file};
+    QFile file{m_file};
 
-	if (!file.exists())
-		return;
+    if (!file.exists())
+        return;
 
-	if (!file.open(QIODevice::ReadOnly))
-		return;
+    if (!file.open(QIODevice::ReadOnly))
+        return;
 
-	QString description;
-	QTextStream stream(&file);
-	if (!stream.atEnd())
-		description = stream.readLine();
-	file.close();
+    QString description;
+    QTextStream stream(&file);
+    if (!stream.atEnd())
+        description = stream.readLine();
+    file.close();
 
-	m_fileDescStatusChanger->setTitle(description);
+    m_fileDescStatusChanger->setTitle(description);
 }
 
 void FileDescription::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("FileDesc", "file", m_pathsProvider->profilePath() + QStringLiteral("description.txt"));
-	m_configuration->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
-	m_configuration->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
+    m_configuration->deprecatedApi()->addVariable(
+        "FileDesc", "file", m_pathsProvider->profilePath() + QStringLiteral("description.txt"));
+    m_configuration->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
+    m_configuration->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }
 
 #include "moc_filedesc.cpp"

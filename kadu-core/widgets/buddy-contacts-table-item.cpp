@@ -27,135 +27,134 @@
 #include "roster/roster-entry-state.h"
 #include "roster/roster-entry.h"
 
-BuddyContactsTableItem::BuddyContactsTableItem(ContactManager *contactManager, Contact contact, QObject *parent) :
-		QObject{parent},
-		m_contactManager{contactManager}
+BuddyContactsTableItem::BuddyContactsTableItem(ContactManager *contactManager, Contact contact, QObject *parent)
+        : QObject{parent}, m_contactManager{contactManager}
 {
-	ItemContact = contact;
-	ItemContactPriority = contact.priority();
-	ItemAccount = contact.contactAccount();
-	Id = contact.id();
-	RosterDetached = !contact.isNull() ? (contact.rosterEntry()->state() == RosterEntryState::Detached) : false;
-	Action = ItemEdit;
+    ItemContact = contact;
+    ItemContactPriority = contact.priority();
+    ItemAccount = contact.contactAccount();
+    Id = contact.id();
+    RosterDetached = !contact.isNull() ? (contact.rosterEntry()->state() == RosterEntryState::Detached) : false;
+    Action = ItemEdit;
 }
 
 void BuddyContactsTableItem::setItemContactPriority(int itemContactPriority)
 {
-	if (ItemContactPriority != itemContactPriority)
-	{
-		ItemContactPriority = itemContactPriority;
-		emit updated(this);
-	}
+    if (ItemContactPriority != itemContactPriority)
+    {
+        ItemContactPriority = itemContactPriority;
+        emit updated(this);
+    }
 }
 
 void BuddyContactsTableItem::setItemAccount(Account account)
 {
-	if (ItemAccount != account)
-	{
-		ItemAccount = account;
-		emit updated(this);
-	}
+    if (ItemAccount != account)
+    {
+        ItemAccount = account;
+        emit updated(this);
+    }
 }
 
-void BuddyContactsTableItem::setId(const QString& id)
+void BuddyContactsTableItem::setId(const QString &id)
 {
-	if (Id != id)
-	{
-		Id = id;
-		emit updated(this);
-	}
+    if (Id != id)
+    {
+        Id = id;
+        emit updated(this);
+    }
 }
 
 void BuddyContactsTableItem::setRosterDetached(bool rosterDetached)
 {
-	if (RosterDetached != rosterDetached)
-	{
-		RosterDetached = rosterDetached;
-		emit updated(this);
-	}
+    if (RosterDetached != rosterDetached)
+    {
+        RosterDetached = rosterDetached;
+        emit updated(this);
+    }
 }
 
 void BuddyContactsTableItem::setAction(BuddyContactsTableItem::ItemAction action)
 {
-	if (Action != action)
-	{
-		Action = action;
-		emit updated(this);
-	}
+    if (Action != action)
+    {
+        Action = action;
+        emit updated(this);
+    }
 }
 
 void BuddyContactsTableItem::setDetachedBuddyName(const QString &detachedBuddyName)
 {
-	if (DetachedBuddyName != detachedBuddyName)
-	{
-		DetachedBuddyName = detachedBuddyName;
-		emit updated(this);
-	}
+    if (DetachedBuddyName != detachedBuddyName)
+    {
+        DetachedBuddyName = detachedBuddyName;
+        emit updated(this);
+    }
 }
 
 bool BuddyContactsTableItem::isValid() const
 {
-	if (ItemRemove == Action)
-		return true;
+    if (ItemRemove == Action)
+        return true;
 
-	if (ItemDetach == Action)
-		return !DetachedBuddyName.isEmpty();
+    if (ItemDetach == Action)
+        return !DetachedBuddyName.isEmpty();
 
-	if (ItemAdd == Action)
-		return isAddValid();
+    if (ItemAdd == Action)
+        return isAddValid();
 
-	return isEditValid();
+    return isEditValid();
 }
 
 bool BuddyContactsTableItem::isAddValid() const
 {
-	if (ItemContact)
-		return false;
+    if (ItemContact)
+        return false;
 
-	if (!ItemAccount)
-		return false;
+    if (!ItemAccount)
+        return false;
 
-	if (Id.isEmpty())
-		return false;
+    if (Id.isEmpty())
+        return false;
 
-	Protocol *handler = ItemAccount.protocolHandler();
-	if (!handler)
-		return false;
+    Protocol *handler = ItemAccount.protocolHandler();
+    if (!handler)
+        return false;
 
-	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
-		return false;
+    if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
+        return false;
 
-	// allow contacts without buddy or new ones
-	Contact contact = m_contactManager->byId(ItemAccount, Id, ActionReturnNull);
-	return contact.ownerBuddy().isAnonymous();
+    // allow contacts without buddy or new ones
+    Contact contact = m_contactManager->byId(ItemAccount, Id, ActionReturnNull);
+    return contact.ownerBuddy().isAnonymous();
 }
 
 bool BuddyContactsTableItem::isEditValid() const
 {
-	if (!ItemContact)
-		return false;
+    if (!ItemContact)
+        return false;
 
-	if (!ItemAccount)
-		return false;
+    if (!ItemAccount)
+        return false;
 
-	if (Id.isEmpty())
-		return false;
+    if (Id.isEmpty())
+        return false;
 
-	Protocol *handler = ItemAccount.protocolHandler();
-	if (!handler)
-		return true; // make it user responsibility
+    Protocol *handler = ItemAccount.protocolHandler();
+    if (!handler)
+        return true;   // make it user responsibility
 
-	if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
-		return false;
+    if (handler->protocolFactory()->validateId(Id) != QValidator::Acceptable)
+        return false;
 
-	if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())
-	{
-		// allow contacts without buddy or new ones
-		Contact contact = m_contactManager->byId(ItemAccount, Id, ActionReturnNull);
-		return contact.ownerBuddy().isAnonymous();
-	}
+    if (ItemAccount != ItemContact.contactAccount() || Id != ItemContact.id())
+    {
+        // allow contacts without buddy or new ones
+        Contact contact = m_contactManager->byId(ItemAccount, Id, ActionReturnNull);
+        return contact.ownerBuddy().isAnonymous();
+    }
 
-	return true;
+    return true;
 }
 
 #include "moc_buddy-contacts-table-item.cpp"

@@ -26,15 +26,14 @@
 
 class AddFoundBuddyAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit AddFoundBuddyAction(QObject *parent = nullptr);
-	virtual ~AddFoundBuddyAction();
+    Q_INVOKABLE explicit AddFoundBuddyAction(QObject *parent = nullptr);
+    virtual ~AddFoundBuddyAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 };

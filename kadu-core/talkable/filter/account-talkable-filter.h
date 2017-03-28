@@ -40,41 +40,40 @@
  */
 class AccountTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Account FilterAccount;
+    Account FilterAccount;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of TalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 *
-	 * Create new instance of AccountTalkableFilter with given parent.
-	 */
-	explicit AccountTalkableFilter(QObject *parent = nullptr);
-	virtual ~AccountTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of TalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     *
+     * Create new instance of AccountTalkableFilter with given parent.
+     */
+    explicit AccountTalkableFilter(QObject *parent = nullptr);
+    virtual ~AccountTalkableFilter();
 
-	virtual FilterResult filterChat(const Chat &chat);
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
+    virtual FilterResult filterChat(const Chat &chat);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets account to filter objects by.
-	 * @param filterAccount account to filter objects by
-	 *
-	 * Sets account to filter objects by. If filterAccount is null then every item will get Rejected result.
-	 * If filterAccount is not null then Contact and Chat items that belong to this Account will get Undecided
-	 * result.
-	 */
-	void setAccount(const Account &filterAccount);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets account to filter objects by.
+     * @param filterAccount account to filter objects by
+     *
+     * Sets account to filter objects by. If filterAccount is null then every item will get Rejected result.
+     * If filterAccount is not null then Contact and Chat items that belong to this Account will get Undecided
+     * result.
+     */
+    void setAccount(const Account &filterAccount);
 };
 
 /**
  * @}
  */
 
-#endif // ACCOUNT_TALKABLE_FILTER_H
+#endif   // ACCOUNT_TALKABLE_FILTER_H

@@ -37,14 +37,14 @@
 
 #include <QtWidgets/QFileDialog>
 
-SendFileAction::SendFileAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+SendFileAction::SendFileAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon(QStringLiteral("document-send")));
-	setName(QStringLiteral("sendFileAction"));
-	setText(tr("Send File..."));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon(QStringLiteral("document-send")));
+    setName(QStringLiteral("sendFileAction"));
+    setText(tr("Send File..."));
+    setType(ActionDescription::TypeUser);
 }
 
 SendFileAction::~SendFileAction()
@@ -53,109 +53,109 @@ SendFileAction::~SendFileAction()
 
 void SendFileAction::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
-	m_fileTransferManager = fileTransferManager;
+    m_fileTransferManager = fileTransferManager;
 }
 
 void SendFileAction::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
 {
-	m_fileTransferStorage = fileTransferStorage;
+    m_fileTransferStorage = fileTransferStorage;
 }
 
 void SendFileAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void SendFileAction::actionInstanceCreated(Action *action)
 {
-	auto account = action->context()->chat().chatAccount();
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
-		return;
+    auto account = action->context()->chat().chatAccount();
+    if (!account || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
+        return;
 
-	connect(account.protocolHandler()->fileTransferService(), SIGNAL(canSendChanged()), action, SLOT(checkState()));
+    connect(account.protocolHandler()->fileTransferService(), SIGNAL(canSendChanged()), action, SLOT(checkState()));
 }
 
-void SendFileAction::triggered(QWidget* widget, ActionContext* context, bool toggled)
+void SendFileAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(widget)
-	Q_UNUSED(toggled)
+    Q_UNUSED(widget)
+    Q_UNUSED(toggled)
 
-	if (!context)
-		return;
+    if (!context)
+        return;
 
-	auto contacts = context->contacts();
-	if (!contacts.isEmpty())
-		selectFilesAndSend(contacts);
+    auto contacts = context->contacts();
+    if (!contacts.isEmpty())
+        selectFilesAndSend(contacts);
 }
 
 void SendFileAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
-	action->setToolTip(text());
+    action->setEnabled(false);
+    action->setToolTip(text());
 
-	if (action->context()->buddies().isAnyTemporary())
-		return;
+    if (action->context()->buddies().isAnyTemporary())
+        return;
 
-	auto contacts = action->context()->contacts();
+    auto contacts = action->context()->contacts();
 
-	if (contacts.isEmpty())
-		return;
+    if (contacts.isEmpty())
+        return;
 
-	for (auto &contact : contacts)
-	{
-		if (m_myself->buddy() == contact.ownerBuddy())
-			return;
+    for (auto &contact : contacts)
+    {
+        if (m_myself->buddy() == contact.ownerBuddy())
+            return;
 
-		auto account = contact.contactAccount();
-		if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
-			return;
+        auto account = contact.contactAccount();
+        if (account.isNull() || !account.protocolHandler() || !account.protocolHandler()->fileTransferService())
+            return;
 
-		auto canSend = account.protocolHandler()->fileTransferService()->canSend(contact);
-		if (!canSend.canSend())
-		{
-			if (!canSend.reason().isEmpty())
-				action->setToolTip(canSend.reason());
-			return;
-		}
-	}
+        auto canSend = account.protocolHandler()->fileTransferService()->canSend(contact);
+        if (!canSend.canSend())
+        {
+            if (!canSend.reason().isEmpty())
+                action->setToolTip(canSend.reason());
+            return;
+        }
+    }
 
-	action->setEnabled(true);
+    action->setEnabled(true);
 }
 
 void SendFileAction::selectFilesAndSend(const ContactSet &contacts)
 {
-	auto filesNames = selectFilesToSend();
-	if (filesNames.isEmpty())
-		return;
+    auto filesNames = selectFilesToSend();
+    if (filesNames.isEmpty())
+        return;
 
-	for (auto &&contact : contacts)
-	{
-		auto account = contact.contactAccount();
-		if (!account.protocolHandler())
-			continue;
+    for (auto &&contact : contacts)
+    {
+        auto account = contact.contactAccount();
+        if (!account.protocolHandler())
+            continue;
 
-		auto service = account.protocolHandler()->fileTransferService();
-		if (!service)
-			continue;
+        auto service = account.protocolHandler()->fileTransferService();
+        if (!service)
+            continue;
 
-		for (auto &&fileName : filesNames)
-		{
-			auto fileTransfer = m_fileTransferStorage->create();
-			fileTransfer.setPeer(contact);
-			fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
+        for (auto &&fileName : filesNames)
+        {
+            auto fileTransfer = m_fileTransferStorage->create();
+            fileTransfer.setPeer(contact);
+            fileTransfer.setTransferDirection(FileTransferDirection::Outgoing);
 
-			m_fileTransferManager->addItem(fileTransfer);
-			m_fileTransferManager->sendFile(fileTransfer, fileName);
-			m_fileTransferManager->showFileTransferWindow();
-		}
-	}
+            m_fileTransferManager->addItem(fileTransfer);
+            m_fileTransferManager->sendFile(fileTransfer, fileName);
+            m_fileTransferManager->showFileTransferWindow();
+        }
+    }
 }
 
 QStringList SendFileAction::selectFilesToSend() const
 {
-	return QFileDialog::getOpenFileNames(
-			nullptr, tr("Select file location"),
-			configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
+    return QFileDialog::getOpenFileNames(
+        nullptr, tr("Select file location"),
+        configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
 }
 
 #include "moc_send-file-action.cpp"

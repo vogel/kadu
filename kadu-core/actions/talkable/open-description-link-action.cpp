@@ -25,14 +25,14 @@
 #include "os/generic/url-opener.h"
 #include "url-handlers/url-handler-manager.h"
 
-OpenDescriptionLinkAction::OpenDescriptionLinkAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenDescriptionLinkAction::OpenDescriptionLinkAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"go-jump"});
-	setName(QStringLiteral("openDescriptionLinkAction"));
-	setText(tr("Open Description Link in Browser"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"go-jump"});
+    setName(QStringLiteral("openDescriptionLinkAction"));
+    setText(tr("Open Description Link in Browser"));
+    setType(ActionDescription::TypeUser);
 }
 
 OpenDescriptionLinkAction::~OpenDescriptionLinkAction()
@@ -41,37 +41,39 @@ OpenDescriptionLinkAction::~OpenDescriptionLinkAction()
 
 void OpenDescriptionLinkAction::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 {
-	m_urlHandlerManager = urlHandlerManager;
+    m_urlHandlerManager = urlHandlerManager;
 }
 
 void OpenDescriptionLinkAction::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void OpenDescriptionLinkAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto const &contact = action->context()->contacts().toContact();
-	if (!contact)
-		return;
+    auto const &contact = action->context()->contacts().toContact();
+    if (!contact)
+        return;
 
-	auto const &description = contact.currentStatus().description();
-	if (description.isEmpty())
-		return;
+    auto const &description = contact.currentStatus().description();
+    if (description.isEmpty())
+        return;
 
-	auto url = m_urlHandlerManager->urlRegExp();
-	int idx_start = url.indexIn(description);
-	if (idx_start >= 0)
-		m_urlOpener->openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
+    auto url = m_urlHandlerManager->urlRegExp();
+    int idx_start = url.indexIn(description);
+    if (idx_start >= 0)
+        m_urlOpener->openUrl(description.mid(idx_start, url.matchedLength()).toUtf8());
 }
 
-void OpenDescriptionLinkAction::updateActionState(Action* action)
+void OpenDescriptionLinkAction::updateActionState(Action *action)
 {
-	action->setEnabled(action->context()->contacts().toContact().currentStatus().description().indexOf(m_urlHandlerManager->urlRegExp()) >= 0);
+    action->setEnabled(
+        action->context()->contacts().toContact().currentStatus().description().indexOf(
+            m_urlHandlerManager->urlRegExp()) >= 0);
 }
 
 #include "moc_open-description-link-action.cpp"

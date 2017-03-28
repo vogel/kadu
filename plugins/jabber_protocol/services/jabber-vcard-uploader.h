@@ -40,35 +40,34 @@ class QXmppVCardManager;
  */
 class JabberVCardUploader : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given Client.
-	 * @param client instance of Client
-	 * @param parent QObject parent
-	 */
-	explicit JabberVCardUploader(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
-	virtual ~JabberVCardUploader();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create instance attached to given Client.
+     * @param client instance of Client
+     * @param parent QObject parent
+     */
+    explicit JabberVCardUploader(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
+    virtual ~JabberVCardUploader();
 
-	/**
-	 * @short Uploads VCard for current client.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param vCard VCard to upload
-	 *
-	 * Before calling this method attach to vCardUploaded() signal to get informed about result. Please
-	 * note that this method can be only called once. After that this object emits vCardUploaded() and
-	 * deletes itself.
-	 */
-	void uploadVCard(const QXmppVCardIq &vcard);
+    /**
+     * @short Uploads VCard for current client.
+     * @author Rafał 'Vogel' Malinowski
+     * @param vCard VCard to upload
+     *
+     * Before calling this method attach to vCardUploaded() signal to get informed about result. Please
+     * note that this method can be only called once. After that this object emits vCardUploaded() and
+     * deletes itself.
+     */
+    void uploadVCard(const QXmppVCardIq &vcard);
 
 signals:
-	void vCardUploaded(bool ok);
+    void vCardUploaded(bool ok);
 
 private:
-	QPointer<QXmppVCardManager> m_vcardManager;
-
+    QPointer<QXmppVCardManager> m_vcardManager;
 };
 
 /**

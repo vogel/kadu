@@ -32,19 +32,17 @@ QString RosterNotifier::sm_importFailedNotifyTopic("Roster/ImportFailed");
 QString RosterNotifier::sm_exportSucceededNotifyTopic("Roster/ExportSucceeded");
 QString RosterNotifier::sm_exportFailedNotifyTopic("Roster/ExportFailed");
 
-RosterNotifier::RosterNotifier(QObject *parent) :
-		QObject{parent}
+RosterNotifier::RosterNotifier(QObject *parent) : QObject{parent}
 {
-	m_rosterNotificationEvent = NotificationEvent{sm_rosterNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Roster")};
-	m_importSucceededNotificationEvent = NotificationEvent{sm_importSucceededNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Import from server succeeded")};
-	m_importFailedNotificationEvent = NotificationEvent{sm_importFailedNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Import from server failed")};
-	m_exportSucceededNotificationEvent = NotificationEvent{sm_exportSucceededNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Export to server succeeded")};
-	m_exportFailedNotificationEvent = NotificationEvent{sm_exportFailedNotifyTopic,
-			QT_TRANSLATE_NOOP("@default", "Export to server failed")};
+    m_rosterNotificationEvent = NotificationEvent{sm_rosterNotifyTopic, QT_TRANSLATE_NOOP("@default", "Roster")};
+    m_importSucceededNotificationEvent =
+        NotificationEvent{sm_importSucceededNotifyTopic, QT_TRANSLATE_NOOP("@default", "Import from server succeeded")};
+    m_importFailedNotificationEvent =
+        NotificationEvent{sm_importFailedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Import from server failed")};
+    m_exportSucceededNotificationEvent =
+        NotificationEvent{sm_exportSucceededNotifyTopic, QT_TRANSLATE_NOOP("@default", "Export to server succeeded")};
+    m_exportFailedNotificationEvent =
+        NotificationEvent{sm_exportFailedNotifyTopic, QT_TRANSLATE_NOOP("@default", "Export to server failed")};
 }
 
 RosterNotifier::~RosterNotifier()
@@ -53,55 +51,56 @@ RosterNotifier::~RosterNotifier()
 
 void RosterNotifier::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 QList<NotificationEvent> RosterNotifier::notifyEvents()
 {
-	return QList<NotificationEvent>{}
-			<< m_rosterNotificationEvent
-			<< m_importSucceededNotificationEvent
-			<< m_importFailedNotificationEvent
-			<< m_exportSucceededNotificationEvent
-			<< m_exportFailedNotificationEvent;
+    return QList<NotificationEvent>{} << m_rosterNotificationEvent << m_importSucceededNotificationEvent
+                                      << m_importFailedNotificationEvent << m_exportSucceededNotificationEvent
+                                      << m_exportFailedNotificationEvent;
 }
 
 void RosterNotifier::notify(const QString &topic, const Account &account, const NormalizedHtmlString &message)
 {
-	auto data = QVariantMap{};
-	data.insert("account", qVariantFromValue(account));
+    auto data = QVariantMap{};
+    data.insert("account", qVariantFromValue(account));
 
-	auto notification = Notification{};
-	notification.type = topic;
-	notification.title = tr("Roster");
-	notification.text = message;
-	notification.data = std::move(data);
+    auto notification = Notification{};
+    notification.type = topic;
+    notification.title = tr("Roster");
+    notification.text = message;
+    notification.data = std::move(data);
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 void RosterNotifier::notifyImportSucceeded(const Account &account)
 {
-	notify(sm_importSucceededNotifyTopic, account,
-		   normalizeHtml(HtmlString{tr("%1: roster import succeded")}.arg(plainToHtml(account.id()))));
+    notify(
+        sm_importSucceededNotifyTopic, account,
+        normalizeHtml(HtmlString{tr("%1: roster import succeded")}.arg(plainToHtml(account.id()))));
 }
 
 void RosterNotifier::notifyImportFailed(const Account &account)
 {
-	notify(sm_importFailedNotifyTopic, account,
-		   normalizeHtml(HtmlString{tr("%1: roster import failed")}.arg(plainToHtml(account.id()))));
+    notify(
+        sm_importFailedNotifyTopic, account,
+        normalizeHtml(HtmlString{tr("%1: roster import failed")}.arg(plainToHtml(account.id()))));
 }
 
 void RosterNotifier::notifyExportSucceeded(const Account &account)
 {
-	notify(sm_exportSucceededNotifyTopic, account,
-		   normalizeHtml(HtmlString{tr("%1: roster export succeded")}.arg(plainToHtml(account.id()))));
+    notify(
+        sm_exportSucceededNotifyTopic, account,
+        normalizeHtml(HtmlString{tr("%1: roster export succeded")}.arg(plainToHtml(account.id()))));
 }
 
 void RosterNotifier::notifyExportFailed(const Account &account)
 {
-	notify(sm_exportFailedNotifyTopic, account,
-		   normalizeHtml(HtmlString{tr("%1: roster export failed")}.arg(plainToHtml(account.id()))));
+    notify(
+        sm_exportFailedNotifyTopic, account,
+        normalizeHtml(HtmlString{tr("%1: roster export failed")}.arg(plainToHtml(account.id()))));
 }
 
 #include "moc_roster-notifier.cpp"

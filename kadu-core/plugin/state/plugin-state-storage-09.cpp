@@ -33,52 +33,54 @@
  * This method loads old configuration from depreceated configuration entries: General/EverLaoded,
  * General/LoadedModules and General/UnloadedModules.
  */
-QMap<QString, PluginState> PluginStateStorage09::load(Configuration *configuration, const ::std::set<QString> &installedPluginNames) const
+QMap<QString, PluginState>
+PluginStateStorage09::load(Configuration *configuration, const ::std::set<QString> &installedPluginNames) const
 {
-	auto result = QMap<QString, PluginState>{};
+    auto result = QMap<QString, PluginState>{};
 
-	auto everLoaded = configuration->deprecatedApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
-	auto loaded = configuration->deprecatedApi()->readEntry("General", "LoadedModules");
+    auto everLoaded =
+        configuration->deprecatedApi()->readEntry("General", "EverLoaded").split(',', QString::SkipEmptyParts).toSet();
+    auto loaded = configuration->deprecatedApi()->readEntry("General", "LoadedModules");
 
-	auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
-	everLoaded += loadedPlugins;
-	auto unloaded_str = configuration->deprecatedApi()->readEntry("General", "UnloadedModules");
-	auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
+    auto loadedPlugins = loaded.split(',', QString::SkipEmptyParts).toSet();
+    everLoaded += loadedPlugins;
+    auto unloaded_str = configuration->deprecatedApi()->readEntry("General", "UnloadedModules");
+    auto unloadedPlugins = unloaded_str.split(',', QString::SkipEmptyParts).toSet();
 
-	auto allPlugins = everLoaded + unloadedPlugins; // just in case...
-	QSet<QString> oldPlugins;
-	for (auto pluginName : allPlugins)
-		if (!contains(installedPluginNames, pluginName) && !oldPlugins.contains(pluginName))
-			oldPlugins.insert(pluginName);
+    auto allPlugins = everLoaded + unloadedPlugins;   // just in case...
+    QSet<QString> oldPlugins;
+    for (auto pluginName : allPlugins)
+        if (!contains(installedPluginNames, pluginName) && !oldPlugins.contains(pluginName))
+            oldPlugins.insert(pluginName);
 
-	if (loadedPlugins.contains("encryption"))
-	{
-		loadedPlugins.remove("encryption");
-		loadedPlugins.remove("encryption_otr");
-	}
-	if (loadedPlugins.contains("osd_hints"))
-	{
-		loadedPlugins.remove("osd_hints");
-		loadedPlugins.insert("hints");
-	}
+    if (loadedPlugins.contains("encryption"))
+    {
+        loadedPlugins.remove("encryption");
+        loadedPlugins.remove("encryption_otr");
+    }
+    if (loadedPlugins.contains("osd_hints"))
+    {
+        loadedPlugins.remove("osd_hints");
+        loadedPlugins.insert("hints");
+    }
 
-	for (auto const &pluginName : installedPluginNames)
-		if (allPlugins.contains(pluginName))
-		{
-			if (loadedPlugins.contains(pluginName))
-				result.insert(pluginName, PluginState::Enabled);
-			else if (everLoaded.contains(pluginName))
-				result.insert(pluginName, PluginState::Disabled);
-		}
+    for (auto const &pluginName : installedPluginNames)
+        if (allPlugins.contains(pluginName))
+        {
+            if (loadedPlugins.contains(pluginName))
+                result.insert(pluginName, PluginState::Enabled);
+            else if (everLoaded.contains(pluginName))
+                result.insert(pluginName, PluginState::Disabled);
+        }
 
-	for (auto pluginName : oldPlugins)
-		if (allPlugins.contains(pluginName))
-		{
-			if (loadedPlugins.contains(pluginName))
-				result.insert(pluginName, PluginState::Enabled);
-			else if (everLoaded.contains(pluginName))
-				result.insert(pluginName, PluginState::Disabled);
-		}
+    for (auto pluginName : oldPlugins)
+        if (allPlugins.contains(pluginName))
+        {
+            if (loadedPlugins.contains(pluginName))
+                result.insert(pluginName, PluginState::Enabled);
+            else if (everLoaded.contains(pluginName))
+                result.insert(pluginName, PluginState::Disabled);
+        }
 
-	return result;
+    return result;
 }

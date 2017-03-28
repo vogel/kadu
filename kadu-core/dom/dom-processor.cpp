@@ -23,77 +23,77 @@
 
 #include <QtXml/QDomNode>
 
-DomProcessor::DomProcessor(QDomDocument &domDocument) :
-		m_domDocument{domDocument}
+DomProcessor::DomProcessor(QDomDocument &domDocument) : m_domDocument{domDocument}
 {
 }
 
 QDomNode DomProcessor::acceptNode(const DomVisitor *visitor, QDomNode node)
 {
-	switch (node.nodeType())
-	{
-		case QDomNode::TextNode:
-			node = visitor->visit(node.toText());
-			break;
-		case QDomNode::ElementNode:
-			node = visitor->beginVisit(node.toElement());
-			break;
-		default:
-			break;
-	}
+    switch (node.nodeType())
+    {
+    case QDomNode::TextNode:
+        node = visitor->visit(node.toText());
+        break;
+    case QDomNode::ElementNode:
+        node = visitor->beginVisit(node.toElement());
+        break;
+    default:
+        break;
+    }
 
-	auto childNode = node.firstChild();
-	while (!childNode.isNull())
-		childNode = acceptNode(visitor, childNode);
+    auto childNode = node.firstChild();
+    while (!childNode.isNull())
+        childNode = acceptNode(visitor, childNode);
 
-	switch (node.nodeType())
-	{
-		case QDomNode::ElementNode:
-			node = visitor->endVisit(node.toElement());
-			break;
-		default:
-			node = node.nextSibling();
-			break;
-	}
+    switch (node.nodeType())
+    {
+    case QDomNode::ElementNode:
+        node = visitor->endVisit(node.toElement());
+        break;
+    default:
+        node = node.nextSibling();
+        break;
+    }
 
-	return node;
+    return node;
 }
 
 void DomProcessor::accept(const DomVisitor *visitor)
 {
-	Q_ASSERT(visitor);
+    Q_ASSERT(visitor);
 
-	acceptNode(visitor, m_domDocument.documentElement());
+    acceptNode(visitor, m_domDocument.documentElement());
 }
 
 QDomDocument toDomDocument(const QString &xml)
 {
-	auto domDocument = QDomDocument{};
-	auto preparedXml = QString{xml}.replace("<", "-<").replace(">", ">-");
-	// force content to be valid HTML with only one root
-	if (domDocument.setContent(QString(R"(<div>%1</div>)").arg(preparedXml)))
-		return domDocument;
+    auto domDocument = QDomDocument{};
+    auto preparedXml = QString{xml}.replace("<", "-<").replace(">", ">-");
+    // force content to be valid HTML with only one root
+    if (domDocument.setContent(QString(R"(<div>%1</div>)").arg(preparedXml)))
+        return domDocument;
 
-	throw invalid_xml{};
+    throw invalid_xml{};
 }
 
 QString toString(const QDomDocument &domDocument)
 {
-	if (domDocument.documentElement().childNodes().isEmpty())
-		return QString();
+    if (domDocument.documentElement().childNodes().isEmpty())
+        return QString();
 
-	auto result = domDocument.toString(-1).trimmed();
-	// remove <div></div>
-	Q_ASSERT(result.startsWith(QStringLiteral(R"(<div>)")));
-	Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
-	result = result.mid(static_cast<int>(qstrlen(R"(<div>)")), result.length() - static_cast<int>(qstrlen(R"(<div></div>)")));
-	return result.replace("-<", "<").replace(">-", ">");
+    auto result = domDocument.toString(-1).trimmed();
+    // remove <div></div>
+    Q_ASSERT(result.startsWith(QStringLiteral(R"(<div>)")));
+    Q_ASSERT(result.endsWith(QStringLiteral("</div>")));
+    result = result.mid(
+        static_cast<int>(qstrlen(R"(<div>)")), result.length() - static_cast<int>(qstrlen(R"(<div></div>)")));
+    return result.replace("-<", "<").replace(">-", ">");
 }
 
 QString processDom(const QString &xml, const DomVisitor &domVisitor)
 {
-	auto domDocument = toDomDocument(xml);
-	auto domProcessor = DomProcessor{domDocument};
-	domProcessor.accept(&domVisitor);
-	return toString(domDocument);
+    auto domDocument = toDomDocument(xml);
+    auto domProcessor = DomProcessor{domDocument};
+    domProcessor.accept(&domVisitor);
+    return toString(domDocument);
 }

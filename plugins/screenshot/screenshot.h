@@ -49,43 +49,42 @@ class ScreenshotWidget;
 
 class ScreenShot : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
-	QPointer<ScreenshotNotificationService> m_screenshotNotificationService;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
+    QPointer<ScreenshotNotificationService> m_screenshotNotificationService;
 
-	ScreenShotMode Mode;
-	ScreenshotTaker *MyScreenshotTaker;
-	ChatWidget *MyChatWidget;
+    ScreenShotMode Mode;
+    ScreenshotTaker *MyScreenshotTaker;
+    ChatWidget *MyChatWidget;
 
-	bool warnedAboutSize;
+    bool warnedAboutSize;
 
-	void checkShotsSize();
+    void checkShotsSize();
 
-	void pasteImageClause(const QString &path);
-	bool checkImageSize(long int size);
+    void pasteImageClause(const QString &path);
+    bool checkImageSize(long int size);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setScreenshotNotificationService(ScreenshotNotificationService *screenshotNotificationService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setScreenshotNotificationService(ScreenshotNotificationService *screenshotNotificationService);
+    INJEQT_INIT void init();
 
-	void screenshotTaken(QPixmap screenshot, bool needsCrop);
-	void screenshotNotTaken();
+    void screenshotTaken(QPixmap screenshot, bool needsCrop);
+    void screenshotNotTaken();
 
-	void screenshotReady(QPixmap pixmap);
+    void screenshotReady(QPixmap pixmap);
 
 public:
-	explicit ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
-	virtual ~ScreenShot();
+    explicit ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget);
+    virtual ~ScreenShot();
 
-	void takeStandardShot();
-	void takeShotWithChatWindowHidden();
-	void takeWindowShot();
-
+    void takeStandardShot();
+    void takeShotWithChatWindowHidden();
+    void takeWindowShot();
 };

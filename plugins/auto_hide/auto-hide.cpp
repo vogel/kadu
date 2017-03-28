@@ -28,61 +28,58 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-AutoHide::AutoHide(QObject *parent) :
-		QObject{parent},
-		m_idleTime{0},
-		m_enabled{false}
+AutoHide::AutoHide(QObject *parent) : QObject{parent}, m_idleTime{0}, m_enabled{false}
 {
-	connect(&m_timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
+    connect(&m_timer, SIGNAL(timeout()), this, SLOT(timerTimeoutSlot()));
 }
 
 AutoHide::~AutoHide()
 {
-	m_timer.stop();
+    m_timer.stop();
 }
 
 void AutoHide::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void AutoHide::setIdle(Idle *idle)
 {
-	m_idle = idle;
+    m_idle = idle;
 }
 
 void AutoHide::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void AutoHide::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void AutoHide::timerTimeoutSlot()
 {
-	if (!m_enabled)
-		return;
+    if (!m_enabled)
+        return;
 
-	if (m_idle->secondsIdle() >= m_idleTime)
-	{
-		auto window = m_kaduWindowService->kaduWindow();
-		if (window->docked())
-			window->window()->hide();
-	}
+    if (m_idle->secondsIdle() >= m_idleTime)
+    {
+        auto window = m_kaduWindowService->kaduWindow();
+        if (window->docked())
+            window->window()->hide();
+    }
 }
 
 void AutoHide::configurationUpdated()
 {
-	m_idleTime = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
-	m_enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
+    m_idleTime = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "auto_hide_idle_time", 5 * 60);
+    m_enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "auto_hide_use_auto_hide");
 
-	if (m_enabled && !m_timer.isActive())
-		m_timer.start(1000);
-	else if (!m_enabled && m_timer.isActive())
-		m_timer.stop();
+    if (m_enabled && !m_timer.isActive())
+        m_timer.start(1000);
+    else if (!m_enabled && m_timer.isActive())
+        m_timer.stop();
 }
 
 #include "moc_auto-hide.cpp"

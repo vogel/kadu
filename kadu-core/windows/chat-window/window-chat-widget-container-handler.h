@@ -33,30 +33,29 @@ class InjectedFactory;
 
 class WindowChatWidgetContainerHandler : public ChatWidgetContainerHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit WindowChatWidgetContainerHandler(QObject *parent = nullptr);
-	virtual ~WindowChatWidgetContainerHandler();
+    Q_INVOKABLE explicit WindowChatWidgetContainerHandler(QObject *parent = nullptr);
+    virtual ~WindowChatWidgetContainerHandler();
 
-	virtual bool acceptChat(Chat chat) const override;
-	virtual ChatWidget * addChat(Chat chat, OpenChatActivation activation) override;
-	virtual void removeChat(Chat chat) override;
+    virtual bool acceptChat(Chat chat) const override;
+    virtual ChatWidget *addChat(Chat chat, OpenChatActivation activation) override;
+    virtual void removeChat(Chat chat) override;
 
-	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
-	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
+    virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
+    virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
     virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
 
 private:
-	QPointer<ChatWindowRepository> m_chatWindowRepository;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ChatWindowRepository> m_chatWindowRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void chatWindowActivated(ChatWindow *chatWindow);
-
+    void chatWindowActivated(ChatWindow *chatWindow);
 };

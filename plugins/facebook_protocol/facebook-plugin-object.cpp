@@ -23,8 +23,7 @@
 
 #include "protocols/protocols-manager.h"
 
-FacebookPluginObject::FacebookPluginObject(QObject *parent) :
-		QObject{parent}
+FacebookPluginObject::FacebookPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,22 +33,22 @@ FacebookPluginObject::~FacebookPluginObject()
 
 void FacebookPluginObject::setFacebookProtocolFactory(FacebookProtocolFactory *facebookProtocolFactory)
 {
-	m_facebookProtocolFactory = facebookProtocolFactory;
+    m_facebookProtocolFactory = facebookProtocolFactory;
 }
 
 void FacebookPluginObject::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void FacebookPluginObject::init()
 {
-	m_protocolsManager->registerProtocolFactory(m_facebookProtocolFactory);
+    m_protocolsManager->registerProtocolFactory(m_facebookProtocolFactory);
 }
 
 void FacebookPluginObject::done()
 {
-	m_protocolsManager->unregisterProtocolFactory(m_facebookProtocolFactory);
+    m_protocolsManager->unregisterProtocolFactory(m_facebookProtocolFactory);
 }
 
 #include "facebook-plugin-object.moc"

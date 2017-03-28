@@ -24,15 +24,14 @@
 
 class WriteableContactsListFilter : public AbstractAccountFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual bool acceptAccount(Account account);
+    virtual bool acceptAccount(Account account);
 
 public:
-	explicit WriteableContactsListFilter(QObject *parent = nullptr);
-	virtual ~WriteableContactsListFilter();
-
+    explicit WriteableContactsListFilter(QObject *parent = nullptr);
+    virtual ~WriteableContactsListFilter();
 };
 
-#endif // WRITEABLE_CONTACTS_LIST_FILTER_H
+#endif   // WRITEABLE_CONTACTS_LIST_FILTER_H

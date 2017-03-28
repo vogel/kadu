@@ -29,20 +29,19 @@ class UrlOpener;
 
 class OpenRedmineAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenRedmineAction(QObject *parent = nullptr);
-	virtual ~OpenRedmineAction();
+    Q_INVOKABLE explicit OpenRedmineAction(QObject *parent = nullptr);
+    virtual ~OpenRedmineAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<UrlOpener> m_urlOpener;
 
 private slots:
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 };

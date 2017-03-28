@@ -26,37 +26,39 @@
 #include <QtCore/QMap>
 #include <QtCore/QObject>
 
-#include "themes/theme.h"
 #include "exports.h"
+#include "themes/theme.h"
 
 class KADUAPI ThemeManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QMap<QString, Theme> Themes;
-	QString CurrentThemeName;
+    QMap<QString, Theme> Themes;
+    QString CurrentThemeName;
 
 protected:
-	QStringList getSubDirs(const QString &dirPath) const;
+    QStringList getSubDirs(const QString &dirPath) const;
 
-	virtual QString defaultThemeName() const = 0;
-	virtual QStringList defaultThemePaths() const = 0;
-	virtual bool isValidThemePath(const QString &themePath) const = 0;
+    virtual QString defaultThemeName() const = 0;
+    virtual QStringList defaultThemePaths() const = 0;
+    virtual bool isValidThemePath(const QString &themePath) const = 0;
 
 public:
-	explicit ThemeManager(QObject *parent = nullptr);
-	virtual ~ThemeManager();
+    explicit ThemeManager(QObject *parent = nullptr);
+    virtual ~ThemeManager();
 
-	void loadThemes();
+    void loadThemes();
 
-	const QMap<QString, Theme> & themes() const { return Themes; }
+    const QMap<QString, Theme> &themes() const
+    {
+        return Themes;
+    }
 
-	void setCurrentTheme(const QString &themeName);
-	Theme currentTheme() const;
+    void setCurrentTheme(const QString &themeName);
+    Theme currentTheme() const;
 
 signals:
-	void themeListUpdated();
-
+    void themeListUpdated();
 };
 
-#endif // THEME_MANAGER_H
+#endif   // THEME_MANAGER_H

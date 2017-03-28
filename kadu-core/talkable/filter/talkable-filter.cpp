@@ -24,8 +24,7 @@
 #include "chat/chat.h"
 #include "contacts/contact.h"
 
-TalkableFilter::TalkableFilter(QObject *parent) :
-		QObject(parent)
+TalkableFilter::TalkableFilter(QObject *parent) : QObject(parent)
 {
 }
 
@@ -35,23 +34,23 @@ TalkableFilter::~TalkableFilter()
 
 TalkableFilter::FilterResult TalkableFilter::filterChat(const Chat &chat)
 {
-	Q_UNUSED(chat);
+    Q_UNUSED(chat);
 
-	return Undecided;
+    return Undecided;
 }
 
 TalkableFilter::FilterResult TalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	Q_UNUSED(buddy);
+    Q_UNUSED(buddy);
 
-	return Undecided;
+    return Undecided;
 }
 
 TalkableFilter::FilterResult TalkableFilter::filterContact(const Contact &contact)
 {
-	Q_UNUSED(contact);
+    Q_UNUSED(contact);
 
-	return Undecided;
+    return Undecided;
 }
 
 #include "moc_talkable-filter.cpp"

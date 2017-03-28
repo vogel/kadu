@@ -30,9 +30,9 @@
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
 
-ChatNotifier::ChatNotifier(QObject *parent) :
-		QObject{parent},
-		Notifier{"ChatNotifier", QT_TRANSLATE_NOOP("@default", "Chat window notifications"), KaduIcon("protocols/common/message")}
+ChatNotifier::ChatNotifier(QObject *parent)
+        : QObject{parent}, Notifier{"ChatNotifier", QT_TRANSLATE_NOOP("@default", "Chat window notifications"),
+                                    KaduIcon("protocols/common/message")}
 {
 }
 
@@ -42,46 +42,47 @@ ChatNotifier::~ChatNotifier()
 
 void ChatNotifier::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void ChatNotifier::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	m_formattedStringFactory = formattedStringFactory;
+    m_formattedStringFactory = formattedStringFactory;
 }
 
-NotifierConfigurationWidget * ChatNotifier::createConfigurationWidget(QWidget* parent)
+NotifierConfigurationWidget *ChatNotifier::createConfigurationWidget(QWidget *parent)
 {
-	Q_UNUSED(parent);
-	return 0;
+    Q_UNUSED(parent);
+    return 0;
 }
 
 void ChatNotifier::sendNotificationToChatWidget(const Notification &notification, ChatWidget *chatWidget)
 {
-	if (!m_formattedStringFactory)
-		return;
+    if (!m_formattedStringFactory)
+        return;
 
-	auto content = notification.details.string().isEmpty()
-		? notification.text
-		: normalizeHtml(HtmlString{"%1<br/> <small>%2</small>"}).arg(notification.text, notification.details);
+    auto content =
+        notification.details.string().isEmpty()
+            ? notification.text
+            : normalizeHtml(HtmlString{"%1<br/> <small>%2</small>"}).arg(notification.text, notification.details);
 
-	chatWidget->appendSystemMessage(content);
+    chatWidget->appendSystemMessage(content);
 }
 
 void ChatNotifier::notify(const Notification &notification)
 {
-	if (!m_chatWidgetRepository)
-		return;
+    if (!m_chatWidgetRepository)
+        return;
 
-	auto buddies = BuddySet();
-	auto chat = notification.data["chat"].value<Chat>();
-	if (chat)
-		buddies = chat.contacts().toBuddySet();
+    auto buddies = BuddySet();
+    auto chat = notification.data["chat"].value<Chat>();
+    if (chat)
+        buddies = chat.contacts().toBuddySet();
 
-	for (auto chatWidget : m_chatWidgetRepository.data())
-		// warning: do not exchange intersect caller and argument, it will modify buddies variable if you do
-		if (buddies.isEmpty() || !chatWidget->chat().contacts().toBuddySet().intersect(buddies).isEmpty())
-			sendNotificationToChatWidget(notification, chatWidget);
+    for (auto chatWidget : m_chatWidgetRepository.data())
+        // warning: do not exchange intersect caller and argument, it will modify buddies variable if you do
+        if (buddies.isEmpty() || !chatWidget->chat().contacts().toBuddySet().intersect(buddies).isEmpty())
+            sendNotificationToChatWidget(notification, chatWidget);
 }
 
 #include "moc_chat-notifier.cpp"

@@ -40,34 +40,33 @@
  */
 class KaduTextEdit : public QTextEdit
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	quint16 PreferredLines;
+    quint16 PreferredLines;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new KaduTextEdit.
-	 * @param parent QWidget parent of KaduTextEdit
-	 */
-	explicit KaduTextEdit(QWidget *parent = nullptr);
-	virtual ~KaduTextEdit();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new KaduTextEdit.
+     * @param parent QWidget parent of KaduTextEdit
+     */
+    explicit KaduTextEdit(QWidget *parent = nullptr);
+    virtual ~KaduTextEdit();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set preferred number of lines for this widgte.
-	 * @param preferredLines preferred number of lines
-	 *
-	 * Size hint of this widget depends of number of preffered lines.
-	 */
-	void setPreferredLines(quint16 preferredLines);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set preferred number of lines for this widgte.
+     * @param preferredLines preferred number of lines
+     *
+     * Size hint of this widget depends of number of preffered lines.
+     */
+    void setPreferredLines(quint16 preferredLines);
 
-	virtual QSize sizeHint() const;
-
+    virtual QSize sizeHint() const;
 };
 
 /**
  * @}
  */
 
-#endif // KADU_TEXT_EDIT_H
+#endif   // KADU_TEXT_EDIT_H

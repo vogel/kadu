@@ -30,30 +30,32 @@ class Configuration;
 
 class KADUAPI ChatEditBoxSizeManager : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatEditBoxSizeManager(QObject *parent = nullptr);
-	virtual ~ChatEditBoxSizeManager();
+    Q_INVOKABLE explicit ChatEditBoxSizeManager(QObject *parent = nullptr);
+    virtual ~ChatEditBoxSizeManager();
 
-	void setCommonHeight(int height);
-	int commonHeight() { return CommonHeight; }
+    void setCommonHeight(int height);
+    int commonHeight()
+    {
+        return CommonHeight;
+    }
 
-	bool initialized();
+    bool initialized();
 
 signals:
-	void commonHeightChanged(int height);
+    void commonHeightChanged(int height);
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	int CommonHeight;
+    int CommonHeight;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

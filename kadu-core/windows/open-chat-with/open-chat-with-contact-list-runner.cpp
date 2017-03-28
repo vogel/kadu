@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "open-chat-with-contact-list-runner.h"
 
 #include "accounts/account-manager.h"
@@ -26,8 +25,7 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 
-OpenChatWithContactListRunner::OpenChatWithContactListRunner(QObject *parent) :
-		QObject{parent}
+OpenChatWithContactListRunner::OpenChatWithContactListRunner(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,33 +35,33 @@ OpenChatWithContactListRunner::~OpenChatWithContactListRunner()
 
 void OpenChatWithContactListRunner::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 BuddyList OpenChatWithContactListRunner::matchingContacts(const QString &query)
 {
-	BuddyList matchedContacts;
+    BuddyList matchedContacts;
 
-	for (auto const &buddy : m_buddyManager->items())
-	{
-		auto found = false;
-		for (auto const &data : buddy.contacts())
-			if (data.id().contains(query, Qt::CaseInsensitive))
-			{
-				matchedContacts.append(buddy);
-				found = true;
-				break;
-			}
+    for (auto const &buddy : m_buddyManager->items())
+    {
+        auto found = false;
+        for (auto const &data : buddy.contacts())
+            if (data.id().contains(query, Qt::CaseInsensitive))
+            {
+                matchedContacts.append(buddy);
+                found = true;
+                break;
+            }
 
-		if (found)
-			continue;
-		
-		if (buddy.firstName().contains(query, Qt::CaseInsensitive) ||
-				buddy.lastName().contains(query, Qt::CaseInsensitive) ||
-				buddy.display().contains(query, Qt::CaseInsensitive) ||
-				buddy.nickName().contains(query, Qt::CaseInsensitive))
-			matchedContacts.append(buddy);
-	}
+        if (found)
+            continue;
 
-	return matchedContacts;
+        if (buddy.firstName().contains(query, Qt::CaseInsensitive) ||
+            buddy.lastName().contains(query, Qt::CaseInsensitive) ||
+            buddy.display().contains(query, Qt::CaseInsensitive) ||
+            buddy.nickName().contains(query, Qt::CaseInsensitive))
+            matchedContacts.append(buddy);
+    }
+
+    return matchedContacts;
 }

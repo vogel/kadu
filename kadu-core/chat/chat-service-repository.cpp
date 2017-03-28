@@ -26,45 +26,41 @@
 
 namespace
 {
-
-ChatService * converter(ChatServiceRepository::WrappedIterator iterator)
+ChatService *converter(ChatServiceRepository::WrappedIterator iterator)
 {
-	return iterator->second;
+    return iterator->second;
 }
-
 }
 
 ChatServiceRepository::Iterator ChatServiceRepository::begin()
 {
-	return Iterator{m_chatServices.begin(), converter};
+    return Iterator{m_chatServices.begin(), converter};
 }
 
 ChatServiceRepository::Iterator ChatServiceRepository::end()
 {
-	return Iterator{m_chatServices.end(), converter};
+    return Iterator{m_chatServices.end(), converter};
 }
 
-ChatService * ChatServiceRepository::chatService(const Account &account) const
+ChatService *ChatServiceRepository::chatService(const Account &account) const
 {
-	auto it = m_chatServices.find(account);
-	return it == std::end(m_chatServices)
-			? nullptr
-			: it->second;
+    auto it = m_chatServices.find(account);
+    return it == std::end(m_chatServices) ? nullptr : it->second;
 }
 
 void ChatServiceRepository::addChatService(ChatService *chatService)
 {
-	assert(m_chatServices.find(chatService->account()) == std::end(m_chatServices));
+    assert(m_chatServices.find(chatService->account()) == std::end(m_chatServices));
 
-	m_chatServices.insert(std::make_pair(chatService->account(), chatService));
-	emit chatServiceAdded(chatService);
+    m_chatServices.insert(std::make_pair(chatService->account(), chatService));
+    emit chatServiceAdded(chatService);
 }
 
 void ChatServiceRepository::removeChatService(ChatService *chatService)
 {
-	auto it = m_chatServices.find(chatService->account());
-	assert(it != std::end(m_chatServices));
+    auto it = m_chatServices.find(chatService->account());
+    assert(it != std::end(m_chatServices));
 
-	m_chatServices.erase(it);
-	emit chatServiceRemoved(chatService);
+    m_chatServices.erase(it);
+    emit chatServiceRemoved(chatService);
 }

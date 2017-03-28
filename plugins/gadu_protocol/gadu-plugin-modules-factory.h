@@ -23,14 +23,13 @@
 
 class GaduPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit GaduPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~GaduPluginModulesFactory();
+    explicit GaduPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~GaduPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

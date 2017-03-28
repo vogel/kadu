@@ -38,43 +38,42 @@ class MainWindowRepository;
 
 class FileTransferWindow : public QFrame, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
-	void contentsChanged();
+    void contentsChanged();
 
 public:
-	explicit FileTransferWindow(QWidget *parent = nullptr);
-	virtual ~FileTransferWindow();
+    explicit FileTransferWindow(QWidget *parent = nullptr);
+    virtual ~FileTransferWindow();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<FileTransferManager> m_fileTransferManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<MainWindowRepository> m_mainWindowRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<MainWindowRepository> m_mainWindowRepository;
 
-	std::vector<FileTransferWidget *> m_widgets;
+    std::vector<FileTransferWidget *> m_widgets;
 
-	owned_qptr<QScrollArea> m_scrollView;
+    owned_qptr<QScrollArea> m_scrollView;
 
-	owned_qptr<QFrame> m_innerFrame;
-	owned_qptr<QVBoxLayout> m_transfersLayout;
+    owned_qptr<QFrame> m_innerFrame;
+    owned_qptr<QVBoxLayout> m_transfersLayout;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMainWindowRepository(MainWindowRepository *mainWindowRepository);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMainWindowRepository(MainWindowRepository *mainWindowRepository);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void fileTransferAdded(FileTransfer fileTransfer);
-	void fileTransferRemoved(FileTransfer fileTransfer);
+    void fileTransferAdded(FileTransfer fileTransfer);
+    void fileTransferRemoved(FileTransfer fileTransfer);
 
-	void clearClicked();
-
+    void clearClicked();
 };

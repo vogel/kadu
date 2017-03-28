@@ -22,8 +22,7 @@
 
 #include "message-filter-service.h"
 
-MessageFilterService::MessageFilterService(QObject *parent) :
-		QObject(parent)
+MessageFilterService::MessageFilterService(QObject *parent) : QObject(parent)
 {
 }
 
@@ -33,23 +32,23 @@ MessageFilterService::~MessageFilterService()
 
 void MessageFilterService::registerMessageFilter(MessageFilter *filter)
 {
-	if (!filter || MessageFilters.contains(filter))
-		return;
+    if (!filter || MessageFilters.contains(filter))
+        return;
 
-	MessageFilters.append(filter);
+    MessageFilters.append(filter);
 }
 
 void MessageFilterService::unregisterMessageFilter(MessageFilter *filter)
 {
-	MessageFilters.removeAll(filter);
+    MessageFilters.removeAll(filter);
 }
 
 bool MessageFilterService::acceptMessage(const Message &message)
 {
-	foreach (MessageFilter *filter, MessageFilters)
-		if (!filter->acceptMessage(message))
-			return false;
-	return true;
+    foreach (MessageFilter *filter, MessageFilters)
+        if (!filter->acceptMessage(message))
+            return false;
+    return true;
 }
 
 #include "moc_message-filter-service.cpp"

@@ -23,32 +23,32 @@
 
 #include <QtWidgets/QTreeWidget>
 
-ClearResultsAction::ClearResultsAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ClearResultsAction::ClearResultsAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"edit-clear"});
-	setName(QStringLiteral("clearSearchAction"));
-	setText(tr("Clear results"));
-	setType(ActionDescription::TypeSearch);
+    setIcon(KaduIcon{"edit-clear"});
+    setName(QStringLiteral("clearSearchAction"));
+    setText(tr("Clear results"));
+    setType(ActionDescription::TypeSearch);
 }
 
 ClearResultsAction::~ClearResultsAction()
 {
 }
 
-void ClearResultsAction::actionInstanceCreated(Action* action)
+void ClearResultsAction::actionInstanceCreated(Action *action)
 {
-	auto search = qobject_cast<SearchWindow *>(action->parentWidget());
-	if (!search || !search->ResultsListWidget || !search->ResultsListWidget->topLevelItemCount())
-		action->setEnabled(false);
+    auto search = qobject_cast<SearchWindow *>(action->parentWidget());
+    if (!search || !search->ResultsListWidget || !search->ResultsListWidget->topLevelItemCount())
+        action->setEnabled(false);
 }
 
 void ClearResultsAction::actionTriggered(QAction *sender, bool)
 {
-	auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
-	if (search)
-		search->clearResults();
+    auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
+    if (search)
+        search->clearResults();
 }
 
 #include "moc_clear-results-action.cpp"

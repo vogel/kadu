@@ -25,9 +25,9 @@
 
 AccountModule::AccountModule()
 {
-	add_type<AccountManager>();
-	add_type<AccountNotificationService>();
-	add_type<AccountStorage>();
+    add_type<AccountManager>();
+    add_type<AccountNotificationService>();
+    add_type<AccountStorage>();
 }
 
 AccountModule::~AccountModule()

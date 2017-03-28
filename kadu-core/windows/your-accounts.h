@@ -26,8 +26,8 @@
 
 #include "accounts/account.h"
 #include "accounts/accounts-aware-object.h"
-#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include <QtCore/QItemSelection>
 #include <QtCore/QModelIndex>
@@ -59,90 +59,89 @@ class ProtocolsComboBox;
 
 class KADUAPI YourAccounts : public QWidget, AccountsAwareObject, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Myself> m_myself;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Myself> m_myself;
 
-	QListView *AccountsView;
-	AccountsModel *MyAccountsModel;
-	QAction *AddExistingAccountAction;
-	QAction *CreateNewAccountAction;
+    QListView *AccountsView;
+    AccountsModel *MyAccountsModel;
+    QAction *AddExistingAccountAction;
+    QAction *CreateNewAccountAction;
 
-	QLabel *MainAccountLabel;
-	QGroupBox *MainAccountGroupBox;
+    QLabel *MainAccountLabel;
+    QGroupBox *MainAccountGroupBox;
 
-	QStackedWidget *MainStack;
-	QStackedWidget *CreateAddStack;
-	QStackedWidget *EditStack;
-	ModalConfigurationWidget *CurrentWidget;
-	bool IsCurrentWidgetEditAccount;
+    QStackedWidget *MainStack;
+    QStackedWidget *CreateAddStack;
+    QStackedWidget *EditStack;
+    ModalConfigurationWidget *CurrentWidget;
+    bool IsCurrentWidgetEditAccount;
 
-	/*
-	 * This is necessary to prevent infinite recursion when checking
-	 * if we can safely change widget. Blocking signals doesn't work
-	 * as expected, because ProtocolsComboBox really wants to have
-	 * signals enabled to update its CurrentValue properly.
-	 */
-	bool ForceWidgetChange;
+    /*
+     * This is necessary to prevent infinite recursion when checking
+     * if we can safely change widget. Blocking signals doesn't work
+     * as expected, because ProtocolsComboBox really wants to have
+     * signals enabled to update its CurrentValue properly.
+     */
+    bool ForceWidgetChange;
 
-	ProtocolsComboBox *Protocols;
-	ProtocolFactory *LastProtocol;
-	QWidget *CreateAddAccountContainer;
+    ProtocolsComboBox *Protocols;
+    ProtocolFactory *LastProtocol;
+    QWidget *CreateAddAccountContainer;
 
-	QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
-	QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
-	QMap<Account, AccountEditWidget *> EditWidgets;
+    QMap<ProtocolFactory *, AccountCreateWidget *> CreateWidgets;
+    QMap<ProtocolFactory *, AccountAddWidget *> AddWidgets;
+    QMap<Account, AccountEditWidget *> EditWidgets;
 
-	CanRegisterProtocolFilter *CanRegisterFilter;
+    CanRegisterProtocolFilter *CanRegisterFilter;
 
-	void createGui();
-	void createAccountWidget();
-	void createEditAccountWidget();
+    void createGui();
+    void createAccountWidget();
+    void createEditAccountWidget();
 
-	AccountCreateWidget * getAccountCreateWidget(ProtocolFactory *protocol);
-	AccountAddWidget * getAccountAddWidget(ProtocolFactory *protocol);
-	AccountEditWidget * getAccountEditWidget(Account account);
+    AccountCreateWidget *getAccountCreateWidget(ProtocolFactory *protocol);
+    AccountAddWidget *getAccountAddWidget(ProtocolFactory *protocol);
+    AccountEditWidget *getAccountEditWidget(Account account);
 
-	void switchToCreateMode();
-	void switchToAddMode();
+    void switchToCreateMode();
+    void switchToAddMode();
 
-	void selectAccount(Account account);
+    void selectAccount(Account account);
 
-	void updateCurrentWidget();
+    void updateCurrentWidget();
 
-	bool canChangeWidget();
+    bool canChangeWidget();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_INIT void init();
 
-	void protocolChanged();
+    void protocolChanged();
 
-	void accountCreated(Account account);
-	void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void accountCreated(Account account);
+    void accountSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
-	void okClicked();
+    void okClicked();
 
-	void protocolHandlerChanged(Account account);
+    void protocolHandlerChanged(Account account);
 
 protected:
-	virtual void closeEvent(QCloseEvent *e) override;
-	virtual void keyPressEvent(QKeyEvent *e) override;
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
+    virtual void closeEvent(QCloseEvent *e) override;
+    virtual void keyPressEvent(QKeyEvent *e) override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
 
 public:
-	explicit YourAccounts(QWidget *parent = nullptr);
-	virtual ~YourAccounts();
-
+    explicit YourAccounts(QWidget *parent = nullptr);
+    virtual ~YourAccounts();
 };

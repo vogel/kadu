@@ -30,14 +30,14 @@
 
 struct KADUAPI MultilogonSession
 {
-	Account account;
-	QByteArray id;
-	QString name;
-	QHostAddress remoteAddress;
-	QDateTime logonTime;
+    Account account;
+    QByteArray id;
+    QString name;
+    QHostAddress remoteAddress;
+    QDateTime logonTime;
 };
 
-KADUAPI bool operator == (const MultilogonSession &x, const MultilogonSession &y);
-KADUAPI bool operator != (const MultilogonSession &x, const MultilogonSession &y);
+KADUAPI bool operator==(const MultilogonSession &x, const MultilogonSession &y);
+KADUAPI bool operator!=(const MultilogonSession &x, const MultilogonSession &y);
 
 Q_DECLARE_METATYPE(MultilogonSession)

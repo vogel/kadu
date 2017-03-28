@@ -24,10 +24,11 @@
 
 #include "oauth-authorization.h"
 
-OAuthAuthorization::OAuthAuthorization(OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
-		QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject(parent), Token(token), AuthorizationUrl(authorizationUrl),
-		CallbackUrl(callbackUrl), Consumer(consumer), NetworkAccessManager(networkAccessManager), Reply(0)
+OAuthAuthorization::OAuthAuthorization(
+    OAuthToken token, const QString &authorizationUrl, const QString &callbackUrl, OAuthConsumer consumer,
+    QNetworkAccessManager *networkAccessManager, QObject *parent)
+        : QObject(parent), Token(token), AuthorizationUrl(authorizationUrl), CallbackUrl(callbackUrl),
+          Consumer(consumer), NetworkAccessManager(networkAccessManager), Reply(0)
 {
 }
 
@@ -37,30 +38,30 @@ OAuthAuthorization::~OAuthAuthorization()
 
 void OAuthAuthorization::authorize()
 {
-	QByteArray payback;
-	payback += "callback_url=";
-	payback += QUrl::toPercentEncoding("http://www.mojageneracja.pl");
-	payback += "&request_token=";
-	payback += QUrl::toPercentEncoding(Token.token());
-	payback += "&uin=";
-	payback += QUrl::toPercentEncoding(Token.consumer().consumerKey());
-	payback += "&password=";
-	payback += QUrl::toPercentEncoding(Token.consumer().consumerSecret());
+    QByteArray payback;
+    payback += "callback_url=";
+    payback += QUrl::toPercentEncoding("http://www.mojageneracja.pl");
+    payback += "&request_token=";
+    payback += QUrl::toPercentEncoding(Token.token());
+    payback += "&uin=";
+    payback += QUrl::toPercentEncoding(Token.consumer().consumerKey());
+    payback += "&password=";
+    payback += QUrl::toPercentEncoding(Token.consumer().consumerSecret());
 
-	QNetworkRequest request;
-	request.setUrl(AuthorizationUrl);
-	request.setRawHeader("Connection", "close");
-	request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(payback.size()));
-	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QNetworkRequest request;
+    request.setUrl(AuthorizationUrl);
+    request.setRawHeader("Connection", "close");
+    request.setHeader(QNetworkRequest::ContentLengthHeader, QByteArray::number(payback.size()));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
-	Reply = NetworkAccessManager->post(request, payback);
-	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    Reply = NetworkAccessManager->post(request, payback);
+    connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void OAuthAuthorization::requestFinished()
 {
-	emit authorized(QNetworkReply::NoError == Reply->error());
-	deleteLater();
+    emit authorized(QNetworkReply::NoError == Reply->error());
+    deleteLater();
 }
 
 #include "moc_oauth-authorization.cpp"

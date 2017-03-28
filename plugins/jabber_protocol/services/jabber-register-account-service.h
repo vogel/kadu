@@ -30,21 +30,20 @@ class Jid;
 
 class JabberRegisterAccountService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberRegisterAccountService(QObject *parent = nullptr);
-	virtual ~JabberRegisterAccountService();
+    explicit JabberRegisterAccountService(QObject *parent = nullptr);
+    virtual ~JabberRegisterAccountService();
 
-	void setErrorService(JabberErrorService *errorService);
+    void setErrorService(JabberErrorService *errorService);
 
-	JabberRegisterAccount * registerAccount(Jid jid, QString password, QString email);
+    JabberRegisterAccount *registerAccount(Jid jid, QString password, QString email);
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<JabberErrorService> m_errorService;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<JabberErrorService> m_errorService;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

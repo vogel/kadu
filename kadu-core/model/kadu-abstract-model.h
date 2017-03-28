@@ -28,10 +28,11 @@ class QVariant;
 class KaduAbstractModel
 {
 public:
-	virtual ~KaduAbstractModel() {}
+    virtual ~KaduAbstractModel()
+    {
+    }
 
-	virtual QModelIndexList indexListForValue(const QVariant &value) const = 0;
-
+    virtual QModelIndexList indexListForValue(const QVariant &value) const = 0;
 };
 
-#endif // KADU_ABSTRACT_MODEL_H
+#endif   // KADU_ABSTRACT_MODEL_H

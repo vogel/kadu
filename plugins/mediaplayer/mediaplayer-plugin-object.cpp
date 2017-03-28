@@ -27,8 +27,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-MediaplayerPluginObject::MediaplayerPluginObject(QObject *parent) :
-		QObject{parent}
+MediaplayerPluginObject::MediaplayerPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,46 +35,51 @@ MediaplayerPluginObject::~MediaplayerPluginObject()
 {
 }
 
-void MediaplayerPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void MediaplayerPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void MediaplayerPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void MediaplayerPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
-void MediaplayerPluginObject::setMediaplayerConfigurationUiHandler(MediaplayerConfigurationUiHandler *mediaplayerConfigurationUiHandler)
+void MediaplayerPluginObject::setMediaplayerConfigurationUiHandler(
+    MediaplayerConfigurationUiHandler *mediaplayerConfigurationUiHandler)
 {
-	m_mediaplayerConfigurationUiHandler = mediaplayerConfigurationUiHandler;
+    m_mediaplayerConfigurationUiHandler = mediaplayerConfigurationUiHandler;
 }
 
 void MediaplayerPluginObject::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void MediaplayerPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
-MediaPlayer * MediaplayerPluginObject::mediaPlayer() const
+MediaPlayer *MediaplayerPluginObject::mediaPlayer() const
 {
-	return m_mediaPlayer;
+    return m_mediaPlayer;
 }
 
 void MediaplayerPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
 }
 
 void MediaplayerPluginObject::done()
 {
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_mediaplayerConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
 }
 
 #include "moc_mediaplayer-plugin-object.cpp"

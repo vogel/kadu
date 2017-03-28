@@ -43,101 +43,96 @@ class RosterEntry;
 
 class KADUAPI ContactShared : public Shared
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(ContactShared)
+    Q_OBJECT
+    Q_DISABLE_COPY(ContactShared)
 
-	QPointer<AccountManager> m_accountManager;
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<ProtocolsManager> m_protocolsManager;
 
-	RosterEntry *Entry;
+    RosterEntry *Entry;
 
-	Account *ContactAccount;
-	Avatar *ContactAvatar;
-	Buddy *OwnerBuddy;
-	QString Id;
-	int Priority;
-	short int MaximumImageSize;
-	quint16 UnreadMessagesCount;
+    Account *ContactAccount;
+    Avatar *ContactAvatar;
+    Buddy *OwnerBuddy;
+    QString Id;
+    int Priority;
+    short int MaximumImageSize;
+    quint16 UnreadMessagesCount;
 
-	Status CurrentStatus;
-	bool Blocking;
-	bool IgnoreNextStatusChange;
+    Status CurrentStatus;
+    bool Blocking;
+    bool IgnoreNextStatusChange;
 
-	void addToBuddy();
-	void removeFromBuddy();
+    void addToBuddy();
+    void removeFromBuddy();
 
-	void doSetOwnerBuddy(const Buddy &buddy);
-	void doSetContactAvatar(const Avatar &contactAvatar);
+    void doSetOwnerBuddy(const Buddy &buddy);
+    void doSetContactAvatar(const Avatar &contactAvatar);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_INIT void init();
 
-	void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
-	void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
+    void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
+    void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
 
-	void avatarUpdated();
-	void changeNotifierChanged();
+    void avatarUpdated();
+    void changeNotifierChanged();
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
 public:
-	explicit ContactShared(const QUuid &uuid = QUuid());
-	virtual ~ContactShared();
+    explicit ContactShared(const QUuid &uuid = QUuid());
+    virtual ~ContactShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	virtual void aboutToBeRemoved();
+    virtual void aboutToBeRemoved();
 
-	KaduShared_PropertyRead(const QString &, id, Id)
-	void setId(const QString &id);
+    KaduShared_PropertyRead(const QString &, id, Id) void setId(const QString &id);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return RosterEntry for this Contact.
-	 * @return RosterEntry for this Contact
-	 *
-	 * This method never returns null entry.
-	 */
-	RosterEntry * rosterEntry();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return RosterEntry for this Contact.
+     * @return RosterEntry for this Contact
+     *
+     * This method never returns null entry.
+     */
+    RosterEntry *rosterEntry();
 
-	KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
+    KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
 
-	KaduShared_PropertyReadDecl(Avatar, contactAvatar)
-	void setContactAvatar(const Avatar &contactAvatar);
+        KaduShared_PropertyReadDecl(Avatar, contactAvatar) void setContactAvatar(const Avatar &contactAvatar);
 
-	KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
+    KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
 
-	KaduShared_PropertyRead(int, priority, Priority)
-	void setPriority(int priority);
+        KaduShared_PropertyRead(int, priority, Priority) void setPriority(int priority);
 
-	KaduShared_Property(const Status &, currentStatus, CurrentStatus)
-	KaduShared_PropertyBool(Blocking)
-	KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
-	KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
-	KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
+    KaduShared_Property(const Status &, currentStatus, CurrentStatus) KaduShared_PropertyBool(Blocking)
+        KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
+            KaduShared_Property(short int, maximumImageSize, MaximumImageSize)
+                KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
-	bool isAnonymous();
-	QString display(bool useBuddyData);
-	Avatar avatar(bool useBuddyData);
+                    bool isAnonymous();
+    QString display(bool useBuddyData);
+    Avatar avatar(bool useBuddyData);
 
 signals:
-	void updated();
-	void buddyUpdated();
-	void priorityUpdated();
-	void updatedLocally();
-
+    void updated();
+    void buddyUpdated();
+    void priorityUpdated();
+    void updatedLocally();
 };

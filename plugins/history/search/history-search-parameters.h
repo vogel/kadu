@@ -25,22 +25,30 @@
 
 class HistorySearchParameters
 {
-	QString Query;
-	QDate FromDate;
-	QDate ToDate;
+    QString Query;
+    QDate FromDate;
+    QDate ToDate;
 
 public:
-	HistorySearchParameters();
+    HistorySearchParameters();
 
-	HistorySearchParameters & setQuery(const QString &query);
-	const QString & query() const { return Query; }
+    HistorySearchParameters &setQuery(const QString &query);
+    const QString &query() const
+    {
+        return Query;
+    }
 
-	HistorySearchParameters & setFromDate(const QDate &date);
-	const QDate & fromDate() const { return FromDate; }
+    HistorySearchParameters &setFromDate(const QDate &date);
+    const QDate &fromDate() const
+    {
+        return FromDate;
+    }
 
-	HistorySearchParameters & setToDate(const QDate &date);
-	const QDate & toDate() const { return ToDate; }
-
+    HistorySearchParameters &setToDate(const QDate &date);
+    const QDate &toDate() const
+    {
+        return ToDate;
+    }
 };
 
-#endif // HISTORY_SEARCH_PARAMETERS_H
+#endif   // HISTORY_SEARCH_PARAMETERS_H

@@ -39,8 +39,7 @@
 
 #include "buddy-contacts-table.h"
 
-BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) :
-		QWidget(parent), MyBuddy(buddy)
+BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) : QWidget(parent), MyBuddy(buddy)
 {
 }
 
@@ -50,187 +49,191 @@ BuddyContactsTable::~BuddyContactsTable()
 
 void BuddyContactsTable::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void BuddyContactsTable::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void BuddyContactsTable::init()
 {
-	Delegate = new BuddyContactsTableDelegate(this);
-	Model = m_injectedFactory->makeInjected<BuddyContactsTableModel>(MyBuddy, this);
-	Proxy = new BuddyContactsTableModelProxy(Model);
-	Proxy->setSourceModel(Model);
+    Delegate = new BuddyContactsTableDelegate(this);
+    Model = m_injectedFactory->makeInjected<BuddyContactsTableModel>(MyBuddy, this);
+    Proxy = new BuddyContactsTableModelProxy(Model);
+    Proxy->setSourceModel(Model);
 
-	createGui();
+    createGui();
 }
 
 void BuddyContactsTable::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
 
-	View = new QTableView(this);
-	View->setAlternatingRowColors(true);
-	View->setDragEnabled(true);
-	View->setEditTriggers(QAbstractItemView::AllEditTriggers);
-	View->setItemDelegate(Delegate);
-	View->setModel(Proxy);
+    View = new QTableView(this);
+    View->setAlternatingRowColors(true);
+    View->setDragEnabled(true);
+    View->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    View->setItemDelegate(Delegate);
+    View->setModel(Proxy);
 
-	View->setSelectionBehavior(QAbstractItemView::SelectRows);
-	View->setVerticalHeader(0);
+    View->setSelectionBehavior(QAbstractItemView::SelectRows);
+    View->setVerticalHeader(0);
 
-	View->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-	View->horizontalHeader()->setStretchLastSection(true);
+    View->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    View->horizontalHeader()->setStretchLastSection(true);
 
-	connect(View->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(viewSelectionChanged(QModelIndex,QModelIndex)));
+    connect(
+        View->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this,
+        SLOT(viewSelectionChanged(QModelIndex, QModelIndex)));
 
-	layout->addWidget(View);
+    layout->addWidget(View);
 
-	QWidget *buttons = new QWidget(View);
-	QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
+    QWidget *buttons = new QWidget(View);
+    QVBoxLayout *buttonsLayout = new QVBoxLayout(buttons);
 
-	MoveUpButton = new QPushButton(tr("Move up"), buttons);
-	connect(MoveUpButton, SIGNAL(clicked(bool)), this, SLOT(moveUpClicked()));
-	buttonsLayout->addWidget(MoveUpButton);
+    MoveUpButton = new QPushButton(tr("Move up"), buttons);
+    connect(MoveUpButton, SIGNAL(clicked(bool)), this, SLOT(moveUpClicked()));
+    buttonsLayout->addWidget(MoveUpButton);
 
-	MoveDownButton = new QPushButton(tr("Move down"), buttons);
-	connect(MoveDownButton, SIGNAL(clicked(bool)), this, SLOT(moveDownClicked()));
-	buttonsLayout->addWidget(MoveDownButton);
+    MoveDownButton = new QPushButton(tr("Move down"), buttons);
+    connect(MoveDownButton, SIGNAL(clicked(bool)), this, SLOT(moveDownClicked()));
+    buttonsLayout->addWidget(MoveDownButton);
 
-	AddContactButton = new QPushButton(tr("Add contact"), buttons);
-	connect(AddContactButton, SIGNAL(clicked(bool)), this, SLOT(addClicked()));
-	buttonsLayout->addWidget(AddContactButton);
+    AddContactButton = new QPushButton(tr("Add contact"), buttons);
+    connect(AddContactButton, SIGNAL(clicked(bool)), this, SLOT(addClicked()));
+    buttonsLayout->addWidget(AddContactButton);
 
-	DetachContactButton = new QPushButton(tr("Detach contact"), buttons);
-	connect(DetachContactButton, SIGNAL(clicked(bool)), this, SLOT(detachClicked()));
-	buttonsLayout->addWidget(DetachContactButton);
+    DetachContactButton = new QPushButton(tr("Detach contact"), buttons);
+    connect(DetachContactButton, SIGNAL(clicked(bool)), this, SLOT(detachClicked()));
+    buttonsLayout->addWidget(DetachContactButton);
 
-	RemoveContactButton = new QPushButton(tr("Remove contact"), buttons);
-	connect(RemoveContactButton, SIGNAL(clicked(bool)), this, SLOT(removeClicked()));
-	buttonsLayout->addWidget(RemoveContactButton);
+    RemoveContactButton = new QPushButton(tr("Remove contact"), buttons);
+    connect(RemoveContactButton, SIGNAL(clicked(bool)), this, SLOT(removeClicked()));
+    buttonsLayout->addWidget(RemoveContactButton);
 
-	viewSelectionChanged(QModelIndex(), QModelIndex());
-	layout->addWidget(buttons);
+    viewSelectionChanged(QModelIndex(), QModelIndex());
+    layout->addWidget(buttons);
 }
 
-const ConfigurationValueStateNotifier * BuddyContactsTable::valueStateNotifier() const
+const ConfigurationValueStateNotifier *BuddyContactsTable::valueStateNotifier() const
 {
-	return Model->valueStateNotifier();
+    return Model->valueStateNotifier();
 }
 
 void BuddyContactsTable::save()
 {
-	Model->save();
+    Model->save();
 }
 
 void BuddyContactsTable::viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-	Q_UNUSED(previous)
+    Q_UNUSED(previous)
 
-	if (!current.isValid())
-	{
-		MoveUpButton->setEnabled(false);
-		MoveDownButton->setEnabled(false);
-		DetachContactButton->setEnabled(false);
-		RemoveContactButton->setEnabled(false);
-	}
-	else
-	{
-		MoveUpButton->setEnabled(current.sibling(current.row() - 1, current.column()).isValid());
-		MoveDownButton->setEnabled(current.sibling(current.row() + 1, current.column()).isValid());
-		DetachContactButton->setEnabled(true);
-		RemoveContactButton->setEnabled(true);
-	}
+    if (!current.isValid())
+    {
+        MoveUpButton->setEnabled(false);
+        MoveDownButton->setEnabled(false);
+        DetachContactButton->setEnabled(false);
+        RemoveContactButton->setEnabled(false);
+    }
+    else
+    {
+        MoveUpButton->setEnabled(current.sibling(current.row() - 1, current.column()).isValid());
+        MoveDownButton->setEnabled(current.sibling(current.row() + 1, current.column()).isValid());
+        DetachContactButton->setEnabled(true);
+        RemoveContactButton->setEnabled(true);
+    }
 
-	DetachContactButton->setEnabled(MyBuddy.contacts().count() > 1);
+    DetachContactButton->setEnabled(MyBuddy.contacts().count() > 1);
 }
 
 void BuddyContactsTable::moveUpClicked()
 {
-	QModelIndex currentItem = View->currentIndex();
-	QModelIndex previousItem = currentItem.sibling(currentItem.row() - 1, currentItem.column());
-	if (!previousItem.isValid())
-		return;
+    QModelIndex currentItem = View->currentIndex();
+    QModelIndex previousItem = currentItem.sibling(currentItem.row() - 1, currentItem.column());
+    if (!previousItem.isValid())
+        return;
 
-	BuddyContactsTableItem *current = currentItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
-	BuddyContactsTableItem *previous = previousItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    BuddyContactsTableItem *current = currentItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    BuddyContactsTableItem *previous = previousItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 
-	if (!current || !previous)
-		return;
+    if (!current || !previous)
+        return;
 
-	int priority = current->itemContactPriority();
-	current->setItemContactPriority(previous->itemContactPriority());
-	previous->setItemContactPriority(priority);
+    int priority = current->itemContactPriority();
+    current->setItemContactPriority(previous->itemContactPriority());
+    previous->setItemContactPriority(priority);
 
-	viewSelectionChanged(View->currentIndex(), previousItem);
+    viewSelectionChanged(View->currentIndex(), previousItem);
 }
 
 void BuddyContactsTable::moveDownClicked()
 {
-	QModelIndex currentItem = View->currentIndex();
-	QModelIndex nextItem = currentItem.sibling(currentItem.row() + 1, currentItem.column());
-	if (!nextItem.isValid())
-		return;
+    QModelIndex currentItem = View->currentIndex();
+    QModelIndex nextItem = currentItem.sibling(currentItem.row() + 1, currentItem.column());
+    if (!nextItem.isValid())
+        return;
 
-	BuddyContactsTableItem *current = currentItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
-	BuddyContactsTableItem *next = nextItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    BuddyContactsTableItem *current = currentItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    BuddyContactsTableItem *next = nextItem.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 
-	if (!current || !next)
-		return;
+    if (!current || !next)
+        return;
 
-	int priority = current->itemContactPriority();
-	current->setItemContactPriority(next->itemContactPriority());
-	next->setItemContactPriority(priority);
+    int priority = current->itemContactPriority();
+    current->setItemContactPriority(next->itemContactPriority());
+    next->setItemContactPriority(priority);
 
-	viewSelectionChanged(View->currentIndex(), nextItem);
+    viewSelectionChanged(View->currentIndex(), nextItem);
 }
 
 void BuddyContactsTable::addClicked()
 {
-	Model->insertRow(Model->rowCount());
+    Model->insertRow(Model->rowCount());
 }
 
 void BuddyContactsTable::detachClicked()
 {
-	BuddyContactsTableItem *item = View->currentIndex().data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
-	if (!item)
-		return;
+    BuddyContactsTableItem *item =
+        View->currentIndex().data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    if (!item)
+        return;
 
-	QString display = QString("%1 (%2)").arg(item->id()).arg(item->itemAccount().accountIdentity().name());
-	display = QInputDialog::getText(this, tr("New buddy display name"),
-			tr("Give name for new buddy for this contact"), QLineEdit::Normal, display);
+    QString display = QString("%1 (%2)").arg(item->id()).arg(item->itemAccount().accountIdentity().name());
+    display = QInputDialog::getText(
+        this, tr("New buddy display name"), tr("Give name for new buddy for this contact"), QLineEdit::Normal, display);
 
-	if (display.isEmpty())
-		return;
+    if (display.isEmpty())
+        return;
 
-	item->setAction(BuddyContactsTableItem::ItemDetach);
-	item->setDetachedBuddyName(display);
+    item->setAction(BuddyContactsTableItem::ItemDetach);
+    item->setDetachedBuddyName(display);
 }
 
 void BuddyContactsTable::removeClicked()
 {
-	BuddyContactsTableItem *item = View->currentIndex().data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
-	if (!item)
-		return;
+    BuddyContactsTableItem *item =
+        View->currentIndex().data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    if (!item)
+        return;
 
-	if (item->action() == BuddyContactsTableItem::ItemAdd)
-	{
-		// remove it, we don't need it anyway
-		Model->removeRow(View->currentIndex().row());
-		return;
-	}
+    if (item->action() == BuddyContactsTableItem::ItemAdd)
+    {
+        // remove it, we don't need it anyway
+        Model->removeRow(View->currentIndex().row());
+        return;
+    }
 
-	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
-			tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
-	dialog->addButton(QMessageBox::Yes, tr("Delete contact"));
-	dialog->addButton(QMessageBox::No, tr("Cancel"));
+    MessageDialog *dialog = MessageDialog::create(
+        m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+        tr("Are you sure do you want to delete this contact from buddy <b>%1</b>?").arg(MyBuddy.display()));
+    dialog->addButton(QMessageBox::Yes, tr("Delete contact"));
+    dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (dialog->ask())
-		item->setAction(BuddyContactsTableItem::ItemRemove);
+    if (dialog->ask())
+        item->setAction(BuddyContactsTableItem::ItemRemove);
 }
 
 #include "moc_buddy-contacts-table.cpp"

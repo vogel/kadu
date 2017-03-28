@@ -31,8 +31,7 @@
 #include <QtCore/QModelIndexList>
 #include <QtWidgets/QAbstractItemView>
 
-ChatHistoryTab::ChatHistoryTab(QWidget *parent) :
-		HistoryMessagesTab(parent)
+ChatHistoryTab::ChatHistoryTab(QWidget *parent) : HistoryMessagesTab(parent)
 {
 }
 
@@ -42,45 +41,45 @@ ChatHistoryTab::~ChatHistoryTab()
 
 void ChatHistoryTab::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void ChatHistoryTab::init()
 {
-	timelineView()->setTalkableVisible(false);
-	timelineView()->setTitleVisible(true);
+    timelineView()->setTalkableVisible(false);
+    timelineView()->setTitleVisible(true);
 
-	setClearHistoryMenuItemTitle(tr("&Clear Chat History"));
+    setClearHistoryMenuItemTitle(tr("&Clear Chat History"));
 }
 
 void ChatHistoryTab::talkablesAvailable()
 {
-	if (!m_talkableToSelect.isValidChat())
-		return;
+    if (!m_talkableToSelect.isValidChat())
+        return;
 
-	QModelIndexList indexesToSelect;
+    QModelIndexList indexesToSelect;
 
-	auto chat = m_talkableConverter->toChat(m_talkableToSelect);
-	m_talkableToSelect = Talkable();
+    auto chat = m_talkableConverter->toChat(m_talkableToSelect);
+    m_talkableToSelect = Talkable();
 
-	if (chat.contacts().size() == 1)
-		indexesToSelect = modelChain()->indexListForValue(chat.contacts().begin()->ownerBuddy());
-	else if (chat.contacts().size() > 1)
-		indexesToSelect = modelChain()->indexListForValue(chat);
+    if (chat.contacts().size() == 1)
+        indexesToSelect = modelChain()->indexListForValue(chat.contacts().begin()->ownerBuddy());
+    else if (chat.contacts().size() > 1)
+        indexesToSelect = modelChain()->indexListForValue(chat);
 
-	if (1 == indexesToSelect.size())
-	{
-		talkableTree()->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
-		talkableTree()->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
-		displayTalkable(chat, false);
-	}
-	else
-		talkableTree()->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
+    if (1 == indexesToSelect.size())
+    {
+        talkableTree()->selectionModel()->select(indexesToSelect.at(0), QItemSelectionModel::ClearAndSelect);
+        talkableTree()->scrollTo(indexesToSelect.at(0), QAbstractItemView::EnsureVisible);
+        displayTalkable(chat, false);
+    }
+    else
+        talkableTree()->selectionModel()->select(QModelIndex(), QItemSelectionModel::ClearAndSelect);
 }
 
 void ChatHistoryTab::selectTalkable(const Talkable &talkable)
 {
-	m_talkableToSelect = talkable;
+    m_talkableToSelect = talkable;
 }
 
 #include "moc_chat-history-tab.cpp"

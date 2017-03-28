@@ -26,29 +26,28 @@ class QSpinBox;
 
 class AutoawayConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutoawayConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~AutoawayConfigurationUiHandler();
+    Q_INVOKABLE explicit AutoawayConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~AutoawayConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QSpinBox *m_autoAwaySpinBox;
-	QSpinBox *m_autoExtendedAwaySpinBox;
-	QSpinBox *m_autoInvisibleSpinBox;
-	QSpinBox *m_autoOfflineSpinBox;
-	QSpinBox *m_autoRefreshSpinBox;
-	QLineEdit *m_descriptionTextLineEdit;
+    QSpinBox *m_autoAwaySpinBox;
+    QSpinBox *m_autoExtendedAwaySpinBox;
+    QSpinBox *m_autoInvisibleSpinBox;
+    QSpinBox *m_autoOfflineSpinBox;
+    QSpinBox *m_autoRefreshSpinBox;
+    QLineEdit *m_descriptionTextLineEdit;
 
 private slots:
-	void autoAwaySpinBoxValueChanged(int value);
-	void autoExtendedAwaySpinBoxValueChanged(int value);
-	void autoInvisibleSpinBoxValueChanged(int value);
-	void autoOfflineSpinBoxValueChanged(int value);
-	void descriptionChangeChanged(int index);
-
+    void autoAwaySpinBoxValueChanged(int value);
+    void autoExtendedAwaySpinBoxValueChanged(int value);
+    void autoInvisibleSpinBoxValueChanged(int value);
+    void autoOfflineSpinBoxValueChanged(int value);
+    void descriptionChangeChanged(int index);
 };

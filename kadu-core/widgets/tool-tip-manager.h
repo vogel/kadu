@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -33,21 +33,20 @@ class ToolTipWidget;
 
 class KADUAPI ToolTipManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ToolTipManager(QObject *parent = nullptr);
-	virtual ~ToolTipManager();
+    Q_INVOKABLE explicit ToolTipManager(QObject *parent = nullptr);
+    virtual ~ToolTipManager();
 
-	void showToolTip(const QPoint &point, const Talkable &talkable);
-	void hideToolTip();
+    void showToolTip(const QPoint &point, const Talkable &talkable);
+    void hideToolTip();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	not_owned_qptr<ToolTipWidget> m_toolTipWidget;
+    not_owned_qptr<ToolTipWidget> m_toolTipWidget;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

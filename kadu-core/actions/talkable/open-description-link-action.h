@@ -30,23 +30,22 @@ class UrlOpener;
 
 class OpenDescriptionLinkAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenDescriptionLinkAction(QObject *parent = nullptr);
-	virtual ~OpenDescriptionLinkAction();
+    Q_INVOKABLE explicit OpenDescriptionLinkAction(QObject *parent = nullptr);
+    virtual ~OpenDescriptionLinkAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<UrlHandlerManager> m_urlHandlerManager;
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<UrlHandlerManager> m_urlHandlerManager;
+    QPointer<UrlOpener> m_urlOpener;
 
 private slots:
-	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-
+    INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 };

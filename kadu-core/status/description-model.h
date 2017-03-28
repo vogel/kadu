@@ -26,25 +26,24 @@ class DescriptionManager;
 
 class DescriptionModel : public QAbstractListModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	DescriptionManager *Manager;
+    DescriptionManager *Manager;
 
 private slots:
-	void descriptionAboutToBeAdded(const QString &description);
-	void descriptionAdded(const QString &description);
-	void descriptionAboutToBeRemoved(const QString &description);
-	void descriptionRemoved(const QString &description);
+    void descriptionAboutToBeAdded(const QString &description);
+    void descriptionAdded(const QString &description);
+    void descriptionAboutToBeRemoved(const QString &description);
+    void descriptionRemoved(const QString &description);
 
 public:
-	explicit DescriptionModel(DescriptionManager *manager);
-	virtual ~DescriptionModel();
+    explicit DescriptionModel(DescriptionManager *manager);
+    virtual ~DescriptionModel();
 
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-	virtual QVariant data(const QModelIndex &index, int role) const;
-
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 };
 
-#endif // DESCRIPTION_MODEL
+#endif   // DESCRIPTION_MODEL

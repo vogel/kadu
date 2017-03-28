@@ -20,8 +20,7 @@
 
 #include "moc_history-storage.cpp"
 
-HistoryStorage::HistoryStorage(QObject *parent) :
-		QObject{parent}
+HistoryStorage::HistoryStorage(QObject *parent) : QObject{parent}
 {
 }
 

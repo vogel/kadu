@@ -26,8 +26,7 @@ class Parser;
 
 namespace DateTimeParserTags
 {
-	void registerParserTags(Parser *parser);
-
+void registerParserTags(Parser *parser);
 }
 
-#endif // DATE_TIME_PARSER_TAGS_H
+#endif   // DATE_TIME_PARSER_TAGS_H

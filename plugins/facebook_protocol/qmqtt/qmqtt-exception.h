@@ -23,8 +23,9 @@
 
 class QMqttException : public std::exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Generic MqTT Error"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Generic MqTT Error";
+    };
 };

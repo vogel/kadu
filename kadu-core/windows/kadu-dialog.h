@@ -24,8 +24,8 @@
 
 #include <QtWidgets/QDialog>
 
-#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+#include "os/generic/desktop-aware-object.h"
 
 class DialogWidget;
 class QHBoxLayout;
@@ -36,30 +36,30 @@ class TitleWidget;
 
 class KADUAPI KaduDialog : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	DialogWidget *CentralWidget;
+    DialogWidget *CentralWidget;
 
-	QHBoxLayout *horizontalLayout;
-	QLabel *iconLabel;
-	QVBoxLayout *verticalLayout;
-	TitleWidget *Title;
+    QHBoxLayout *horizontalLayout;
+    QLabel *iconLabel;
+    QVBoxLayout *verticalLayout;
+    TitleWidget *Title;
 
-	QPushButton *OkButton;
-	QPushButton *CancelButton;
+    QPushButton *OkButton;
+    QPushButton *CancelButton;
 
-	void createGui();
-	void createButtonBox();
+    void createGui();
+    void createButtonBox();
 
 private slots:
-	void widgetValidated(bool valid);
+    void widgetValidated(bool valid);
 
 public:
-	explicit KaduDialog(DialogWidget *dialogWidget, QWidget* parent);
-	virtual ~KaduDialog();
+    explicit KaduDialog(DialogWidget *dialogWidget, QWidget *parent);
+    virtual ~KaduDialog();
 
-	void setAcceptButtonText(const QString &text);
-	void setCancelButtonText(const QString &text);
+    void setAcceptButtonText(const QString &text);
+    void setCancelButtonText(const QString &text);
 };
 
-#endif // KADU_DIALOG_H
+#endif   // KADU_DIALOG_H

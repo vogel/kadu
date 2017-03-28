@@ -19,65 +19,64 @@
 
 #include "history-query-result.h"
 
-HistoryQueryResult::HistoryQueryResult() :
-		Count(0)
+HistoryQueryResult::HistoryQueryResult() : Count(0)
 {
 }
 
 HistoryQueryResult::HistoryQueryResult(const HistoryQueryResult &copyMe)
 {
-	ResultTalkable = copyMe.ResultTalkable;
-	Date = copyMe.Date;
-	Title = copyMe.Title;
-	Count = copyMe.Count;
+    ResultTalkable = copyMe.ResultTalkable;
+    Date = copyMe.Date;
+    Title = copyMe.Title;
+    Count = copyMe.Count;
 }
 
-HistoryQueryResult & HistoryQueryResult::operator = (const HistoryQueryResult &copyMe)
+HistoryQueryResult &HistoryQueryResult::operator=(const HistoryQueryResult &copyMe)
 {
-	ResultTalkable = copyMe.ResultTalkable;
-	Date = copyMe.Date;
-	Title = copyMe.Title;
-	Count = copyMe.Count;
+    ResultTalkable = copyMe.ResultTalkable;
+    Date = copyMe.Date;
+    Title = copyMe.Title;
+    Count = copyMe.Count;
 
-	return *this;
+    return *this;
 }
 
 void HistoryQueryResult::setTalkable(const Talkable &talkable)
 {
-	ResultTalkable = talkable;
+    ResultTalkable = talkable;
 }
 
 Talkable HistoryQueryResult::talkable() const
 {
-	return ResultTalkable;
+    return ResultTalkable;
 }
 
 void HistoryQueryResult::setDate(const QDate &date)
 {
-	Date = date;
+    Date = date;
 }
 
 QDate HistoryQueryResult::date() const
 {
-	return Date;
+    return Date;
 }
 
 void HistoryQueryResult::setTitle(const QString &title)
 {
-	Title = title;
+    Title = title;
 }
 
 QString HistoryQueryResult::title() const
 {
-	return Title;
+    return Title;
 }
 
 void HistoryQueryResult::setCount(const quint32 count)
 {
-	Count = count;
+    Count = count;
 }
 
 quint32 HistoryQueryResult::count() const
 {
-	return Count;
+    return Count;
 }

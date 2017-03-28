@@ -43,16 +43,15 @@
  */
 class ClipboardHtmlTransformerService : public QObject, public TransformerService<ClipboardHtmlTransformer>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ClipboardHtmlTransformerService(QObject *parent = nullptr);
-	virtual ~ClipboardHtmlTransformerService();
-
+    Q_INVOKABLE explicit ClipboardHtmlTransformerService(QObject *parent = nullptr);
+    virtual ~ClipboardHtmlTransformerService();
 };
 
 /**
  * @}
  */
 
-#endif // CLIPBOARD_HTML_TRANSFORMER_SERVICE_H
+#endif   // CLIPBOARD_HTML_TRANSFORMER_SERVICE_H

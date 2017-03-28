@@ -24,8 +24,7 @@
 #include "widgets/webkit-messages-view/webkit-messages-view-handler-factory.h"
 #include "widgets/webkit-messages-view/webkit-messages-view.h"
 
-WebkitMessagesViewFactory::WebkitMessagesViewFactory(QObject *parent) :
-		QObject{parent}
+WebkitMessagesViewFactory::WebkitMessagesViewFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -33,30 +32,35 @@ WebkitMessagesViewFactory::~WebkitMessagesViewFactory()
 {
 }
 
-void WebkitMessagesViewFactory::setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider)
+void WebkitMessagesViewFactory::setChatStyleRendererFactoryProvider(
+    ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider)
 {
-	m_chatStyleRendererFactoryProvider = chatStyleRendererFactoryProvider;
+    m_chatStyleRendererFactoryProvider = chatStyleRendererFactoryProvider;
 }
 
 void WebkitMessagesViewFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-void WebkitMessagesViewFactory::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
+void WebkitMessagesViewFactory::setWebkitMessagesViewHandlerFactory(
+    WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
 {
-	m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
+    m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
 }
 
-owned_qptr<WebkitMessagesView> WebkitMessagesViewFactory::createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent)
+owned_qptr<WebkitMessagesView>
+WebkitMessagesViewFactory::createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent)
 {
-	auto result = m_injectedFactory->makeOwned<WebkitMessagesView>(chat, supportTransparency, parent);
-	result->setChatStyleRendererFactory(m_chatStyleRendererFactoryProvider->chatStyleRendererFactory());
-	result->setWebkitMessagesViewHandlerFactory(m_webkitMessagesViewHandlerFactory);
-	result->refreshView();
+    auto result = m_injectedFactory->makeOwned<WebkitMessagesView>(chat, supportTransparency, parent);
+    result->setChatStyleRendererFactory(m_chatStyleRendererFactoryProvider->chatStyleRendererFactory());
+    result->setWebkitMessagesViewHandlerFactory(m_webkitMessagesViewHandlerFactory);
+    result->refreshView();
 
-	connect(m_chatStyleRendererFactoryProvider, SIGNAL(chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)),
-			result.get(), SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
+    connect(
+        m_chatStyleRendererFactoryProvider,
+        SIGNAL(chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory>)), result.get(),
+        SLOT(setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory>)));
 
-	return result;
+    return result;
 }

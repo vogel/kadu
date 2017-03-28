@@ -31,22 +31,23 @@
 class ConfigGroupBox;
 
 /**
-	&lt;line-separator id="id" /&gt;
+        &lt;line-separator id="id" /&gt;
  **/
 class KADUAPI ConfigLineSeparator : public QFrame, public ConfigWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigLineSeparator(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigLineSeparator() {}
+    ConfigLineSeparator(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigLineSeparator()
+    {
+    }
 
-	virtual void loadConfiguration() {};
-	virtual void saveConfiguration() {};
-
+    virtual void loadConfiguration(){};
+    virtual void saveConfiguration(){};
 };
 
 #endif

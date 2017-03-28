@@ -32,20 +32,19 @@ class StoragePoint;
 
 class KADUAPI BuddyStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyStorage(QObject *parent = nullptr);
-	virtual ~BuddyStorage();
+    Q_INVOKABLE explicit BuddyStorage(QObject *parent = nullptr);
+    virtual ~BuddyStorage();
 
-	Buddy create();
-	Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	Buddy loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Buddy create();
+    Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Buddy loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

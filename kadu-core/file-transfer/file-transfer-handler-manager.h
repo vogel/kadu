@@ -31,37 +31,36 @@ class FileTransferManager;
 
 class KADUAPI FileTransferHandlerManager : public QObject, AccountsAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FileTransferHandlerManager(QObject *parent = nullptr);
-	virtual ~FileTransferHandlerManager();
+    Q_INVOKABLE explicit FileTransferHandlerManager(QObject *parent = nullptr);
+    virtual ~FileTransferHandlerManager();
 
-	bool ensureHandler(FileTransfer transfer);
+    bool ensureHandler(FileTransfer transfer);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
-	void fileTransferRemoved(FileTransfer fileTransfer);
+    void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
+    void fileTransferRemoved(FileTransfer fileTransfer);
 
 protected:
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<FileTransferManager> m_fileTransferManager;
 
-	void createHandlers(Account account);
-	void removeHandlers(Account account);
-	void createHandler(FileTransfer transfer);
-	void removeHandler(FileTransfer transfer);
+    void createHandlers(Account account);
+    void removeHandlers(Account account);
+    void createHandler(FileTransfer transfer);
+    void removeHandler(FileTransfer transfer);
 
 private slots:
-	void protocolHandlerChanged(Account account);
-
+    void protocolHandlerChanged(Account account);
 };

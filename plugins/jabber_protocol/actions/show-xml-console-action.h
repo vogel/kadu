@@ -30,27 +30,26 @@ class MenuInventory;
 
 class ShowXmlConsoleAction : public ActionDescription
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ShowXmlConsoleAction(QObject *parent = nullptr);
-	virtual ~ShowXmlConsoleAction();
+    Q_INVOKABLE explicit ShowXmlConsoleAction(QObject *parent = nullptr);
+    virtual ~ShowXmlConsoleAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void actionTriggered(QAction *sender, bool toggled);
+    virtual void actionInstanceCreated(Action *action);
+    virtual void actionTriggered(QAction *sender, bool toggled);
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<MenuInventory> m_menuInventory;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<MenuInventory> m_menuInventory;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_INIT void init();
 
-	void insertMenuActionDescription();
-	void updateShowXmlConsoleMenu();
-	void menuActionTriggered(QAction *action);
-
+    void insertMenuActionDescription();
+    void updateShowXmlConsoleMenu();
+    void menuActionTriggered(QAction *action);
 };

@@ -19,8 +19,7 @@
 
 #include "configuration-value-state-notifier.h"
 
-ConfigurationValueStateNotifier::ConfigurationValueStateNotifier(QObject *parent) :
-		QObject(parent)
+ConfigurationValueStateNotifier::ConfigurationValueStateNotifier(QObject *parent) : QObject(parent)
 {
 }
 

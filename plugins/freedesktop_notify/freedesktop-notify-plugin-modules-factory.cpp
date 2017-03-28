@@ -23,8 +23,8 @@
 
 #include <injeqt/injector.h>
 
-FreedesktopNotifyPluginModulesFactory::FreedesktopNotifyPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+FreedesktopNotifyPluginModulesFactory::FreedesktopNotifyPluginModulesFactory(QObject *parent)
+        : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +34,10 @@ FreedesktopNotifyPluginModulesFactory::~FreedesktopNotifyPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> FreedesktopNotifyPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<FreedesktopNotifyModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<FreedesktopNotifyModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_freedesktop-notify-plugin-modules-factory.cpp"

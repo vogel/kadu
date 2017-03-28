@@ -29,17 +29,16 @@
 class KADUAPI NotificationEvent
 {
 public:
-	NotificationEvent();
-	explicit NotificationEvent(QString name, QString description);
+    NotificationEvent();
+    explicit NotificationEvent(QString name, QString description);
 
-	QString name() const;
-	QString category() const;
-	QString description() const;
+    QString name() const;
+    QString category() const;
+    QString description() const;
 
 private:
-	QString m_name;
-	QString m_description;
-
+    QString m_name;
+    QString m_description;
 };
 
-bool operator == (const NotificationEvent &x, const NotificationEvent &y);
+bool operator==(const NotificationEvent &x, const NotificationEvent &y);

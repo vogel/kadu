@@ -26,19 +26,18 @@ class QXmppRegisterIq;
 
 class JabberRegisterExtension : public QXmppClientExtension
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberRegisterExtension();
-	virtual ~JabberRegisterExtension();
+    explicit JabberRegisterExtension();
+    virtual ~JabberRegisterExtension();
 
-	void sendRegisterIq(const QXmppRegisterIq &registerIq);
-	virtual bool handleStanza(const QDomElement &stanza);
+    void sendRegisterIq(const QXmppRegisterIq &registerIq);
+    virtual bool handleStanza(const QDomElement &stanza);
 
 signals:
-	void registerIqReceived(const QXmppRegisterIq &registerIq);
+    void registerIqReceived(const QXmppRegisterIq &registerIq);
 
 private:
-	QSet<QString> m_pendingIds;
-
+    QSet<QString> m_pendingIds;
 };

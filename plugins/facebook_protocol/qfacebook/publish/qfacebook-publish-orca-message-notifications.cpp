@@ -26,13 +26,13 @@
 
 QFacebookPublishOrcaMessageNotifications QFacebookPublishOrcaMessageNotifications::decode(const QByteArray &content)
 {
-	auto result = QFacebookPublishOrcaMessageNotifications{};
-	auto jsonReader = QFacebookJsonReader{content};
-	result.otherUserFbid = jsonReader.readString("other_user_fbid").toLongLong();
-	result.senderFbid = jsonReader.readUid("sender_fbid");
-	result.timestamp = jsonReader.readLongLong("timestamp");
-	result.offlineThreadingId = jsonReader.readString("offline_threading_id").toLongLong();
-	result.body = jsonReader.readString("body");
+    auto result = QFacebookPublishOrcaMessageNotifications{};
+    auto jsonReader = QFacebookJsonReader{content};
+    result.otherUserFbid = jsonReader.readString("other_user_fbid").toLongLong();
+    result.senderFbid = jsonReader.readUid("sender_fbid");
+    result.timestamp = jsonReader.readLongLong("timestamp");
+    result.offlineThreadingId = jsonReader.readString("offline_threading_id").toLongLong();
+    result.body = jsonReader.readString("body");
 
-	return result;
+    return result;
 }

@@ -38,36 +38,34 @@ class ConfigurationApi;
 
 class KADUAPI Account : public SharedBase<AccountShared>
 {
-	KaduSharedBaseClass(Account)
+    KaduSharedBaseClass(Account)
 
-public:
-	static Account null;
+        public : static Account null;
 
-	Account();
-	Account(AccountShared *data);
-	explicit Account(QObject *data);
-	Account(const Account &copy);
-	virtual ~Account();
+    Account();
+    Account(AccountShared *data);
+    explicit Account(QObject *data);
+    Account(const Account &copy);
+    virtual ~Account();
 
-	StatusContainer * statusContainer() const;
+    StatusContainer *statusContainer() const;
 
-	KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
-	KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
-	KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName)
-	KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
-	KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
-	KaduSharedBase_PropertyCRW(QString, id, Id)
-	KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
-	KaduSharedBase_Property(bool, hasPassword, HasPassword)
-	KaduSharedBase_PropertyCRW(QString, password, Password)
-	KaduSharedBase_Property(bool, useDefaultProxy, UseDefaultProxy)
-	KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy)
-	KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
-
+    KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
+        KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
+            KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName)
+                KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
+                    KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
+                        KaduSharedBase_PropertyCRW(QString, id, Id)
+                            KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
+                                KaduSharedBase_Property(bool, hasPassword, HasPassword)
+                                    KaduSharedBase_PropertyCRW(QString, password, Password)
+                                        KaduSharedBase_Property(bool, useDefaultProxy, UseDefaultProxy)
+                                            KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy)
+                                                KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
 };
 
-KADUAPI Protocol * protocol(Account account);
+KADUAPI Protocol *protocol(Account account);
 
 Q_DECLARE_METATYPE(Account)
 
-#endif // ACCOUNT_H
+#endif   // ACCOUNT_H

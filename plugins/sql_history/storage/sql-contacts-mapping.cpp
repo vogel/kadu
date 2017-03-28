@@ -29,10 +29,11 @@
 
 #include "sql-contacts-mapping.h"
 
-SqlContactsMapping::SqlContactsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent) :
-		QObject(parent), Database(database), Mutex(QMutex::Recursive), AccountsMapping(accountsMapping)
+SqlContactsMapping::SqlContactsMapping(
+    const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent)
+        : QObject(parent), Database(database), Mutex(QMutex::Recursive), AccountsMapping(accountsMapping)
 {
-	Q_ASSERT(AccountsMapping);
+    Q_ASSERT(AccountsMapping);
 }
 
 SqlContactsMapping::~SqlContactsMapping()
@@ -41,103 +42,103 @@ SqlContactsMapping::~SqlContactsMapping()
 
 void SqlContactsMapping::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void SqlContactsMapping::init()
 {
-	loadMappingsFromDatabase();
+    loadMappingsFromDatabase();
 
-	connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
+    connect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)));
 }
 
 void SqlContactsMapping::contactUpdated(const Contact &contact)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	int id = idByContact(contact, false);
-	// not all contacts are mapped
-	if (id <= 0)
-		return;
+    int id = idByContact(contact, false);
+    // not all contacts are mapped
+    if (id <= 0)
+        return;
 
-	QSqlQuery query(Database);
-	query.prepare("UPDATE kadu_contacts SET account_id = :account_id, contact = :contact WHERE id = :id");
-	query.bindValue(":account_id", SqlAccountsMapping::idByAccount(contact.contactAccount()));
-	query.bindValue(":contact", contact.id());
-	query.bindValue(":id", id);
-	query.exec();
+    QSqlQuery query(Database);
+    query.prepare("UPDATE kadu_contacts SET account_id = :account_id, contact = :contact WHERE id = :id");
+    query.bindValue(":account_id", SqlAccountsMapping::idByAccount(contact.contactAccount()));
+    query.bindValue(":contact", contact.id());
+    query.bindValue(":id", id);
+    query.exec();
 }
 
 void SqlContactsMapping::addMapping(int id, const Contact &contact)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	contact.addProperty("sql_history:id", id, CustomProperties::NonStorable);
-	ContactMapping.insert(id, contact);
+    contact.addProperty("sql_history:id", id, CustomProperties::NonStorable);
+    ContactMapping.insert(id, contact);
 }
 
 void SqlContactsMapping::loadMappingsFromDatabase()
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	QSqlQuery query(Database);
-	query.prepare("SELECT id, account_id, contact FROM kadu_contacts");
+    QSqlQuery query(Database);
+    query.prepare("SELECT id, account_id, contact FROM kadu_contacts");
 
-	query.setForwardOnly(true);
-	query.exec();
+    query.setForwardOnly(true);
+    query.exec();
 
-	while (query.next())
-	{
-		int id = query.value(0).toInt();
-		Account account = AccountsMapping->accountById(query.value(1).toInt());
-		QString contactId = query.value(2).toString();
+    while (query.next())
+    {
+        int id = query.value(0).toInt();
+        Account account = AccountsMapping->accountById(query.value(1).toInt());
+        QString contactId = query.value(2).toString();
 
-		if (id <= 0)
-			continue;
+        if (id <= 0)
+            continue;
 
-		// This contact needs to be known to the manager even if it's not on our roster,
-		// in case we want to add him later or even talk to her without adding.
-		Contact contact = m_contactManager->byId(account, contactId, ActionCreateAndAdd);
-		if (contact)
-			addMapping(id, contact);
-	}
+        // This contact needs to be known to the manager even if it's not on our roster,
+        // in case we want to add him later or even talk to her without adding.
+        Contact contact = m_contactManager->byId(account, contactId, ActionCreateAndAdd);
+        if (contact)
+            addMapping(id, contact);
+    }
 }
 
 Contact SqlContactsMapping::contactById(int sqlId) const
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	if (ContactMapping.contains(sqlId))
-		return ContactMapping.value(sqlId);
-	else
-		return Contact::null;
+    if (ContactMapping.contains(sqlId))
+        return ContactMapping.value(sqlId);
+    else
+        return Contact::null;
 }
 
 int SqlContactsMapping::idByContact(const Contact &contact, bool create)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	int id = contact.property("sql_history:id", 0).toInt();
-	if (!create || id > 0)
-		return id;
+    int id = contact.property("sql_history:id", 0).toInt();
+    if (!create || id > 0)
+        return id;
 
-	QSqlQuery query(Database);
-	query.prepare("INSERT INTO kadu_contacts (account_id, contact) VALUES (:account_id, :contact)");
-	query.bindValue(":account_id", SqlAccountsMapping::idByAccount(contact.contactAccount()));
-	query.bindValue(":contact", contact.id());
-	query.exec();
+    QSqlQuery query(Database);
+    query.prepare("INSERT INTO kadu_contacts (account_id, contact) VALUES (:account_id, :contact)");
+    query.bindValue(":account_id", SqlAccountsMapping::idByAccount(contact.contactAccount()));
+    query.bindValue(":contact", contact.id());
+    query.exec();
 
-	id = query.lastInsertId().toInt();
-	addMapping(id, contact);
+    id = query.lastInsertId().toInt();
+    addMapping(id, contact);
 
-	return id;
+    return id;
 }
 
-const QMap<int, Contact> & SqlContactsMapping::mapping() const
+const QMap<int, Contact> &SqlContactsMapping::mapping() const
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	return ContactMapping;
+    return ContactMapping;
 }
 
 #include "moc_sql-contacts-mapping.cpp"

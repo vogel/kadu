@@ -30,8 +30,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-AntistringConfiguration::AntistringConfiguration(QObject *parent) :
-		QObject{parent}
+AntistringConfiguration::AntistringConfiguration(QObject *parent) : QObject{parent}
 {
 }
 
@@ -41,90 +40,93 @@ AntistringConfiguration::~AntistringConfiguration()
 
 void AntistringConfiguration::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void AntistringConfiguration::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AntistringConfiguration::init()
 {
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void AntistringConfiguration::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
-	m_configuration->deprecatedApi()->addVariable("PowerKadu", "admonish_tresc_config",
-			"http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
+    m_configuration->deprecatedApi()->addVariable(
+        "PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
+    m_configuration->deprecatedApi()->addVariable(
+        "PowerKadu", "admonish_tresc_config", "http://www.olsztyn.mm.pl/~silentman/lancuszki.htm");
 }
 
 void AntistringConfiguration::configurationUpdated()
 {
-	readConditions();
+    readConditions();
 
-	Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_antistring");
-	MessageStop = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
-	LogMessage = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
-	ReturnMessage = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config")});
-	LogFile = m_configuration->deprecatedApi()->readEntry("PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
+    Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_antistring");
+    MessageStop = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "message stop");
+    LogMessage = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "log message");
+    ReturnMessage =
+        normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry("PowerKadu", "admonish_tresc_config")});
+    LogFile = m_configuration->deprecatedApi()->readEntry(
+        "PowerKadu", "log file", m_pathsProvider->profilePath() + QStringLiteral("antistring.log"));
 }
 
 void AntistringConfiguration::addCondition(const QString &conditionString)
 {
-	QStringList conditionPair = conditionString.split('\t');
-	if (conditionPair.isEmpty())
-		return;
+    QStringList conditionPair = conditionString.split('\t');
+    if (conditionPair.isEmpty())
+        return;
 
-	bool ok;
-	int factor = conditionPair[0].toInt(&ok, 10);
-	if (ok)
-		// TODO why we are not checking if there are two items?
-		Conditions.append(qMakePair(conditionPair[1], factor));
+    bool ok;
+    int factor = conditionPair[0].toInt(&ok, 10);
+    if (ok)
+        // TODO why we are not checking if there are two items?
+        Conditions.append(qMakePair(conditionPair[1], factor));
 }
 
 void AntistringConfiguration::readDefaultConditions()
 {
-	QFile defaultListFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/antistring/ant_conditions.conf"));
-	if (!defaultListFile.open(QFile::ReadOnly))
-		return;
+    QFile defaultListFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/antistring/ant_conditions.conf"));
+    if (!defaultListFile.open(QFile::ReadOnly))
+        return;
 
-	QTextStream textStream(&defaultListFile);
+    QTextStream textStream(&defaultListFile);
 
-	while (!textStream.atEnd())
-		addCondition(textStream.readLine());
+    while (!textStream.atEnd())
+        addCondition(textStream.readLine());
 
-	defaultListFile.close();
+    defaultListFile.close();
 }
 
 void AntistringConfiguration::readConditions()
 {
-	Conditions.clear();
+    Conditions.clear();
 
-	QString conditionsString = m_configuration->deprecatedApi()->readEntry("PowerKadu", "antistring conditions");
-	QStringList conditionsList = conditionsString.split("\t\t");
+    QString conditionsString = m_configuration->deprecatedApi()->readEntry("PowerKadu", "antistring conditions");
+    QStringList conditionsList = conditionsString.split("\t\t");
 
-	if (conditionsList.empty())
-	{
-		readDefaultConditions();
-		return;
-	}
+    if (conditionsList.empty())
+    {
+        readDefaultConditions();
+        return;
+    }
 
-	foreach (const QString &conditionItem, conditionsList)
-		addCondition(conditionItem);
+    foreach (const QString &conditionItem, conditionsList)
+        addCondition(conditionItem);
 }
 
 void AntistringConfiguration::storeConditions()
 {
-	QStringList conditionsList;
+    QStringList conditionsList;
 
-	foreach (const ConditionPair &condition, Conditions)
-		conditionsList.append(QString::number(condition.second) + '\t' + condition.first);
+    foreach (const ConditionPair &condition, Conditions)
+        conditionsList.append(QString::number(condition.second) + '\t' + condition.first);
 
-	m_configuration->deprecatedApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
+    m_configuration->deprecatedApi()->writeEntry("PowerKadu", "antistring conditions", conditionsList.join("\t\t"));
 }
 
 #include "moc_antistring-configuration.cpp"

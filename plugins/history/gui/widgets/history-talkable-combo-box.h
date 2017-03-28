@@ -48,61 +48,60 @@ class PluginInjectedFactory;
  */
 class HistoryTalkableComboBox : public SelectTalkableComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	QFutureWatcher<QVector<Talkable> > *TalkablesFutureWatcher;
+    QFutureWatcher<QVector<Talkable>> *TalkablesFutureWatcher;
 
-	QAction *AllAction;
-	ChatListModel *ChatsModel;
-	BuddyListModel *BuddiesModel;
+    QAction *AllAction;
+    ChatListModel *ChatsModel;
+    BuddyListModel *BuddiesModel;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 
-	void futureTalkablesAvailable();
-	void futureTalkablesCanceled();
+    void futureTalkablesAvailable();
+    void futureTalkablesCanceled();
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new HistoryTalkableComboBox.
-	 * @param parent parent widget
-	 */
-	explicit HistoryTalkableComboBox(QWidget *parent = nullptr);
-	virtual ~HistoryTalkableComboBox();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new HistoryTalkableComboBox.
+     * @param parent parent widget
+     */
+    explicit HistoryTalkableComboBox(QWidget *parent = nullptr);
+    virtual ~HistoryTalkableComboBox();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set label for "All talkables" item.
-	 * @param allLabel new label for "All talkables" item
-	 *
-	 * Default value of this label is empty.
-	 */
-	void setAllLabel(const QString &allLabel);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set label for "All talkables" item.
+     * @param allLabel new label for "All talkables" item
+     *
+     * Default value of this label is empty.
+     */
+    void setAllLabel(const QString &allLabel);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set list of talkables to display below "All talkables" item.
-	 * @param talkables list of talkables to display below "All talkables" item
-	 *
-	 * This list will be split into chats and buddies before displaying. Buddies will be extracted
-	 * from single-buddy chats.
-	 */
-	void setTalkables(const QVector<Talkable> &talkables);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set list of talkables to display below "All talkables" item.
+     * @param talkables list of talkables to display below "All talkables" item
+     *
+     * This list will be split into chats and buddies before displaying. Buddies will be extracted
+     * from single-buddy chats.
+     */
+    void setTalkables(const QVector<Talkable> &talkables);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set list of future talkables to display below "All talkables" item.
-	 * @param talkables list of future talkables to display below "All talkables" item
-	 *
-	 * Widget will be populated when future value will become available. Thenhis list will be split
-	 * into chats and buddies before displaying. Buddies will be extracted from single-buddy chats.
-	 */
-	void setFutureTalkables(const QFuture<QVector<Talkable>> &talkables);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set list of future talkables to display below "All talkables" item.
+     * @param talkables list of future talkables to display below "All talkables" item
+     *
+     * Widget will be populated when future value will become available. Thenhis list will be split
+     * into chats and buddies before displaying. Buddies will be extracted from single-buddy chats.
+     */
+    void setFutureTalkables(const QFuture<QVector<Talkable>> &talkables);
 };
 
 /**

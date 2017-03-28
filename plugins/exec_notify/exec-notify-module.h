@@ -23,9 +23,7 @@
 
 class ExecNotifyModule : public injeqt::module
 {
-
 public:
-	explicit ExecNotifyModule();
-	virtual ~ExecNotifyModule();
-
+    explicit ExecNotifyModule();
+    virtual ~ExecNotifyModule();
 };

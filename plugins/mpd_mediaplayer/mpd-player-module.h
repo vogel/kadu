@@ -23,9 +23,7 @@
 
 class MpdPlayerModule : public injeqt::module
 {
-
 public:
-	explicit MpdPlayerModule();
-	virtual ~MpdPlayerModule();
-
+    explicit MpdPlayerModule();
+    virtual ~MpdPlayerModule();
 };

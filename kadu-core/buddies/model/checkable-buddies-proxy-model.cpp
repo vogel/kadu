@@ -22,8 +22,7 @@
 
 #include "checkable-buddies-proxy-model.h"
 
-CheckableBuddiesProxyModel::CheckableBuddiesProxyModel(QObject *parent) :
-		QIdentityProxyModel(parent)
+CheckableBuddiesProxyModel::CheckableBuddiesProxyModel(QObject *parent) : QIdentityProxyModel(parent)
 {
 }
 
@@ -31,65 +30,65 @@ CheckableBuddiesProxyModel::~CheckableBuddiesProxyModel()
 {
 }
 
-QFlags<Qt::ItemFlag> CheckableBuddiesProxyModel::flags(const QModelIndex& index) const
+QFlags<Qt::ItemFlag> CheckableBuddiesProxyModel::flags(const QModelIndex &index) const
 {
-	if (BuddyRole != index.data(ItemTypeRole))
-		return QIdentityProxyModel::flags(index);
+    if (BuddyRole != index.data(ItemTypeRole))
+        return QIdentityProxyModel::flags(index);
 
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
-	if (buddy)
-		return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
+    const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+    if (buddy)
+        return QIdentityProxyModel::flags(index) | Qt::ItemIsUserCheckable;
 
-	return QIdentityProxyModel::flags(index);
+    return QIdentityProxyModel::flags(index);
 }
 
 QVariant CheckableBuddiesProxyModel::data(const QModelIndex &index, int role) const
 {
-	if (role != Qt::CheckStateRole)
-		return QIdentityProxyModel::data(index, role);
+    if (role != Qt::CheckStateRole)
+        return QIdentityProxyModel::data(index, role);
 
-	if (BuddyRole != index.data(ItemTypeRole))
-		return QVariant();
+    if (BuddyRole != index.data(ItemTypeRole))
+        return QVariant();
 
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
-	return CheckedBuddies.contains(buddy) ? Qt::Checked : Qt::Unchecked;
+    const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+    return CheckedBuddies.contains(buddy) ? Qt::Checked : Qt::Unchecked;
 }
 
 bool CheckableBuddiesProxyModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (Qt::CheckStateRole != role)
-		return false;
+    if (Qt::CheckStateRole != role)
+        return false;
 
-	if (index.parent().isValid())
-		return false;
+    if (index.parent().isValid())
+        return false;
 
-	if (BuddyRole != index.data(ItemTypeRole))
-		return false;
+    if (BuddyRole != index.data(ItemTypeRole))
+        return false;
 
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
-	if (!buddy)
-		return false;
+    const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+    if (!buddy)
+        return false;
 
-	Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
-	if (Qt::Checked == checkState)
-	{
-		CheckedBuddies.insert(buddy);
-		emit checkedBuddiesChanged(CheckedBuddies);
-		return true;
-	}
-	else if (Qt::Unchecked == checkState)
-	{
-		CheckedBuddies.remove(buddy);
-		emit checkedBuddiesChanged(CheckedBuddies);
-		return true;
-	}
+    Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+    if (Qt::Checked == checkState)
+    {
+        CheckedBuddies.insert(buddy);
+        emit checkedBuddiesChanged(CheckedBuddies);
+        return true;
+    }
+    else if (Qt::Unchecked == checkState)
+    {
+        CheckedBuddies.remove(buddy);
+        emit checkedBuddiesChanged(CheckedBuddies);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 BuddySet CheckableBuddiesProxyModel::checkedBuddies() const
 {
-	return CheckedBuddies;
+    return CheckedBuddies;
 }
 
 #include "moc_checkable-buddies-proxy-model.cpp"

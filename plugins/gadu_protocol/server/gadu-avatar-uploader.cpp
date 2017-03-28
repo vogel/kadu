@@ -29,65 +29,63 @@
 
 #include "gadu-avatar-uploader.h"
 
-GaduAvatarUploader::GaduAvatarUploader(QObject *parent) :
-		AvatarUploader(parent)
+GaduAvatarUploader::GaduAvatarUploader(QObject *parent) : AvatarUploader(parent)
 {
-	NetworkAccessManager = new QNetworkAccessManager(this);
-	Reply = 0;
+    NetworkAccessManager = new QNetworkAccessManager(this);
+    Reply = 0;
 }
 
 GaduAvatarUploader::~GaduAvatarUploader()
 {
-
 }
 
 void GaduAvatarUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
 {
-	Id = id;
-	Avatar = avatar;
+    Id = id;
+    Avatar = avatar;
 
-	OAuthManager *authManager = new OAuthManager(this);
-	connect(authManager, SIGNAL(authorized(OAuthToken)), this, SLOT(authorized(OAuthToken)));
-	authManager->authorize(OAuthConsumer(id.toUtf8(), password.toUtf8()));
+    OAuthManager *authManager = new OAuthManager(this);
+    connect(authManager, SIGNAL(authorized(OAuthToken)), this, SLOT(authorized(OAuthToken)));
+    authManager->authorize(OAuthConsumer(id.toUtf8(), password.toUtf8()));
 }
 
 void GaduAvatarUploader::authorized(OAuthToken token)
 {
-	if (!token.isValid())
-	{
-		emit avatarUploaded(false, Avatar);
-		deleteLater();
-		return;
-	}
+    if (!token.isValid())
+    {
+        emit avatarUploaded(false, Avatar);
+        deleteLater();
+        return;
+    }
 
-	QBuffer avatarBuffer;
-	avatarBuffer.open(QIODevice::WriteOnly);
-	Avatar.save(&avatarBuffer, "PNG");
-	avatarBuffer.close();
+    QBuffer avatarBuffer;
+    avatarBuffer.open(QIODevice::WriteOnly);
+    Avatar.save(&avatarBuffer, "PNG");
+    avatarBuffer.close();
 
-	QByteArray url;
-	url += "http://avatars.nowe.gg/upload";
+    QByteArray url;
+    url += "http://avatars.nowe.gg/upload";
 
-	QByteArray payload;
-	payload += "uin=" + QUrl::toPercentEncoding(Id);
-	payload += "&photo=";
-	payload += QUrl::toPercentEncoding(avatarBuffer.buffer().toBase64());
+    QByteArray payload;
+    payload += "uin=" + QUrl::toPercentEncoding(Id);
+    payload += "&photo=";
+    payload += QUrl::toPercentEncoding(avatarBuffer.buffer().toBase64());
 
-	QNetworkRequest putAvatarRequest;
-	putAvatarRequest.setUrl(QString(url));
-	putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
+    QNetworkRequest putAvatarRequest;
+    putAvatarRequest.setUrl(QString(url));
+    putAvatarRequest.setHeader(QNetworkRequest::ContentTypeHeader, QByteArray("application/x-www-form-urlencoded"));
 
-	putAvatarRequest.setRawHeader("Authorization", token.token());
-	putAvatarRequest.setRawHeader("From", "avatars to avatars");
+    putAvatarRequest.setRawHeader("Authorization", token.token());
+    putAvatarRequest.setRawHeader("From", "avatars to avatars");
 
-	Reply = NetworkAccessManager->post(putAvatarRequest, payload);
-	connect(Reply, SIGNAL(finished()), SLOT(transferFinished()));
+    Reply = NetworkAccessManager->post(putAvatarRequest, payload);
+    connect(Reply, SIGNAL(finished()), SLOT(transferFinished()));
 }
 
 void GaduAvatarUploader::transferFinished()
 {
-	emit avatarUploaded(QNetworkReply::NoError == Reply->error(), Avatar);
-	deleteLater();
+    emit avatarUploaded(QNetworkReply::NoError == Reply->error(), Avatar);
+    deleteLater();
 }
 
 #include "moc_gadu-avatar-uploader.cpp"

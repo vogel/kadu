@@ -24,8 +24,7 @@
 
 #include "status-changer-manager.h"
 
-StatusChangerManager::StatusChangerManager(QObject *parent) :
-		QObject{parent}
+StatusChangerManager::StatusChangerManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,71 +34,71 @@ StatusChangerManager::~StatusChangerManager()
 
 void StatusChangerManager::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void StatusChangerManager::registerStatusChanger(StatusChanger *statusChanger)
 {
-	connect(statusChanger, SIGNAL(statusChanged(StatusContainer *)), this, SLOT(statusChanged(StatusContainer *)));
+    connect(statusChanger, SIGNAL(statusChanged(StatusContainer *)), this, SLOT(statusChanged(StatusContainer *)));
 
-	for (int i = 0; i < StatusChangers.count(); i++)
-		if (StatusChangers.at(i)->priority() > statusChanger->priority())
-		{
-			StatusChangers.insert(i, statusChanger);
-			statusChanged();
-			return;
-		}
+    for (int i = 0; i < StatusChangers.count(); i++)
+        if (StatusChangers.at(i)->priority() > statusChanger->priority())
+        {
+            StatusChangers.insert(i, statusChanger);
+            statusChanged();
+            return;
+        }
 
-	StatusChangers.append(statusChanger);
-	statusChanged();
+    StatusChangers.append(statusChanger);
+    statusChanged();
 }
 
 void StatusChangerManager::unregisterStatusChanger(StatusChanger *statusChanger)
 {
-	if (StatusChangers.removeAll(statusChanger))
-	{
-		disconnect(statusChanger, 0, this, 0);
-		statusChanged();
-	}
+    if (StatusChangers.removeAll(statusChanger))
+    {
+        disconnect(statusChanger, 0, this, 0);
+        statusChanged();
+    }
 }
 
 void StatusChangerManager::setStatusManually(StatusContainer *statusContainer, Status status)
 {
-	if (statusContainer)
-	{
-		emit manualStatusAboutToBeChanged(statusContainer, status);
-		Statuses.insert(statusContainer, status);
-		statusChanged(statusContainer, SourceUser);
-	}
+    if (statusContainer)
+    {
+        emit manualStatusAboutToBeChanged(statusContainer, status);
+        Statuses.insert(statusContainer, status);
+        statusChanged(statusContainer, SourceUser);
+    }
 }
 
 Status StatusChangerManager::manuallySetStatus(StatusContainer *statusContainer)
 {
-	if (Statuses.contains(statusContainer))
-		return Statuses.value(statusContainer);
-	return Status();
+    if (Statuses.contains(statusContainer))
+        return Statuses.value(statusContainer);
+    return Status();
 }
 
 void StatusChangerManager::statusChanged(StatusContainer *container, StatusChangeSource source)
 {
-	if (!container)
-	{
-		foreach (StatusContainer *statusContainer, m_statusContainerManager->statusContainers())
-			if (statusContainer)
-				statusChanged(statusContainer, source);
+    if (!container)
+    {
+        foreach (StatusContainer *statusContainer, m_statusContainerManager->statusContainers())
+            if (statusContainer)
+                statusChanged(statusContainer, source);
 
-		return;
-	}
+        return;
+    }
 
-	if (Statuses.contains(container))
-	{
-		Status status = Statuses.value(container);
-		for (int i = 0; i < StatusChangers.count(); i++)
-			StatusChangers.at(i)->changeStatus(container, status);
+    if (Statuses.contains(container))
+    {
+        Status status = Statuses.value(container);
+        for (int i = 0; i < StatusChangers.count(); i++)
+            StatusChangers.at(i)->changeStatus(container, status);
 
-		if (SourceUser == source || container->status() != status)
-			container->setStatus(status, source);
-	}
+        if (SourceUser == source || container->status() != status)
+            container->setStatus(status, source);
+    }
 }
 
 #include "moc_status-changer-manager.cpp"

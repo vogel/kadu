@@ -34,27 +34,28 @@ enum class MessageRenderHeaderBehavior;
 
 class KADUAPI MessageRenderInfoFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MessageRenderInfoFactory(QObject *parent = nullptr);
-	virtual ~MessageRenderInfoFactory();
+    Q_INVOKABLE explicit MessageRenderInfoFactory(QObject *parent = nullptr);
+    virtual ~MessageRenderInfoFactory();
 
-	MessageRenderInfo messageRenderInfo(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior);
+    MessageRenderInfo messageRenderInfo(
+        const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior);
 
 private:
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<ChatStyleManager> m_chatStyleManager;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<ChatStyleManager> m_chatStyleManager;
 
-	QString backgroundColor(const Message &message) const;
-	QString nickColor(const Message &message) const;
-	QString fontColor(const Message &message) const;
-	bool includeHeader(const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const;
-	int separatorSize(bool includeHeader) const;
-	bool showServerTime(const Message &message) const;
+    QString backgroundColor(const Message &message) const;
+    QString nickColor(const Message &message) const;
+    QString fontColor(const Message &message) const;
+    bool includeHeader(
+        const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior) const;
+    int separatorSize(bool includeHeader) const;
+    bool showServerTime(const Message &message) const;
 
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
-
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
 };

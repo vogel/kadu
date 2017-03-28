@@ -28,26 +28,33 @@
 
 class KADUAPI Theme
 {
-	QString Path;
-	QString Name;
+    QString Path;
+    QString Name;
 
 public:
-	static Theme null;
+    static Theme null;
 
-	Theme() {}
-	Theme(const QString &path, const QString &name);
-	Theme(const Theme &copyMe);
+    Theme()
+    {
+    }
+    Theme(const QString &path, const QString &name);
+    Theme(const Theme &copyMe);
 
-	Theme & operator = (const Theme &copyMe);
-	bool operator == (const Theme &compareTo);
-	bool operator != (const Theme &compareTo);
+    Theme &operator=(const Theme &copyMe);
+    bool operator==(const Theme &compareTo);
+    bool operator!=(const Theme &compareTo);
 
-	const QString & path() const { return Path; }
-	const QString & name() const { return Name; }
+    const QString &path() const
+    {
+        return Path;
+    }
+    const QString &name() const
+    {
+        return Name;
+    }
 
-	bool isValid() const;
-	explicit operator bool() const;
-
+    bool isValid() const;
+    explicit operator bool() const;
 };
 
-#endif // THEME_H
+#endif   // THEME_H

@@ -32,38 +32,39 @@ class SystemInfo;
 
 class AdiumStyleRenderer : public ChatStyleRenderer
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AdiumStyleRenderer(ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
-	virtual ~AdiumStyleRenderer();
+    explicit AdiumStyleRenderer(
+        ChatStyleRendererConfiguration configuration, std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
+    virtual ~AdiumStyleRenderer();
 
-	virtual void clearMessages() override;
-	virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
-	virtual void removeFirstMessage() override;
-	virtual void displayMessageStatus(const QString &id, MessageStatus) override;
-	virtual void displayChatState(ChatState, const QString &, const QString &) override;
-	virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
+    virtual void clearMessages() override;
+    virtual void appendChatMessage(const Message &message, const MessageRenderInfo &messageRenderInfo) override;
+    virtual void removeFirstMessage() override;
+    virtual void displayMessageStatus(const QString &id, MessageStatus) override;
+    virtual void displayChatState(ChatState, const QString &, const QString &) override;
+    virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
-	QPointer<SystemInfo> m_systemInfo;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
+    QPointer<SystemInfo> m_systemInfo;
 
-	std::shared_ptr<AdiumStyle> m_style;
+    std::shared_ptr<AdiumStyle> m_style;
 
-	QString replaceKeywords(const QString &styleHref, const QString &style);
-	QString replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
-	QString preprocessStyleBaseHtml(bool useTransparency);
+    QString replaceKeywords(const QString &styleHref, const QString &style);
+    QString
+    replaceKeywords(const QString &styleHref, const QString &source, const Message &message, const QString &nickColor);
+    QString preprocessStyleBaseHtml(bool useTransparency);
 
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
-	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);
+    INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
+    INJEQT_INIT void init();
 
-	void pageLoaded();
-
+    void pageLoaded();
 };

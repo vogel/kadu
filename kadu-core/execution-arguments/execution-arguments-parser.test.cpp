@@ -25,127 +25,150 @@
 
 class ExcutionArgumentsParserTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void shouldCreateDefaultArgumentsWhenNonePassed();
-	void shouldProperlyParseQueryVersion();
-	void shouldProperlyParseQueryUsage();
-	void shouldProperlyParseProfileDirectory();
-	void shouldIgnoreEmptyProfileDirectory();
-	void shouldAcceptLastProfileDirectory();
-	void shouldProperlyParseListOfIds();
-	void shouldIgnoreInvalidIds();
-	void shouldProperlyParseComplexArguments();
-
+    void shouldCreateDefaultArgumentsWhenNonePassed();
+    void shouldProperlyParseQueryVersion();
+    void shouldProperlyParseQueryUsage();
+    void shouldProperlyParseProfileDirectory();
+    void shouldIgnoreEmptyProfileDirectory();
+    void shouldAcceptLastProfileDirectory();
+    void shouldProperlyParseListOfIds();
+    void shouldIgnoreInvalidIds();
+    void shouldProperlyParseComplexArguments();
 };
 
 void ExcutionArgumentsParserTest::shouldCreateDefaultArgumentsWhenNonePassed()
 {
-	auto arguments = QStringList{};
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{};
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{});
+    QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseQueryVersion()
 {
-	auto arguments = QStringList{} << "--version";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "--version";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), true);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
+    QCOMPARE(executionArguments.queryVersion(), true);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{});
+    QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseQueryUsage()
 {
-	auto arguments = QStringList{} << "--help";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "--help";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), true);
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), true);
+    QCOMPARE(executionArguments.profileDirectory(), QString{});
+    QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseProfileDirectory()
 {
-	auto arguments = QStringList{} << "--config-dir" << "kadu-2";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "--config-dir"
+                                   << "kadu-2";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-2"});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-2"});
+    QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
 void ExcutionArgumentsParserTest::shouldIgnoreEmptyProfileDirectory()
 {
-	auto arguments = QStringList{} << "--config-dir";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "--config-dir";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{});
+    QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
 void ExcutionArgumentsParserTest::shouldAcceptLastProfileDirectory()
 {
-	auto arguments = QStringList{} << "--config-dir" << "kadu-2" << "--config-dir" << "kadu-3";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "--config-dir"
+                                   << "kadu-2"
+                                   << "--config-dir"
+                                   << "kadu-3";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-3"});
-	QCOMPARE(executionArguments.openIds(), QStringList{});
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-3"});
+    QCOMPARE(executionArguments.openIds(), QStringList{});
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseListOfIds()
 {
-	auto arguments = QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "gg:123"
+                                   << "gg:456"
+                                   << "xmpp:test@example.com";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{});
+    QCOMPARE(
+        executionArguments.openIds(), QStringList{} << "gg:123"
+                                                    << "gg:456"
+                                                    << "xmpp:test@example.com");
 }
 
 void ExcutionArgumentsParserTest::shouldIgnoreInvalidIds()
 {
-	auto arguments = QStringList{} << "gg:123" << "gg:" << "gg:456" << "xmpp:test@example.com" << "xmpp:" << "no-id";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "gg:123"
+                                   << "gg:"
+                                   << "gg:456"
+                                   << "xmpp:test@example.com"
+                                   << "xmpp:"
+                                   << "no-id";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), false);
-	QCOMPARE(executionArguments.queryUsage(), false);
-	QCOMPARE(executionArguments.profileDirectory(), QString{});
-	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:123" << "gg:456" << "xmpp:test@example.com");
+    QCOMPARE(executionArguments.queryVersion(), false);
+    QCOMPARE(executionArguments.queryUsage(), false);
+    QCOMPARE(executionArguments.profileDirectory(), QString{});
+    QCOMPARE(
+        executionArguments.openIds(), QStringList{} << "gg:123"
+                                                    << "gg:456"
+                                                    << "xmpp:test@example.com");
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseComplexArguments()
 {
-	auto arguments = QStringList{} << "--version" << "--help" << "--config-dir" << "kadu-7" << "gg:15" << "xmpp:12";
-	auto parser = ExecutionArgumentsParser{};
-	auto executionArguments = parser.parse(arguments);
+    auto arguments = QStringList{} << "--version"
+                                   << "--help"
+                                   << "--config-dir"
+                                   << "kadu-7"
+                                   << "gg:15"
+                                   << "xmpp:12";
+    auto parser = ExecutionArgumentsParser{};
+    auto executionArguments = parser.parse(arguments);
 
-	QCOMPARE(executionArguments.queryVersion(), true);
-	QCOMPARE(executionArguments.queryUsage(), true);
-	QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-7"});
-	QCOMPARE(executionArguments.openIds(), QStringList{} << "gg:15" << "xmpp:12");
+    QCOMPARE(executionArguments.queryVersion(), true);
+    QCOMPARE(executionArguments.queryUsage(), true);
+    QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-7"});
+    QCOMPARE(
+        executionArguments.openIds(), QStringList{} << "gg:15"
+                                                    << "xmpp:12");
 }
 
 QTEST_APPLESS_MAIN(ExcutionArgumentsParserTest)

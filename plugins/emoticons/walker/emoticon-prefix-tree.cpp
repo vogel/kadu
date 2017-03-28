@@ -35,33 +35,33 @@ EmoticonPrefixTree::EmoticonPrefixTree()
 
 EmoticonPrefixTree::~EmoticonPrefixTree()
 {
-	qDeleteAll(Children);
+    qDeleteAll(Children);
 }
 
 Emoticon EmoticonPrefixTree::nodeEmoticon() const
 {
-	return NodeEmoticon;
+    return NodeEmoticon;
 }
 
 void EmoticonPrefixTree::setNodeEmoticon(const Emoticon &emoticon)
 {
-	NodeEmoticon = emoticon;
+    NodeEmoticon = emoticon;
 }
 
 QMap<QChar, EmoticonPrefixTree *> EmoticonPrefixTree::children() const
 {
-	return Children;
+    return Children;
 }
 
-EmoticonPrefixTree * EmoticonPrefixTree::child(QChar c)
+EmoticonPrefixTree *EmoticonPrefixTree::child(QChar c)
 {
-	return Children.value(c);
+    return Children.value(c);
 }
 
-EmoticonPrefixTree * EmoticonPrefixTree::createChild(QChar c)
+EmoticonPrefixTree *EmoticonPrefixTree::createChild(QChar c)
 {
-	if (!Children.contains(c))
-		Children.insert(c, new EmoticonPrefixTree());
+    if (!Children.contains(c))
+        Children.insert(c, new EmoticonPrefixTree());
 
-	return child(c);
+    return child(c);
 }

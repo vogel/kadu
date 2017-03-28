@@ -23,9 +23,9 @@
 
 class AutoHideModule : public injeqt::module
 {
-
 public:
-	AutoHideModule();
-	virtual ~AutoHideModule() {}
-
+    AutoHideModule();
+    virtual ~AutoHideModule()
+    {
+    }
 };

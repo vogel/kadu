@@ -23,7 +23,7 @@
 
 ParserModule::ParserModule()
 {
-	add_type<Parser>();
+    add_type<Parser>();
 }
 
 ParserModule::~ParserModule()

@@ -19,9 +19,9 @@
 
 #include "history-plugin-object.h"
 
+#include "buddy-history-delete-handler.h"
 #include "gui/widgets/history-buddy-configuration-widget-factory.h"
 #include "gui/widgets/history-chat-configuration-widget-factory.h"
-#include "buddy-history-delete-handler.h"
 #include "history.h"
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
@@ -31,8 +31,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-HistoryPluginObject::HistoryPluginObject(QObject *parent) :
-		QObject{parent}
+HistoryPluginObject::HistoryPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,70 +39,78 @@ HistoryPluginObject::~HistoryPluginObject()
 {
 }
 
-void HistoryPluginObject::setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager)
+void HistoryPluginObject::setBuddyAdditionalDataDeleteHandlerManager(
+    BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager)
 {
-	m_buddyAdditionalDataDeleteHandlerManager = buddyAdditionalDataDeleteHandlerManager;
+    m_buddyAdditionalDataDeleteHandlerManager = buddyAdditionalDataDeleteHandlerManager;
 }
 
-void HistoryPluginObject::setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
+void HistoryPluginObject::setBuddyConfigurationWidgetFactoryRepository(
+    BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
 {
-	m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
+    m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
 }
 
 void HistoryPluginObject::setBuddyHistoryDeleteHandler(BuddyHistoryDeleteHandler *buddyHistoryDeleteHandler)
 {
-	m_buddyHistoryDeleteHandler = buddyHistoryDeleteHandler;
+    m_buddyHistoryDeleteHandler = buddyHistoryDeleteHandler;
 }
 
-void HistoryPluginObject::setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
+void HistoryPluginObject::setChatConfigurationWidgetFactoryRepository(
+    ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
 {
-	m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
+    m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
 }
 
-void HistoryPluginObject::setHistoryBuddyConfigurationWidgetFactory(HistoryBuddyConfigurationWidgetFactory *historyBuddyConfigurationWidgetFactory)
+void HistoryPluginObject::setHistoryBuddyConfigurationWidgetFactory(
+    HistoryBuddyConfigurationWidgetFactory *historyBuddyConfigurationWidgetFactory)
 {
-	m_historyBuddyConfigurationWidgetFactory = historyBuddyConfigurationWidgetFactory;
+    m_historyBuddyConfigurationWidgetFactory = historyBuddyConfigurationWidgetFactory;
 }
 
-void HistoryPluginObject::setHistoryChatConfigurationWidgetFactory(HistoryChatConfigurationWidgetFactory *historyChatConfigurationWidgetFactory)
+void HistoryPluginObject::setHistoryChatConfigurationWidgetFactory(
+    HistoryChatConfigurationWidgetFactory *historyChatConfigurationWidgetFactory)
 {
-	m_historyChatConfigurationWidgetFactory = historyChatConfigurationWidgetFactory;
+    m_historyChatConfigurationWidgetFactory = historyChatConfigurationWidgetFactory;
 }
 
 void HistoryPluginObject::setHistory(History *history)
 {
-	m_history = history;
+    m_history = history;
 }
 
-void HistoryPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void HistoryPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void HistoryPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
-History * HistoryPluginObject::history() const
+History *HistoryPluginObject::history() const
 {
-	return m_history;
+    return m_history;
 }
 
 void HistoryPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
-	m_buddyAdditionalDataDeleteHandlerManager->registerAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
-	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_historyBuddyConfigurationWidgetFactory);
-	m_chatConfigurationWidgetFactoryRepository->registerFactory(m_historyChatConfigurationWidgetFactory);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
+    m_buddyAdditionalDataDeleteHandlerManager->registerAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
+    m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_historyBuddyConfigurationWidgetFactory);
+    m_chatConfigurationWidgetFactoryRepository->registerFactory(m_historyChatConfigurationWidgetFactory);
 }
 
 void HistoryPluginObject::done()
 {
-	m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_historyChatConfigurationWidgetFactory);
-	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_historyBuddyConfigurationWidgetFactory);
-	m_buddyAdditionalDataDeleteHandlerManager->unregisterAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
+    m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_historyChatConfigurationWidgetFactory);
+    m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_historyBuddyConfigurationWidgetFactory);
+    m_buddyAdditionalDataDeleteHandlerManager->unregisterAdditionalDataDeleteHandler(m_buddyHistoryDeleteHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
 }
 
 #include "moc_history-plugin-object.cpp"

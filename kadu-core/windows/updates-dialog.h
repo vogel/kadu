@@ -35,28 +35,27 @@ class QCheckBox;
 
 class UpdatesDialog : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit UpdatesDialog(const QString &newestVersion, QWidget *parent = nullptr);
-	virtual ~UpdatesDialog();
+    explicit UpdatesDialog(const QString &newestVersion, QWidget *parent = nullptr);
+    virtual ~UpdatesDialog();
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<Configuration> m_configuration;
+    QPointer<UrlOpener> m_urlOpener;
 
-	QString m_newestVersion;
-	QCheckBox *m_checkForUpdates;
+    QString m_newestVersion;
+    QCheckBox *m_checkForUpdates;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+    INJEQT_INIT void init();
 
-	void accepted();
-	void downloadClicked();
-
+    void accepted();
+    void downloadClicked();
 };

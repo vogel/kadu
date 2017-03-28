@@ -37,168 +37,175 @@
 #include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
 
-BuddyDeleteWindow::BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent) :
-		QDialog(parent), BuddiesToDelete(buddiesToDelete)
+BuddyDeleteWindow::BuddyDeleteWindow(const BuddySet &buddiesToDelete, QWidget *parent)
+        : QDialog(parent), BuddiesToDelete(buddiesToDelete)
 {
-	setWindowRole("kadu-buddy-delete");
+    setWindowRole("kadu-buddy-delete");
 
-	setAttribute(Qt::WA_DeleteOnClose);
-	setModal(false);
-	setMaximumHeight(250);
+    setAttribute(Qt::WA_DeleteOnClose);
+    setModal(false);
+    setMaximumHeight(250);
 }
 
 BuddyDeleteWindow::~BuddyDeleteWindow()
 {
-
 }
 
-void BuddyDeleteWindow::setBuddyAdditionalDataDeleteHandlerManager(BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager)
+void BuddyDeleteWindow::setBuddyAdditionalDataDeleteHandlerManager(
+    BuddyAdditionalDataDeleteHandlerManager *buddyAdditionalDataDeleteHandlerManager)
 {
-	m_buddyAdditionalDataDeleteHandlerManager = buddyAdditionalDataDeleteHandlerManager;
+    m_buddyAdditionalDataDeleteHandlerManager = buddyAdditionalDataDeleteHandlerManager;
 }
 
 void BuddyDeleteWindow::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void BuddyDeleteWindow::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void BuddyDeleteWindow::setRoster(Roster *roster)
 {
-	m_roster = roster;
+    m_roster = roster;
 }
 
 void BuddyDeleteWindow::init()
 {
-	createGui();
+    createGui();
 }
 
 void BuddyDeleteWindow::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QWidget *topWidget = new QWidget(this);
-	mainLayout->addWidget(topWidget);
+    QWidget *topWidget = new QWidget(this);
+    mainLayout->addWidget(topWidget);
 
-	QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
+    QHBoxLayout *topLayout = new QHBoxLayout(topWidget);
 
-	QLabel *iconLabel = new QLabel(topWidget);
-	iconLabel->setPixmap(m_iconsManager->iconByPath(KaduIcon("dialog-warning")).pixmap(32, 32));
-	topLayout->addWidget(iconLabel, 0, Qt::AlignTop);
+    QLabel *iconLabel = new QLabel(topWidget);
+    iconLabel->setPixmap(m_iconsManager->iconByPath(KaduIcon("dialog-warning")).pixmap(32, 32));
+    topLayout->addWidget(iconLabel, 0, Qt::AlignTop);
 
-	QWidget *contentWidget = new QWidget(topWidget);
-	topLayout->addWidget(contentWidget);
+    QWidget *contentWidget = new QWidget(topWidget);
+    topLayout->addWidget(contentWidget);
 
-	QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
+    QVBoxLayout *contentLayout = new QVBoxLayout(contentWidget);
 
-	QLabel *messageLabel = new QLabel(tr("The following buddies will be deleted:<br/>%1.<br/>Are you sure?").arg(getBuddiesNames()), contentWidget);
-	messageLabel->setTextFormat(Qt::RichText);
-	messageLabel->setWordWrap(true);
-	contentLayout->addWidget(messageLabel);
+    QLabel *messageLabel = new QLabel(
+        tr("The following buddies will be deleted:<br/>%1.<br/>Are you sure?").arg(getBuddiesNames()), contentWidget);
+    messageLabel->setTextFormat(Qt::RichText);
+    messageLabel->setWordWrap(true);
+    contentLayout->addWidget(messageLabel);
 
-	QLabel *additionalDataLabel = new QLabel(tr("Please select additional data that will be removed:"), contentWidget);
-	contentLayout->addWidget(additionalDataLabel);
+    QLabel *additionalDataLabel = new QLabel(tr("Please select additional data that will be removed:"), contentWidget);
+    contentLayout->addWidget(additionalDataLabel);
 
-	AdditionalDataListView = new QListWidget(contentWidget);
-	contentLayout->addWidget(AdditionalDataListView);
-	connect(AdditionalDataListView, SIGNAL(itemPressed(QListWidgetItem *)), this, SLOT(additionalDataListViewItemPressed(QListWidgetItem *)));
-	connect(AdditionalDataListView, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(additionalDataListViewItemClicked(QListWidgetItem *)));
+    AdditionalDataListView = new QListWidget(contentWidget);
+    contentLayout->addWidget(AdditionalDataListView);
+    connect(
+        AdditionalDataListView, SIGNAL(itemPressed(QListWidgetItem *)), this,
+        SLOT(additionalDataListViewItemPressed(QListWidgetItem *)));
+    connect(
+        AdditionalDataListView, SIGNAL(itemClicked(QListWidgetItem *)), this,
+        SLOT(additionalDataListViewItemClicked(QListWidgetItem *)));
 
-	fillAdditionalDataListView();
+    fillAdditionalDataListView();
 
-	QPushButton *deleteButton = new QPushButton(tr("Delete"));
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"));
-	cancelButton->setDefault(true);
+    QPushButton *deleteButton = new QPushButton(tr("Delete"));
+    QPushButton *cancelButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"));
+    cancelButton->setDefault(true);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	buttons->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
-	mainLayout->addWidget(buttons);
+    QDialogButtonBox *buttons = new QDialogButtonBox(this);
+    buttons->addButton(deleteButton, QDialogButtonBox::DestructiveRole);
+    buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+    mainLayout->addWidget(buttons);
 
-	connect(deleteButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(deleteButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 }
 
 void BuddyDeleteWindow::fillAdditionalDataListView()
 {
-	for (auto handler : m_buddyAdditionalDataDeleteHandlerManager->items())
-	{
-		QListWidgetItem *item = new QListWidgetItem(AdditionalDataListView);
-		item->setText(handler->displayName());
-		item->setCheckState(Qt::Unchecked);
-		item->setData(Qt::UserRole, handler->name());
+    for (auto handler : m_buddyAdditionalDataDeleteHandlerManager->items())
+    {
+        QListWidgetItem *item = new QListWidgetItem(AdditionalDataListView);
+        item->setText(handler->displayName());
+        item->setCheckState(Qt::Unchecked);
+        item->setData(Qt::UserRole, handler->name());
 
-		AdditionalDataListView->addItem(item);
-	}
+        AdditionalDataListView->addItem(item);
+    }
 }
 
 QString BuddyDeleteWindow::getBuddiesNames()
 {
-	QStringList displays;
-	foreach (const Buddy &buddy, BuddiesToDelete)
-		displays.append(QString("<b>%1</b>").arg(buddy.display()));
+    QStringList displays;
+    foreach (const Buddy &buddy, BuddiesToDelete)
+        displays.append(QString("<b>%1</b>").arg(buddy.display()));
 
-	return displays.join(", ");
+    return displays.join(", ");
 }
 
 void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
 {
-	for (int i = 0; i < AdditionalDataListView->count(); i++)
-	{
-		QListWidgetItem *item = AdditionalDataListView->item(i);
-		if (Qt::Checked == item->checkState())
-		{
-			QString deleteHandlerName = item->data(Qt::UserRole).toString();
-			BuddyAdditionalDataDeleteHandler *handler = m_buddyAdditionalDataDeleteHandlerManager->byName(deleteHandlerName);
-			if (handler)
-				handler->deleteBuddyAdditionalData(buddy);
-		}
-	}
+    for (int i = 0; i < AdditionalDataListView->count(); i++)
+    {
+        QListWidgetItem *item = AdditionalDataListView->item(i);
+        if (Qt::Checked == item->checkState())
+        {
+            QString deleteHandlerName = item->data(Qt::UserRole).toString();
+            BuddyAdditionalDataDeleteHandler *handler =
+                m_buddyAdditionalDataDeleteHandlerManager->byName(deleteHandlerName);
+            if (handler)
+                handler->deleteBuddyAdditionalData(buddy);
+        }
+    }
 
-	QList<Contact> contacts = buddy.contacts();
+    QList<Contact> contacts = buddy.contacts();
 
-	// this set owner buddy on all of the contacts
-	m_buddyManager->removeItem(buddy);
+    // this set owner buddy on all of the contacts
+    m_buddyManager->removeItem(buddy);
 
-	foreach (const Contact &contact, contacts)
-		m_roster->removeContact(contact);
+    foreach (const Contact &contact, contacts)
+        m_roster->removeContact(contact);
 }
 
 void BuddyDeleteWindow::accept()
 {
-	QDialog::accept();
+    QDialog::accept();
 
-	foreach (const Buddy &buddy, BuddiesToDelete)
-		deleteBuddy(buddy);
-	m_buddyManager->ensureStored();
+    foreach (const Buddy &buddy, BuddiesToDelete)
+        deleteBuddy(buddy);
+    m_buddyManager->ensureStored();
 }
 
 void BuddyDeleteWindow::reject()
 {
-	QDialog::reject();
+    QDialog::reject();
 }
 
 void BuddyDeleteWindow::additionalDataListViewItemPressed(QListWidgetItem *item)
 {
-	if (!item)
-		return;
+    if (!item)
+        return;
 
-	// required for proper handling of mouse double clicks
-	ItemState = item->checkState();
+    // required for proper handling of mouse double clicks
+    ItemState = item->checkState();
 }
 
 void BuddyDeleteWindow::additionalDataListViewItemClicked(QListWidgetItem *item)
 {
-	if (!item)
-		return;
+    if (!item)
+        return;
 
-	ItemState = (ItemState == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
+    ItemState = (ItemState == Qt::Unchecked ? Qt::Checked : Qt::Unchecked);
 
-	item->setCheckState(ItemState);
+    item->setCheckState(ItemState);
 }
 
 #include "moc_buddy-delete-window.cpp"

@@ -37,21 +37,22 @@
  */
 class GaduEmoticonThemeLoader : public EmoticonThemeLoader
 {
-	QVector<Emoticon> Emoticons;
-	QVector<Emoticon> Aliases;
+    QVector<Emoticon> Emoticons;
+    QVector<Emoticon> Aliases;
 
-	bool validGaduGaduEmoticonDirectory(const QString &dir);
-	void loadEmoticons(const QString &path);
+    bool validGaduGaduEmoticonDirectory(const QString &dir);
+    void loadEmoticons(const QString &path);
 
 public:
-	virtual ~GaduEmoticonThemeLoader() {}
+    virtual ~GaduEmoticonThemeLoader()
+    {
+    }
 
-	virtual EmoticonTheme loadEmoticonTheme(const QString &path);
-
+    virtual EmoticonTheme loadEmoticonTheme(const QString &path);
 };
 
 /**
  * @}
  */
 
-#endif // GADU_EMOTICON_THEME_LOADER_H
+#endif   // GADU_EMOTICON_THEME_LOADER_H

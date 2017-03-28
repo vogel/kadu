@@ -19,22 +19,22 @@
 
 #include "multilogon-session.h"
 
-bool operator == (const MultilogonSession &x, const MultilogonSession &y)
+bool operator==(const MultilogonSession &x, const MultilogonSession &y)
 {
-	if (x.account != y.account)
-		return false;
-	if (x.id != y.id)
-		return false;
-	if (x.name != y.name)
-		return false;
-	if (x.remoteAddress != y.remoteAddress)
-		return false;
-	if (x.logonTime != y.logonTime)
-		return false;
-	return true;
+    if (x.account != y.account)
+        return false;
+    if (x.id != y.id)
+        return false;
+    if (x.name != y.name)
+        return false;
+    if (x.remoteAddress != y.remoteAddress)
+        return false;
+    if (x.logonTime != y.logonTime)
+        return false;
+    return true;
 }
 
-bool operator != (const MultilogonSession &x, const MultilogonSession &y)
+bool operator!=(const MultilogonSession &x, const MultilogonSession &y)
 {
-	return !(x == y);
+    return !(x == y);
 }

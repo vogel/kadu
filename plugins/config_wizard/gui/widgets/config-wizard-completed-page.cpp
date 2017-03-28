@@ -27,12 +27,11 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
 
-ConfigWizardCompletedPage::ConfigWizardCompletedPage(QWidget *parent) :
-		ConfigWizardPage(parent)
+ConfigWizardCompletedPage::ConfigWizardCompletedPage(QWidget *parent) : ConfigWizardPage(parent)
 {
-	setDescription(tr("<p>Confirm your wizard setting to start using Kadu.</p>"));
+    setDescription(tr("<p>Confirm your wizard setting to start using Kadu.</p>"));
 
-	createGui();
+    createGui();
 }
 
 ConfigWizardCompletedPage::~ConfigWizardCompletedPage()
@@ -41,32 +40,32 @@ ConfigWizardCompletedPage::~ConfigWizardCompletedPage()
 
 void ConfigWizardCompletedPage::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void ConfigWizardCompletedPage::setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService)
 {
-	m_yourAccountsWindowService = yourAccountsWindowService;
+    m_yourAccountsWindowService = yourAccountsWindowService;
 }
 
 void ConfigWizardCompletedPage::createGui()
 {
-	formLayout()->addRow(new QLabel(tr("<h3>Configuration Wizard Completed</h3>"), this));
+    formLayout()->addRow(new QLabel(tr("<h3>Configuration Wizard Completed</h3>"), this));
 
-	ConfigureAccouuntsCheckBox = new QCheckBox(tr("Go to Accounts Setting after closing this window"), this);
+    ConfigureAccouuntsCheckBox = new QCheckBox(tr("Go to Accounts Setting after closing this window"), this);
 
-	formLayout()->addRow(QString(), ConfigureAccouuntsCheckBox);
+    formLayout()->addRow(QString(), ConfigureAccouuntsCheckBox);
 }
 
 void ConfigWizardCompletedPage::initializePage()
 {
-	ConfigureAccouuntsCheckBox->setChecked(m_accountManager->items().isEmpty());
+    ConfigureAccouuntsCheckBox->setChecked(m_accountManager->items().isEmpty());
 }
 
 void ConfigWizardCompletedPage::acceptPage()
 {
     if (ConfigureAccouuntsCheckBox->isChecked())
-		m_yourAccountsWindowService->show();
+        m_yourAccountsWindowService->show();
 }
 
 #include "moc_config-wizard-completed-page.cpp"

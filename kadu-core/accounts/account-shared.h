@@ -51,114 +51,112 @@ class StatusSetter;
 
 class KADUAPI AccountShared : public Shared
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	friend class AccountStatusContainer;
+    friend class AccountStatusContainer;
 
-	QPointer<AccountManager> m_accountManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NetworkProxyManager> m_networkProxyManager;
-	QPointer<ProtocolsManager> m_protocolsManager;
-	QPointer<StatusSetter> m_statusSetter;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<NetworkProxyManager> m_networkProxyManager;
+    QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<StatusSetter> m_statusSetter;
 
-	QString ProtocolName;
-	Protocol *ProtocolHandler;
-	AccountStatusContainer *MyStatusContainer;
+    QString ProtocolName;
+    Protocol *ProtocolHandler;
+    AccountStatusContainer *MyStatusContainer;
 
-	Identity *AccountIdentity;
-	Contact *AccountContact;
+    Identity *AccountIdentity;
+    Contact *AccountContact;
 
-	QString Id;
+    QString Id;
 
-	bool RememberPassword;
-	bool HasPassword;
-	QString Password;
+    bool RememberPassword;
+    bool HasPassword;
+    QString Password;
 
-	bool UseDefaultProxy;
-	NetworkProxy Proxy;
+    bool UseDefaultProxy;
+    NetworkProxy Proxy;
 
-	bool PrivateStatus;
+    bool PrivateStatus;
 
-	void setDisconnectStatus();
-	void useProtocolFactory(ProtocolFactory *factory);
+    void setDisconnectStatus();
+    void useProtocolFactory(ProtocolFactory *factory);
 
-	void doSetAccountIdentity(const Identity &accountIdentity);
-	void doSetId(const QString &id);
+    void doSetAccountIdentity(const Identity &accountIdentity);
+    void doSetId(const QString &id);
 
-	void importNetworkProxy();
+    void importNetworkProxy();
 
-	QVector<RosterTask> loadRosterTasks();
-	void storeRosterTasks(const QVector<RosterTask> &tasks);
+    QVector<RosterTask> loadRosterTasks();
+    void storeRosterTasks(const QVector<RosterTask> &tasks);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+    INJEQT_INIT void init();
 
-	void protocolRegistered(ProtocolFactory *protocolHandler);
-	void protocolUnregistered(ProtocolFactory *protocolHandler);
+    void protocolRegistered(ProtocolFactory *protocolHandler);
+    void protocolUnregistered(ProtocolFactory *protocolHandler);
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
-	// TODO: 0.11, fix this
-	// hack, changing details does not trigger this
-	friend class GaduEditAccountWidget;
-	void forceEmitUpdated();
+    // TODO: 0.11, fix this
+    // hack, changing details does not trigger this
+    friend class GaduEditAccountWidget;
+    void forceEmitUpdated();
 
 public:
-	explicit AccountShared(const QString &protocolName = QString(), QObject *parent = nullptr);
-	virtual ~AccountShared();
+    explicit AccountShared(const QString &protocolName = QString(), QObject *parent = nullptr);
+    virtual ~AccountShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	virtual void aboutToBeRemoved();
+    virtual void aboutToBeRemoved();
 
-	Contact accountContact();
+    Contact accountContact();
 
-	StatusContainer * statusContainer();
+    StatusContainer *statusContainer();
 
-	KaduShared_PropertyDeclCRW(Identity, accountIdentity, AccountIdentity)
+    KaduShared_PropertyDeclCRW(Identity, accountIdentity, AccountIdentity)
 
-	KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
+        KaduShared_PropertyRead(const QString &, protocolName, ProtocolName)
 
-	void setId(const QString &id);
-	KaduShared_PropertyRead(const QString &, id, Id)
+            void setId(const QString &id);
+    KaduShared_PropertyRead(const QString &, id, Id)
 
-	void setPrivateStatus(bool isPrivate);
-	KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
+        void setPrivateStatus(bool isPrivate);
+    KaduShared_PropertyRead(bool, privateStatus, PrivateStatus)
 
-	KaduShared_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
-	KaduShared_Property(bool, rememberPassword, RememberPassword)
-	KaduShared_Property(bool, hasPassword, HasPassword)
-	KaduShared_Property(const QString &, password, Password)
-	KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
-	KaduShared_Property(const NetworkProxy &, proxy, Proxy)
+        KaduShared_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
+            KaduShared_Property(bool, rememberPassword, RememberPassword)
+                KaduShared_Property(bool, hasPassword, HasPassword)
+                    KaduShared_Property(const QString &, password, Password)
+                        KaduShared_Property(bool, useDefaultProxy, UseDefaultProxy)
+                            KaduShared_Property(const NetworkProxy &, proxy, Proxy)
 
-signals:
-	void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
+                                signals : void buddyStatusChanged(const Contact &contact, const Status &oldStatus);
 
-	void connecting();
-	void connected();
-	void disconnected();
+    void connecting();
+    void connected();
+    void disconnected();
 
-	void remoteStatusChangeRequest(Account account, Status requestedStatus);
+    void remoteStatusChangeRequest(Account account, Status requestedStatus);
 
-	void updated();
-	void protocolHandlerChanged(Account account);
-
+    void updated();
+    void protocolHandlerChanged(Account account);
 };
 
-KADUAPI Protocol * protocol(AccountShared *account);
+KADUAPI Protocol *protocol(AccountShared *account);

@@ -39,41 +39,40 @@
  */
 class HistoryQueryResultsProxyModel : public QSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool TalkableVisible;
-	bool TitleVisible;
+    bool TalkableVisible;
+    bool TitleVisible;
 
 protected:
-	virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const;
+    virtual bool filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new proxy model.
-	 * @param parent QObject parent of new proxy model.
-	 */
-	explicit HistoryQueryResultsProxyModel(QObject *parent = nullptr);
-	virtual ~HistoryQueryResultsProxyModel();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new proxy model.
+     * @param parent QObject parent of new proxy model.
+     */
+    explicit HistoryQueryResultsProxyModel(QObject *parent = nullptr);
+    virtual ~HistoryQueryResultsProxyModel();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set visibility of first (talkable) column.
-	 * @param talkableVisible new value of visibility  of first (talkable) column
-	 */
-	void setTalkableVisible(const bool talkableVisible);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set visibility of first (talkable) column.
+     * @param talkableVisible new value of visibility  of first (talkable) column
+     */
+    void setTalkableVisible(const bool talkableVisible);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set visibility of fourth (title) column.
-	 * @param titleVisible new value of visibility of fourth (title) column
-	 */
-	void setTitleVisible(const bool titleVisible);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set visibility of fourth (title) column.
+     * @param titleVisible new value of visibility of fourth (title) column
+     */
+    void setTitleVisible(const bool titleVisible);
 };
 
 /**
  * @}
  */
 
-#endif // HISTORY_QUERY_RESULTS_PROXY_MODEL_H
+#endif   // HISTORY_QUERY_RESULTS_PROXY_MODEL_H

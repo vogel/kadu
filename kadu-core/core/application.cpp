@@ -34,12 +34,11 @@
 
 #include <QtWidgets/QApplication>
 
-Application::Application(QObject *parent) :
-		QObject{parent}
+Application::Application(QObject *parent) : QObject{parent}
 {
 #ifdef Q_OS_WIN
-	// Fix for #2491
-	qApp->setStyleSheet("QToolBar{border:0px}");
+    // Fix for #2491
+    qApp->setStyleSheet("QToolBar{border:0px}");
 #endif
 }
 
@@ -49,27 +48,27 @@ Application::~Application()
 
 void Application::setConfigurationWriter(ConfigurationWriter *configurationWriter)
 {
-	m_configurationWriter = configurationWriter;
+    m_configurationWriter = configurationWriter;
 }
 
 void Application::flushConfiguration()
 {
-	m_configurationWriter->write();
+    m_configurationWriter->write();
 }
 
 void Application::backupConfiguration()
 {
-	m_configurationWriter->backup();
+    m_configurationWriter->backup();
 }
 
 bool Application::isSavingSession() const
 {
-	return qApp->isSavingSession();
+    return qApp->isSavingSession();
 }
 
 void Application::quit()
 {
-	qApp->quit();
+    qApp->quit();
 }
 
 #include "moc_application.cpp"

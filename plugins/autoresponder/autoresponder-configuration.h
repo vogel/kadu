@@ -46,107 +46,106 @@
  */
 class AutoresponderConfiguration
 {
-	QString AutoRespondText;
-	bool RespondConferences;
-	bool RespondOnlyFirst;
-	bool StatusAvailable;
-	bool StatusBusy;
-	bool StatusInvisible;
+    QString AutoRespondText;
+    bool RespondConferences;
+    bool RespondOnlyFirst;
+    bool StatusAvailable;
+    bool StatusBusy;
+    bool StatusInvisible;
 
 public:
-	AutoresponderConfiguration();
-	AutoresponderConfiguration(const AutoresponderConfiguration &copyMe);
+    AutoresponderConfiguration();
+    AutoresponderConfiguration(const AutoresponderConfiguration &copyMe);
 
-	AutoresponderConfiguration & operator = (const AutoresponderConfiguration &copyMe);
+    AutoresponderConfiguration &operator=(const AutoresponderConfiguration &copyMe);
 
-	/**
-	 * @short Set value of autoRespondText property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param autoRespondText new value of autoRespondText property
-	 */
-	void setAutoRespondText(const QString &autoRespondText);
+    /**
+     * @short Set value of autoRespondText property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param autoRespondText new value of autoRespondText property
+     */
+    void setAutoRespondText(const QString &autoRespondText);
 
-	/**
-	 * @short Return value of autoRespondText property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of autoRespondText property
-	 */
-	QString autoRespondText() const;
+    /**
+     * @short Return value of autoRespondText property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of autoRespondText property
+     */
+    QString autoRespondText() const;
 
-	/**
-	 * @short Set value of respondConferences property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param respondConferences new value of respondConferences property
-	 */
-	void setRespondConferences(bool respondConferences);
+    /**
+     * @short Set value of respondConferences property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param respondConferences new value of respondConferences property
+     */
+    void setRespondConferences(bool respondConferences);
 
-	/**
-	 * @short Return value of respondConferences property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of respondConferences property
-	 */
-	bool respondConferences() const;
+    /**
+     * @short Return value of respondConferences property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of respondConferences property
+     */
+    bool respondConferences() const;
 
-	/**
-	 * @short Set value of respondOnlyFirst property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param respondOnlyFirst new value of respondOnlyFirst property
-	 */
-	void setRespondOnlyFirst(bool respondOnlyFirst);
+    /**
+     * @short Set value of respondOnlyFirst property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param respondOnlyFirst new value of respondOnlyFirst property
+     */
+    void setRespondOnlyFirst(bool respondOnlyFirst);
 
-	/**
-	 * @short Return value of respondOnlyFirst property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of respondOnlyFirst property
-	 */
-	bool respondOnlyFirst() const;
+    /**
+     * @short Return value of respondOnlyFirst property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of respondOnlyFirst property
+     */
+    bool respondOnlyFirst() const;
 
-	/**
-	 * @short Set value of statusAvailable property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param statusAvailable new value of statusAvailable property
-	 */
-	void setStatusAvailable(bool statusAvailable);
+    /**
+     * @short Set value of statusAvailable property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param statusAvailable new value of statusAvailable property
+     */
+    void setStatusAvailable(bool statusAvailable);
 
-	/**
-	 * @short Return value of statusAvailable property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of statusAvailable property
-	 */
-	bool statusAvailable() const;
+    /**
+     * @short Return value of statusAvailable property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of statusAvailable property
+     */
+    bool statusAvailable() const;
 
-	/**
-	 * @short Set value of statusBusy property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param statusBusy new value of statusBusy property
-	 */
-	void setStatusBusy(bool statusBusy);
+    /**
+     * @short Set value of statusBusy property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param statusBusy new value of statusBusy property
+     */
+    void setStatusBusy(bool statusBusy);
 
-	/**
-	 * @short Return value of statusBusy property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of statusBusy property
-	 */
-	bool statusBusy() const;
+    /**
+     * @short Return value of statusBusy property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of statusBusy property
+     */
+    bool statusBusy() const;
 
-	/**
-	 * @short Set value of statusInvisible property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param statusInvisible new value of statusInvisible property
-	 */
-	void setStatusInvisible(bool statusInvisible);
+    /**
+     * @short Set value of statusInvisible property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param statusInvisible new value of statusInvisible property
+     */
+    void setStatusInvisible(bool statusInvisible);
 
-	/**
-	 * @short Return value of statusInvisible property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of statusInvisible property
-	 */
-	bool statusInvisible() const;
-
+    /**
+     * @short Return value of statusInvisible property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of statusInvisible property
+     */
+    bool statusInvisible() const;
 };
 
 /**
  * @}
  */
 
-#endif // AUTORESPONDER_CONFIGURATION_H
+#endif   // AUTORESPONDER_CONFIGURATION_H

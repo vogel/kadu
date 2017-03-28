@@ -29,29 +29,30 @@
 
 QMap<QString, PluginState> PluginStateStorage::load(StoragePoint &storagePoint) const
 {
-	auto result = QMap<QString, PluginState>();
-	auto elements = storagePoint.storage()->getNodes(storagePoint.point(), QStringLiteral("Plugin"));
-	for (const auto &element : elements)
-	{
-		auto name = element.attribute("name");
-		auto state = stringToPluginState(storagePoint.storage()->getTextNode(element, QStringLiteral("State")));
-		result.insert(name, state);
-	}
+    auto result = QMap<QString, PluginState>();
+    auto elements = storagePoint.storage()->getNodes(storagePoint.point(), QStringLiteral("Plugin"));
+    for (const auto &element : elements)
+    {
+        auto name = element.attribute("name");
+        auto state = stringToPluginState(storagePoint.storage()->getTextNode(element, QStringLiteral("State")));
+        result.insert(name, state);
+    }
 
-	return result;
+    return result;
 }
 
 void PluginStateStorage::store(StoragePoint &storagePoint, const QMap<QString, PluginState> &pluginStates) const
 {
-	storagePoint.storage()->removeChildren(storagePoint.point());
+    storagePoint.storage()->removeChildren(storagePoint.point());
 
-	for (const auto &name : pluginStates.keys())
-	{
-		auto stateString = pluginStateToString(pluginStates.value(name));
-		if (!stateString.isEmpty())
-		{
-			auto node = storagePoint.storage()->getNamedNode(storagePoint.point(), QStringLiteral("Plugin"), name, ConfigurationApi::ModeAppend);
-			storagePoint.storage()->appendTextNode(node, QStringLiteral("State"), stateString);
-		}
-	}
+    for (const auto &name : pluginStates.keys())
+    {
+        auto stateString = pluginStateToString(pluginStates.value(name));
+        if (!stateString.isEmpty())
+        {
+            auto node = storagePoint.storage()->getNamedNode(
+                storagePoint.point(), QStringLiteral("Plugin"), name, ConfigurationApi::ModeAppend);
+            storagePoint.storage()->appendTextNode(node, QStringLiteral("State"), stateString);
+        }
+    }
 }

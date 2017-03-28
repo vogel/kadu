@@ -23,9 +23,9 @@
 
 class ConfigWizardModule : public injeqt::module
 {
-
 public:
-	ConfigWizardModule();
-	virtual ~ConfigWizardModule() {}
-
+    ConfigWizardModule();
+    virtual ~ConfigWizardModule()
+    {
+    }
 };

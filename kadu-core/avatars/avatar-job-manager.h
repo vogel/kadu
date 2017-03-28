@@ -22,8 +22,8 @@
 
 #include "accounts/accounts-aware-object.h"
 #include "avatars/avatar.h"
-#include "storage/manager.h"
 #include "exports.h"
+#include "storage/manager.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -36,38 +36,40 @@ class InjectedFactory;
 
 class KADUAPI AvatarJobManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AvatarJobManager(QObject *parent = nullptr);
-	virtual ~AvatarJobManager();
+    Q_INVOKABLE explicit AvatarJobManager(QObject *parent = nullptr);
+    virtual ~AvatarJobManager();
 
-	void addJob(const Contact &contact);
+    void addJob(const Contact &contact);
 
-	bool hasJob();
-	Contact nextJob();
+    bool hasJob();
+    Contact nextJob();
 
 signals:
-	void jobAvailable();
+    void jobAvailable();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QMutex Mutex;
-	bool IsJobRunning;
+    QMutex Mutex;
+    bool IsJobRunning;
 
-	QSet<Contact> Jobs;
+    QSet<Contact> Jobs;
 
-	QMutex & mutex() { return Mutex; }
+    QMutex &mutex()
+    {
+        return Mutex;
+    }
 
-	void scheduleJob();
+    void scheduleJob();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void runJob();
-	void jobFinished();
-
+    void runJob();
+    void jobFinished();
 };

@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-SpeechPluginObject::SpeechPluginObject(QObject *parent) :
-		QObject{parent}
+SpeechPluginObject::SpeechPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,49 +36,52 @@ SpeechPluginObject::~SpeechPluginObject()
 {
 }
 
-void SpeechPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void SpeechPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void SpeechPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void SpeechPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void SpeechPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void SpeechPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SpeechPluginObject::setSpeechConfigurationUiHandler(SpeechConfigurationUiHandler *speechConfigurationUiHandler)
 {
-	m_speechConfigurationUiHandler = speechConfigurationUiHandler;
+    m_speechConfigurationUiHandler = speechConfigurationUiHandler;
 }
 
 void SpeechPluginObject::setSpeech(Speech *speech)
 {
-	m_speech = speech;
+    m_speech = speech;
 }
 
 void SpeechPluginObject::init()
 {
-
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_speechConfigurationUiHandler);
-	m_notifierRepository->registerNotifier(m_speech);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_speechConfigurationUiHandler);
+    m_notifierRepository->registerNotifier(m_speech);
 }
 
 void SpeechPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_speech);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_speechConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
+    m_notifierRepository->unregisterNotifier(m_speech);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_speechConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
 }
 
 #include "moc_speech-plugin-object.cpp"

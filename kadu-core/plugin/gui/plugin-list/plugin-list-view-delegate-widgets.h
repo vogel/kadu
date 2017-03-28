@@ -33,59 +33,58 @@ class QStyleOptionViewItem;
 class PluginListWidgetDelegate;
 class PluginListWidgetDelegateEventListener;
 
-
 class PluginListWidgetDelegateWidgets
 {
-        friend class PluginListWidgetDelegate;
-	friend class PluginListWidgetDelegateEventListener;
+    friend class PluginListWidgetDelegate;
+    friend class PluginListWidgetDelegateEventListener;
 
-	PluginListWidgetDelegate *delegate;
+    PluginListWidgetDelegate *delegate;
 
-	PluginListWidgetDelegateEventListener *eventListener;
+    PluginListWidgetDelegateEventListener *eventListener;
 
-        QList<QList<QWidget*> > allocatedWidgets;
-        QHash<QPersistentModelIndex, QList<QWidget*> > usedWidgets;
-        QHash<QWidget*, QPersistentModelIndex> widgetInIndex;
+    QList<QList<QWidget *>> allocatedWidgets;
+    QHash<QPersistentModelIndex, QList<QWidget *>> usedWidgets;
+    QHash<QWidget *, QPersistentModelIndex> widgetInIndex;
 
-        bool clearing;
+    bool clearing;
 
 public:
-        enum UpdateWidgetsEnum
-        {
-                UpdateWidgets = 0,
-                NotUpdateWidgets
-        };
+    enum UpdateWidgetsEnum
+    {
+        UpdateWidgets = 0,
+        NotUpdateWidgets
+    };
 
-        PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate);
+    PluginListWidgetDelegateWidgets(PluginListWidgetDelegate *delegate);
 
-        ~PluginListWidgetDelegateWidgets();
+    ~PluginListWidgetDelegateWidgets();
 
-        /**
-          * @brief Returns the widget associated to @p index and @p widget
-          * @param index The index to search into.
-          * @param option a QStyleOptionViewItem.
-          * @return A QList of the pointers to the widgets found.
-          * @internal
-          */
-        QList<QWidget*> findWidgets(const QPersistentModelIndex &index, const QStyleOptionViewItem &option,
-                                    UpdateWidgetsEnum updateWidgets = UpdateWidgets);
+    /**
+      * @brief Returns the widget associated to @p index and @p widget
+      * @param index The index to search into.
+      * @param option a QStyleOptionViewItem.
+      * @return A QList of the pointers to the widgets found.
+      * @internal
+      */
+    QList<QWidget *> findWidgets(
+        const QPersistentModelIndex &index, const QStyleOptionViewItem &option,
+        UpdateWidgetsEnum updateWidgets = UpdateWidgets);
 
-        QList<QWidget*> invalidIndexesWidgets() const;
+    QList<QWidget *> invalidIndexesWidgets() const;
 
-        void fullClear();
+    void fullClear();
 };
 
-class PluginListWidgetDelegateEventListener
-                        : public QObject
+class PluginListWidgetDelegateEventListener : public QObject
 {
-	friend class PluginListWidgetDelegateWidgets;
+    friend class PluginListWidgetDelegateWidgets;
 
-        PluginListWidgetDelegateWidgets *Pool;
+    PluginListWidgetDelegateWidgets *Pool;
 
 public:
-        PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgets *pool, QObject *parent = nullptr);
+    PluginListWidgetDelegateEventListener(PluginListWidgetDelegateWidgets *pool, QObject *parent = nullptr);
 
-        virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif

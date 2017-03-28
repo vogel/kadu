@@ -27,9 +27,8 @@
 #include "status/status-type-manager.h"
 #include "storage/storable-object.h"
 
-StorableStatusContainer::StorableStatusContainer(StorableObject *storableObject, QObject *parent) :
-		StatusContainer{parent},
-		m_storableObject{storableObject}
+StorableStatusContainer::StorableStatusContainer(StorableObject *storableObject, QObject *parent)
+        : StatusContainer{parent}, m_storableObject{storableObject}
 {
 }
 
@@ -39,48 +38,48 @@ StorableStatusContainer::~StorableStatusContainer()
 
 void StorableStatusContainer::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void StorableStatusContainer::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
-StatusTypeManager * StorableStatusContainer::statusTypeManager() const
+StatusTypeManager *StorableStatusContainer::statusTypeManager() const
 {
-	return m_statusTypeManager;
+    return m_statusTypeManager;
 }
 
 Status StorableStatusContainer::loadStatus()
 {
-	if (!m_storableObject->isValidStorage())
-		return Status();
+    if (!m_storableObject->isValidStorage())
+        return Status();
 
-	QString name = m_storableObject->loadValue<QString>("LastStatusName");
-	QString description = m_storableObject->loadValue<QString>("LastStatusDescription");
+    QString name = m_storableObject->loadValue<QString>("LastStatusName");
+    QString description = m_storableObject->loadValue<QString>("LastStatusDescription");
 
-	// if no status is available in storage, then this status container is a new one
-	// so we need to connect ASAP
-	if (name.isEmpty())
-		name = "Online";
+    // if no status is available in storage, then this status container is a new one
+    // so we need to connect ASAP
+    if (name.isEmpty())
+        name = "Online";
 
-	Status status;
-	status.setType(m_statusTypeManager->fromName(name));
-	status.setDescription(description);
+    Status status;
+    status.setType(m_statusTypeManager->fromName(name));
+    status.setDescription(description);
 
-	return status;
+    return status;
 }
 
 void StorableStatusContainer::storeStatus(Status status)
 {
-	if (!m_storableObject->isValidStorage())
-		return;
+    if (!m_storableObject->isValidStorage())
+        return;
 
-	m_storableObject->storeValue("LastStatusDescription", status.description());
-	m_storableObject->storeValue("LastStatusName", m_statusTypeManager->statusTypeData(status.type()).name());
+    m_storableObject->storeValue("LastStatusDescription", status.description());
+    m_storableObject->storeValue("LastStatusName", m_statusTypeManager->statusTypeData(status.type()).name());
 
-	m_configurationManager->flush();
+    m_configurationManager->flush();
 }
 
 #include "moc_storable-status-container.cpp"

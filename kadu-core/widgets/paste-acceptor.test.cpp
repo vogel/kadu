@@ -23,126 +23,132 @@
 
 class PasteAcceptorTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void shouldHandleText();
-	void shouldHandleUrlText();
-	void shouldHandleLocalFileUrl();
-	void shouldIgnoreRemoteFileUrl();
-	void shouldIgnoreEmptyUrl();
-	void shouldPrefertextOverLocalFileUrl();
-	void shouldHandleImageData();
-
+    void shouldHandleText();
+    void shouldHandleUrlText();
+    void shouldHandleLocalFileUrl();
+    void shouldIgnoreRemoteFileUrl();
+    void shouldIgnoreEmptyUrl();
+    void shouldPrefertextOverLocalFileUrl();
+    void shouldHandleImageData();
 };
 
 class PasteAcceptorStub : public PasteAcceptor
 {
-
 public:
-	QString plainText;
-	QUrl fileUrl;
-	QByteArray imageData;
+    QString plainText;
+    QUrl fileUrl;
+    QByteArray imageData;
 
-	virtual void acceptPlainText(QString plainText) override { this->plainText = plainText; }
-	virtual void acceptFileUrl(QUrl fileUrl) override { this->fileUrl = fileUrl; }
-	virtual void acceptImageData(QByteArray imageData) override { this->imageData = imageData; }
-
+    virtual void acceptPlainText(QString plainText) override
+    {
+        this->plainText = plainText;
+    }
+    virtual void acceptFileUrl(QUrl fileUrl) override
+    {
+        this->fileUrl = fileUrl;
+    }
+    virtual void acceptImageData(QByteArray imageData) override
+    {
+        this->imageData = imageData;
+    }
 };
 
 void PasteAcceptorTest::shouldHandleText()
 {
-	QMimeData mimeData{};
-	mimeData.setData("text/plain", "plain text");
-	mimeData.setData("text/html", "html text");
+    QMimeData mimeData{};
+    mimeData.setData("text/plain", "plain text");
+    mimeData.setData("text/html", "html text");
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QCOMPARE(pasteAcceptorStub.plainText, QLatin1String("plain text"));
-	QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
-	QVERIFY(pasteAcceptorStub.imageData.isEmpty());
+    QCOMPARE(pasteAcceptorStub.plainText, QLatin1String("plain text"));
+    QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
+    QVERIFY(pasteAcceptorStub.imageData.isEmpty());
 }
 
 void PasteAcceptorTest::shouldHandleUrlText()
 {
-	QMimeData mimeData{};
-	mimeData.setData("text/plain", "http://random.url.com/example");
-	mimeData.setUrls(QList<QUrl>{} << QUrl{"http://random.url.com/example"});
+    QMimeData mimeData{};
+    mimeData.setData("text/plain", "http://random.url.com/example");
+    mimeData.setUrls(QList<QUrl>{} << QUrl{"http://random.url.com/example"});
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QCOMPARE(pasteAcceptorStub.plainText, QLatin1String("http://random.url.com/example"));
-	QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
-	QVERIFY(pasteAcceptorStub.imageData.isEmpty());
+    QCOMPARE(pasteAcceptorStub.plainText, QLatin1String("http://random.url.com/example"));
+    QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
+    QVERIFY(pasteAcceptorStub.imageData.isEmpty());
 }
 
 void PasteAcceptorTest::shouldHandleLocalFileUrl()
 {
-	QMimeData mimeData{};
-	mimeData.setUrls(QList<QUrl>{} << QUrl{"file:///local/file/path"});
+    QMimeData mimeData{};
+    mimeData.setUrls(QList<QUrl>{} << QUrl{"file:///local/file/path"});
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QVERIFY(pasteAcceptorStub.plainText.isEmpty());
-	QCOMPARE(pasteAcceptorStub.fileUrl, QUrl{"file:///local/file/path"});
-	QVERIFY(pasteAcceptorStub.imageData.isEmpty());
+    QVERIFY(pasteAcceptorStub.plainText.isEmpty());
+    QCOMPARE(pasteAcceptorStub.fileUrl, QUrl{"file:///local/file/path"});
+    QVERIFY(pasteAcceptorStub.imageData.isEmpty());
 }
 
 void PasteAcceptorTest::shouldIgnoreRemoteFileUrl()
 {
-	QMimeData mimeData{};
-	mimeData.setUrls(QList<QUrl>{} << QUrl{"http:///remote/file/path"});
+    QMimeData mimeData{};
+    mimeData.setUrls(QList<QUrl>{} << QUrl{"http:///remote/file/path"});
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QVERIFY(pasteAcceptorStub.plainText.isEmpty());
-	QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
-	QVERIFY(pasteAcceptorStub.imageData.isEmpty());
+    QVERIFY(pasteAcceptorStub.plainText.isEmpty());
+    QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
+    QVERIFY(pasteAcceptorStub.imageData.isEmpty());
 }
 
 void PasteAcceptorTest::shouldIgnoreEmptyUrl()
 {
-	QMimeData mimeData{};
-	mimeData.setUrls(QList<QUrl>{} << QUrl{});
+    QMimeData mimeData{};
+    mimeData.setUrls(QList<QUrl>{} << QUrl{});
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QVERIFY(pasteAcceptorStub.plainText.isEmpty());
-	QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
-	QVERIFY(pasteAcceptorStub.imageData.isEmpty());
+    QVERIFY(pasteAcceptorStub.plainText.isEmpty());
+    QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
+    QVERIFY(pasteAcceptorStub.imageData.isEmpty());
 }
 
 void PasteAcceptorTest::shouldPrefertextOverLocalFileUrl()
 {
-	QMimeData mimeData{};
-	mimeData.setData("text/plain", "file:///local/file/path");
-	mimeData.setUrls(QList<QUrl>{} << QUrl{"file:///local/file/path"});
+    QMimeData mimeData{};
+    mimeData.setData("text/plain", "file:///local/file/path");
+    mimeData.setUrls(QList<QUrl>{} << QUrl{"file:///local/file/path"});
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QCOMPARE(pasteAcceptorStub.plainText, QLatin1String("file:///local/file/path"));
-	QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
-	QVERIFY(pasteAcceptorStub.imageData.isEmpty());
+    QCOMPARE(pasteAcceptorStub.plainText, QLatin1String("file:///local/file/path"));
+    QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
+    QVERIFY(pasteAcceptorStub.imageData.isEmpty());
 }
 
 void PasteAcceptorTest::shouldHandleImageData()
 {
-	auto imageData = QByteArray{"imagedata"};
-	QMimeData mimeData{};
-	mimeData.setData("application/x-qt-image", imageData);
+    auto imageData = QByteArray{"imagedata"};
+    QMimeData mimeData{};
+    mimeData.setData("application/x-qt-image", imageData);
 
-	auto pasteAcceptorStub = PasteAcceptorStub{};
-	acceptPasteData(&mimeData, &pasteAcceptorStub);
+    auto pasteAcceptorStub = PasteAcceptorStub{};
+    acceptPasteData(&mimeData, &pasteAcceptorStub);
 
-	QVERIFY(pasteAcceptorStub.plainText.isEmpty());
-	QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
-	QCOMPARE(pasteAcceptorStub.imageData, imageData);
+    QVERIFY(pasteAcceptorStub.plainText.isEmpty());
+    QVERIFY(pasteAcceptorStub.fileUrl.isEmpty());
+    QCOMPARE(pasteAcceptorStub.imageData, imageData);
 }
 
 QTEST_APPLESS_MAIN(PasteAcceptorTest)

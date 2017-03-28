@@ -32,11 +32,10 @@
 
 #include <QtWidgets/QLineEdit>
 
-SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) :
-		FilteredTreeView(FilterAtBottom, parent, Qt::Popup)
+SelectTalkablePopup::SelectTalkablePopup(QWidget *parent) : FilteredTreeView(FilterAtBottom, parent, Qt::Popup)
 {
-	setAttribute(Qt::WA_WindowPropagation);
-	setAttribute(Qt::WA_X11NetWmWindowTypeCombo);
+    setAttribute(Qt::WA_WindowPropagation);
+    setAttribute(Qt::WA_X11NetWmWindowTypeCombo);
 }
 
 SelectTalkablePopup::~SelectTalkablePopup()
@@ -45,90 +44,90 @@ SelectTalkablePopup::~SelectTalkablePopup()
 
 void SelectTalkablePopup::init()
 {
-	View = injectedFactory()->makeInjected<TalkableTreeView>(this);
-	setView(View);
+    View = injectedFactory()->makeInjected<TalkableTreeView>(this);
+    setView(View);
 
-	Chain = new ModelChain(this);
+    Chain = new ModelChain(this);
 
-	ProxyModel = injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
-	ProxyModel->setSortByStatusAndUnreadMessages(false);
+    ProxyModel = injectedFactory()->makeInjected<TalkableProxyModel>(Chain);
+    ProxyModel->setSortByStatusAndUnreadMessages(false);
 
-	HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
-	ProxyModel->addFilter(HideAnonymousFilter);
+    HideAnonymousFilter = new HideAnonymousTalkableFilter(ProxyModel);
+    ProxyModel->addFilter(HideAnonymousFilter);
 
-	NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
-	connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
+    NameTalkableFilter *nameFilter = new NameTalkableFilter(NameTalkableFilter::UndecidedMatching, ProxyModel);
+    connect(this, SIGNAL(filterChanged(QString)), nameFilter, SLOT(setName(QString)));
 
-	ProxyModel->addFilter(nameFilter);
-	Chain->addProxyModel(ProxyModel);
+    ProxyModel->addFilter(nameFilter);
+    Chain->addProxyModel(ProxyModel);
 
-	connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
-	connect(View, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
+    connect(View, SIGNAL(clicked(QModelIndex)), this, SLOT(itemClicked(QModelIndex)));
+    connect(View, SIGNAL(talkableActivated(Talkable)), this, SLOT(talkableActivated(Talkable)));
 
-	View->setItemsExpandable(false);
-	View->setChain(Chain);
-	View->setRootIsDecorated(false);
-	View->setShowIdentityNameIfMany(false);
-	View->setSelectionMode(QAbstractItemView::SingleSelection);
+    View->setItemsExpandable(false);
+    View->setChain(Chain);
+    View->setRootIsDecorated(false);
+    View->setShowIdentityNameIfMany(false);
+    View->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 QSize SelectTalkablePopup::sizeHint() const
 {
-	QSize newSizeHint = FilteredTreeView::sizeHint();
-	newSizeHint.setHeight(2 * newSizeHint.height());
-	return newSizeHint;
+    QSize newSizeHint = FilteredTreeView::sizeHint();
+    newSizeHint.setHeight(2 * newSizeHint.height());
+    return newSizeHint;
 }
 
 void SelectTalkablePopup::setBaseModel(QAbstractItemModel *model)
 {
-	Chain->setBaseModel(model);
+    Chain->setBaseModel(model);
 }
 
 void SelectTalkablePopup::setShowAnonymous(bool showAnonymous)
 {
-	HideAnonymousFilter->setEnabled(!showAnonymous);
+    HideAnonymousFilter->setEnabled(!showAnonymous);
 }
 
 void SelectTalkablePopup::show(const Talkable &talkable)
 {
-	filterWidget()->setFocus();
+    filterWidget()->setFocus();
 
-	QModelIndex currentIndex;
+    QModelIndex currentIndex;
 
-	if (!talkable.isEmpty())
-	{
-		const QModelIndexList &indexes = View->chain()->indexListForValue(QVariant::fromValue(talkable));
-		if (!indexes.isEmpty())
-		{
-			Q_ASSERT(indexes.size() == 1);
-			currentIndex = indexes.at(0);
-		}
-	}
+    if (!talkable.isEmpty())
+    {
+        const QModelIndexList &indexes = View->chain()->indexListForValue(QVariant::fromValue(talkable));
+        if (!indexes.isEmpty())
+        {
+            Q_ASSERT(indexes.size() == 1);
+            currentIndex = indexes.at(0);
+        }
+    }
 
-	View->setCurrentIndex(currentIndex);
+    View->setCurrentIndex(currentIndex);
 
-	FilteredTreeView::show();
+    FilteredTreeView::show();
 }
 
 void SelectTalkablePopup::itemClicked(const QModelIndex &index)
 {
-	talkableActivated(index.data(TalkableRole).value<Talkable>());
+    talkableActivated(index.data(TalkableRole).value<Talkable>());
 }
 
 void SelectTalkablePopup::talkableActivated(const Talkable &talkable)
 {
-	emit talkableSelected(talkable);
-	close();
+    emit talkableSelected(talkable);
+    close();
 }
 
 void SelectTalkablePopup::addFilter(TalkableFilter *filter)
 {
-	ProxyModel->addFilter(filter);
+    ProxyModel->addFilter(filter);
 }
 
 void SelectTalkablePopup::removeFilter(TalkableFilter *filter)
 {
-	ProxyModel->removeFilter(filter);
+    ProxyModel->removeFilter(filter);
 }
 
 #include "moc_select-talkable-popup.cpp"

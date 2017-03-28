@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-FacebookPluginModulesFactory::FacebookPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+FacebookPluginModulesFactory::FacebookPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ FacebookPluginModulesFactory::~FacebookPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> FacebookPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<FacebookModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<FacebookModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "facebook-plugin-modules-factory.moc"

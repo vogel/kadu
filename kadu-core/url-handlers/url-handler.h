@@ -30,11 +30,12 @@ class QDomDocument;
 class UrlHandler
 {
 public:
-	virtual ~UrlHandler() {}
+    virtual ~UrlHandler()
+    {
+    }
 
-	virtual bool isUrlValid(const QByteArray &url) = 0;
-	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false) = 0;
-
+    virtual bool isUrlValid(const QByteArray &url) = 0;
+    virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false) = 0;
 };
 
-#endif // URL_HANDLER_H
+#endif   // URL_HANDLER_H

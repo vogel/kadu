@@ -23,8 +23,8 @@
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
 #include <functional>
+#include <injeqt/injeqt.h>
 
 class SslCertificateStorage;
 class SslCertificateRepository;
@@ -34,29 +34,25 @@ class QSslError;
 
 class KADUAPI SslCertificateManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SslCertificateManager(QObject *parent = nullptr);
-	virtual ~SslCertificateManager();
+    Q_INVOKABLE explicit SslCertificateManager(QObject *parent = nullptr);
+    virtual ~SslCertificateManager();
 
-	void loadPersistentSslCertificates();
-	void storePersistentSslCertificates();
+    void loadPersistentSslCertificates();
+    void storePersistentSslCertificates();
 
-	bool acceptCertificate(const QString &hostName, const QSslCertificate &certificate) const;
-	void askForCertificateAcceptance(
-		const QString &hostName,
-		const QSslCertificate &certificate,
-		const QList<QSslError> &errors,
-		const std::function<void()> &onAccepted,
-		const std::function<void()> &onRejected);
+    bool acceptCertificate(const QString &hostName, const QSslCertificate &certificate) const;
+    void askForCertificateAcceptance(
+        const QString &hostName, const QSslCertificate &certificate, const QList<QSslError> &errors,
+        const std::function<void()> &onAccepted, const std::function<void()> &onRejected);
 
 private:
-	QPointer<SslCertificateRepository> m_sslCertificateRepository;
-	QPointer<SslCertificateStorage> m_sslCertificateStorage;
+    QPointer<SslCertificateRepository> m_sslCertificateRepository;
+    QPointer<SslCertificateStorage> m_sslCertificateStorage;
 
 private slots:
-	INJEQT_SET void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
-	INJEQT_SET void setSslCertificateStorage(SslCertificateStorage *sslCertificateStorage);
-
+    INJEQT_SET void setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository);
+    INJEQT_SET void setSslCertificateStorage(SslCertificateStorage *sslCertificateStorage);
 };

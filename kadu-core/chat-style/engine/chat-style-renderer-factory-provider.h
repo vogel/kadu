@@ -35,24 +35,23 @@ class ChatStyleRendererFactory;
  */
 class ChatStyleRendererFactoryProvider : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatStyleRendererFactoryProvider(QObject *parent = nullptr);
-	virtual ~ChatStyleRendererFactoryProvider();
+    explicit ChatStyleRendererFactoryProvider(QObject *parent = nullptr);
+    virtual ~ChatStyleRendererFactoryProvider();
 
-	/**
-	 * @return Current instance of ChatStyleRendererFactory.
-	 */
-	virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const = 0;
+    /**
+     * @return Current instance of ChatStyleRendererFactory.
+     */
+    virtual std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory() const = 0;
 
 signals:
-	/**
-	 * @short Signal emited when instance of ChatStyleRendererFactory is replaced by other one.
-	 * @param chatStyleRenderer new instance of ChatStyleRendererFactory.
-	 */
-	void chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory> chatStyleRenderer);
-
+    /**
+     * @short Signal emited when instance of ChatStyleRendererFactory is replaced by other one.
+     * @param chatStyleRenderer new instance of ChatStyleRendererFactory.
+     */
+    void chatStyleRendererFactoryChanged(std::shared_ptr<ChatStyleRendererFactory> chatStyleRenderer);
 };
 
 /**

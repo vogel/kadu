@@ -24,14 +24,12 @@
 
 class MailUrlDomVisitorProvider : public DomVisitorProvider
 {
-
 public:
-	MailUrlDomVisitorProvider();
-	virtual ~MailUrlDomVisitorProvider();
+    MailUrlDomVisitorProvider();
+    virtual ~MailUrlDomVisitorProvider();
 
-	virtual const DomVisitor * provide() const;
+    virtual const DomVisitor *provide() const;
 
 private:
-	IgnoreLinksDomVisitor m_ignoreLinks;
-
+    IgnoreLinksDomVisitor m_ignoreLinks;
 };

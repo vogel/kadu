@@ -25,8 +25,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-DockingPluginObject::DockingPluginObject(QObject *parent) :
-		QObject{parent}
+DockingPluginObject::DockingPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,27 +35,30 @@ DockingPluginObject::~DockingPluginObject()
 
 void DockingPluginObject::setDocking(Docking *docking)
 {
-	m_docking = docking;
+    m_docking = docking;
 }
 
-void DockingPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void DockingPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void DockingPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void DockingPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
 }
 
 void DockingPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
 }
 
 #include "moc_docking-plugin-object.cpp"

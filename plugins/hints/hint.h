@@ -37,54 +37,53 @@ struct Notification;
 
 class Hint : public QFrame
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Hint(const Notification &notification, HintsConfiguration *hintsConfiguration, QWidget *parent = nullptr);
-	virtual ~Hint();
+    explicit Hint(const Notification &notification, HintsConfiguration *hintsConfiguration, QWidget *parent = nullptr);
+    virtual ~Hint();
 
-	bool isDeprecated();
+    bool isDeprecated();
 
 public slots:
-	void nextSecond();
+    void nextSecond();
 
-	void acceptNotification();
-	void discardNotification();
+    void acceptNotification();
+    void discardNotification();
 
 signals:
-	void leftButtonClicked(Hint *hint);
-	void rightButtonClicked(Hint *hint);
-	void midButtonClicked(Hint *hint);
-	void hintDestroyed(Hint *hint);
+    void leftButtonClicked(Hint *hint);
+    void rightButtonClicked(Hint *hint);
+    void midButtonClicked(Hint *hint);
+    void hintDestroyed(Hint *hint);
 
 protected:
-	virtual void mouseReleaseEvent(QMouseEvent * event);
-	virtual void enterEvent(QEvent *event);
-	virtual void leaveEvent(QEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+    virtual void enterEvent(QEvent *event);
+    virtual void leaveEvent(QEvent *event);
 
 private:
-	QPointer<HintsConfiguration> m_hintsConfiguration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<HintsConfiguration> m_hintsConfiguration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<NotificationService> m_notificationService;
 
-	int secs;
-	int startSecs;
+    int secs;
+    int startSecs;
 
-	Notification m_notification;
+    Notification m_notification;
 
-	void createGui();
-	QString details() const;
-	bool shouldShowButtons() const;
+    void createGui();
+    QString details() const;
+    bool shouldShowButtons() const;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *IconsManager);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *IconsManager);
+    INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
 
-	void buttonClicked();
-
+    void buttonClicked();
 };

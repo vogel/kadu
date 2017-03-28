@@ -24,25 +24,25 @@
 
 #include "network-manager-qt.h"
 
-NetworkManagerQt::NetworkManagerQt(QObject *parent) :
-		NetworkManager{parent}
+NetworkManagerQt::NetworkManagerQt(QObject *parent) : NetworkManager{parent}
 {
 #ifdef Q_OS_WIN
-	// Kadu bug #2591
-	if (QSysInfo::WindowsVersion < QSysInfo::WV_VISTA)
-	{
-		ConfigurationManager = 0;
-		HasValidCapabilities = false;
-	}
-	else
+    // Kadu bug #2591
+    if (QSysInfo::WindowsVersion < QSysInfo::WV_VISTA)
+    {
+        ConfigurationManager = 0;
+        HasValidCapabilities = false;
+    }
+    else
 #endif
-	{
-		ConfigurationManager = new QNetworkConfigurationManager(this);
-		HasValidCapabilities = ConfigurationManager->capabilities() & QNetworkConfigurationManager::CanStartAndStopInterfaces;
+    {
+        ConfigurationManager = new QNetworkConfigurationManager(this);
+        HasValidCapabilities =
+            ConfigurationManager->capabilities() & QNetworkConfigurationManager::CanStartAndStopInterfaces;
 
-		if (HasValidCapabilities)
-			connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
-	}
+        if (HasValidCapabilities)
+            connect(ConfigurationManager, SIGNAL(onlineStateChanged(bool)), this, SLOT(onlineStateChanged(bool)));
+    }
 }
 
 NetworkManagerQt::~NetworkManagerQt()
@@ -51,14 +51,12 @@ NetworkManagerQt::~NetworkManagerQt()
 
 bool NetworkManagerQt::isOnline()
 {
-	return HasValidCapabilities
-			? ConfigurationManager->isOnline()
-			: true;
+    return HasValidCapabilities ? ConfigurationManager->isOnline() : true;
 }
 
 void NetworkManagerQt::forceOnline()
 {
-	onlineStateChanged(true);
+    onlineStateChanged(true);
 }
 
 #include "moc_network-manager-qt.cpp"

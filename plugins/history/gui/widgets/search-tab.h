@@ -41,61 +41,60 @@ class TimelineChatMessagesView;
 
 class SearchTab : public HistoryTab
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	HistoryMessagesStorage *m_historyChatStorage;
-	HistoryMessagesStorage *StatusStorage;
-	HistoryMessagesStorage *SmsStorage;
-	HistoryMessagesStorage **SearchedStorage;
+    HistoryMessagesStorage *m_historyChatStorage;
+    HistoryMessagesStorage *StatusStorage;
+    HistoryMessagesStorage *SmsStorage;
+    HistoryMessagesStorage **SearchedStorage;
 
-	QSplitter *Splitter;
-	TimelineChatMessagesView *TimelineView;
+    QSplitter *Splitter;
+    TimelineChatMessagesView *TimelineView;
 
-	QLineEdit *Query;
+    QLineEdit *Query;
 
-	QRadioButton *SearchInChats;
-	HistoryTalkableComboBox *SelectChat;
+    QRadioButton *SearchInChats;
+    HistoryTalkableComboBox *SelectChat;
 
-	QRadioButton *SearchInStatuses;
-	HistoryTalkableComboBox *SelectStatusBuddy;
+    QRadioButton *SearchInStatuses;
+    HistoryTalkableComboBox *SelectStatusBuddy;
 
-	QRadioButton *SearchInSmses;
-	HistoryTalkableComboBox *SelectSmsRecipient;
+    QRadioButton *SearchInSmses;
+    HistoryTalkableComboBox *SelectSmsRecipient;
 
-	QCheckBox *SearchByDate;
-	QDateEdit *FromDate;
-	QDateEdit *ToDate;
+    QCheckBox *SearchByDate;
+    QDateEdit *FromDate;
+    QDateEdit *ToDate;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
 
-	void kindChanged(QAbstractButton *button);
-	void fromDateChanged(const QDate &date);
-	void toDateChanged(const QDate &date);
-	void performSearch();
-	void clearSelect();
+    void kindChanged(QAbstractButton *button);
+    void fromDateChanged(const QDate &date);
+    void toDateChanged(const QDate &date);
+    void performSearch();
+    void clearSelect();
 
-	void currentDateChanged();
-	void messagesDisplayed();
+    void currentDateChanged();
+    void messagesDisplayed();
 
 public:
-	explicit SearchTab(QWidget *parent = nullptr);
-	virtual ~SearchTab();
+    explicit SearchTab(QWidget *parent = nullptr);
+    virtual ~SearchTab();
 
-	void setHistoryChatStorage(HistoryMessagesStorage *storage);
-	void setStatusStorage(HistoryMessagesStorage *storage);
-	void setSmsStorage(HistoryMessagesStorage *storage);
+    void setHistoryChatStorage(HistoryMessagesStorage *storage);
+    void setStatusStorage(HistoryMessagesStorage *storage);
+    void setSmsStorage(HistoryMessagesStorage *storage);
 
-	virtual QList<int> sizes() const;
-	virtual void setSizes(const QList<int> &newSizes);
-
+    virtual QList<int> sizes() const;
+    virtual void setSizes(const QList<int> &newSizes);
 };

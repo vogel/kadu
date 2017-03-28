@@ -24,9 +24,9 @@
 #include <QtCore/QtGlobal>
 
 #ifdef libkadu_EXPORTS
-#	define KADUAPI Q_DECL_EXPORT
+#define KADUAPI Q_DECL_EXPORT
 #else
-#	define KADUAPI Q_DECL_IMPORT
+#define KADUAPI Q_DECL_IMPORT
 #endif
 
-#endif // EXPORTS_H
+#endif   // EXPORTS_H

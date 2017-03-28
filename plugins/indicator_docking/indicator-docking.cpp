@@ -31,139 +31,144 @@
 #include <libqmessagingmenu/qmessaging-menu-source.h>
 #include <libqmessagingmenu/qmessaging-menu-status.h>
 
-IndicatorDocking::IndicatorDocking(QObject *parent) :
-	QObject{parent}
+IndicatorDocking::IndicatorDocking(QObject *parent) : QObject{parent}
 {
-	m_messagingMenuApp = new QMessagingMenuApp{"kadu.desktop", this};
-	m_messagingMenuApp->registerMenu();
+    m_messagingMenuApp = new QMessagingMenuApp{"kadu.desktop", this};
+    m_messagingMenuApp->registerMenu();
 
-	connect(m_messagingMenuApp, SIGNAL(sourceActivated(QString)), this, SLOT(sourceActivated(QString)));
-	connect(m_messagingMenuApp, SIGNAL(statusChanged(QMessagingMenuStatus)), this, SLOT(statusChanged(QMessagingMenuStatus)));
+    connect(m_messagingMenuApp, SIGNAL(sourceActivated(QString)), this, SLOT(sourceActivated(QString)));
+    connect(
+        m_messagingMenuApp, SIGNAL(statusChanged(QMessagingMenuStatus)), this,
+        SLOT(statusChanged(QMessagingMenuStatus)));
 }
 
 IndicatorDocking::~IndicatorDocking()
 {
-	disconnect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
-	disconnect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
+    disconnect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
+    disconnect(
+        m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 
-	for (auto &&message : m_unreadMessageRepository->allUnreadMessages())
-		unreadMessageRemoved(message);
+    for (auto &&message : m_unreadMessageRepository->allUnreadMessages())
+        unreadMessageRemoved(message);
 
-	m_messagingMenuApp->unregisterMenu();
+    m_messagingMenuApp->unregisterMenu();
 }
 
 void IndicatorDocking::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void IndicatorDocking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void IndicatorDocking::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 
-	statusContainerUpdated(m_statusContainerManager);
-	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(statusContainerUpdated(StatusContainer*)));
+    statusContainerUpdated(m_statusContainerManager);
+    connect(
+        m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this,
+        SLOT(statusContainerUpdated(StatusContainer *)));
 }
 
 void IndicatorDocking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 
-	for (auto &&message : m_unreadMessageRepository->allUnreadMessages())
-		unreadMessageAdded(message);
+    for (auto &&message : m_unreadMessageRepository->allUnreadMessages())
+        unreadMessageAdded(message);
 
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
+    connect(
+        m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageRemoved(Message)));
 }
 
 void IndicatorDocking::unreadMessageAdded(const Message &message)
 {
-	auto id = message.messageChat().uuid().toString();
-	auto label = title(message.messageChat());
-	auto count = message.messageChat().unreadMessagesCount();
-	auto avatar = message.messageChat().contacts().toContact().avatar(true);
-	auto source = m_messagingMenuApp->addSource(id, label, avatar.filePath(), count);
-	source->drawAttention();
+    auto id = message.messageChat().uuid().toString();
+    auto label = title(message.messageChat());
+    auto count = message.messageChat().unreadMessagesCount();
+    auto avatar = message.messageChat().contacts().toContact().avatar(true);
+    auto source = m_messagingMenuApp->addSource(id, label, avatar.filePath(), count);
+    source->drawAttention();
 }
 
 void IndicatorDocking::unreadMessageRemoved(const Message &message)
 {
-	auto count = message.messageChat().unreadMessagesCount();
-	if (count == 0)
-	{
-		auto id = message.messageChat().uuid().toString();
-		auto source = m_messagingMenuApp->source(id);
-		if (source)
-		{
-			source->removeAttention();
-			m_messagingMenuApp->removeSource(id);
-		}
-	}
+    auto count = message.messageChat().unreadMessagesCount();
+    if (count == 0)
+    {
+        auto id = message.messageChat().uuid().toString();
+        auto source = m_messagingMenuApp->source(id);
+        if (source)
+        {
+            source->removeAttention();
+            m_messagingMenuApp->removeSource(id);
+        }
+    }
 }
 
 void IndicatorDocking::sourceActivated(const QString &id)
 {
-	auto chat = m_chatManager->byUuid(QUuid{id});
-	if (!chat)
-		return;
+    auto chat = m_chatManager->byUuid(QUuid{id});
+    if (!chat)
+        return;
 
-	m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+    m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 
 void IndicatorDocking::statusChanged(QMessagingMenuStatus status)
 {
-	auto currentStatus = m_statusContainerManager->status();
-	switch (status)
-	{
-		case QMessagingMenuStatus::Available:
-			currentStatus.setType(StatusType::Online);
-			break;
-		case QMessagingMenuStatus::Away:
-			currentStatus.setType(StatusType::Away);
-			break;
-		case QMessagingMenuStatus::Busy:
-			currentStatus.setType(StatusType::DoNotDisturb);
-			break;
-		case QMessagingMenuStatus::Invisible:
-			currentStatus.setType(StatusType::Invisible);
-			break;
-		case QMessagingMenuStatus::Offline:
-			currentStatus.setType(StatusType::Offline);
-			break;
-	}
+    auto currentStatus = m_statusContainerManager->status();
+    switch (status)
+    {
+    case QMessagingMenuStatus::Available:
+        currentStatus.setType(StatusType::Online);
+        break;
+    case QMessagingMenuStatus::Away:
+        currentStatus.setType(StatusType::Away);
+        break;
+    case QMessagingMenuStatus::Busy:
+        currentStatus.setType(StatusType::DoNotDisturb);
+        break;
+    case QMessagingMenuStatus::Invisible:
+        currentStatus.setType(StatusType::Invisible);
+        break;
+    case QMessagingMenuStatus::Offline:
+        currentStatus.setType(StatusType::Offline);
+        break;
+    }
 
-	m_statusContainerManager->setStatus(currentStatus, SourceUser);
+    m_statusContainerManager->setStatus(currentStatus, SourceUser);
 }
 
 void IndicatorDocking::statusContainerUpdated(StatusContainer *statusContainer)
 {
-	switch (statusContainer->status().type())
-	{
-		case StatusType::FreeForChat:
-		case StatusType::Online:
-			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Available);
-			break;
-		case StatusType::Away:
-			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Away);
-			break;
-		case StatusType::NotAvailable:
-		case StatusType::DoNotDisturb:
-			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Busy);
-			break;
-		case StatusType::Invisible:
-			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Invisible);
-			break;
-		case StatusType::Offline:
-			m_messagingMenuApp->setStatus(QMessagingMenuStatus::Offline);
-			break;
-		default:
-			break;
-	}
+    switch (statusContainer->status().type())
+    {
+    case StatusType::FreeForChat:
+    case StatusType::Online:
+        m_messagingMenuApp->setStatus(QMessagingMenuStatus::Available);
+        break;
+    case StatusType::Away:
+        m_messagingMenuApp->setStatus(QMessagingMenuStatus::Away);
+        break;
+    case StatusType::NotAvailable:
+    case StatusType::DoNotDisturb:
+        m_messagingMenuApp->setStatus(QMessagingMenuStatus::Busy);
+        break;
+    case StatusType::Invisible:
+        m_messagingMenuApp->setStatus(QMessagingMenuStatus::Invisible);
+        break;
+    case StatusType::Offline:
+        m_messagingMenuApp->setStatus(QMessagingMenuStatus::Offline);
+        break;
+    default:
+        break;
+    }
 }
 
 #include "moc_indicator-docking.cpp"

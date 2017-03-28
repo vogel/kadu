@@ -28,18 +28,17 @@
 
 class ImageExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ImageExpanderDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~ImageExpanderDomVisitorProvider();
+    Q_INVOKABLE explicit ImageExpanderDomVisitorProvider(QObject *parent = nullptr);
+    virtual ~ImageExpanderDomVisitorProvider();
 
-	virtual const DomVisitor * provide() const;
+    virtual const DomVisitor *provide() const;
 
-	void setConfiguration(const ImageLinkConfiguration &configuration);
+    void setConfiguration(const ImageLinkConfiguration &configuration);
 
 private:
-	ImageLinkConfiguration m_configuration;
-	IgnoreLinksDomVisitor m_ignoreLinksVisitor;
-
+    ImageLinkConfiguration m_configuration;
+    IgnoreLinksDomVisitor m_ignoreLinksVisitor;
 };

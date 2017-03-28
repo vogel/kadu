@@ -20,7 +20,7 @@
 #pragma once
 
 extern "C" {
-#	include <libotr/context.h>
+#include <libotr/context.h>
 }
 
 #include <QtCore/QObject>
@@ -34,38 +34,37 @@ class OtrUserStateService;
 
 class OtrTrustLevelService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrContextConverter> ContextConverter;
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrContextConverter> ContextConverter;
+    QPointer<OtrUserStateService> UserStateService;
 
 public:
-	static void wrapperOtrUpdateContextList(void *data);
+    static void wrapperOtrUpdateContextList(void *data);
 
-	enum TrustLevel
-	{
-		TrustLevelUnknown,
-		TrustLevelNotPrivate,
-		TrustLevelUnverified,
-		TrustLevelPrivate
-	};
+    enum TrustLevel
+    {
+        TrustLevelUnknown,
+        TrustLevelNotPrivate,
+        TrustLevelUnverified,
+        TrustLevelPrivate
+    };
 
-	Q_INVOKABLE OtrTrustLevelService();
-	virtual ~OtrTrustLevelService();
+    Q_INVOKABLE OtrTrustLevelService();
+    virtual ~OtrTrustLevelService();
 
-	void storeTrustLevelToContact(const Contact &contact, TrustLevel level) const;
-	TrustLevel loadTrustLevelFromContact(const Contact &contact) const;
+    void storeTrustLevelToContact(const Contact &contact, TrustLevel level) const;
+    TrustLevel loadTrustLevelFromContact(const Contact &contact) const;
 
-	TrustLevel trustLevelFromContext(ConnContext *context) const;
+    TrustLevel trustLevelFromContext(ConnContext *context) const;
 
 public slots:
-	void updateTrustLevels();
+    void updateTrustLevels();
 
 signals:
-	void trustLevelsUpdated();
+    void trustLevelsUpdated();
 
 private slots:
-	INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
-
+    INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 };

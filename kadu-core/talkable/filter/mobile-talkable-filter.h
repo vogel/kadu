@@ -21,8 +21,8 @@
 #ifndef MOBILE_TALKABLE_FILTER_H
 #define MOBILE_TALKABLE_FILTER_H
 
-#include "talkable/filter/talkable-filter.h"
 #include "exports.h"
+#include "talkable/filter/talkable-filter.h"
 
 /**
  * @addtogroup Talkable
@@ -39,25 +39,24 @@
  */
 class KADUAPI MobileTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of MobileTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit MobileTalkableFilter(QObject *parent = nullptr);
-	virtual ~MobileTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of MobileTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit MobileTalkableFilter(QObject *parent = nullptr);
+    virtual ~MobileTalkableFilter();
 
-	virtual FilterResult filterChat(const Chat &chat);
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
-
+    virtual FilterResult filterChat(const Chat &chat);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 };
 
 /**
  * @}
  */
 
-#endif // MOBILE_TALKABLE_FILTER_H
+#endif   // MOBILE_TALKABLE_FILTER_H

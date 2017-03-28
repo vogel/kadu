@@ -41,46 +41,46 @@ class QXmppMucManager;
 
 class JabberRoomChatService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberRoomChatService(QXmppClient *client, QXmppMucManager *muc, Account account, QObject *parent = nullptr);
-	virtual ~JabberRoomChatService();
+    explicit JabberRoomChatService(
+        QXmppClient *client, QXmppMucManager *muc, Account account, QObject *parent = nullptr);
+    virtual ~JabberRoomChatService();
 
-	void setPresenceService(JabberPresenceService *presenceService);
+    void setPresenceService(JabberPresenceService *presenceService);
 
-	Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
+    Message handleReceivedMessage(const QXmppMessage &xmppMessage) const;
 
-	void joinOpenedRoomChats();
-	bool isRoomChat(const Chat &chat) const;
-	void leaveChat(const Chat &chat);
+    void joinOpenedRoomChats();
+    bool isRoomChat(const Chat &chat) const;
+    void leaveChat(const Chat &chat);
 
 private:
-	QPointer<QXmppClient> m_client;
-	QPointer<QXmppMucManager> m_muc;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<JabberPresenceService> m_presenceService;
-	QPointer<MessageStorage> m_messageStorage;
+    QPointer<QXmppClient> m_client;
+    QPointer<QXmppMucManager> m_muc;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<JabberPresenceService> m_presenceService;
+    QPointer<MessageStorage> m_messageStorage;
 
-	QMap<Chat, JabberRoomChat *> m_chats;
+    QMap<Chat, JabberRoomChat *> m_chats;
 
-	JabberRoomChat * getRoomChat(const QString &id) const;
-	JabberRoomChat * getRoomChat(const Chat &chat) const;
-	JabberRoomChat * getOrCreateRoomChat(const Chat &chat);
-	ChatDetailsRoom * myRoomChatDetails(const Chat &chat) const;
+    JabberRoomChat *getRoomChat(const QString &id) const;
+    JabberRoomChat *getRoomChat(const Chat &chat) const;
+    JabberRoomChat *getOrCreateRoomChat(const Chat &chat);
+    ChatDetailsRoom *myRoomChatDetails(const Chat &chat) const;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
+    INJEQT_INIT void init();
 
-	void connected();
+    void connected();
 
-	void chatOpened(const Chat &chat);
-	void chatClosed(const Chat &chat);
-
+    void chatOpened(const Chat &chat);
+    void chatClosed(const Chat &chat);
 };

@@ -27,86 +27,87 @@
 
 void PluginDependencyGraph::addPlugin(const QString &pluginName)
 {
-	m_graph.addNode(pluginName);
+    m_graph.addNode(pluginName);
 }
 
 void PluginDependencyGraph::addDependency(const QString &dependentPluginName, const QString &dependencyPluginName)
 {
-	if (dependentPluginName == dependencyPluginName)
-		return;
+    if (dependentPluginName == dependencyPluginName)
+        return;
 
-	m_graph.addEdge<PluginDependencyTag>(dependentPluginName, dependencyPluginName);
-	m_graph.addEdge<PluginDependentTag>(dependencyPluginName, dependentPluginName);
+    m_graph.addEdge<PluginDependencyTag>(dependentPluginName, dependencyPluginName);
+    m_graph.addEdge<PluginDependentTag>(dependencyPluginName, dependentPluginName);
 }
 
 int PluginDependencyGraph::size() const
 {
-	return m_graph.nodes().size();
+    return m_graph.nodes().size();
 }
 
 std::set<QString> PluginDependencyGraph::plugins() const
 {
-	auto result = std::set<QString>{};
-	std::transform(std::begin(m_graph.nodes()), std::end(m_graph.nodes()), std::inserter(result, result.begin()),
-		[](const PluginGraph::Storage::value_type &value) { return value.first; });
-	return result;
+    auto result = std::set<QString>{};
+    std::transform(
+        std::begin(m_graph.nodes()), std::end(m_graph.nodes()), std::inserter(result, result.begin()),
+        [](const PluginGraph::Storage::value_type &value) { return value.first; });
+    return result;
 }
 
 QSet<QString> PluginDependencyGraph::directDependencies(const QString &pluginName) const
 {
-	return directSuccessors<PluginDependencyTag>(pluginName);
+    return directSuccessors<PluginDependencyTag>(pluginName);
 }
 
 QSet<QString> PluginDependencyGraph::directDependents(const QString &pluginName) const
 {
-	return directSuccessors<PluginDependentTag>(pluginName);
+    return directSuccessors<PluginDependentTag>(pluginName);
 }
 
-template<typename SuccessorTypeTag>
+template <typename SuccessorTypeTag>
 QSet<QString> PluginDependencyGraph::directSuccessors(const QString &pluginName) const
 {
-	auto node = m_graph.node(pluginName);
-	if (!node)
-		return {};
+    auto node = m_graph.node(pluginName);
+    if (!node)
+        return {};
 
-	auto result = QSet<QString>{};
-	for (auto successor : node->successors<SuccessorTypeTag>())
-		result.insert(successor->payload());
-	return result;
+    auto result = QSet<QString>{};
+    for (auto successor : node->successors<SuccessorTypeTag>())
+        result.insert(successor->payload());
+    return result;
 }
 
 QSet<QString> PluginDependencyGraph::findPluginsInDependencyCycle() const
 {
-	auto result = QSet<QString>{};
-	for (auto successor : graph_find_cycles<PluginDependencyTag>(m_graph))
-		result.insert(successor);
-	return result;
+    auto result = QSet<QString>{};
+    for (auto successor : graph_find_cycles<PluginDependencyTag>(m_graph))
+        result.insert(successor);
+    return result;
 }
 
 QVector<QString> PluginDependencyGraph::findDependencies(const QString &pluginName) const
 {
-	return findSuccessors<PluginDependencyTag>(pluginName);
+    return findSuccessors<PluginDependencyTag>(pluginName);
 }
 
 QVector<QString> PluginDependencyGraph::findDependents(const QString &pluginName) const
 {
-	return findSuccessors<PluginDependentTag>(pluginName);
+    return findSuccessors<PluginDependentTag>(pluginName);
 }
 
-template<typename SuccessorTypeTag>
+template <typename SuccessorTypeTag>
 QVector<QString> PluginDependencyGraph::findSuccessors(const QString &pluginName) const
 {
-	try
-	{
-		auto sortedSuccessors = graph_sort_successors<SuccessorTypeTag>(m_graph, pluginName);
-		auto result = QVector<QString>{};
+    try
+    {
+        auto sortedSuccessors = graph_sort_successors<SuccessorTypeTag>(m_graph, pluginName);
+        auto result = QVector<QString>{};
 
-		auto extractPayload = [](decltype(sortedSuccessors[0]) &v){ return v->payload(); };
-		std::transform(sortedSuccessors.begin(), sortedSuccessors.end(), std::back_inserter(result), extractPayload);
-		return result;
-	}
-	catch (GraphCycleException &e)
-	{
-		throw PluginDependencyCycleException();
-	}
+        auto extractPayload = [](decltype(sortedSuccessors[0]) &v) { return v->payload(); };
+        std::transform(sortedSuccessors.begin(), sortedSuccessors.end(), std::back_inserter(result), extractPayload);
+        return result;
+    }
+    catch (GraphCycleException &e)
+    {
+        throw PluginDependencyCycleException();
+    }
 }

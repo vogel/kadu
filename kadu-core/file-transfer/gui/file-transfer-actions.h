@@ -29,22 +29,21 @@ class ShowFileTransferWindowAction;
 
 class FileTransferActions : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FileTransferActions(QObject *parent = nullptr);
-	virtual ~FileTransferActions();
+    Q_INVOKABLE explicit FileTransferActions(QObject *parent = nullptr);
+    virtual ~FileTransferActions();
 
 private:
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<SendFileAction> m_sendFileAction;
-	QPointer<ShowFileTransferWindowAction> m_showFileTransferWindowAction;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<SendFileAction> m_sendFileAction;
+    QPointer<ShowFileTransferWindowAction> m_showFileTransferWindowAction;
 
 private slots:
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setSendFileAction(SendFileAction *sendFileAction);
-	INJEQT_SET void setShowFileTransferWindowAction(ShowFileTransferWindowAction *showFileTransferWindowAction);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setSendFileAction(SendFileAction *sendFileAction);
+    INJEQT_SET void setShowFileTransferWindowAction(ShowFileTransferWindowAction *showFileTransferWindowAction);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

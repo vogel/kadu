@@ -28,27 +28,41 @@ class MobileNumberManager;
 
 class MobileNumber : public UuidStorableObject
 {
-	QPointer<MobileNumberManager> m_mobileNumberManager;
+    QPointer<MobileNumberManager> m_mobileNumberManager;
 
-	QString m_number;
-	QString m_gatewayId;
+    QString m_number;
+    QString m_gatewayId;
 
 protected:
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 public:
-	MobileNumber(MobileNumberManager *mobileNumberManager);
-	MobileNumber(MobileNumberManager *mobileNumberManager, QString number, QString gatewayId);
-	virtual ~MobileNumber();
+    MobileNumber(MobileNumberManager *mobileNumberManager);
+    MobileNumber(MobileNumberManager *mobileNumberManager, QString number, QString gatewayId);
+    virtual ~MobileNumber();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName() { return QStringLiteral("MobileNumber"); }
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName()
+    {
+        return QStringLiteral("MobileNumber");
+    }
 
-	const QString & number() const { return m_number; };
-	void setNumber(const QString &number) { m_number = number; };
+    const QString &number() const
+    {
+        return m_number;
+    };
+    void setNumber(const QString &number)
+    {
+        m_number = number;
+    };
 
-	const QString & gatewayId() const { return m_gatewayId; };
-	void setGatewayId(const QString &gatewayId) { m_gatewayId = gatewayId; };
-
+    const QString &gatewayId() const
+    {
+        return m_gatewayId;
+    };
+    void setGatewayId(const QString &gatewayId)
+    {
+        m_gatewayId = gatewayId;
+    };
 };

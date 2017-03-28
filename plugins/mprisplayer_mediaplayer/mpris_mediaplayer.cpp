@@ -32,8 +32,7 @@
 
 #include "mpris_mediaplayer.h"
 
-MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) :
-		QObject(parent)
+MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) : QObject(parent)
 {
 }
 
@@ -43,199 +42,199 @@ MPRISMediaPlayer::~MPRISMediaPlayer()
 
 void MPRISMediaPlayer::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void MPRISMediaPlayer::setService(const QString &service)
 {
-	this->service = service;
+    this->service = service;
 
-	if (m_controller)
-		delete m_controller;
+    if (m_controller)
+        delete m_controller;
 
-	m_controller = new MPRISController(m_mediaPlayer, this->service, this);
+    m_controller = new MPRISController(m_mediaPlayer, this->service, this);
 }
 
 void MPRISMediaPlayer::setName(const QString &name)
 {
-	this->name = name;
+    this->name = name;
 }
 
 // PlayerInfo
 
 QString MPRISMediaPlayer::getPlayerName()
 {
-	return name;
+    return name;
 }
 
 QString MPRISMediaPlayer::getPlayerVersion()
 {
-	if (m_controller)
-		return m_controller->identity();
-	else
-		return QString();
+    if (m_controller)
+        return m_controller->identity();
+    else
+        return QString();
 }
 
 // TrackList
 
 QStringList MPRISMediaPlayer::getPlayListTitles()
 {
-	QStringList result;
-	if (!isPlaying())
-		return result;
+    QStringList result;
+    if (!isPlaying())
+        return result;
 
-	QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
+    QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
 
-	foreach (const TrackInfo &track, tracks)
-		result << track.title();
+    foreach (const TrackInfo &track, tracks)
+        result << track.title();
 
-	return result;
+    return result;
 }
 
 QStringList MPRISMediaPlayer::getPlayListFiles()
 {
-	QStringList result;
-	if (!isPlaying())
-		return result;
+    QStringList result;
+    if (!isPlaying())
+        return result;
 
-	QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
+    QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
 
-	foreach (const TrackInfo &track, tracks)
-		result << track.file();
+    foreach (const TrackInfo &track, tracks)
+        result << track.file();
 
-	return result;
+    return result;
 }
 
 QString MPRISMediaPlayer::getTitle()
 {
-	if (!isPlaying())
-		return QString();
+    if (!isPlaying())
+        return QString();
 
-	return m_controller->track().title();
+    return m_controller->track().title();
 }
 
 QString MPRISMediaPlayer::getAlbum()
 {
-	if (!isPlaying())
-		return QString();
+    if (!isPlaying())
+        return QString();
 
-	return m_controller->track().album();
+    return m_controller->track().album();
 }
 
 QString MPRISMediaPlayer::getArtist()
 {
-	if (!isPlaying())
-		return QString();
+    if (!isPlaying())
+        return QString();
 
-	return m_controller->track().artist();
+    return m_controller->track().artist();
 }
 
 QString MPRISMediaPlayer::getFile()
 {
-	if (!isPlaying())
-		return QString();
+    if (!isPlaying())
+        return QString();
 
-	return m_controller->track().file();
+    return m_controller->track().file();
 }
 
 int MPRISMediaPlayer::getLength()
 {
-	if (!isPlaying())
-		return 0;
+    if (!isPlaying())
+        return 0;
 
-	return m_controller->track().length();
+    return m_controller->track().length();
 }
 
 // Player
 
 int MPRISMediaPlayer::getCurrentPos()
 {
-	if (!isPlaying())
-		return 0;
+    if (!isPlaying())
+        return 0;
 
-	return m_controller->getCurrentPosition();
+    return m_controller->getCurrentPosition();
 }
 
 void MPRISMediaPlayer::nextTrack()
 {
-	if (m_controller)
-		m_controller->call("Next");
+    if (m_controller)
+        m_controller->call("Next");
 }
 
 void MPRISMediaPlayer::prevTrack()
 {
-	if (m_controller)
-		m_controller->call("Previous");
+    if (m_controller)
+        m_controller->call("Previous");
 }
 
 void MPRISMediaPlayer::play()
 {
-	if (m_controller)
-		m_controller->call("Play");
+    if (m_controller)
+        m_controller->call("Play");
 }
 
 void MPRISMediaPlayer::stop()
 {
-	if (m_controller)
-		m_controller->call("Stop");
+    if (m_controller)
+        m_controller->call("Stop");
 }
 
 void MPRISMediaPlayer::pause()
 {
-	if (m_controller)
-		m_controller->call("Pause");
+    if (m_controller)
+        m_controller->call("Pause");
 }
 
 void MPRISMediaPlayer::setVolume(int vol)
 {
-	if (m_controller)
-		m_controller->setVolume(vol);
+    if (m_controller)
+        m_controller->setVolume(vol);
 }
 
 void MPRISMediaPlayer::incrVolume()
 {
-	if (!m_controller)
-		return;
+    if (!m_controller)
+        return;
 
-	int vol = m_controller->getVolume();
-	if (vol < 100)
-		vol += 2;
+    int vol = m_controller->getVolume();
+    if (vol < 100)
+        vol += 2;
 
-	if (vol > 100)
-		vol = 100;
+    if (vol > 100)
+        vol = 100;
 
-	m_controller->setVolume(vol);
+    m_controller->setVolume(vol);
 }
 
 void MPRISMediaPlayer::decrVolume()
 {
-	if (!m_controller)
-		return;
+    if (!m_controller)
+        return;
 
-	int vol = m_controller->getVolume();
-	if (vol > 0)
-		vol -= 2;
+    int vol = m_controller->getVolume();
+    if (vol > 0)
+        vol -= 2;
 
-	if (vol < 0)
-		vol = 0;
+    if (vol < 0)
+        vol = 0;
 
-	m_controller->setVolume(vol);
+    m_controller->setVolume(vol);
 }
 
 bool MPRISMediaPlayer::isPlaying()
 {
-	if (!m_controller)
-		return false;
+    if (!m_controller)
+        return false;
 
-	return MPRISController::StatusPlaying == m_controller->status();
+    return MPRISController::StatusPlaying == m_controller->status();
 }
 
 bool MPRISMediaPlayer::isActive()
 {
-	if (!m_controller)
-		return false;
+    if (!m_controller)
+        return false;
 
-	return m_controller->active();
+    return m_controller->active();
 }
 
 #include "moc_mpris_mediaplayer.cpp"

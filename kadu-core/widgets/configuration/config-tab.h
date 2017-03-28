@@ -37,28 +37,30 @@ class KaduScrollArea;
 
 class ConfigTab : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString MyName;
+    QString MyName;
 
-	QMap<QString, ConfigGroupBox *> MyConfigGroupBoxes;
+    QMap<QString, ConfigGroupBox *> MyConfigGroupBoxes;
 
-	QScrollArea *MyScrollArea;
-	QVBoxLayout *MyMainLayout;
-	QWidget *MyMainWidget;
+    QScrollArea *MyScrollArea;
+    QVBoxLayout *MyMainLayout;
+    QWidget *MyMainWidget;
 
 private slots:
-	void configGroupBoxDestroyed(QObject *obj);
+    void configGroupBoxDestroyed(QObject *obj);
 
 public:
-	ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget);
-	virtual ~ConfigTab();
+    ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget);
+    virtual ~ConfigTab();
 
-	ConfigGroupBox * configGroupBox(const QString &name, bool create);
+    ConfigGroupBox *configGroupBox(const QString &name, bool create);
 
-	const QString & name() const { return MyName; }
-	QWidget * widget() const;
-
+    const QString &name() const
+    {
+        return MyName;
+    }
+    QWidget *widget() const;
 };
 
 #endif

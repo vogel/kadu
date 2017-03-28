@@ -20,8 +20,8 @@
 
 #include "history-query-results-proxy-model.h"
 
-HistoryQueryResultsProxyModel::HistoryQueryResultsProxyModel(QObject *parent) :
-		QSortFilterProxyModel(parent), TalkableVisible(true), TitleVisible(true)
+HistoryQueryResultsProxyModel::HistoryQueryResultsProxyModel(QObject *parent)
+        : QSortFilterProxyModel(parent), TalkableVisible(true), TitleVisible(true)
 {
 }
 
@@ -31,32 +31,32 @@ HistoryQueryResultsProxyModel::~HistoryQueryResultsProxyModel()
 
 bool HistoryQueryResultsProxyModel::filterAcceptsColumn(int sourceColumn, const QModelIndex &sourceParent) const
 {
-	Q_UNUSED(sourceParent);
+    Q_UNUSED(sourceParent);
 
-	if (!TalkableVisible && 0 == sourceColumn)
-		return false;
-	if (!TitleVisible && 3 == sourceColumn)
-		return false;
+    if (!TalkableVisible && 0 == sourceColumn)
+        return false;
+    if (!TitleVisible && 3 == sourceColumn)
+        return false;
 
-	return true;
+    return true;
 }
 
 void HistoryQueryResultsProxyModel::setTalkableVisible(const bool talkableVisible)
 {
-	if (TalkableVisible == talkableVisible)
-		return;
+    if (TalkableVisible == talkableVisible)
+        return;
 
-	TalkableVisible = talkableVisible;
-	invalidateFilter();
+    TalkableVisible = talkableVisible;
+    invalidateFilter();
 }
 
 void HistoryQueryResultsProxyModel::setTitleVisible(const bool titleVisible)
 {
-	if (TitleVisible == titleVisible)
-		return;
+    if (TitleVisible == titleVisible)
+        return;
 
-	TitleVisible = titleVisible;
-	invalidateFilter();
+    TitleVisible = titleVisible;
+    invalidateFilter();
 }
 
 #include "moc_history-query-results-proxy-model.cpp"

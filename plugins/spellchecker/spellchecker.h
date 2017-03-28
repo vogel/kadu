@@ -49,54 +49,53 @@ typedef struct str_enchant_dict EnchantDict;
 
 class SpellChecker : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
 #if defined(HAVE_ASPELL)
-	typedef QMap<QString, AspellSpeller *> Checkers;
+    typedef QMap<QString, AspellSpeller *> Checkers;
 #elif defined(HAVE_ENCHANT)
-	typedef QMap<QString, EnchantDict *> Checkers;
+    typedef QMap<QString, EnchantDict *> Checkers;
 #endif
 
-	Q_INVOKABLE explicit SpellChecker(QObject *parent = nullptr);
-	virtual ~SpellChecker();
+    Q_INVOKABLE explicit SpellChecker(QObject *parent = nullptr);
+    virtual ~SpellChecker();
 
-	void buildMarkTag();
-	void buildCheckers();
-	bool checkWord(const QString &word);
-	QStringList buildSuggestList(const QString &word);
+    void buildMarkTag();
+    void buildCheckers();
+    bool checkWord(const QString &word);
+    QStringList buildSuggestList(const QString &word);
 
-	QStringList notCheckedLanguages() const;
-	QStringList checkedLanguages() const;
-	bool addCheckedLang(const QString &name);
-	void removeCheckedLang(const QString &name);
+    QStringList notCheckedLanguages() const;
+    QStringList checkedLanguages() const;
+    bool addCheckedLang(const QString &name);
+    void removeCheckedLang(const QString &name);
 
 public slots:
-	void chatWidgetAdded(ChatWidget *chatWidget);
+    void chatWidgetAdded(ChatWidget *chatWidget);
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
-	QPointer<Suggester> m_suggester;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
+    QPointer<Suggester> m_suggester;
 
 #if defined(HAVE_ASPELL)
-	AspellConfig *SpellConfig;
+    AspellConfig *SpellConfig;
 #elif defined(HAVE_ENCHANT)
-	EnchantBroker *Broker;
+    EnchantBroker *Broker;
 #endif
 
-	Checkers MyCheckers;
+    Checkers MyCheckers;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
-	INJEQT_SET void setSuggester(Suggester *suggester);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+    INJEQT_SET void setSuggester(Suggester *suggester);
+    INJEQT_INIT void init();
 
-	void configurationUpdated();
-
+    void configurationUpdated();
 };

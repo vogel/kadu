@@ -41,39 +41,40 @@ class ChatWidgetContainerHandler;
  */
 class KADUAPI ChatWidgetContainerHandlerRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	using iterator = QList<ChatWidgetContainerHandler *>::iterator;
+    using iterator = QList<ChatWidgetContainerHandler *>::iterator;
 
-	Q_INVOKABLE explicit ChatWidgetContainerHandlerRepository(QObject *parent = nullptr);
-	virtual ~ChatWidgetContainerHandlerRepository();
+    Q_INVOKABLE explicit ChatWidgetContainerHandlerRepository(QObject *parent = nullptr);
+    virtual ~ChatWidgetContainerHandlerRepository();
 
-	void registerChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void registerChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void unregisterChatWidgetContainerHandler(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 
-	iterator begin();
-	iterator end();
+    iterator begin();
+    iterator end();
 
-	QList<ChatWidgetContainerHandler *> chatWidgetContainerHandlers() const;
+    QList<ChatWidgetContainerHandler *> chatWidgetContainerHandlers() const;
 
 signals:
-	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 
 private:
-	QList<ChatWidgetContainerHandler *> m_chatWidgetContainerHandlers;
-
+    QList<ChatWidgetContainerHandler *> m_chatWidgetContainerHandlers;
 };
 
-inline ChatWidgetContainerHandlerRepository::iterator begin(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+inline ChatWidgetContainerHandlerRepository::iterator
+begin(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
 {
-	return chatWidgetContainerHandlerRepository->begin();
+    return chatWidgetContainerHandlerRepository->begin();
 }
 
-inline ChatWidgetContainerHandlerRepository::iterator end(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+inline ChatWidgetContainerHandlerRepository::iterator
+end(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
 {
-	return chatWidgetContainerHandlerRepository->end();
+    return chatWidgetContainerHandlerRepository->end();
 }
 
 /**

@@ -32,11 +32,9 @@
  */
 class KADUAPI ForceSpaceDomVisitor : public DomTextRegexpVisitor
 {
-
 public:
-	explicit ForceSpaceDomVisitor();
-	virtual ~ForceSpaceDomVisitor();
+    explicit ForceSpaceDomVisitor();
+    virtual ~ForceSpaceDomVisitor();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const override;
-
+    virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const override;
 };

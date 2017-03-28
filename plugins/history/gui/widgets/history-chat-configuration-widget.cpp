@@ -29,10 +29,10 @@
 
 #include "history-chat-configuration-widget.h"
 
-HistoryChatConfigurationWidget::HistoryChatConfigurationWidget(const Chat &chat, QWidget *parent) :
-		ChatConfigurationWidget(chat, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
+HistoryChatConfigurationWidget::HistoryChatConfigurationWidget(const Chat &chat, QWidget *parent)
+        : ChatConfigurationWidget(chat, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("History"));
+    setWindowTitle(tr("History"));
 }
 
 HistoryChatConfigurationWidget::~HistoryChatConfigurationWidget()
@@ -41,66 +41,66 @@ HistoryChatConfigurationWidget::~HistoryChatConfigurationWidget()
 
 void HistoryChatConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void HistoryChatConfigurationWidget::init()
 {
-	createGui();
-	configurationUpdated();
-	loadValues();
+    createGui();
+    configurationUpdated();
+    loadValues();
 }
 
 void HistoryChatConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	StoreHistoryCheckBox = new QCheckBox(tr("Store history"));
+    StoreHistoryCheckBox = new QCheckBox(tr("Store history"));
 
-	connect(StoreHistoryCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(StoreHistoryCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 
-	layout->addWidget(StoreHistoryCheckBox);
-	layout->addStretch(100);
+    layout->addWidget(StoreHistoryCheckBox);
+    layout->addStretch(100);
 }
 
 void HistoryChatConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
-	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
+    GlobalStoreHistory = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+    StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 
 void HistoryChatConfigurationWidget::loadValues()
 {
-	StoreHistoryCheckBox->setChecked(chat().property("history:StoreHistory", true).toBool());
-	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
+    StoreHistoryCheckBox->setChecked(chat().property("history:StoreHistory", true).toBool());
+    StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 
 void HistoryChatConfigurationWidget::updateState()
 {
-	if (StoreHistoryCheckBox->isChecked() == chat().property("history:StoreHistory", true).toBool())
-		StateNotifier->setState(StateNotChanged);
-	else
-		StateNotifier->setState(StateChangedDataValid);
+    if (StoreHistoryCheckBox->isChecked() == chat().property("history:StoreHistory", true).toBool())
+        StateNotifier->setState(StateNotChanged);
+    else
+        StateNotifier->setState(StateChangedDataValid);
 }
 
-const ConfigurationValueStateNotifier * HistoryChatConfigurationWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *HistoryChatConfigurationWidget::stateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }
 
 void HistoryChatConfigurationWidget::apply()
 {
-	if (StoreHistoryCheckBox->isChecked())
-		chat().removeProperty("history:StoreHistory");
-	else
-		chat().addProperty("history:StoreHistory", false, CustomProperties::Storable);
+    if (StoreHistoryCheckBox->isChecked())
+        chat().removeProperty("history:StoreHistory");
+    else
+        chat().addProperty("history:StoreHistory", false, CustomProperties::Storable);
 
-	updateState();
+    updateState();
 }
 
 void HistoryChatConfigurationWidget::cancel()
 {
-	loadValues();
+    loadValues();
 }
 
 #include "moc_history-chat-configuration-widget.cpp"

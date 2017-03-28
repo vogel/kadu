@@ -19,8 +19,8 @@
 
 #include "cenzor-plugin-object.h"
 
-#include "configuration/gui/cenzor-configuration-ui-handler.h"
 #include "cenzor-message-filter.h"
+#include "configuration/gui/cenzor-configuration-ui-handler.h"
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "message/message-filter-service.h"
@@ -29,8 +29,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-CenzorPluginObject::CenzorPluginObject(QObject *parent) :
-		QObject{parent}
+CenzorPluginObject::CenzorPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,46 +39,50 @@ CenzorPluginObject::~CenzorPluginObject()
 
 void CenzorPluginObject::setCenzorConfigurationUiHandler(CenzorConfigurationUiHandler *cenzorConfigurationUiHandler)
 {
-	m_cenzorConfigurationUiHandler = cenzorConfigurationUiHandler;
+    m_cenzorConfigurationUiHandler = cenzorConfigurationUiHandler;
 }
 
 void CenzorPluginObject::setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter)
 {
-	m_cenzorMessageFilter = cenzorMessageFilter;
+    m_cenzorMessageFilter = cenzorMessageFilter;
 }
 
-void CenzorPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void CenzorPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void CenzorPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void CenzorPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void CenzorPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
-	m_messageFilterService = messageFilterService;
+    m_messageFilterService = messageFilterService;
 }
 
 void CenzorPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void CenzorPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_cenzorConfigurationUiHandler);
-	m_messageFilterService->registerMessageFilter(m_cenzorMessageFilter);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_cenzorConfigurationUiHandler);
+    m_messageFilterService->registerMessageFilter(m_cenzorMessageFilter);
 }
 
 void CenzorPluginObject::done()
 {
-	m_messageFilterService->unregisterMessageFilter(m_cenzorMessageFilter);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_cenzorConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
+    m_messageFilterService->unregisterMessageFilter(m_cenzorMessageFilter);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_cenzorConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 }
 
 #include "moc_cenzor-plugin-object.cpp"

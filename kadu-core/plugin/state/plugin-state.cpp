@@ -23,23 +23,23 @@
 
 QString pluginStateToString(PluginState pluginState)
 {
-	switch (pluginState)
-	{
-		case PluginState::Enabled:
-			return QStringLiteral("Loaded");
-		case PluginState::Disabled:
-			return QStringLiteral("NotLoaded");
-		default:
-			return {};
-	}
+    switch (pluginState)
+    {
+    case PluginState::Enabled:
+        return QStringLiteral("Loaded");
+    case PluginState::Disabled:
+        return QStringLiteral("NotLoaded");
+    default:
+        return {};
+    }
 }
 
 PluginState stringToPluginState(const QString &string)
 {
-	if (string == QStringLiteral("Loaded"))
-		return PluginState::Enabled;
-	else if (string == QStringLiteral("NotLoaded"))
-		return PluginState::Disabled;
-	else
-		return PluginState::New;
+    if (string == QStringLiteral("Loaded"))
+        return PluginState::Enabled;
+    else if (string == QStringLiteral("NotLoaded"))
+        return PluginState::Disabled;
+    else
+        return PluginState::New;
 }

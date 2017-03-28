@@ -28,23 +28,22 @@ class ChatConfigurationWidgetFactory;
 
 class KADUAPI ChatConfigurationWidgetFactoryRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<ChatConfigurationWidgetFactory *> Factories;
+    QList<ChatConfigurationWidgetFactory *> Factories;
 
 public:
-	Q_INVOKABLE explicit ChatConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
-	virtual ~ChatConfigurationWidgetFactoryRepository();
+    Q_INVOKABLE explicit ChatConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
+    virtual ~ChatConfigurationWidgetFactoryRepository();
 
-	void registerFactory(ChatConfigurationWidgetFactory *factory);
-	void unregisterFactory(ChatConfigurationWidgetFactory *factory);
+    void registerFactory(ChatConfigurationWidgetFactory *factory);
+    void unregisterFactory(ChatConfigurationWidgetFactory *factory);
 
-	QList<ChatConfigurationWidgetFactory *> factories() const;
+    QList<ChatConfigurationWidgetFactory *> factories() const;
 
 signals:
-	void factoryRegistered(ChatConfigurationWidgetFactory *factory);
-	void factoryUnregistered(ChatConfigurationWidgetFactory *factory);
-
+    void factoryRegistered(ChatConfigurationWidgetFactory *factory);
+    void factoryUnregistered(ChatConfigurationWidgetFactory *factory);
 };
 
-#endif // CHAT_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H
+#endif   // CHAT_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H

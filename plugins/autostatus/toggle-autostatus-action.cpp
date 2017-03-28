@@ -23,15 +23,15 @@
 
 #include "actions/action.h"
 
-ToggleAutostatusAction::ToggleAutostatusAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ToggleAutostatusAction::ToggleAutostatusAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/enable-notifications"});
-	setName(QStringLiteral("autostatusAction"));
-	setText(tr("&Autostatus"));
-	setType(ActionDescription::TypeMainMenu);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/enable-notifications"});
+    setName(QStringLiteral("autostatusAction"));
+    setText(tr("&Autostatus"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ToggleAutostatusAction::~ToggleAutostatusAction()
@@ -40,12 +40,12 @@ ToggleAutostatusAction::~ToggleAutostatusAction()
 
 void ToggleAutostatusAction::setAutostatusService(AutostatusService *autostatusService)
 {
-	m_autostatusService = autostatusService;
+    m_autostatusService = autostatusService;
 }
 
 void ToggleAutostatusAction::actionTriggered(QAction *, bool toggled)
 {
-	m_autostatusService->toggle(toggled);
+    m_autostatusService->toggle(toggled);
 }
 
 #include "moc_toggle-autostatus-action.cpp"

@@ -36,47 +36,45 @@ class InjectedFactory;
 
 class KADUAPI IdentityShared : public Shared
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit IdentityShared(const QUuid &uuid = QUuid(), QObject *parent = nullptr);
-	virtual ~IdentityShared();
+    explicit IdentityShared(const QUuid &uuid = QUuid(), QObject *parent = nullptr);
+    virtual ~IdentityShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	virtual void aboutToBeRemoved();
+    virtual void aboutToBeRemoved();
 
-	QList<Account> accounts();
-	void addAccount(const Account &account);
-	void removeAccount(const Account &account);
-	bool hasAccount(const Account &account);
-	bool hasAnyLoadedAccount();
-	bool isEmpty();
+    QList<Account> accounts();
+    void addAccount(const Account &account);
+    void removeAccount(const Account &account);
+    bool hasAccount(const Account &account);
+    bool hasAnyLoadedAccount();
+    bool isEmpty();
 
-	KaduShared_Property(const QString &, name, Name)
-	KaduShared_PropertyBool(Permanent)
+    KaduShared_Property(const QString &, name, Name) KaduShared_PropertyBool(Permanent)
 
-	StatusContainer * statusContainer() const;
+        StatusContainer *statusContainer() const;
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
 private:
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	not_owned_qptr<IdentityStatusContainer> m_identityStatusContainer;
+    not_owned_qptr<IdentityStatusContainer> m_identityStatusContainer;
 
-	bool Permanent;
-	QString Name;
-	QList<Account> Accounts;
+    bool Permanent;
+    QString Name;
+    QList<Account> Accounts;
 
 private slots:
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 };

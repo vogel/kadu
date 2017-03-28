@@ -19,56 +19,56 @@
 
 #include "group-tab-bar-configuration.h"
 
-GroupTabBarConfiguration::GroupTabBarConfiguration() :
-		DisplayGroupTabs{true}, ShowGroupTabEverybody{true}, AlwaysShowGroupTabUngroupped{false}, CurrentGroupTab{0}
+GroupTabBarConfiguration::GroupTabBarConfiguration()
+        : DisplayGroupTabs{true}, ShowGroupTabEverybody{true}, AlwaysShowGroupTabUngroupped{false}, CurrentGroupTab{0}
 {
 }
 void GroupTabBarConfiguration::setDisplayGroupTabs(bool displayGroupTabs)
 {
-	DisplayGroupTabs = displayGroupTabs;
+    DisplayGroupTabs = displayGroupTabs;
 }
 
 bool GroupTabBarConfiguration::displayGroupTabs() const
 {
-	return DisplayGroupTabs;
+    return DisplayGroupTabs;
 }
 
 void GroupTabBarConfiguration::setShowGroupTabEverybody(int showGroupTabEverybody)
 {
-	ShowGroupTabEverybody = showGroupTabEverybody;
+    ShowGroupTabEverybody = showGroupTabEverybody;
 }
 
 int GroupTabBarConfiguration::showGroupTabEverybody() const
 {
-	return ShowGroupTabEverybody;
+    return ShowGroupTabEverybody;
 }
 
 void GroupTabBarConfiguration::setAlwaysShowGroupTabUngroupped(int alwaysShowGroupTabUngroupped)
 {
-	AlwaysShowGroupTabUngroupped = alwaysShowGroupTabUngroupped;
+    AlwaysShowGroupTabUngroupped = alwaysShowGroupTabUngroupped;
 }
 
 bool GroupTabBarConfiguration::alwaysShowGroupTabUngroupped() const
 {
-	return AlwaysShowGroupTabUngroupped;
+    return AlwaysShowGroupTabUngroupped;
 }
 
 void GroupTabBarConfiguration::setCurrentGroupTab(int currentGroupTab)
 {
-	CurrentGroupTab = currentGroupTab;
+    CurrentGroupTab = currentGroupTab;
 }
 
 int GroupTabBarConfiguration::currentGroupTab() const
 {
-	return CurrentGroupTab;
+    return CurrentGroupTab;
 }
 
 void GroupTabBarConfiguration::setGroupFilters(QVector<GroupFilter> groupFilters)
 {
-	GroupFilters = groupFilters;
+    GroupFilters = groupFilters;
 }
 
 QVector<GroupFilter> GroupTabBarConfiguration::groupFilters() const
 {
-	return GroupFilters;
+    return GroupFilters;
 }

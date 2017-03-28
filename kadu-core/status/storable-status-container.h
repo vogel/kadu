@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "status/status-container.h"
 #include "exports.h"
+#include "status/status-container.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -45,51 +45,50 @@ class StorableObject;
  */
 class KADUAPI StorableStatusContainer : public StatusContainer
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new StorableStatusContainer instance.
-	 * @param storableObject storable object to store status in
-	 *
-	 * This constructor creates new StorableStatusContainer instance associated with given storableObject.
-	 * Each status loading and storing will be performed using this storable object.
-	 */
-	explicit StorableStatusContainer(StorableObject *storableObject, QObject *parent = nullptr);
-	virtual ~StorableStatusContainer();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new StorableStatusContainer instance.
+     * @param storableObject storable object to store status in
+     *
+     * This constructor creates new StorableStatusContainer instance associated with given storableObject.
+     * Each status loading and storing will be performed using this storable object.
+     */
+    explicit StorableStatusContainer(StorableObject *storableObject, QObject *parent = nullptr);
+    virtual ~StorableStatusContainer();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return status stored in storable object.
-	 * @return stored status.
-	 *
-	 * Return status stored in storable object.
-	 */
-	virtual Status loadStatus();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return status stored in storable object.
+     * @return stored status.
+     *
+     * Return status stored in storable object.
+     */
+    virtual Status loadStatus();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Stores given status in storable object.
-	 * @param status status to store
-	 *
-	 * Stores given status in storable object.
-	 */
-	virtual void storeStatus(Status status);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Stores given status in storable object.
+     * @param status status to store
+     *
+     * Stores given status in storable object.
+     */
+    virtual void storeStatus(Status status);
 
 protected:
-	StatusTypeManager * statusTypeManager() const;
+    StatusTypeManager *statusTypeManager() const;
 
 private:
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	StorableObject *m_storableObject;
+    StorableObject *m_storableObject;
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 };
 
 /**

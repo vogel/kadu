@@ -30,14 +30,13 @@
 
 #include "chat-image-request-service.h"
 
-ChatImageRequestService::ChatImageRequestService(QObject *parent) :
-		QObject(parent), ReceivedImageKeysCount(0)
+ChatImageRequestService::ChatImageRequestService(QObject *parent) : QObject(parent), ReceivedImageKeysCount(0)
 {
-	QTimer *everyMinuteTimer = new QTimer(this);
-	everyMinuteTimer->setInterval(60 * 1000);
-	everyMinuteTimer->setSingleShot(false);
-	connect(everyMinuteTimer, SIGNAL(timeout()), this, SLOT(resetReceivedImageKeysCount()));
-	everyMinuteTimer->start();
+    QTimer *everyMinuteTimer = new QTimer(this);
+    everyMinuteTimer->setInterval(60 * 1000);
+    everyMinuteTimer->setSingleShot(false);
+    connect(everyMinuteTimer, SIGNAL(timeout()), this, SLOT(resetReceivedImageKeysCount()));
+    everyMinuteTimer->start();
 }
 
 ChatImageRequestService::~ChatImageRequestService()
@@ -46,107 +45,108 @@ ChatImageRequestService::~ChatImageRequestService()
 
 void ChatImageRequestService::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void ChatImageRequestService::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	CurrentImageStorageService = imageStorageService;
+    CurrentImageStorageService = imageStorageService;
 }
 
 void ChatImageRequestService::setAccountManager(AccountManager *accountManager)
 {
-	if (CurrentAccountManager)
-		disconnect(CurrentAccountManager.data(), 0, this, 0);
+    if (CurrentAccountManager)
+        disconnect(CurrentAccountManager.data(), 0, this, 0);
 
-	CurrentAccountManager = accountManager;
-	if (!CurrentAccountManager)
-		return;
+    CurrentAccountManager = accountManager;
+    if (!CurrentAccountManager)
+        return;
 
-	connect(CurrentAccountManager.data(), SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(connectAccount(Account)));
+    connect(
+        CurrentAccountManager.data(), SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(connectAccount(Account)));
 }
 
 void ChatImageRequestService::setContactManager(ContactManager *contactManager)
 {
-	CurrentContactManager = contactManager;
+    CurrentContactManager = contactManager;
 }
 
 void ChatImageRequestService::setConfiguration(ChatImageRequestServiceConfiguration configuration)
 {
-	Configuration = configuration;
+    Configuration = configuration;
 }
 
 void ChatImageRequestService::connectAccount(Account account)
 {
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->chatImageService())
-		return;
+    if (!account || !account.protocolHandler() || !account.protocolHandler()->chatImageService())
+        return;
 
-	connect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageKeyReceived(QString,ChatImage)),
-	        this, SLOT(chatImageKeyReceived(QString,ChatImage)), Qt::UniqueConnection);
-	connect(account.protocolHandler()->chatImageService(), SIGNAL(chatImageAvailable(ChatImage,QByteArray)),
-	        this, SLOT(chatImageAvailable(ChatImage,QByteArray)), Qt::UniqueConnection);
+    connect(
+        account.protocolHandler()->chatImageService(), SIGNAL(chatImageKeyReceived(QString, ChatImage)), this,
+        SLOT(chatImageKeyReceived(QString, ChatImage)), Qt::UniqueConnection);
+    connect(
+        account.protocolHandler()->chatImageService(), SIGNAL(chatImageAvailable(ChatImage, QByteArray)), this,
+        SLOT(chatImageAvailable(ChatImage, QByteArray)), Qt::UniqueConnection);
 }
 
 bool ChatImageRequestService::acceptImage(const Account &account, const QString &id, const ChatImage &chatImage) const
 {
-	if (!Configuration.limitImageSize())
-		return true;
+    if (!Configuration.limitImageSize())
+        return true;
 
-	if (Configuration.maximumImageSizeInKiloBytes() * 1024 >= chatImage.size())
-		return true;
+    if (Configuration.maximumImageSizeInKiloBytes() * 1024 >= chatImage.size())
+        return true;
 
-	if (!CurrentContactManager)
-		return false;
+    if (!CurrentContactManager)
+        return false;
 
-	if (!Configuration.allowBiggerImagesAfterAsking())
-		return false;
+    if (!Configuration.allowBiggerImagesAfterAsking())
+        return false;
 
-	const Contact &contact = CurrentContactManager.data()->byId(account, id, ActionReturnNull);
+    const Contact &contact = CurrentContactManager.data()->byId(account, id, ActionReturnNull);
 
-	QString question = tr(
-			"Buddy %1 is attempting to send you an image of %2 KiB in size.\n"
-			"This exceeds your configured limits.\n"
-			"Do you want to accept this image anyway?")
-			.arg(contact.display(true)).arg((chatImage.size() + 1023) / 1024);
+    QString question = tr("Buddy %1 is attempting to send you an image of %2 KiB in size.\n"
+                          "This exceeds your configured limits.\n"
+                          "Do you want to accept this image anyway?")
+                           .arg(contact.display(true))
+                           .arg((chatImage.size() + 1023) / 1024);
 
-	MessageDialog *dialog = MessageDialog::create(
-			m_iconsManager->iconByPath(KaduIcon("dialog-question")),
-			tr("Kadu") + " - " + tr("Incoming Image"),
-			question);
-	dialog->addButton(QMessageBox::Yes, tr("Accept image"));
-	dialog->addButton(QMessageBox::No, tr("Deny"));
+    MessageDialog *dialog = MessageDialog::create(
+        m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu") + " - " + tr("Incoming Image"), question);
+    dialog->addButton(QMessageBox::Yes, tr("Accept image"));
+    dialog->addButton(QMessageBox::No, tr("Deny"));
 
-	return dialog->ask();
+    return dialog->ask();
 }
 
 void ChatImageRequestService::chatImageKeyReceived(const QString &id, const ChatImage &chatImage)
 {
-	if (ReceivedImageKeysCount >= ReceivedImageKeysPerMinuteLimit)
-		return;
+    if (ReceivedImageKeysCount >= ReceivedImageKeysPerMinuteLimit)
+        return;
 
-	ChatImageService *service = qobject_cast<ChatImageService *>(sender());
-	if (!service)
-		return;
+    ChatImageService *service = qobject_cast<ChatImageService *>(sender());
+    if (!service)
+        return;
 
-	if (!acceptImage(service->account(), id, chatImage))
-		return;
+    if (!acceptImage(service->account(), id, chatImage))
+        return;
 
-	service->requestChatImage(id, chatImage);
-	ReceivedImageKeysCount++;
+    service->requestChatImage(id, chatImage);
+    ReceivedImageKeysCount++;
 }
 
 void ChatImageRequestService::chatImageAvailable(const ChatImage &chatImage, const QByteArray &imageData)
 {
-	if (!CurrentImageStorageService)
-		return;
+    if (!CurrentImageStorageService)
+        return;
 
-	QString filePath = CurrentImageStorageService.data()->storeImage(chatImage.key(), imageData);
-	emit chatImageStored(chatImage, CurrentImageStorageService.data()->fullPath(filePath));
+    QString filePath = CurrentImageStorageService.data()->storeImage(chatImage.key(), imageData);
+    emit chatImageStored(chatImage, CurrentImageStorageService.data()->fullPath(filePath));
 }
 
 void ChatImageRequestService::resetReceivedImageKeysCount()
 {
-	ReceivedImageKeysCount = 0;
+    ReceivedImageKeysCount = 0;
 }
 
 #include "moc_chat-image-request-service.cpp"

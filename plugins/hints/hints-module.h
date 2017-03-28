@@ -23,9 +23,9 @@
 
 class HintsModule : public injeqt::module
 {
-
 public:
-	HintsModule();
-	virtual ~HintsModule() {}
-
+    HintsModule();
+    virtual ~HintsModule()
+    {
+    }
 };

@@ -48,49 +48,49 @@
  */
 class EmoticonSelector : public QScrollArea
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QScopedPointer<EmoticonPathProvider> PathProvider;
+    QScopedPointer<EmoticonPathProvider> PathProvider;
 
-	void addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainwidget);
-	void calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget);
+    void addEmoticonButtons(const QVector<Emoticon> &emoticons, QWidget *mainwidget);
+    void calculatePositionAndSize(const QWidget *activatingWidget, const QWidget *mainwidget);
 
 private slots:
-	void emoticonClickedSlot(const Emoticon &emoticon);
+    void emoticonClickedSlot(const Emoticon &emoticon);
 
 protected:
-	virtual bool event(QEvent *e);
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual bool event(QEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	/**
-	 * @short Create new EmoticonSelector widget.
-	 * @param emoticons emoticons to display
-	 * @param pathProvider EmoticonPathProvider used to get image file name for emoticon for popup widget
-	 * @param parent parent widget
-	 *
-	 * This object gets ownership of pathProvider pointer.
-	 */
-	explicit EmoticonSelector(const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent = nullptr);
-	virtual ~EmoticonSelector();
+    /**
+     * @short Create new EmoticonSelector widget.
+     * @param emoticons emoticons to display
+     * @param pathProvider EmoticonPathProvider used to get image file name for emoticon for popup widget
+     * @param parent parent widget
+     *
+     * This object gets ownership of pathProvider pointer.
+     */
+    explicit EmoticonSelector(
+        const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent = nullptr);
+    virtual ~EmoticonSelector();
 
 signals:
-	/**
-	 * @short Signal emited when emoticon is clicked.
-	 * @param emoticon clicked emoticon
-	 */
-	void emoticonClicked(const Emoticon &emoticon);
+    /**
+     * @short Signal emited when emoticon is clicked.
+     * @param emoticon clicked emoticon
+     */
+    void emoticonClicked(const Emoticon &emoticon);
 
-	/**
-	 * @short Signal emited when emoticon is clicked.
-	 * @param emoticon clicked emoticon's trigger text
-	 */
-	void emoticonClicked(const QString &emoticon);
-
+    /**
+     * @short Signal emited when emoticon is clicked.
+     * @param emoticon clicked emoticon's trigger text
+     */
+    void emoticonClicked(const QString &emoticon);
 };
 
 /**
  * @}
  */
 
-#endif // EMOTICON_SELECTOR_H
+#endif   // EMOTICON_SELECTOR_H

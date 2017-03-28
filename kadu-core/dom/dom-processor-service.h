@@ -48,30 +48,29 @@ class DomVisitor;
  */
 class KADUAPI DomProcessorService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Create new instance of DomProcessorService.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent of new instance
-	 */
-	explicit DomProcessorService(QObject *parent = nullptr);
-	virtual ~DomProcessorService();
+    /**
+     * @short Create new instance of DomProcessorService.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent of new instance
+     */
+    explicit DomProcessorService(QObject *parent = nullptr);
+    virtual ~DomProcessorService();
 
-	/**
-	 * @short Process xml with all available DomVisitor instances.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domDocument to process
-	 * @todo remove
-	 *
-	 * This method will convert xml string to domDocument and call other process() method. Result of that
-	 * will be again serialized to string and returned.
-	 *
-	 * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
-	 */
-	virtual QString process(const QString &xml) = 0;
-
+    /**
+     * @short Process xml with all available DomVisitor instances.
+     * @author Rafał 'Vogel' Malinowski
+     * @param domDocument to process
+     * @todo remove
+     *
+     * This method will convert xml string to domDocument and call other process() method. Result of that
+     * will be again serialized to string and returned.
+     *
+     * Value of xml must be valid XML. If not, it will be truncated at first invalid character.
+     */
+    virtual QString process(const QString &xml) = 0;
 };
 
 /**

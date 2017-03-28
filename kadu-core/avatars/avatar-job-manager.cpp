@@ -28,10 +28,7 @@
 
 #include <QtCore/QTimer>
 
-AvatarJobManager::AvatarJobManager(QObject *parent) :
-		QObject{parent},
-		Mutex{QMutex::Recursive},
-		IsJobRunning{false}
+AvatarJobManager::AvatarJobManager(QObject *parent) : QObject{parent}, Mutex{QMutex::Recursive}, IsJobRunning{false}
 {
 }
 
@@ -41,82 +38,82 @@ AvatarJobManager::~AvatarJobManager()
 
 void AvatarJobManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void AvatarJobManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AvatarJobManager::scheduleJob()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (!IsJobRunning && hasJob())
-		// run it in next even cycle
-		// this is for reccursion prevention, so we save on stack memory
-		QTimer::singleShot(0, this, SLOT(runJob()));
+    if (!IsJobRunning && hasJob())
+        // run it in next even cycle
+        // this is for reccursion prevention, so we save on stack memory
+        QTimer::singleShot(0, this, SLOT(runJob()));
 }
 
 void AvatarJobManager::runJob()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (IsJobRunning)
-		return;
+    if (IsJobRunning)
+        return;
 
-	if (!hasJob())
-		return;
+    if (!hasJob())
+        return;
 
-	if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
-		return;
+    if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
+        return;
 
-	IsJobRunning = true;
+    IsJobRunning = true;
 
-	auto contact = nextJob();
-	auto runner = m_injectedFactory->makeInjected<AvatarJobRunner>(contact, this);
-	connect(runner, SIGNAL(jobFinished(bool)), this, SLOT(jobFinished()));
-	runner->runJob();
+    auto contact = nextJob();
+    auto runner = m_injectedFactory->makeInjected<AvatarJobRunner>(contact, this);
+    connect(runner, SIGNAL(jobFinished(bool)), this, SLOT(jobFinished()));
+    runner->runJob();
 }
 
 void AvatarJobManager::jobFinished()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	IsJobRunning = false;
-	scheduleJob();
+    IsJobRunning = false;
+    scheduleJob();
 }
 
 void AvatarJobManager::addJob(const Contact &contact)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (!contact)
-		return;
+    if (!contact)
+        return;
 
-	Jobs.insert(contact);
-	scheduleJob();
+    Jobs.insert(contact);
+    scheduleJob();
 }
 
 bool AvatarJobManager::hasJob()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	return !Jobs.isEmpty();
+    return !Jobs.isEmpty();
 }
 
 Contact AvatarJobManager::nextJob()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (!hasJob())
-		return Contact::null;
+    if (!hasJob())
+        return Contact::null;
 
-	Contact job = *Jobs.constBegin();
-	Jobs.remove(job);
+    Contact job = *Jobs.constBegin();
+    Jobs.remove(job);
 
-	return job;
+    return job;
 }
 
 #include "moc_avatar-job-manager.cpp"

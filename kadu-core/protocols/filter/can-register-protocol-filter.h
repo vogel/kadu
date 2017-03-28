@@ -28,18 +28,17 @@
 
 class CanRegisterProtocolFilter : public AbstractProtocolFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool Enabled;
+    bool Enabled;
 
 public:
-	CanRegisterProtocolFilter(QObject *parent = nullptr);
+    CanRegisterProtocolFilter(QObject *parent = nullptr);
 
-	void setEnabled(bool enabled);
-	virtual bool acceptProtocol(ProtocolFactory *factory);
-
+    void setEnabled(bool enabled);
+    virtual bool acceptProtocol(ProtocolFactory *factory);
 };
 
 Q_DECLARE_METATYPE(CanRegisterProtocolFilter *)
 
-#endif // CAN_REGISTER_PROTOCOL_FILTER_H
+#endif   // CAN_REGISTER_PROTOCOL_FILTER_H

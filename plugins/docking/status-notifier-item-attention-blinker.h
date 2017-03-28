@@ -30,21 +30,21 @@ class QTimer;
 
 class StatusNotifierItemAttentionBlinker : public StatusNotifierItemAttention
 {
-	Q_OBJECT
-	
+    Q_OBJECT
+
 public:
-	explicit StatusNotifierItemAttentionBlinker(QIcon normalIcon, QIcon blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
-	virtual ~StatusNotifierItemAttentionBlinker();
+    explicit StatusNotifierItemAttentionBlinker(
+        QIcon normalIcon, QIcon blinkIcon, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
+    virtual ~StatusNotifierItemAttentionBlinker();
 
 private:
-	QIcon m_normalIcon;
-	QIcon m_blinkIcon;
-	QSystemTrayIcon *m_systemTrayIcon;
+    QIcon m_normalIcon;
+    QIcon m_blinkIcon;
+    QSystemTrayIcon *m_systemTrayIcon;
 
-	owned_qptr<QTimer> m_timer;
-	bool m_blink;
+    owned_qptr<QTimer> m_timer;
+    bool m_blink;
 
 private slots:
-	void timeout();
-
+    void timeout();
 };

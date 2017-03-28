@@ -32,17 +32,19 @@ class QRect;
 
 class PixmapGrabber
 {
-	PixmapGrabber() {} // disable instances
+    PixmapGrabber()
+    {
+    }   // disable instances
 
 public:
-	// Methods from KSnapShot
-	static QPixmap grabCurrent();
+    // Methods from KSnapShot
+    static QPixmap grabCurrent();
 #if defined(Q_OS_UNIX)
-	static Window findRealWindow(Window w, int depth = 0);
-	static void getWindowsRecursive(std::vector<QRect> &windows, Window w, int rx = 0, int ry = 0, int depth = 0);
-	static QPixmap grabWindow(Window child, int x, int y, uint w, uint h, uint border);
-	static Window windowUnderCursor(bool includeDecorations);
+    static Window findRealWindow(Window w, int depth = 0);
+    static void getWindowsRecursive(std::vector<QRect> &windows, Window w, int rx = 0, int ry = 0, int depth = 0);
+    static QPixmap grabWindow(Window child, int x, int y, uint w, uint h, uint border);
+    static Window windowUnderCursor(bool includeDecorations);
 #endif
 };
 
-#endif // PIXMAP_GRABBER_H
+#endif   // PIXMAP_GRABBER_H

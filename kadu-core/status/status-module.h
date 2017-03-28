@@ -25,9 +25,7 @@
 
 class KADUAPI StatusModule : public injeqt::module
 {
-
 public:
-	explicit StatusModule();
-	virtual ~StatusModule();
-
+    explicit StatusModule();
+    virtual ~StatusModule();
 };

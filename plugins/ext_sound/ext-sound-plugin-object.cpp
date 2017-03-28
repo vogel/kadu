@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-ExtSoundPluginObject::ExtSoundPluginObject(QObject *parent) :
-		QObject{parent}
+ExtSoundPluginObject::ExtSoundPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,34 +38,37 @@ ExtSoundPluginObject::~ExtSoundPluginObject()
 
 void ExtSoundPluginObject::setExternalPlayer(ExternalPlayer *externalPlayer)
 {
-	m_externalPlayer = externalPlayer;
+    m_externalPlayer = externalPlayer;
 }
 
-void ExtSoundPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void ExtSoundPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void ExtSoundPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void ExtSoundPluginObject::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
 void ExtSoundPluginObject::init()
 {
-	m_soundManager->setPlayer(m_externalPlayer);
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
+    m_soundManager->setPlayer(m_externalPlayer);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
 }
 
 void ExtSoundPluginObject::done()
 {
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
-	m_soundManager->setPlayer(nullptr);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
+    m_soundManager->setPlayer(nullptr);
 }
 
 #include "moc_ext-sound-plugin-object.cpp"

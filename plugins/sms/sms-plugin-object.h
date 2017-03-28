@@ -34,31 +34,31 @@ class SmsScriptsManager;
 
 class SmsPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit SmsPluginObject(QObject *parent = nullptr);
-	virtual ~SmsPluginObject();
+    Q_INVOKABLE explicit SmsPluginObject(QObject *parent = nullptr);
+    virtual ~SmsPluginObject();
 
 private:
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SmsActions> m_smsActions;
-	QPointer<SmsConfigurationUiHandler> m_smsConfigurationUiHandler;
-	QPointer<SmsGatewayManager> m_smsGatewayManager;
-	QPointer<SmsScriptsManager> m_smsScriptsManager;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<SmsActions> m_smsActions;
+    QPointer<SmsConfigurationUiHandler> m_smsConfigurationUiHandler;
+    QPointer<SmsGatewayManager> m_smsGatewayManager;
+    QPointer<SmsScriptsManager> m_smsScriptsManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSmsActions(SmsActions *smsActions);
-	INJEQT_SET void setSmsConfigurationUiHandler(SmsConfigurationUiHandler *smsConfigurationUiHandler);
-	INJEQT_SET void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
-	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setSmsActions(SmsActions *smsActions);
+    INJEQT_SET void setSmsConfigurationUiHandler(SmsConfigurationUiHandler *smsConfigurationUiHandler);
+    INJEQT_SET void setSmsGatewayManager(SmsGatewayManager *smsGatewayManager);
+    INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 };

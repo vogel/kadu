@@ -32,10 +32,10 @@
  * @param v value to look for
  * @return true if value v can be found in cointainer c
  */
-template<typename C, typename T>
+template <typename C, typename T>
 bool contains(const C &c, const T &v)
 {
-	return std::find(c.begin(), c.end(), v) != c.end();
+    return std::find(c.begin(), c.end(), v) != c.end();
 }
 
 /**
@@ -43,10 +43,10 @@ bool contains(const C &c, const T &v)
  * @param k key to look for
  * @return true if key k can be found in map m
  */
-template<typename K, typename V>
+template <typename K, typename V>
 bool contains(const std::map<K, V> &m, const K &k)
 {
-	return m.find(k) != m.end();
+    return m.find(k) != m.end();
 }
 
 /**
@@ -57,13 +57,13 @@ bool contains(const std::map<K, V> &m, const K &k)
  *
  * If v1 or v2 can not be found in container c, the result is undefined.
  */
-template<typename C, typename T>
+template <typename C, typename T>
 bool precedes(const C &c, const T &v1, const T &v2)
 {
-	auto it1 = std::find(c.begin(), c.end(), v1);
-	auto it2 = std::find(c.begin(), c.end(), v2);
+    auto it1 = std::find(c.begin(), c.end(), v1);
+    auto it2 = std::find(c.begin(), c.end(), v2);
 
-	return it1 < it2;
+    return it1 < it2;
 }
 
 /**
@@ -81,26 +81,26 @@ bool precedes(const C &c, const T &v1, const T &v2)
  * In case there is no overlap {end(A), begin(B)} is returned
  */
 template <typename ForwardIterator1, typename ForwardIterator2>
-std::pair<ForwardIterator1, ForwardIterator2> find_overlapping_region(ForwardIterator1 first1, ForwardIterator1 last1,
-		ForwardIterator2 first2, ForwardIterator2 last2)
+std::pair<ForwardIterator1, ForwardIterator2> find_overlapping_region(
+    ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2, ForwardIterator2 last2)
 {
-	if (first1 == last1 || first2 == last2)
-		return std::make_pair(last1, first2);
+    if (first1 == last1 || first2 == last2)
+        return std::make_pair(last1, first2);
 
-	auto result1 = std::find(first1, last1, *first2);
-	if (result1 == last1)
-		return std::make_pair(last1, first2);
+    auto result1 = std::find(first1, last1, *first2);
+    if (result1 == last1)
+        return std::make_pair(last1, first2);
 
-	auto it1 = result1;
-	auto it2 = first2;
-	while (it1 != last1 && it2 != last2)
-		if (*it1++ != *it2++)
-			break;
+    auto it1 = result1;
+    auto it2 = first2;
+    while (it1 != last1 && it2 != last2)
+        if (*it1++ != *it2++)
+            break;
 
-	if (it1 == last1)
-		return std::make_pair(result1, it2);
-	else
-		return std::make_pair(last1, first2);
+    if (it1 == last1)
+        return std::make_pair(result1, it2);
+    else
+        return std::make_pair(last1, first2);
 }
 
 /**

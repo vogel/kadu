@@ -21,8 +21,8 @@
 #pragma once
 
 #include "chat/chat.h"
-#include "widgets/modal-configuration-widget.h"
 #include "exports.h"
+#include "widgets/modal-configuration-widget.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
@@ -49,76 +49,82 @@ class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI ChatDataWindow : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatDataWindow(const Chat &chat);
-	virtual ~ChatDataWindow();
+    explicit ChatDataWindow(const Chat &chat);
+    virtual ~ChatDataWindow();
 
-	QList<ChatConfigurationWidget *> chatConfigurationWidgets() const;
+    QList<ChatConfigurationWidget *> chatConfigurationWidgets() const;
 
-	void show();
+    void show();
 
-	Chat chat() const { return MyChat; }
+    Chat chat() const
+    {
+        return MyChat;
+    }
 
-	QWidget * generalTab() const { return GeneralTab; }
+    QWidget *generalTab() const
+    {
+        return GeneralTab;
+    }
 
 signals:
-	void widgetAdded(ChatConfigurationWidget *widget);
-	void widgetRemoved(ChatConfigurationWidget *widget);
+    void widgetAdded(ChatConfigurationWidget *widget);
+    void widgetRemoved(ChatConfigurationWidget *widget);
 
-	void destroyed(const Chat &chat);
-	void save();
+    void destroyed(const Chat &chat);
+    void save();
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 private:
-	QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
+    QMap<ChatConfigurationWidgetFactory *, ChatConfigurationWidget *> ChatConfigurationWidgets;
 
-	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
-	SimpleConfigurationValueStateNotifier *SimpleStateNotifier;
+    CompositeConfigurationValueStateNotifier *ValueStateNotifier;
+    SimpleConfigurationValueStateNotifier *SimpleStateNotifier;
 
-	Chat MyChat;
+    Chat MyChat;
 
-	QTabWidget *TabWidget;
-	QWidget *GeneralTab;
+    QTabWidget *TabWidget;
+    QWidget *GeneralTab;
 
-	QLineEdit *DisplayEdit;
+    QLineEdit *DisplayEdit;
 
-	ChatEditWidget *EditWidget;
-	ChatGroupsConfigurationWidget *GroupsTab;
+    ChatEditWidget *EditWidget;
+    ChatGroupsConfigurationWidget *GroupsTab;
 
-	QPushButton *OkButton;
-	QPushButton *ApplyButton;
+    QPushButton *OkButton;
+    QPushButton *ApplyButton;
 
-	void createGui();
-	void createButtons(QVBoxLayout *layout);
+    void createGui();
+    void createButtons(QVBoxLayout *layout);
 
-	void applyChatConfigurationWidgets();
+    void applyChatConfigurationWidgets();
 
 private slots:
-	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatConfigurationWidgetFactoryRepository(
+        ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void factoryRegistered(ChatConfigurationWidgetFactory *factory);
-	void factoryUnregistered(ChatConfigurationWidgetFactory *factory);
+    void factoryRegistered(ChatConfigurationWidgetFactory *factory);
+    void factoryUnregistered(ChatConfigurationWidgetFactory *factory);
 
-	void displayEditChanged();
-	void stateChangedSlot(ConfigurationValueState state);
+    void displayEditChanged();
+    void stateChangedSlot(ConfigurationValueState state);
 
-	void updateChat();
-	void updateChatAndClose();
-	void chatRemoved(const Chat &buddy);
-
+    void updateChat();
+    void updateChatAndClose();
+    void chatRemoved(const Chat &buddy);
 };

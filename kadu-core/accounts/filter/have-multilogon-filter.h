@@ -24,14 +24,14 @@
 
 class HaveMultilogonFilter : public AbstractAccountFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual bool acceptAccount(Account account);
+    virtual bool acceptAccount(Account account);
 
 public:
-	explicit HaveMultilogonFilter(QObject *parent = nullptr);
-	virtual ~HaveMultilogonFilter();
+    explicit HaveMultilogonFilter(QObject *parent = nullptr);
+    virtual ~HaveMultilogonFilter();
 };
 
-#endif // HAVE_MULTILOGON_FILTER_H
+#endif   // HAVE_MULTILOGON_FILTER_H

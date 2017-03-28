@@ -20,12 +20,12 @@
 
 #include "gadu-id-validator.h"
 
-owned_qptr<LongValidator> createOwnedGaduIdValidator(QObject* parent)
+owned_qptr<LongValidator> createOwnedGaduIdValidator(QObject *parent)
 {
-	return make_owned<LongValidator>(1LL, 3999999999LL, parent);
+    return make_owned<LongValidator>(1LL, 3999999999LL, parent);
 }
 
 not_owned_qptr<LongValidator> createNotOwnedGaduIdValidator()
 {
-	return make_not_owned<LongValidator>(1LL, 3999999999LL);
+    return make_not_owned<LongValidator>(1LL, 3999999999LL);
 }

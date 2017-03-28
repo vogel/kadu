@@ -23,8 +23,7 @@
 #include "plugin/plugin-injected-factory.h"
 #include "sound-manager.h"
 
-SoundBuddyConfigurationWidgetFactory::SoundBuddyConfigurationWidgetFactory(QObject *parent) :
-		QObject{parent}
+SoundBuddyConfigurationWidgetFactory::SoundBuddyConfigurationWidgetFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,15 +33,15 @@ SoundBuddyConfigurationWidgetFactory::~SoundBuddyConfigurationWidgetFactory()
 
 void SoundBuddyConfigurationWidgetFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundBuddyConfigurationWidgetFactory::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
-BuddyConfigurationWidget * SoundBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
+BuddyConfigurationWidget *SoundBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
 {
-	return m_pluginInjectedFactory->makeInjected<SoundBuddyConfigurationWidget>(buddy, m_soundManager, parent);
+    return m_pluginInjectedFactory->makeInjected<SoundBuddyConfigurationWidget>(buddy, m_soundManager, parent);
 }

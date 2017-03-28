@@ -23,9 +23,9 @@
 #pragma once
 
 #include "accounts/account.h"
+#include "exports.h"
 #include "widgets/account-configuration-widget.h"
 #include "widgets/modal-configuration-widget.h"
-#include "exports.h"
 
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
@@ -41,45 +41,45 @@ class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI AccountEditWidget : public AccountConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AccountEditWidget(Account account, QWidget *parent = nullptr);
-	virtual ~AccountEditWidget();
+    explicit AccountEditWidget(Account account, QWidget *parent = nullptr);
+    virtual ~AccountEditWidget();
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const;
 
-	QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
+    QList<AccountConfigurationWidget *> accountConfigurationWidgets() const;
 
 public slots:
-	virtual void apply() = 0;
-	virtual void cancel() = 0;
+    virtual void apply() = 0;
+    virtual void cancel() = 0;
 
 signals:
-	void widgetAdded(AccountConfigurationWidget *widget);
-	void widgetRemoved(AccountConfigurationWidget *widget);
+    void widgetAdded(AccountConfigurationWidget *widget);
+    void widgetRemoved(AccountConfigurationWidget *widget);
 
 protected:
-	AccountConfigurationWidgetFactoryRepository * accountConfigurationWidgetFactoryRepository() const;
+    AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository() const;
 
-	void applyAccountConfigurationWidgets();
-	void cancelAccountConfigurationWidgets();
+    void applyAccountConfigurationWidgets();
+    void cancelAccountConfigurationWidgets();
 
-	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
+    SimpleConfigurationValueStateNotifier *simpleStateNotifier() const;
 
 private:
-	QPointer<AccountConfigurationWidgetFactoryRepository> m_accountConfigurationWidgetFactoryRepository;
+    QPointer<AccountConfigurationWidgetFactoryRepository> m_accountConfigurationWidgetFactoryRepository;
 
-	QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
-	SimpleConfigurationValueStateNotifier *StateNotifier;
-	CompositeConfigurationValueStateNotifier *CompositeStateNotifier;
+    QMap<AccountConfigurationWidgetFactory *, AccountConfigurationWidget *> AccountConfigurationWidgets;
+    SimpleConfigurationValueStateNotifier *StateNotifier;
+    CompositeConfigurationValueStateNotifier *CompositeStateNotifier;
 
 private slots:
-	INJEQT_SET void setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountConfigurationWidgetFactoryRepository(
+        AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository);
+    INJEQT_INIT void init();
 
-	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
-	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
-	virtual void removeAccount() = 0;
-
+    void factoryRegistered(AccountConfigurationWidgetFactory *factory);
+    void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
+    virtual void removeAccount() = 0;
 };

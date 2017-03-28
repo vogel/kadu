@@ -29,21 +29,20 @@ class TabsManager;
 
 class AttachTabAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit AttachTabAction(QObject *parent = nullptr);
-	virtual ~AttachTabAction();
+    Q_INVOKABLE explicit AttachTabAction(QObject *parent = nullptr);
+    virtual ~AttachTabAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<TabsManager> m_tabsManager;
+    QPointer<TabsManager> m_tabsManager;
 
 private slots:
-	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
-
+    INJEQT_SET void setTabsManager(TabsManager *tabsManager);
 };

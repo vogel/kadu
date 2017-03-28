@@ -23,9 +23,9 @@
 
 class UnityIntegrationModule : public injeqt::module
 {
-
 public:
-	UnityIntegrationModule();
-	virtual ~UnityIntegrationModule() {}
-
+    UnityIntegrationModule();
+    virtual ~UnityIntegrationModule()
+    {
+    }
 };

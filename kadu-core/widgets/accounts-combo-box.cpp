@@ -32,11 +32,11 @@
 
 #include "accounts-combo-box.h"
 
-AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent) :
-		ActionsComboBox(parent)
+AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent)
+        : ActionsComboBox(parent)
 {
-	if (includeSelectAccount)
-		addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
+    if (includeSelectAccount)
+        addBeforeAction(new QAction(tr(" - Select account - "), this), visibility);
 }
 
 AccountsComboBox::~AccountsComboBox()
@@ -45,48 +45,48 @@ AccountsComboBox::~AccountsComboBox()
 
 void AccountsComboBox::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void AccountsComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AccountsComboBox::init()
 {
-	ModelChain *chain = new ModelChain(this);
-	Model = m_injectedFactory->makeInjected<AccountsModel>(m_accountManager, chain);
-	ProxyModel = new AccountsProxyModel(chain);
-	chain->setBaseModel(Model);
-	ProxyModel->addFilter(new HaveProtocolFilter(ProxyModel));
-	chain->addProxyModel(ProxyModel);
-	setUpModel(AccountRole, chain);
+    ModelChain *chain = new ModelChain(this);
+    Model = m_injectedFactory->makeInjected<AccountsModel>(m_accountManager, chain);
+    ProxyModel = new AccountsProxyModel(chain);
+    chain->setBaseModel(Model);
+    ProxyModel->addFilter(new HaveProtocolFilter(ProxyModel));
+    chain->addProxyModel(ProxyModel);
+    setUpModel(AccountRole, chain);
 }
 
 void AccountsComboBox::setCurrentAccount(Account account)
 {
-	setCurrentValue(account);
+    setCurrentValue(account);
 }
 
 Account AccountsComboBox::currentAccount()
 {
-	return currentValue().value<Account>();
+    return currentValue().value<Account>();
 }
 
 void AccountsComboBox::setIncludeIdInDisplay(bool includeIdInDisplay)
 {
-	Model->setIncludeIdInDisplay(includeIdInDisplay);
+    Model->setIncludeIdInDisplay(includeIdInDisplay);
 }
 
 void AccountsComboBox::addFilter(AbstractAccountFilter *filter)
 {
-	ProxyModel->addFilter(filter);
+    ProxyModel->addFilter(filter);
 }
 
 void AccountsComboBox::removeFilter(AbstractAccountFilter *filter)
 {
-	ProxyModel->removeFilter(filter);
+    ProxyModel->removeFilter(filter);
 }
 
 #include "moc_accounts-combo-box.cpp"

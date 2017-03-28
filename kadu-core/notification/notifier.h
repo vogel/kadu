@@ -23,8 +23,8 @@
 #ifndef NOTIFIER_H
 #define NOTIFIER_H
 
-#include "icons/kadu-icon.h"
 #include "exports.h"
+#include "icons/kadu-icon.h"
 
 struct Notification;
 class NotifierConfigurationWidget;
@@ -32,44 +32,52 @@ class NotifierConfigurationWidget;
 class QWidget;
 
 /**
-	@class Notifier
-	@brief Klasa abstrakcyjna opisuj�ca notifikator.
+        @class Notifier
+        @brief Klasa abstrakcyjna opisuj�ca notifikator.
 
-	Notifykatory zajmuj� si� wy�wietlaniem lub informowaniem w inny spos�b u�ytkownika o wyst�puj�cych
-	w programie zdarzeniach (nowa rozmowa, nowy transfer pliku, b��d...).
+        Notifykatory zajmuj� si� wy�wietlaniem lub informowaniem w inny spos�b u�ytkownika o wyst�puj�cych
+        w programie zdarzeniach (nowa rozmowa, nowy transfer pliku, b��d...).
 
-	Notyfikatory mog� umo�liwia� u�ytkownikowi podj�cie akcji jak odebranie lub zignorownie rozmowy,
-	odebranie pliku, kontynuacje odbierania pliku i inne. Niekt�ry notifikatory nie b�d�
-	implementowa� akcji, dlatego te� niekt�re zdarzenia nie mog� by� przez nie obs�ugiwane.
+        Notyfikatory mog� umo�liwia� u�ytkownikowi podj�cie akcji jak odebranie lub zignorownie rozmowy,
+        odebranie pliku, kontynuacje odbierania pliku i inne. Niekt�ry notifikatory nie b�d�
+        implementowa� akcji, dlatego te� niekt�re zdarzenia nie mog� by� przez nie obs�ugiwane.
  **/
 class KADUAPI Notifier
 {
-	QString Name;
-	QString Description;
-	KaduIcon Icon;
+    QString Name;
+    QString Description;
+    KaduIcon Icon;
 
 public:
-	Notifier(const QString &name, const QString &description, const KaduIcon &icon);
-	virtual ~Notifier();
+    Notifier(const QString &name, const QString &description, const KaduIcon &icon);
+    virtual ~Notifier();
 
-	const QString & name() const { return Name; }
-	const QString & description() const { return Description; }
-	const KaduIcon & icon() const { return Icon; }
+    const QString &name() const
+    {
+        return Name;
+    }
+    const QString &description() const
+    {
+        return Description;
+    }
+    const KaduIcon &icon() const
+    {
+        return Icon;
+    }
 
-	/**
-		Metoda informuj�ca notifikator o nowym zdarzeniu. Zdarzenie mo�e wywo�a�
-		sygna� closed(), po kt�rym notyfikator musi przesta� informowa� u�ytkownika
-		o danym zdarzeniu (na przyk�ad, musi zamkn�� skojarzone ze zdarzeniem okno).
-	 **/
-	virtual void notify(const Notification &notification) = 0;
+    /**
+            Metoda informuj�ca notifikator o nowym zdarzeniu. Zdarzenie mo�e wywo�a�
+            sygna� closed(), po kt�rym notyfikator musi przesta� informowa� u�ytkownika
+            o danym zdarzeniu (na przyk�ad, musi zamkn�� skojarzone ze zdarzeniem okno).
+     **/
+    virtual void notify(const Notification &notification) = 0;
 
-	/**
-		Zwraca widget, jaki zostanie dodany do okna konfiguracyjnego
-		na prawo od odpowiedniego CheckBoxa.
-		Mo�e zwr�ci� zero.
-	 **/
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) = 0;
-
+    /**
+            Zwraca widget, jaki zostanie dodany do okna konfiguracyjnego
+            na prawo od odpowiedniego CheckBoxa.
+            Mo�e zwr�ci� zero.
+     **/
+    virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) = 0;
 };
 
-#endif // NOTIFEIR_H
+#endif   // NOTIFEIR_H

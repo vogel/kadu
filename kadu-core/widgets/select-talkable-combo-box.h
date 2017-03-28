@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "talkable/talkable.h"
 #include "exports.h"
+#include "talkable/talkable.h"
 
 #include "widgets/actions-combo-box.h"
 
@@ -36,38 +36,37 @@ class TalkableProxyModel;
 
 class KADUAPI SelectTalkableComboBox : public ActionsComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	HideAnonymousTalkableFilter *HideAnonymousFilter;
-	ModelChain *Chain;
-	SelectTalkablePopup *Popup;
-	TalkableProxyModel *ProxyModel;
+    HideAnonymousTalkableFilter *HideAnonymousFilter;
+    ModelChain *Chain;
+    SelectTalkablePopup *Popup;
+    TalkableProxyModel *ProxyModel;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
 protected:
-	InjectedFactory * injectedFactory() const;
+    InjectedFactory *injectedFactory() const;
 
-	virtual void showPopup();
-	virtual void hidePopup();
+    virtual void showPopup();
+    virtual void hidePopup();
 
 public:
-	explicit SelectTalkableComboBox(QWidget *parent = nullptr);
-	virtual ~SelectTalkableComboBox();
+    explicit SelectTalkableComboBox(QWidget *parent = nullptr);
+    virtual ~SelectTalkableComboBox();
 
-	void setBaseModel(QAbstractItemModel *model);
-	void setShowAnonymous(bool showAnonymous);
+    void setBaseModel(QAbstractItemModel *model);
+    void setShowAnonymous(bool showAnonymous);
 
-	Talkable currentTalkable() const;
+    Talkable currentTalkable() const;
 
-	void addFilter(TalkableFilter *filter);
-	void removeFilter(TalkableFilter *filter);
+    void addFilter(TalkableFilter *filter);
+    void removeFilter(TalkableFilter *filter);
 
 public slots:
-	void setCurrentTalkable(const Talkable &talkable);
-
+    void setCurrentTalkable(const Talkable &talkable);
 };

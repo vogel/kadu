@@ -24,6 +24,6 @@
 
 FacebookModule::FacebookModule()
 {
-	add_type<FacebookPluginObject>();
-	add_type<FacebookProtocolFactory>();
+    add_type<FacebookPluginObject>();
+    add_type<FacebookProtocolFactory>();
 }

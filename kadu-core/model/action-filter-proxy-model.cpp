@@ -24,8 +24,7 @@
 
 #include "action-filter-proxy-model.h"
 
-ActionFilterProxyModel::ActionFilterProxyModel(QObject *parent) :
-		QSortFilterProxyModel(parent), Size(0), Model(0)
+ActionFilterProxyModel::ActionFilterProxyModel(QObject *parent) : QSortFilterProxyModel(parent), Size(0), Model(0)
 {
 }
 
@@ -35,65 +34,65 @@ ActionFilterProxyModel::~ActionFilterProxyModel()
 
 void ActionFilterProxyModel::setModel(QAbstractItemModel *model)
 {
-	if (Model)
-		disconnect(Model, 0, this, 0);
+    if (Model)
+        disconnect(Model, 0, this, 0);
 
-	Model = model;
+    Model = model;
 
-	if (Model)
-	{
-		connect(Model, SIGNAL(rowsInserted(QModelIndex,int,int)), this, SLOT(updateSize()));
-		connect(Model, SIGNAL(rowsRemoved(QModelIndex,int,int)), this, SLOT(updateSize()));
-	}
+    if (Model)
+    {
+        connect(Model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(updateSize()));
+        connect(Model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(updateSize()));
+    }
 
-	updateSize();
+    updateSize();
 }
 
 void ActionFilterProxyModel::updateSize()
 {
-	int newSize = Model ? Model->rowCount() : 0;
-	if (newSize == Size)
-		return;
+    int newSize = Model ? Model->rowCount() : 0;
+    if (newSize == Size)
+        return;
 
-	Size = newSize;
-	invalidateFilter();
+    Size = newSize;
+    invalidateFilter();
 }
 
 void ActionFilterProxyModel::addHideWhenModelEmpty(QAction *action)
 {
-	HideWhenModelEmpty.append(action);
-	invalidateFilter();
+    HideWhenModelEmpty.append(action);
+    invalidateFilter();
 }
 
 void ActionFilterProxyModel::addHideWhenModelSingle(QAction *action)
 {
-	HideWhenModelSingle.append(action);
-	invalidateFilter();
+    HideWhenModelSingle.append(action);
+    invalidateFilter();
 }
 
 bool ActionFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	if (Size > 1)
-		return true;
+    if (Size > 1)
+        return true;
 
-	// only filter first-level
-	if (sourceParent.isValid())
-		return true;
+    // only filter first-level
+    if (sourceParent.isValid())
+        return true;
 
-	const QModelIndex &sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
-	if (ActionRole != sourceIndex.data(ItemTypeRole).value<int>())
-		return true;
+    const QModelIndex &sourceIndex = sourceModel()->index(sourceRow, 0, sourceParent);
+    if (ActionRole != sourceIndex.data(ItemTypeRole).value<int>())
+        return true;
 
-	QAction *action = sourceIndex.data(ActionRole).value<QAction *>();
-	if (!action)
-		return false;
+    QAction *action = sourceIndex.data(ActionRole).value<QAction *>();
+    if (!action)
+        return false;
 
-	if (Size <= 1 && HideWhenModelSingle.contains(action))
-		return false;
-	if (Size == 0 && HideWhenModelEmpty.contains(action))
-		return false;
+    if (Size <= 1 && HideWhenModelSingle.contains(action))
+        return false;
+    if (Size == 0 && HideWhenModelEmpty.contains(action))
+        return false;
 
-	return true;
+    return true;
 }
 
 #include "moc_action-filter-proxy-model.cpp"

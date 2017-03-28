@@ -31,21 +31,21 @@
 
 /**
  * @class EmoticonClipboardHtmlTransformer
- * @short Transformer for replacing emoticon images with emoticon text triggers in HTML code that is pasted into clipboard.
+ * @short Transformer for replacing emoticon images with emoticon text triggers in HTML code that is pasted into
+ * clipboard.
  * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonClipboardHtmlTransformer : public QObject, public ClipboardHtmlTransformer
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QRegExp EmoticonRegularExpression;
+    QRegExp EmoticonRegularExpression;
 
 public:
-	Q_INVOKABLE EmoticonClipboardHtmlTransformer(QObject *parent = nullptr);
-	virtual ~EmoticonClipboardHtmlTransformer();
+    Q_INVOKABLE EmoticonClipboardHtmlTransformer(QObject *parent = nullptr);
+    virtual ~EmoticonClipboardHtmlTransformer();
 
-	virtual QString transform(const QString &clipboardHtml);
-
+    virtual QString transform(const QString &clipboardHtml);
 };
 
 /**

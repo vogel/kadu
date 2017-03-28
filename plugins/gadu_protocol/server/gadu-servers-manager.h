@@ -29,23 +29,22 @@
 
 class GADUAPI GaduServersManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	typedef QPair<QHostAddress, int> GaduServer;
+    typedef QPair<QHostAddress, int> GaduServer;
 
-	Q_INVOKABLE explicit GaduServersManager(QObject *parent = nullptr);
-	virtual ~GaduServersManager();
+    Q_INVOKABLE explicit GaduServersManager(QObject *parent = nullptr);
+    virtual ~GaduServersManager();
 
-	QPair<QHostAddress, int> getServer();
-	void markServerAsBad(GaduServer server);
+    QPair<QHostAddress, int> getServer();
+    void markServerAsBad(GaduServer server);
 
 private:
-	QList<GaduServer> AllServers;
-	QList<GaduServer> GoodServers;
-	QList<GaduServer> BadServers;
+    QList<GaduServer> AllServers;
+    QList<GaduServer> GoodServers;
+    QList<GaduServer> BadServers;
 
 private slots:
-	INJEQT_INIT void init();
-
+    INJEQT_INIT void init();
 };

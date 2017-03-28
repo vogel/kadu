@@ -30,21 +30,20 @@ class InjectorProvider;
 
 class KADUAPI PluginInjectorProvider : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginInjectorProvider(QObject *instance = nullptr);
-	virtual ~PluginInjectorProvider();
+    Q_INVOKABLE explicit PluginInjectorProvider(QObject *instance = nullptr);
+    virtual ~PluginInjectorProvider();
 
-	injeqt::injector & injector(const QString &pluginName);
-	void insert(const QString &pluginName, injeqt::injector &injector);
-	void remove(const QString &pluginName);
+    injeqt::injector &injector(const QString &pluginName);
+    void insert(const QString &pluginName, injeqt::injector &injector);
+    void remove(const QString &pluginName);
 
 private:
-	QPointer<InjectorProvider> m_injectorProvider;
-	std::map<QString, injeqt::injector *> m_pluginInjectors;
+    QPointer<InjectorProvider> m_injectorProvider;
+    std::map<QString, injeqt::injector *> m_pluginInjectors;
 
 private slots:
-	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
-
+    INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
 };

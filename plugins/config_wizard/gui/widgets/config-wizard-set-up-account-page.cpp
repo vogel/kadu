@@ -33,12 +33,14 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
 
-ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent) :
-		ConfigWizardPage(parent), AccountSuccessfullyCreated(false)
+ConfigWizardSetUpAccountPage::ConfigWizardSetUpAccountPage(QWidget *parent)
+        : ConfigWizardPage(parent), AccountSuccessfullyCreated(false)
 {
-	setDescription(tr("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup option.</p>"));
+    setDescription(
+        tr("<p>Please enter your account data.</p><p>Go back if you want to select a different Account Setup "
+           "option.</p>"));
 
-	createGui();
+    createGui();
 }
 
 ConfigWizardSetUpAccountPage::~ConfigWizardSetUpAccountPage()
@@ -47,95 +49,97 @@ ConfigWizardSetUpAccountPage::~ConfigWizardSetUpAccountPage()
 
 void ConfigWizardSetUpAccountPage::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void ConfigWizardSetUpAccountPage::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void ConfigWizardSetUpAccountPage::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void ConfigWizardSetUpAccountPage::createGui()
 {
-	formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
+    formLayout()->addRow(new QLabel(tr("<h3>Account Setup</h3>"), this));
 }
 
 bool ConfigWizardSetUpAccountPage::isComplete() const
 {
-	if (AccountWidget && AccountWidget.data()->stateNotifier())
-		return StateChangedDataValid == AccountWidget.data()->stateNotifier()->state();
+    if (AccountWidget && AccountWidget.data()->stateNotifier())
+        return StateChangedDataValid == AccountWidget.data()->stateNotifier()->state();
 
-	return true;
+    return true;
 }
 
 void ConfigWizardSetUpAccountPage::initializePage()
 {
-	ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
-	if (!pf)
-		return;
+    ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
+    if (!pf)
+        return;
 
-	if (field("choose-network.new").toBool())
-		AccountWidget = pf->newCreateAccountWidget(false, this);
-	else if (field("choose-network.existing").toBool())
-		AccountWidget = pf->newAddAccountWidget(false, this);
+    if (field("choose-network.new").toBool())
+        AccountWidget = pf->newCreateAccountWidget(false, this);
+    else if (field("choose-network.existing").toBool())
+        AccountWidget = pf->newAddAccountWidget(false, this);
 
-	if (AccountWidget)
-	{
-		formLayout()->addRow(QString(), AccountWidget.data());
+    if (AccountWidget)
+    {
+        formLayout()->addRow(QString(), AccountWidget.data());
 
-		if (AccountWidget.data()->stateNotifier())
-			connect(AccountWidget.data()->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this, SIGNAL(completeChanged()));
-		// NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
-		// but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
-		connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
-		// Same as above, window() is QWizard.
-		connect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
-	}
+        if (AccountWidget.data()->stateNotifier())
+            connect(
+                AccountWidget.data()->stateNotifier(), SIGNAL(stateChanged(ConfigurationValueState)), this,
+                SIGNAL(completeChanged()));
+        // NOTE: This signal is declared by AccountCreateWidget and AccountCreateWidget
+        // but not by ModalConfigurationWidget. It will work correctly with Qt meta-object system, though.
+        connect(AccountWidget.data(), SIGNAL(accountCreated(Account)), this, SLOT(accountCreated(Account)));
+        // Same as above, window() is QWizard.
+        connect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
+    }
 }
 
 void ConfigWizardSetUpAccountPage::cleanupPage()
 {
-	if (AccountWidget)
-	{
-		disconnect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
-		disconnect(AccountWidget.data(), 0, this, 0);
-		delete AccountWidget.data();
-	}
+    if (AccountWidget)
+    {
+        disconnect(AccountWidget.data(), SIGNAL(destroyed()), window(), SLOT(back()));
+        disconnect(AccountWidget.data(), 0, this, 0);
+        delete AccountWidget.data();
+    }
 
-	QWizardPage::cleanupPage();
+    QWizardPage::cleanupPage();
 }
 
 bool ConfigWizardSetUpAccountPage::validatePage()
 {
-	if (!AccountWidget)
-		return true;
+    if (!AccountWidget)
+        return true;
 
-	AccountWidget.data()->apply();
+    AccountWidget.data()->apply();
 
-	// apply() call should have blocked until accountCreated() was emitted,
-	// so AccountSuccessfullyCreated should now be filled.
-	return AccountSuccessfullyCreated;
+    // apply() call should have blocked until accountCreated() was emitted,
+    // so AccountSuccessfullyCreated should now be filled.
+    return AccountSuccessfullyCreated;
 }
 
 void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 {
-	if (!account)
-	{
-		AccountSuccessfullyCreated = false;
-		return;
-	}
+    if (!account)
+    {
+        AccountSuccessfullyCreated = false;
+        return;
+    }
 
-	m_accountManager->addItem(account);
-	account.accountContact().setOwnerBuddy(m_myself->buddy());
+    m_accountManager->addItem(account);
+    account.accountContact().setOwnerBuddy(m_myself->buddy());
 
-	AccountSuccessfullyCreated = true;
+    AccountSuccessfullyCreated = true;
 
-	m_configurationManager->flush();
+    m_configurationManager->flush();
 }
 
 #include "moc_config-wizard-set-up-account-page.cpp"

@@ -23,14 +23,13 @@
 
 class EmoticonsPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit EmoticonsPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~EmoticonsPluginModulesFactory();
+    explicit EmoticonsPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~EmoticonsPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

@@ -45,33 +45,32 @@ class QNetworkReply;
  */
 class GaduAvatarUploader : public AvatarUploader
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString Id;
-	QNetworkAccessManager *NetworkAccessManager;
-	QNetworkReply *Reply;
+    QString Id;
+    QNetworkAccessManager *NetworkAccessManager;
+    QNetworkReply *Reply;
 
-	QImage Avatar;
+    QImage Avatar;
 
 private slots:
-	void authorized(OAuthToken token);
-	void transferFinished();
+    void authorized(OAuthToken token);
+    void transferFinished();
 
 public:
-	/**
-	 * @short Create new GaduAvatarUploader instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent
-	 */
-	explicit GaduAvatarUploader(QObject *parent = nullptr);
-	virtual ~GaduAvatarUploader();
+    /**
+     * @short Create new GaduAvatarUploader instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent
+     */
+    explicit GaduAvatarUploader(QObject *parent = nullptr);
+    virtual ~GaduAvatarUploader();
 
-	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
-
+    virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 };
 
 /**
  * @}
  */
 
-#endif // GADU_AVATAR_UPLOADER_H
+#endif   // GADU_AVATAR_UPLOADER_H

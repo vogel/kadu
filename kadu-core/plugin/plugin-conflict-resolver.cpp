@@ -23,8 +23,7 @@
 
 #include <QtCore/QMap>
 
-PluginConflictResolver::PluginConflictResolver(QObject *parent) :
-		QObject{parent}
+PluginConflictResolver::PluginConflictResolver(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,36 +33,38 @@ PluginConflictResolver::~PluginConflictResolver()
 
 void PluginConflictResolver::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
-	m_pluginDependencyHandler = pluginDependencyHandler;
+    m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
-std::set<QString> PluginConflictResolver::conflictingPlugins(const std::set<QString> &activePluginSet, const QString &pluginName)
+std::set<QString>
+PluginConflictResolver::conflictingPlugins(const std::set<QString> &activePluginSet, const QString &pluginName)
 {
-	if (!m_pluginDependencyHandler || contains(activePluginSet, pluginName))
-		return std::set<QString>{}; 
+    if (!m_pluginDependencyHandler || contains(activePluginSet, pluginName))
+        return std::set<QString>{};
 
-	auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
-	auto withoutActive = decltype(withDependencies){};
-	std::copy_if(std::begin(withDependencies), std::end(withDependencies), std::back_inserter(withoutActive),
-			[=,&pluginName](QString const &dependencyName){ return !contains(activePluginSet, dependencyName); });
+    auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
+    auto withoutActive = decltype(withDependencies){};
+    std::copy_if(
+        std::begin(withDependencies), std::end(withDependencies), std::back_inserter(withoutActive),
+        [=, &pluginName](QString const &dependencyName) { return !contains(activePluginSet, dependencyName); });
 
-	auto activeProvides = QMap<QString, QString>{};
-	for (auto const &metadata : m_pluginDependencyHandler)
-		if (contains(activePluginSet, metadata.name) && !metadata.provides.isEmpty())
-			activeProvides.insert(metadata.provides, metadata.name);
+    auto activeProvides = QMap<QString, QString>{};
+    for (auto const &metadata : m_pluginDependencyHandler)
+        if (contains(activePluginSet, metadata.name) && !metadata.provides.isEmpty())
+            activeProvides.insert(metadata.provides, metadata.name);
 
-	auto pluginsToDeactivate = std::set<QString>{};
-	for (auto pluginName : withoutActive)
-	{
-		auto metadata = m_pluginDependencyHandler->pluginMetadata(pluginName);
-		if (!metadata.provides.isEmpty() && activeProvides.contains(metadata.provides))
-		{
-			auto pluginToDeactivate = activeProvides.value(metadata.provides);
-			for (auto dependentPluginToDeactivate : m_pluginDependencyHandler->withDependents(pluginToDeactivate))
-				if (contains(activePluginSet, dependentPluginToDeactivate))
-					pluginsToDeactivate.insert(dependentPluginToDeactivate);
-		}
-	}
+    auto pluginsToDeactivate = std::set<QString>{};
+    for (auto pluginName : withoutActive)
+    {
+        auto metadata = m_pluginDependencyHandler->pluginMetadata(pluginName);
+        if (!metadata.provides.isEmpty() && activeProvides.contains(metadata.provides))
+        {
+            auto pluginToDeactivate = activeProvides.value(metadata.provides);
+            for (auto dependentPluginToDeactivate : m_pluginDependencyHandler->withDependents(pluginToDeactivate))
+                if (contains(activePluginSet, dependentPluginToDeactivate))
+                    pluginsToDeactivate.insert(dependentPluginToDeactivate);
+        }
+    }
 
-	return pluginsToDeactivate;
+    return pluginsToDeactivate;
 }

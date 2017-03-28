@@ -24,25 +24,24 @@
 
 class KADUAPI CompositeConfigurationValueStateNotifier : public ConfigurationValueStateNotifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<const ConfigurationValueStateNotifier *> StateNotifiers;
-	ConfigurationValueState CurrentState;
+    QList<const ConfigurationValueStateNotifier *> StateNotifiers;
+    ConfigurationValueState CurrentState;
 
-	ConfigurationValueState computeState();
+    ConfigurationValueState computeState();
 
 private slots:
-	void recomputeState();
+    void recomputeState();
 
 public:
-	explicit CompositeConfigurationValueStateNotifier(QObject *parent = nullptr);
-	virtual ~CompositeConfigurationValueStateNotifier();
+    explicit CompositeConfigurationValueStateNotifier(QObject *parent = nullptr);
+    virtual ~CompositeConfigurationValueStateNotifier();
 
-	void addConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier);
-	void removeConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier);
+    void addConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier);
+    void removeConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier);
 
-	virtual ConfigurationValueState state() const;
-
+    virtual ConfigurationValueState state() const;
 };
 
-#endif // COMPOSITE_CONFIGURATION_VALUE_STATE_NOTIFIER_H
+#endif   // COMPOSITE_CONFIGURATION_VALUE_STATE_NOTIFIER_H

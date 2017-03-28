@@ -24,19 +24,18 @@
 
 class OAuthConsumer
 {
-	QByteArray ConsumerKey;
-	QByteArray ConsumerSecret;
+    QByteArray ConsumerKey;
+    QByteArray ConsumerSecret;
 
 public:
-	OAuthConsumer();
-	OAuthConsumer(const OAuthConsumer &copyMe);
-	OAuthConsumer(const QByteArray &key, const QByteArray &secret);
+    OAuthConsumer();
+    OAuthConsumer(const OAuthConsumer &copyMe);
+    OAuthConsumer(const QByteArray &key, const QByteArray &secret);
 
-	OAuthConsumer & operator = (const OAuthConsumer &copyMe);
+    OAuthConsumer &operator=(const OAuthConsumer &copyMe);
 
-	const QByteArray & consumerKey() const;
-	const QByteArray & consumerSecret() const;
-
+    const QByteArray &consumerKey() const;
+    const QByteArray &consumerSecret() const;
 };
 
-#endif // OAUTH_CONSUMER_H
+#endif   // OAUTH_CONSUMER_H

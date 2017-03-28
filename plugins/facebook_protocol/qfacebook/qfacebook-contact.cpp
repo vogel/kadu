@@ -23,16 +23,12 @@
 
 QFacebookContact QFacebookContact::fromJson(const QFacebookJsonReader &json)
 {
-	return QFacebookContact{
-		json.readObject("represented_profile").readString("id").toUtf8(),
-		json.readObject("structured_name").readString("text"),
-		json.readObject("hugePictureUrl").readString("uri").toUtf8()
-	};
+    return QFacebookContact{json.readObject("represented_profile").readString("id").toUtf8(),
+                            json.readObject("structured_name").readString("text"),
+                            json.readObject("hugePictureUrl").readString("uri").toUtf8()};
 }
 
-QFacebookContact::QFacebookContact(QByteArray id, QString name, QByteArray avatarUrl) :
-		m_id{std::move(id)},
-		m_name{std::move(name)},
-		m_avatarUrl{std::move(avatarUrl)}
+QFacebookContact::QFacebookContact(QByteArray id, QString name, QByteArray avatarUrl)
+        : m_id{std::move(id)}, m_name{std::move(name)}, m_avatarUrl{std::move(avatarUrl)}
 {
 }

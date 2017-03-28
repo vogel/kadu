@@ -23,20 +23,20 @@ HistorySearchParameters::HistorySearchParameters()
 {
 }
 
-HistorySearchParameters & HistorySearchParameters::setQuery(const QString &query)
+HistorySearchParameters &HistorySearchParameters::setQuery(const QString &query)
 {
-	Query = query;
-	return *this;
+    Query = query;
+    return *this;
 }
 
-HistorySearchParameters & HistorySearchParameters::setFromDate(const QDate &date)
+HistorySearchParameters &HistorySearchParameters::setFromDate(const QDate &date)
 {
-	FromDate = date;
-	return *this;
+    FromDate = date;
+    return *this;
 }
 
-HistorySearchParameters & HistorySearchParameters::setToDate(const QDate &date)
+HistorySearchParameters &HistorySearchParameters::setToDate(const QDate &date)
 {
-	ToDate = date;
-	return *this;
+    ToDate = date;
+    return *this;
 }

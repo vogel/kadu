@@ -54,46 +54,45 @@ class PluginActivationService;
  */
 class KADUAPI PluginActivationErrorHandler : public QObject
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(PluginActivationErrorHandler)
+    Q_OBJECT
+    Q_DISABLE_COPY(PluginActivationErrorHandler)
 
 public:
-	Q_INVOKABLE explicit PluginActivationErrorHandler(QObject *parent = nullptr);
-	virtual ~PluginActivationErrorHandler();
+    Q_INVOKABLE explicit PluginActivationErrorHandler(QObject *parent = nullptr);
+    virtual ~PluginActivationErrorHandler();
 
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @short Shows activation error to the user.
-	 * @param pluginName name of plugin that caused error
-	 * @param errorMessage error message that will be displayer to the user
-	 *
-	 * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
-	 * current plugin state, it also intructs the dialog wheter to offer the user choice wheter to try
-	 * to load this plugin automatically in future.
-	 */
-	void handleActivationError(const QString &pluginName, const QString &errorMessage);
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @short Shows activation error to the user.
+     * @param pluginName name of plugin that caused error
+     * @param errorMessage error message that will be displayer to the user
+     *
+     * This method creates new PluginErrorDialog with message \p errorMessage and opens it. Depending on
+     * current plugin state, it also intructs the dialog wheter to offer the user choice wheter to try
+     * to load this plugin automatically in future.
+     */
+    void handleActivationError(const QString &pluginName, const QString &errorMessage);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PluginActivationService> m_pluginActivationService;
-	QPointer<PluginStateService> m_pluginStateService;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PluginActivationService> m_pluginActivationService;
+    QPointer<PluginStateService> m_pluginStateService;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
-	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+    INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @short Sets state enablement of plugin if it is inactive.
-	 *
-	 * If this plugin is active or its state is PluginState::New, this method does nothing.
-	 *
-	 * Otherwise, this method sets its state to PluginState::Enabled if \p enable is true.
-	 * If \p enable is false, this method sets the plugin's state to PluginState::Disabled.
-	 */
-	void setStateEnabledIfInactive(const QString &pluginName, bool enable);
-
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @short Sets state enablement of plugin if it is inactive.
+     *
+     * If this plugin is active or its state is PluginState::New, this method does nothing.
+     *
+     * Otherwise, this method sets its state to PluginState::Enabled if \p enable is true.
+     * If \p enable is false, this method sets the plugin's state to PluginState::Disabled.
+     */
+    void setStateEnabledIfInactive(const QString &pluginName, bool enable);
 };
 
 /**

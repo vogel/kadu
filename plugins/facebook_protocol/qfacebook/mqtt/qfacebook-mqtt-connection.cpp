@@ -30,11 +30,10 @@
 #include "qmqtt/qmqtt-types.h"
 #include "qthrift/qthrift-exception.h"
 
-QFacebookMqttConnection::QFacebookMqttConnection(QMqttConnection &mqttConnection, QObject *parent) :
-		QObject{parent},
-		m_mqttConnection{mqttConnection}
+QFacebookMqttConnection::QFacebookMqttConnection(QMqttConnection &mqttConnection, QObject *parent)
+        : QObject{parent}, m_mqttConnection{mqttConnection}
 {
-	connect(&m_mqttConnection, &QMqttConnection::messageReceived, this, &QFacebookMqttConnection::messageReceived);
+    connect(&m_mqttConnection, &QMqttConnection::messageReceived, this, &QFacebookMqttConnection::messageReceived);
 }
 
 QFacebookMqttConnection::~QFacebookMqttConnection()
@@ -43,53 +42,53 @@ QFacebookMqttConnection::~QFacebookMqttConnection()
 
 void QFacebookMqttConnection::messageReceived(const QMqttMessage &message)
 {
-	try
-	{
-		auto type = static_cast<QFacebookMessageType>(message.type);
-		switch (type)
-		{
-			case QFacebookMessageType::ConnectAck:
-				emit connectAckReceived(QFacebookConnectAck::decode(message));
-				break;
+    try
+    {
+        auto type = static_cast<QFacebookMessageType>(message.type);
+        switch (type)
+        {
+        case QFacebookMessageType::ConnectAck:
+            emit connectAckReceived(QFacebookConnectAck::decode(message));
+            break;
 
-			case QFacebookMessageType::Publish:
-			{
-				auto publish = QFacebookPublish::decode(message);
-				sendPublishReceivedConfirmation(message.flags, publish);
-				emit publishReceived(publish);
-				break;
-			}
+        case QFacebookMessageType::Publish:
+        {
+            auto publish = QFacebookPublish::decode(message);
+            sendPublishReceivedConfirmation(message.flags, publish);
+            emit publishReceived(publish);
+            break;
+        }
 
-			case QFacebookMessageType::PublishAck:
-			case QFacebookMessageType::PubComp:
-			case QFacebookMessageType::SubscribeAck:
-			case QFacebookMessageType::UnsubscribeAck:
-				break;
+        case QFacebookMessageType::PublishAck:
+        case QFacebookMessageType::PubComp:
+        case QFacebookMessageType::SubscribeAck:
+        case QFacebookMessageType::UnsubscribeAck:
+            break;
 
-			case QFacebookMessageType::Pong:
-				emit pongReceived(QFacebookPong::decode(message));
-				break;
+        case QFacebookMessageType::Pong:
+            emit pongReceived(QFacebookPong::decode(message));
+            break;
 
-			default:
-				break;
-		};
-	}
-	catch (...)
-	{
-		emit invalidIncomingMessage(message.content);
-	}
+        default:
+            break;
+        };
+    }
+    catch (...)
+    {
+        emit invalidIncomingMessage(message.content);
+    }
 }
 
 void QFacebookMqttConnection::sendPublishReceivedConfirmation(uint8_t flags, const QFacebookPublish &publish)
 {
-	if (publish.mid == 0)
-		return;
+    if (publish.mid == 0)
+        return;
 
-	auto qos1 = (flags & static_cast<int8_t>(QMqttMessageFlag::QoS1)) == static_cast<int8_t>(QMqttMessageFlag::QoS1);
-	auto qos2 = (flags & static_cast<int8_t>(QMqttMessageFlag::QoS2)) == static_cast<int8_t>(QMqttMessageFlag::QoS2);
+    auto qos1 = (flags & static_cast<int8_t>(QMqttMessageFlag::QoS1)) == static_cast<int8_t>(QMqttMessageFlag::QoS1);
+    auto qos2 = (flags & static_cast<int8_t>(QMqttMessageFlag::QoS2)) == static_cast<int8_t>(QMqttMessageFlag::QoS2);
 
-	if (qos1)
-		send(QFacebookPublishAck{publish.mid});
-	if (qos2)
-		send(QFacebookPublishRecorded{publish.mid});
+    if (qos1)
+        send(QFacebookPublishAck{publish.mid});
+    if (qos2)
+        send(QFacebookPublishRecorded{publish.mid});
 }

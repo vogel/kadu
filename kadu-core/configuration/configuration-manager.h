@@ -38,36 +38,41 @@ class ToolbarConfigurationManager;
 
 class KADUAPI ConfigurationManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfigurationManager(QObject *parent = nullptr);
-	virtual ~ConfigurationManager();
+    Q_INVOKABLE explicit ConfigurationManager(QObject *parent = nullptr);
+    virtual ~ConfigurationManager();
 
-	const QUuid & uuid() const { return m_uuid; }
+    const QUuid &uuid() const
+    {
+        return m_uuid;
+    }
 
-	void registerStorableObject(StorableObject *object);
-	void unregisterStorableObject(StorableObject *object);
+    void registerStorableObject(StorableObject *object);
+    void unregisterStorableObject(StorableObject *object);
 
-	ToolbarConfigurationManager * toolbarConfigurationManager() { return m_toolbarConfiguration; }
+    ToolbarConfigurationManager *toolbarConfigurationManager()
+    {
+        return m_toolbarConfiguration;
+    }
 
 public slots:
-	void flush();
+    void flush();
 
 private:
-	QPointer<Application> m_application;
-	QPointer<Configuration> m_configuration;
+    QPointer<Application> m_application;
+    QPointer<Configuration> m_configuration;
 
-	QUuid m_uuid;
-	QList<StorableObject *> m_registeredStorableObjects;
+    QUuid m_uuid;
+    QList<StorableObject *> m_registeredStorableObjects;
 
-	ToolbarConfigurationManager *m_toolbarConfiguration;
+    ToolbarConfigurationManager *m_toolbarConfiguration;
 
-	void importConfiguration();
+    void importConfiguration();
 
 private slots:
-	INJEQT_SET void setApplication(Application *application);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setApplication(Application *application);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

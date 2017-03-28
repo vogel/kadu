@@ -35,42 +35,41 @@ class QLineEdit;
 
 class JabberPersonalInfoWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberPersonalInfoWidget(Account account, QWidget *parent = nullptr);
-	virtual ~JabberPersonalInfoWidget();
+    explicit JabberPersonalInfoWidget(Account account, QWidget *parent = nullptr);
+    virtual ~JabberPersonalInfoWidget();
 
-	bool isModified();
+    bool isModified();
 
-	void apply();
-	void cancel();
+    void apply();
+    void cancel();
 
 signals:
-	void dataChanged();
+    void dataChanged();
 
 private:
-	QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<BuddyStorage> m_buddyStorage;
 
-	PersonalInfoService *Service;
-	QString Id;
-	Buddy MyBuddy;
+    PersonalInfoService *Service;
+    QString Id;
+    Buddy MyBuddy;
 
-	QLineEdit *FullName;
-	QLineEdit *NickName;
-	QLineEdit *FamilyName;
-	QLineEdit *BirthYear;
-	QLineEdit *City;
-	QLineEdit *Email;
-	QLineEdit *Website;
+    QLineEdit *FullName;
+    QLineEdit *NickName;
+    QLineEdit *FamilyName;
+    QLineEdit *BirthYear;
+    QLineEdit *City;
+    QLineEdit *Email;
+    QLineEdit *Website;
 
-	void createGui();
-	void fillForm();
+    void createGui();
+    void fillForm();
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_INIT void init();
 
-	void personalInfoAvailable(Buddy buddy);
-
+    void personalInfoAvailable(Buddy buddy);
 };

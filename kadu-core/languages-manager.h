@@ -33,23 +33,22 @@ class PathsProvider;
 
 class KADUAPI LanguagesManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit LanguagesManager(QObject *parent = nullptr);
-	virtual ~LanguagesManager();
+    Q_INVOKABLE explicit LanguagesManager(QObject *parent = nullptr);
+    virtual ~LanguagesManager();
 
-	QMap<QString, QString> languages() const;
+    QMap<QString, QString> languages() const;
 
 private:
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QMap<QString, QString> m_languages;
+    QMap<QString, QString> m_languages;
 
-	void loadLanguages();
+    void loadLanguages();
 
 private slots:
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

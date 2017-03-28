@@ -24,7 +24,7 @@
 #include <injeqt/injeqt.h>
 
 extern "C" {
-#	include <libotr/proto.h>
+#include <libotr/proto.h>
 }
 
 class ChatManager;
@@ -40,46 +40,45 @@ class OtrUserStateService;
 
 class OtrSessionService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperOtrGoneSecure(void *data, ConnContext *context);
-	static void wrapperOtrGoneInsecure(void *data, ConnContext *context);
-	static void wrapperOtrStillSecure(void *data, ConnContext *context, int isReply);
+    static void wrapperOtrGoneSecure(void *data, ConnContext *context);
+    static void wrapperOtrGoneInsecure(void *data, ConnContext *context);
+    static void wrapperOtrStillSecure(void *data, ConnContext *context, int isReply);
 
-	Q_INVOKABLE OtrSessionService();
-	virtual ~OtrSessionService();
+    Q_INVOKABLE OtrSessionService();
+    virtual ~OtrSessionService();
 
 public slots:
-	void startSession(const Contact &contact);
-	void endSession(const Contact &contact);
+    void startSession(const Contact &contact);
+    void endSession(const Contact &contact);
 
 signals:
-	void tryingToStartSession(const Contact &contact) const;
-	void tryingToRefreshSession(const Contact &contact) const;
+    void tryingToStartSession(const Contact &contact) const;
+    void tryingToRefreshSession(const Contact &contact) const;
 
-	void goneSecure(const Contact &contact) const;
-	void goneInsecure(const Contact &contact) const;
-	void stillSecure(const Contact &contact) const;
+    void goneSecure(const Contact &contact) const;
+    void goneInsecure(const Contact &contact) const;
+    void stillSecure(const Contact &contact) const;
 
 private slots:
-	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
-	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+    INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
+    INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<MessageManager> CurrentMessageManager;
-	QPointer<OtrAppOpsService> AppOpsService;
-	QPointer<OtrOpDataFactory> OpDataFactory;
-	QPointer<OtrPolicyService> PolicyService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
-	QPointer<OtrUserStateService> UserStateService;
-
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<MessageManager> CurrentMessageManager;
+    QPointer<OtrAppOpsService> AppOpsService;
+    QPointer<OtrOpDataFactory> OpDataFactory;
+    QPointer<OtrPolicyService> PolicyService;
+    QPointer<OtrTrustLevelService> TrustLevelService;
+    QPointer<OtrUserStateService> UserStateService;
 };

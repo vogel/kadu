@@ -21,8 +21,8 @@
 
 #include <QtCore/QString>
 
-#include "formatted-string/formatted-string-visitor.h"
 #include "exports.h"
+#include "formatted-string/formatted-string-visitor.h"
 
 /**
  * @addtogroup FormattedString
@@ -36,23 +36,22 @@
  */
 class KADUAPI FormattedStringIsPlainTextVisitor : public FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedStringIsPlainTextVisitor);
+    Q_DISABLE_COPY(FormattedStringIsPlainTextVisitor);
 
 public:
-	FormattedStringIsPlainTextVisitor();
-	virtual ~FormattedStringIsPlainTextVisitor();
+    FormattedStringIsPlainTextVisitor();
+    virtual ~FormattedStringIsPlainTextVisitor();
 
-	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString) override;
-	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString) override;
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) override;
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) override;
+    virtual void beginVisit(const CompositeFormattedString *const compositeFormattedString) override;
+    virtual void endVisit(const CompositeFormattedString *const compositeFormattedString) override;
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock) override;
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock) override;
 
-	bool isPlainText() const;
+    bool isPlainText() const;
 
 private:
-	bool m_first;
-	bool m_isPlain;
-
+    bool m_first;
+    bool m_isPlain;
 };
 
 /**

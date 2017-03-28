@@ -27,7 +27,7 @@ class QString;
 
 namespace StringUtils
 {
-	KADUAPI QString ellipsis(const QString &string, quint16 length);
+KADUAPI QString ellipsis(const QString &string, quint16 length);
 }
 
-#endif // STRING_UTILS_H
+#endif   // STRING_UTILS_H

@@ -30,17 +30,17 @@
 
 MailUrlHandler::MailUrlHandler()
 {
-	MailRegExp = QRegExp("\\b(mailto:)?[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b");
+    MailRegExp = QRegExp("\\b(mailto:)?[a-zA-Z0-9_\\.\\-]+@[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,4}\\b");
 }
 
 bool MailUrlHandler::isUrlValid(const QByteArray &url)
 {
-	return MailRegExp.exactMatch(QString::fromUtf8(url));
+    return MailRegExp.exactMatch(QString::fromUtf8(url));
 }
 
 void MailUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu)
 {
-	Q_UNUSED(disableMenu)
+    Q_UNUSED(disableMenu)
 
-	urlOpener->openEmail(url);
+    urlOpener->openEmail(url);
 }

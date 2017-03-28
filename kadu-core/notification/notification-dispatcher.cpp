@@ -26,8 +26,7 @@
 #include "notification/notifier-repository.h"
 #include "notification/notifier.h"
 
-NotificationDispatcher::NotificationDispatcher(QObject *parent) :
-		QObject{parent}
+NotificationDispatcher::NotificationDispatcher(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,32 +36,32 @@ NotificationDispatcher::~NotificationDispatcher()
 
 void NotificationDispatcher::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void NotificationDispatcher::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationConfiguration = notificationConfiguration;
+    m_notificationConfiguration = notificationConfiguration;
 }
 
 void NotificationDispatcher::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 bool NotificationDispatcher::dispatchNotification(const Notification &notification)
 {
-	auto notifyType = m_notificationConfiguration->notifyConfigurationKey(notification.type);
-	auto foundNotifier = false;
+    auto notifyType = m_notificationConfiguration->notifyConfigurationKey(notification.type);
+    auto foundNotifier = false;
 
-	for (auto notifier : m_notifierRepository)
-	{
-		if (m_configuration->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
-		{
-			notifier->notify(notification);
-			foundNotifier = true;
-		}
-	}
+    for (auto notifier : m_notifierRepository)
+    {
+        if (m_configuration->deprecatedApi()->readBoolEntry("Notify", notifyType + '_' + notifier->name()))
+        {
+            notifier->notify(notification);
+            foundNotifier = true;
+        }
+    }
 
-	return foundNotifier;
+    return foundNotifier;
 }

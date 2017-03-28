@@ -18,7 +18,7 @@
  */
 
 extern "C" {
-#	include <libotr/instag.h>
+#include <libotr/instag.h>
 }
 
 #include "accounts/account-manager.h"
@@ -32,8 +32,7 @@ extern "C" {
 
 #include "otr-context-converter.h"
 
-OtrContextConverter::OtrContextConverter(QObject *parent) :
-		QObject{parent}
+OtrContextConverter::OtrContextConverter(QObject *parent) : QObject{parent}
 {
 }
 
@@ -43,56 +42,56 @@ OtrContextConverter::~OtrContextConverter()
 
 void OtrContextConverter::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void OtrContextConverter::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void OtrContextConverter::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void OtrContextConverter::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void OtrContextConverter::setUserStateService(OtrUserStateService *userStateService)
 {
-	m_userStateService = userStateService;
+    m_userStateService = userStateService;
 }
 
 Chat OtrContextConverter::connectionContextToChat(ConnContext *context) const
 {
-	auto contact = connectionContextToContact(context);
-	return ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+    auto contact = connectionContextToContact(context);
+    return ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
 }
 
 Contact OtrContextConverter::connectionContextToContact(ConnContext *context) const
 {
-	auto account = m_accountManager->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
-	return m_contactManager->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
+    auto account =
+        m_accountManager->byId(QString::fromUtf8(context->protocol), QString::fromUtf8(context->accountname));
+    return m_contactManager->byId(account, QString::fromUtf8(context->username), ActionReturnNull);
 }
 
-ConnContext * OtrContextConverter::chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction) const
+ConnContext *OtrContextConverter::chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction) const
 {
-	return chat
-			? contactToContextConverter(chat.contacts().toContact(), notFoundAction)
-			: nullptr;
+    return chat ? contactToContextConverter(chat.contacts().toContact(), notFoundAction) : nullptr;
 }
 
-ConnContext * OtrContextConverter::contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction) const
+ConnContext *OtrContextConverter::contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction) const
 {
-	if (!contact)
-		return 0;
+    if (!contact)
+        return 0;
 
-	return otrl_context_find(m_userStateService->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
-							 qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd,
-							 0, 0, 0);
+    return otrl_context_find(
+        m_userStateService->userState(), qPrintable(contact.id()), qPrintable(contact.contactAccount().id()),
+        qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd, 0,
+        0, 0);
 }
 
 #include "moc_otr-context-converter.cpp"

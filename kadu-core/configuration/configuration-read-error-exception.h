@@ -26,5 +26,8 @@
 
 class KADUAPI ConfigurationReadErrorException : public std::exception
 {
-	virtual const char * what() const noexcept { return "Configuration could not be read"; }
+    virtual const char *what() const noexcept
+    {
+        return "Configuration could not be read";
+    }
 };

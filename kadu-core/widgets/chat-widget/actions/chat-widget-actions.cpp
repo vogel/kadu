@@ -33,19 +33,17 @@ ChatWidgetActions::~ChatWidgetActions()
 
 void ChatWidgetActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void ChatWidgetActions::setOpenChatAction(OpenChatAction *openChatAction)
 {
-	m_openChatAction = openChatAction;
+    m_openChatAction = openChatAction;
 }
 
 void ChatWidgetActions::init()
 {
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
+    m_menuInventory->menu("buddy-list")->addAction(m_openChatAction, KaduMenu::SectionChat, 1000);
 }
 
 #include "moc_chat-widget-actions.cpp"

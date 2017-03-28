@@ -26,26 +26,24 @@
 
 KaduSharedBaseClassImpl(Avatar)
 
-Avatar Avatar::null;
+    Avatar Avatar::null;
 
 Avatar::Avatar()
 {
 }
 
-Avatar::Avatar(AvatarShared *data) :
-		SharedBase<AvatarShared>(data)
+Avatar::Avatar(AvatarShared *data) : SharedBase<AvatarShared>(data)
 {
 }
 
 Avatar::Avatar(QObject *data)
 {
-	AvatarShared *shared = qobject_cast<AvatarShared *>(data);
-	if (shared)
-		setData(shared);
+    AvatarShared *shared = qobject_cast<AvatarShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
-Avatar::Avatar(const Avatar &copy) :
-		SharedBase<AvatarShared>(copy)
+Avatar::Avatar(const Avatar &copy) : SharedBase<AvatarShared>(copy)
 {
 }
 
@@ -55,13 +53,13 @@ Avatar::~Avatar()
 
 void Avatar::storeAvatar()
 {
-	if (!isNull())
-		data()->storeAvatar();
+    if (!isNull())
+        data()->storeAvatar();
 }
 
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
-KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
-KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
-KaduSharedBase_PropertyDefCRW(Avatar, QPixmap, pixmap, Pixmap, QPixmap())
-KaduSharedBase_PropertyReadDef(Avatar, QString, smallFilePath, SmallFilePath, QString())
-KaduSharedBase_PropertyDefCRW(Avatar, QString, filePath, FilePath, QString())
+    KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
+        KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
+            KaduSharedBase_PropertyDefCRW(Avatar, QPixmap, pixmap, Pixmap, QPixmap())
+                KaduSharedBase_PropertyReadDef(Avatar, QString, smallFilePath, SmallFilePath, QString())
+                    KaduSharedBase_PropertyDefCRW(Avatar, QString, filePath, FilePath, QString())

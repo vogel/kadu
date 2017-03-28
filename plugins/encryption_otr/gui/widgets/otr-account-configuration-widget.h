@@ -33,34 +33,33 @@ class OtrPolicyService;
 
 class OtrAccountConfigurationWidget : public AccountConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrPolicyService> PolicyService;
+    QPointer<OtrPolicyService> PolicyService;
 
-	QCheckBox *EnableCheckBox;
-	QCheckBox *AutomaticallyInitiateCheckBox;
-	QCheckBox *RequireCheckBox;
+    QCheckBox *EnableCheckBox;
+    QCheckBox *AutomaticallyInitiateCheckBox;
+    QCheckBox *RequireCheckBox;
 
-	SimpleConfigurationValueStateNotifier *StateNotifier;
+    SimpleConfigurationValueStateNotifier *StateNotifier;
 
-	void createGui();
-	OtrPolicy policy();
-	void loadValues();
+    void createGui();
+    OtrPolicy policy();
+    void loadValues();
 
 private slots:
-	void updateState();
+    void updateState();
 
 public:
-	explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = nullptr);
-	virtual ~OtrAccountConfigurationWidget();
+    explicit OtrAccountConfigurationWidget(const Account &account, QWidget *parent = nullptr);
+    virtual ~OtrAccountConfigurationWidget();
 
-	void setPolicyService(OtrPolicyService *policyService);
+    void setPolicyService(OtrPolicyService *policyService);
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const;
 
-	virtual void apply();
-	virtual void cancel();
-
+    virtual void apply();
+    virtual void cancel();
 };
 
-#endif // OTR_ACCOUNT_CONFIGURATION_WIDGET_H
+#endif   // OTR_ACCOUNT_CONFIGURATION_WIDGET_H

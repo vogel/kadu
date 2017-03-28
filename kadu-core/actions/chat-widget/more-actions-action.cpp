@@ -27,13 +27,13 @@
 
 #include <QtWidgets/QMenu>
 
-MoreActionsAction::MoreActionsAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+MoreActionsAction::MoreActionsAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setName(QStringLiteral("moreActionsAction"));
-	setText(tr("More..."));
-	setType(ActionDescription::TypeChat);
+    setName(QStringLiteral("moreActionsAction"));
+    setText(tr("More..."));
+    setType(ActionDescription::TypeChat);
 }
 
 MoreActionsAction::~MoreActionsAction()
@@ -42,55 +42,55 @@ MoreActionsAction::~MoreActionsAction()
 
 void MoreActionsAction::setActions(Actions *actions)
 {
-	m_actions = actions;
+    m_actions = actions;
 }
 
 void MoreActionsAction::actionTriggered(QAction *sender, bool toggled)
 {
-	Q_UNUSED(toggled)
+    Q_UNUSED(toggled)
 
-	Q_UNUSED(toggled)
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    Q_UNUSED(toggled)
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	auto chatWidget = chatEditBox->chatWidget();
-	if (!chatWidget)
-		return;
+    auto chatWidget = chatEditBox->chatWidget();
+    if (!chatWidget)
+        return;
 
-	auto widgets = sender->associatedWidgets();
-	if (widgets.isEmpty())
-		return;
+    auto widgets = sender->associatedWidgets();
+    if (widgets.isEmpty())
+        return;
 
-	auto widget = widgets.at(widgets.size() - 1);
+    auto widget = widgets.at(widgets.size() - 1);
 
-	auto parent = widget->parentWidget();
-	while (nullptr != parent && nullptr == qobject_cast<ToolBar *>(parent))
-		parent = parent->parentWidget();
-	auto toolbar = qobject_cast<ToolBar *>(parent);
+    auto parent = widget->parentWidget();
+    while (nullptr != parent && nullptr == qobject_cast<ToolBar *>(parent))
+        parent = parent->parentWidget();
+    auto toolbar = qobject_cast<ToolBar *>(parent);
 
-	QMenu menu;
-	auto subMenu = make_owned<QMenu>(tr("More"), &menu);
+    QMenu menu;
+    auto subMenu = make_owned<QMenu>(tr("More"), &menu);
 
-	for (auto const &actionName : m_actions->keys())
-	{
-		if (toolbar && toolbar->windowHasAction(actionName, false))
-			continue;
+    for (auto const &actionName : m_actions->keys())
+    {
+        if (toolbar && toolbar->windowHasAction(actionName, false))
+            continue;
 
-		auto actionDescription = m_actions->value(actionName);
-		if (ActionDescription::TypeChat == actionDescription->type())
-			menu.addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
-		else if (ActionDescription::TypeUser == actionDescription->type())
-			subMenu->addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
-	}
+        auto actionDescription = m_actions->value(actionName);
+        if (ActionDescription::TypeChat == actionDescription->type())
+            menu.addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
+        else if (ActionDescription::TypeUser == actionDescription->type())
+            subMenu->addAction(m_actions->createAction(actionName, chatEditBox->actionContext(), chatEditBox));
+    }
 
-	menu.addSeparator();
-	menu.addMenu(subMenu);
-	menu.exec(widget->mapToGlobal(QPoint(0, widget->height())));
+    menu.addSeparator();
+    menu.addMenu(subMenu);
+    menu.exec(widget->mapToGlobal(QPoint(0, widget->height())));
 }
 
 #include "moc_more-actions-action.cpp"

@@ -43,40 +43,39 @@ class RecentChatRepository;
  */
 class KADUAPI RecentChatService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	static const QString LAST_MESSAGE_DATE_TIME_PROPERTY;
-	static const int KEEP_RECENT_FOR_SECONDS { 60 * 60 * 4 };
+    static const QString LAST_MESSAGE_DATE_TIME_PROPERTY;
+    static const int KEEP_RECENT_FOR_SECONDS{60 * 60 * 4};
 
-	Q_INVOKABLE explicit RecentChatService(QObject *parent = nullptr);
-	virtual ~RecentChatService();
+    Q_INVOKABLE explicit RecentChatService(QObject *parent = nullptr);
+    virtual ~RecentChatService();
 
-	void cleanUp();
+    void cleanUp();
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<MessageManager> m_messageManager;
-	QPointer<RecentChatRepository> m_recentChatRepository;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<MessageManager> m_messageManager;
+    QPointer<RecentChatRepository> m_recentChatRepository;
 
-	void add(Chat chat) const;
-	void remove(Chat chat) const;
-	void update(Chat chat) const;
-	bool isRecent(Chat chat) const;
-	bool isRecent(QDateTime dateTime) const;
-	bool isAlreadyInRepository(Chat chat) const;
+    void add(Chat chat) const;
+    void remove(Chat chat) const;
+    void update(Chat chat) const;
+    bool isRecent(Chat chat) const;
+    bool isRecent(QDateTime dateTime) const;
+    bool isAlreadyInRepository(Chat chat) const;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setOpenChatRepository(RecentChatRepository *recentChatRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setOpenChatRepository(RecentChatRepository *recentChatRepository);
+    INJEQT_INIT void init();
 
-	void message(const Message &message) const;
-	void chatAdded(Chat chat) const;
-	void chatRemoved(Chat chat) const;
-
+    void message(const Message &message) const;
+    void chatAdded(Chat chat) const;
+    void chatRemoved(Chat chat) const;
 };
 
 /**

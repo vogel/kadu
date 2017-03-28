@@ -28,11 +28,11 @@
 
 ConfigurationModule::ConfigurationModule()
 {
-	add_type<ConfigurationFactory>();
-	add_type<ConfigurationManager>();
-	add_type<ConfigurationPathProvider>();
-	add_type<ConfigurationUiHandlerRepository>();
-	add_type<ConfigurationWriter>();
+    add_type<ConfigurationFactory>();
+    add_type<ConfigurationManager>();
+    add_type<ConfigurationPathProvider>();
+    add_type<ConfigurationUiHandlerRepository>();
+    add_type<ConfigurationWriter>();
 
-	add_factory<Configuration, ConfigurationFactory>();
+    add_factory<Configuration, ConfigurationFactory>();
 }

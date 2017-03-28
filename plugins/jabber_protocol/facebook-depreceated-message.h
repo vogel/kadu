@@ -28,20 +28,19 @@ class IconsManager;
 
 class FacebookDepreceatedMessage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FacebookDepreceatedMessage(QObject *parent = nullptr);
-	virtual ~FacebookDepreceatedMessage();
+    Q_INVOKABLE explicit FacebookDepreceatedMessage(QObject *parent = nullptr);
+    virtual ~FacebookDepreceatedMessage();
 
-	void showIfNotSeen();
+    void showIfNotSeen();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

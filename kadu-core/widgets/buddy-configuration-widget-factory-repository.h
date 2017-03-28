@@ -28,23 +28,22 @@ class BuddyConfigurationWidgetFactory;
 
 class KADUAPI BuddyConfigurationWidgetFactoryRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<BuddyConfigurationWidgetFactory *> Factories;
+    QList<BuddyConfigurationWidgetFactory *> Factories;
 
 public:
-	Q_INVOKABLE explicit BuddyConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
-	virtual ~BuddyConfigurationWidgetFactoryRepository();
+    Q_INVOKABLE explicit BuddyConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
+    virtual ~BuddyConfigurationWidgetFactoryRepository();
 
-	void registerFactory(BuddyConfigurationWidgetFactory *factory);
-	void unregisterFactory(BuddyConfigurationWidgetFactory *factory);
+    void registerFactory(BuddyConfigurationWidgetFactory *factory);
+    void unregisterFactory(BuddyConfigurationWidgetFactory *factory);
 
-	QList<BuddyConfigurationWidgetFactory *> factories() const;
+    QList<BuddyConfigurationWidgetFactory *> factories() const;
 
 signals:
-	void factoryRegistered(BuddyConfigurationWidgetFactory *factory);
-	void factoryUnregistered(BuddyConfigurationWidgetFactory *factory);
-
+    void factoryRegistered(BuddyConfigurationWidgetFactory *factory);
+    void factoryUnregistered(BuddyConfigurationWidgetFactory *factory);
 };
 
-#endif // BUDDY_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H
+#endif   // BUDDY_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H

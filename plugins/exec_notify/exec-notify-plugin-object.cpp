@@ -23,8 +23,7 @@
 
 #include "notification/notifier-repository.h"
 
-ExecNotifyPluginObject::ExecNotifyPluginObject(QObject *parent) :
-		QObject{parent}
+ExecNotifyPluginObject::ExecNotifyPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,22 +33,22 @@ ExecNotifyPluginObject::~ExecNotifyPluginObject()
 
 void ExecNotifyPluginObject::setExecNotifier(ExecNotifier *execNotifier)
 {
-	m_execNotifier = execNotifier;
+    m_execNotifier = execNotifier;
 }
 
 void ExecNotifyPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void ExecNotifyPluginObject::init()
 {
-	m_notifierRepository->registerNotifier(m_execNotifier);
+    m_notifierRepository->registerNotifier(m_execNotifier);
 }
 
 void ExecNotifyPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_execNotifier);
+    m_notifierRepository->unregisterNotifier(m_execNotifier);
 }
 
 #include "moc_exec-notify-plugin-object.cpp"

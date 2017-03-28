@@ -23,8 +23,8 @@
 
 struct QFacebookPublishForegroundState
 {
-	QByteArray encode();
+    QByteArray encode();
 
-	bool foreground;
-	int keepAlive;
+    bool foreground;
+    int keepAlive;
 };

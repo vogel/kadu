@@ -29,18 +29,19 @@
 
 class KADUAPI SubscriptionService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SubscriptionService(QObject *parent) : QObject(parent) {}
+    explicit SubscriptionService(QObject *parent) : QObject(parent)
+    {
+    }
 
-	virtual void resendSubscription(const Contact &contact) = 0;
-	virtual void removeSubscription(const Contact &contact) = 0;
-	virtual void requestSubscription(const Contact &contact) = 0;
+    virtual void resendSubscription(const Contact &contact) = 0;
+    virtual void removeSubscription(const Contact &contact) = 0;
+    virtual void requestSubscription(const Contact &contact) = 0;
 
 public slots:
-	virtual void authorizeContact(Contact contact, bool authorized) = 0;
-
+    virtual void authorizeContact(Contact contact, bool authorized) = 0;
 };
 
-#endif // SUBSCRIPTION_SERVICE_H
+#endif   // SUBSCRIPTION_SERVICE_H

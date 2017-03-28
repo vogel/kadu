@@ -26,30 +26,33 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-label.h"
 
-ConfigLabel::ConfigLabel(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QLabel(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigLabel::ConfigLabel(
+    const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+    ConfigurationWindowDataManager *dataManager)
+        : QLabel(parentConfigGroupBox->widget()),
+          ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
-	createWidgets();
+    createWidgets();
 }
 
 ConfigLabel::ConfigLabel(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QLabel(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
+        : QLabel(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
 }
 
 void ConfigLabel::createWidgets()
 {
-	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
-	setWordWrap(true);
-	parentConfigGroupBox->addWidget(this);
+    setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
+    setWordWrap(true);
+    parentConfigGroupBox->addWidget(this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    if (!ConfigWidget::toolTip.isEmpty())
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 void ConfigLabel::setText(const QString &text, bool defaultFormatting)
 {
-	QLabel::setText((defaultFormatting ? "<i>" : "") + text + (defaultFormatting ? "</i>" : ""));
+    QLabel::setText((defaultFormatting ? "<i>" : "") + text + (defaultFormatting ? "</i>" : ""));
 }
 
 #include "moc_config-label.cpp"

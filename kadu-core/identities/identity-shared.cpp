@@ -34,130 +34,127 @@
 
 #include "identity-shared.h"
 
-IdentityShared::IdentityShared(const QUuid &uuid, QObject *parent) :
-		Shared(uuid, parent), Permanent(false)
+IdentityShared::IdentityShared(const QUuid &uuid, QObject *parent) : Shared(uuid, parent), Permanent(false)
 {
 }
 
 IdentityShared::~IdentityShared()
 {
-	ref.ref();
+    ref.ref();
 }
 
 void IdentityShared::setIdentityManager(IdentityManager *identityManager)
 {
-	m_identityManager = identityManager;
+    m_identityManager = identityManager;
 }
 
 void IdentityShared::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void IdentityShared::init()
 {
-	m_identityStatusContainer = m_injectedFactory->makeNotOwned<IdentityStatusContainer>(this);
-	setState(StateNotLoaded);
+    m_identityStatusContainer = m_injectedFactory->makeNotOwned<IdentityStatusContainer>(this);
+    setState(StateNotLoaded);
 }
 
-StorableObject * IdentityShared::storageParent()
+StorableObject *IdentityShared::storageParent()
 {
-	return m_identityManager;
+    return m_identityManager;
 }
 
 QString IdentityShared::storageNodeName()
 {
-	return QStringLiteral("Identity");
+    return QStringLiteral("Identity");
 }
 
 void IdentityShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	Permanent = loadValue<bool>("Permanent");
-	Name = loadValue<QString>("Name");
+    Permanent = loadValue<bool>("Permanent");
+    Name = loadValue<QString>("Name");
 }
 
 void IdentityShared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::store();
+    Shared::store();
 
-	storeValue("Permanent", Permanent);
-	storeValue("Name", Name);
+    storeValue("Permanent", Permanent);
+    storeValue("Name", Name);
 }
 
 bool IdentityShared::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return (UuidStorableObject::shouldStore()
-			&& !Name.isEmpty())
-			|| customProperties()->shouldStore();
+    return (UuidStorableObject::shouldStore() && !Name.isEmpty()) || customProperties()->shouldStore();
 }
 
 void IdentityShared::aboutToBeRemoved()
 {
-	Accounts.clear();
+    Accounts.clear();
 }
 
 QList<Account> IdentityShared::accounts()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Accounts;
+    return Accounts;
 }
 
 void IdentityShared::addAccount(const Account &account)
 {
-	if (!account)
-		return;
+    if (!account)
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	Accounts.append(account);
-	m_identityStatusContainer->addAccount(account);
+    Accounts.append(account);
+    m_identityStatusContainer->addAccount(account);
 }
 
 void IdentityShared::removeAccount(const Account &account)
 {
-	if (!account)
-		return;
+    if (!account)
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Accounts.removeAll(account) > 0)
-		m_identityStatusContainer->removeAccount(account);
+    if (Accounts.removeAll(account) > 0)
+        m_identityStatusContainer->removeAccount(account);
 }
 
 bool IdentityShared::hasAccount(const Account &account)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return account && Accounts.contains(account);
+    return account && Accounts.contains(account);
 }
 
 bool IdentityShared::hasAnyLoadedAccount()
 {
-	ensureLoaded();
-	return std::any_of(std::begin(Accounts), std::end(Accounts), [](const Account &x){ return x.protocolHandler(); });
+    ensureLoaded();
+    return std::any_of(std::begin(Accounts), std::end(Accounts), [](const Account &x) { return x.protocolHandler(); });
 }
 
 bool IdentityShared::isEmpty()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Accounts.isEmpty();
+    return Accounts.isEmpty();
 }
 
-StatusContainer * IdentityShared::statusContainer() const
+StatusContainer *IdentityShared::statusContainer() const
 {
-	return m_identityStatusContainer.get();
+    return m_identityStatusContainer.get();
 }
 
 #include "moc_identity-shared.cpp"

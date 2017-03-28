@@ -25,9 +25,8 @@
 
 #include "proxy-action-context.h"
 
-ProxyActionContext::ProxyActionContext(StatusContainer *statusContainer) :
-		m_statusContainer{statusContainer},
-		ForwardActionContext(0)
+ProxyActionContext::ProxyActionContext(StatusContainer *statusContainer)
+        : m_statusContainer{statusContainer}, ForwardActionContext(0)
 {
 }
 
@@ -37,55 +36,45 @@ ProxyActionContext::~ProxyActionContext()
 
 void ProxyActionContext::setForwardActionContext(ActionContext *forwardActionContext)
 {
-	if (ForwardActionContext)
-		disconnect(ForwardActionContext, 0, this, 0);
+    if (ForwardActionContext)
+        disconnect(ForwardActionContext, 0, this, 0);
 
-	ForwardActionContext = forwardActionContext;
+    ForwardActionContext = forwardActionContext;
 
-	if (ForwardActionContext)
-		connect(ForwardActionContext, SIGNAL(changed()), this, SIGNAL(changed()));
+    if (ForwardActionContext)
+        connect(ForwardActionContext, SIGNAL(changed()), this, SIGNAL(changed()));
 
-	emit changed();
+    emit changed();
 }
 
-QWidget * ProxyActionContext::widget()
+QWidget *ProxyActionContext::widget()
 {
-	return ForwardActionContext
-			? ForwardActionContext->widget()
-			: nullptr;
+    return ForwardActionContext ? ForwardActionContext->widget() : nullptr;
 }
 
 ContactSet ProxyActionContext::contacts()
 {
-	return ForwardActionContext
-			? ForwardActionContext->contacts()
-			: ContactSet();
+    return ForwardActionContext ? ForwardActionContext->contacts() : ContactSet();
 }
 
 BuddySet ProxyActionContext::buddies()
 {
-	return ForwardActionContext
-			? ForwardActionContext->buddies()
-			: BuddySet();
+    return ForwardActionContext ? ForwardActionContext->buddies() : BuddySet();
 }
 
 Chat ProxyActionContext::chat()
 {
-	return ForwardActionContext
-			? ForwardActionContext->chat()
-			: Chat::null;
+    return ForwardActionContext ? ForwardActionContext->chat() : Chat::null;
 }
 
-StatusContainer * ProxyActionContext::statusContainer()
+StatusContainer *ProxyActionContext::statusContainer()
 {
-	return m_statusContainer;
+    return m_statusContainer;
 }
 
 RoleSet ProxyActionContext::roles()
 {
-	return ForwardActionContext
-			? ForwardActionContext->roles()
-			: RoleSet();
+    return ForwardActionContext ? ForwardActionContext->roles() : RoleSet();
 }
 
 #include "moc_proxy-action-context.cpp"

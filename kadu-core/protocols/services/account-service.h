@@ -39,23 +39,22 @@
  */
 class KADUAPI AccountService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Returns account bounded with this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return account bounded with this service
-	 */
-	Account account() const;
+    /**
+     * @short Returns account bounded with this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return account bounded with this service
+     */
+    Account account() const;
 
 protected:
-	explicit AccountService(Account account, QObject *parent = nullptr);
-	virtual ~AccountService();
+    explicit AccountService(Account account, QObject *parent = nullptr);
+    virtual ~AccountService();
 
 private:
-	Account m_account;
-
+    Account m_account;
 };
 
 /**

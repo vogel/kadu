@@ -39,20 +39,18 @@ class ContactSet;
 
 class KADUAPI BuddySet : public QSet<Buddy>
 {
-
 public:
-	BuddySet();
-	explicit BuddySet(Buddy buddy);
+    BuddySet();
+    explicit BuddySet(Buddy buddy);
 
-	bool isAllAnonymous() const;
-	bool isAnyTemporary() const;
-	BuddyList toBuddyList() const;
-	Buddy toBuddy() const;
+    bool isAllAnonymous() const;
+    bool isAnyTemporary() const;
+    BuddyList toBuddyList() const;
+    Buddy toBuddy() const;
 
-	QVector<Contact> getAllContacts() const;
-
+    QVector<Contact> getAllContacts() const;
 };
 
 uint qHash(const BuddySet &buddySet);
 
-#endif // BUDDY_SET_H
+#endif   // BUDDY_SET_H

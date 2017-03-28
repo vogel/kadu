@@ -21,46 +21,45 @@
 
 #include "gui/windows/sms-dialog.h"
 
-SmsDialogRepository::SmsDialogRepository(QObject *parent) :
-		QObject{parent}
+SmsDialogRepository::SmsDialogRepository(QObject *parent) : QObject{parent}
 {
 }
 
 SmsDialogRepository::~SmsDialogRepository()
 {
-	auto size = m_dialogs.size();
-	for (auto i = size - 1; i >= 0; i--)
-		delete m_dialogs.at(i);
+    auto size = m_dialogs.size();
+    for (auto i = size - 1; i >= 0; i--)
+        delete m_dialogs.at(i);
 }
 
 void SmsDialogRepository::addDialog(SmsDialog *dialog)
 {
-	if (!dialog)
-		return;
+    if (!dialog)
+        return;
 
-	if (m_dialogs.contains(dialog))
-		return;
+    if (m_dialogs.contains(dialog))
+        return;
 
-	m_dialogs.append(dialog);
-	connect(dialog, SIGNAL(destroyed(QObject*)), this, SLOT(dialogDestroyed(QObject*)));
+    m_dialogs.append(dialog);
+    connect(dialog, SIGNAL(destroyed(QObject *)), this, SLOT(dialogDestroyed(QObject *)));
 }
 
 void SmsDialogRepository::removeDialog(SmsDialog *dialog)
 {
-	if (!dialog)
-		return;
+    if (!dialog)
+        return;
 
-	auto index = m_dialogs.indexOf(dialog);
-	if (index < 0)
-		return;
+    auto index = m_dialogs.indexOf(dialog);
+    if (index < 0)
+        return;
 
-	m_dialogs.remove(index);
-	disconnect(dialog, nullptr, this, nullptr);
+    m_dialogs.remove(index);
+    disconnect(dialog, nullptr, this, nullptr);
 }
 
 void SmsDialogRepository::dialogDestroyed(QObject *object)
 {
-	removeDialog(static_cast<SmsDialog *>(object));
+    removeDialog(static_cast<SmsDialog *>(object));
 }
 
 #include "moc_sms-dialog-repository.cpp"

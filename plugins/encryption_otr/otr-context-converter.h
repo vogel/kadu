@@ -20,7 +20,7 @@
 #pragma once
 
 extern "C" {
-#	include <libotr/context.h>
+#include <libotr/context.h>
 }
 
 #include "storage/manager-common.h"
@@ -40,30 +40,30 @@ class OtrUserStateService;
 
 class OtrContextConverter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit OtrContextConverter(QObject *parent = nullptr);
-	virtual ~OtrContextConverter();
+    Q_INVOKABLE explicit OtrContextConverter(QObject *parent = nullptr);
+    virtual ~OtrContextConverter();
 
-	Chat connectionContextToChat(ConnContext *context) const;
-	Contact connectionContextToContact(ConnContext *context) const;
+    Chat connectionContextToChat(ConnContext *context) const;
+    Contact connectionContextToContact(ConnContext *context) const;
 
-	ConnContext * chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction = ActionReturnNull) const;
-	ConnContext * contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction = ActionReturnNull) const;
+    ConnContext *chatToContextConverter(const Chat &chat, NotFoundAction notFoundAction = ActionReturnNull) const;
+    ConnContext *
+    contactToContextConverter(const Contact &contact, NotFoundAction notFoundAction = ActionReturnNull) const;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<OtrUserStateService> m_userStateService;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<OtrUserStateService> m_userStateService;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
-
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 };

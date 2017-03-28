@@ -23,9 +23,9 @@
 
 class IdleModule : public injeqt::module
 {
-
 public:
-	IdleModule();
-	virtual ~IdleModule() {}
-
+    IdleModule();
+    virtual ~IdleModule()
+    {
+    }
 };

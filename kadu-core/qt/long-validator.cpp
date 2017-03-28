@@ -21,8 +21,8 @@
 
 #include "long-validator.h"
 
-LongValidator::LongValidator(qlonglong bottom, qlonglong top, QObject* parent) :
-		QValidator(parent), Bottom(bottom), Top(top)
+LongValidator::LongValidator(qlonglong bottom, qlonglong top, QObject *parent)
+        : QValidator(parent), Bottom(bottom), Top(top)
 {
 }
 
@@ -32,34 +32,34 @@ LongValidator::~LongValidator()
 
 QValidator::State LongValidator::validate(QString &input, int &) const
 {
-	if (input.isEmpty())
-		return Intermediate;
+    if (input.isEmpty())
+        return Intermediate;
 
-	bool ok;
-	qlonglong result = input.toLongLong(&ok);
+    bool ok;
+    qlonglong result = input.toLongLong(&ok);
 
-	if (!ok)
-		return Invalid;
+    if (!ok)
+        return Invalid;
 
-	if (result < Bottom || result > Top)
-		return Invalid;
+    if (result < Bottom || result > Top)
+        return Invalid;
 
-	return Acceptable;
+    return Acceptable;
 }
 
 void LongValidator::fixup(QString &input) const
 {
-	QString result;
+    QString result;
 
-	int length = input.length();
-	for (int i = 0; i < length; i++)
-	{
-		QChar c = input.at(i);
-		if (c.isDigit())
-			result += c;
-	}
+    int length = input.length();
+    for (int i = 0; i < length; i++)
+    {
+        QChar c = input.at(i);
+        if (c.isDigit())
+            result += c;
+    }
 
-	input = result;
+    input = result;
 }
 
 #include "moc_long-validator.cpp"

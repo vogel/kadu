@@ -28,69 +28,66 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDriveSendTicketRequest::GaduDriveSendTicketRequest(QString recipient, QString fileName, qint64 fileSize,
-	GaduDriveSessionToken sessionToken, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent},
-		m_recipient{recipient},
-		m_fileName{fileName},
-		m_fileSize{fileSize},
-		m_sessionToken{std::move(sessionToken)},
-		m_networkAccessManager{networkAccessManager}
+GaduDriveSendTicketRequest::GaduDriveSendTicketRequest(
+    QString recipient, QString fileName, qint64 fileSize, GaduDriveSessionToken sessionToken,
+    QNetworkAccessManager *networkAccessManager, QObject *parent)
+        : QObject{parent}, m_recipient{recipient}, m_fileName{fileName}, m_fileSize{fileSize},
+          m_sessionToken{std::move(sessionToken)}, m_networkAccessManager{networkAccessManager}
 {
-	if (m_sessionToken.isValid())
-		sendRequest();
+    if (m_sessionToken.isValid())
+        sendRequest();
 }
 
 GaduDriveSendTicketRequest::~GaduDriveSendTicketRequest()
 {
-	if (m_reply)
-		m_reply->deleteLater();
+    if (m_reply)
+        m_reply->deleteLater();
 }
 
 void GaduDriveSendTicketRequest::authorized(GaduDriveSessionToken sessionToken)
 {
-	m_sessionToken = std::move(sessionToken);
+    m_sessionToken = std::move(sessionToken);
 
-	if (!m_sessionToken.isValid())
-	{
-		emit sendTickedReceived({});
-		deleteLater();
-	}
-	else
-		sendRequest();
+    if (!m_sessionToken.isValid())
+    {
+        emit sendTickedReceived({});
+        deleteLater();
+    }
+    else
+        sendRequest();
 }
 
 void GaduDriveSendTicketRequest::sendRequest()
 {
-	if (m_reply != nullptr)
-		return;
+    if (m_reply != nullptr)
+        return;
 
-	auto sendTicket = QJsonObject{};
-	sendTicket["recipient"] = m_recipient;
-	sendTicket["file_name"] = m_fileName;
-	sendTicket["file_size"] = QString::number(m_fileSize); // gg expects string
+    auto sendTicket = QJsonObject{};
+    sendTicket["recipient"] = m_recipient;
+    sendTicket["file_name"] = m_fileName;
+    sendTicket["file_size"] = QString::number(m_fileSize);   // gg expects string
 
-	auto requestContent = QJsonObject{};
-	requestContent["send_ticket"] = sendTicket;
+    auto requestContent = QJsonObject{};
+    requestContent["send_ticket"] = sendTicket;
 
-	QNetworkRequest request;
-	request.setUrl(QUrl{"https://drive.mpa.gg.pl/send_ticket"});
-	request.setRawHeader("Connection", "keep-alive");
-	request.setRawHeader("X-gged-api-version", "6");
-	request.setRawHeader("X-gged-security-token", m_sessionToken.securityToken().toAscii());
+    QNetworkRequest request;
+    request.setUrl(QUrl{"https://drive.mpa.gg.pl/send_ticket"});
+    request.setRawHeader("Connection", "keep-alive");
+    request.setRawHeader("X-gged-api-version", "6");
+    request.setRawHeader("X-gged-security-token", m_sessionToken.securityToken().toAscii());
 
-	m_reply = m_networkAccessManager->put(request, QJsonDocument{requestContent}.toJson());
-	connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    m_reply = m_networkAccessManager->put(request, QJsonDocument{requestContent}.toJson());
+    connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void GaduDriveSendTicketRequest::requestFinished()
 {
-	auto ticket = QNetworkReply::NoError == m_reply->error()
-		? GaduDriveSendTicketParser::fromJson(QJsonDocument::fromJson(m_reply->readAll()))
-		: GaduDriveSendTicket{};
+    auto ticket = QNetworkReply::NoError == m_reply->error()
+                      ? GaduDriveSendTicketParser::fromJson(QJsonDocument::fromJson(m_reply->readAll()))
+                      : GaduDriveSendTicket{};
 
-	emit sendTickedReceived(ticket);
-	deleteLater();
+    emit sendTickedReceived(ticket);
+    deleteLater();
 }
 
 #include "moc_gadu-drive-send-ticket-request.cpp"

@@ -23,14 +23,13 @@
 
 class SpellcheckerPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit SpellcheckerPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~SpellcheckerPluginModulesFactory();
+    explicit SpellcheckerPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~SpellcheckerPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

@@ -25,9 +25,9 @@
 
 class KADUAPI MessageModule : public injeqt::module
 {
-
 public:
-	MessageModule();
-	virtual ~MessageModule() {}
-
+    MessageModule();
+    virtual ~MessageModule()
+    {
+    }
 };

@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-OtrPluginModulesFactory::OtrPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+OtrPluginModulesFactory::OtrPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ OtrPluginModulesFactory::~OtrPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> OtrPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<OtrModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<OtrModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_otr-plugin-modules-factory.cpp"

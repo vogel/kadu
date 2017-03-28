@@ -28,15 +28,15 @@ OtrBuddyConfigurationWidgetFactory::~OtrBuddyConfigurationWidgetFactory()
 
 void OtrBuddyConfigurationWidgetFactory::setPolicyService(OtrPolicyService *policyService)
 {
-	PolicyService = policyService;
+    PolicyService = policyService;
 }
 
-BuddyConfigurationWidget * OtrBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
+BuddyConfigurationWidget *OtrBuddyConfigurationWidgetFactory::createWidget(const Buddy &buddy, QWidget *parent)
 {
-	OtrBuddyConfigurationWidget *result = new OtrBuddyConfigurationWidget(buddy, parent);
-	result->setPolicyService(PolicyService.data());
+    OtrBuddyConfigurationWidget *result = new OtrBuddyConfigurationWidget(buddy, parent);
+    result->setPolicyService(PolicyService.data());
 
-	return result;
+    return result;
 }
 
 #include "moc_otr-buddy-configuration-widget-factory.cpp"

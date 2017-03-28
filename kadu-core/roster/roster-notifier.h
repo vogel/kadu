@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "notification/notification-event.h"
 #include "exports.h"
+#include "notification/notification-event.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -51,40 +51,39 @@ class NotificationService;
  */
 class KADUAPI RosterNotifier : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit RosterNotifier(QObject *parent = nullptr);
-	virtual ~RosterNotifier();
+    Q_INVOKABLE explicit RosterNotifier(QObject *parent = nullptr);
+    virtual ~RosterNotifier();
 
-	QList<NotificationEvent> notifyEvents();
+    QList<NotificationEvent> notifyEvents();
 
 public slots:
-	void notifyImportSucceeded(const Account &account);
-	void notifyImportFailed(const Account &account);
-	void notifyExportSucceeded(const Account &account);
-	void notifyExportFailed(const Account &account);
+    void notifyImportSucceeded(const Account &account);
+    void notifyImportFailed(const Account &account);
+    void notifyExportSucceeded(const Account &account);
+    void notifyExportFailed(const Account &account);
 
 private:
-	static QString sm_rosterNotifyTopic;
-	static QString sm_importSucceededNotifyTopic;
-	static QString sm_importFailedNotifyTopic;
-	static QString sm_exportSucceededNotifyTopic;
-	static QString sm_exportFailedNotifyTopic;
+    static QString sm_rosterNotifyTopic;
+    static QString sm_importSucceededNotifyTopic;
+    static QString sm_importFailedNotifyTopic;
+    static QString sm_exportSucceededNotifyTopic;
+    static QString sm_exportFailedNotifyTopic;
 
-	QPointer<NotificationService> m_notificationService;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_rosterNotificationEvent;
-	NotificationEvent m_importSucceededNotificationEvent;
-	NotificationEvent m_importFailedNotificationEvent;
-	NotificationEvent m_exportSucceededNotificationEvent;
-	NotificationEvent m_exportFailedNotificationEvent;
+    NotificationEvent m_rosterNotificationEvent;
+    NotificationEvent m_importSucceededNotificationEvent;
+    NotificationEvent m_importFailedNotificationEvent;
+    NotificationEvent m_exportSucceededNotificationEvent;
+    NotificationEvent m_exportFailedNotificationEvent;
 
-	void notify(const QString &topic, const Account &account, const NormalizedHtmlString &message);
+    void notify(const QString &topic, const Account &account, const NormalizedHtmlString &message);
 
 private slots:
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
 };
 
 /**

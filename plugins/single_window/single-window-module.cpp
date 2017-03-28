@@ -25,10 +25,10 @@
 
 SingleWindowModule::SingleWindowModule()
 {
-	add_type<SingleWindowChatWidgetContainerHandler>();
-	add_type<SingleWindowManager>();
-	add_type<SingleWindowPluginObject>();
-	add_type<SingleWindow>();
+    add_type<SingleWindowChatWidgetContainerHandler>();
+    add_type<SingleWindowManager>();
+    add_type<SingleWindowPluginObject>();
+    add_type<SingleWindow>();
 }
 
 SingleWindowModule::~SingleWindowModule()

@@ -37,21 +37,21 @@
 
 #include "jabber-contact-personal-info-widget.h"
 
-JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent) :
-		QWidget(parent), MyContact(contact)
+JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent)
+        : QWidget(parent), MyContact(contact)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
 
-	createGui();
-	reset();
+    createGui();
+    reset();
 
-	ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
-	if (!service)
-		return;
+    ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
+    if (!service)
+        return;
 
-	connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
+    connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
 
-	service->fetchPersonalInfo(MyContact);
+    service->fetchPersonalInfo(MyContact);
 }
 
 JabberContactPersonalInfoWidget::~JabberContactPersonalInfoWidget()
@@ -60,73 +60,73 @@ JabberContactPersonalInfoWidget::~JabberContactPersonalInfoWidget()
 
 void JabberContactPersonalInfoWidget::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void JabberContactPersonalInfoWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QGroupBox *infoWidget = new QGroupBox(this);
-	QFormLayout *infoLayout = new QFormLayout(infoWidget);
+    QGroupBox *infoWidget = new QGroupBox(this);
+    QFormLayout *infoLayout = new QFormLayout(infoWidget);
 
-	FullNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Full Name") + ':', infoWidget), FullNameText);
+    FullNameText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Full Name") + ':', infoWidget), FullNameText);
 
-	FamilyNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Family Name") + ':', infoWidget), FamilyNameText);
+    FamilyNameText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Family Name") + ':', infoWidget), FamilyNameText);
 
-	NicknameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Nickname") + ':', infoWidget), NicknameText);
+    NicknameText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Nickname") + ':', infoWidget), NicknameText);
 
-	BirthdateText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Birthdate") + ':', infoWidget), BirthdateText);
+    BirthdateText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Birthdate") + ':', infoWidget), BirthdateText);
 
-	CityText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("City") + ':', infoWidget), CityText);
+    CityText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("City") + ':', infoWidget), CityText);
 
-	EmailText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("E-Mail") + ':', infoWidget), EmailText);
-	connect(EmailText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
+    EmailText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("E-Mail") + ':', infoWidget), EmailText);
+    connect(EmailText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
 
-	WebsiteText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Website") + ':', infoWidget), WebsiteText);
-	connect(WebsiteText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
+    WebsiteText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Website") + ':', infoWidget), WebsiteText);
+    connect(WebsiteText, SIGNAL(linkActivated(const QString &)), this, SLOT(urlClicked(const QString &)));
 
-	layout->addWidget(infoWidget);
-	layout->addStretch(100);
+    layout->addWidget(infoWidget);
+    layout->addStretch(100);
 }
 
 void JabberContactPersonalInfoWidget::reset()
 {
-	FullNameText->clear();
-	FamilyNameText->clear();
-	NicknameText->clear();
-	BirthdateText->clear();
-	CityText->clear();
-	EmailText->clear();
-	WebsiteText->clear();
+    FullNameText->clear();
+    FamilyNameText->clear();
+    NicknameText->clear();
+    BirthdateText->clear();
+    CityText->clear();
+    EmailText->clear();
+    WebsiteText->clear();
 }
 
 void JabberContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	FullNameText->setText(buddy.firstName());
-	FamilyNameText->setText(buddy.familyName());
-	NicknameText->setText(buddy.nickName());
+    FullNameText->setText(buddy.firstName());
+    FamilyNameText->setText(buddy.familyName());
+    NicknameText->setText(buddy.nickName());
 
-	if (0 != buddy.birthYear())
-		BirthdateText->setText(QString::number(buddy.birthYear()));
-	else
-		BirthdateText->clear();
+    if (0 != buddy.birthYear())
+        BirthdateText->setText(QString::number(buddy.birthYear()));
+    else
+        BirthdateText->clear();
 
-	CityText->setText(buddy.city());
-	EmailText->setText(QString("<a href=\"mailto:%1\">%1</a>").arg(buddy.email()));
-	WebsiteText->setText(QString("<a href=\"%1\">%1</a>").arg(buddy.website()));
+    CityText->setText(buddy.city());
+    EmailText->setText(QString("<a href=\"mailto:%1\">%1</a>").arg(buddy.email()));
+    WebsiteText->setText(QString("<a href=\"%1\">%1</a>").arg(buddy.website()));
 }
 
 void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
 {
-	m_urlOpener->openUrl(link.toUtf8());
+    m_urlOpener->openUrl(link.toUtf8());
 }
 
 #include "moc_jabber-contact-personal-info-widget.cpp"

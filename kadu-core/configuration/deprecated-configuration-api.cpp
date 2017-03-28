@@ -28,188 +28,190 @@
 
 static QMutex GlobalMutex;
 
-DeprecatedConfigurationApi::DeprecatedConfigurationApi(ConfigurationApi *xmlConfigFile, const QString &fileName) :
-		m_xmlConfigFile{xmlConfigFile},
-		m_fileName{fileName.section('/', -1)}
+DeprecatedConfigurationApi::DeprecatedConfigurationApi(ConfigurationApi *xmlConfigFile, const QString &fileName)
+        : m_xmlConfigFile{xmlConfigFile}, m_fileName{fileName.section('/', -1)}
 {
 }
 
 bool DeprecatedConfigurationApi::changeEntry(const QString &group, const QString &name, const QString &value)
 {
-	QMutexLocker locker(&GlobalMutex);
+    QMutexLocker locker(&GlobalMutex);
 
-	auto root_elem = m_xmlConfigFile->rootElement();
-	auto deprecated_elem = m_xmlConfigFile->accessElement(root_elem, "Deprecated");
-	auto config_file_elem = m_xmlConfigFile->accessElementByFileNameProperty(deprecated_elem, "ConfigFile", "name", m_fileName);
-	auto group_elem = m_xmlConfigFile->accessElementByProperty(config_file_elem, "Group", "name", group);
-	auto entry_elem = m_xmlConfigFile->accessElementByProperty(group_elem, "Entry", "name", name);
-	entry_elem.setAttribute("value", value);
+    auto root_elem = m_xmlConfigFile->rootElement();
+    auto deprecated_elem = m_xmlConfigFile->accessElement(root_elem, "Deprecated");
+    auto config_file_elem =
+        m_xmlConfigFile->accessElementByFileNameProperty(deprecated_elem, "ConfigFile", "name", m_fileName);
+    auto group_elem = m_xmlConfigFile->accessElementByProperty(config_file_elem, "Group", "name", group);
+    auto entry_elem = m_xmlConfigFile->accessElementByProperty(group_elem, "Entry", "name", name);
+    entry_elem.setAttribute("value", value);
 
-	return true;
+    return true;
 }
 
 QString DeprecatedConfigurationApi::getEntry(const QString &group, const QString &name) const
 {
-	QMutexLocker locker(&GlobalMutex);
+    QMutexLocker locker(&GlobalMutex);
 
-	auto root_elem = m_xmlConfigFile->rootElement();
-	auto deprecated_elem = m_xmlConfigFile->findElement(root_elem, "Deprecated");
+    auto root_elem = m_xmlConfigFile->rootElement();
+    auto deprecated_elem = m_xmlConfigFile->findElement(root_elem, "Deprecated");
 
-	if (deprecated_elem.isNull())
-		return {};
+    if (deprecated_elem.isNull())
+        return {};
 
-	auto config_file_elem = m_xmlConfigFile->findElementByFileNameProperty(deprecated_elem, "ConfigFile", "name", m_fileName);
-	if (config_file_elem.isNull())
-		return {};
+    auto config_file_elem =
+        m_xmlConfigFile->findElementByFileNameProperty(deprecated_elem, "ConfigFile", "name", m_fileName);
+    if (config_file_elem.isNull())
+        return {};
 
-	auto group_elem = m_xmlConfigFile->findElementByProperty(config_file_elem, "Group", "name", group);
-	if (group_elem.isNull())
-		return {};
+    auto group_elem = m_xmlConfigFile->findElementByProperty(config_file_elem, "Group", "name", group);
+    if (group_elem.isNull())
+        return {};
 
-	auto entry_elem = m_xmlConfigFile->findElementByProperty(group_elem, "Entry", "name", name);
-	return entry_elem.attribute("value");
+    auto entry_elem = m_xmlConfigFile->findElementByProperty(group_elem, "Entry", "name", name);
+    return entry_elem.attribute("value");
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QString &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const QString &value)
 {
-	changeEntry(group, name, value);
+    changeEntry(group, name, value);
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const char *value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const char *value)
 {
-	changeEntry(group, name, QString::fromLocal8Bit(value));
+    changeEntry(group, name, QString::fromLocal8Bit(value));
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const int value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const int value)
 {
-	changeEntry(group, name, QString::number(value));
+    changeEntry(group, name, QString::number(value));
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const bool value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const bool value)
 {
-	changeEntry(group, name, value ? "true" : "false");
+    changeEntry(group, name, value ? "true" : "false");
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QRect &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const QRect &value)
 {
-	changeEntry(group, name, rectToString(value));
+    changeEntry(group, name, rectToString(value));
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QColor &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const QColor &value)
 {
-	changeEntry(group, name, value.name());
+    changeEntry(group, name, value.name());
 }
 
-void DeprecatedConfigurationApi::writeEntry(const QString &group,const QString &name, const QFont &value)
+void DeprecatedConfigurationApi::writeEntry(const QString &group, const QString &name, const QFont &value)
 {
-	changeEntry(group, name, value.toString());
+    changeEntry(group, name, value.toString());
 }
 
-QString DeprecatedConfigurationApi::readEntry(const QString &group,const QString &name, const QString &def) const
+QString DeprecatedConfigurationApi::readEntry(const QString &group, const QString &name, const QString &def) const
 {
-	auto string = getEntry(group, name);
-	if (string.isNull())
-		return def;
-	return string;
+    auto string = getEntry(group, name);
+    if (string.isNull())
+        return def;
+    return string;
 }
 
-unsigned int DeprecatedConfigurationApi::readUnsignedNumEntry(const QString &group,const QString &name, unsigned int def) const
+unsigned int
+DeprecatedConfigurationApi::readUnsignedNumEntry(const QString &group, const QString &name, unsigned int def) const
 {
-	auto ok = false;
-	auto string = getEntry(group, name);
-	if (string.isNull())
-		return def;
-	auto num = string.toUInt(&ok);
-	if (!ok)
-		return def;
-	return num;
+    auto ok = false;
+    auto string = getEntry(group, name);
+    if (string.isNull())
+        return def;
+    auto num = string.toUInt(&ok);
+    if (!ok)
+        return def;
+    return num;
 }
 
-int DeprecatedConfigurationApi::readNumEntry(const QString &group,const QString &name, int def) const
+int DeprecatedConfigurationApi::readNumEntry(const QString &group, const QString &name, int def) const
 {
-	auto ok = false;
-	auto string = getEntry(group, name);
-	if (string.isNull())
-		return def;
-	auto num = string.toInt(&ok);
-	if (!ok)
-		return def;
-	return num;
+    auto ok = false;
+    auto string = getEntry(group, name);
+    if (string.isNull())
+        return def;
+    auto num = string.toInt(&ok);
+    if (!ok)
+        return def;
+    return num;
 }
 
-bool DeprecatedConfigurationApi::readBoolEntry(const QString &group,const QString &name, bool def) const
+bool DeprecatedConfigurationApi::readBoolEntry(const QString &group, const QString &name, bool def) const
 {
-	auto string = getEntry(group, name);
-	if (string.isNull())
-		return def;
-	return string=="true";
+    auto string = getEntry(group, name);
+    if (string.isNull())
+        return def;
+    return string == "true";
 }
 
-QRect DeprecatedConfigurationApi::readRectEntry(const QString &group,const QString &name, const QRect *def) const
+QRect DeprecatedConfigurationApi::readRectEntry(const QString &group, const QString &name, const QRect *def) const
 {
-	return stringToRect(getEntry(group, name), def);
+    return stringToRect(getEntry(group, name), def);
 }
 
-QColor DeprecatedConfigurationApi::readColorEntry(const QString &group,const QString &name, const QColor *def) const
+QColor DeprecatedConfigurationApi::readColorEntry(const QString &group, const QString &name, const QColor *def) const
 {
-	auto str = getEntry(group, name);
-	if (str.isNull())
-		return def ? *def : QColor(0, 0, 0);
-	else
-		return QColor(str);
+    auto str = getEntry(group, name);
+    if (str.isNull())
+        return def ? *def : QColor(0, 0, 0);
+    else
+        return QColor(str);
 }
 
-
-QFont DeprecatedConfigurationApi::readFontEntry(const QString &group,const QString &name, const QFont *def) const
+QFont DeprecatedConfigurationApi::readFontEntry(const QString &group, const QString &name, const QFont *def) const
 {
-	auto string = getEntry(group, name);
-	if (string.isNull())
-		return def ? *def : QApplication::font();
-	auto font = QFont{};
-	if(font.fromString(string))
-		return font;
-	return def ? *def : QApplication::font();
+    auto string = getEntry(group, name);
+    if (string.isNull())
+        return def ? *def : QApplication::font();
+    auto font = QFont{};
+    if (font.fromString(string))
+        return font;
+    return def ? *def : QApplication::font();
 }
 
 void DeprecatedConfigurationApi::removeVariable(const QString &group, const QString &name)
 {
-	QMutexLocker locker(&GlobalMutex);
+    QMutexLocker locker(&GlobalMutex);
 
-	auto root_elem = m_xmlConfigFile->rootElement();
-	auto deprecated_elem = m_xmlConfigFile->accessElement(root_elem, "Deprecated");
-	auto config_file_elem = m_xmlConfigFile->accessElementByFileNameProperty(deprecated_elem, "ConfigFile", "name", m_fileName);
-	auto group_elem = m_xmlConfigFile->accessElementByProperty(config_file_elem, "Group", "name", group);
-	auto entry_elem = m_xmlConfigFile->accessElementByProperty(group_elem, "Entry", "name", name);
-	group_elem.removeChild(entry_elem);
+    auto root_elem = m_xmlConfigFile->rootElement();
+    auto deprecated_elem = m_xmlConfigFile->accessElement(root_elem, "Deprecated");
+    auto config_file_elem =
+        m_xmlConfigFile->accessElementByFileNameProperty(deprecated_elem, "ConfigFile", "name", m_fileName);
+    auto group_elem = m_xmlConfigFile->accessElementByProperty(config_file_elem, "Group", "name", group);
+    auto entry_elem = m_xmlConfigFile->accessElementByProperty(group_elem, "Entry", "name", name);
+    group_elem.removeChild(entry_elem);
 }
 
 void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const QString &defvalue)
 {
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group, name, defvalue);
+    if (getEntry(group, name).isEmpty())
+        writeEntry(group, name, defvalue);
 }
 void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const char *defvalue)
 {
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group, name, defvalue);
+    if (getEntry(group, name).isEmpty())
+        writeEntry(group, name, defvalue);
 }
 void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const int defvalue)
 {
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group, name, defvalue);
+    if (getEntry(group, name).isEmpty())
+        writeEntry(group, name, defvalue);
 }
 void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const bool defvalue)
 {
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group, name, defvalue);
+    if (getEntry(group, name).isEmpty())
+        writeEntry(group, name, defvalue);
 }
 void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const QColor &defvalue)
 {
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group, name, defvalue);
+    if (getEntry(group, name).isEmpty())
+        writeEntry(group, name, defvalue);
 }
 void DeprecatedConfigurationApi::addVariable(const QString &group, const QString &name, const QFont &defvalue)
 {
-	if (getEntry(group, name).isEmpty())
-		writeEntry(group, name, defvalue);
+    if (getEntry(group, name).isEmpty())
+        writeEntry(group, name, defvalue);
 }

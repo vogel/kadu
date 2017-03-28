@@ -36,12 +36,11 @@
 
 #include <QtWidgets/QHBoxLayout>
 
-ChatStylePreview::ChatStylePreview(QWidget *parent) :
-		QFrame{parent}
+ChatStylePreview::ChatStylePreview(QWidget *parent) : QFrame{parent}
 {
-	setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	setFixedHeight(250);
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    setFixedHeight(250);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 }
 
 ChatStylePreview::~ChatStylePreview()
@@ -50,100 +49,101 @@ ChatStylePreview::~ChatStylePreview()
 
 void ChatStylePreview::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void ChatStylePreview::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatConfigurationHolder = chatConfigurationHolder;
+    m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
 void ChatStylePreview::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void ChatStylePreview::setContactStorage(ContactStorage *contactStorage)
 {
-	m_contactStorage = contactStorage;
+    m_contactStorage = contactStorage;
 }
 
 void ChatStylePreview::setBuddyStorage(BuddyStorage *buddyStorage)
 {
-	m_buddyStorage = buddyStorage;
+    m_buddyStorage = buddyStorage;
 }
 
 void ChatStylePreview::setMessageStorage(MessageStorage *messageStorage)
 {
-	m_messageStorage = messageStorage;
+    m_messageStorage = messageStorage;
 }
 
 void ChatStylePreview::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void ChatStylePreview::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
 {
-	m_webkitMessagesViewFactory = webkitMessagesViewFactory;
+    m_webkitMessagesViewFactory = webkitMessagesViewFactory;
 }
 
 void ChatStylePreview::init()
 {
-	auto layout = make_owned<QHBoxLayout>(this);
-	layout->setContentsMargins(0, 0, 0, 0);
-	m_view = preparePreview();
-	layout->addWidget(m_view.get());
+    auto layout = make_owned<QHBoxLayout>(this);
+    layout->setContentsMargins(0, 0, 0, 0);
+    m_view = preparePreview();
+    layout->addWidget(m_view.get());
 
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void ChatStylePreview::setRendererFactory(std::unique_ptr<ChatStyleRendererFactory> rendererFactory)
 {
-	m_view.get()->setChatStyleRendererFactory(std::move(rendererFactory));
+    m_view.get()->setChatStyleRendererFactory(std::move(rendererFactory));
 }
 
 owned_qptr<WebkitMessagesView> ChatStylePreview::preparePreview()
 {
-	auto example = m_buddyStorage->create();
+    auto example = m_buddyStorage->create();
 
-	auto chat = m_chatStorage->create("Contact");
+    auto chat = m_chatStorage->create("Contact");
 
-	auto details = static_cast<ChatDetailsContact *>(chat.details());
-	details->setState(StorableObject::StateNew);
-	details->setContact(m_buddyPreferredManager->preferredContact(example));
+    auto details = static_cast<ChatDetailsContact *>(chat.details());
+    details->setState(StorableObject::StateNew);
+    details->setContact(m_buddyPreferredManager->preferredContact(example));
 
-	auto buddy = m_buddyStorage->create();
-	buddy.setDisplay(m_myself->buddy().display());
-	auto contact = m_contactStorage->create();
-	contact.setId("id@network");
-	contact.setOwnerBuddy(buddy);
+    auto buddy = m_buddyStorage->create();
+    buddy.setDisplay(m_myself->buddy().display());
+    auto contact = m_contactStorage->create();
+    contact.setId("id@network");
+    contact.setOwnerBuddy(buddy);
 
-	auto sentMessage = m_messageStorage->create();
-	sentMessage.setMessageChat(chat);
-	sentMessage.setType(MessageTypeSent);
-	sentMessage.setMessageSender(contact);
-	sentMessage.setContent(normalizeHtml(plainToHtml(tr("Your message"))));
-	sentMessage.setReceiveDate(QDateTime::currentDateTime());
-	sentMessage.setSendDate(QDateTime::currentDateTime());
+    auto sentMessage = m_messageStorage->create();
+    sentMessage.setMessageChat(chat);
+    sentMessage.setType(MessageTypeSent);
+    sentMessage.setMessageSender(contact);
+    sentMessage.setContent(normalizeHtml(plainToHtml(tr("Your message"))));
+    sentMessage.setReceiveDate(QDateTime::currentDateTime());
+    sentMessage.setSendDate(QDateTime::currentDateTime());
 
-	auto receivedMessage = m_messageStorage->create();
-	receivedMessage.setMessageChat(chat);
-	receivedMessage.setType(MessageTypeReceived);
-	receivedMessage.setMessageSender(m_buddyPreferredManager->preferredContact(example));
-	receivedMessage.setContent(normalizeHtml(plainToHtml(tr("Message from Your friend"))));
-	receivedMessage.setReceiveDate(QDateTime::currentDateTime());
-	receivedMessage.setSendDate(QDateTime::currentDateTime());
+    auto receivedMessage = m_messageStorage->create();
+    receivedMessage.setMessageChat(chat);
+    receivedMessage.setType(MessageTypeReceived);
+    receivedMessage.setMessageSender(m_buddyPreferredManager->preferredContact(example));
+    receivedMessage.setContent(normalizeHtml(plainToHtml(tr("Message from Your friend"))));
+    receivedMessage.setReceiveDate(QDateTime::currentDateTime());
+    receivedMessage.setSendDate(QDateTime::currentDateTime());
 
-	auto result = m_webkitMessagesViewFactory->createWebkitMessagesView(chat, false, this);
-	result->add(sentMessage);
-	result->add(receivedMessage);
-	return result;
+    auto result = m_webkitMessagesViewFactory->createWebkitMessagesView(chat, false, this);
+    result->add(sentMessage);
+    result->add(receivedMessage);
+    return result;
 }
 
 void ChatStylePreview::configurationUpdated()
 {
-	m_view->setUserFont(m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
+    m_view->setUserFont(
+        m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
 }
 
 #include "moc_chat-style-preview.cpp"

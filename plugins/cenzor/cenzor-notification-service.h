@@ -35,26 +35,25 @@ struct Notification;
 
 class CenzorNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit CenzorNotificationService(QObject *parent = nullptr);
-	virtual ~CenzorNotificationService();
+    Q_INVOKABLE explicit CenzorNotificationService(QObject *parent = nullptr);
+    virtual ~CenzorNotificationService();
 
 public slots:
-	void notifyCenzored(const Chat &chat);
+    void notifyCenzored(const Chat &chat);
 
 private:
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_cenzoredEvent;
+    NotificationEvent m_cenzoredEvent;
 
 private slots:
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

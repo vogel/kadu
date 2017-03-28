@@ -30,23 +30,22 @@ class ChatWindowRepository;
 
 class ChatWindowManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWindowManager(QObject *parent = nullptr);
-	virtual ~ChatWindowManager();
+    Q_INVOKABLE explicit ChatWindowManager(QObject *parent = nullptr);
+    virtual ~ChatWindowManager();
 
-	void openStoredChatWindows();
-	void storeOpenedChatWindows();
+    void openStoredChatWindows();
+    void storeOpenedChatWindows();
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ChatWindowRepository> m_chatWindowRepository;
-	QPointer<ChatWindowStorage> m_chatWindowStorage;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ChatWindowRepository> m_chatWindowRepository;
+    QPointer<ChatWindowStorage> m_chatWindowStorage;
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
-	INJEQT_SET void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
-
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setChatWindowRepository(ChatWindowRepository *chatWindowRepository);
+    INJEQT_SET void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
 };

@@ -39,21 +39,22 @@ template <typename T_dest, typename T_src>
 class Adapter
 {
 public:
-	virtual ~Adapter<T_dest, T_src>() {}
+    virtual ~Adapter<T_dest, T_src>()
+    {
+    }
 
-	/**
-	 * @short Adapt instance of class from one type to another.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @author Piotr Dąbrowski
-	 * @param object object to adapt
-	 * @return object adapted to type T_dest
-	 */
-	virtual T_dest adapt(const T_src &object) = 0;
-
+    /**
+     * @short Adapt instance of class from one type to another.
+     * @author Rafał 'Vogel' Malinowski
+     * @author Piotr Dąbrowski
+     * @param object object to adapt
+     * @return object adapted to type T_dest
+     */
+    virtual T_dest adapt(const T_src &object) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // ADAPTER_H
+#endif   // ADAPTER_H

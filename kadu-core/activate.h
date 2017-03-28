@@ -7,8 +7,8 @@ class QWidget;
 
 #include "exports.h"
 
-bool KADUAPI _isActiveWindow( QWidget *window );
-void KADUAPI _activateWindow( Configuration *configuration, QWidget *window );
+bool KADUAPI _isActiveWindow(QWidget *window);
+void KADUAPI _activateWindow(Configuration *configuration, QWidget *window);
 
 /**
  * Returns true if passed widget's window is active or fully visible to the user
@@ -17,6 +17,6 @@ void KADUAPI _activateWindow( Configuration *configuration, QWidget *window );
  *
  * NOTE: It is currently supported only on X11. On other platforms it is equivalent to QWidget::isActiveWindow().
  */
-bool KADUAPI _isWindowActiveOrFullyVisible( QWidget *window );
+bool KADUAPI _isWindowActiveOrFullyVisible(QWidget *window);
 
-#endif // ACTIVATE_H
+#endif   // ACTIVATE_H

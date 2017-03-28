@@ -25,13 +25,12 @@ class QStringList;
 
 class JabberServersService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberServersService(QObject *parent = nullptr);
-	virtual ~JabberServersService();
+    explicit JabberServersService(QObject *parent = nullptr);
+    virtual ~JabberServersService();
 
-	QStringList knownServers();
-	QStringList knownNoXDataServers();
-
+    QStringList knownServers();
+    QStringList knownNoXDataServers();
 };

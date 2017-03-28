@@ -44,28 +44,27 @@ class QXmppVCardIq;
  */
 class JabberAvatarDownloader : public AvatarDownloader
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<JabberVCardService> VCardService;
+    QPointer<JabberVCardService> VCardService;
 
-	void done(QImage avatar);
-	void failed();
+    void done(QImage avatar);
+    void failed();
 
 private slots:
-	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
+    void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 
 public:
-	/**
-	 * @short Create new JabberAvatarDownloader instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param vCardService vCard service to use in this class
-	 * @param parent QObject parent
-	 */
-	explicit JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent = nullptr);
-	virtual ~JabberAvatarDownloader();
+    /**
+     * @short Create new JabberAvatarDownloader instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param vCardService vCard service to use in this class
+     * @param parent QObject parent
+     */
+    explicit JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent = nullptr);
+    virtual ~JabberAvatarDownloader();
 
-	virtual void downloadAvatar(const QString &id);
-
+    virtual void downloadAvatar(const QString &id);
 };
 
 /**

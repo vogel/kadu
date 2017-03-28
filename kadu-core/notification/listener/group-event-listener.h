@@ -33,23 +33,22 @@ class NotificationService;
 
 class GroupEventListener : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(LISTENER)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(LISTENER)
 
 public:
-	Q_INVOKABLE explicit GroupEventListener(QObject *parent = nullptr);
-	virtual ~GroupEventListener();
+    Q_INVOKABLE explicit GroupEventListener(QObject *parent = nullptr);
+    virtual ~GroupEventListener();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<GroupManager> m_groupManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<GroupManager> m_groupManager;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
+    INJEQT_INIT void init();
 
-	void groupAdded(const Group &group);
-	void groupUpdated();
-
+    void groupAdded(const Group &group);
+    void groupUpdated();
 };

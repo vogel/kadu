@@ -33,27 +33,29 @@ class ResendSubscriptionAction;
 
 class JabberProtocolMenuManager : public QObject, public ProtocolMenuManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberProtocolMenuManager(QObject *parent = nullptr);
-	virtual ~JabberProtocolMenuManager();
+    Q_INVOKABLE explicit JabberProtocolMenuManager(QObject *parent = nullptr);
+    virtual ~JabberProtocolMenuManager();
 
-	virtual const QList<ActionDescription *> & protocolActions() const;
-	virtual const QString protocolName() const { return "jabber"; }
+    virtual const QList<ActionDescription *> &protocolActions() const;
+    virtual const QString protocolName() const
+    {
+        return "jabber";
+    }
 
 private:
-	QPointer<AskForSubscriptionAction> m_askForSubscriptionAction;
-	QPointer<JabberActions> m_jabberActions;
-	QPointer<RemoveSubscriptionAction> m_removeSubscriptionAction;
-	QPointer<ResendSubscriptionAction> m_resendSubscriptionAction;
+    QPointer<AskForSubscriptionAction> m_askForSubscriptionAction;
+    QPointer<JabberActions> m_jabberActions;
+    QPointer<RemoveSubscriptionAction> m_removeSubscriptionAction;
+    QPointer<ResendSubscriptionAction> m_resendSubscriptionAction;
 
-	mutable QList<ActionDescription *> m_rosterActions;
+    mutable QList<ActionDescription *> m_rosterActions;
 
 private slots:
-	INJEQT_SET void setAskForSubscriptionAction(AskForSubscriptionAction *askForSubscriptionAction);
-	INJEQT_SET void setJabberActions(JabberActions *jabberActions);
-	INJEQT_SET void setRemoveSubscriptionAction(RemoveSubscriptionAction *removeSubscriptionAction);
-	INJEQT_SET void setResendSubscriptionAction(ResendSubscriptionAction *resendSubscriptionAction);
-
+    INJEQT_SET void setAskForSubscriptionAction(AskForSubscriptionAction *askForSubscriptionAction);
+    INJEQT_SET void setJabberActions(JabberActions *jabberActions);
+    INJEQT_SET void setRemoveSubscriptionAction(RemoveSubscriptionAction *removeSubscriptionAction);
+    INJEQT_SET void setResendSubscriptionAction(ResendSubscriptionAction *resendSubscriptionAction);
 };

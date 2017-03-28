@@ -23,9 +23,9 @@
 
 enum ScreenShotMode
 {
-	ShotModeStandard,
-	ShotModeWithChatWindowHidden,
-	ShotModeSingleWindow
+    ShotModeStandard,
+    ShotModeWithChatWindowHidden,
+    ShotModeSingleWindow
 };
 
-#endif // SCREENSHOT_MODE_H
+#endif   // SCREENSHOT_MODE_H

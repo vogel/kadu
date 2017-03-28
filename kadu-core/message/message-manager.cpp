@@ -21,8 +21,7 @@
 
 #include "message-manager.h"
 
-MessageManager::MessageManager(QObject *parent) :
-		QObject{parent}
+MessageManager::MessageManager(QObject *parent) : QObject{parent}
 {
 }
 

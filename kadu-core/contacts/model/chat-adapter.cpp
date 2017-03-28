@@ -24,13 +24,12 @@
 
 #include "chat-adapter.h"
 
-ChatAdapter::ChatAdapter(ContactListModel *model, const Chat &chat) :
-		QObject(model), Model(model)
+ChatAdapter::ChatAdapter(ContactListModel *model, const Chat &chat) : QObject(model), Model(model)
 {
-	Model->setContactList(chat.contacts().toContactVector());
+    Model->setContactList(chat.contacts().toContactVector());
 
-	connect(chat, SIGNAL(contactAdded(Contact)), SLOT(contactAdded(Contact)));
-	connect(chat, SIGNAL(contactRemoved(Contact)), SLOT(contactRemoved(Contact)));
+    connect(chat, SIGNAL(contactAdded(Contact)), SLOT(contactAdded(Contact)));
+    connect(chat, SIGNAL(contactRemoved(Contact)), SLOT(contactRemoved(Contact)));
 }
 
 ChatAdapter::~ChatAdapter()
@@ -39,12 +38,12 @@ ChatAdapter::~ChatAdapter()
 
 void ChatAdapter::contactAdded(const Contact &contact)
 {
-	Model->addContact(contact);
+    Model->addContact(contact);
 }
 
 void ChatAdapter::contactRemoved(const Contact &contact)
 {
-	Model->removeContact(contact);
+    Model->removeContact(contact);
 }
 
 #include "moc_chat-adapter.cpp"

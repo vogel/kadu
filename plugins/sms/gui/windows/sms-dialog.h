@@ -46,64 +46,65 @@ class TalkableConverter;
 
 class SmsDialog : public QWidget, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<History> m_history;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<MobileNumberManager> m_mobileNumberManager;
-	QPointer<SmsGatewayManager> m_smsGatewayManager;
-	QPointer<SmsScriptsManager> m_smsScriptsManager;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<History> m_history;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<MobileNumberManager> m_mobileNumberManager;
+    QPointer<SmsGatewayManager> m_smsGatewayManager;
+    QPointer<SmsScriptsManager> m_smsScriptsManager;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	QLineEdit *RecipientEdit;
-	SelectTalkableComboBox *RecipientComboBox;
-	QComboBox *ProviderComboBox;
-	QTextEdit *ContentEdit;
-	QLabel *LengthLabel;
-	QLineEdit *SignatureEdit;
-	QPushButton *SendButton;
-	QCheckBox *SaveInHistoryCheckBox;
+    QLineEdit *RecipientEdit;
+    SelectTalkableComboBox *RecipientComboBox;
+    QComboBox *ProviderComboBox;
+    QTextEdit *ContentEdit;
+    QLabel *LengthLabel;
+    QLineEdit *SignatureEdit;
+    QPushButton *SendButton;
+    QCheckBox *SaveInHistoryCheckBox;
 
-	QString MaxLengthSuffixText;
-	quint16 MaxLength;
+    QString MaxLengthSuffixText;
+    quint16 MaxLength;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
 
-	void validate();
+    void validate();
 
-	void recipientBuddyChanged();
-	void recipientNumberChanged(const QString &number);
+    void recipientBuddyChanged();
+    void recipientNumberChanged(const QString &number);
 
-	void editReturnPressed();
-	void updateCounter();
+    void editReturnPressed();
+    void updateCounter();
 
-	void gatewayActivated(int index);
-	void gatewayAssigned(const QString &number, const QString &gatewayId);
-	void sendSms();
+    void gatewayActivated(int index);
+    void gatewayAssigned(const QString &number, const QString &gatewayId);
+    void sendSms();
 
-	void saveSmsInHistory(const QString &number, const QString &message);
+    void saveSmsInHistory(const QString &number, const QString &message);
 
-	void clear();
+    void clear();
 
 protected:
-	virtual void configurationUpdated();
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void configurationUpdated();
+    virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit SmsDialog(History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, QWidget *parent = nullptr);
-	virtual ~SmsDialog();
+    explicit SmsDialog(
+        History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager,
+        SmsScriptsManager *smsScriptsManager, QWidget *parent = nullptr);
+    virtual ~SmsDialog();
 
-	void setRecipient(const QString &phone);
-
+    void setRecipient(const QString &phone);
 };

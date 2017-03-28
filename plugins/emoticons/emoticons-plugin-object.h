@@ -37,37 +37,41 @@ class PathsProvider;
 
 class EmoticonsPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit EmoticonsPluginObject(QObject *parent = nullptr);
-	virtual ~EmoticonsPluginObject();
+    Q_INVOKABLE explicit EmoticonsPluginObject(QObject *parent = nullptr);
+    virtual ~EmoticonsPluginObject();
 
 private:
-	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
-	QPointer<EmoticonClipboardHtmlTransformer> m_emoticonClipboardHtmlTransformer;
-	QPointer<EmoticonConfigurator> m_emoticonConfigurator;
-	QPointer<EmoticonExpanderDomVisitorProvider> m_emoticonExpanderDomVisitorProvider;
-	QPointer<EmoticonsConfigurationUiHandler> m_emoticonsConfigurationUiHandler;
-	QPointer<InsertEmoticonAction> m_insertEmoticonAction;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+    QPointer<EmoticonClipboardHtmlTransformer> m_emoticonClipboardHtmlTransformer;
+    QPointer<EmoticonConfigurator> m_emoticonConfigurator;
+    QPointer<EmoticonExpanderDomVisitorProvider> m_emoticonExpanderDomVisitorProvider;
+    QPointer<EmoticonsConfigurationUiHandler> m_emoticonsConfigurationUiHandler;
+    QPointer<InsertEmoticonAction> m_insertEmoticonAction;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
-	INJEQT_SET void setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer);
-	INJEQT_SET void setEmoticonConfigurator(EmoticonConfigurator *emoticonConfigurator);
-	INJEQT_SET void setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider);
-	INJEQT_SET void setEmoticonsConfigurationUiHandler(EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler);
-	INJEQT_SET void setInsertEmoticonAction(InsertEmoticonAction *insertEmoticonAction);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void
+    setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+    INJEQT_SET void
+    setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer);
+    INJEQT_SET void setEmoticonConfigurator(EmoticonConfigurator *emoticonConfigurator);
+    INJEQT_SET void
+    setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider);
+    INJEQT_SET void
+    setEmoticonsConfigurationUiHandler(EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler);
+    INJEQT_SET void setInsertEmoticonAction(InsertEmoticonAction *insertEmoticonAction);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

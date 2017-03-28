@@ -31,22 +31,21 @@ class MultilogonWindow;
 
 class KADUAPI MultilogonWindowService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MultilogonWindowService(QObject *parent = nullptr);
-	virtual ~MultilogonWindowService();
+    Q_INVOKABLE explicit MultilogonWindowService(QObject *parent = nullptr);
+    virtual ~MultilogonWindowService();
 
-	void show();
+    void show();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QPointer<MultilogonWindow> m_multilogonWindow;
+    QPointer<MultilogonWindow> m_multilogonWindow;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

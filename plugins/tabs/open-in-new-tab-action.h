@@ -31,25 +31,24 @@ class Configuration;
 
 class OpenInNewTabAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenInNewTabAction(QObject *parent = nullptr);
-	virtual ~OpenInNewTabAction();
+    Q_INVOKABLE explicit OpenInNewTabAction(QObject *parent = nullptr);
+    virtual ~OpenInNewTabAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<Configuration> m_configuration;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<Configuration> m_configuration;
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 };

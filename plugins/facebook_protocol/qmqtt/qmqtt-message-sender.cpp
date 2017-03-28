@@ -21,21 +21,21 @@
 
 QByteArray QMqttMessageSender::writeMessage(const QMqttMessage &message)
 {
-	auto size = static_cast<uint32_t>(message.content.size());
-	auto result = QByteArray{};
-	auto byte = (static_cast<uint8_t>(message.type) << 4) | (message.flags & 0x0F);
-	result.append(reinterpret_cast<char *>(&byte), 1);
+    auto size = static_cast<uint32_t>(message.content.size());
+    auto result = QByteArray{};
+    auto byte = (static_cast<uint8_t>(message.type) << 4) | (message.flags & 0x0F);
+    result.append(reinterpret_cast<char *>(&byte), 1);
 
-	do
-	{
-		auto byte = static_cast<uint8_t>(size & 0x7F);
-		size >>= 7;
-		if (size > 0)
-			byte |= 0x80;
+    do
+    {
+        auto byte = static_cast<uint8_t>(size & 0x7F);
+        size >>= 7;
+        if (size > 0)
+            byte |= 0x80;
 
-		result.append(reinterpret_cast<char *>(&byte), 1);
-	} while (size > 0);
+        result.append(reinterpret_cast<char *>(&byte), 1);
+    } while (size > 0);
 
-	result.append(message.content);
-	return result;
+    result.append(message.content);
+    return result;
 }

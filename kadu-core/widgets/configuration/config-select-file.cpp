@@ -27,65 +27,69 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-select-file.h"
 
-ConfigSelectFile::ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QString &type, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: SelectFile(type, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigSelectFile::ConfigSelectFile(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    const QString &type, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : SelectFile(type, parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
+    createWidgets();
 }
 
 ConfigSelectFile::ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: SelectFile(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+        : SelectFile(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigSelectFile::~ConfigSelectFile()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigSelectFile::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigSelectFile::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setFile(dataManager->readEntry(section, item).toString());
+    if (!dataManager)
+        return;
+    setFile(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigSelectFile::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, file());
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, file());
 }
 
 void ConfigSelectFile::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	SelectFile::setVisible(visible);
+    label->setVisible(visible);
+    SelectFile::setVisible(visible);
 }
 
 bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 {
-	QString type = domElement.attribute("type");
-	if (type.isEmpty())
-		return false;
+    QString type = domElement.attribute("type");
+    if (type.isEmpty())
+        return false;
 
-	setType(type);
+    setType(type);
 
-	return ConfigWidgetValue::fromDomElement(domElement);
+    return ConfigWidgetValue::fromDomElement(domElement);
 }
 
 #include "moc_config-select-file.cpp"

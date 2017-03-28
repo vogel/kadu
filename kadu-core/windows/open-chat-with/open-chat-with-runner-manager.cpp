@@ -24,14 +24,14 @@
 
 #include "open-chat-with-runner-manager.h"
 
-OpenChatWithRunnerManager * OpenChatWithRunnerManager::Instance = 0;
+OpenChatWithRunnerManager *OpenChatWithRunnerManager::Instance = 0;
 
-OpenChatWithRunnerManager * OpenChatWithRunnerManager::instance()
+OpenChatWithRunnerManager *OpenChatWithRunnerManager::instance()
 {
-	if (!Instance)
-		Instance = new OpenChatWithRunnerManager();
+    if (!Instance)
+        Instance = new OpenChatWithRunnerManager();
 
-	return Instance;
+    return Instance;
 }
 
 OpenChatWithRunnerManager::OpenChatWithRunnerManager()
@@ -44,21 +44,21 @@ OpenChatWithRunnerManager::~OpenChatWithRunnerManager()
 
 void OpenChatWithRunnerManager::registerRunner(OpenChatWithRunner *runner)
 {
-	Runners.append(runner);
+    Runners.append(runner);
 }
 
 void OpenChatWithRunnerManager::unregisterRunner(OpenChatWithRunner *runner)
 {
-	Runners.removeAll(runner);
+    Runners.removeAll(runner);
 }
 
 BuddyList OpenChatWithRunnerManager::matchingContacts(const QString &query)
 {
-	BuddyList matchingContacts;
-	foreach (OpenChatWithRunner *runner, Runners)
-		matchingContacts += runner->matchingContacts(query);
+    BuddyList matchingContacts;
+    foreach (OpenChatWithRunner *runner, Runners)
+        matchingContacts += runner->matchingContacts(query);
 
-	return matchingContacts;
+    return matchingContacts;
 }
 
 #include "moc_open-chat-with-runner-manager.cpp"

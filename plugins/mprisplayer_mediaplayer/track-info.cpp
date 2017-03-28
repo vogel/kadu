@@ -19,8 +19,7 @@
 
 #include "track-info.h"
 
-TrackInfo::TrackInfo() :
-		TrackNumber(0), Length(0)
+TrackInfo::TrackInfo() : TrackNumber(0), Length(0)
 {
 }
 
@@ -30,82 +29,82 @@ TrackInfo::~TrackInfo()
 
 TrackInfo::TrackInfo(const TrackInfo &copyMe)
 {
-	Title = copyMe.Title;
-	Artist = copyMe.Artist;
-	Album = copyMe.Album;
-	TrackNumber = copyMe.TrackNumber;
-	File = copyMe.File;
-	Length = copyMe.Length;
+    Title = copyMe.Title;
+    Artist = copyMe.Artist;
+    Album = copyMe.Album;
+    TrackNumber = copyMe.TrackNumber;
+    File = copyMe.File;
+    Length = copyMe.Length;
 }
 
-TrackInfo & TrackInfo::operator = (const TrackInfo &copyMe)
+TrackInfo &TrackInfo::operator=(const TrackInfo &copyMe)
 {
-	Title = copyMe.Title;
-	Artist = copyMe.Artist;
-	Album = copyMe.Album;
-	TrackNumber = copyMe.TrackNumber;
-	File = copyMe.File;
-	Length = copyMe.Length;
+    Title = copyMe.Title;
+    Artist = copyMe.Artist;
+    Album = copyMe.Album;
+    TrackNumber = copyMe.TrackNumber;
+    File = copyMe.File;
+    Length = copyMe.Length;
 
-	return *this;
+    return *this;
 }
 
 void TrackInfo::setTitle(const QString &title)
 {
-	Title = title;
+    Title = title;
 }
 
 QString TrackInfo::title() const
 {
-	return Title;
+    return Title;
 }
 
 void TrackInfo::setArtist(const QString &artist)
 {
-	Artist = artist;
+    Artist = artist;
 }
 
 QString TrackInfo::artist() const
 {
-	return Artist;
+    return Artist;
 }
 
 void TrackInfo::setAlbum(const QString &album)
 {
-	Album = album;
+    Album = album;
 }
 
 QString TrackInfo::album() const
 {
-	return Album;
+    return Album;
 }
 
 void TrackInfo::setTrackNumber(uint trackNumber)
 {
-	TrackNumber = trackNumber;
+    TrackNumber = trackNumber;
 }
 
 uint TrackInfo::trackNumber() const
 {
-	return TrackNumber;
+    return TrackNumber;
 }
 
 void TrackInfo::setFile(const QString &file)
 {
-	File = file;
+    File = file;
 }
 
 QString TrackInfo::file() const
 {
-	return File;
+    return File;
 }
 
 void TrackInfo::setLength(uint length)
 {
-	Length = length;
+    Length = length;
 }
 
 uint TrackInfo::length() const
 {
-	return Length;
+    return Length;
 }

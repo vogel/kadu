@@ -33,26 +33,25 @@ class QUrl;
 
 class KADUAPI ImageStorageServiceImpl : public ImageStorageService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ImageStorageServiceImpl(QObject *parent = nullptr);
-	virtual ~ImageStorageServiceImpl();
+    Q_INVOKABLE explicit ImageStorageServiceImpl(QObject *parent = nullptr);
+    virtual ~ImageStorageServiceImpl();
 
-	virtual QString storagePath() const override;
-	virtual QString fullPath(const QString &imageFilePath) override;
-	virtual QString storeImage(const QString &imageFilePath) override;
-	virtual QString storeImage(const QString &imageFileName, const QByteArray &content) override;
-	virtual QUrl toFileUrl(const QUrl &url) override;
+    virtual QString storagePath() const override;
+    virtual QString fullPath(const QString &imageFilePath) override;
+    virtual QString storeImage(const QString &imageFilePath) override;
+    virtual QString storeImage(const QString &imageFileName, const QByteArray &content) override;
+    virtual QUrl toFileUrl(const QUrl &url) override;
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PathsProvider> m_pathsProvider;
-	QString m_storagePath;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PathsProvider> m_pathsProvider;
+    QString m_storagePath;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

@@ -29,53 +29,53 @@
 #include "widgets/configuration/config-tab.h"
 #include "widgets/configuration/config-widget.h"
 
-ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox) :
-		QObject(configTab), Name(name), GroupBox(groupBox), RefCount(0)
+ConfigGroupBox::ConfigGroupBox(const QString &name, ConfigTab *configTab, QGroupBox *groupBox)
+        : QObject(configTab), Name(name), GroupBox(groupBox), RefCount(0)
 {
-	Container = new QWidget(GroupBox);
-	GroupBox->layout()->addWidget(Container);
+    Container = new QWidget(GroupBox);
+    GroupBox->layout()->addWidget(Container);
 
-	MainLayout = new QFormLayout(Container);
-	MainLayout->setContentsMargins(5, 5, 5, 5);
+    MainLayout = new QFormLayout(Container);
+    MainLayout->setContentsMargins(5, 5, 5, 5);
 }
 
 ConfigGroupBox::~ConfigGroupBox()
 {
-	/* NOTE: It's needed to call ConfigTab::configGroupBoxDestroyed() before this
-	 * ConfigSection will be destroyed. If we relied on QObject to send this signal,
-	 * it'd be called after destroying all ConfigGroupBox data but we need that data.
-	 */
-	blockSignals(false);
-	emit destroyed(this);
+    /* NOTE: It's needed to call ConfigTab::configGroupBoxDestroyed() before this
+     * ConfigSection will be destroyed. If we relied on QObject to send this signal,
+     * it'd be called after destroying all ConfigGroupBox data but we need that data.
+     */
+    blockSignals(false);
+    emit destroyed(this);
 
-	delete GroupBox;
-	GroupBox = 0;
+    delete GroupBox;
+    GroupBox = 0;
 }
 
 void ConfigGroupBox::addWidget(QWidget *widget, bool fullSpace)
 {
-	Q_UNUSED(fullSpace);
+    Q_UNUSED(fullSpace);
 
-	MainLayout->addRow(widget);
+    MainLayout->addRow(widget);
 }
 
 void ConfigGroupBox::addWidgets(QWidget *widget1, QWidget *widget2, Qt::Alignment alignment)
 {
-	Q_UNUSED(alignment);
+    Q_UNUSED(alignment);
 
-	MainLayout->addRow(widget1, widget2);
+    MainLayout->addRow(widget1, widget2);
 }
 
 void ConfigGroupBox::insertWidget(int pos, QWidget *widget, bool fullSpace)
 {
-	Q_UNUSED(fullSpace);
+    Q_UNUSED(fullSpace);
 
-	MainLayout->insertRow(pos, widget);
+    MainLayout->insertRow(pos, widget);
 }
 
 void ConfigGroupBox::insertWidgets(int pos, QWidget *widget1, QWidget *widget2)
 {
-	MainLayout->insertRow(pos, widget1, widget2);
+    MainLayout->insertRow(pos, widget1, widget2);
 }
 
 #include "moc_config-group-box.cpp"

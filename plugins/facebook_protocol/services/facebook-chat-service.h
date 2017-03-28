@@ -45,46 +45,45 @@ class MessageStorage;
 
 class FacebookChatService : public ChatService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FacebookChatService(Account account, QFacebookSession &facebookSession, QObject *parent = nullptr);
-	virtual ~FacebookChatService();
+    explicit FacebookChatService(Account account, QFacebookSession &facebookSession, QObject *parent = nullptr);
+    virtual ~FacebookChatService();
 
-	virtual int maxMessageLength() const override;
+    virtual int maxMessageLength() const override;
 
 public slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+    INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 
-	virtual bool sendMessage(const Message &message) override;
-	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) override;
-	virtual void leaveChat(const Chat &chat) override;
+    virtual bool sendMessage(const Message &message) override;
+    virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) override;
+    virtual void leaveChat(const Chat &chat) override;
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
-	QPointer<MessageStorage> m_messageStorage;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<FormattedStringFactory> m_formattedStringFactory;
+    QPointer<MessageStorage> m_messageStorage;
 
-	QFacebookSession &m_facebookSession;
-	std::map<QFacebookMsgId, Message> m_undeliveredMessages;
-	std::map<QFacebookMsgId, QDateTime> m_sentMessages;
-	QTimer m_eachSecondTimer;
-	int m_syncSequenceId {-1};
+    QFacebookSession &m_facebookSession;
+    std::map<QFacebookMsgId, Message> m_undeliveredMessages;
+    std::map<QFacebookMsgId, QDateTime> m_sentMessages;
+    QTimer m_eachSecondTimer;
+    int m_syncSequenceId{-1};
 
-	void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
-	void messageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
-	void removeOldUndeliveredMessages();
-	void removeOldSentMessages();
+    void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
+    void messageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
+    void removeOldUndeliveredMessages();
+    void removeOldSentMessages();
 
-	void threadsReceived(const QFacebookDownloadThreadsResult &result);
-	void unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result);
-	void unreadMessagesReceived(const QFacebookDownloadUnreadMessagesResult &result);
-	void unreadMessageReceived(const QFacebookDownloadUnreadMessageResult &result);
-
+    void threadsReceived(const QFacebookDownloadThreadsResult &result);
+    void unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result);
+    void unreadMessagesReceived(const QFacebookDownloadUnreadMessagesResult &result);
+    void unreadMessageReceived(const QFacebookDownloadUnreadMessageResult &result);
 };

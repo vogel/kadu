@@ -27,12 +27,16 @@ struct QMqttMessage;
 class QFacebookPublishAck : public QFacebookMessage
 {
 public:
-	QFacebookPublishAck(uint16_t mid) : mid{mid} {}
+    QFacebookPublishAck(uint16_t mid) : mid{mid}
+    {
+    }
 
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::PublishAck; }
-	virtual QMqttMessage encode() const;
-	static QFacebookPublishAck decode(const QMqttMessage &message);
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::PublishAck;
+    }
+    virtual QMqttMessage encode() const;
+    static QFacebookPublishAck decode(const QMqttMessage &message);
 
-	uint16_t mid;
-
+    uint16_t mid;
 };

@@ -23,9 +23,7 @@
 
 class SoundModule : public injeqt::module
 {
-
 public:
-	explicit SoundModule();
-	virtual ~SoundModule();
-
+    explicit SoundModule();
+    virtual ~SoundModule();
 };

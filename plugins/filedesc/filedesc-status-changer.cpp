@@ -24,8 +24,7 @@
 
 #include "status/status.h"
 
-FileDescStatusChanger::FileDescStatusChanger(QObject *parent) :
-		StatusChanger{900, parent}
+FileDescStatusChanger::FileDescStatusChanger(QObject *parent) : StatusChanger{900, parent}
 {
 }
 
@@ -35,27 +34,27 @@ FileDescStatusChanger::~FileDescStatusChanger()
 
 void FileDescStatusChanger::setFileDescription(FileDescription *fileDescription)
 {
-	m_fileDescription = fileDescription;
+    m_fileDescription = fileDescription;
 }
 
 void FileDescStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
-	Q_UNUSED(container)
+    Q_UNUSED(container)
 
-	if (status.isDisconnected())
-		return;
+    if (status.isDisconnected())
+        return;
 
-	if (status.description().isEmpty() && !m_fileDescription->forceDesc())
-		return;
+    if (status.description().isEmpty() && !m_fileDescription->forceDesc())
+        return;
 
-	if (!status.description().isEmpty() && m_fileDescription->allowOther())
-		return;
+    if (!status.description().isEmpty() && m_fileDescription->allowOther())
+        return;
 
-	status.setDescription(m_title);
+    status.setDescription(m_title);
 }
 
 void FileDescStatusChanger::setTitle(const QString &title)
 {
-	m_title = title;
-	emit statusChanged(0);
+    m_title = title;
+    emit statusChanged(0);
 }

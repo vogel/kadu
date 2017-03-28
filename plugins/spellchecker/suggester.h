@@ -37,38 +37,37 @@ class SpellChecker;
 
 class Suggester : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Actions> m_actions;
-	QPointer<CustomInputMenuManager> m_customInputMenuManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
-	QPointer<SpellChecker> m_spellChecker;
+    QPointer<Actions> m_actions;
+    QPointer<CustomInputMenuManager> m_customInputMenuManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
+    QPointer<SpellChecker> m_spellChecker;
 
-	QStringList SuggestionWordList;
-	QTextCursor CurrentTextSelection;
-	QList<ActionDescription *> SuggestActions;
+    QStringList SuggestionWordList;
+    QTextCursor CurrentTextSelection;
+    QList<ActionDescription *> SuggestActions;
 
-	void buildSuggestList(const QString &word);
-	void addWordListToMenu(const QTextCursor &textCursor);
+    void buildSuggestList(const QString &word);
+    void addWordListToMenu(const QTextCursor &textCursor);
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
-	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
+    INJEQT_SET void setActions(Actions *actions);
+    INJEQT_SET void setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+    INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 
 protected:
-	virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual bool eventFilter(QObject *object, QEvent *event);
 
 public:
-	Q_INVOKABLE explicit Suggester(QObject *parent = nullptr);
-	virtual ~Suggester();
+    Q_INVOKABLE explicit Suggester(QObject *parent = nullptr);
+    virtual ~Suggester();
 
-	void clearWordMenu();
+    void clearWordMenu();
 
 public slots:
-	void replaceWith(QString word);
-
+    void replaceWith(QString word);
 };

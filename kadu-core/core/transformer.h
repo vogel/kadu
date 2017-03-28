@@ -38,24 +38,25 @@ template <typename T>
 class Transformer
 {
 public:
-	typedef T object_type;
+    typedef T object_type;
 
-	virtual ~Transformer<T>() {}
+    virtual ~Transformer<T>()
+    {
+    }
 
-	/**
-	 * @short Transform instance of class.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param object object to transform
-	 * @return transformed object
-	 *
-	 * This method returns new object. Original one is untouched.
-	 */
-	virtual T transform(const T &object) = 0;
-
+    /**
+     * @short Transform instance of class.
+     * @author Rafał 'Vogel' Malinowski
+     * @param object object to transform
+     * @return transformed object
+     *
+     * This method returns new object. Original one is untouched.
+     */
+    virtual T transform(const T &object) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // TRANSFORMER_H
+#endif   // TRANSFORMER_H

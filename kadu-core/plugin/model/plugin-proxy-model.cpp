@@ -25,10 +25,9 @@
 
 #include "plugin/model/plugin-model.h"
 
-PluginProxyModel::PluginProxyModel(QObject *parent) :
-		CategorizedSortFilterProxyModel{parent}
+PluginProxyModel::PluginProxyModel(QObject *parent) : CategorizedSortFilterProxyModel{parent}
 {
-	sort(0);
+    sort(0);
 }
 
 PluginProxyModel::~PluginProxyModel()
@@ -37,33 +36,35 @@ PluginProxyModel::~PluginProxyModel()
 
 void PluginProxyModel::setFilterText(const QString &filterText)
 {
-	if (m_filterText == filterText)
-		return;
+    if (m_filterText == filterText)
+        return;
 
-	m_filterText = filterText;
-	invalidate();
+    m_filterText = filterText;
+    invalidate();
 }
 
 bool PluginProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	Q_UNUSED(sourceParent)
+    Q_UNUSED(sourceParent)
 
-	if (m_filterText.isEmpty())
-		return true;
+    if (m_filterText.isEmpty())
+        return true;
 
-	auto index = sourceModel()->index(sourceRow, 0);
-	auto metadata = index.data(PluginModel::MetadataRole).value<PluginMetadata>();
-	if (metadata.internal)
-		return false;
+    auto index = sourceModel()->index(sourceRow, 0);
+    auto metadata = index.data(PluginModel::MetadataRole).value<PluginMetadata>();
+    if (metadata.internal)
+        return false;
 
-	return metadata.displayName.contains(m_filterText, Qt::CaseInsensitive) ||
-			metadata.name.contains(m_filterText, Qt::CaseInsensitive) ||
-			metadata.description.contains(m_filterText, Qt::CaseInsensitive) ||
-			metadata.author.contains(m_filterText, Qt::CaseInsensitive) ||
-			index.data(CategorizedSortFilterProxyModel::CategoryDisplayRole).toString().contains(m_filterText, Qt::CaseInsensitive);
+    return metadata.displayName.contains(m_filterText, Qt::CaseInsensitive) ||
+           metadata.name.contains(m_filterText, Qt::CaseInsensitive) ||
+           metadata.description.contains(m_filterText, Qt::CaseInsensitive) ||
+           metadata.author.contains(m_filterText, Qt::CaseInsensitive) ||
+           index.data(CategorizedSortFilterProxyModel::CategoryDisplayRole)
+               .toString()
+               .contains(m_filterText, Qt::CaseInsensitive);
 }
 
 bool PluginProxyModel::subSortLessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	return left.data(Qt::DisplayRole).toString().compare(right.data(Qt::DisplayRole).toString()) < 0;
+    return left.data(Qt::DisplayRole).toString().compare(right.data(Qt::DisplayRole).toString()) < 0;
 }

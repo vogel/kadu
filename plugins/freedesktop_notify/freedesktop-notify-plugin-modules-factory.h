@@ -23,14 +23,13 @@
 
 class FreedesktopNotifyPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit FreedesktopNotifyPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~FreedesktopNotifyPluginModulesFactory();
+    explicit FreedesktopNotifyPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~FreedesktopNotifyPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

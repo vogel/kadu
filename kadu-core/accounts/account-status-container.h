@@ -27,32 +27,31 @@ class Protocol;
 
 class AccountStatusContainer : public StorableStatusContainer
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	AccountShared *Account;
+    AccountShared *Account;
 
-	void setDisconnectStatus();
+    void setDisconnectStatus();
 
 public:
-	explicit AccountStatusContainer(AccountShared *account);
-	virtual ~AccountStatusContainer();
+    explicit AccountStatusContainer(AccountShared *account);
+    virtual ~AccountStatusContainer();
 
-	virtual QString statusContainerName();
+    virtual QString statusContainerName();
 
-	virtual void setStatus(Status newStatus, StatusChangeSource source);
-	virtual Status status();
+    virtual void setStatus(Status newStatus, StatusChangeSource source);
+    virtual Status status();
 
-	virtual bool isStatusSettingInProgress();
-	virtual int maxDescriptionLength();
+    virtual bool isStatusSettingInProgress();
+    virtual int maxDescriptionLength();
 
-	virtual KaduIcon statusIcon();
-	virtual KaduIcon statusIcon(const Status &status);
+    virtual KaduIcon statusIcon();
+    virtual KaduIcon statusIcon(const Status &status);
 
-	virtual QList<StatusType> supportedStatusTypes();
+    virtual QList<StatusType> supportedStatusTypes();
 
 public slots:
-	void triggerStatusUpdated();
-
+    void triggerStatusUpdated();
 };
 
-#endif // ACCOUNT_STATUS_CONTAINER_H
+#endif   // ACCOUNT_STATUS_CONTAINER_H

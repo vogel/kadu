@@ -38,8 +38,7 @@
 
 #include "sms-script-manager.h"
 
-SmsScriptsManager::SmsScriptsManager(QObject *parent) :
-		QObject{parent}
+SmsScriptsManager::SmsScriptsManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -49,79 +48,79 @@ SmsScriptsManager::~SmsScriptsManager()
 
 void SmsScriptsManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SmsScriptsManager::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SmsScriptsManager::init()
 {
-	Engine = new QScriptEngine(this);
-	Network = m_pluginInjectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
+    Engine = new QScriptEngine(this);
+    Network = m_pluginInjectedFactory->makeInjected<NetworkAccessManagerWrapper>(Engine, this);
 
-	Engine->globalObject().setProperty("network", Engine->newQObject(Network));
-	Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));
+    Engine->globalObject().setProperty("network", Engine->newQObject(Network));
+    Engine->globalObject().setProperty("translator", Engine->newQObject(new SmsTranslator(this)));
 
 #if SMS_USE_DEBUGGER
- 	QScriptEngineDebugger *debugger = new QScriptEngineDebugger(this);
- 	debugger->attachTo(Engine);
- 	debugger->standardWindow()->show();
+    QScriptEngineDebugger *debugger = new QScriptEngineDebugger(this);
+    debugger->attachTo(Engine);
+    debugger->standardWindow()->show();
 #endif
 
-	QString scriptPath = m_pathsProvider->profilePath() + QStringLiteral("plugins/data/sms/scripts/gateway.js");
-	if (QFile::exists(scriptPath))
-		loadScript(scriptPath);
-	else
-	{
-		scriptPath = m_pathsProvider->dataPath() + QStringLiteral("plugins/data/sms/scripts/gateway.js");
-		if (QFile::exists(scriptPath))
-			loadScript(scriptPath);
-		// TODO: maybe we should return here if no gateway.js was found?
-	}
+    QString scriptPath = m_pathsProvider->profilePath() + QStringLiteral("plugins/data/sms/scripts/gateway.js");
+    if (QFile::exists(scriptPath))
+        loadScript(scriptPath);
+    else
+    {
+        scriptPath = m_pathsProvider->dataPath() + QStringLiteral("plugins/data/sms/scripts/gateway.js");
+        if (QFile::exists(scriptPath))
+            loadScript(scriptPath);
+        // TODO: maybe we should return here if no gateway.js was found?
+    }
 
-	// scripts from profile path can replace the ones from data path if the file name is the same
-	loadScripts(QDir(m_pathsProvider->profilePath() + QStringLiteral("plugins/data/sms/scripts")));
-	loadScripts(QDir(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/sms/scripts")));
+    // scripts from profile path can replace the ones from data path if the file name is the same
+    loadScripts(QDir(m_pathsProvider->profilePath() + QStringLiteral("plugins/data/sms/scripts")));
+    loadScripts(QDir(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/sms/scripts")));
 }
 
 void SmsScriptsManager::loadScripts(const QDir &dir)
 {
-	if (!dir.exists())
-		return;
+    if (!dir.exists())
+        return;
 
-	QFileInfoList gateways = dir.entryInfoList(QStringList("gateway-*.js"));
-	foreach (const QFileInfo &gatewayFile, gateways)
-		loadScript(gatewayFile);
+    QFileInfoList gateways = dir.entryInfoList(QStringList("gateway-*.js"));
+    foreach (const QFileInfo &gatewayFile, gateways)
+        loadScript(gatewayFile);
 }
 
 void SmsScriptsManager::loadScript(const QFileInfo &fileInfo)
 {
-	if (!fileInfo.exists())
-		return;
+    if (!fileInfo.exists())
+        return;
 
-	// We want file name exluding the path - file from a higher priority dir can
-	// replace a file of the same name from different dir.
-	QString fileName = fileInfo.fileName();
-	if (LoadedFiles.contains(fileName))
-		return;
-	LoadedFiles.append(fileName);
+    // We want file name exluding the path - file from a higher priority dir can
+    // replace a file of the same name from different dir.
+    QString fileName = fileInfo.fileName();
+    if (LoadedFiles.contains(fileName))
+        return;
+    LoadedFiles.append(fileName);
 
-	QFile file(fileInfo.absoluteFilePath());
-	if (!file.open(QFile::ReadOnly))
-		return;
+    QFile file(fileInfo.absoluteFilePath());
+    if (!file.open(QFile::ReadOnly))
+        return;
 
-	QTextStream reader(&file);
-	reader.setCodec("UTF-8");
-	QString content = reader.readAll();
-	file.close();
+    QTextStream reader(&file);
+    reader.setCodec("UTF-8");
+    QString content = reader.readAll();
+    file.close();
 
-	if (content.isEmpty())
-		return;
+    if (content.isEmpty())
+        return;
 
-	Engine->evaluate(content);
+    Engine->evaluate(content);
 }
 
 #include "moc_sms-script-manager.cpp"

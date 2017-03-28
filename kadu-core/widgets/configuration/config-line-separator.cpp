@@ -24,18 +24,19 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-separator.h"
 
-ConfigLineSeparator::ConfigLineSeparator(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QFrame(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
+ConfigLineSeparator::ConfigLineSeparator(
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QFrame(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager)
 {
-	createWidgets();
+    createWidgets();
 }
 
 void ConfigLineSeparator::createWidgets()
 {
-	int margin = 5;
-	setFrameShape(QFrame::HLine);
-	setMinimumHeight(2*margin+1);
-	parentConfigGroupBox->addWidget(this, true);
+    int margin = 5;
+    setFrameShape(QFrame::HLine);
+    setMinimumHeight(2 * margin + 1);
+    parentConfigGroupBox->addWidget(this, true);
 }
 
 #include "moc_config-line-separator.cpp"

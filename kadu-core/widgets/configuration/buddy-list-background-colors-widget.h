@@ -29,20 +29,19 @@ class MainConfigurationWindow;
 
 class BuddyListBackgroundColorsWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<MainConfigurationWindow> m_mainWindow;
+    QPointer<MainConfigurationWindow> m_mainWindow;
 
-	ColorButton *colorButton;
-	ColorButton *alternateColorButton;
+    ColorButton *colorButton;
+    ColorButton *alternateColorButton;
 
-	void createGui();
-	void loadConfiguration();
+    void createGui();
+    void loadConfiguration();
 
 private slots:
-	void configurationApplied();
+    void configurationApplied();
 
 public:
-	explicit BuddyListBackgroundColorsWidget(MainConfigurationWindow *mainWindow);
-
+    explicit BuddyListBackgroundColorsWidget(MainConfigurationWindow *mainWindow);
 };

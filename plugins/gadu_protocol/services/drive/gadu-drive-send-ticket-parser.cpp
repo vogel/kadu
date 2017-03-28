@@ -29,30 +29,32 @@
 
 GaduDriveSendTicket GaduDriveSendTicketParser::fromJson(QJsonDocument json)
 {
-	auto sendTicket = json.object().value("result").toObject().value("send_ticket").toObject();
-	auto ticketId = sendTicket.value("id").toString();
-	auto sender = sendTicket.value("sender").toString();
-	auto recipient = sendTicket.value("recipient").toString();
-	auto fileName = sendTicket.value("file_name").toString();
-	auto fileSize = sendTicket.value("file_size").toString().toUInt();
-	auto progress = sendTicket.value("send_progress").toDouble();
-	auto ackStatusString = sendTicket.value("ack_status").toString();
-	auto ackStatus = ackStatusString == "allowed"
-		? GaduDriveSendTicketAckStatus::Allowed
-		: ackStatusString == "rejected"
-		? GaduDriveSendTicketAckStatus::Rejected
-		: GaduDriveSendTicketAckStatus::Unknown;
-	auto modeString = sendTicket.value("send_mode").toString();
-	auto mode = modeString == "publink"
-		? GaduDriveSendTicketMode::Publink
-		: GaduDriveSendTicketMode::Normal;
-	auto statusString = sendTicket.value("send_status").toString();
-	auto status = statusString == "completed"
-		? GaduDriveSendTicketStatus::Completed
-		: statusString == "expired"
-		? GaduDriveSendTicketStatus::Expired
-		: GaduDriveSendTicketStatus::InProgress;
+    auto sendTicket = json.object().value("result").toObject().value("send_ticket").toObject();
+    auto ticketId = sendTicket.value("id").toString();
+    auto sender = sendTicket.value("sender").toString();
+    auto recipient = sendTicket.value("recipient").toString();
+    auto fileName = sendTicket.value("file_name").toString();
+    auto fileSize = sendTicket.value("file_size").toString().toUInt();
+    auto progress = sendTicket.value("send_progress").toDouble();
+    auto ackStatusString = sendTicket.value("ack_status").toString();
+    auto ackStatus = ackStatusString == "allowed"
+                         ? GaduDriveSendTicketAckStatus::Allowed
+                         : ackStatusString == "rejected" ? GaduDriveSendTicketAckStatus::Rejected
+                                                         : GaduDriveSendTicketAckStatus::Unknown;
+    auto modeString = sendTicket.value("send_mode").toString();
+    auto mode = modeString == "publink" ? GaduDriveSendTicketMode::Publink : GaduDriveSendTicketMode::Normal;
+    auto statusString = sendTicket.value("send_status").toString();
+    auto status = statusString == "completed" ? GaduDriveSendTicketStatus::Completed
+                                              : statusString == "expired" ? GaduDriveSendTicketStatus::Expired
+                                                                          : GaduDriveSendTicketStatus::InProgress;
 
-	return GaduDriveSendTicket{std::move(ticketId), std::move(sender), std::move(recipient), std::move(fileName),
-		fileSize, progress, ackStatus, mode, status};
+    return GaduDriveSendTicket{std::move(ticketId),
+                               std::move(sender),
+                               std::move(recipient),
+                               std::move(fileName),
+                               fileSize,
+                               progress,
+                               ackStatus,
+                               mode,
+                               status};
 }

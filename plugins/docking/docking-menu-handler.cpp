@@ -22,6 +22,7 @@
 #include "docking-menu-action-repository.h"
 #include "status-notifier-item.h"
 
+#include "activate.h"
 #include "icons/icons-manager.h"
 #include "notification/silent-mode-service.h"
 #include "plugin/plugin-injected-factory.h"
@@ -29,21 +30,16 @@
 #include "widgets/status-menu.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
-#include "activate.h"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMenu>
 
-DockingMenuHandler::DockingMenuHandler(QObject *parent) :
-		QObject{parent},
+DockingMenuHandler::DockingMenuHandler(QObject *parent)
+        : QObject{parent},
 #if defined(Q_OS_UNIX)
-		m_showKaduAction{nullptr},
-		m_hideKaduAction{nullptr},
+          m_showKaduAction{nullptr}, m_hideKaduAction{nullptr},
 #endif
-		m_silentModeAction{nullptr},
-		m_closeKaduAction{nullptr},
-		m_needsUpdate{true},
-		m_mainWindowLastVisible{true}
+          m_silentModeAction{nullptr}, m_closeKaduAction{nullptr}, m_needsUpdate{true}, m_mainWindowLastVisible{true}
 {
 }
 
@@ -53,171 +49,175 @@ DockingMenuHandler::~DockingMenuHandler()
 
 void DockingMenuHandler::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void DockingMenuHandler::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
 {
-	m_dockingMenuActionRepository = dockingMenuActionRepository;
+    m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
 void DockingMenuHandler::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void DockingMenuHandler::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void DockingMenuHandler::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void DockingMenuHandler::setSilentModeService(SilentModeService *silentModeService)
 {
-	m_silentModeService = silentModeService;
+    m_silentModeService = silentModeService;
 }
 
 void DockingMenuHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void DockingMenuHandler::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
 {
-	m_menu = statusNotifierItem->contextMenu();
+    m_menu = statusNotifierItem->contextMenu();
 }
 
 void DockingMenuHandler::init()
 {
-	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
-	connect(m_dockingMenuActionRepository, SIGNAL(actionAdded(QAction*)), this, SLOT(update()));
-	connect(m_dockingMenuActionRepository, SIGNAL(actionRemoved(QAction*)), this, SLOT(update()));
+    connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(update()));
+    connect(m_dockingMenuActionRepository, SIGNAL(actionAdded(QAction *)), this, SLOT(update()));
+    connect(m_dockingMenuActionRepository, SIGNAL(actionRemoved(QAction *)), this, SLOT(update()));
 
-	for (auto statusContainer : m_statusContainerManager->statusContainers())
-		connect(statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(update()));
-	
-	connect(m_statusContainerManager, SIGNAL(statusContainerRegistered(StatusContainer*)),
-	        this, SLOT(statusContainerRegistered(StatusContainer*)));
-	connect(m_statusContainerManager, SIGNAL(statusContainerUnregistered(StatusContainer*)),
-	        this, SLOT(statusContainerUnregistered(StatusContainer*)));
+    for (auto statusContainer : m_statusContainerManager->statusContainers())
+        connect(statusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(update()));
 
-	connect(m_silentModeService, &SilentModeService::silentModeToggled, this, &DockingMenuHandler::update);
+    connect(
+        m_statusContainerManager, SIGNAL(statusContainerRegistered(StatusContainer *)), this,
+        SLOT(statusContainerRegistered(StatusContainer *)));
+    connect(
+        m_statusContainerManager, SIGNAL(statusContainerUnregistered(StatusContainer *)), this,
+        SLOT(statusContainerUnregistered(StatusContainer *)));
 
-	m_menu->setSeparatorsCollapsible(true);
-	connect(m_menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
-	
+    connect(m_silentModeService, &SilentModeService::silentModeToggled, this, &DockingMenuHandler::update);
+
+    m_menu->setSeparatorsCollapsible(true);
+    connect(m_menu, SIGNAL(aboutToShow()), this, SLOT(aboutToShow()));
+
 #if defined(Q_OS_UNIX)
-	m_showKaduAction = new QAction{tr("&Restore"), this};
-	connect(m_showKaduAction, SIGNAL(triggered()), this, SLOT(showKaduWindow()));
+    m_showKaduAction = new QAction{tr("&Restore"), this};
+    connect(m_showKaduAction, SIGNAL(triggered()), this, SLOT(showKaduWindow()));
 
-	m_hideKaduAction = new QAction{tr("&Minimize"), this};
-	connect(m_hideKaduAction, SIGNAL(triggered()), this, SLOT(hideKaduWindow()));
+    m_hideKaduAction = new QAction{tr("&Minimize"), this};
+    connect(m_hideKaduAction, SIGNAL(triggered()), this, SLOT(hideKaduWindow()));
 #endif
 
-	m_silentModeAction = new QAction{m_iconsManager->iconByPath(KaduIcon{"kadu_icons/enable-notifications"}), tr("Silent mode"), this};
-	m_silentModeAction->setCheckable(true);
-	connect(m_silentModeAction, SIGNAL(triggered(bool)), this, SLOT(silentModeToggled(bool)));
+    m_silentModeAction =
+        new QAction{m_iconsManager->iconByPath(KaduIcon{"kadu_icons/enable-notifications"}), tr("Silent mode"), this};
+    m_silentModeAction->setCheckable(true);
+    connect(m_silentModeAction, SIGNAL(triggered(bool)), this, SLOT(silentModeToggled(bool)));
 
-	m_closeKaduAction = new QAction{m_iconsManager->iconByPath(KaduIcon{"application-exit"}), tr("&Exit Kadu"), this};
-	connect(m_closeKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
+    m_closeKaduAction = new QAction{m_iconsManager->iconByPath(KaduIcon{"application-exit"}), tr("&Exit Kadu"), this};
+    connect(m_closeKaduAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 }
 
 void DockingMenuHandler::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	connect(statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(update()));
-	update();
+    connect(statusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(update()));
+    update();
 }
 
 void DockingMenuHandler::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	disconnect(statusContainer, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(update()));
-	update();
+    disconnect(statusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(update()));
+    update();
 }
 
 void DockingMenuHandler::update()
 {
-	m_needsUpdate = true;
+    m_needsUpdate = true;
 }
 
 void DockingMenuHandler::aboutToShow()
 {
-	if (m_needsUpdate)
-		doUpdate();
+    if (m_needsUpdate)
+        doUpdate();
 }
 
 void DockingMenuHandler::doUpdate()
 {
-	m_menu->clear();
-	addStatusContainerMenus();
-	addActionRepositoryMenus();
-	m_menu->addSeparator();
-	m_silentModeAction->setChecked(m_silentModeService->isSilent());
-	m_menu->addAction(m_silentModeAction);
-	m_menu->addSeparator();
+    m_menu->clear();
+    addStatusContainerMenus();
+    addActionRepositoryMenus();
+    m_menu->addSeparator();
+    m_silentModeAction->setChecked(m_silentModeService->isSilent());
+    m_menu->addAction(m_silentModeAction);
+    m_menu->addSeparator();
 #if defined(Q_OS_UNIX)
-	m_mainWindowLastVisible = m_kaduWindowService->kaduWindow()->window()->isVisible();
-	m_menu->addAction(m_mainWindowLastVisible ? m_hideKaduAction : m_showKaduAction);
+    m_mainWindowLastVisible = m_kaduWindowService->kaduWindow()->window()->isVisible();
+    m_menu->addAction(m_mainWindowLastVisible ? m_hideKaduAction : m_showKaduAction);
 #endif
-	m_menu->addAction(m_closeKaduAction);
+    m_menu->addAction(m_closeKaduAction);
 
-	m_needsUpdate = false;
+    m_needsUpdate = false;
 }
 
 void DockingMenuHandler::addStatusContainerMenus()
 {
-	auto statusContainersCount = m_statusContainerManager->statusContainers().count();
-	auto showAllAccountsMenu = statusContainersCount > 0;
-	auto multipleMenus = statusContainersCount > 1;
+    auto statusContainersCount = m_statusContainerManager->statusContainers().count();
+    auto showAllAccountsMenu = statusContainersCount > 0;
+    auto multipleMenus = statusContainersCount > 1;
 
-	if (multipleMenus)
-	{
-		for (auto statusContainer : m_statusContainerManager->statusContainers())
-			addStatusContainerMenu(statusContainer);
-		m_menu->addSeparator();
-	}
+    if (multipleMenus)
+    {
+        for (auto statusContainer : m_statusContainerManager->statusContainers())
+            addStatusContainerMenu(statusContainer);
+        m_menu->addSeparator();
+    }
 
-	if (showAllAccountsMenu)
-	{
-		auto allAccountsMenu = m_pluginInjectedFactory->makeInjected<StatusMenu>(m_statusContainerManager, multipleMenus, m_menu);
-		connect(allAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(update()));
-	}
+    if (showAllAccountsMenu)
+    {
+        auto allAccountsMenu =
+            m_pluginInjectedFactory->makeInjected<StatusMenu>(m_statusContainerManager, multipleMenus, m_menu);
+        connect(allAccountsMenu, SIGNAL(menuRecreated()), this, SLOT(update()));
+    }
 }
 
 void DockingMenuHandler::addStatusContainerMenu(StatusContainer *statusContainer)
 {
-	auto menu = new QMenu{statusContainer->statusContainerName(), m_menu};
-	menu->setIcon(m_iconsManager->iconByPath(statusContainer->statusIcon()));
-	new StatusMenu{statusContainer, false, menu};
-	m_menu->addMenu(menu);
+    auto menu = new QMenu{statusContainer->statusContainerName(), m_menu};
+    menu->setIcon(m_iconsManager->iconByPath(statusContainer->statusIcon()));
+    new StatusMenu{statusContainer, false, menu};
+    m_menu->addMenu(menu);
 }
 
 void DockingMenuHandler::addActionRepositoryMenus()
 {
-	if (!m_dockingMenuActionRepository->actions().isEmpty())
-	{
-		m_menu->addSeparator();
-		for (auto action : m_dockingMenuActionRepository->actions())
-			m_menu->addAction(action);
-	}
+    if (!m_dockingMenuActionRepository->actions().isEmpty())
+    {
+        m_menu->addSeparator();
+        for (auto action : m_dockingMenuActionRepository->actions())
+            m_menu->addAction(action);
+    }
 }
 
 void DockingMenuHandler::showKaduWindow()
 {
-	_activateWindow(m_configuration, m_kaduWindowService->kaduWindow());
+    _activateWindow(m_configuration, m_kaduWindowService->kaduWindow());
 }
 
 void DockingMenuHandler::hideKaduWindow()
 {
-	m_kaduWindowService->kaduWindow()->window()->hide();
+    m_kaduWindowService->kaduWindow()->window()->hide();
 }
 
 void DockingMenuHandler::silentModeToggled(bool enabled)
 {
-	m_silentModeService->setSilent(enabled);
+    m_silentModeService->setSilent(enabled);
 }
 
 #include "moc_docking-menu-handler.cpp"

@@ -26,53 +26,58 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-hot-key-edit.h"
 
-ConfigHotKeyEdit::ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
-		HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigHotKeyEdit::ConfigHotKeyEdit(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : HotKeyEdit(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
+    createWidgets();
 }
 
-ConfigHotKeyEdit::ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
-		HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigHotKeyEdit::ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : HotKeyEdit(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigHotKeyEdit::~ConfigHotKeyEdit()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigHotKeyEdit::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigHotKeyEdit::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setShortCut(dataManager->readEntry(section, item).toString());
+    if (!dataManager)
+        return;
+    setShortCut(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigHotKeyEdit::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QVariant(shortCutString()));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QVariant(shortCutString()));
 }
 
 void ConfigHotKeyEdit::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	HotKeyEdit::setVisible(visible);
+    label->setVisible(visible);
+    HotKeyEdit::setVisible(visible);
 }
 
 #include "moc_config-hot-key-edit.cpp"

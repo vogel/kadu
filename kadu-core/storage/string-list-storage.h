@@ -26,13 +26,12 @@ class StoragePoint;
 class StringListStorage
 {
 public:
-	StringListStorage(StoragePoint *storagePoint, QString nodeName);
+    StringListStorage(StoragePoint *storagePoint, QString nodeName);
 
-	QStringList load() const;
-	void store(const QStringList &values) const;
+    QStringList load() const;
+    void store(const QStringList &values) const;
 
 private:
-	StoragePoint *m_storagePoint;
-	QString m_nodeName;
-
+    StoragePoint *m_storagePoint;
+    QString m_nodeName;
 };

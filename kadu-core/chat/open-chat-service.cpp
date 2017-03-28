@@ -23,8 +23,7 @@
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
 
-OpenChatService::OpenChatService(QObject *parent) :
-		QObject{parent}
+OpenChatService::OpenChatService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,31 +33,32 @@ OpenChatService::~OpenChatService()
 
 void OpenChatService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void OpenChatService::setOpenChatRepository(OpenChatRepository *openChatRepository)
 {
-	m_openChatRepository = openChatRepository;
+    m_openChatRepository = openChatRepository;
 }
 
 void OpenChatService::init()
 {
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &OpenChatService::chatWidgetAdded);
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &OpenChatService::chatWidgetRemoved);
+    connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this, &OpenChatService::chatWidgetAdded);
+    connect(
+        m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this, &OpenChatService::chatWidgetRemoved);
 
-	for (auto chatWidget : m_chatWidgetRepository)
-		chatWidgetAdded(chatWidget);
+    for (auto chatWidget : m_chatWidgetRepository)
+        chatWidgetAdded(chatWidget);
 }
 
 void OpenChatService::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	m_openChatRepository->addOpenChat(chatWidget->chat());
+    m_openChatRepository->addOpenChat(chatWidget->chat());
 }
 
 void OpenChatService::chatWidgetRemoved(ChatWidget *chatWidget)
 {
-	m_openChatRepository->removeOpenChat(chatWidget->chat());
+    m_openChatRepository->removeOpenChat(chatWidget->chat());
 }
 
 #include "open-chat-service.moc"

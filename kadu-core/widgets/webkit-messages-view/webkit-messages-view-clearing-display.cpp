@@ -23,8 +23,8 @@
 #include "message/message-render-header-behavior.h"
 #include "misc/algorithm.h"
 
-WebkitMessagesViewClearingDisplay::WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer) :
-		WebkitMessagesViewDisplay{chatStyleRenderer}
+WebkitMessagesViewClearingDisplay::WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer)
+        : WebkitMessagesViewDisplay{chatStyleRenderer}
 {
 }
 
@@ -34,15 +34,17 @@ WebkitMessagesViewClearingDisplay::~WebkitMessagesViewClearingDisplay()
 
 void WebkitMessagesViewClearingDisplay::displayMessages(SortedMessages messages)
 {
-	auto overlapping = find_overlapping_region(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
+    auto overlapping =
+        find_overlapping_region(begin(m_currentMessages), end(m_currentMessages), begin(messages), end(messages));
 
-	if (!m_currentMessages.empty() && begin(m_currentMessages) != overlapping.first)
-	{
-		chatStyleRenderer().clearMessages();
-		appendMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::WhenRequired);
-	}
-	else
-		appendMessagesRange(overlapping.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
+    if (!m_currentMessages.empty() && begin(m_currentMessages) != overlapping.first)
+    {
+        chatStyleRenderer().clearMessages();
+        appendMessagesRange(begin(messages), end(messages), Message::null, MessageRenderHeaderBehavior::WhenRequired);
+    }
+    else
+        appendMessagesRange(
+            overlapping.second, end(messages), m_currentMessages.last(), MessageRenderHeaderBehavior::WhenRequired);
 
-	m_currentMessages = std::move(messages);
+    m_currentMessages = std::move(messages);
 }

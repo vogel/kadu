@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include "status/status-type.h"
 #include "exports.h"
+#include "status/status-type.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -43,51 +43,57 @@ class QActionGroup;
 
 class KADUAPI StatusActions : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StatusActions(StatusContainer *statusContainer, bool includePrefix, bool onlyStatuses, QObject *parent = nullptr);
-	virtual ~StatusActions();
+    explicit StatusActions(
+        StatusContainer *statusContainer, bool includePrefix, bool onlyStatuses, QObject *parent = nullptr);
+    virtual ~StatusActions();
 
-	const QList<QAction *> & actions() const { return Actions; }
-	StatusContainer * statusContainer() const { return MyStatusContainer; }
+    const QList<QAction *> &actions() const
+    {
+        return Actions;
+    }
+    StatusContainer *statusContainer() const
+    {
+        return MyStatusContainer;
+    }
 
 signals:
-	void statusActionsRecreated();
+    void statusActionsRecreated();
 
-	void statusActionTriggered(QAction *);
-	void changeDescriptionActionTriggered(bool);
+    void statusActionTriggered(QAction *);
+    void changeDescriptionActionTriggered(bool);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<StatusSetter> m_statusSetter;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<StatusSetter> m_statusSetter;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	StatusContainer *MyStatusContainer;
-	bool IncludePrefix;
-	bool OnlyStatuses;
+    StatusContainer *MyStatusContainer;
+    bool IncludePrefix;
+    bool OnlyStatuses;
 
-	QActionGroup *ChangeStatusActionGroup;
-	QAction *ChangeDescription;
-	QList<QAction *> Actions;
-	QList<StatusType> MyStatusTypes;
+    QActionGroup *ChangeStatusActionGroup;
+    QAction *ChangeDescription;
+    QList<QAction *> Actions;
+    QList<StatusType> MyStatusTypes;
 
-	void createActions();
-	void createBasicActions();
-	QAction * createSeparator();
-	QAction * createStatusAction(const StatusTypeData & typeData);
+    void createActions();
+    void createBasicActions();
+    QAction *createSeparator();
+    QAction *createStatusAction(const StatusTypeData &typeData);
 
-	void cleanUpActions();
+    void cleanUpActions();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 
-	void statusUpdated(StatusContainer *container = 0);
-	void iconThemeChanged();
-
+    void statusUpdated(StatusContainer *container = 0);
+    void iconThemeChanged();
 };

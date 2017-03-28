@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-ScreenshotPluginObject::ScreenshotPluginObject(QObject *parent) :
-		QObject{parent}
+ScreenshotPluginObject::ScreenshotPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,46 +36,51 @@ ScreenshotPluginObject::~ScreenshotPluginObject()
 {
 }
 
-void ScreenshotPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void ScreenshotPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void ScreenshotPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void ScreenshotPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void ScreenshotPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void ScreenshotPluginObject::setScreenshotActions(ScreenshotActions *screenshotActions)
 {
-	m_screenshotActions = screenshotActions;
+    m_screenshotActions = screenshotActions;
 }
 
-void ScreenshotPluginObject::setScreenShotConfigurationUiHandler(ScreenShotConfigurationUiHandler *screenShotConfigurationUiHandler)
+void ScreenshotPluginObject::setScreenShotConfigurationUiHandler(
+    ScreenShotConfigurationUiHandler *screenShotConfigurationUiHandler)
 {
-	m_screenShotConfigurationUiHandler = screenShotConfigurationUiHandler;
+    m_screenShotConfigurationUiHandler = screenShotConfigurationUiHandler;
 }
 
 void ScreenshotPluginObject::setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration)
 {
-	m_screenShotConfiguration = screenShotConfiguration;
+    m_screenShotConfiguration = screenShotConfiguration;
 }
 
 void ScreenshotPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_screenShotConfigurationUiHandler);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_screenShotConfigurationUiHandler);
 }
 
 void ScreenshotPluginObject::done()
 {
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_screenShotConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_screenShotConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
 }
 
 #include "moc_screenshot-plugin-object.cpp"

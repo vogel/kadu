@@ -32,23 +32,22 @@ class QAction;
 
 class SoundActions : public QObject, public ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SoundActions(QObject *parent = nullptr);
-	virtual ~SoundActions();
+    Q_INVOKABLE explicit SoundActions(QObject *parent = nullptr);
+    virtual ~SoundActions();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<SoundMuteAction> m_soundMuteAction;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<SoundMuteAction> m_soundMuteAction;
 
 private slots:
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setSoundMuteAction(SoundMuteAction *soundMuteAction);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setSoundMuteAction(SoundMuteAction *soundMuteAction);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

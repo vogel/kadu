@@ -32,8 +32,8 @@
 
 #include "buddies/buddy-gender.h"
 #include "buddies/buddy-shared.h"
-#include "storage/shared-base.h"
 #include "exports.h"
+#include "storage/shared-base.h"
 
 class Account;
 class Avatar;
@@ -46,78 +46,71 @@ class ConfigurationApi;
 
 class KADUAPI Buddy : public SharedBase<BuddyShared>
 {
-	KaduSharedBaseClass(Buddy)
+    KaduSharedBaseClass(Buddy)
 
-	friend class BuddyDummyFactory;
-	friend class ContactShared;
-	// only allow ContactShared and BuddyDummyFactory to access these methods
-	void addContact(Contact contact);
-	void removeContact(Contact contact) const;
+        friend class BuddyDummyFactory;
+    friend class ContactShared;
+    // only allow ContactShared and BuddyDummyFactory to access these methods
+    void addContact(Contact contact);
+    void removeContact(Contact contact) const;
 
 public:
-	static Buddy null;
+    static Buddy null;
 
-	Buddy();
-	Buddy(BuddyShared *data);
-	explicit Buddy(QObject *data);
-	Buddy(const Buddy &copy);
-	virtual ~Buddy();
+    Buddy();
+    Buddy(BuddyShared *data);
+    explicit Buddy(QObject *data);
+    Buddy(const Buddy &copy);
+    virtual ~Buddy();
 
-	void mergeWith(Buddy buddy); // TODO: 0.10 refactor
+    void mergeWith(Buddy buddy);   // TODO: 0.10 refactor
 
-	void importConfiguration(const QDomElement &parent);
-	void importConfiguration(); // import configuration from customDataValues
+    void importConfiguration(const QDomElement &parent);
+    void importConfiguration();   // import configuration from customDataValues
 
-	QString customData(const QString &key) const;
-	void setCustomData(const QString &key, const QString &value);
-	void removeCustomData(const QString &key);
+    QString customData(const QString &key) const;
+    void setCustomData(const QString &key, const QString &value);
+    void removeCustomData(const QString &key);
 
-	void sortContacts();
-	void normalizePriorities();
+    void sortContacts();
+    void normalizePriorities();
 
-// 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.10 tricky merge, this should work well ;)
+    // 	void setData(BuddyShared *data) { Data = data; }  // TODO: 0.10 tricky merge, this should work well ;)
 
-	QVector<Contact> contacts(Account account) const;
-	QList<Contact> contacts() const;
-	bool hasContact(Account account) const;
+    QVector<Contact> contacts(Account account) const;
+    QList<Contact> contacts() const;
+    bool hasContact(Account account) const;
 
-	QString id(Account account) const;
-	// properties
+    QString id(Account account) const;
+    // properties
 
-	bool showInAllGroup() const;
-	bool isInGroup(Group group) const;
-	void addToGroup(Group group) const;
-	void removeFromGroup(Group group) const;
+    bool showInAllGroup() const;
+    bool isInGroup(Group group) const;
+    void addToGroup(Group group) const;
+    void removeFromGroup(Group group) const;
 
-	bool isEmpty(bool checkOnlyForContacts = false) const;
+    bool isEmpty(bool checkOnlyForContacts = false) const;
 
-	QString display() const;
+    QString display() const;
 
-	KaduSharedBase_PropertyCRW(Avatar, buddyAvatar, BuddyAvatar)
-	KaduSharedBase_PropertyWrite(const QString &, display, Display)
-	KaduSharedBase_PropertyCRW(QString, firstName, FirstName)
-	KaduSharedBase_PropertyCRW(QString, lastName, LastName)
-	KaduSharedBase_PropertyCRW(QString, familyName, FamilyName)
-	KaduSharedBase_PropertyCRW(QString, city, City)
-	KaduSharedBase_PropertyCRW(QString, familyCity, FamilyCity)
-	KaduSharedBase_PropertyCRW(QString, nickName, NickName)
-	KaduSharedBase_PropertyCRW(QString, homePhone, HomePhone)
-	KaduSharedBase_PropertyCRW(QString, mobile, Mobile)
-	KaduSharedBase_PropertyCRW(QString, email, Email)
-	KaduSharedBase_PropertyCRW(QString, website, Website)
-	KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
-	KaduSharedBase_Property(BuddyGender, gender, Gender)
-	KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
-	KaduSharedBase_Property(bool, preferHigherStatuses, PreferHigherStatuses)
-	KaduSharedBase_PropertyBool(Anonymous)
-	KaduSharedBase_PropertyBool(Temporary)
-	KaduSharedBase_PropertyBool(Ignored)
-	KaduSharedBase_PropertyBool(Blocked)
-	KaduSharedBase_PropertyBool(OfflineTo)
-	KaduSharedBase_PropertyRead(quint16, unreadMessagesCount, UnreadMessagesCount)
-
+    KaduSharedBase_PropertyCRW(Avatar, buddyAvatar, BuddyAvatar) KaduSharedBase_PropertyWrite(
+        const QString &, display, Display) KaduSharedBase_PropertyCRW(QString, firstName, FirstName)
+        KaduSharedBase_PropertyCRW(QString, lastName, LastName) KaduSharedBase_PropertyCRW(
+            QString, familyName, FamilyName) KaduSharedBase_PropertyCRW(QString, city, City)
+            KaduSharedBase_PropertyCRW(QString, familyCity, FamilyCity) KaduSharedBase_PropertyCRW(
+                QString, nickName, NickName) KaduSharedBase_PropertyCRW(QString, homePhone, HomePhone)
+                KaduSharedBase_PropertyCRW(QString, mobile, Mobile) KaduSharedBase_PropertyCRW(QString, email, Email)
+                    KaduSharedBase_PropertyCRW(QString, website, Website)
+                        KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
+                            KaduSharedBase_Property(BuddyGender, gender, Gender)
+                                KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
+                                    KaduSharedBase_Property(bool, preferHigherStatuses, PreferHigherStatuses)
+                                        KaduSharedBase_PropertyBool(Anonymous) KaduSharedBase_PropertyBool(Temporary)
+                                            KaduSharedBase_PropertyBool(Ignored) KaduSharedBase_PropertyBool(Blocked)
+                                                KaduSharedBase_PropertyBool(OfflineTo) KaduSharedBase_PropertyRead(
+                                                    quint16, unreadMessagesCount, UnreadMessagesCount)
 };
 
 Q_DECLARE_METATYPE(Buddy)
 
-#endif // BUDDY_H
+#endif   // BUDDY_H

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -35,22 +35,21 @@ class QWinThumbnailToolBar;
 
 class WindowsThumbnailToolbar : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit WindowsThumbnailToolbar(not_owned_qptr<StatusActions> statusActions, QWidget *parent = nullptr);
-	virtual ~WindowsThumbnailToolbar();
+    explicit WindowsThumbnailToolbar(not_owned_qptr<StatusActions> statusActions, QWidget *parent = nullptr);
+    virtual ~WindowsThumbnailToolbar();
 
 private:
-	QPointer<StatusSetter> m_statusSetter;
+    QPointer<StatusSetter> m_statusSetter;
 
-	not_owned_qptr<StatusActions> m_statusActions;
-	owned_qptr<QWinThumbnailToolBar> m_toolbar;
+    not_owned_qptr<StatusActions> m_statusActions;
+    owned_qptr<QWinThumbnailToolBar> m_toolbar;
 
-	void statusActionsRecreated();
-	void changeStatus(QAction *action);
+    void statusActionsRecreated();
+    void changeStatus(QAction *action);
 
 private slots:
-	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-
+    INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
 };

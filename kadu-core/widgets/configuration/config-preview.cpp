@@ -27,43 +27,48 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-preview.h"
 
-ConfigPreview::ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: Preview(parentConfigGroupBox->widget()), ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigPreview::ConfigPreview(
+    const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+    ConfigurationWindowDataManager *dataManager)
+        : Preview(parentConfigGroupBox->widget()),
+          ConfigWidget(widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
+    createWidgets();
 }
 
 ConfigPreview::ConfigPreview(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: Preview(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager), label(0)
+        : Preview(parentConfigGroupBox->widget()), ConfigWidget(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigPreview::~ConfigPreview()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigPreview::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
 }
 
 void ConfigPreview::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	Preview::setVisible(visible);
+    label->setVisible(visible);
+    Preview::setVisible(visible);
 }
 
 bool ConfigPreview::fromDomElement(QDomElement domElement)
 {
-	QString height = domElement.attribute("height");
-	bool ok;
-	int newheight = height.toInt(&ok);
-	if (ok)
-		setFixedHeight(newheight);
-	return ConfigWidget::fromDomElement(domElement);
+    QString height = domElement.attribute("height");
+    bool ok;
+    int newheight = height.toInt(&ok);
+    if (ok)
+        setFixedHeight(newheight);
+    return ConfigWidget::fromDomElement(domElement);
 }
 
 #include "moc_config-preview.cpp"

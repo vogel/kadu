@@ -25,9 +25,7 @@
 
 class KADUAPI DomModule : public injeqt::module
 {
-
 public:
-	explicit DomModule();
-	virtual ~DomModule();
-
+    explicit DomModule();
+    virtual ~DomModule();
 };

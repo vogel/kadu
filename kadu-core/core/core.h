@@ -34,7 +34,7 @@
 #include <injeqt/injector.h>
 #include <memory>
 
-template<class T>
+template <class T>
 class DefaultProvider;
 
 class ExecutionArguments;
@@ -43,51 +43,50 @@ class Roster;
 
 class KADUAPI Core : public QObject, private AccountsAwareObject, public ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Core(injeqt::v1::injector &&injector);
-	virtual ~Core();
+    explicit Core(injeqt::v1::injector &&injector);
+    virtual ~Core();
 
-	int executeSingle(const ExecutionArguments &executionArguments);
+    int executeSingle(const ExecutionArguments &executionArguments);
 
-	void setIcon(const KaduIcon &icon);
+    void setIcon(const KaduIcon &icon);
 
 public slots:
-	void executeRemoteCommand(const QString &signal);
+    void executeRemoteCommand(const QString &signal);
 
 signals:
-	void connecting();
-	void connected();
-	void disconnected();
+    void connecting();
+    void connected();
+    void disconnected();
 
 protected:
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
-	virtual void configurationUpdated() override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
+    virtual void configurationUpdated() override;
 
 private:
-	mutable injeqt::v1::injector m_injector;
-	std::unique_ptr<InjectorRegisteredActions> m_injectorRegisteredActions;
+    mutable injeqt::v1::injector m_injector;
+    std::unique_ptr<InjectorRegisteredActions> m_injectorRegisteredActions;
 
-	void execute(const QStringList &openIds, const QString &openUuid);
+    void execute(const QStringList &openIds, const QString &openUuid);
 
-	void createGui();
-	void runServices();
-	void runGuiServices();
-	void stopServices();
+    void createGui();
+    void runServices();
+    void runGuiServices();
+    void stopServices();
 
-	void activatePlugins();
+    void activatePlugins();
 
-	void createDefaultConfiguration();
-	void createAllDefaultToolbars();
+    void createDefaultConfiguration();
+    void createAllDefaultToolbars();
 
-	void init();
-	void loadDefaultStatus();
+    void init();
+    void loadDefaultStatus();
 
 private slots:
-	void updateIcon();
+    void updateIcon();
 
-	void deleteOldConfigurationFiles();
-
+    void deleteOldConfigurationFiles();
 };

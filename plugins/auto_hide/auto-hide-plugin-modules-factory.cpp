@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-AutoHidePluginModulesFactory::AutoHidePluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+AutoHidePluginModulesFactory::AutoHidePluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ AutoHidePluginModulesFactory::~AutoHidePluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> AutoHidePluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<AutoHideModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<AutoHideModule>());
 
-	return modules;
+    return modules;
 }
 
 QString AutoHidePluginModulesFactory::parentInjectorName() const
 {
-	return "idle";
+    return "idle";
 }
 
 #include "moc_auto-hide-plugin-modules-factory.cpp"

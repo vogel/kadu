@@ -24,8 +24,7 @@
 
 #include "hide-anonymous-talkable-filter.h"
 
-HideAnonymousTalkableFilter::HideAnonymousTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), Enabled(true)
+HideAnonymousTalkableFilter::HideAnonymousTalkableFilter(QObject *parent) : TalkableFilter(parent), Enabled(true)
 {
 }
 
@@ -35,44 +34,44 @@ HideAnonymousTalkableFilter::~HideAnonymousTalkableFilter()
 
 void HideAnonymousTalkableFilter::setEnabled(bool enabled)
 {
-	if (Enabled == enabled)
-		return;
+    if (Enabled == enabled)
+        return;
 
-	Enabled = enabled;
-	emit filterChanged();
+    Enabled = enabled;
+    emit filterChanged();
 }
 
 TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterChat(const Chat &chat)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (chat.display().isEmpty())
-		return Rejected;
-	else
-		return Undecided;
+    if (chat.display().isEmpty())
+        return Rejected;
+    else
+        return Undecided;
 }
 
 TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (buddy.isAnonymous())
-		return Rejected;
-	else
-		return Undecided;
+    if (buddy.isAnonymous())
+        return Rejected;
+    else
+        return Undecided;
 }
 
 TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterContact(const Contact &contact)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (contact.isAnonymous())
-		return Rejected;
-	else
-		return Undecided;
+    if (contact.isAnonymous())
+        return Rejected;
+    else
+        return Undecided;
 }
 
 #include "moc_hide-anonymous-talkable-filter.cpp"

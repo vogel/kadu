@@ -21,8 +21,7 @@
 
 #include "toolbar-configuration-manager.h"
 
-ToolbarConfigurationManager::ToolbarConfigurationManager(QObject *parent) :
-		QObject(parent)
+ToolbarConfigurationManager::ToolbarConfigurationManager(QObject *parent) : QObject(parent)
 {
 }
 
@@ -32,8 +31,8 @@ ToolbarConfigurationManager::~ToolbarConfigurationManager()
 
 void ToolbarConfigurationManager::notifyConfigurationUpdated()
 {
-	// do not use '0' here, with '50' there is no flicking
-	QTimer::singleShot(50, this, SIGNAL(configurationUpdated()));
+    // do not use '0' here, with '50' there is no flicking
+    QTimer::singleShot(50, this, SIGNAL(configurationUpdated()));
 }
 
 #include "moc_toolbar-configuration-manager.cpp"

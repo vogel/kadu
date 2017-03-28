@@ -34,16 +34,15 @@
  *
  * Creates empty ChatDetailsContactSet object assigned to chatData object.
  */
-ChatDetailsContactSet::ChatDetailsContactSet(ChatShared *chatData) :
-		ChatDetails(chatData)
+ChatDetailsContactSet::ChatDetailsContactSet(ChatShared *chatData) : ChatDetails(chatData)
 {
-	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+    Protocol *protocol = mainData()->chatAccount().protocolHandler();
 
-	if (protocol)
-	{
-		connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-		connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-	}
+    if (protocol)
+    {
+        connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+        connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+    }
 }
 
 ChatDetailsContactSet::~ChatDetailsContactSet()
@@ -52,12 +51,12 @@ ChatDetailsContactSet::~ChatDetailsContactSet()
 
 void ChatDetailsContactSet::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void ChatDetailsContactSet::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 /**
@@ -69,12 +68,12 @@ void ChatDetailsContactSet::setContactManager(ContactManager *contactManager)
  */
 void ChatDetailsContactSet::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ChatDetails::load();
+    ChatDetails::load();
 
-	m_contacts = ContactSetConfigurationHelper::loadFromConfiguration(m_contactManager, this, "Contacts");
+    m_contacts = ContactSetConfigurationHelper::loadFromConfiguration(m_contactManager, this, "Contacts");
 }
 
 /**
@@ -86,12 +85,12 @@ void ChatDetailsContactSet::load()
  */
 void ChatDetailsContactSet::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", m_contacts);
+    ContactSetConfigurationHelper::saveToConfiguration(this, "Contacts", m_contacts);
 }
 
 /**
@@ -104,9 +103,9 @@ void ChatDetailsContactSet::store()
  */
 bool ChatDetailsContactSet::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return StorableObject::shouldStore() && !m_contacts.isEmpty();
+    return StorableObject::shouldStore() && !m_contacts.isEmpty();
 }
 
 /**
@@ -116,9 +115,9 @@ bool ChatDetailsContactSet::shouldStore()
  *
  * Returns type of this chat - 'ContactSet'.
  */
-ChatType * ChatDetailsContactSet::type() const
+ChatType *ChatDetailsContactSet::type() const
 {
-	return m_chatTypeManager->chatType("ContactSet");
+    return m_chatTypeManager->chatType("ContactSet");
 }
 
 /**
@@ -131,17 +130,17 @@ ChatType * ChatDetailsContactSet::type() const
  */
 QString ChatDetailsContactSet::name() const
 {
-	QStringList displays;
-	foreach (const Contact &contact, m_contacts)
-		displays.append(contact.display(true));
+    QStringList displays;
+    foreach (const Contact &contact, m_contacts)
+        displays.append(contact.display(true));
 
-	displays.sort();
-	return displays.join(", ");
+    displays.sort();
+    return displays.join(", ");
 }
 
 bool ChatDetailsContactSet::isConnected() const
 {
-	return mainData()->chatAccount().protocolHandler() && mainData()->chatAccount().protocolHandler()->isConnected();
+    return mainData()->chatAccount().protocolHandler() && mainData()->chatAccount().protocolHandler()->isConnected();
 }
 
 /**
@@ -153,9 +152,9 @@ bool ChatDetailsContactSet::isConnected() const
  */
 void ChatDetailsContactSet::setContacts(const ContactSet &contacts)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	m_contacts = contacts;
+    m_contacts = contacts;
 }
 
 #include "moc_chat-details-contact-set.cpp"

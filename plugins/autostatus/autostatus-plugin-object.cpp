@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-AutostatusPluginObject::AutostatusPluginObject(QObject *parent) :
-		QObject{parent}
+AutostatusPluginObject::AutostatusPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,44 +38,47 @@ AutostatusPluginObject::~AutostatusPluginObject()
 
 void AutostatusPluginObject::setAutostatusActions(AutostatusActions *autostatusActions)
 {
-	m_autostatusActions = autostatusActions;
+    m_autostatusActions = autostatusActions;
 }
 
 void AutostatusPluginObject::setAutostatusService(AutostatusService *autostatusService)
 {
-	m_autostatusService = autostatusService;
+    m_autostatusService = autostatusService;
 }
 
 void AutostatusPluginObject::setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger)
 {
-	m_autostatusStatusChanger = autostatusStatusChanger;
+    m_autostatusStatusChanger = autostatusStatusChanger;
 }
 
-void AutostatusPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void AutostatusPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void AutostatusPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AutostatusPluginObject::setStatusChangerManager(StatusChangerManager *statusChangerManager)
 {
-	m_statusChangerManager = statusChangerManager;
+    m_statusChangerManager = statusChangerManager;
 }
 
 void AutostatusPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autostatus.ui"));
-	m_statusChangerManager->registerStatusChanger(m_autostatusStatusChanger);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autostatus.ui"));
+    m_statusChangerManager->registerStatusChanger(m_autostatusStatusChanger);
 }
 
 void AutostatusPluginObject::done()
 {
-	m_statusChangerManager->unregisterStatusChanger(m_autostatusStatusChanger);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autostatus.ui"));
+    m_statusChangerManager->unregisterStatusChanger(m_autostatusStatusChanger);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autostatus.ui"));
 }
 
 #include "moc_autostatus-plugin-object.cpp"

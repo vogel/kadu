@@ -19,20 +19,19 @@
 
 #pragma once
 
-#include "file-transfer/file-transfer-handler.h"
 #include "exports.h"
+#include "file-transfer/file-transfer-handler.h"
 
 class QIODevice;
 
 class KADUAPI OutgoingFileTransferHandler : public FileTransferHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit OutgoingFileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
-	virtual ~OutgoingFileTransferHandler();
+    explicit OutgoingFileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
+    virtual ~OutgoingFileTransferHandler();
 
-	virtual void send(QIODevice *source) = 0;
-	virtual void stop() = 0;
-
+    virtual void send(QIODevice *source) = 0;
+    virtual void stop() = 0;
 };

@@ -64,150 +64,149 @@ class ConfigurationApi;
  */
 class KADUAPI StoragePoint
 {
-	ConfigurationApi *Storage;
-	QDomElement Point;
+    ConfigurationApi *Storage;
+    QDomElement Point;
 
 public:
-	StoragePoint(ConfigurationApi *storage, QDomElement point);
+    StoragePoint(ConfigurationApi *storage, QDomElement point);
 
-	ConfigurationApi * storage() const;
-	QDomElement point() const;
+    ConfigurationApi *storage() const;
+    QDomElement point() const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as an attribute).
-	 * @param T type of returned value
-	 * @param name name of attribute that will be loaded
-	 * @return value of XML attribute
-	 *
-	 * Loads value from XML node as an attribute 'name' with type T.
-	 */
-template<class T>
-	T loadAttribute(const QString &name) const
-	{
-		QVariant value = Point.attribute(name);
-		return value.value<T>();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as an attribute).
+     * @param T type of returned value
+     * @param name name of attribute that will be loaded
+     * @return value of XML attribute
+     *
+     * Loads value from XML node as an attribute 'name' with type T.
+     */
+    template <class T>
+    T loadAttribute(const QString &name) const
+    {
+        QVariant value = Point.attribute(name);
+        return value.value<T>();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as subnode).
-	 * @param T type of returned value
-	 * @param name name of subnode that will be loaded
-	 * @return value of XML subnode
-	 *
-	 * Loads value from XML node as subnode 'name' with type T.
-	 */
-template<class T>
-	T loadValue(const QString &name) const
-	{
-		QVariant value;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as subnode).
+     * @param T type of returned value
+     * @param name name of subnode that will be loaded
+     * @return value of XML subnode
+     *
+     * Loads value from XML node as subnode 'name' with type T.
+     */
+    template <class T>
+    T loadValue(const QString &name) const
+    {
+        QVariant value;
 
-		if (Storage->hasNode(Point, name))
-			value = Storage->getTextNode(Point, name);
+        if (Storage->hasNode(Point, name))
+            value = Storage->getTextNode(Point, name);
 
-		return value.value<T>();
-	}
+        return value.value<T>();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Check if value is available in XML node (as subnode).
-	 * @param name name of subnode that will be checked
-	 * @return true, if subnode is available
-	 *
-	 * Check if value is available in XML node (as subnode).
-	 */
-	bool hasValue(const QString &name) const
-	{
-		return Storage->hasNode(Point, name);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Check if value is available in XML node (as subnode).
+     * @param name name of subnode that will be checked
+     * @return true, if subnode is available
+     *
+     * Check if value is available in XML node (as subnode).
+     */
+    bool hasValue(const QString &name) const
+    {
+        return Storage->hasNode(Point, name);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as an attribute).
-	 * @param T type of returned value
-	 * @param name name of attribute that will be loaded
-	 * @param def default value, returned when attribute non present
-	 * @return value of XML attribute
-	 *
-	 * Loads value from XML node as an attribute 'name' with type T.
-	 * If attribute is non present this method will return value of def.
-	 */
-template<class T>
-	T loadAttribute(const QString &name, T def) const
-	{
-		if (Point.hasAttribute(name))
-		{
-			QVariant value = Point.attribute(name);
-			return value.value<T>();
-		}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as an attribute).
+     * @param T type of returned value
+     * @param name name of attribute that will be loaded
+     * @param def default value, returned when attribute non present
+     * @return value of XML attribute
+     *
+     * Loads value from XML node as an attribute 'name' with type T.
+     * If attribute is non present this method will return value of def.
+     */
+    template <class T>
+    T loadAttribute(const QString &name, T def) const
+    {
+        if (Point.hasAttribute(name))
+        {
+            QVariant value = Point.attribute(name);
+            return value.value<T>();
+        }
 
-		return def;
-	}
+        return def;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as subnode).
-	 * @param T type of returned value
-	 * @param name name of subnode that will be loaded
-	 * @param def default value, returned when subnode non present
-	 * @return value of XML subnode
-	 *
-	 * Loads value from XML node as subnode 'name' with type T.
-	 * If subnode is non present this method will return value of def.
-	 */
-template<class T>
-	T loadValue(const QString &name, T def) const
-	{
-		if (Storage->hasNode(Point, name))
-		{
-			QVariant value = Storage->getTextNode(Point, name);
-			return value.value<T>();
-		}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as subnode).
+     * @param T type of returned value
+     * @param name name of subnode that will be loaded
+     * @param def default value, returned when subnode non present
+     * @return value of XML subnode
+     *
+     * Loads value from XML node as subnode 'name' with type T.
+     * If subnode is non present this method will return value of def.
+     */
+    template <class T>
+    T loadValue(const QString &name, T def) const
+    {
+        if (Storage->hasNode(Point, name))
+        {
+            QVariant value = Storage->getTextNode(Point, name);
+            return value.value<T>();
+        }
 
-		return def;
-	}
+        return def;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores value into XML node (as a subnode).
-	 * @param name name of subnode that will store this value
-	 * @param value value to be stored
-	 *
-	 * Stores value into XML node as a subnode 'name' with value 'value'
-	 * (value is converted to QString before storing).
-	 */
-	void storeValue(const QString &name, const QVariant value);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores value into XML node (as a subnode).
+     * @param name name of subnode that will store this value
+     * @param value value to be stored
+     *
+     * Stores value into XML node as a subnode 'name' with value 'value'
+     * (value is converted to QString before storing).
+     */
+    void storeValue(const QString &name, const QVariant value);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores value into XML node (as an attribute).
-	 * @param name name of attribute that will store this value
-	 * @param value value to be stored
-	 *
-	 * Stores value into XML node as a attribute 'name' with value 'value'
-	 * (value is converted to QString before storing).
-	 */
-	void storeAttribute(const QString &name, const QVariant value);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores value into XML node (as an attribute).
+     * @param name name of attribute that will store this value
+     * @param value value to be stored
+     *
+     * Stores value into XML node as a attribute 'name' with value 'value'
+     * (value is converted to QString before storing).
+     */
+    void storeAttribute(const QString &name, const QVariant value);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes value (a subnode) from XML node.
-	 * @param name name of subnode that will be removed
-	 *
-	 * Removes subnode 'name' from XML storage file.
-	 */
-	void removeValue(const QString &name);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removes value (a subnode) from XML node.
+     * @param name name of subnode that will be removed
+     *
+     * Removes subnode 'name' from XML storage file.
+     */
+    void removeValue(const QString &name);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes value (an attribute) from XML node.
-	 * @param name name of attribute that will be removed
-	 *
-	 * Removes attribute 'name' from XML storage file.
-	 */
-	void removeAttribute(const QString &name);
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removes value (an attribute) from XML node.
+     * @param name name of attribute that will be removed
+     *
+     * Removes attribute 'name' from XML storage file.
+     */
+    void removeAttribute(const QString &name);
 };
 
 /**

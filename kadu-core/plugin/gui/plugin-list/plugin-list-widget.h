@@ -51,52 +51,51 @@ class PluginStateService;
   */
 class PluginListWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PluginListWidget(MainConfigurationWindow *mainWindow);
-	virtual ~PluginListWidget();
+    explicit PluginListWidget(MainConfigurationWindow *mainWindow);
+    virtual ~PluginListWidget();
 
-	void applyChanges();
+    void applyChanges();
 
-	int dependantLayoutValue(int value, int width, int totalWidth) const;
+    int dependantLayoutValue(int value, int width, int totalWidth) const;
 
 private:
-	friend class PluginListWidgetItemDelegate;
-	friend class PluginModel;
-	friend class PluginProxyModel;
+    friend class PluginListWidgetItemDelegate;
+    friend class PluginModel;
+    friend class PluginProxyModel;
 
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PluginActivationService> m_pluginActivationService;
-	QPointer<PluginConflictResolver> m_pluginConflictResolver;
-	QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
-	QPointer<PluginStateManager> m_pluginStateManager;
-	QPointer<PluginStateService> m_pluginStateService;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PluginActivationService> m_pluginActivationService;
+    QPointer<PluginConflictResolver> m_pluginConflictResolver;
+    QPointer<PluginDependencyHandler> m_pluginDependencyHandler;
+    QPointer<PluginStateManager> m_pluginStateManager;
+    QPointer<PluginStateService> m_pluginStateService;
 
-	CategorizedListView *m_listView;
-	PluginModel *m_model;
-	PluginProxyModel *m_proxyModel;
-	bool m_processingChange;
+    CategorizedListView *m_listView;
+    PluginModel *m_model;
+    PluginProxyModel *m_proxyModel;
+    bool m_processingChange;
 
-	QSet<QString> activePluginsBeforeChange(const QString &changedPluginName, bool changedPluginChecked) const;
-	QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
+    QSet<QString> activePluginsBeforeChange(const QString &changedPluginName, bool changedPluginChecked) const;
+    QVector<QString> pluginsWithNewActiveState(bool newActiveState) const;
 
-	void handleCheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins);
-	void handleUncheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins);
+    void handleCheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins);
+    void handleUncheckedPlugin(const QString &pluginName, const QSet<QString> &modelActivePlugins);
 
-	void setAllChecked(const QVector<QString> &plugins, bool checked);
-	QString vectorToString(const QVector<QString> &plugins);
+    void setAllChecked(const QVector<QString> &plugins, bool checked);
+    QString vectorToString(const QVector<QString> &plugins);
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
-	INJEQT_SET void setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver);
-	INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
-	INJEQT_SET void setPluginStateManager(PluginStateManager *pluginStateManager);
-	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPluginActivationService(PluginActivationService *pluginActivationService);
+    INJEQT_SET void setPluginConflictResolver(PluginConflictResolver *pluginConflictResolver);
+    INJEQT_SET void setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler);
+    INJEQT_SET void setPluginStateManager(PluginStateManager *pluginStateManager);
+    INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
+    INJEQT_INIT void init();
 
-	void configurationApplied();
-	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-
+    void configurationApplied();
+    void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
 };

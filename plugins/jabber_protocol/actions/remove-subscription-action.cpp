@@ -21,12 +21,11 @@
 
 #include "protocols/services/subscription-service.h"
 
-RemoveSubscriptionAction::RemoveSubscriptionAction(QObject *parent) :
-		SubscriptionAction(parent)
+RemoveSubscriptionAction::RemoveSubscriptionAction(QObject *parent) : SubscriptionAction(parent)
 {
-	setType(ActionDescription::TypeUser);
-	setName("rosterRemoveSubscription");
-	setText(tr("Remove Subscription"));
+    setType(ActionDescription::TypeUser);
+    setName("rosterRemoveSubscription");
+    setText(tr("Remove Subscription"));
 }
 
 RemoveSubscriptionAction::~RemoveSubscriptionAction()
@@ -35,7 +34,7 @@ RemoveSubscriptionAction::~RemoveSubscriptionAction()
 
 void RemoveSubscriptionAction::execute(SubscriptionService *subscriptionService, const Contact &contact)
 {
-	subscriptionService->removeSubscription(contact);
+    subscriptionService->removeSubscription(contact);
 }
 
 #include "moc_remove-subscription-action.cpp"

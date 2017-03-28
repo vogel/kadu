@@ -24,10 +24,10 @@
 
 class KADUAPI OpenChatWithRunner
 {
-
 public:
-	virtual ~OpenChatWithRunner() {}
+    virtual ~OpenChatWithRunner()
+    {
+    }
 
-	virtual BuddyList matchingContacts(const QString &query) = 0;
-
+    virtual BuddyList matchingContacts(const QString &query) = 0;
 };

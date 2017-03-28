@@ -42,8 +42,7 @@
 
 #include "updates.h"
 
-Updates::Updates(QObject *parent) :
-		QObject(parent), UpdateChecked{false}
+Updates::Updates(QObject *parent) : QObject(parent), UpdateChecked{false}
 {
 }
 
@@ -53,186 +52,188 @@ Updates::~Updates()
 
 void Updates::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void Updates::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void Updates::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void Updates::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void Updates::setMainWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void Updates::setVersionService(VersionService *versionService)
 {
-	m_versionService = versionService;
+    m_versionService = versionService;
 }
 
 void Updates::init()
 {
-	buildQuery();
-	triggerAllAccountsAdded(m_accountManager);
+    buildQuery();
+    triggerAllAccountsAdded(m_accountManager);
 }
 
 void Updates::accountAdded(Account account)
 {
-	connect(account, SIGNAL(connected()), this, SLOT(run()));
+    connect(account, SIGNAL(connected()), this, SLOT(run()));
 }
 
 void Updates::accountRemoved(Account account)
 {
-	disconnect(account, 0, this, 0);
+    disconnect(account, 0, this, 0);
 }
 
 void Updates::buildQuery()
 {
-	Query = QString("/update-new.php?uuid=%1&version=%2").arg(m_configurationManager->uuid().toString()).arg(m_versionService->version());
+    Query = QString("/update-new.php?uuid=%1&version=%2")
+                .arg(m_configurationManager->uuid().toString())
+                .arg(m_versionService->version());
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
-	{
-		QString platform("&system=");
+    if (m_configuration->deprecatedApi()->readBoolEntry("General", "SendSysInfo"), true)
+    {
+        QString platform("&system=");
 #if defined(Q_OS_LINUX)
-                platform.append("Linux-");
+        platform.append("Linux-");
 
-                QFile issue("/etc/issue");
-                if (issue.open(QIODevice::ReadOnly | QIODevice::Text))
-                {
-                        QString tmp = issue.readLine();
-                        tmp.truncate(tmp.indexOf(" "));
-                        platform.append(tmp);
-                        issue.close();
-                }
-                else
-                        platform.append("Unknown");
+        QFile issue("/etc/issue");
+        if (issue.open(QIODevice::ReadOnly | QIODevice::Text))
+        {
+            QString tmp = issue.readLine();
+            tmp.truncate(tmp.indexOf(" "));
+            platform.append(tmp);
+            issue.close();
+        }
+        else
+            platform.append("Unknown");
 #elif defined(Q_OS_FREEBSD)
-		platform.append("FreeBSD");
+        platform.append("FreeBSD");
 #elif defined(Q_OS_NETBSD)
-		platform.append("NetBSD");
+        platform.append("NetBSD");
 #elif defined(Q_OS_OPENBSD)
-		platform.append("OpenBSD");
+        platform.append("OpenBSD");
 #elif defined(Q_OS_SOLARIS)
-		platform.append("Solaris");
+        platform.append("Solaris");
 #elif defined(Q_OS_WIN)
-		switch (QSysInfo::WindowsVersion)
-		{
-			case QSysInfo::WV_95:
-				platform.append("Windows95");
-				break;
-			case QSysInfo::WV_98:
-				platform.append("Windows98");
-				break;
-			case QSysInfo::WV_Me:
-				platform.append("WindowsME");
-				break;
-			case QSysInfo::WV_NT:
-				platform.append("WindowsNT");
-				break;
-			case QSysInfo::WV_2000:
-				platform.append("Windows2000");
-				break;
-			case QSysInfo::WV_XP:
-				platform.append("WindowsXP");
-				break;
-			case QSysInfo::WV_2003:
-				platform.append("Windows2003");
-				break;
-			case QSysInfo::WV_VISTA:
-				platform.append("WindowsVista");
-				break;
-			case QSysInfo::WV_WINDOWS7:
-				platform.append("Windows7");
-				break;
-	    		default:
-				platform.append("Windows-Unknown");
-				break;
-		}
+        switch (QSysInfo::WindowsVersion)
+        {
+        case QSysInfo::WV_95:
+            platform.append("Windows95");
+            break;
+        case QSysInfo::WV_98:
+            platform.append("Windows98");
+            break;
+        case QSysInfo::WV_Me:
+            platform.append("WindowsME");
+            break;
+        case QSysInfo::WV_NT:
+            platform.append("WindowsNT");
+            break;
+        case QSysInfo::WV_2000:
+            platform.append("Windows2000");
+            break;
+        case QSysInfo::WV_XP:
+            platform.append("WindowsXP");
+            break;
+        case QSysInfo::WV_2003:
+            platform.append("Windows2003");
+            break;
+        case QSysInfo::WV_VISTA:
+            platform.append("WindowsVista");
+            break;
+        case QSysInfo::WV_WINDOWS7:
+            platform.append("Windows7");
+            break;
+        default:
+            platform.append("Windows-Unknown");
+            break;
+        }
 #elif defined(Q_OS_HAIKU)
-                platform.append("Haiku OS");
+        platform.append("Haiku OS");
 #else
-		platform.append("Unknown");
+        platform.append("Unknown");
 #endif
-		Query.append(platform);
-	}
+        Query.append(platform);
+    }
 }
 
 void Updates::run()
 {
-	if (UpdateChecked)
-		return;
+    if (UpdateChecked)
+        return;
 
-	UpdateChecked = true;
+    UpdateChecked = true;
 
-	auto manager = new QNetworkAccessManager{this};
-	connect(manager, SIGNAL(finished(QNetworkReply*)),
-			this, SLOT(gotUpdatesInfo(QNetworkReply*)));
+    auto manager = new QNetworkAccessManager{this};
+    connect(manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(gotUpdatesInfo(QNetworkReply *)));
 
-	manager->get(QNetworkRequest{QUrl{QStringLiteral("http://www.kadu.im") + Query}});
+    manager->get(QNetworkRequest{QUrl{QStringLiteral("http://www.kadu.im") + Query}});
 }
 
 bool Updates::isNewerVersionThan(const QString &version)
 {
-	QStringList thisVersion = stripVersion(m_versionService->version()).split('.');
-	QStringList queryVersion = stripVersion(version).split('.');
+    QStringList thisVersion = stripVersion(m_versionService->version()).split('.');
+    QStringList queryVersion = stripVersion(version).split('.');
 
-	for (int i = 0, end = qMin(thisVersion.size(), queryVersion.size()); i < end; ++i)
-		if (queryVersion.at(i).toInt() != thisVersion.at(i).toInt())
-			return queryVersion.at(i).toInt() > thisVersion.at(i).toInt();
+    for (int i = 0, end = qMin(thisVersion.size(), queryVersion.size()); i < end; ++i)
+        if (queryVersion.at(i).toInt() != thisVersion.at(i).toInt())
+            return queryVersion.at(i).toInt() > thisVersion.at(i).toInt();
 
-	return (queryVersion.size() > thisVersion.size());
+    return (queryVersion.size() > thisVersion.size());
 }
 
 QString Updates::stripVersion(const QString &version)
 {
-	Qt::CaseSensitivity cs = Qt::CaseInsensitive;
+    Qt::CaseSensitivity cs = Qt::CaseInsensitive;
 
-	// We don't want to compare git versions at all.
-	if (version.contains("-g", cs))
-		return "9999";
+    // We don't want to compare git versions at all.
+    if (version.contains("-g", cs))
+        return "9999";
 
-	QString strippedVersion = version;
-	// Use negative numbers so that 0.1.0 is considered newer than 0.1-alpha10.
-	if (strippedVersion.contains("-alpha", cs))
-		strippedVersion.replace("-alpha", ".-3.", cs);
-	else if (strippedVersion.contains("-beta", cs))
-		strippedVersion.replace("-beta", ".-2.", cs);
-	else if (strippedVersion.contains("-rc", cs))
-		strippedVersion.replace("-rc", ".-1.", cs);
-	else
-		strippedVersion.append(".0");
+    QString strippedVersion = version;
+    // Use negative numbers so that 0.1.0 is considered newer than 0.1-alpha10.
+    if (strippedVersion.contains("-alpha", cs))
+        strippedVersion.replace("-alpha", ".-3.", cs);
+    else if (strippedVersion.contains("-beta", cs))
+        strippedVersion.replace("-beta", ".-2.", cs);
+    else if (strippedVersion.contains("-rc", cs))
+        strippedVersion.replace("-rc", ".-1.", cs);
+    else
+        strippedVersion.append(".0");
 
-	return strippedVersion;
+    return strippedVersion;
 }
 
 void Updates::gotUpdatesInfo(QNetworkReply *reply)
 {
-	reply->deleteLater();
-	deleteLater();
+    reply->deleteLater();
+    deleteLater();
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
-	{
-		auto newestVersion = QString::fromUtf8(reply->readAll());
-		if (newestVersion.size() > 31)
-			return;
+    if (m_configuration->deprecatedApi()->readBoolEntry("General", "CheckUpdates"))
+    {
+        auto newestVersion = QString::fromUtf8(reply->readAll());
+        if (newestVersion.size() > 31)
+            return;
 
-		if (isNewerVersionThan(newestVersion))
-		{
-			auto dialog = m_injectedFactory->makeInjected<UpdatesDialog>(newestVersion, m_kaduWindowService->kaduWindow());
-			dialog->show();
-		}
-	}
+        if (isNewerVersionThan(newestVersion))
+        {
+            auto dialog =
+                m_injectedFactory->makeInjected<UpdatesDialog>(newestVersion, m_kaduWindowService->kaduWindow());
+            dialog->show();
+        }
+    }
 }
 
 #include "moc_updates.cpp"

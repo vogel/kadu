@@ -34,31 +34,30 @@ class UrlHandlerManager;
 
 class GaduPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit GaduPluginObject(QObject *parent = nullptr);
-	virtual ~GaduPluginObject();
+    Q_INVOKABLE explicit GaduPluginObject(QObject *parent = nullptr);
+    virtual ~GaduPluginObject();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
-	QPointer<GaduProtocolFactory> m_gaduProtocolFactory;
-	QPointer<GaduUrlDomVisitorProvider> m_gaduUrlDomVisitorProvider;
-	QPointer<GaduUrlHandler> m_gaduUrlHandler;
-	QPointer<ProtocolsManager> m_protocolsManager;
-	QPointer<UrlHandlerManager> m_urlHandlerManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+    QPointer<GaduProtocolFactory> m_gaduProtocolFactory;
+    QPointer<GaduUrlDomVisitorProvider> m_gaduUrlDomVisitorProvider;
+    QPointer<GaduUrlHandler> m_gaduUrlHandler;
+    QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
-	INJEQT_SET void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
-	INJEQT_SET void setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider);
-	INJEQT_SET void setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+    INJEQT_SET void setGaduProtocolFactory(GaduProtocolFactory *gaduProtocolFactory);
+    INJEQT_SET void setGaduUrlDomVisitorProvider(GaduUrlDomVisitorProvider *gaduUrlDomVisitorProvider);
+    INJEQT_SET void setGaduUrlHandler(GaduUrlHandler *gaduUrlHandler);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 };

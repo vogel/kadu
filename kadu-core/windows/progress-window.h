@@ -60,89 +60,89 @@ class QProgressBar;
  */
 class KADUAPI ProgressWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	QProgressBar *ProgressBar;
-	QListWidget *TextListWidget;
-	QPushButton *ShowDetailsButton;
-	QPushButton *CloseButton;
+    QProgressBar *ProgressBar;
+    QListWidget *TextListWidget;
+    QPushButton *ShowDetailsButton;
+    QPushButton *CloseButton;
 
-	QString Label;
-	bool Finished;
-	bool Cancellable;
+    QString Label;
+    bool Finished;
+    bool Cancellable;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void showDetailsClicked();
+    void showDetailsClicked();
 
 protected:
-	virtual void closeEvent(QCloseEvent *closeEvent);
-	virtual void keyPressEvent(QKeyEvent *keyEvent);
+    virtual void closeEvent(QCloseEvent *closeEvent);
+    virtual void keyPressEvent(QKeyEvent *keyEvent);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new progress window with given label.
-	 * @param label label of progress window
-	 * @param parent parent QWidget of progress window
-	 */
-	explicit ProgressWindow(const QString &label, QWidget *parent = nullptr);
-	virtual ~ProgressWindow();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new progress window with given label.
+     * @param label label of progress window
+     * @param parent parent QWidget of progress window
+     */
+    explicit ProgressWindow(const QString &label, QWidget *parent = nullptr);
+    virtual ~ProgressWindow();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set value of Cancellable property.
-	 * @param setCancellable new value of Cancellable property
-	 *
-	 * If window is Cancellable it can be closed before action is finished. Signal @link canceled() @endlink will be emited in such case.
-	 */
-	void setCancellable(bool cancellable);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set value of Cancellable property.
+     * @param setCancellable new value of Cancellable property
+     *
+     * If window is Cancellable it can be closed before action is finished. Signal @link canceled() @endlink will be
+     * emited in such case.
+     */
+    void setCancellable(bool cancellable);
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new progress entry to progress list widget.
-	 * @param entryIcon name of KaduIcon that will be displayed next to progress message
-	 * @param entryMessage message to add at bottom of progress list
-	 */
-	void addProgressEntry(const QString &entryIcon, const QString &entryMessage);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add new progress entry to progress list widget.
+     * @param entryIcon name of KaduIcon that will be displayed next to progress message
+     * @param entryMessage message to add at bottom of progress list
+     */
+    void addProgressEntry(const QString &entryIcon, const QString &entryMessage);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set value of progress bar.
-	 * @param value new value of progress bar
-	 * @param maximum new maximum value of progress bar
-	 *
-	 * Set both values to 0 to make progress bar show busy indicator.
-	 */
-	void setProgressValue(int value, int maximum);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set value of progress bar.
+     * @param value new value of progress bar
+     * @param maximum new maximum value of progress bar
+     *
+     * Set both values to 0 to make progress bar show busy indicator.
+     */
+    void setProgressValue(int value, int maximum);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add new progress entry to progress list widget and enable closing of this window.
-	 * @param ok true if action was successfull
-	 * @param entryIcon
-	 * @param entryIcon name of KaduIcon that will be displayed next to progress message
-	 * @param entryMessage message to add at bottom of progress list
-	 *
-	 * This method works like addProgressEntry() and additionally enables closing of this progress
-	 * window. Also alert is set on this window and if ok is false a message dialog with given
-	 * icon and message is displayed.
-	 */
-	void progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add new progress entry to progress list widget and enable closing of this window.
+     * @param ok true if action was successfull
+     * @param entryIcon
+     * @param entryIcon name of KaduIcon that will be displayed next to progress message
+     * @param entryMessage message to add at bottom of progress list
+     *
+     * This method works like addProgressEntry() and additionally enables closing of this progress
+     * window. Also alert is set on this window and if ok is false a message dialog with given
+     * icon and message is displayed.
+     */
+    void progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Emited when window is closed before finishing its task.
-	 */
-	void canceled();
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Emited when window is closed before finishing its task.
+     */
+    void canceled();
 };
 
 /**

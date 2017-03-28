@@ -27,5 +27,5 @@ StaticEmoticonPathProvider::~StaticEmoticonPathProvider()
 
 QString StaticEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
 {
-	return emoticon.staticFilePath();
+    return emoticon.staticFilePath();
 }

@@ -43,16 +43,15 @@ class QStringList;
  */
 class KADUAPI PluginStateStorage09
 {
-
 public:
-	/**
-	 * @param installedPluginNames list of known installed plugins
-	 * @return Plugin states loaded from 0.9 format of configuration.
-	 *
-	 * If configuration in 0.9 format is not available, empty map is returned.
-	 */
-	QMap<QString, PluginState> load(Configuration *configuration, const ::std::set<QString> &installedPluginNames) const;
-
+    /**
+     * @param installedPluginNames list of known installed plugins
+     * @return Plugin states loaded from 0.9 format of configuration.
+     *
+     * If configuration in 0.9 format is not available, empty map is returned.
+     */
+    QMap<QString, PluginState>
+    load(Configuration *configuration, const ::std::set<QString> &installedPluginNames) const;
 };
 
 /**

@@ -35,9 +35,9 @@
 
 #include "configuration/configuration-aware-object.h"
 #include "configuration/gui/configuration-ui-handler.h"
+#include "injeqt-type-roles.h"
 #include "misc/misc.h"
 #include "storage/storable-object.h"
-#include "injeqt-type-roles.h"
 
 #include "gui/widgets/tab-widget.h"
 
@@ -61,112 +61,120 @@ enum class OpenChatActivation;
 
 class TabsManager : public StorableObject, ConfigurationAwareObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
-	// just for fun, this code is so bad already
-	// that one more friend class wont do a difference
-	friend class TabWidget;
+    // just for fun, this code is so bad already
+    // that one more friend class wont do a difference
+    friend class TabWidget;
 
-	QPointer<AttachTabAction> m_attachTabAction;
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<OpenInNewTabAction> m_openInNewTabAction;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SessionService> m_sessionService;
+    QPointer<AttachTabAction> m_attachTabAction;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<OpenInNewTabAction> m_openInNewTabAction;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SessionService> m_sessionService;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
-	TabWidget *TabDialog;
-	QList<Chat> DetachedChats;
-	QList<Chat> ClosedChats;
-	bool m_closing {false};
+    TabWidget *TabDialog;
+    QList<Chat> DetachedChats;
+    QList<Chat> ClosedChats;
+    bool m_closing{false};
 
-	int TargetTabs;
-	void insertTab(ChatWidget *chatWidget);
-	void makePopupMenu();
-	ChatWidget *SelectedChat;
-	QMenu *Menu;
-	QAction *DetachTabMenuAction;
-	QAction *CloseTabMenuAction;
-	QAction *CloseOtherTabsMenuAction;
-	QAction *ReopenClosedTabMenuAction;
-	ChatWidgetSetTitle *Title;
+    int TargetTabs;
+    void insertTab(ChatWidget *chatWidget);
+    void makePopupMenu();
+    ChatWidget *SelectedChat;
+    QMenu *Menu;
+    QAction *DetachTabMenuAction;
+    QAction *CloseTabMenuAction;
+    QAction *CloseOtherTabsMenuAction;
+    QAction *ReopenClosedTabMenuAction;
+    ChatWidgetSetTitle *Title;
 
-	void updateTabTitle(ChatWidget *chatWidget);
+    void updateTabTitle(ChatWidget *chatWidget);
 
-	/**
-	* Zmienne konfiguracyjne.
-	*/
-	bool ConfigTabsBelowChats;
-	bool ConfigDefaultTabs;
+    /**
+    * Zmienne konfiguracyjne.
+    */
+    bool ConfigTabsBelowChats;
+    bool ConfigDefaultTabs;
 
-	void setConfiguration(ChatWidget *chatWidget);
+    void setConfiguration(ChatWidget *chatWidget);
 
 private slots:
-	INJEQT_SET void setAttachTabAction(AttachTabAction *attachTabAction);
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setOpenInNewTabAction(OpenInNewTabAction *openInNewTabAction);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSessionService(SessionService *sessionService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAttachTabAction(AttachTabAction *attachTabAction);
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setOpenInNewTabAction(OpenInNewTabAction *openInNewTabAction);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSessionService(SessionService *sessionService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void onContextMenu(QWidget *w, const QPoint &pos);
-	void onMenuActionDetach();
-	void onMenuActionDetachAll();
-	void onMenuActionClose();
-	void onMenuActionCloseAll();
-	void onMenuActionCloseAllButActive();
-	void reopenClosedChat();
+    void onContextMenu(QWidget *w, const QPoint &pos);
+    void onMenuActionDetach();
+    void onMenuActionDetachAll();
+    void onMenuActionClose();
+    void onMenuActionCloseAll();
+    void onMenuActionCloseAllButActive();
+    void reopenClosedChat();
 
 protected:
-	virtual void configurationUpdated();
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void configurationUpdated();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
 public:
-	Q_INVOKABLE explicit TabsManager(QObject *parent = nullptr);
-	virtual ~TabsManager();
+    Q_INVOKABLE explicit TabsManager(QObject *parent = nullptr);
+    virtual ~TabsManager();
 
-	TabWidget * tabWidget() { return TabDialog; }
+    TabWidget *tabWidget()
+    {
+        return TabDialog;
+    }
 
-	void openStoredChatTabs();
-	void storeOpenedChatTabs();
+    void openStoredChatTabs();
+    void storeOpenedChatTabs();
 
-	void attachChat(ChatWidget *chatWidget);
-	void detachChat(ChatWidget *chatWidget);
+    void attachChat(ChatWidget *chatWidget);
+    void detachChat(ChatWidget *chatWidget);
 
-	virtual StorableObject * storageParent() { return 0; }
-	virtual QString storageNodeName() { return QStringLiteral("ModuleTabs"); }
+    virtual StorableObject *storageParent()
+    {
+        return 0;
+    }
+    virtual QString storageNodeName()
+    {
+        return QStringLiteral("ModuleTabs");
+    }
 
-	bool acceptChat(Chat chat) const;
-	ChatWidget * addChat(Chat chat, OpenChatActivation activation);
-	void removeChat(Chat chat);
+    bool acceptChat(Chat chat) const;
+    ChatWidget *addChat(Chat chat, OpenChatActivation activation);
+    void removeChat(Chat chat);
 
 public slots:
-	void onDestroyingChat(ChatWidget *chatWidget);
-	void onTitleChanged(ChatWidget *chatWidget);
-	void onTitleChanged();
+    void onDestroyingChat(ChatWidget *chatWidget);
+    void onTitleChanged(ChatWidget *chatWidget);
+    void onTitleChanged();
 
-	void onTabChange(int index);
+    void onTabChange(int index);
 
-	void closeChat();
+    void closeChat();
 
 signals:
-	void chatWidgetActivated(ChatWidget *chatWidget);
-	void chatAcceptanceChanged(Chat chat);
-
+    void chatWidgetActivated(ChatWidget *chatWidget);
+    void chatAcceptanceChanged(Chat chat);
 };

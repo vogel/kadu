@@ -19,8 +19,8 @@
 
 #include "chat-style-renderer.h"
 
-ChatStyleRenderer::ChatStyleRenderer(ChatStyleRendererConfiguration configuration, QObject *parent) :
-		QObject{parent}, m_configuration{std::move(configuration)}, m_ready{false}
+ChatStyleRenderer::ChatStyleRenderer(ChatStyleRendererConfiguration configuration, QObject *parent)
+        : QObject{parent}, m_configuration{std::move(configuration)}, m_ready{false}
 {
 }
 
@@ -28,23 +28,23 @@ ChatStyleRenderer::~ChatStyleRenderer()
 {
 }
 
-const ChatStyleRendererConfiguration & ChatStyleRenderer::configuration() const
+const ChatStyleRendererConfiguration &ChatStyleRenderer::configuration() const
 {
-	return m_configuration;
+    return m_configuration;
 }
 
 bool ChatStyleRenderer::isReady() const
 {
-	return m_ready;
+    return m_ready;
 }
 
 void ChatStyleRenderer::setReady()
 {
-	if (m_ready)
-		return;
+    if (m_ready)
+        return;
 
-	m_ready = true;
-	emit ready();
+    m_ready = true;
+    emit ready();
 }
 
 #include "moc_chat-style-renderer.cpp"

@@ -30,16 +30,17 @@
 
 class KADUAPI ContactPersonalInfoService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ContactPersonalInfoService(Account account, QObject *parent) : AccountService(account, parent) {}
+    explicit ContactPersonalInfoService(Account account, QObject *parent) : AccountService(account, parent)
+    {
+    }
 
-	virtual void fetchPersonalInfo(Contact contact) = 0;
+    virtual void fetchPersonalInfo(Contact contact) = 0;
 
 signals:
-	void personalInfoAvailable(Buddy buddy);
-
+    void personalInfoAvailable(Buddy buddy);
 };
 
-#endif // CONTACT_PERSONAL_INFO_SERVICE_H
+#endif   // CONTACT_PERSONAL_INFO_SERVICE_H

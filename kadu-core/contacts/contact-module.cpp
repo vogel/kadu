@@ -26,10 +26,10 @@
 
 ContactModule::ContactModule()
 {
-	add_type<ContactDataExtractor>();
-	add_type<ContactManager>();
-	add_type<ContactParserTags>();
-	add_type<ContactStorage>();
+    add_type<ContactDataExtractor>();
+    add_type<ContactManager>();
+    add_type<ContactParserTags>();
+    add_type<ContactStorage>();
 }
 
 ContactModule::~ContactModule()

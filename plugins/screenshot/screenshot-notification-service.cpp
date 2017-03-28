@@ -26,9 +26,10 @@
 #include "notification/notification-service.h"
 #include "notification/notification.h"
 
-ScreenshotNotificationService::ScreenshotNotificationService(QObject *parent) :
-		QObject{parent},
-		m_sizeLimitEvent{QStringLiteral("ssSizeLimit"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"))}
+ScreenshotNotificationService::ScreenshotNotificationService(QObject *parent)
+        : QObject{parent},
+          m_sizeLimitEvent{QStringLiteral("ssSizeLimit"),
+                           QStringLiteral(QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"))}
 {
 }
 
@@ -36,35 +37,36 @@ ScreenshotNotificationService::~ScreenshotNotificationService()
 {
 }
 
-void ScreenshotNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+void ScreenshotNotificationService::setNotificationEventRepository(
+    NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void ScreenshotNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void ScreenshotNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_sizeLimitEvent);
+    m_notificationEventRepository->addNotificationEvent(m_sizeLimitEvent);
 }
 
 void ScreenshotNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_sizeLimitEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_sizeLimitEvent);
 }
 
 void ScreenshotNotificationService::notifySizeLimit(long size)
 {
-	auto notification = Notification{};
-	notification.type = m_sizeLimitEvent.name();
-	notification.icon = KaduIcon{"kadu_icons/blocking"};
-	notification.title = tr("ScreenShot size limit");
-	notification.text = normalizeHtml(HtmlString{tr("Images size limit exceed: %1 KB").arg(size/1024)});
+    auto notification = Notification{};
+    notification.type = m_sizeLimitEvent.name();
+    notification.icon = KaduIcon{"kadu_icons/blocking"};
+    notification.title = tr("ScreenShot size limit");
+    notification.text = normalizeHtml(HtmlString{tr("Images size limit exceed: %1 KB").arg(size / 1024)});
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 #include "moc_screenshot-notification-service.cpp"

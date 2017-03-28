@@ -37,35 +37,34 @@ class TalkableConverter;
 
 class MergeBuddiesDialogWidget : public DialogWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit MergeBuddiesDialogWidget(Buddy buddy, const QString &message, QWidget* parent);
-	virtual ~MergeBuddiesDialogWidget();
+    explicit MergeBuddiesDialogWidget(Buddy buddy, const QString &message, QWidget *parent);
+    virtual ~MergeBuddiesDialogWidget();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Myself> m_myself;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Myself> m_myself;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	Buddy MyBuddy;
+    Buddy MyBuddy;
 
-	SelectTalkableComboBox *SelectCombo;
+    SelectTalkableComboBox *SelectCombo;
 
-	virtual void createGui();
+    virtual void createGui();
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
 
-	void selectedBuddyChanged();
-	virtual void dialogAccepted();
-	virtual void dialogRejected();
-
+    void selectedBuddyChanged();
+    virtual void dialogAccepted();
+    virtual void dialogRejected();
 };

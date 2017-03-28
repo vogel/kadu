@@ -19,10 +19,10 @@
 
 #pragma once
 
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook/qfacebook-device-id.h"
 #include "qfacebook/qfacebook-msgid.h"
 #include "qfacebook/qfacebook-uid.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
 #include "misc/memory.h"
 
@@ -43,50 +43,49 @@ class QSslSocket;
 
 class QFacebookMqttApi : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QFacebookMqttApi(QFacebookSessionToken session, QFacebookDeviceId deviceId, QObject *parent = nullptr);
-	virtual ~QFacebookMqttApi();
+    explicit QFacebookMqttApi(QFacebookSessionToken session, QFacebookDeviceId deviceId, QObject *parent = nullptr);
+    virtual ~QFacebookMqttApi();
 
-	QFacebookMsgId sendMessage(QFacebookUid to, const QByteArray &body);
-	void markThread(QFacebookUid threadId, const QByteArray &mark, bool state, int syncSequenceId);
+    QFacebookMsgId sendMessage(QFacebookUid to, const QByteArray &body);
+    void markThread(QFacebookUid threadId, const QByteArray &mark, bool state, int syncSequenceId);
 
 signals:
-	void connected();
-	void disconnected();
+    void connected();
+    void disconnected();
 
-	void invalidDataReceived(const QByteArray &data);
-	void presenceReceived(const QFacebookPublishPresence &presence);
-	void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
-	void orcaMessageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
+    void invalidDataReceived(const QByteArray &data);
+    void presenceReceived(const QFacebookPublishPresence &presence);
+    void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
+    void orcaMessageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
 
 private:
-	QFacebookSessionToken m_session;
-	QFacebookDeviceId m_deviceId;
-	QTimer m_pingTimer;
-	QTimer m_connectionTimeoutTimer;
-	owned_qptr<QSslSocket> m_socket;
-	owned_qptr<QMqttConnection> m_mqttConnection;
-	owned_qptr<QFacebookMqttConnection> m_facebookMqttConnection;
-	uint16_t m_messageId {0};
+    QFacebookSessionToken m_session;
+    QFacebookDeviceId m_deviceId;
+    QTimer m_pingTimer;
+    QTimer m_connectionTimeoutTimer;
+    owned_qptr<QSslSocket> m_socket;
+    owned_qptr<QMqttConnection> m_mqttConnection;
+    owned_qptr<QFacebookMqttConnection> m_facebookMqttConnection;
+    uint16_t m_messageId{0};
 
-	void socketConnected();
-	void socketDisconnected();
-	void connectionTimeOut();
+    void socketConnected();
+    void socketDisconnected();
+    void connectionTimeOut();
 
-	void sendConnect();
-	void sendDisconnect();
-	void sendPing();
-	void sendPublish(const QByteArray &topic, const QByteArray &content);
-	void sendSubscribe(const std::vector<QByteArray> &topics);
-	void sendUnsubscribe(const std::vector<QByteArray> &topics);
+    void sendConnect();
+    void sendDisconnect();
+    void sendPing();
+    void sendPublish(const QByteArray &topic, const QByteArray &content);
+    void sendSubscribe(const std::vector<QByteArray> &topics);
+    void sendUnsubscribe(const std::vector<QByteArray> &topics);
 
-	void invalidOutgoingMessage();
-	void invalidIncomingMessage(const QByteArray &data);
+    void invalidOutgoingMessage();
+    void invalidIncomingMessage(const QByteArray &data);
 
-	void connectAckReceived(const QFacebookConnectAck &connectAck);
-	void pongReceived(const QFacebookPong &pong);
-	void publishReceived(const QFacebookPublish &publish);
-
+    void connectAckReceived(const QFacebookConnectAck &connectAck);
+    void pongReceived(const QFacebookPong &pong);
+    void publishReceived(const QFacebookPublish &publish);
 };

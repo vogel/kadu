@@ -36,43 +36,42 @@ class IconsManager;
 
 class ScreenshotTaker : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	ChatWidget *CurrentChatWidget;
+    ChatWidget *CurrentChatWidget;
 
-	QLabel *IconLabel;
-	QPushButton *CancelButton;
+    QLabel *IconLabel;
+    QPushButton *CancelButton;
 
-	bool Dragging;
+    bool Dragging;
 
-	void createLayout();
+    void createLayout();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void takeShot();
+    void takeShot();
 
 protected:
-	virtual void closeEvent(QCloseEvent *e);
-	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *e);
+    virtual void closeEvent(QCloseEvent *e);
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	explicit ScreenshotTaker(ChatWidget *chatWidget);
-	virtual ~ScreenshotTaker();
+    explicit ScreenshotTaker(ChatWidget *chatWidget);
+    virtual ~ScreenshotTaker();
 
 public slots:
-	void takeStandardShot();
-	void takeShotWithChatWindowHidden();
-	void takeWindowShot();
+    void takeStandardShot();
+    void takeShotWithChatWindowHidden();
+    void takeWindowShot();
 
 signals:
-	void screenshotTaken(QPixmap screenshot, bool needsCrop);
-	void screenshotNotTaken();
-
+    void screenshotTaken(QPixmap screenshot, bool needsCrop);
+    void screenshotNotTaken();
 };
 
-#endif // SCREENSHOT_TAKER_H
+#endif   // SCREENSHOT_TAKER_H

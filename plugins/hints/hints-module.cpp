@@ -27,9 +27,9 @@
 
 HintsModule::HintsModule()
 {
-	add_type<HintsConfiguration>();
-	add_type<HintsNotifier>();
-	add_type<HintsPluginObject>();
-	add_type<HintsWidgetPositioner>();
-	add_type<HintsWidget>();
+    add_type<HintsConfiguration>();
+    add_type<HintsNotifier>();
+    add_type<HintsPluginObject>();
+    add_type<HintsWidgetPositioner>();
+    add_type<HintsWidget>();
 }

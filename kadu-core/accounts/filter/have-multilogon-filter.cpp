@@ -23,8 +23,7 @@
 
 #include "have-multilogon-filter.h"
 
-HaveMultilogonFilter::HaveMultilogonFilter(QObject *parent) :
-		AbstractAccountFilter(parent)
+HaveMultilogonFilter::HaveMultilogonFilter(QObject *parent) : AbstractAccountFilter(parent)
 {
 }
 
@@ -34,11 +33,11 @@ HaveMultilogonFilter::~HaveMultilogonFilter()
 
 bool HaveMultilogonFilter::acceptAccount(Account account)
 {
-	if (!account)
-		return false;
-	if (!account.protocolHandler())
-		return false;
-	return 0 != account.protocolHandler()->multilogonService();
+    if (!account)
+        return false;
+    if (!account.protocolHandler())
+        return false;
+    return 0 != account.protocolHandler()->multilogonService();
 }
 
 #include "moc_have-multilogon-filter.cpp"

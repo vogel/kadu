@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SingleWindowPluginModulesFactory::SingleWindowPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SingleWindowPluginModulesFactory::SingleWindowPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ SingleWindowPluginModulesFactory::~SingleWindowPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SingleWindowPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SingleWindowModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SingleWindowModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_single-window-plugin-modules-factory.cpp"

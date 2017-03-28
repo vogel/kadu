@@ -32,11 +32,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
-ChatGroupsConfigurationWidget::ChatGroupsConfigurationWidget(const Chat &chat, QWidget *parent) :
-		QWidget{parent},
-		m_chat{chat}
+ChatGroupsConfigurationWidget::ChatGroupsConfigurationWidget(const Chat &chat, QWidget *parent)
+        : QWidget{parent}, m_chat{chat}
 {
-	setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 ChatGroupsConfigurationWidget::~ChatGroupsConfigurationWidget()
@@ -45,31 +44,34 @@ ChatGroupsConfigurationWidget::~ChatGroupsConfigurationWidget()
 
 void ChatGroupsConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ChatGroupsConfigurationWidget::init()
 {
-	createGui();
+    createGui();
 }
 
 void ChatGroupsConfigurationWidget::createGui()
 {
-	auto layout = new QVBoxLayout{this};
+    auto layout = new QVBoxLayout{this};
 
-	QLabel *label = new QLabel{tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(m_chat.display()), this};
-	label->setWordWrap(true);
+    QLabel *label =
+        new QLabel{tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.")
+                       .arg(m_chat.display()),
+                   this};
+    label->setWordWrap(true);
 
-	m_groupList = m_injectedFactory->makeInjected<GroupList>(this);
-	m_groupList->setCheckedGroups(m_chat.groups());
+    m_groupList = m_injectedFactory->makeInjected<GroupList>(this);
+    m_groupList->setCheckedGroups(m_chat.groups());
 
-	layout->addWidget(label);
-	layout->addWidget(m_groupList);
+    layout->addWidget(label);
+    layout->addWidget(m_groupList);
 }
 
 void ChatGroupsConfigurationWidget::save()
 {
-	m_chat.setGroups(m_groupList->checkedGroups());
+    m_chat.setGroups(m_groupList->checkedGroups());
 }
 
 #include "moc_chat-groups-configuration-widget.cpp"

@@ -26,8 +26,8 @@
 
 #include "name-talkable-filter.h"
 
-NameTalkableFilter::NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent) :
-		TalkableFilter(parent), Mode(mode)
+NameTalkableFilter::NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent)
+        : TalkableFilter(parent), Mode(mode)
 {
 }
 
@@ -37,100 +37,100 @@ NameTalkableFilter::~NameTalkableFilter()
 
 bool NameTalkableFilter::matches(const Chat &chat)
 {
-	if (!chat)
-		return false;
+    if (!chat)
+        return false;
 
-	if (chat.display().contains(Name, Qt::CaseInsensitive))
-		return true;
+    if (chat.display().contains(Name, Qt::CaseInsensitive))
+        return true;
 
-	foreach (const Buddy &buddy, chat.contacts().toBuddySet())
-		if (matches(buddy))
-			return true;
+    foreach (const Buddy &buddy, chat.contacts().toBuddySet())
+        if (matches(buddy))
+            return true;
 
-	foreach (const Group &group, chat.groups())
-		if (group.name().contains(Name, Qt::CaseInsensitive))
-			return true;
+    foreach (const Group &group, chat.groups())
+        if (group.name().contains(Name, Qt::CaseInsensitive))
+            return true;
 
-	return false;
+    return false;
 }
 
 bool NameTalkableFilter::matches(const Buddy &buddy)
 {
-	if (!buddy)
-		return false;
-	if (buddy.display().contains(Name, Qt::CaseInsensitive))
-		return true;
-	if (buddy.firstName().contains(Name, Qt::CaseInsensitive))
-		return true;
-	if (buddy.lastName().contains(Name, Qt::CaseInsensitive))
-		return true;
-	if (buddy.nickName().contains(Name, Qt::CaseInsensitive))
-		return true;
-	if (buddy.email().contains(Name, Qt::CaseInsensitive))
-		return true;
+    if (!buddy)
+        return false;
+    if (buddy.display().contains(Name, Qt::CaseInsensitive))
+        return true;
+    if (buddy.firstName().contains(Name, Qt::CaseInsensitive))
+        return true;
+    if (buddy.lastName().contains(Name, Qt::CaseInsensitive))
+        return true;
+    if (buddy.nickName().contains(Name, Qt::CaseInsensitive))
+        return true;
+    if (buddy.email().contains(Name, Qt::CaseInsensitive))
+        return true;
 
-	foreach (const Contact &contact, buddy.contacts())
-		if (matches(contact))
-			return true;
+    foreach (const Contact &contact, buddy.contacts())
+        if (matches(contact))
+            return true;
 
-	foreach (const Group &group, buddy.groups())
-		if (group.name().contains(Name, Qt::CaseInsensitive))
-			return true;
+    foreach (const Group &group, buddy.groups())
+        if (group.name().contains(Name, Qt::CaseInsensitive))
+            return true;
 
-	return false;
+    return false;
 }
 
 bool NameTalkableFilter::matches(const Contact &contact)
 {
-	return contact.id().contains(Name, Qt::CaseInsensitive);
+    return contact.id().contains(Name, Qt::CaseInsensitive);
 }
 
 TalkableFilter::FilterResult NameTalkableFilter::computeResult(bool matched)
 {
-	switch (Mode)
-	{
-		case AcceptMatching:
-			return matched ? Accepted : Rejected;
-		case UndecidedMatching:
-			return matched ? Undecided : Rejected;
-	}
+    switch (Mode)
+    {
+    case AcceptMatching:
+        return matched ? Accepted : Rejected;
+    case UndecidedMatching:
+        return matched ? Undecided : Rejected;
+    }
 
-	Q_ASSERT(false);
+    Q_ASSERT(false);
 
-	return Undecided;
+    return Undecided;
 }
 
 TalkableFilter::FilterResult NameTalkableFilter::filterChat(const Chat &chat)
 {
-	if (Name.isEmpty())
-		return Undecided;
+    if (Name.isEmpty())
+        return Undecided;
 
-	return computeResult(matches(chat));
+    return computeResult(matches(chat));
 }
 
 TalkableFilter::FilterResult NameTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (Name.isEmpty())
-		return Undecided;
+    if (Name.isEmpty())
+        return Undecided;
 
-	return computeResult(matches(buddy));
+    return computeResult(matches(buddy));
 }
 
 TalkableFilter::FilterResult NameTalkableFilter::filterContact(const Contact &contact)
 {
-	if (Name.isEmpty())
-		return Undecided;
+    if (Name.isEmpty())
+        return Undecided;
 
-	return computeResult(matches(contact.ownerBuddy()));
+    return computeResult(matches(contact.ownerBuddy()));
 }
 
 void NameTalkableFilter::setName(const QString &name)
 {
-	if (Name == name)
-		return;
+    if (Name == name)
+        return;
 
-	Name = name;
-	emit filterChanged();
+    Name = name;
+    emit filterChanged();
 }
 
 #include "moc_name-talkable-filter.cpp"

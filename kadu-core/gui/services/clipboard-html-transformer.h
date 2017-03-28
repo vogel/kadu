@@ -34,19 +34,20 @@
  * @short Transformer for fixing HTML code that is pasted into clipboard.
  * @author Rafał 'Vogel' Malinowski
  *
- * Implement this tranformer to fix HTML code that is pasted into clipboard. Fixing can include: replacing emoticon images
+ * Implement this tranformer to fix HTML code that is pasted into clipboard. Fixing can include: replacing emoticon
+ * images
  * with emoticon text triggers, expanding URLs, removing unneeded message parts.
  */
 class ClipboardHtmlTransformer : public Transformer<QString>
 {
-
 public:
-	virtual ~ClipboardHtmlTransformer() {}
-
+    virtual ~ClipboardHtmlTransformer()
+    {
+    }
 };
 
 /**
  * @}
  */
 
-#endif // CLIPBOARD_HTML_TRANSFORMER_H
+#endif   // CLIPBOARD_HTML_TRANSFORMER_H

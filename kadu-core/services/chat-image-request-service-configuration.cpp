@@ -19,53 +19,55 @@
 
 #include "chat-image-request-service-configuration.h"
 
-ChatImageRequestServiceConfiguration::ChatImageRequestServiceConfiguration() :
-		LimitImageSize(false), MaximumImageSizeInKiloBytes(255 * 1024), AllowBiggerImagesAfterAsking(true)
+ChatImageRequestServiceConfiguration::ChatImageRequestServiceConfiguration()
+        : LimitImageSize(false), MaximumImageSizeInKiloBytes(255 * 1024), AllowBiggerImagesAfterAsking(true)
 {
 }
 
-ChatImageRequestServiceConfiguration::ChatImageRequestServiceConfiguration(const ChatImageRequestServiceConfiguration &copyMe)
+ChatImageRequestServiceConfiguration::ChatImageRequestServiceConfiguration(
+    const ChatImageRequestServiceConfiguration &copyMe)
 {
-	LimitImageSize = copyMe.LimitImageSize;
-	MaximumImageSizeInKiloBytes = copyMe.MaximumImageSizeInKiloBytes;
-	AllowBiggerImagesAfterAsking = copyMe.AllowBiggerImagesAfterAsking;
+    LimitImageSize = copyMe.LimitImageSize;
+    MaximumImageSizeInKiloBytes = copyMe.MaximumImageSizeInKiloBytes;
+    AllowBiggerImagesAfterAsking = copyMe.AllowBiggerImagesAfterAsking;
 }
 
-ChatImageRequestServiceConfiguration & ChatImageRequestServiceConfiguration::operator = (const ChatImageRequestServiceConfiguration &copyMe)
+ChatImageRequestServiceConfiguration &ChatImageRequestServiceConfiguration::
+operator=(const ChatImageRequestServiceConfiguration &copyMe)
 {
-	LimitImageSize = copyMe.LimitImageSize;
-	MaximumImageSizeInKiloBytes = copyMe.MaximumImageSizeInKiloBytes;
-	AllowBiggerImagesAfterAsking = copyMe.AllowBiggerImagesAfterAsking;
+    LimitImageSize = copyMe.LimitImageSize;
+    MaximumImageSizeInKiloBytes = copyMe.MaximumImageSizeInKiloBytes;
+    AllowBiggerImagesAfterAsking = copyMe.AllowBiggerImagesAfterAsking;
 
-	return *this;
+    return *this;
 }
 
-void ChatImageRequestServiceConfiguration::setLimitImageSize (quint32 limitImageSize)
+void ChatImageRequestServiceConfiguration::setLimitImageSize(quint32 limitImageSize)
 {
-	LimitImageSize = limitImageSize;
+    LimitImageSize = limitImageSize;
 }
 
 quint32 ChatImageRequestServiceConfiguration::limitImageSize() const
 {
-	return LimitImageSize;
+    return LimitImageSize;
 }
 
 void ChatImageRequestServiceConfiguration::setMaximumImageSizeInKiloBytes(quint32 maximumImageSizeInKiloBytes)
 {
-	MaximumImageSizeInKiloBytes = maximumImageSizeInKiloBytes;
+    MaximumImageSizeInKiloBytes = maximumImageSizeInKiloBytes;
 }
 
 quint32 ChatImageRequestServiceConfiguration::maximumImageSizeInKiloBytes() const
 {
-	return MaximumImageSizeInKiloBytes;
+    return MaximumImageSizeInKiloBytes;
 }
 
 void ChatImageRequestServiceConfiguration::setAllowBiggerImagesAfterAsking(bool allowBiggerImagesAfterAsking)
 {
-	AllowBiggerImagesAfterAsking = allowBiggerImagesAfterAsking;
+    AllowBiggerImagesAfterAsking = allowBiggerImagesAfterAsking;
 }
 
 bool ChatImageRequestServiceConfiguration::allowBiggerImagesAfterAsking() const
 {
-	return AllowBiggerImagesAfterAsking;
+    return AllowBiggerImagesAfterAsking;
 }

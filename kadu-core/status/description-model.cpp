@@ -24,86 +24,89 @@
 
 #include "description-model.h"
 
-DescriptionModel::DescriptionModel(DescriptionManager *manager) :
-		Manager(manager)
+DescriptionModel::DescriptionModel(DescriptionManager *manager) : Manager(manager)
 {
-	connect(Manager, SIGNAL(descriptionAboutToBeAdded(const QString &)),
-			this, SLOT(descriptionAboutToBeAdded(const QString &)), Qt::DirectConnection);
-	connect(Manager, SIGNAL(descriptionAdded(const QString &)),
-			this, SLOT(descriptionAdded(const QString &)), Qt::DirectConnection);
-	connect(Manager, SIGNAL(descriptionAboutToBeRemoved(const QString &)),
-			this, SLOT(descriptionAboutToBeRemoved(const QString &)), Qt::DirectConnection);
-	connect(Manager, SIGNAL(descriptionRemoved(const QString &)),
-			this, SLOT(descriptionRemoved(const QString &)), Qt::DirectConnection);
+    connect(
+        Manager, SIGNAL(descriptionAboutToBeAdded(const QString &)), this,
+        SLOT(descriptionAboutToBeAdded(const QString &)), Qt::DirectConnection);
+    connect(
+        Manager, SIGNAL(descriptionAdded(const QString &)), this, SLOT(descriptionAdded(const QString &)),
+        Qt::DirectConnection);
+    connect(
+        Manager, SIGNAL(descriptionAboutToBeRemoved(const QString &)), this,
+        SLOT(descriptionAboutToBeRemoved(const QString &)), Qt::DirectConnection);
+    connect(
+        Manager, SIGNAL(descriptionRemoved(const QString &)), this, SLOT(descriptionRemoved(const QString &)),
+        Qt::DirectConnection);
 }
 
 DescriptionModel::~DescriptionModel()
 {
-	disconnect(Manager, 0, this, 0);
+    disconnect(Manager, 0, this, 0);
 }
 
 int DescriptionModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : Manager->content().count();
+    return parent.isValid() ? 0 : Manager->content().count();
 }
 
 Qt::ItemFlags DescriptionModel::flags(const QModelIndex &index) const
 {
-	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable; // fake
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;   // fake
 }
 
 QVariant DescriptionModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
-		return QVariant();
+    if (!index.isValid())
+        return QVariant();
 
-	if (0 != index.column())
-		return QVariant();
+    if (0 != index.column())
+        return QVariant();
 
-	if (index.row() < 0 || index.row() >= Manager->content().count())
-		return QVariant();
+    if (index.row() < 0 || index.row() >= Manager->content().count())
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-		{
-			QString text = Manager->content().at(index.row());
-			return text.replace('\n', " / ");
-		}
+    switch (role)
+    {
+    case Qt::DisplayRole:
+    {
+        QString text = Manager->content().at(index.row());
+        return text.replace('\n', " / ");
+    }
 
-		case DescriptionRole:
-			return Manager->content().at(index.row());
+    case DescriptionRole:
+        return Manager->content().at(index.row());
 
-		default:
-			return QVariant();
-	}
+    default:
+        return QVariant();
+    }
 }
 
 void DescriptionModel::descriptionAboutToBeAdded(const QString &description)
 {
-	Q_UNUSED(description)
+    Q_UNUSED(description)
 
-	beginInsertRows(QModelIndex(), 0, 0);
+    beginInsertRows(QModelIndex(), 0, 0);
 }
 
 void DescriptionModel::descriptionAdded(const QString &description)
 {
-	Q_UNUSED(description)
+    Q_UNUSED(description)
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void DescriptionModel::descriptionAboutToBeRemoved(const QString &description)
 {
-	int index = Manager->content().indexOf(description);
-	beginRemoveRows(QModelIndex(), index, index);
+    int index = Manager->content().indexOf(description);
+    beginRemoveRows(QModelIndex(), index, index);
 }
 
 void DescriptionModel::descriptionRemoved(const QString &description)
 {
-	Q_UNUSED(description)
+    Q_UNUSED(description)
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
 #include "moc_description-model.cpp"

@@ -28,16 +28,16 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowOnlyBuddiesWithDescriptionAction::ShowOnlyBuddiesWithDescriptionAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowOnlyBuddiesWithDescriptionAction::ShowOnlyBuddiesWithDescriptionAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/only-show-with-description"});
-	setName(QStringLiteral("descriptionUsersAction"));
-	setShortcut("kadu_showonlydesc");
-	setText(tr("Only Show Buddies with Description"));
-	setType(ActionDescription::TypeUserList);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/only-show-with-description"});
+    setName(QStringLiteral("descriptionUsersAction"));
+    setShortcut("kadu_showonlydesc");
+    setText(tr("Only Show Buddies with Description"));
+    setType(ActionDescription::TypeUserList);
 }
 
 ShowOnlyBuddiesWithDescriptionAction::~ShowOnlyBuddiesWithDescriptionAction()
@@ -46,53 +46,55 @@ ShowOnlyBuddiesWithDescriptionAction::~ShowOnlyBuddiesWithDescriptionAction()
 
 void ShowOnlyBuddiesWithDescriptionAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowOnlyBuddiesWithDescriptionAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowOnlyBuddiesWithDescriptionAction::actionInstanceCreated(Action *action)
 {
-	auto window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
+    auto window = qobject_cast<MainWindow *>(action->parentWidget());
+    if (!window)
+        return;
+    if (!window->talkableProxyModel())
+        return;
 
-	auto enabled = !m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription");
-	auto filter = injectedFactory()->makeInjected<HideWithoutDescriptionTalkableFilter>(action);
-	filter->setEnabled(enabled);
+    auto enabled = !m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription");
+    auto filter = injectedFactory()->makeInjected<HideWithoutDescriptionTalkableFilter>(action);
+    filter->setEnabled(enabled);
 
-	action->setData(QVariant::fromValue(filter));
-	action->setChecked(enabled);
+    action->setData(QVariant::fromValue(filter));
+    action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(filter);
+    window->talkableProxyModel()->addFilter(filter);
 }
 
 void ShowOnlyBuddiesWithDescriptionAction::actionTriggered(QAction *action, bool toggled)
 {
-	auto v = action->data();
-	if (v.canConvert<HideWithoutDescriptionTalkableFilter *>())
-	{
-		auto filter = v.value<HideWithoutDescriptionTalkableFilter *>();
-		filter->setEnabled(toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowWithoutDescription", !toggled);
-	}
+    auto v = action->data();
+    if (v.canConvert<HideWithoutDescriptionTalkableFilter *>())
+    {
+        auto filter = v.value<HideWithoutDescriptionTalkableFilter *>();
+        filter->setEnabled(toggled);
+        m_configuration->deprecatedApi()->writeEntry("General", "ShowWithoutDescription", !toggled);
+    }
 }
 
 void ShowOnlyBuddiesWithDescriptionAction::configurationUpdated()
 {
-	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
-		return;
+    if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+        return;
 
-	ActionDescription::configurationUpdated();
+    ActionDescription::configurationUpdated();
 
-	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) && action(context)->isChecked() == m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription"))
-		action(context)->trigger();
+    auto context = m_kaduWindowService->kaduWindow()->actionContext();
+    if (action(context) &&
+        action(context)->isChecked() ==
+            m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription"))
+        action(context)->trigger();
 }
 
 #include "moc_show-only-buddies-with-description-action.cpp"

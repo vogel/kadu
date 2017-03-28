@@ -25,19 +25,18 @@
 
 class ProtocolFilter : public AbstractAccountFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString ProtocolName;
+    QString ProtocolName;
 
 protected:
-	virtual bool acceptAccount(Account account);
+    virtual bool acceptAccount(Account account);
 
 public:
-	explicit ProtocolFilter(QObject *parent = nullptr);
-	virtual ~ProtocolFilter();
+    explicit ProtocolFilter(QObject *parent = nullptr);
+    virtual ~ProtocolFilter();
 
-	void setProtocolName(const QString &protocolName);
-
+    void setProtocolName(const QString &protocolName);
 };
 
-#endif // PROTOCOL_FILTER_H
+#endif   // PROTOCOL_FILTER_H

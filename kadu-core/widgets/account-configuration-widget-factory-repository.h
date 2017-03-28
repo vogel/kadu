@@ -20,30 +20,29 @@
 #ifndef ACCOUNT_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H
 #define ACCOUNT_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H
 
-#include <QtCore/QObject>
 #include "exports.h"
+#include <QtCore/QObject>
 
 class AccountConfigurationWidgetFactory;
 
 class KADUAPI AccountConfigurationWidgetFactoryRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<AccountConfigurationWidgetFactory *> Factories;
+    QList<AccountConfigurationWidgetFactory *> Factories;
 
 public:
-	Q_INVOKABLE explicit AccountConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
-	virtual ~AccountConfigurationWidgetFactoryRepository();
+    Q_INVOKABLE explicit AccountConfigurationWidgetFactoryRepository(QObject *parent = nullptr);
+    virtual ~AccountConfigurationWidgetFactoryRepository();
 
-	void registerFactory(AccountConfigurationWidgetFactory *factory);
-	void unregisterFactory(AccountConfigurationWidgetFactory *factory);
+    void registerFactory(AccountConfigurationWidgetFactory *factory);
+    void unregisterFactory(AccountConfigurationWidgetFactory *factory);
 
-	QList<AccountConfigurationWidgetFactory *> factories() const;
+    QList<AccountConfigurationWidgetFactory *> factories() const;
 
 signals:
-	void factoryRegistered(AccountConfigurationWidgetFactory *factory);
-	void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
-
+    void factoryRegistered(AccountConfigurationWidgetFactory *factory);
+    void factoryUnregistered(AccountConfigurationWidgetFactory *factory);
 };
 
-#endif // ACCOUNT_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H
+#endif   // ACCOUNT_CONFIGURATION_WIDGET_FACTORY_REPOSITORY_H

@@ -35,26 +35,26 @@
  */
 enum class StatusTypeGroup
 {
-	/**
-	 * Empty (invalid) status type group.
-	 */
-	None = -1,
-	/**
-	 * Online status type group. Contains "Online" and "Free for chat" status types.
-	 */
-	Online = 0,
-	/**
-	 * Away status type group. Contains "Away", "Not available" and "Do not disturb" status types.
-	 */
-	Away = 10,
-	/**
-	 * Invisible status type group. Contains "Invisible" status type.
-	 */
-	Invisible = 20,
-	/**
-	 * Offline status type group. Contains "Offline" status type.
-	 */
-	Offline = 30
+    /**
+     * Empty (invalid) status type group.
+     */
+    None = -1,
+    /**
+     * Online status type group. Contains "Online" and "Free for chat" status types.
+     */
+    Online = 0,
+    /**
+     * Away status type group. Contains "Away", "Not available" and "Do not disturb" status types.
+     */
+    Away = 10,
+    /**
+     * Invisible status type group. Contains "Invisible" status type.
+     */
+    Invisible = 20,
+    /**
+     * Offline status type group. Contains "Offline" status type.
+     */
+    Offline = 30
 };
 
 /**
@@ -62,4 +62,4 @@ enum class StatusTypeGroup
  * @}
  */
 
-#endif // STATUS_TYPE_GROUP_H
+#endif   // STATUS_TYPE_GROUP_H

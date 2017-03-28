@@ -46,113 +46,126 @@ class QVBoxLayout;
 class QDialogButtonBox;
 
 /**
-	@class ConfigurationWindow
-	@author Vogel
-	@short Widget okna konfigruacyjnego.
+        @class ConfigurationWindow
+        @author Vogel
+        @short Widget okna konfigruacyjnego.
 
-	Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.
-	Pierwszym stopniem są sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawierającego
-	ikony i opis tekstowy). Okno zawierające tylko jedną sekcję nie wyświetla ListWidget'a.
-	Drugim stopniem są karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
+        Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.
+        Pierwszym stopniem są sekcje reprezentowane przez ListWidget'a z lewej strony okna (zawierającego
+        ikony i opis tekstowy). Okno zawierające tylko jedną sekcję nie wyświetla ListWidget'a.
+        Drugim stopniem są karty reprezentowane przez TabWidget'y, trzecim - grupy opisane przez GroupBox'y.
 
-	Okno konfiguracyjne identyfikuje się przez jego nazwę podaną w konstruktorze
-	(dzięki tej nazwie każde okno może osobno zapamiętać swoją pozycję i ostatnio
-	otwartej karty).
+        Okno konfiguracyjne identyfikuje się przez jego nazwę podaną w konstruktorze
+        (dzięki tej nazwie każde okno może osobno zapamiętać swoją pozycję i ostatnio
+        otwartej karty).
 
-	Okna mogą teoretycznie zawierać dowolne widgety. Każdy z nich, który dodatkowo
-	dziedziczy z klasy ConfigWidget, traktowany jest w specjalny sposób. Jego
-	metody loadConfiguration i saveConfiguration są wywoływane automatycznie
-	przy otwieraniu okna i przy zapisywaniu konfiguracji, dzięki czemu nie jest
-	potrzebne żadne 'ręczne' podpinanie się do tych akcji.
+        Okna mogą teoretycznie zawierać dowolne widgety. Każdy z nich, który dodatkowo
+        dziedziczy z klasy ConfigWidget, traktowany jest w specjalny sposób. Jego
+        metody loadConfiguration i saveConfiguration są wywoływane automatycznie
+        przy otwieraniu okna i przy zapisywaniu konfiguracji, dzięki czemu nie jest
+        potrzebne żadne 'ręczne' podpinanie się do tych akcji.
 
-	W momencie zapisania konfiguracji wszystkie obiekty w programie będące instancajmi
-	klasy ConfigurationAwareObject zostaną o tym poinformowane i będą
-	mogły zaktualizować swój stan.
+        W momencie zapisania konfiguracji wszystkie obiekty w programie będące instancajmi
+        klasy ConfigurationAwareObject zostaną o tym poinformowane i będą
+        mogły zaktualizować swój stan.
 
-	Widgety w oknie mogą być tworzone na 2 sposoby. Pierwszym z nich jest
-	pobranie GroupBoxa za pomocą funkcji configGroupBox i dodawanie
-	do niego widgetów za pomocą jego funkcji addWidget i addWidgets.
-	Drugą jest stworzenie plików XML *.ui, które są wczytywane i usuwane dynamicznie
-	z pomocą metod appendUiFile i removeUiFile.
+        Widgety w oknie mogą być tworzone na 2 sposoby. Pierwszym z nich jest
+        pobranie GroupBoxa za pomocą funkcji configGroupBox i dodawanie
+        do niego widgetów za pomocą jego funkcji addWidget i addWidgets.
+        Drugą jest stworzenie plików XML *.ui, które są wczytywane i usuwane dynamicznie
+        z pomocą metod appendUiFile i removeUiFile.
 
-	W tym drugim przypadku stosuje się pliki *.ui o następującej strukturze:
+        W tym drugim przypadku stosuje się pliki *.ui o następującej strukturze:
 
-	&lt;configuration-ui&gt;
-		&lt;section caption="tytuł" icon="nazwa_ikony"&gt;
-			&lt;tab caption="tytuł"&gt;
-				&lt;group-box caption="tytuł" id="id"&gt;
-					&lt;widget ... /&gt;
-				&lt;/group-box&gt;
-			&lt;/tab&gt;
-		&lt;/section&gt;
-	&lt;/configuration-ui&gt;
+        &lt;configuration-ui&gt;
+                &lt;section caption="tytuł" icon="nazwa_ikony"&gt;
+                        &lt;tab caption="tytuł"&gt;
+                                &lt;group-box caption="tytuł" id="id"&gt;
+                                        &lt;widget ... /&gt;
+                                &lt;/group-box&gt;
+                        &lt;/tab&gt;
+                &lt;/section&gt;
+        &lt;/configuration-ui&gt;
 
-	Elementy zawierające atrybut id (nie wymagany) - czyli group-box i dowolny widget
-	mogą zostać pobrane przez aplikacje za pomocą metody widgetById.
-	Widgety z modułów powinny posiadać id w postaci: nazwaModułu/nazwaId.
+        Elementy zawierające atrybut id (nie wymagany) - czyli group-box i dowolny widget
+        mogą zostać pobrane przez aplikacje za pomocą metody widgetById.
+        Widgety z modułów powinny posiadać id w postaci: nazwaModułu/nazwaId.
 
-	Atrybut catpion jest wymagany. Możliwe tagi widget są opisane w dokumentacji
-	klas Config* (np.: ConfigComboBox).
+        Atrybut catpion jest wymagany. Możliwe tagi widget są opisane w dokumentacji
+        klas Config* (np.: ConfigComboBox).
  **/
 
 class KADUAPI ConfigurationWindow : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	ConfigurationWindowDataManager *m_dataManager;
-	QString Name;
-	QString Section;
+    ConfigurationWindowDataManager *m_dataManager;
+    QString Name;
+    QString Section;
 
-	ConfigurationWidget *configurationWidget;
+    ConfigurationWidget *configurationWidget;
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void updateAndCloseConfig();
-	void updateConfig();
+    void updateAndCloseConfig();
+    void updateConfig();
 
 protected:
-	InjectedFactory * injectedFactory() const;
+    InjectedFactory *injectedFactory() const;
 
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	/**
-		Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
-		jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
-		otwartej karty.
-	 **/
-	ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager, QWidget *parent = nullptr);
-	virtual ~ConfigurationWindow();
+    /**
+            Tworzy okno konfiguracyjne o danej nazwie. Nazwa wykorzystywana
+            jest przy zapamiętywaniu pozycji okna oraz jego ostatnio
+            otwartej karty.
+     **/
+    ConfigurationWindow(
+        const QString &name, const QString &caption, const QString &section,
+        ConfigurationWindowDataManager *dataManager, QWidget *parent = nullptr);
+    virtual ~ConfigurationWindow();
 
-	ConfigurationWindowDataManager * dataManager() const { return m_dataManager; }
+    ConfigurationWindowDataManager *dataManager() const
+    {
+        return m_dataManager;
+    }
 
-	const QString & name() const { return Name; }
-	const QString & section() const { return Section; }
-	ConfigurationWidget * widget() { return configurationWidget; }
+    const QString &name() const
+    {
+        return Name;
+    }
+    const QString &section() const
+    {
+        return Section;
+    }
+    ConfigurationWidget *widget()
+    {
+        return configurationWidget;
+    }
 
-	/**
-		Jeżeli okno jest ukryte wczytuje wartości elementów z pliku
-		konfiguracyjnego i pokazuje okno.
-	 **/
-	virtual void show();
+    /**
+            Jeżeli okno jest ukryte wczytuje wartości elementów z pliku
+            konfiguracyjnego i pokazuje okno.
+     **/
+    virtual void show();
 
 signals:
-	/**
-		Sygnał emitowany po naciśnięciu Ok lub Apply ale przed zapisaniem
-		wartości do pliku konfiguracyjnego. Nietypowe widgety konfiguracyjne
-		powinny się podpiąć pod ten sygnał i po jego uzyskaniu zapisać
-		nowe wartości do pliku.
-	 **/
-	void configurationWindowApplied();
+    /**
+            Sygnał emitowany po naciśnięciu Ok lub Apply ale przed zapisaniem
+            wartości do pliku konfiguracyjnego. Nietypowe widgety konfiguracyjne
+            powinny się podpiąć pod ten sygnał i po jego uzyskaniu zapisać
+            nowe wartości do pliku.
+     **/
+    void configurationWindowApplied();
 
-	void configurationSaved();
-
+    void configurationSaved();
 };

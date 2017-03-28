@@ -28,9 +28,7 @@
 
 #include "talkable-model.h"
 
-TalkableModel::TalkableModel(QObject *parent) :
-		KaduMergedProxyModel{parent},
-		m_includeMyself{false}
+TalkableModel::TalkableModel(QObject *parent) : KaduMergedProxyModel{parent}, m_includeMyself{false}
 {
 }
 
@@ -40,47 +38,47 @@ TalkableModel::~TalkableModel()
 
 void TalkableModel::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void TalkableModel::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void TalkableModel::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void TalkableModel::init()
 {
-	m_chats = m_injectedFactory->makeOwned<ChatListModel>(this);
-	m_injectedFactory->makeOwned<ChatManagerAdapter>(m_chatManager, m_chats);
-	m_buddies = m_injectedFactory->makeOwned<BuddyListModel>(this);
-	m_buddiesAdapter = m_injectedFactory->makeOwned<BuddyManagerAdapter>(m_buddies);
+    m_chats = m_injectedFactory->makeOwned<ChatListModel>(this);
+    m_injectedFactory->makeOwned<ChatManagerAdapter>(m_chatManager, m_chats);
+    m_buddies = m_injectedFactory->makeOwned<BuddyListModel>(this);
+    m_buddiesAdapter = m_injectedFactory->makeOwned<BuddyManagerAdapter>(m_buddies);
 
-	auto models = QList<QAbstractItemModel *>{};
-	models.append(m_chats);
-	models.append(m_buddies);
-	setModels(models);
+    auto models = QList<QAbstractItemModel *>{};
+    models.append(m_chats);
+    models.append(m_buddies);
+    setModels(models);
 }
 
 void TalkableModel::setIncludeMyself(bool includeMyself)
 {
-	if (m_includeMyself == includeMyself)
-		return;
+    if (m_includeMyself == includeMyself)
+        return;
 
-	m_includeMyself = includeMyself;
-	if (m_includeMyself)
-		m_buddies->addBuddy(m_myself->buddy());
-	else
-		m_buddies->removeBuddy(m_myself->buddy());
+    m_includeMyself = includeMyself;
+    if (m_includeMyself)
+        m_buddies->addBuddy(m_myself->buddy());
+    else
+        m_buddies->removeBuddy(m_myself->buddy());
 }
 
 bool TalkableModel::includeMyself() const
 {
-	return m_includeMyself;
+    return m_includeMyself;
 }
 
 #include "moc_talkable-model.cpp"

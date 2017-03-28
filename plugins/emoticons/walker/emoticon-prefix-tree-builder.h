@@ -40,30 +40,29 @@ class QChar;
  */
 class EmoticonPrefixTreeBuilder
 {
-	QScopedPointer<EmoticonPrefixTree> Root;
+    QScopedPointer<EmoticonPrefixTree> Root;
 
 public:
-	EmoticonPrefixTreeBuilder();
+    EmoticonPrefixTreeBuilder();
 
-	/**
-	 * @short Add new emoticon to builded prefix tree.
-	 * @param emoticon emoticon to add
-	 */
-	void addEmoticon(const Emoticon &emoticon);
+    /**
+     * @short Add new emoticon to builded prefix tree.
+     * @param emoticon emoticon to add
+     */
+    void addEmoticon(const Emoticon &emoticon);
 
-	/**
-	 * @short Return created prefix tree.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return created prefix tree.
-	 *
-	 * Not that this method can only be called once.
-	 */
-	EmoticonPrefixTree * tree();
-
+    /**
+     * @short Return created prefix tree.
+     * @author Rafał 'Vogel' Malinowski
+     * @return created prefix tree.
+     *
+     * Not that this method can only be called once.
+     */
+    EmoticonPrefixTree *tree();
 };
 
 /**
  * @}
  */
 
-#endif // EMOTICON_PREFIX_TREE_BUILDER_H
+#endif   // EMOTICON_PREFIX_TREE_BUILDER_H

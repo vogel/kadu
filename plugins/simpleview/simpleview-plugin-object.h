@@ -30,23 +30,22 @@ class SimpleView;
 
 class SimpleviewPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit SimpleviewPluginObject(QObject *parent = nullptr);
-	virtual ~SimpleviewPluginObject();
+    Q_INVOKABLE explicit SimpleviewPluginObject(QObject *parent = nullptr);
+    virtual ~SimpleviewPluginObject();
 
 private:
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SimpleView> m_simpleView;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<SimpleView> m_simpleView;
 
 private slots:
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSimpleView(SimpleView *simpleView);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setSimpleView(SimpleView *simpleView);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

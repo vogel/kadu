@@ -19,8 +19,8 @@
 
 #include "composite-configuration-value-state-notifier.h"
 
-CompositeConfigurationValueStateNotifier::CompositeConfigurationValueStateNotifier(QObject *parent) :
-		ConfigurationValueStateNotifier(parent), CurrentState(StateNotChanged)
+CompositeConfigurationValueStateNotifier::CompositeConfigurationValueStateNotifier(QObject *parent)
+        : ConfigurationValueStateNotifier(parent), CurrentState(StateNotChanged)
 {
 }
 
@@ -28,65 +28,69 @@ CompositeConfigurationValueStateNotifier::~CompositeConfigurationValueStateNotif
 {
 }
 
-void CompositeConfigurationValueStateNotifier::addConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier)
+void CompositeConfigurationValueStateNotifier::addConfigurationValueStateNotifier(
+    const ConfigurationValueStateNotifier *configurationValueStateNotifier)
 {
-	if (!configurationValueStateNotifier)
-		return;
-	if (StateNotifiers.contains(configurationValueStateNotifier))
-		return;
+    if (!configurationValueStateNotifier)
+        return;
+    if (StateNotifiers.contains(configurationValueStateNotifier))
+        return;
 
-	StateNotifiers.append(configurationValueStateNotifier);
-	connect(configurationValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(recomputeState()));
-	recomputeState();
+    StateNotifiers.append(configurationValueStateNotifier);
+    connect(
+        configurationValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(recomputeState()));
+    recomputeState();
 }
 
-void CompositeConfigurationValueStateNotifier::removeConfigurationValueStateNotifier(const ConfigurationValueStateNotifier *configurationValueStateNotifier)
+void CompositeConfigurationValueStateNotifier::removeConfigurationValueStateNotifier(
+    const ConfigurationValueStateNotifier *configurationValueStateNotifier)
 {
-	if (!configurationValueStateNotifier)
-		return;
-	if (!StateNotifiers.contains(configurationValueStateNotifier))
-		return;
+    if (!configurationValueStateNotifier)
+        return;
+    if (!StateNotifiers.contains(configurationValueStateNotifier))
+        return;
 
-	StateNotifiers.removeAll(configurationValueStateNotifier);
-	disconnect(configurationValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(recomputeState()));
-	recomputeState();
+    StateNotifiers.removeAll(configurationValueStateNotifier);
+    disconnect(
+        configurationValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(recomputeState()));
+    recomputeState();
 }
 
 ConfigurationValueState CompositeConfigurationValueStateNotifier::computeState()
 {
-	bool anyChanged = false;
+    bool anyChanged = false;
 
-	foreach (const ConfigurationValueStateNotifier * const stateNotifier, StateNotifiers)
-	{
-		switch (stateNotifier->state())
-		{
-			case StateChangedDataInvalid:
-				return StateChangedDataInvalid;
-			case StateNotChanged:
-				break;
-			case StateChangedDataValid:
-				anyChanged = true;
-				break;
-		}
-	}
+    foreach (const ConfigurationValueStateNotifier *const stateNotifier, StateNotifiers)
+    {
+        switch (stateNotifier->state())
+        {
+        case StateChangedDataInvalid:
+            return StateChangedDataInvalid;
+        case StateNotChanged:
+            break;
+        case StateChangedDataValid:
+            anyChanged = true;
+            break;
+        }
+    }
 
-	if (anyChanged)
-		return StateChangedDataValid;
-	else
-		return StateNotChanged;
+    if (anyChanged)
+        return StateChangedDataValid;
+    else
+        return StateNotChanged;
 }
 
 void CompositeConfigurationValueStateNotifier::recomputeState()
 {
-	ConfigurationValueState newState = computeState();
-	if (CurrentState == newState)
-		return;
+    ConfigurationValueState newState = computeState();
+    if (CurrentState == newState)
+        return;
 
-	CurrentState = newState;
-	emit stateChanged(CurrentState);
+    CurrentState = newState;
+    emit stateChanged(CurrentState);
 }
 
 ConfigurationValueState CompositeConfigurationValueStateNotifier::state() const
 {
-	return CurrentState;
+    return CurrentState;
 }

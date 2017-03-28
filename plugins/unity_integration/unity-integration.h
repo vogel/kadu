@@ -29,22 +29,21 @@ class UnreadMessageRepository;
 
 class UnityIntegration : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit UnityIntegration(QObject *parent = nullptr);
-	virtual ~UnityIntegration();
+    Q_INVOKABLE explicit UnityIntegration(QObject *parent = nullptr);
+    virtual ~UnityIntegration();
 
 private:
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	QUnity *m_unity;
+    QUnity *m_unity;
 
 private slots:
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
-	void fileTransferProgressChanged(int progress);
-	void unreadMessagesChanged();
-
+    void fileTransferProgressChanged(int progress);
+    void unreadMessagesChanged();
 };

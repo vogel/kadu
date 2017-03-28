@@ -19,78 +19,78 @@
 
 #include "gadu-url-incoming-file-transfer-handler.h"
 
+#include "gadu-protocol.h"
 #include "services/drive/gadu-drive-get-transfer.h"
 #include "services/drive/gadu-drive-service.h"
-#include "gadu-protocol.h"
 
 #include "file-transfer/file-transfer-status.h"
 #include "file-transfer/file-transfer-type.h"
 
 #include <QtNetwork/QNetworkReply>
 
-GaduUrlIncomingFileTransferHandler::GaduUrlIncomingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer) :
-		UrlIncomingFileTransferHandler{fileTransfer},
-		m_protocol{protocol}
+GaduUrlIncomingFileTransferHandler::GaduUrlIncomingFileTransferHandler(
+    GaduProtocol *protocol, FileTransfer fileTransfer)
+        : UrlIncomingFileTransferHandler{fileTransfer}, m_protocol{protocol}
 {
-	fileTransfer.setTransferType(FileTransferType::Url);
-	if (fileTransfer.transferStatus() == FileTransferStatus::NotConnected)
-		fileTransfer.setTransferStatus(FileTransferStatus::ReadyToDownload);
+    fileTransfer.setTransferType(FileTransferType::Url);
+    if (fileTransfer.transferStatus() == FileTransferStatus::NotConnected)
+        fileTransfer.setTransferStatus(FileTransferStatus::ReadyToDownload);
 }
 
 GaduUrlIncomingFileTransferHandler::~GaduUrlIncomingFileTransferHandler()
 {
-	clenaup();
+    clenaup();
 }
 
 void GaduUrlIncomingFileTransferHandler::clenaup()
 {
-	if (m_destination)
-	{
-		m_destination->close();
-		m_destination->deleteLater();
-	}
+    if (m_destination)
+    {
+        m_destination->close();
+        m_destination->deleteLater();
+    }
 
-	if (m_getTransfer)
-		m_getTransfer->deleteLater();
+    if (m_getTransfer)
+        m_getTransfer->deleteLater();
 }
 
 void GaduUrlIncomingFileTransferHandler::save(QIODevice *destination)
 {
-	clenaup();
+    clenaup();
 
-	m_destination = destination;
+    m_destination = destination;
 
-	auto driveService = m_protocol->driveService();
-	auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
-	auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
+    auto driveService = m_protocol->driveService();
+    auto downloadId = transfer().property("gg:downloadId", QString{}).toString();
+    auto remoteFileName = transfer().property("gg:remoteFileName", QString{}).toString();
 
-	m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, m_destination);
+    m_getTransfer = driveService->getFromDrive(downloadId, remoteFileName, m_destination);
 
-	connect(m_getTransfer, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(downloadProgress(qint64,qint64)));
-	connect(m_getTransfer, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
+    connect(m_getTransfer, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(downloadProgress(qint64, qint64)));
+    connect(m_getTransfer, SIGNAL(finished(QNetworkReply *)), this, SLOT(downloadFinished(QNetworkReply *)));
 
-	transfer().setTransferStatus(FileTransferStatus::Transfer);
-	transfer().setTransferredSize(0);
+    transfer().setTransferStatus(FileTransferStatus::Transfer);
+    transfer().setTransferredSize(0);
 }
 
 void GaduUrlIncomingFileTransferHandler::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
-	transfer().setTransferredSize(bytesReceived);
-	transfer().setFileSize(bytesTotal);
+    transfer().setTransferredSize(bytesReceived);
+    transfer().setFileSize(bytesTotal);
 }
 
 void GaduUrlIncomingFileTransferHandler::downloadFinished(QNetworkReply *reply)
 {
-	switch (reply->error())
-	{
-		case QNetworkReply::NoError:
-			transfer().setTransferStatus(FileTransferStatus::Finished);
-			break;
+    switch (reply->error())
+    {
+    case QNetworkReply::NoError:
+        transfer().setTransferStatus(FileTransferStatus::Finished);
+        break;
 
-		default:
-			transfer().setError(tr("Network error: %1").arg(reply->error()));
-			break;
-	}
+    default:
+        transfer().setError(tr("Network error: %1").arg(reply->error()));
+        break;
+    }
 }
 
 #include "moc_gadu-url-incoming-file-transfer-handler.cpp"

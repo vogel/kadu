@@ -19,16 +19,14 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <injeqt/module.h>
 
 class KADUAPI ChatWidgetModule : public injeqt::module
 {
-
 public:
-	ChatWidgetModule();
-	virtual ~ChatWidgetModule();
-
+    ChatWidgetModule();
+    virtual ~ChatWidgetModule();
 };

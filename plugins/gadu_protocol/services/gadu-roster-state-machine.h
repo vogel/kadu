@@ -29,48 +29,47 @@ class GaduRosterService;
 
 class GaduRosterStateMachine : public QStateMachine
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduRosterStateMachine(GaduRosterService *service, Protocol *protocol);
-	virtual ~GaduRosterStateMachine();
+    explicit GaduRosterStateMachine(GaduRosterService *service, Protocol *protocol);
+    virtual ~GaduRosterStateMachine();
 
-	bool shouldPerformPut() const;
-	bool isPerformingPut() const;
+    bool shouldPerformPut() const;
+    bool isPerformingPut() const;
 
-	bool shouldPerformGet() const;
-	bool isPerformingGet() const;
+    bool shouldPerformGet() const;
+    bool isPerformingGet() const;
 
 signals:
-	void putRequested();
-	void getRequested();
+    void putRequested();
+    void getRequested();
 
-	void performPut();
-	void performGet();
+    void performPut();
+    void performGet();
 
 private:
-	QState *m_workState;
-	QState *m_offlineState;
-	QState *m_idleState;
-	QState *m_putState;
-	QState *m_getState;
+    QState *m_workState;
+    QState *m_offlineState;
+    QState *m_idleState;
+    QState *m_putState;
+    QState *m_getState;
 
-	QState *m_localState;
-	QState *m_localCleanState;
-	QState *m_localDirtyState;
-	QState *m_localCleaningState;
-	QState *m_localCleaningDirtyState;
-	QState *m_localFailedState;
+    QState *m_localState;
+    QState *m_localCleanState;
+    QState *m_localDirtyState;
+    QState *m_localCleaningState;
+    QState *m_localCleaningDirtyState;
+    QState *m_localFailedState;
 
-	QState *m_remoteState;
-	QState *m_remoteCleanState;
-	QState *m_remoteDirtyState;
-	QState *m_remoteCleaningState;
-	QState *m_remoteCleaningDirtyState;
-	QState *m_remoteFailedState;
+    QState *m_remoteState;
+    QState *m_remoteCleanState;
+    QState *m_remoteDirtyState;
+    QState *m_remoteCleaningState;
+    QState *m_remoteCleaningDirtyState;
+    QState *m_remoteFailedState;
 
 private slots:
-	void checkIfSynchronizationRequired();
-	void printConfiguration();
-
+    void checkIfSynchronizationRequired();
+    void printConfiguration();
 };

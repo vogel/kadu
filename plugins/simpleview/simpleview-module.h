@@ -23,9 +23,7 @@
 
 class SimpleviewModule : public injeqt::module
 {
-
 public:
-	explicit SimpleviewModule();
-	virtual ~SimpleviewModule();
-
+    explicit SimpleviewModule();
+    virtual ~SimpleviewModule();
 };

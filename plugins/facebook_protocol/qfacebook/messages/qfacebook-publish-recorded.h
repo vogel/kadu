@@ -27,12 +27,16 @@ struct QMqttMessage;
 class QFacebookPublishRecorded : public QFacebookMessage
 {
 public:
-	QFacebookPublishRecorded(uint16_t mid) : mid{mid} {}
+    QFacebookPublishRecorded(uint16_t mid) : mid{mid}
+    {
+    }
 
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::PublishRecorded; }
-	virtual QMqttMessage encode() const;
-	static QFacebookPublishRecorded decode(const QMqttMessage &message);
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::PublishRecorded;
+    }
+    virtual QMqttMessage encode() const;
+    static QFacebookPublishRecorded decode(const QMqttMessage &message);
 
-	uint16_t mid;
-
+    uint16_t mid;
 };

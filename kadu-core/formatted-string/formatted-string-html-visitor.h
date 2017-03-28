@@ -23,8 +23,8 @@
 
 #include <QtCore/QString>
 
-#include "formatted-string/formatted-string-visitor.h"
 #include "exports.h"
+#include "formatted-string/formatted-string-visitor.h"
 
 class HtmlString;
 
@@ -42,34 +42,33 @@ class HtmlString;
  */
 class KADUAPI FormattedStringHtmlVisitor : public FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedStringHtmlVisitor);
+    Q_DISABLE_COPY(FormattedStringHtmlVisitor);
 
 public:
-	FormattedStringHtmlVisitor();
-	virtual ~FormattedStringHtmlVisitor();
+    FormattedStringHtmlVisitor();
+    virtual ~FormattedStringHtmlVisitor();
 
-	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString) override;
-	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString) override;
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) override;
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) override;
+    virtual void beginVisit(const CompositeFormattedString *const compositeFormattedString) override;
+    virtual void endVisit(const CompositeFormattedString *const compositeFormattedString) override;
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock) override;
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock) override;
 
-	/**
-	* @short Returns HTML view of visited FormattedString.
-	* @author Rafał 'Vogel' Malinowski
-	* @return HTML view of visited FormattedString
-	*/
-	HtmlString result() const;
+    /**
+    * @short Returns HTML view of visited FormattedString.
+    * @author Rafał 'Vogel' Malinowski
+    * @return HTML view of visited FormattedString
+    */
+    HtmlString result() const;
 
 protected:
-	void append(QString content);
+    void append(QString content);
 
 private:
-	QString m_result;
-
+    QString m_result;
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_HTML_VISITOR_H
+#endif   // FORMATTED_STRING_HTML_VISITOR_H

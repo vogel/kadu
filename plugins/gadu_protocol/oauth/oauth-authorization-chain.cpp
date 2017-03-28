@@ -23,8 +23,9 @@
 
 #include "oauth-authorization-chain.h"
 
-OAuthAuthorizationChain::OAuthAuthorizationChain(OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject(parent), NetworkAccessManager(networkAccessManager), Consumer(consumer)
+OAuthAuthorizationChain::OAuthAuthorizationChain(
+    OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent)
+        : QObject(parent), NetworkAccessManager(networkAccessManager), Consumer(consumer)
 {
 }
 
@@ -34,67 +35,68 @@ OAuthAuthorizationChain::~OAuthAuthorizationChain()
 
 void OAuthAuthorizationChain::setRequestTokenUrl(const QString &requestTokenUrl)
 {
-	RequestTokenUrl = requestTokenUrl;
+    RequestTokenUrl = requestTokenUrl;
 }
 
 void OAuthAuthorizationChain::setAuthorizeUrl(const QString &authorizeUrl)
 {
-	AuthorizeUrl = authorizeUrl;
+    AuthorizeUrl = authorizeUrl;
 }
 
 void OAuthAuthorizationChain::setAuthorizeCallbackUrl(const QString &authorizeCallbackUrl)
 {
-	AuthorizeCallbackUrl = authorizeCallbackUrl;
+    AuthorizeCallbackUrl = authorizeCallbackUrl;
 }
 
 void OAuthAuthorizationChain::setAccessTokenUrl(const QString &accessTokenUrl)
 {
-	AccessTokenUrl = accessTokenUrl;
+    AccessTokenUrl = accessTokenUrl;
 }
 
 void OAuthAuthorizationChain::authorize()
 {
-	OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher(RequestTokenUrl, Consumer, NetworkAccessManager, this);
-	connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(requestTokenFetched(OAuthToken)));
-	tokenFetcher->fetchToken();
+    OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher(RequestTokenUrl, Consumer, NetworkAccessManager, this);
+    connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(requestTokenFetched(OAuthToken)));
+    tokenFetcher->fetchToken();
 }
 
 void OAuthAuthorizationChain::requestTokenFetched(OAuthToken token)
 {
-	Token = token;
+    Token = token;
 
-	if (!Token.isValid())
-	{
-		emit authorized(AccessToken);
-		deleteLater();
-		return;
-	}
+    if (!Token.isValid())
+    {
+        emit authorized(AccessToken);
+        deleteLater();
+        return;
+    }
 
-	OAuthAuthorization *authorization = new OAuthAuthorization(Token, AuthorizeUrl, AuthorizeCallbackUrl, Consumer, NetworkAccessManager, this);
-	connect(authorization, SIGNAL(authorized(bool)), this, SLOT(authorized(bool)));
-	authorization->authorize();
+    OAuthAuthorization *authorization =
+        new OAuthAuthorization(Token, AuthorizeUrl, AuthorizeCallbackUrl, Consumer, NetworkAccessManager, this);
+    connect(authorization, SIGNAL(authorized(bool)), this, SLOT(authorized(bool)));
+    authorization->authorize();
 }
 
 void OAuthAuthorizationChain::authorized(bool ok)
 {
-	if (!ok)
-	{
-		emit authorized(AccessToken);
-		deleteLater();
-		return;
-	}
+    if (!ok)
+    {
+        emit authorized(AccessToken);
+        deleteLater();
+        return;
+    }
 
-	OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher(AccessTokenUrl, Token, NetworkAccessManager, this);
-	connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(accessTokenFetched(OAuthToken)));
-	tokenFetcher->fetchToken();
+    OAuthTokenFetcher *tokenFetcher = new OAuthTokenFetcher(AccessTokenUrl, Token, NetworkAccessManager, this);
+    connect(tokenFetcher, SIGNAL(tokenFetched(OAuthToken)), this, SLOT(accessTokenFetched(OAuthToken)));
+    tokenFetcher->fetchToken();
 }
 
 void OAuthAuthorizationChain::accessTokenFetched(OAuthToken token)
 {
-	AccessToken = token;
-	emit authorized(AccessToken);
+    AccessToken = token;
+    emit authorized(AccessToken);
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_oauth-authorization-chain.cpp"

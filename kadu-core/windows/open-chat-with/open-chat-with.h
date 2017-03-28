@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include "os/generic/desktop-aware-object.h"
 #include "open-chat-with-runner.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -47,48 +47,47 @@ class QVBoxLayout;
 
 class KADUAPI OpenChatWith : public QWidget, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit OpenChatWith(QWidget *parent = nullptr);
-	virtual ~OpenChatWith();
+    explicit OpenChatWith(QWidget *parent = nullptr);
+    virtual ~OpenChatWith();
 
-	void show();
+    void show();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QQuickWidget *BuddiesView;
-	LineEditWithClearButton *ContactID;
-	QVBoxLayout *MainLayout;
-	OpenChatWithRunner *OpenChatRunner;
+    QQuickWidget *BuddiesView;
+    LineEditWithClearButton *ContactID;
+    QVBoxLayout *MainLayout;
+    OpenChatWithRunner *OpenChatRunner;
 
-	BuddyListModel *ListModel;
-	ModelChain *Chain;
+    BuddyListModel *ListModel;
+    ModelChain *Chain;
 
-	void focusQml();
+    void focusQml();
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 
-	void inputAccepted();
-	void inputChanged(const QString &text);
-	void itemActivated(int index);
-
+    void inputAccepted();
+    void inputChanged(const QString &text);
+    void itemActivated(int index);
 };

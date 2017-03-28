@@ -23,13 +23,13 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "os/generic/url-opener.h"
 
-OpenForumAction::OpenForumAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenForumAction::OpenForumAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setName(QStringLiteral("forumAction"));
-	setText(tr("Forum"));
-	setType(ActionDescription::TypeMainMenu);
+    setName(QStringLiteral("forumAction"));
+    setText(tr("Forum"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 OpenForumAction::~OpenForumAction()
@@ -38,20 +38,20 @@ OpenForumAction::~OpenForumAction()
 
 void OpenForumAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void OpenForumAction::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void OpenForumAction::actionTriggered(QAction *, bool)
 {
-	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		m_urlOpener->openUrl("http://www.kadu.im/forum/");
-	else
-		m_urlOpener->openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
+    if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
+        m_urlOpener->openUrl("http://www.kadu.im/forum/");
+    else
+        m_urlOpener->openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
 }
 
 #include "moc_open-forum-action.cpp"

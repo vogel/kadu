@@ -31,32 +31,37 @@ class QLabel;
 class ConfigGroupBox;
 
 /**
-	&lt;preview caption="caption" id="id" height="height" /&gt;
-	height - wysokość widgetu w pixelach (nieobowiazkowo, domyślnie PREVIEW_DEFAULT_HEIGHT)
+        &lt;preview caption="caption" id="id" height="height" /&gt;
+        height - wysokość widgetu w pixelach (nieobowiazkowo, domyślnie PREVIEW_DEFAULT_HEIGHT)
 
-	Podgląd składni.
+        Podgląd składni.
  **/
 class KADUAPI ConfigPreview : public Preview, public ConfigWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigPreview(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigPreview(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigPreview();
+    ConfigPreview(
+        const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+        ConfigurationWindowDataManager *dataManager);
+    ConfigPreview(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigPreview();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration() {}
-	virtual void saveConfiguration() {}
+    virtual void loadConfiguration()
+    {
+    }
+    virtual void saveConfiguration()
+    {
+    }
 
-	virtual bool fromDomElement(QDomElement domElement);
-
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

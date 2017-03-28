@@ -29,20 +29,20 @@ class QTextEdit;
 
 class XmlConsole : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Account WatchedAccount;
+    Account WatchedAccount;
 
-	QTextEdit *Viewer;
+    QTextEdit *Viewer;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	void xmlIncomingSlot(const QString &str);
-	void xmlOutgoingSlot(const QString &str);
+    void xmlIncomingSlot(const QString &str);
+    void xmlOutgoingSlot(const QString &str);
 
 public:
-	explicit XmlConsole(Account account);
+    explicit XmlConsole(Account account);
 };
 
-#endif // XML_CONSOLE_H
+#endif   // XML_CONSOLE_H

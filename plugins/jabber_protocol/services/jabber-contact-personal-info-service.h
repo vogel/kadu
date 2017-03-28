@@ -32,24 +32,23 @@ class QXmppVCardIq;
 
 class JabberContactPersonalInfoService : public ContactPersonalInfoService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberContactPersonalInfoService(Account account, QObject *parent = nullptr);
-	virtual ~JabberContactPersonalInfoService();
+    explicit JabberContactPersonalInfoService(Account account, QObject *parent = nullptr);
+    virtual ~JabberContactPersonalInfoService();
 
-	void setVCardService(JabberVCardService *vCardService);
+    void setVCardService(JabberVCardService *vCardService);
 
-	virtual void fetchPersonalInfo(Contact contact);
+    virtual void fetchPersonalInfo(Contact contact);
 
 private:
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<JabberVCardService> VCardService;
-	Buddy CurrentBuddy;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<JabberVCardService> VCardService;
+    Buddy CurrentBuddy;
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
 
-	void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
-
+    void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
 };

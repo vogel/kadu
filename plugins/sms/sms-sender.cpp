@@ -20,10 +20,9 @@
 
 #include "sms-sender.h"
 
-SmsSender::SmsSender(const QString &number, QObject *parent) :
-		QObject(parent), Number(number)
+SmsSender::SmsSender(const QString &number, QObject *parent) : QObject(parent), Number(number)
 {
-	fixNumber();
+    fixNumber();
 }
 
 SmsSender::~SmsSender()
@@ -32,18 +31,18 @@ SmsSender::~SmsSender()
 
 void SmsSender::fixNumber()
 {
-	if (Number.length() == 12 && Number.left(3) == "+48")
-		Number = Number.right(9);
+    if (Number.length() == 12 && Number.left(3) == "+48")
+        Number = Number.right(9);
 }
 
 bool SmsSender::validateSignature()
 {
-	return !Signature.isEmpty();
+    return !Signature.isEmpty();
 }
 
 void SmsSender::setSignature(const QString &signature)
 {
-	Signature = signature;
+    Signature = signature;
 }
 
 #include "moc_sms-sender.cpp"

@@ -35,30 +35,41 @@ class TitleWidget;
 
 class DialogWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	QString Title;
-	QString WindowTitle;
-	QPixmap Pixmap;
+    QString Title;
+    QString WindowTitle;
+    QPixmap Pixmap;
 
-	virtual void createGui() = 0;
+    virtual void createGui() = 0;
 
 private slots:
-	virtual void dialogAccepted() = 0;
-	virtual void dialogRejected() = 0;
+    virtual void dialogAccepted() = 0;
+    virtual void dialogRejected() = 0;
 
 public:
-	DialogWidget(const QString &windowTitle, const QString &title, const QPixmap &pixmap, QWidget* parent)
-			: QWidget(parent), Title(title), WindowTitle(windowTitle), Pixmap(pixmap) {}
-	virtual ~DialogWidget() {};
+    DialogWidget(const QString &windowTitle, const QString &title, const QPixmap &pixmap, QWidget *parent)
+            : QWidget(parent), Title(title), WindowTitle(windowTitle), Pixmap(pixmap)
+    {
+    }
+    virtual ~DialogWidget(){};
 
-	QPixmap pixmap() { return Pixmap; }
-	QString title() { return Title; }
-	QString windowTitle() { return WindowTitle; }
+    QPixmap pixmap()
+    {
+        return Pixmap;
+    }
+    QString title()
+    {
+        return Title;
+    }
+    QString windowTitle()
+    {
+        return WindowTitle;
+    }
 
 signals:
-	void valid(bool valid);
+    void valid(bool valid);
 };
 
-#endif // DIALOG_WIDGET_H
+#endif   // DIALOG_WIDGET_H

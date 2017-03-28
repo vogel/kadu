@@ -26,8 +26,8 @@
 #include "actions/action-context-provider.h"
 #include "actions/action-context.h"
 #include "actions/action-description.h"
-#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QMainWindow>
@@ -52,93 +52,101 @@ class ToolBar;
 
 class KADUAPI MainWindow : public QMainWindow, public ActionContextProvider, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static MainWindow * findMainWindow(QWidget *widget);
+    static MainWindow *findMainWindow(QWidget *widget);
 
-	MainWindow(ActionContext *context, const QString &windowName, QWidget *parent);
-	virtual ~MainWindow();
+    MainWindow(ActionContext *context, const QString &windowName, QWidget *parent);
+    virtual ~MainWindow();
 
-	const QString & windowName() { return WindowName; }
+    const QString &windowName()
+    {
+        return WindowName;
+    }
 
-	virtual QMenu * createPopupMenu() override { return 0; }
+    virtual QMenu *createPopupMenu() override
+    {
+        return 0;
+    }
 
-	virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
-	virtual TalkableProxyModel * talkableProxyModel() = 0;
+    virtual bool supportsActionType(ActionDescription::ActionType type) = 0;
+    virtual TalkableProxyModel *talkableProxyModel() = 0;
 
-	Contact contact();
-	Buddy buddy();
+    Contact contact();
+    Buddy buddy();
 
-	bool hasAction(const QString &actionName, ToolBar *exclude = 0);
+    bool hasAction(const QString &actionName, ToolBar *exclude = 0);
 
-	// ActionContextProvider implementation
-	ActionContext * actionContext() override;
+    // ActionContextProvider implementation
+    ActionContext *actionContext() override;
 
 public slots:
-	void addTopToolbar();
-	void addBottomToolbar();
-	void addLeftToolbar();
-	void addRightToolbar();
+    void addTopToolbar();
+    void addBottomToolbar();
+    void addLeftToolbar();
+    void addRightToolbar();
 
 protected:
-	void setActionContext(ActionContext *actionContext);
+    void setActionContext(ActionContext *actionContext);
 
-	InjectedFactory * injectedFactory() const;
+    InjectedFactory *injectedFactory() const;
 
-	void loadToolBarsFromConfig();
-	void loadToolBarsFromConfig(Qt::ToolBarArea area);
+    void loadToolBarsFromConfig();
+    void loadToolBarsFromConfig(Qt::ToolBarArea area);
 
-	bool loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
+    bool loadOldToolBarsFromConfig(const QString &configName, Qt::ToolBarArea area);
 
-	void writeToolBarsToConfig();
-	void writeToolBarsToConfig(Qt::ToolBarArea area);
+    void writeToolBarsToConfig();
+    void writeToolBarsToConfig(Qt::ToolBarArea area);
 
-	QDomElement getDockAreaConfigElement(Qt::ToolBarArea area);
+    QDomElement getDockAreaConfigElement(Qt::ToolBarArea area);
 
-	static QDomElement getToolbarsConfigElement(Configuration *configuration);
-	static QDomElement getDockAreaConfigElement(Configuration *configuration, QDomElement toolbarsConfig, const QString &name);
-	static void addToolButton(Configuration *configuration, QDomElement toolbarConfig, const QString &actionName, Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
-	static QDomElement findExistingToolbarOnArea(Configuration *configuration, const QString &areaName);
-	static QDomElement findExistingToolbar(Configuration *configuration, const QString &prefix);
+    static QDomElement getToolbarsConfigElement(Configuration *configuration);
+    static QDomElement
+    getDockAreaConfigElement(Configuration *configuration, QDomElement toolbarsConfig, const QString &name);
+    static void addToolButton(
+        Configuration *configuration, QDomElement toolbarConfig, const QString &actionName,
+        Qt::ToolButtonStyle style = Qt::ToolButtonIconOnly);
+    static QDomElement findExistingToolbarOnArea(Configuration *configuration, const QString &areaName);
+    static QDomElement findExistingToolbar(Configuration *configuration, const QString &prefix);
 
-	void setTransparency(bool enable);
-	void setBlur(bool enable);
-	virtual void showEvent (QShowEvent * event) override;
+    void setTransparency(bool enable);
+    void setBlur(bool enable);
+    virtual void showEvent(QShowEvent *event) override;
 
-	virtual void contextMenuEvent(QContextMenuEvent *event) override;
-	Configuration * configuration() const;
+    virtual void contextMenuEvent(QContextMenuEvent *event) override;
+    Configuration *configuration() const;
 
 protected slots:
-	void refreshToolBars();
+    void refreshToolBars();
 
 private:
-	QPointer<Actions> m_actions;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<SessionService> m_sessionService;
+    QPointer<Actions> m_actions;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<SessionService> m_sessionService;
 
-	QString WindowName;
-	bool TransparencyEnabled;
-	bool BlurEnabled;
+    QString WindowName;
+    bool TransparencyEnabled;
+    bool BlurEnabled;
 
-	ActionContext *Context;
+    ActionContext *Context;
 
-	ToolBar * newToolbar(QWidget *parent);
+    ToolBar *newToolbar(QWidget *parent);
 
-	void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
+    void loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::ToolBarArea area);
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setSessionService(SessionService *sessionService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setActions(Actions *actions);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setSessionService(SessionService *sessionService);
+    INJEQT_INIT void init();
 
-	void actionLoadedOrUnloaded(ActionDescription *action);
-	void toolbarUpdated();
-	void toolbarRemoved(ToolBar *toolBar);
-
+    void actionLoadedOrUnloaded(ActionDescription *action);
+    void toolbarUpdated();
+    void toolbarRemoved(ToolBar *toolBar);
 };

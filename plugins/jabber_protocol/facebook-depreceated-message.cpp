@@ -24,8 +24,7 @@
 #include "icons/icons-manager.h"
 #include "windows/message-dialog.h"
 
-FacebookDepreceatedMessage::FacebookDepreceatedMessage(QObject *parent) :
-		QObject{parent}
+FacebookDepreceatedMessage::FacebookDepreceatedMessage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,29 +34,30 @@ FacebookDepreceatedMessage::~FacebookDepreceatedMessage()
 
 void FacebookDepreceatedMessage::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void FacebookDepreceatedMessage::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void FacebookDepreceatedMessage::showIfNotSeen()
 {
-	auto depreceatedMessageSeen = m_configuration->deprecatedApi()->readBoolEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", false);
-	if (depreceatedMessageSeen)
-		return;
+    auto depreceatedMessageSeen =
+        m_configuration->deprecatedApi()->readBoolEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", false);
+    if (depreceatedMessageSeen)
+        return;
 
-	m_configuration->deprecatedApi()->writeEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", true);
+    m_configuration->deprecatedApi()->writeEntry("JabberProtocol", "FacebookDepreceatedMessageSeen", true);
 
-	auto message = tr(
-		"Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to "
-		"Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from "
-		"Kadu using Your Account dialog"
-	);
+    auto message =
+        tr("Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to "
+           "Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them "
+           "from "
+           "Kadu using Your Account dialog");
 
-	MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Kadu - Facebook"), message);
+    MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Kadu - Facebook"), message);
 }
 
 #include "moc_facebook-depreceated-message.cpp"

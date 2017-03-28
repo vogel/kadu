@@ -30,25 +30,24 @@ class IconsManager;
 
 class ContactAvatarDisplay : public QLabel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ContactAvatarDisplay(Contact contact, QSize size, QWidget *parent = nullptr);
-	virtual ~ContactAvatarDisplay();
+    explicit ContactAvatarDisplay(Contact contact, QSize size, QWidget *parent = nullptr);
+    virtual ~ContactAvatarDisplay();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	Contact m_contact;
-	Avatar m_avatar;
-	QSize m_size;
+    Contact m_contact;
+    Avatar m_avatar;
+    QSize m_size;
 
-	void displayAvatar();
+    void displayAvatar();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void avatarUpdated();
-
+    void avatarUpdated();
 };

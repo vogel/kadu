@@ -26,16 +26,16 @@
 
 void AtomicFileWriter::write(const QString &fileName, const QString &content)
 {
-	auto tmpFileName = fileName + ".tmp";
-	QFile file{tmpFileName};
+    auto tmpFileName = fileName + ".tmp";
+    QFile file{tmpFileName};
 
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-		throw AtomicFileWriteException();
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        throw AtomicFileWriteException();
 
-	file.write(content.toUtf8());
-	file.close();
+    file.write(content.toUtf8());
+    file.close();
 
-	QFile::remove(fileName);
-	if (!QFile::rename(tmpFileName, fileName))
-		throw AtomicFileWriteException();
+    QFile::remove(fileName);
+    if (!QFile::rename(tmpFileName, fileName))
+        throw AtomicFileWriteException();
 }

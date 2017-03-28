@@ -23,8 +23,8 @@
 #include "message/message-render-info-factory.h"
 #include "message/message-render-info.h"
 
-WebkitMessagesViewDisplay::WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer) :
-		m_chatStyleRenderer(chatStyleRenderer)
+WebkitMessagesViewDisplay::WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer)
+        : m_chatStyleRenderer(chatStyleRenderer)
 {
 }
 
@@ -34,20 +34,21 @@ WebkitMessagesViewDisplay::~WebkitMessagesViewDisplay()
 
 void WebkitMessagesViewDisplay::setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory)
 {
-	m_messageRenderInfoFactory = messageRenderInfoFactory;
+    m_messageRenderInfoFactory = messageRenderInfoFactory;
 }
 
-ChatStyleRenderer & WebkitMessagesViewDisplay::chatStyleRenderer() const
+ChatStyleRenderer &WebkitMessagesViewDisplay::chatStyleRenderer() const
 {
-	return m_chatStyleRenderer;
+    return m_chatStyleRenderer;
 }
 
-void WebkitMessagesViewDisplay::appendMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const
+void WebkitMessagesViewDisplay::appendMessagesRange(
+    I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const
 {
-	for (auto it = from; it != to; ++it)
-	{
-		auto info = m_messageRenderInfoFactory->messageRenderInfo(previousMessage, *it, headerBehavior);
-		chatStyleRenderer().appendChatMessage(*it, info);
-		previousMessage = *it;
-	}
+    for (auto it = from; it != to; ++it)
+    {
+        auto info = m_messageRenderInfoFactory->messageRenderInfo(previousMessage, *it, headerBehavior);
+        chatStyleRenderer().appendChatMessage(*it, info);
+        previousMessage = *it;
+    }
 }

@@ -34,40 +34,38 @@
  */
 class ChatStyle
 {
-
 public:
-	/**
-	 * @short Create new empty ChatStyle.
-	 */
-	ChatStyle();
+    /**
+     * @short Create new empty ChatStyle.
+     */
+    ChatStyle();
 
-	/**
-	 * @short Create ChatStyle with given name and variant.
-	 */
-	ChatStyle(QString name, QString variant);
+    /**
+     * @short Create ChatStyle with given name and variant.
+     */
+    ChatStyle(QString name, QString variant);
 
-	/**
-	 * @return name of style
-	 */
-	QString name() const;
+    /**
+     * @return name of style
+     */
+    QString name() const;
 
-	/**
-	 * @return variant of style
-	 */
-	QString variant() const;
+    /**
+     * @return variant of style
+     */
+    QString variant() const;
 
 private:
-	QString m_name;
-	QString m_variant;
-
+    QString m_name;
+    QString m_variant;
 };
 
-bool operator == (const ChatStyle &left, const ChatStyle &right);
-bool operator != (const ChatStyle &left, const ChatStyle &right);
-bool operator < (const ChatStyle &left, const ChatStyle &right);
-bool operator <= (const ChatStyle &left, const ChatStyle &right);
-bool operator > (const ChatStyle &left, const ChatStyle &right);
-bool operator >= (const ChatStyle &left, const ChatStyle &right);
+bool operator==(const ChatStyle &left, const ChatStyle &right);
+bool operator!=(const ChatStyle &left, const ChatStyle &right);
+bool operator<(const ChatStyle &left, const ChatStyle &right);
+bool operator<=(const ChatStyle &left, const ChatStyle &right);
+bool operator>(const ChatStyle &left, const ChatStyle &right);
+bool operator>=(const ChatStyle &left, const ChatStyle &right);
 
 /**
  * @}

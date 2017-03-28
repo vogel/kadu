@@ -31,27 +31,28 @@ class QLabel;
 class ConfigGroupBox;
 
 /**
-	&lt;hot-key-edit caption="caption" id="id" /&gt;
+        &lt;hot-key-edit caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigHotKeyEdit : public HotKeyEdit, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigHotKeyEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,  ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigHotKeyEdit();
+    ConfigHotKeyEdit(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigHotKeyEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigHotKeyEdit();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
-
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 };
 
 #endif

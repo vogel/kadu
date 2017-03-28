@@ -31,12 +31,11 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-DefaultProxyAction::DefaultProxyAction(QObject *parent) :
-		ActionDescription(parent)
+DefaultProxyAction::DefaultProxyAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeGlobal);
-	setName("defaultProxyAction");
-	setText(tr("Select Default Proxy"));
+    setType(ActionDescription::TypeGlobal);
+    setName("defaultProxyAction");
+    setText(tr("Select Default Proxy"));
 }
 
 DefaultProxyAction::~DefaultProxyAction()
@@ -45,86 +44,87 @@ DefaultProxyAction::~DefaultProxyAction()
 
 void DefaultProxyAction::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
-	m_networkProxyManager = networkProxyManager;
+    m_networkProxyManager = networkProxyManager;
 }
 
 void DefaultProxyAction::setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService)
 {
-	m_proxyEditWindowService = proxyEditWindowService;
+    m_proxyEditWindowService = proxyEditWindowService;
 }
 
-QMenu * DefaultProxyAction::menuForAction(Action *action)
+QMenu *DefaultProxyAction::menuForAction(Action *action)
 {
-	Q_UNUSED(action)
+    Q_UNUSED(action)
 
-	// no parents for menu as it is destroyed manually by Action class
-	QMenu *menu = new QMenu();
-	connect(menu, SIGNAL(aboutToShow()), this, SLOT(prepareMenu()));
-	connect(menu, SIGNAL(triggered(QAction*)), this, SLOT(selectProxyActionTriggered(QAction *)));
-	return menu;
+    // no parents for menu as it is destroyed manually by Action class
+    QMenu *menu = new QMenu();
+    connect(menu, SIGNAL(aboutToShow()), this, SLOT(prepareMenu()));
+    connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(selectProxyActionTriggered(QAction *)));
+    return menu;
 }
 
 void DefaultProxyAction::populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy)
 {
-	auto proxyModel = injectedFactory()->makeInjected<NetworkProxyModel>();
-	auto proxyProxyModel = new NetworkProxyProxyModel();
-	proxyProxyModel->setSourceModel(proxyModel);
+    auto proxyModel = injectedFactory()->makeInjected<NetworkProxyModel>();
+    auto proxyProxyModel = new NetworkProxyProxyModel();
+    proxyProxyModel->setSourceModel(proxyModel);
 
-	int proxCount = proxyProxyModel->rowCount();
+    int proxCount = proxyProxyModel->rowCount();
 
-	for (int i = 0; i < proxCount; i++)
-	{
-		NetworkProxy networkProxy = proxyProxyModel->data(proxyProxyModel->index(i, 0), NetworkProxyRole).value<NetworkProxy>();
-		if (networkProxy)
-		{
-			QAction *proxyAction = menu->addAction(networkProxy.displayName());
-			actionGroup->addAction(proxyAction);
-			proxyAction->setData(QVariant::fromValue(networkProxy));
-			proxyAction->setCheckable(true);
-			if (defaultProxy == networkProxy)
-				proxyAction->setChecked(true);
-		}
-	}
+    for (int i = 0; i < proxCount; i++)
+    {
+        NetworkProxy networkProxy =
+            proxyProxyModel->data(proxyProxyModel->index(i, 0), NetworkProxyRole).value<NetworkProxy>();
+        if (networkProxy)
+        {
+            QAction *proxyAction = menu->addAction(networkProxy.displayName());
+            actionGroup->addAction(proxyAction);
+            proxyAction->setData(QVariant::fromValue(networkProxy));
+            proxyAction->setCheckable(true);
+            if (defaultProxy == networkProxy)
+                proxyAction->setChecked(true);
+        }
+    }
 
-	delete proxyProxyModel;
-	delete proxyModel;
+    delete proxyProxyModel;
+    delete proxyModel;
 }
 
 void DefaultProxyAction::prepareMenu()
 {
-	QMenu *menu = qobject_cast<QMenu *>(sender());
-	if (!menu)
-		return;
+    QMenu *menu = qobject_cast<QMenu *>(sender());
+    if (!menu)
+        return;
 
-	menu->clear();
+    menu->clear();
 
-	NetworkProxy defaultProxy = m_networkProxyManager->defaultProxy();
+    NetworkProxy defaultProxy = m_networkProxyManager->defaultProxy();
 
-	QAction *proxyAction = menu->addAction(tr(" - No proxy - "));
+    QAction *proxyAction = menu->addAction(tr(" - No proxy - "));
 
-	// this parenting allows proxyActions to be removed on menu->clear() whats prevents memory leak
-	QActionGroup *proxyActions = new QActionGroup(proxyAction);
-	proxyActions->addAction(proxyAction);
-	proxyAction->setCheckable(true);
-	if (!defaultProxy)
-		proxyAction->setChecked(true);
+    // this parenting allows proxyActions to be removed on menu->clear() whats prevents memory leak
+    QActionGroup *proxyActions = new QActionGroup(proxyAction);
+    proxyActions->addAction(proxyAction);
+    proxyAction->setCheckable(true);
+    if (!defaultProxy)
+        proxyAction->setChecked(true);
 
-	populateMenu(menu, proxyActions, defaultProxy);
+    populateMenu(menu, proxyActions, defaultProxy);
 
-	menu->addSeparator();
-	QAction *editProxyConfigurationAction = menu->addAction(tr("Edit proxy configuration..."));
-	connect(editProxyConfigurationAction, SIGNAL(triggered()), this, SLOT(editProxyConfiguration()));
+    menu->addSeparator();
+    QAction *editProxyConfigurationAction = menu->addAction(tr("Edit proxy configuration..."));
+    connect(editProxyConfigurationAction, SIGNAL(triggered()), this, SLOT(editProxyConfiguration()));
 }
 
 void DefaultProxyAction::selectProxyActionTriggered(QAction *action)
 {
-	NetworkProxy defaultProxy = qvariant_cast<NetworkProxy>(action->data());
-	m_networkProxyManager->setDefaultProxy(defaultProxy);
+    NetworkProxy defaultProxy = qvariant_cast<NetworkProxy>(action->data());
+    m_networkProxyManager->setDefaultProxy(defaultProxy);
 }
 
 void DefaultProxyAction::editProxyConfiguration()
 {
-	m_proxyEditWindowService->show();
+    m_proxyEditWindowService->show();
 }
 
 #include "moc_default-proxy-action.cpp"

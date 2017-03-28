@@ -23,23 +23,22 @@ GaduDriveSessionToken::GaduDriveSessionToken()
 {
 }
 
-GaduDriveSessionToken::GaduDriveSessionToken(QString sessionId, QString securityToken) :
-		m_sessionId{sessionId},
-		m_securityToken{securityToken}
+GaduDriveSessionToken::GaduDriveSessionToken(QString sessionId, QString securityToken)
+        : m_sessionId{sessionId}, m_securityToken{securityToken}
 {
 }
 
 QString GaduDriveSessionToken::sessionId() const
 {
-	return m_sessionId;
+    return m_sessionId;
 }
 
 QString GaduDriveSessionToken::securityToken() const
 {
-	return m_securityToken;
+    return m_securityToken;
 }
 
 bool GaduDriveSessionToken::isValid() const
 {
-	return !m_sessionId.isEmpty() && !m_securityToken.isEmpty();
+    return !m_sessionId.isEmpty() && !m_securityToken.isEmpty();
 }

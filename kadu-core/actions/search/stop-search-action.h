@@ -26,15 +26,14 @@
 
 class StopSearchAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit StopSearchAction(QObject *parent = nullptr);
-	virtual ~StopSearchAction();
+    Q_INVOKABLE explicit StopSearchAction(QObject *parent = nullptr);
+    virtual ~StopSearchAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 };

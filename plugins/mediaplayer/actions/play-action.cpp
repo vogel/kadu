@@ -23,14 +23,14 @@
 
 #include "actions/actions.h"
 
-PlayAction::PlayAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+PlayAction::PlayAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"});
-	setName(QStringLiteral("mediaplayer_play"));
-	setText(tr("Play"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-play"});
+    setName(QStringLiteral("mediaplayer_play"));
+    setText(tr("Play"));
+    setType(ActionDescription::TypeChat);
 }
 
 PlayAction::~PlayAction()
@@ -39,12 +39,12 @@ PlayAction::~PlayAction()
 
 void PlayAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void PlayAction::actionTriggered(QAction *, bool)
 {
-	m_mediaPlayer->playPause();
+    m_mediaPlayer->playPause();
 }
 
 #include "moc_play-action.cpp"

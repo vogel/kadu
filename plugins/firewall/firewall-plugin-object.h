@@ -33,29 +33,29 @@ class PathsProvider;
 
 class FirewallPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit FirewallPluginObject(QObject *parent = nullptr);
-	virtual ~FirewallPluginObject();
+    Q_INVOKABLE explicit FirewallPluginObject(QObject *parent = nullptr);
+    virtual ~FirewallPluginObject();
 
 private:
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<FirewallConfigurationUiHandler> m_firewallConfigurationUiHandler;
-	QPointer<FirewallMessageFilter> m_firewallMessageFilter;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<MessageFilterService> m_messageFilterService;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<FirewallConfigurationUiHandler> m_firewallConfigurationUiHandler;
+    QPointer<FirewallMessageFilter> m_firewallMessageFilter;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<MessageFilterService> m_messageFilterService;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler);
-	INJEQT_SET void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler);
+    INJEQT_SET void setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

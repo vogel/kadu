@@ -23,9 +23,7 @@
 
 class SingleWindowModule : public injeqt::module
 {
-
 public:
-	explicit SingleWindowModule();
-	virtual ~SingleWindowModule();
-
+    explicit SingleWindowModule();
+    virtual ~SingleWindowModule();
 };

@@ -37,170 +37,172 @@
 #include "themes.h"
 
 Themes::Themes(const QString &themename, const QString &configname)
-	: QObject(), ThemesList(), ThemesPaths(), additional(),
-	ConfigName(configname), Name(themename), ActualTheme("Custom"), entries()
+        : QObject(), ThemesList(), ThemesPaths(), additional(), ConfigName(configname), Name(themename),
+          ActualTheme("Custom"), entries()
 {
 }
 
 void Themes::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void Themes::init()
 {
-	setPaths(QStringList());
+    setPaths(QStringList());
 }
 
 QStringList Themes::getSubDirs(const QString &path, bool validate) const
 {
-	QDir dir(path);
-	dir.setFilter(QDir::Dirs);
-	QStringList dirs = dir.entryList();
-	dirs.removeAll(".");
-	dirs.removeAll("..");
+    QDir dir(path);
+    dir.setFilter(QDir::Dirs);
+    QStringList dirs = dir.entryList();
+    dirs.removeAll(".");
+    dirs.removeAll("..");
 
-	if (!validate)
-		return dirs;
+    if (!validate)
+        return dirs;
 
-	QStringList subdirs;
-	foreach(const QString &dir, dirs)
-	{
-		QString dirname = path + '/' + dir;
-		if (validateDir(dirname))
-			subdirs.append(dir);
-	}
-	return subdirs;
+    QStringList subdirs;
+    foreach (const QString &dir, dirs)
+    {
+        QString dirname = path + '/' + dir;
+        if (validateDir(dirname))
+            subdirs.append(dir);
+    }
+    return subdirs;
 }
 
 bool Themes::validateDir(const QString &path) const
 {
-	if (ConfigName.isEmpty())
-		return true;
+    if (ConfigName.isEmpty())
+        return true;
 
-	QFile f(path + '/' + ConfigName);
-	if (f.exists())
-		return true;
+    QFile f(path + '/' + ConfigName);
+    if (f.exists())
+        return true;
 
-	QStringList subdirs = getSubDirs(path, false);
-	if (!subdirs.isEmpty())
-	{
-		foreach(const QString &dir, subdirs)
-		{
-			f.setFileName(path + '/' + dir + '/' + ConfigName);
-			if (!f.exists())
-				return false;
-		}
+    QStringList subdirs = getSubDirs(path, false);
+    if (!subdirs.isEmpty())
+    {
+        foreach (const QString &dir, subdirs)
+        {
+            f.setFileName(path + '/' + dir + '/' + ConfigName);
+            if (!f.exists())
+                return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
-const QStringList & Themes::themes() const
+const QStringList &Themes::themes() const
 {
-	return ThemesList;
+    return ThemesList;
 }
 
 void Themes::setTheme(const QString &theme)
 {
-	if (ThemesList.contains(theme) || (theme == "Custom"))
-	{
-		entries.clear();
-		ActualTheme = theme;
-		if (theme != "Custom" && !ConfigName.isEmpty())
-		{
-			QSettings themeSettings(themePath() +  fixFileName(themePath(), ConfigName), QSettings::IniFormat);
-			themeSettings.setIniCodec("ISO8859-2");
+    if (ThemesList.contains(theme) || (theme == "Custom"))
+    {
+        entries.clear();
+        ActualTheme = theme;
+        if (theme != "Custom" && !ConfigName.isEmpty())
+        {
+            QSettings themeSettings(themePath() + fixFileName(themePath(), ConfigName), QSettings::IniFormat);
+            themeSettings.setIniCodec("ISO8859-2");
 
-			themeSettings.beginGroup(Name);
-			auto keys = themeSettings.allKeys();
-			for (auto const &key : keys)
-			{
-				entries.insert(key, themeSettings.value(key).toString());
-			}
-			themeSettings.endGroup();
-		}
-		emit themeChanged(ActualTheme);
-	}
+            themeSettings.beginGroup(Name);
+            auto keys = themeSettings.allKeys();
+            for (auto const &key : keys)
+            {
+                entries.insert(key, themeSettings.value(key).toString());
+            }
+            themeSettings.endGroup();
+        }
+        emit themeChanged(ActualTheme);
+    }
 }
 
-const QString & Themes::theme() const
+const QString &Themes::theme() const
 {
-	return ActualTheme;
+    return ActualTheme;
 }
 
 void Themes::setPaths(const QStringList &paths)
 {
-	ThemesList.clear();
-	ThemesPaths.clear();
-	additional.clear();
-	QStringList temp = paths + defaultPathsProviderWithThemes();
-	foreach(const QString &it, temp)
-	{
-		if (validateDir(it))
-		{
-			if (paths.indexOf(it) != -1)
-				additional.append(it);
-			ThemesPaths.append(it);
-			ThemesList.append(it.section('/', -1, -1, QString::SectionSkipEmpty));
-		}
-// TODO: 0.6.5
-// 		else
-// 			MessageDialog::msg(tr("<i>%1</i><br/>does not contain any theme configuration file").arg(it), false, "dialog-warning");
-	}
-	emit pathsChanged(ThemesPaths);
+    ThemesList.clear();
+    ThemesPaths.clear();
+    additional.clear();
+    QStringList temp = paths + defaultPathsProviderWithThemes();
+    foreach (const QString &it, temp)
+    {
+        if (validateDir(it))
+        {
+            if (paths.indexOf(it) != -1)
+                additional.append(it);
+            ThemesPaths.append(it);
+            ThemesList.append(it.section('/', -1, -1, QString::SectionSkipEmpty));
+        }
+        // TODO: 0.6.5
+        // 		else
+        // 			MessageDialog::msg(tr("<i>%1</i><br/>does not contain any theme configuration
+        // file").arg(it),
+        // false, "dialog-warning");
+    }
+    emit pathsChanged(ThemesPaths);
 }
 
 QStringList Themes::defaultPathsProviderWithThemes() const
 {
-	QStringList result;
+    QStringList result;
 
-	auto path = QString{m_pathsProvider->dataPath() + QStringLiteral("themes/") + Name};
-	foreach(const QString &it, getSubDirs(path))
-		result << (path + '/' + it + '/');
+    auto path = QString{m_pathsProvider->dataPath() + QStringLiteral("themes/") + Name};
+    foreach (const QString &it, getSubDirs(path))
+        result << (path + '/' + it + '/');
 
-	foreach(const QString &it, getSubDirs(m_pathsProvider->profilePath() + Name))
-		result << (m_pathsProvider->profilePath() + Name + '/' + it + '/');
+    foreach (const QString &it, getSubDirs(m_pathsProvider->profilePath() + Name))
+        result << (m_pathsProvider->profilePath() + Name + '/' + it + '/');
 
-	return result;
+    return result;
 }
 
-const QStringList & Themes::paths() const
+const QStringList &Themes::paths() const
 {
     return ThemesPaths;
 }
 
-const QStringList & Themes::additionalPaths() const
+const QStringList &Themes::additionalPaths() const
 {
     return additional;
 }
 
 QString Themes::themePath(const QString &theme) const
 {
-	QString t = theme;
-	if (theme.isEmpty())
-		t = ActualTheme;
-	if (t == "Custom")
-		return QString();
-	if (ThemesPaths.isEmpty())
-		return "Custom";
+    QString t = theme;
+    if (theme.isEmpty())
+        t = ActualTheme;
+    if (t == "Custom")
+        return QString();
+    if (ThemesPaths.isEmpty())
+        return "Custom";
 
-	QRegExp r("(/" + t + "/)$");
-	foreach (const QString &theme, ThemesPaths)
-		if (-1 != r.indexIn(theme))
-			return theme;
+    QRegExp r("(/" + t + "/)$");
+    foreach (const QString &theme, ThemesPaths)
+        if (-1 != r.indexIn(theme))
+            return theme;
 
-	return "Custom";
+    return "Custom";
 }
 
 QString Themes::getThemeEntry(const QString &name) const
 {
-	if (entries.contains(name))
-		return entries[name];
-	else
-		return QString();
+    if (entries.contains(name))
+        return entries[name];
+    else
+        return QString();
 }
 
 #include "moc_themes.cpp"

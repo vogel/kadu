@@ -29,21 +29,21 @@ class DeprecatedConfigurationApi;
 
 class KADUAPI Configuration final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Configuration(QString version, std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent = nullptr);
-	virtual ~Configuration();
+    explicit Configuration(
+        QString version, std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent = nullptr);
+    virtual ~Configuration();
 
-	ConfigurationApi * api() const;
-	DeprecatedConfigurationApi * deprecatedApi() const;
+    ConfigurationApi *api() const;
+    DeprecatedConfigurationApi *deprecatedApi() const;
 
-	void touch();
-	QString content() const;
+    void touch();
+    QString content() const;
 
 private:
-	QString m_version;
-	std::unique_ptr<ConfigurationApi> m_configurationApi;
-	std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
-
+    QString m_version;
+    std::unique_ptr<ConfigurationApi> m_configurationApi;
+    std::unique_ptr<DeprecatedConfigurationApi> m_deprecatedConfigurationApi;
 };

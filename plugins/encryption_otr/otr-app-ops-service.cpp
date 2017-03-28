@@ -34,40 +34,40 @@
 
 OtrAppOpsService::OtrAppOpsService()
 {
-	AppOps.otr_error_message = OtrErrorMessageService::wrapperOtrErrorMessage;
-	AppOps.otr_error_message_free = OtrErrorMessageService::wrapperOtrErrorMessageFree;
-	AppOps.write_fingerprints = OtrFingerprintService::wrapperOtrWriteFingerprints;
-	AppOps.is_logged_in = OtrIsLoggedInService::wrapperOtrIsLoggedIn;
-	AppOps.handle_msg_event = OtrMessageEventService::wrapperOtrHandleMessageEvent;
-	AppOps.inject_message = OtrMessageService::wrapperOtrInjectMessage;
-	AppOps.max_message_size = OtrMessageService::wrapperOtrMaxMessageSize;
-	AppOps.resent_msg_prefix = OtrMessageService::wrapperOtrResentMessagePrefix;
-	AppOps.resent_msg_prefix_free = OtrMessageService::wrapperOtrResentMessagePrefixFree;
-	AppOps.handle_smp_event = OtrPeerIdentityVerificationService::wrapperHandleSmpEvent;
-	AppOps.policy = OtrPolicyService::wrapperOtrPolicy;
-	AppOps.create_privkey = OtrPrivateKeyService::wrapperOtrCreatePrivateKey;
-	AppOps.gone_secure = OtrSessionService::wrapperOtrGoneSecure;
-	AppOps.gone_insecure = OtrSessionService::wrapperOtrGoneInsecure;
-	AppOps.still_secure = OtrSessionService::wrapperOtrStillSecure;
-	AppOps.create_instag = OtrInstanceTagService::wrapperOtrCreateInstanceTag;
-	AppOps.timer_control = OtrTimerService::wrapperOtrTimerControl;
-	AppOps.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
+    AppOps.otr_error_message = OtrErrorMessageService::wrapperOtrErrorMessage;
+    AppOps.otr_error_message_free = OtrErrorMessageService::wrapperOtrErrorMessageFree;
+    AppOps.write_fingerprints = OtrFingerprintService::wrapperOtrWriteFingerprints;
+    AppOps.is_logged_in = OtrIsLoggedInService::wrapperOtrIsLoggedIn;
+    AppOps.handle_msg_event = OtrMessageEventService::wrapperOtrHandleMessageEvent;
+    AppOps.inject_message = OtrMessageService::wrapperOtrInjectMessage;
+    AppOps.max_message_size = OtrMessageService::wrapperOtrMaxMessageSize;
+    AppOps.resent_msg_prefix = OtrMessageService::wrapperOtrResentMessagePrefix;
+    AppOps.resent_msg_prefix_free = OtrMessageService::wrapperOtrResentMessagePrefixFree;
+    AppOps.handle_smp_event = OtrPeerIdentityVerificationService::wrapperHandleSmpEvent;
+    AppOps.policy = OtrPolicyService::wrapperOtrPolicy;
+    AppOps.create_privkey = OtrPrivateKeyService::wrapperOtrCreatePrivateKey;
+    AppOps.gone_secure = OtrSessionService::wrapperOtrGoneSecure;
+    AppOps.gone_insecure = OtrSessionService::wrapperOtrGoneInsecure;
+    AppOps.still_secure = OtrSessionService::wrapperOtrStillSecure;
+    AppOps.create_instag = OtrInstanceTagService::wrapperOtrCreateInstanceTag;
+    AppOps.timer_control = OtrTimerService::wrapperOtrTimerControl;
+    AppOps.update_context_list = OtrTrustLevelService::wrapperOtrUpdateContextList;
 
-	AppOps.new_fingerprint = 0;
-	AppOps.account_name = 0;
-	AppOps.account_name_free = 0;
-	AppOps.received_symkey = 0;
-	AppOps.convert_msg = 0;
-	AppOps.convert_free = 0;
+    AppOps.new_fingerprint = 0;
+    AppOps.account_name = 0;
+    AppOps.account_name_free = 0;
+    AppOps.received_symkey = 0;
+    AppOps.convert_msg = 0;
+    AppOps.convert_free = 0;
 }
 
 OtrAppOpsService::~OtrAppOpsService()
 {
 }
 
-const OtrlMessageAppOps * OtrAppOpsService::appOps() const
+const OtrlMessageAppOps *OtrAppOpsService::appOps() const
 {
-	return &AppOps;
+    return &AppOps;
 }
 
 #include "moc_otr-app-ops-service.cpp"

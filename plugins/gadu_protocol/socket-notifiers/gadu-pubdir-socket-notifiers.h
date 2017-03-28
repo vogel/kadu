@@ -27,29 +27,29 @@
 
 class GaduPubdirSocketNotifiers : public GaduSocketNotifiers
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	struct gg_http *H;
+    struct gg_http *H;
 
-	void finished(bool ok);
+    void finished(bool ok);
 
 protected:
-	virtual bool checkRead();
-	virtual bool checkWrite();
-	virtual void socketEvent();
-	virtual int timeout();
-	virtual bool handleSoftTimeout();
-	virtual void connectionTimeout();
+    virtual bool checkRead();
+    virtual bool checkWrite();
+    virtual void socketEvent();
+    virtual int timeout();
+    virtual bool handleSoftTimeout();
+    virtual void connectionTimeout();
 
 public:
-	GaduPubdirSocketNotifiers(QObject *parent = nullptr) :
-			GaduSocketNotifiers(parent), H(0) {}
+    GaduPubdirSocketNotifiers(QObject *parent = nullptr) : GaduSocketNotifiers(parent), H(0)
+    {
+    }
 
-	void watchFor(struct gg_http *h);
+    void watchFor(struct gg_http *h);
 
 signals:
-	void done(bool ok, struct gg_http *h);
-
+    void done(bool ok, struct gg_http *h);
 };
 
-#endif // GADU_PUBDIR_SOCKET_NOTIFIERS_H
+#endif   // GADU_PUBDIR_SOCKET_NOTIFIERS_H

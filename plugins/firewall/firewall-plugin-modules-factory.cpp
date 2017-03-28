@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-FirewallPluginModulesFactory::FirewallPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+FirewallPluginModulesFactory::FirewallPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ FirewallPluginModulesFactory::~FirewallPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> FirewallPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<FirewallModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<FirewallModule>());
 
-	return modules;
+    return modules;
 }
 
 QString FirewallPluginModulesFactory::parentInjectorName() const
 {
-	return "history";
+    return "history";
 }
 
 #include "moc_firewall-plugin-modules-factory.cpp"

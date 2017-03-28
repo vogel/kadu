@@ -28,26 +28,35 @@ class ActionDescription;
 class CustomInputMenuItem
 {
 public:
-	enum CustomInputMenuCategory
-	{
-		MenuCategoryTextEdit,
-		MenuCategoryModule,
-		MenuCategorySuggestion,
-	};
+    enum CustomInputMenuCategory
+    {
+        MenuCategoryTextEdit,
+        MenuCategoryModule,
+        MenuCategorySuggestion,
+    };
 
 private:
-	ActionDescription *Action;
-	CustomInputMenuCategory Category;
-	int Priority;
+    ActionDescription *Action;
+    CustomInputMenuCategory Category;
+    int Priority;
 
 public:
-	CustomInputMenuItem(ActionDescription *action, CustomInputMenuCategory category, int priority);
+    CustomInputMenuItem(ActionDescription *action, CustomInputMenuCategory category, int priority);
 
-	bool operator < (const CustomInputMenuItem &compareTo) const;
+    bool operator<(const CustomInputMenuItem &compareTo) const;
 
-	ActionDescription * actionDescription() const { return Action; }
-	CustomInputMenuCategory category() const { return Category; }
-	int priority() const { return Priority; }
+    ActionDescription *actionDescription() const
+    {
+        return Action;
+    }
+    CustomInputMenuCategory category() const
+    {
+        return Category;
+    }
+    int priority() const
+    {
+        return Priority;
+    }
 };
 
-#endif // CUSTOM_INPUT_MENU_ITEM_H
+#endif   // CUSTOM_INPUT_MENU_ITEM_H

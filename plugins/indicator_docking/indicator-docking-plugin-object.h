@@ -28,19 +28,18 @@ class IndicatorDocking;
 
 class IndicatorDockingPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit IndicatorDockingPluginObject(QObject *parent = nullptr);
-	virtual ~IndicatorDockingPluginObject();
+    Q_INVOKABLE explicit IndicatorDockingPluginObject(QObject *parent = nullptr);
+    virtual ~IndicatorDockingPluginObject();
 
 private:
-	QPointer<IndicatorDocking> m_indicatorDocking;
+    QPointer<IndicatorDocking> m_indicatorDocking;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setIndicatorDocking(IndicatorDocking *indicatorDocking);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setIndicatorDocking(IndicatorDocking *indicatorDocking);
 };

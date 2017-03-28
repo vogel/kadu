@@ -27,15 +27,14 @@
 
 class JabberUrlDomVisitorProvider : public QObject, public DomVisitorProvider
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberUrlDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~JabberUrlDomVisitorProvider();
+    Q_INVOKABLE explicit JabberUrlDomVisitorProvider(QObject *parent = nullptr);
+    virtual ~JabberUrlDomVisitorProvider();
 
-	virtual const DomVisitor * provide() const;
+    virtual const DomVisitor *provide() const;
 
 private:
-	IgnoreLinksDomVisitor m_ignoreLinks;
-
+    IgnoreLinksDomVisitor m_ignoreLinks;
 };

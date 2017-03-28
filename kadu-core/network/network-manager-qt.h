@@ -48,20 +48,19 @@ class QNetworkConfigurationManager;
  */
 class KADUAPI NetworkManagerQt : public NetworkManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QNetworkConfigurationManager *ConfigurationManager;
-	bool HasValidCapabilities;
+    QNetworkConfigurationManager *ConfigurationManager;
+    bool HasValidCapabilities;
 
 public:
-	Q_INVOKABLE explicit NetworkManagerQt(QObject *parent = nullptr);
-	virtual ~NetworkManagerQt();
+    Q_INVOKABLE explicit NetworkManagerQt(QObject *parent = nullptr);
+    virtual ~NetworkManagerQt();
 
-	virtual bool isOnline();
+    virtual bool isOnline();
 
 public slots:
-	virtual void forceOnline();
-
+    virtual void forceOnline();
 };
 
 /**

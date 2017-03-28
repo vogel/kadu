@@ -30,27 +30,27 @@ class InjectedFactory;
 
 class BuddyContactsTableDelegate : public QStyledItemDelegate
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyContactsTableDelegate(QObject *parent = nullptr);
-	virtual ~BuddyContactsTableDelegate();
+    explicit BuddyContactsTableDelegate(QObject *parent = nullptr);
+    virtual ~BuddyContactsTableDelegate();
 
-	virtual QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual void
+    updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
-	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
-	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+    virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
+    virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
 protected:
-	virtual bool eventFilter(QObject *editor, QEvent *event);
+    virtual bool eventFilter(QObject *editor, QEvent *event);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void dataChanged();
-
+    void dataChanged();
 };

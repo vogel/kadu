@@ -19,31 +19,30 @@
 
 #include "error.h"
 
-Error::Error(ErrorSeverity severity, const QString &message) :
-		Severity(severity), Message(message)
+Error::Error(ErrorSeverity severity, const QString &message) : Severity(severity), Message(message)
 {
 }
 
 Error::Error(const Error &copyMe)
 {
-	Severity = copyMe.Severity;
-	Message = copyMe.Message;
+    Severity = copyMe.Severity;
+    Message = copyMe.Message;
 }
 
-Error & Error::operator = (const Error &copyMe)
+Error &Error::operator=(const Error &copyMe)
 {
-	Severity = copyMe.Severity;
-	Message = copyMe.Message;
+    Severity = copyMe.Severity;
+    Message = copyMe.Message;
 
-	return *this;
+    return *this;
 }
 
 ErrorSeverity Error::severity() const
 {
-	return Severity;
+    return Severity;
 }
 
 QString Error::message() const
 {
-	return Message;
+    return Message;
 }

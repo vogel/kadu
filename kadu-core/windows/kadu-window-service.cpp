@@ -22,12 +22,9 @@
 #include "core/injected-factory.h"
 #include "windows/kadu-window.h"
 
-KaduWindowService::KaduWindowService(QObject *parent) :
-		QObject{parent},
-		m_kaduWindow{nullptr},
-		m_kaduWindowProvider{new SimpleProvider<QWidget *>(nullptr)},
-		m_mainWindowProvider{new DefaultProvider<QWidget *>(m_kaduWindowProvider)},
-		m_showMainWindowOnStart{true}
+KaduWindowService::KaduWindowService(QObject *parent)
+        : QObject{parent}, m_kaduWindow{nullptr}, m_kaduWindowProvider{new SimpleProvider<QWidget *>(nullptr)},
+          m_mainWindowProvider{new DefaultProvider<QWidget *>(m_kaduWindowProvider)}, m_showMainWindowOnStart{true}
 {
 }
 
@@ -37,57 +34,57 @@ KaduWindowService::~KaduWindowService()
 
 void KaduWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void KaduWindowService::done()
 {
-	if (m_kaduWindow)
-	{
-		// TODO: check if needed and why
-		m_kaduWindowProvider->provideValue(nullptr);
-		auto hiddenParent = m_kaduWindow->parentWidget();
-		delete m_kaduWindow;
-		delete hiddenParent;
-	}
+    if (m_kaduWindow)
+    {
+        // TODO: check if needed and why
+        m_kaduWindowProvider->provideValue(nullptr);
+        auto hiddenParent = m_kaduWindow->parentWidget();
+        delete m_kaduWindow;
+        delete hiddenParent;
+    }
 }
 
 void KaduWindowService::createWindow()
 {
-	m_kaduWindow = new KaduWindow{};
-	m_injectedFactory->injectInto(m_kaduWindow);
-	connect(m_kaduWindow, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
-	m_kaduWindowProvider->provideValue(m_kaduWindow);
+    m_kaduWindow = new KaduWindow{};
+    m_injectedFactory->injectInto(m_kaduWindow);
+    connect(m_kaduWindow, SIGNAL(destroyed()), this, SLOT(kaduWindowDestroyed()));
+    m_kaduWindowProvider->provideValue(m_kaduWindow);
 }
 
 void KaduWindowService::kaduWindowDestroyed()
 {
-	m_kaduWindowProvider->provideValue(nullptr);
-	m_kaduWindow = 0;
+    m_kaduWindowProvider->provideValue(nullptr);
+    m_kaduWindow = 0;
 }
 
-KaduWindow * KaduWindowService::kaduWindow()
+KaduWindow *KaduWindowService::kaduWindow()
 {
-	return m_kaduWindow;
+    return m_kaduWindow;
 }
 
 void KaduWindowService::showMainWindow()
 {
-	if (m_showMainWindowOnStart)
-		m_mainWindowProvider->provide()->show();
+    if (m_showMainWindowOnStart)
+        m_mainWindowProvider->provide()->show();
 
-	// after first call which has to be placed in main(), this method should always show main window
-	m_showMainWindowOnStart = true;
+    // after first call which has to be placed in main(), this method should always show main window
+    m_showMainWindowOnStart = true;
 }
 
 void KaduWindowService::setShowMainWindowOnStart(bool showMainWindowOnStart)
 {
-	m_showMainWindowOnStart = showMainWindowOnStart;
+    m_showMainWindowOnStart = showMainWindowOnStart;
 }
 
 std::shared_ptr<DefaultProvider<QWidget *>> KaduWindowService::mainWindowProvider() const
 {
-	return m_mainWindowProvider;
+    return m_mainWindowProvider;
 }
 
 #include "moc_kadu-window-service.cpp"

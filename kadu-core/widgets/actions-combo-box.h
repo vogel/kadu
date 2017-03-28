@@ -56,127 +56,127 @@ class ModelChain;
  */
 class KADUAPI ActionsComboBox : public QComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum ActionVisibility // flag
-	{
-		AlwaysVisible,
-		// TODO: think of better names
-		NotVisibleWithEmptySourceModel,
-		NotVisibleWithOneRowSourceModel
-	};
+    enum ActionVisibility   // flag
+    {
+        AlwaysVisible,
+        // TODO: think of better names
+        NotVisibleWithEmptySourceModel,
+        NotVisibleWithOneRowSourceModel
+    };
 
 private:
-	ActionListModel *BeforeActions;
-	ActionListModel *AfterActions;
-	ActionFilterProxyModel *ActionsFilterModel;
-	KaduAbstractModel *KaduModel;
+    ActionListModel *BeforeActions;
+    ActionListModel *AfterActions;
+    ActionFilterProxyModel *ActionsFilterModel;
+    KaduAbstractModel *KaduModel;
 
-	int DataRole;
-	int LastIndex;
+    int DataRole;
+    int LastIndex;
 
-	bool isActionSelectable(QAction *action);
-	void addActionToFilter(QAction *action, ActionVisibility visibility);
+    bool isActionSelectable(QAction *action);
+    void addActionToFilter(QAction *action, ActionVisibility visibility);
 
 private slots:
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called after user changed selected item.
-	 * @param index activated index
-	 *
-	 * This slot is called when user selected new value in combo box. If new index contains unselectable action
-	 * previous selection is restored and action is triggered. If new index contains selectable action, then this
-	 * action is triggered.
-	 */
-	void activatedSlot(int index);
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @author Rafał 'Vogel' Malinowski
+     * @short Method called after user changed selected item.
+     * @param index activated index
+     *
+     * This slot is called when user selected new value in combo box. If new index contains unselectable action
+     * previous selection is restored and action is triggered. If new index contains selectable action, then this
+     * action is triggered.
+     */
+    void activatedSlot(int index);
 
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Method called after selected index has changed.
-	 * @param index new selected index index
-	 *
-	 * This slot is called when current selected is changed by user or from code. If new index does not contain unselectable
-	 * action then this index is stored as safe selectable index.
-	 */
-	void currentIndexChangedSlot(int index);
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @author Rafał 'Vogel' Malinowski
+     * @short Method called after selected index has changed.
+     * @param index new selected index index
+     *
+     * This slot is called when current selected is changed by user or from code. If new index does not contain
+     * unselectable
+     * action then this index is stored as safe selectable index.
+     */
+    void currentIndexChangedSlot(int index);
 
 protected:
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sets up model for combo box.
-	 * @param dataRole role used to get data from model
-	 * @param modelChain chain of models to use as data source
-	 *
-	 * Sets up the model in combo box. Must be called before any signals are connected to/from the model.
-	 * Parameter modelChain is modified in this method.
-	 */
-	void setUpModel(int dataRole, ModelChain *modelChain);
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @author Rafal 'Vogel' Malinowski
+     * @short Sets up model for combo box.
+     * @param dataRole role used to get data from model
+     * @param modelChain chain of models to use as data source
+     *
+     * Sets up the model in combo box. Must be called before any signals are connected to/from the model.
+     * Parameter modelChain is modified in this method.
+     */
+    void setUpModel(int dataRole, ModelChain *modelChain);
 
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sets current value to the value in argument.
-	 * @param value value to be set
-	 *
-	 * Sets current value to the value in argument.
-	 */
-	void setCurrentValue(const QVariant &value);
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @author Rafal 'Vogel' Malinowski
+     * @short Sets current value to the value in argument.
+     * @param value value to be set
+     *
+     * Sets current value to the value in argument.
+     */
+    void setCurrentValue(const QVariant &value);
 
-	/**
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns current value.
-	 * @return current value
-	 *
-	 * Returns current value.
-	 */
-	QVariant currentValue() const;
+    /**
+     * @author Bartosz 'beevvy' Brachaczek
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns current value.
+     * @return current value
+     *
+     * Returns current value.
+     */
+    QVariant currentValue() const;
 
 public:
-	explicit ActionsComboBox(QWidget *parent = nullptr);
-	virtual ~ActionsComboBox();
+    explicit ActionsComboBox(QWidget *parent = nullptr);
+    virtual ~ActionsComboBox();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Add new action before real values in combo box.
-	 * @param action action to add
-	 * @param visibility action visibility of new action
-	 *
-	 * Add new action before real values in combo box. Action will be triggered when selected by user.
-	 * Action can be marked as non-selectable by setting its data property to true. Second parameter
-	 * creates connection between size of data model and this action visibility.
-	 */
-	void addBeforeAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Add new action before real values in combo box.
+     * @param action action to add
+     * @param visibility action visibility of new action
+     *
+     * Add new action before real values in combo box. Action will be triggered when selected by user.
+     * Action can be marked as non-selectable by setting its data property to true. Second parameter
+     * creates connection between size of data model and this action visibility.
+     */
+    void addBeforeAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Add new action after real values in combo box.
-	 * @param action action to add
-	 * @param visibility action visibility of new action
-	 *
-	 * Add new action after real values in combo box. Action will be triggered when selected by user.
-	 * Action can be marked as non-selectable by setting its data property to true. Second parameter
-	 * creates connection between size of data model and this action visibility.
-	 */
-	void addAfterAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Add new action after real values in combo box.
+     * @param action action to add
+     * @param visibility action visibility of new action
+     *
+     * Add new action after real values in combo box. Action will be triggered when selected by user.
+     * Action can be marked as non-selectable by setting its data property to true. Second parameter
+     * creates connection between size of data model and this action visibility.
+     */
+    void addAfterAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns currently selected action.
-	 * @return currently selected action
-	 *
-	 * Returns currently selected action.
-	 */
-	QAction * currentAction();
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns currently selected action.
+     * @return currently selected action
+     *
+     * Returns currently selected action.
+     */
+    QAction *currentAction();
 };
 
 /**
  * @}
  */
 
-#endif // ACTIONS_COMBO_BOX_H
+#endif   // ACTIONS_COMBO_BOX_H

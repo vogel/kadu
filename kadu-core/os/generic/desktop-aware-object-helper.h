@@ -26,17 +26,16 @@
 
 class DesktopAwareObjectHelper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QTimer Timer;
+    QTimer Timer;
 
 protected slots:
-	void workAreaResized();
+    void workAreaResized();
 
 public:
-	DesktopAwareObjectHelper();
-	~DesktopAwareObjectHelper();
-
+    DesktopAwareObjectHelper();
+    ~DesktopAwareObjectHelper();
 };
 
-#endif // DESKTOP_AWARE_OBJECT_HELPER
+#endif   // DESKTOP_AWARE_OBJECT_HELPER

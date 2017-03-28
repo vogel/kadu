@@ -31,37 +31,38 @@
 #include <QtGui/QMouseEvent>
 #include <QtGui/QMovie>
 
-#include "expander/emoticon-path-provider.h"
 #include "emoticon.h"
+#include "expander/emoticon-path-provider.h"
 
 #include "emoticon-selector-button-popup.h"
 
-EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent) :
-		QLabel(parent, Qt::Popup), DisplayEmoticon(emoticon)
+EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(
+    const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent)
+        : QLabel(parent, Qt::Popup), DisplayEmoticon(emoticon)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setMinimumSize(parent->sizeHint());
-	setAlignment(Qt::AlignCenter);
-	setMouseTracking(true);
-	setToolTip(emoticon.triggerText());
+    setAttribute(Qt::WA_DeleteOnClose);
+    setMinimumSize(parent->sizeHint());
+    setAlignment(Qt::AlignCenter);
+    setMouseTracking(true);
+    setToolTip(emoticon.triggerText());
 
-	QString style =
-		"QLabel {"
-		"	background-color: palette(highlight);"
-		"	padding: 4px;"
-		"}";
-	setStyleSheet(style);
+    QString style =
+        "QLabel {"
+        "	background-color: palette(highlight);"
+        "	padding: 4px;"
+        "}";
+    setStyleSheet(style);
 
-	QMovie *movie = new QMovie(this);
-	movie->setFileName(pathProvider->emoticonPath(emoticon));
-	setMovie(movie);
-	movie->start();
+    QMovie *movie = new QMovie(this);
+    movie->setFileName(pathProvider->emoticonPath(emoticon));
+    setMovie(movie);
+    movie->start();
 
-	// center on parent
-	QPoint newPos = parent->mapToGlobal(QPoint(0, 0));
-	newPos += QPoint(parent->sizeHint().width() / 2, parent->sizeHint().height() / 2);
-	newPos -= QPoint(sizeHint().width() / 2, sizeHint().height() / 2);
-	move(newPos);
+    // center on parent
+    QPoint newPos = parent->mapToGlobal(QPoint(0, 0));
+    newPos += QPoint(parent->sizeHint().width() / 2, parent->sizeHint().height() / 2);
+    newPos -= QPoint(sizeHint().width() / 2, sizeHint().height() / 2);
+    move(newPos);
 }
 
 EmoticonSelectorButtonPopup::~EmoticonSelectorButtonPopup()
@@ -70,15 +71,15 @@ EmoticonSelectorButtonPopup::~EmoticonSelectorButtonPopup()
 
 void EmoticonSelectorButtonPopup::mouseMoveEvent(QMouseEvent *e)
 {
-	QLabel::mouseMoveEvent(e);
-	if (!rect().contains(e->globalPos() - mapToGlobal(QPoint(0, 0))))
-		close();
+    QLabel::mouseMoveEvent(e);
+    if (!rect().contains(e->globalPos() - mapToGlobal(QPoint(0, 0))))
+        close();
 }
 
 void EmoticonSelectorButtonPopup::mouseReleaseEvent(QMouseEvent *e)
 {
-	QLabel::mouseReleaseEvent(e);
-	emit clicked(DisplayEmoticon);
+    QLabel::mouseReleaseEvent(e);
+    emit clicked(DisplayEmoticon);
 }
 
 #include "moc_emoticon-selector-button-popup.cpp"

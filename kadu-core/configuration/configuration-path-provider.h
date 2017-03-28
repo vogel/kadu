@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/paths-provider.h"
 #include "exports.h"
+#include "misc/paths-provider.h"
 
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
@@ -29,21 +29,20 @@ class QStringList;
 
 class KADUAPI ConfigurationPathProvider final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfigurationPathProvider(QObject *parent = nullptr);
-	virtual ~ConfigurationPathProvider();
+    Q_INVOKABLE explicit ConfigurationPathProvider(QObject *parent = nullptr);
+    virtual ~ConfigurationPathProvider();
 
-	QString configurationDirectoryPath() const;
-	QStringList possibleConfigurationFilePaths() const;
-	QString configurationFilePath() const;
-	QString backupFilePath() const;
+    QString configurationDirectoryPath() const;
+    QStringList possibleConfigurationFilePaths() const;
+    QString configurationFilePath() const;
+    QString backupFilePath() const;
 
 private:
-	PathsProvider *m_pathsProvider;
+    PathsProvider *m_pathsProvider;
 
 public slots:
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 };

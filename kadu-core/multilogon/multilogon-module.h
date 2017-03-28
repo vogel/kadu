@@ -25,9 +25,7 @@
 
 class KADUAPI MultilogonModule : public injeqt::module
 {
-
 public:
-	explicit MultilogonModule();
-	virtual ~MultilogonModule();
-
+    explicit MultilogonModule();
+    virtual ~MultilogonModule();
 };

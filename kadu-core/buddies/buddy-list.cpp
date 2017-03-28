@@ -26,21 +26,21 @@ BuddyList::BuddyList()
 
 BuddyList::BuddyList(const QList<Buddy> &list)
 {
-	*this += list;
+    *this += list;
 }
 
 BuddyList::BuddyList(const Buddy &buddy)
 {
-	append(buddy);
+    append(buddy);
 }
 
-bool BuddyList::operator == (const BuddyList &compare) const
+bool BuddyList::operator==(const BuddyList &compare) const
 {
-	if (size() != compare.size())
-		return false;
+    if (size() != compare.size())
+        return false;
 
-	foreach (const Buddy &buddy, compare)
-		if (!contains(buddy))
-			return false;
-	return true;
+    foreach (const Buddy &buddy, compare)
+        if (!contains(buddy))
+            return false;
+    return true;
 }

@@ -28,37 +28,37 @@
 #include "contacts/contact-manager.h"
 #include "plugin/plugin-injected-factory.h"
 
-FacebookServices::FacebookServices(Account account, std::unique_ptr<QFacebookSession> session) :
-		m_account{account},
-		m_session{std::move(session)}
+FacebookServices::FacebookServices(Account account, std::unique_ptr<QFacebookSession> session)
+        : m_account{account}, m_session{std::move(session)}
 {
 }
 
 FacebookServices::~FacebookServices()
 {
-	m_chatServiceRepository->removeChatService(m_chatService.get());
+    m_chatServiceRepository->removeChatService(m_chatService.get());
 }
 
 void FacebookServices::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
-	m_chatServiceRepository = chatServiceRepository;
+    m_chatServiceRepository = chatServiceRepository;
 }
 
 void FacebookServices::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void FacebookServices::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void FacebookServices::init()
 {
-	m_chatService = m_pluginInjectedFactory->makeUnique<FacebookChatService>(m_account, *m_session);
-	m_chatServiceRepository->addChatService(m_chatService.get());
+    m_chatService = m_pluginInjectedFactory->makeUnique<FacebookChatService>(m_account, *m_session);
+    m_chatServiceRepository->addChatService(m_chatService.get());
 
-	auto contacts = m_contactManager->contacts(m_account, ContactManager::ExcludeAnonymous);
-	m_rosterService = m_pluginInjectedFactory->makeUnique<FacebookRosterService>(std::move(contacts), *m_account.protocolHandler(), *m_session);
+    auto contacts = m_contactManager->contacts(m_account, ContactManager::ExcludeAnonymous);
+    m_rosterService = m_pluginInjectedFactory->makeUnique<FacebookRosterService>(
+        std::move(contacts), *m_account.protocolHandler(), *m_session);
 }

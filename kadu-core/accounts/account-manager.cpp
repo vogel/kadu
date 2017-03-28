@@ -41,8 +41,7 @@
 
 #include "account-manager.h"
 
-AccountManager::AccountManager(QObject *parent) :
-		Manager<Account>{parent}
+AccountManager::AccountManager(QObject *parent) : Manager<Account>{parent}
 {
 }
 
@@ -52,226 +51,228 @@ AccountManager::~AccountManager()
 
 void AccountManager::setAccountStorage(AccountStorage *accountStorage)
 {
-	m_accountStorage = accountStorage;
+    m_accountStorage = accountStorage;
 }
 
 void AccountManager::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void AccountManager::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void AccountManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void AccountManager::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void AccountManager::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AccountManager::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void AccountManager::init()
 {
-	// needed for QueuedConnection
-	qRegisterMetaType<Account>("Account");
-	m_configurationManager->registerStorableObject(this);
+    // needed for QueuedConnection
+    qRegisterMetaType<Account>("Account");
+    m_configurationManager->registerStorableObject(this);
 }
 
 void AccountManager::done()
 {
-	m_configurationManager->unregisterStorableObject(this);
+    m_configurationManager->unregisterStorableObject(this);
 }
 
 Account AccountManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return m_accountStorage->loadStubFromStorage(storagePoint);
+    return m_accountStorage->loadStubFromStorage(storagePoint);
 }
 
 void AccountManager::itemAboutToBeAdded(Account item)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (item.data())
-		item.data()->ensureLoaded();
-	connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
-	emit accountAboutToBeAdded(item);
+    if (item.data())
+        item.data()->ensureLoaded();
+    connect(item, SIGNAL(updated()), this, SLOT(accountDataUpdated()));
+    emit accountAboutToBeAdded(item);
 }
 
 void AccountManager::itemAdded(Account item)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	if (item.data())
-		item.data()->ensureLoaded();
-	AccountsAwareObject::notifyAccountAdded(item);
-	emit accountAdded(item);
-	connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(item);
+    if (item.data())
+        item.data()->ensureLoaded();
+    AccountsAwareObject::notifyAccountAdded(item);
+    emit accountAdded(item);
+    connect(item, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    protocolHandlerChanged(item);
 }
 
 void AccountManager::itemAboutToBeRemoved(Account item)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	emit accountAboutToBeRemoved(item);
+    emit accountAboutToBeRemoved(item);
 }
 
 void AccountManager::itemRemoved(Account item)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	AccountsAwareObject::notifyAccountRemoved(item);
-	emit accountRemoved(item);
-	emit accountLoadedStateChanged(item);
-	disconnect(item, 0, this, 0);
+    AccountsAwareObject::notifyAccountRemoved(item);
+    emit accountRemoved(item);
+    emit accountLoadedStateChanged(item);
+    disconnect(item, 0, this, 0);
 }
 
 void AccountManager::protocolHandlerChanged(Account item)
 {
-	if (protocol(item))
-		connect(protocol(item), SIGNAL(invalidPassword(Account)),
-				this, SLOT(providePassword(Account)), static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
-	emit accountLoadedStateChanged(item);
+    if (protocol(item))
+        connect(
+            protocol(item), SIGNAL(invalidPassword(Account)), this, SLOT(providePassword(Account)),
+            static_cast<Qt::ConnectionType>(Qt::QueuedConnection | Qt::UniqueConnection));
+    emit accountLoadedStateChanged(item);
 }
 
 Account AccountManager::defaultAccount()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	ensureLoaded();
+    ensureLoaded();
 
-	// TODO: hack
-	for (auto const &account : items())
-		if (account.protocolName() == "gadu")
-			return account;
+    // TODO: hack
+    for (auto const &account : items())
+        if (account.protocolName() == "gadu")
+            return account;
 
-	return byIndex(0);
+    return byIndex(0);
 }
 
 Account AccountManager::bestAccount()
 {
-	return bestAccount(items());
+    return bestAccount(items());
 }
 
 const QVector<Account> AccountManager::byIdentity(Identity identity)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	ensureLoaded();
+    ensureLoaded();
 
-	QVector<Account> list;
-	for (auto const &account : items())
-		if (account.accountIdentity() == identity)
-			list.append(account);
+    QVector<Account> list;
+    for (auto const &account : items())
+        if (account.accountIdentity() == identity)
+            list.append(account);
 
-	return list;
+    return list;
 }
 
-Account AccountManager::byId(const QString& protocolName, const QString& id)
+Account AccountManager::byId(const QString &protocolName, const QString &id)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	ensureLoaded();
+    ensureLoaded();
 
-	for (auto const &account : items())
-		if (account.protocolName() == protocolName && account.id() == id)
-			return account;
+    for (auto const &account : items())
+        if (account.protocolName() == protocolName && account.id() == id)
+            return account;
 
-	return Account::null;
+    return Account::null;
 }
 
 const QVector<Account> AccountManager::byProtocolName(const QString &name)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	ensureLoaded();
+    ensureLoaded();
 
-	QVector<Account> list;
-	for (auto const &account : items())
-		if (account.protocolName() == name)
-			list.append(account);
+    QVector<Account> list;
+    for (auto const &account : items())
+        if (account.protocolName() == name)
+            list.append(account);
 
-	return list;
+    return list;
 }
 
 void AccountManager::accountDataUpdated()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	Account account(sender());
-	if (account)
-		emit accountUpdated(account);
+    Account account(sender());
+    if (account)
+        emit accountUpdated(account);
 }
 
 void AccountManager::removeAccountAndBuddies(Account account)
 {
-	auto statusContainer = account.statusContainer();
-	if (statusContainer)
-		statusContainer->setStatus(Status(), SourceUser); // user removed account
+    auto statusContainer = account.statusContainer();
+    if (statusContainer)
+        statusContainer->setStatus(Status(), SourceUser);   // user removed account
 
-	if (auto p = protocol(account))
-		delete p->rosterService();
+    if (auto p = protocol(account))
+        delete p->rosterService();
 
-	removeItem(account);
+    removeItem(account);
 
-	for (auto const &contact : m_contactManager->contacts(account))
-		m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
+    for (auto const &contact : m_contactManager->contacts(account))
+        m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
 
-	for (auto const &chat : m_chatManager->chats(account))
-		chat.setDisplay(QString());
+    for (auto const &chat : m_chatManager->chats(account))
+        chat.setDisplay(QString());
 }
 
-void AccountManager::passwordProvided(const QVariant& data, const QString& password, bool permanent)
+void AccountManager::passwordProvided(const QVariant &data, const QString &password, bool permanent)
 {
-	Account account = data.value<Account>();
-	if (!account)
-		return;
+    Account account = data.value<Account>();
+    if (!account)
+        return;
 
-	account.setPassword(password);
-	account.setRememberPassword(permanent);
-	account.setHasPassword(!password.isEmpty());
+    account.setPassword(password);
+    account.setRememberPassword(permanent);
+    account.setHasPassword(!password.isEmpty());
 
-	// inform protocol that we have password
-	// maybe this should be in other place, but for now it is enough
-	if (auto p = protocol(account))
-		p->passwordProvided();
+    // inform protocol that we have password
+    // maybe this should be in other place, but for now it is enough
+    if (auto p = protocol(account))
+        p->passwordProvided();
 }
 
 void AccountManager::providePassword(Account account)
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	QString message = tr("Please provide password for %1 (%2) account")
-			.arg(account.accountIdentity().name())
-			.arg(account.id());
+    QString message =
+        tr("Please provide password for %1 (%2) account").arg(account.accountIdentity().name()).arg(account.id());
 
-	auto passwordWidget = m_injectedFactory->makeInjected<PasswordDialogWidget>(message, account, nullptr);
-	connect(passwordWidget, SIGNAL(passwordEntered(const QVariant &, const QString &, bool)), this, SLOT(passwordProvided(const QVariant &, const QString &, bool)));
-	KaduDialog *window = new KaduDialog(passwordWidget, 0);
-	window->exec();
+    auto passwordWidget = m_injectedFactory->makeInjected<PasswordDialogWidget>(message, account, nullptr);
+    connect(
+        passwordWidget, SIGNAL(passwordEntered(const QVariant &, const QString &, bool)), this,
+        SLOT(passwordProvided(const QVariant &, const QString &, bool)));
+    KaduDialog *window = new KaduDialog(passwordWidget, 0);
+    window->exec();
 }
 
 void AccountManager::loaded()
 {
-	Manager<Account>::loaded();
+    Manager<Account>::loaded();
 
-	for (auto const &account : items())
-		account.accountContact().setOwnerBuddy(m_myself->buddy());
+    for (auto const &account : items())
+        account.accountContact().setOwnerBuddy(m_myself->buddy());
 }
 
 #include "moc_account-manager.cpp"

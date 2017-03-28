@@ -25,41 +25,46 @@
 
 class SmsSender : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString Number;
-	QString Signature;
+    QString Number;
+    QString Signature;
 
-	void fixNumber();
+    void fixNumber();
 
 protected:
-	QString Message;
+    QString Message;
 
-	bool validateSignature();
+    bool validateSignature();
 
 public:
-	explicit SmsSender(const QString &number, QObject *parent = nullptr);
-	virtual ~SmsSender();
+    explicit SmsSender(const QString &number, QObject *parent = nullptr);
+    virtual ~SmsSender();
 
-	const QString & number() const { return Number; }
-	const QString & signature() const { return Signature; }
+    const QString &number() const
+    {
+        return Number;
+    }
+    const QString &signature() const
+    {
+        return Signature;
+    }
 
-	void setSignature(const QString &signature);
+    void setSignature(const QString &signature);
 
-	virtual void sendMessage(const QString &message) = 0;
+    virtual void sendMessage(const QString &message) = 0;
 
 public slots:
-	virtual void cancel() = 0;
+    virtual void cancel() = 0;
 
 signals:
-	void gatewayAssigned(const QString &number, const QString &gatewayId);
+    void gatewayAssigned(const QString &number, const QString &gatewayId);
 
-	void smsSent(const QString &number, const QString &message);
+    void smsSent(const QString &number, const QString &message);
 
-	void progress(const QString &entryIcon, const QString &entryMessage);
-	void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
-	void canceled();
-
+    void progress(const QString &entryIcon, const QString &entryMessage);
+    void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
+    void canceled();
 };
 
-#endif // SMS_SENDER_H
+#endif   // SMS_SENDER_H

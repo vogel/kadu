@@ -20,19 +20,18 @@
 #include "emoticons-module.h"
 
 #include "configuration/emoticon-configurator.h"
+#include "emoticons-plugin-object.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
 #include "gui/emoticon-clipboard-html-transformer.h"
 #include "gui/emoticons-configuration-ui-handler.h"
 #include "gui/insert-emoticon-action.h"
-#include "emoticons-plugin-object.h"
 
 EmoticonsModule::EmoticonsModule()
 {
-	add_type<EmoticonClipboardHtmlTransformer>();
-	add_type<EmoticonConfigurator>();
-	add_type<EmoticonExpanderDomVisitorProvider>();
-	add_type<EmoticonsConfigurationUiHandler>();
-	add_type<EmoticonsPluginObject>();
-	add_type<InsertEmoticonAction>();
+    add_type<EmoticonClipboardHtmlTransformer>();
+    add_type<EmoticonConfigurator>();
+    add_type<EmoticonExpanderDomVisitorProvider>();
+    add_type<EmoticonsConfigurationUiHandler>();
+    add_type<EmoticonsPluginObject>();
+    add_type<InsertEmoticonAction>();
 }
-

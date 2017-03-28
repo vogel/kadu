@@ -27,10 +27,9 @@
 
 #include "oauth-manager.h"
 
-OAuthManager::OAuthManager(QObject *parent) :
-		QObject(parent)
+OAuthManager::OAuthManager(QObject *parent) : QObject(parent)
 {
-	NetworkManager = new QNetworkAccessManager(this);
+    NetworkManager = new QNetworkAccessManager(this);
 }
 
 OAuthManager::~OAuthManager()
@@ -39,14 +38,14 @@ OAuthManager::~OAuthManager()
 
 void OAuthManager::authorize(OAuthConsumer consumer)
 {
-	OAuthAuthorizationChain *chain = new OAuthAuthorizationChain(consumer, NetworkManager, this);
-	chain->setRequestTokenUrl("http://api.gadu-gadu.pl/request_token");
-	chain->setAuthorizeUrl("https://login.gadu-gadu.pl/authorize");
-	chain->setAuthorizeCallbackUrl("http://www.mojageneracja.pl");
-	chain->setAccessTokenUrl("http://api.gadu-gadu.pl/access_token");
+    OAuthAuthorizationChain *chain = new OAuthAuthorizationChain(consumer, NetworkManager, this);
+    chain->setRequestTokenUrl("http://api.gadu-gadu.pl/request_token");
+    chain->setAuthorizeUrl("https://login.gadu-gadu.pl/authorize");
+    chain->setAuthorizeCallbackUrl("http://www.mojageneracja.pl");
+    chain->setAccessTokenUrl("http://api.gadu-gadu.pl/access_token");
 
-	connect(chain, SIGNAL(authorized(OAuthToken)), this, SIGNAL(authorized(OAuthToken)));
-	chain->authorize();
+    connect(chain, SIGNAL(authorized(OAuthToken)), this, SIGNAL(authorized(OAuthToken)));
+    chain->authorize();
 }
 
 #include "moc_oauth-manager.cpp"

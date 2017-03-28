@@ -27,20 +27,19 @@
 
 class PluginProxyModel : public CategorizedSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PluginProxyModel(QObject *parent = nullptr);
-	virtual ~PluginProxyModel();
+    explicit PluginProxyModel(QObject *parent = nullptr);
+    virtual ~PluginProxyModel();
 
 public slots:
-	void setFilterText(const QString &filterText);
+    void setFilterText(const QString &filterText);
 
 protected:
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
-	virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const override;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    virtual bool subSortLessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
 private:
-	QString m_filterText;
-
+    QString m_filterText;
 };

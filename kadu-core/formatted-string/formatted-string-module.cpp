@@ -23,7 +23,7 @@
 
 FormattedStringModule::FormattedStringModule()
 {
-	add_type<FormattedStringFactory>();
+    add_type<FormattedStringFactory>();
 }
 
 FormattedStringModule::~FormattedStringModule()

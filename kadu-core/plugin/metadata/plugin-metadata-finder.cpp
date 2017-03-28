@@ -26,8 +26,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QVector>
 
-PluginMetadataFinder::PluginMetadataFinder(QObject *parent) noexcept :
-		PluginMetadataProvider{parent}
+PluginMetadataFinder::PluginMetadataFinder(QObject *parent) noexcept : PluginMetadataProvider{parent}
 {
 }
 
@@ -37,36 +36,38 @@ PluginMetadataFinder::~PluginMetadataFinder() noexcept
 
 void PluginMetadataFinder::setDirectory(QString directory)
 {
-	m_directory = std::move(directory);
+    m_directory = std::move(directory);
 }
 
 void PluginMetadataFinder::setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept
 {
-	m_pluginMetadataReader = pluginMetadataReader;
+    m_pluginMetadataReader = pluginMetadataReader;
 }
 
 std::map<QString, PluginMetadata> PluginMetadataFinder::provide() noexcept
 {
-	if (m_directory.isEmpty() || !m_pluginMetadataReader)
-		return std::map<QString, PluginMetadata>{};
+    if (m_directory.isEmpty() || !m_pluginMetadataReader)
+        return std::map<QString, PluginMetadata>{};
 
-	auto result = std::map<QString, PluginMetadata>{};
+    auto result = std::map<QString, PluginMetadata>{};
 
-	auto dir = QDir{m_directory, "*.desc"};
-	dir.setFilter(QDir::Files);
+    auto dir = QDir{m_directory, "*.desc"};
+    dir.setFilter(QDir::Files);
 
-	for (auto const &entry : dir.entryList())
-	{
-		try
-		{
-			auto pluginName = entry.left(entry.length() - static_cast<int>(qstrlen(".desc")));
-			result.insert({pluginName, m_pluginMetadataReader->readPluginMetadata(pluginName, QString{"%1/%2"}.arg(m_directory).arg(entry))});
-		}
-		catch (...)
-		{
-			// I don't think we can recover from this error...
-		}
-	}
+    for (auto const &entry : dir.entryList())
+    {
+        try
+        {
+            auto pluginName = entry.left(entry.length() - static_cast<int>(qstrlen(".desc")));
+            result.insert(
+                {pluginName,
+                 m_pluginMetadataReader->readPluginMetadata(pluginName, QString{"%1/%2"}.arg(m_directory).arg(entry))});
+        }
+        catch (...)
+        {
+            // I don't think we can recover from this error...
+        }
+    }
 
-	return result;
+    return result;
 }

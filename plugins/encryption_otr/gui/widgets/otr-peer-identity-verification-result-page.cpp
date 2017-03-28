@@ -25,12 +25,12 @@
 
 #include "otr-peer-identity-verification-result-page.h"
 
-OtrPeerIdentityVerificationResultPage::OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationResultPage::OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent)
+        : QWizardPage(parent), MyContact(contact)
 {
-	setTitle(tr("Verification Result"));
+    setTitle(tr("Verification Result"));
 
-	createGui();
+    createGui();
 }
 
 OtrPeerIdentityVerificationResultPage::~OtrPeerIdentityVerificationResultPage()
@@ -39,46 +39,50 @@ OtrPeerIdentityVerificationResultPage::~OtrPeerIdentityVerificationResultPage()
 
 void OtrPeerIdentityVerificationResultPage::createGui()
 {
-	QLabel *resultLabel = new QLabel();
-	resultLabel->setWordWrap(true);
+    QLabel *resultLabel = new QLabel();
+    resultLabel->setWordWrap(true);
 
-	registerField("result", resultLabel);
-	registerField("resultText", resultLabel, "text");
+    registerField("result", resultLabel);
+    registerField("resultText", resultLabel, "text");
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->addWidget(resultLabel);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->addWidget(resultLabel);
 }
 
 void OtrPeerIdentityVerificationResultPage::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
-	TrustLevelService = trustLevelService;
+    TrustLevelService = trustLevelService;
 }
 
 int OtrPeerIdentityVerificationResultPage::nextId() const
 {
-	return -1;
+    return -1;
 }
 
 void OtrPeerIdentityVerificationResultPage::initializePage()
 {
-	OtrPeerIdentityVerificationState::State result = static_cast<OtrPeerIdentityVerificationState::State>(field("result").toInt());
-	OtrTrustLevelService::TrustLevel trustLevel = TrustLevelService
-			? TrustLevelService.data()->loadTrustLevelFromContact(MyContact)
-			: OtrTrustLevelService::TrustLevelUnknown;
+    OtrPeerIdentityVerificationState::State result =
+        static_cast<OtrPeerIdentityVerificationState::State>(field("result").toInt());
+    OtrTrustLevelService::TrustLevel trustLevel = TrustLevelService
+                                                      ? TrustLevelService.data()->loadTrustLevelFromContact(MyContact)
+                                                      : OtrTrustLevelService::TrustLevelUnknown;
 
-	setField("resultText", stateToString(result, trustLevel));
+    setField("resultText", stateToString(result, trustLevel));
 }
 
-QString OtrPeerIdentityVerificationResultPage::stateToString(const OtrPeerIdentityVerificationState::State &state,
-															 OtrTrustLevelService::TrustLevel trustLevel)
+QString OtrPeerIdentityVerificationResultPage::stateToString(
+    const OtrPeerIdentityVerificationState::State &state, OtrTrustLevelService::TrustLevel trustLevel)
 {
-	if (OtrPeerIdentityVerificationState::StateFailed == state)
-		return tr("Verificationof %1 failed. You are probably talking to an imposter. Either close conversation or try other verification method.").arg(MyContact.display(true));
-	if (OtrPeerIdentityVerificationState::StateSucceeded == state && OtrTrustLevelService::TrustLevelPrivate != trustLevel)
-		return tr("%1 has verified you. You should do the same.").arg(MyContact.display(true));
-	if (OtrPeerIdentityVerificationState::StateSucceeded == state)
-		return tr("Verification of %1 succeeded.").arg(MyContact.display(true));
-	return tr("Unknown.");
+    if (OtrPeerIdentityVerificationState::StateFailed == state)
+        return tr("Verificationof %1 failed. You are probably talking to an imposter. Either close conversation or try "
+                  "other verification method.")
+            .arg(MyContact.display(true));
+    if (OtrPeerIdentityVerificationState::StateSucceeded == state &&
+        OtrTrustLevelService::TrustLevelPrivate != trustLevel)
+        return tr("%1 has verified you. You should do the same.").arg(MyContact.display(true));
+    if (OtrPeerIdentityVerificationState::StateSucceeded == state)
+        return tr("Verification of %1 succeeded.").arg(MyContact.display(true));
+    return tr("Unknown.");
 }
 
 #include "moc_otr-peer-identity-verification-result-page.cpp"

@@ -31,11 +31,10 @@
 
 QString IconThemeManager::defaultTheme()
 {
-	return QStringLiteral("default");
+    return QStringLiteral("default");
 }
 
-IconThemeManager::IconThemeManager(QObject *parent) :
-		ThemeManager{parent}
+IconThemeManager::IconThemeManager(QObject *parent) : ThemeManager{parent}
 {
 }
 
@@ -45,41 +44,41 @@ IconThemeManager::~IconThemeManager()
 
 void IconThemeManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void IconThemeManager::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void IconThemeManager::init()
 {
-	loadThemes();
-	setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
-	m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", currentTheme().name());
+    loadThemes();
+    setCurrentTheme(m_configuration->deprecatedApi()->readEntry("Look", "IconTheme"));
+    m_configuration->deprecatedApi()->writeEntry("Look", "IconTheme", currentTheme().name());
 }
 
 QString IconThemeManager::defaultThemeName() const
 {
-	return defaultTheme();
+    return defaultTheme();
 }
 
 QStringList IconThemeManager::defaultThemePaths() const
 {
-	// Allow local themes to override global ones.
-	auto result = getSubDirs(m_pathsProvider->profilePath() + QStringLiteral("icons"));
-	result += getSubDirs(m_pathsProvider->dataPath() + QStringLiteral("themes/icons"));
+    // Allow local themes to override global ones.
+    auto result = getSubDirs(m_pathsProvider->profilePath() + QStringLiteral("icons"));
+    result += getSubDirs(m_pathsProvider->dataPath() + QStringLiteral("themes/icons"));
 
-	return result;
+    return result;
 }
 
 bool IconThemeManager::isValidThemePath(const QString &themePath) const
 {
-	auto kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
-	QFileInfo kaduIconFile(kaduIconFileName);
+    auto kaduIconFileName = themePath + "/kadu_icons/64x64/kadu.png";
+    QFileInfo kaduIconFile(kaduIconFileName);
 
-	return kaduIconFile.exists();
+    return kaduIconFile.exists();
 }
 
 #include "moc_icon-theme-manager.cpp"

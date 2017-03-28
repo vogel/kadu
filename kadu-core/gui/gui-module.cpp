@@ -43,27 +43,27 @@
 
 GuiModule::GuiModule()
 {
-	add_type<Actions>();
-	add_type<BuddyDataWindowRepository>();
-	add_type<ChatConfigurationHolder>();
-	add_type<ChatDataWindowRepository>();
-	add_type<ChatEditBoxSizeManager>();
-	add_type<ChatWidgetActions>();
-	add_type<CustomInputMenuManager>();
-	add_type<KaduWindowActions>();
-	add_type<KaduWindowService>();
-	add_type<MainConfigurationWindowService>();
-	add_type<MainWindowRepository>();
-	add_type<MenuInventory>();
-	add_type<MultilogonWindowService>();
-	add_type<OpenChatWithService>();
-	add_type<ProxyEditWindowService>();
-	add_type<ToolTipManager>();
-	add_type<WebkitMessagesViewDisplayFactory>();
-	add_type<WebkitMessagesViewFactory>();
-	add_type<WebkitMessagesViewHandlerFactory>();
-	add_type<WindowManager>();
-	add_type<YourAccountsWindowService>();
+    add_type<Actions>();
+    add_type<BuddyDataWindowRepository>();
+    add_type<ChatConfigurationHolder>();
+    add_type<ChatDataWindowRepository>();
+    add_type<ChatEditBoxSizeManager>();
+    add_type<ChatWidgetActions>();
+    add_type<CustomInputMenuManager>();
+    add_type<KaduWindowActions>();
+    add_type<KaduWindowService>();
+    add_type<MainConfigurationWindowService>();
+    add_type<MainWindowRepository>();
+    add_type<MenuInventory>();
+    add_type<MultilogonWindowService>();
+    add_type<OpenChatWithService>();
+    add_type<ProxyEditWindowService>();
+    add_type<ToolTipManager>();
+    add_type<WebkitMessagesViewDisplayFactory>();
+    add_type<WebkitMessagesViewFactory>();
+    add_type<WebkitMessagesViewHandlerFactory>();
+    add_type<WindowManager>();
+    add_type<YourAccountsWindowService>();
 }
 
 GuiModule::~GuiModule()

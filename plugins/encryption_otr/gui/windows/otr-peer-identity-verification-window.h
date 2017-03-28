@@ -26,36 +26,35 @@
 
 class OtrPeerIdentityVerificationWindow : public QWizard
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Contact MyContact;
+    Contact MyContact;
 
 public:
-	enum
-	{
-		SelectMethodPage,
-		QuestionAndAnswerPage,
-		SharedSecretPage,
-		RespondQuestionAndAnswerPage,
-		RespondSharedSecretPage,
-		FingerprintExchangePage,
-		ProgressPage,
-		ResultPage
-	};
+    enum
+    {
+        SelectMethodPage,
+        QuestionAndAnswerPage,
+        SharedSecretPage,
+        RespondQuestionAndAnswerPage,
+        RespondSharedSecretPage,
+        FingerprintExchangePage,
+        ProgressPage,
+        ResultPage
+    };
 
-	explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationWindow();
+    explicit OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationWindow();
 
-	void showRespondQuestionAndAnswer(const QString &question);
-	void showRespondSharedSecret();
+    void showRespondQuestionAndAnswer(const QString &question);
+    void showRespondSharedSecret();
 
 public slots:
-	virtual void reject();
+    virtual void reject();
 
 signals:
-	void aboutToBeRejected();
-	void destroyed(const Contact &contact);
-
+    void aboutToBeRejected();
+    void destroyed(const Contact &contact);
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_WINDOW_H

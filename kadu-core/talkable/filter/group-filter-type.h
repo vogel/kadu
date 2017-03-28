@@ -22,10 +22,10 @@
 
 enum GroupFilterType
 {
-	GroupFilterInvalid,
-	GroupFilterRegular,
-	GroupFilterEverybody,
-	GroupFilterUngroupped
+    GroupFilterInvalid,
+    GroupFilterRegular,
+    GroupFilterEverybody,
+    GroupFilterUngroupped
 };
 
-#endif // GROUP_FILTER_TYPE_H
+#endif   // GROUP_FILTER_TYPE_H

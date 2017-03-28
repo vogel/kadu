@@ -39,57 +39,60 @@ OtrChatTopBarWidgetFactory::~OtrChatTopBarWidgetFactory()
 
 void OtrChatTopBarWidgetFactory::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void OtrChatTopBarWidgetFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
-void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository)
+void OtrChatTopBarWidgetFactory::setPeerIdentityVerificationWindowRepository(
+    OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository)
 {
-	PeerIdentityVerificationWindowRepository = peerIdentityVerificationWindowRepository;
+    PeerIdentityVerificationWindowRepository = peerIdentityVerificationWindowRepository;
 }
 
 void OtrChatTopBarWidgetFactory::setSessionService(OtrSessionService *sessionService)
 {
-	SessionService = sessionService;
+    SessionService = sessionService;
 }
 
 void OtrChatTopBarWidgetFactory::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
-	TrustLevelService = trustLevelService;
+    TrustLevelService = trustLevelService;
 }
 
-QWidget * OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
+QWidget *OtrChatTopBarWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
-	auto chatType = m_chatTypeManager->chatType(chat.type());
-	if (chatType->name() != "Contact")
-		return 0;
+    auto chatType = m_chatTypeManager->chatType(chat.type());
+    if (chatType->name() != "Contact")
+        return 0;
 
-	auto result = m_pluginInjectedFactory->makeInjected<OtrChatTopBarWidget>(chat.contacts().toContact(), parent);
-	result->setTrustLevelService(TrustLevelService.data());
+    auto result = m_pluginInjectedFactory->makeInjected<OtrChatTopBarWidget>(chat.contacts().toContact(), parent);
+    result->setTrustLevelService(TrustLevelService.data());
 
-	if (SessionService)
-	{
-		connect(result, SIGNAL(startSession(Contact)), SessionService.data(), SLOT(startSession(Contact)));
-		connect(result, SIGNAL(endSession(Contact)), SessionService.data(), SLOT(endSession(Contact)));
-	}
+    if (SessionService)
+    {
+        connect(result, SIGNAL(startSession(Contact)), SessionService.data(), SLOT(startSession(Contact)));
+        connect(result, SIGNAL(endSession(Contact)), SessionService.data(), SLOT(endSession(Contact)));
+    }
 
-	if (PeerIdentityVerificationWindowRepository)
-		connect(result, SIGNAL(verifyPeerIdentity(Contact)), PeerIdentityVerificationWindowRepository.data(), SLOT(showVerificationWindow(Contact)));
+    if (PeerIdentityVerificationWindowRepository)
+        connect(
+            result, SIGNAL(verifyPeerIdentity(Contact)), PeerIdentityVerificationWindowRepository.data(),
+            SLOT(showVerificationWindow(Contact)));
 
-	connect(result, SIGNAL(destroyed(QObject*)), this, SLOT(widgetDestroyed(QObject*)));
-	Widgets.append(result);
+    connect(result, SIGNAL(destroyed(QObject *)), this, SLOT(widgetDestroyed(QObject *)));
+    Widgets.append(result);
 
-	return result;
+    return result;
 }
 
 void OtrChatTopBarWidgetFactory::widgetDestroyed(QObject *widget)
 {
-	OtrChatTopBarWidget *otrWidget = static_cast<OtrChatTopBarWidget *>(widget);
-	Widgets.removeAll(otrWidget);
+    OtrChatTopBarWidget *otrWidget = static_cast<OtrChatTopBarWidget *>(widget);
+    Widgets.removeAll(otrWidget);
 }
 
 #include "moc_otr-chat-top-bar-widget-factory.cpp"

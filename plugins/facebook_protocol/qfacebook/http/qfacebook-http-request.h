@@ -26,24 +26,35 @@
 class QFacebookHttpRequest
 {
 public:
-	explicit QFacebookHttpRequest(
-		QByteArray url,
-		std::experimental::optional<QByteArray> token,
-		QByteArray method,
-		QByteArray friendlyName,
-		std::map<QByteArray, QByteArray> parameters);
+    explicit QFacebookHttpRequest(
+        QByteArray url, std::experimental::optional<QByteArray> token, QByteArray method, QByteArray friendlyName,
+        std::map<QByteArray, QByteArray> parameters);
 
-	QByteArray url() const { return m_url; }
-	std::experimental::optional<QByteArray> token() const { return m_token; }
-	QByteArray method() const { return m_method; }
-	QByteArray friendlyName() const { return m_friendlyName; }
-	std::map<QByteArray, QByteArray> parameters() const { return m_parameters; }
+    QByteArray url() const
+    {
+        return m_url;
+    }
+    std::experimental::optional<QByteArray> token() const
+    {
+        return m_token;
+    }
+    QByteArray method() const
+    {
+        return m_method;
+    }
+    QByteArray friendlyName() const
+    {
+        return m_friendlyName;
+    }
+    std::map<QByteArray, QByteArray> parameters() const
+    {
+        return m_parameters;
+    }
 
 private:
-	QByteArray m_url;
-	std::experimental::optional<QByteArray> m_token;
-	QByteArray m_method;
-	QByteArray m_friendlyName;
-	std::map<QByteArray, QByteArray> m_parameters;
-
+    QByteArray m_url;
+    std::experimental::optional<QByteArray> m_token;
+    QByteArray m_method;
+    QByteArray m_friendlyName;
+    std::map<QByteArray, QByteArray> m_parameters;
 };

@@ -26,16 +26,15 @@ typedef struct _UnityLauncherEntry UnityLauncherEntry;
 
 class QUnity : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QUnity(const QString &desktopId, QObject *parent = nullptr);
-	virtual ~QUnity();
+    explicit QUnity(const QString &desktopId, QObject *parent = nullptr);
+    virtual ~QUnity();
 
-	void updateCount(int count);
-	void updateProgress(int progress);
+    void updateCount(int count);
+    void updateProgress(int progress);
 
 private:
-	UnityLauncherEntry *m_launcher;
-
+    UnityLauncherEntry *m_launcher;
 };

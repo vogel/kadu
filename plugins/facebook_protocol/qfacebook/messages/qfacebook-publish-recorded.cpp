@@ -26,18 +26,15 @@
 
 QMqttMessage QFacebookPublishRecorded::encode() const
 {
-	auto mqttWriter = QMqttWriter{};
-	mqttWriter.write(mid);
+    auto mqttWriter = QMqttWriter{};
+    mqttWriter.write(mid);
 
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		static_cast<uint8_t>(QMqttMessageFlag::QoS0),
-		mqttWriter.result()
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), static_cast<uint8_t>(QMqttMessageFlag::QoS0),
+                        mqttWriter.result()};
 }
 
 QFacebookPublishRecorded QFacebookPublishRecorded::decode(const QMqttMessage &message)
 {
-	auto reader = QMqttReader{message.content};
-	return QFacebookPublishRecorded{reader.readUint16()};
+    auto reader = QMqttReader{message.content};
+    return QFacebookPublishRecorded{reader.readUint16()};
 }

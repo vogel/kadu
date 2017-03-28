@@ -28,11 +28,14 @@
 class KADUAPI WindowsScreenModeChecker : public ScreenModeChecker
 {
 public:
-	WindowsScreenModeChecker() {};
+    WindowsScreenModeChecker(){};
 
-	bool isFullscreenAppActive();
-	bool isScreensaverActive();
-	bool isDummy() { return false; }
+    bool isFullscreenAppActive();
+    bool isScreensaverActive();
+    bool isDummy()
+    {
+        return false;
+    }
 };
 
-#endif // WINDOWS_SCREEN_MODE_CHECKER_H
+#endif   // WINDOWS_SCREEN_MODE_CHECKER_H

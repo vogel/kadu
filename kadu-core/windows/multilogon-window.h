@@ -22,8 +22,8 @@
 #pragma once
 
 #include "accounts/account.h"
-#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -40,34 +40,33 @@ struct MultilogonSession;
 
 class KADUAPI MultilogonWindow : public QWidget, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	AccountsComboBox *Accounts;
-	QTableView *SessionsTable;
-	QPushButton *KillSessionButton;
+    AccountsComboBox *Accounts;
+    QTableView *SessionsTable;
+    QPushButton *KillSessionButton;
 
-	void createGui();
+    void createGui();
 
-	MultilogonService * multilogonService();
-	MultilogonSession multilogonSession();
+    MultilogonService *multilogonService();
+    MultilogonSession multilogonSession();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void accountChanged();
-	void selectionChanged();
-	void killSession();
+    void accountChanged();
+    void selectionChanged();
+    void killSession();
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 public:
-	explicit MultilogonWindow(QWidget *parent = nullptr);
-	virtual ~MultilogonWindow();
-
+    explicit MultilogonWindow(QWidget *parent = nullptr);
+    virtual ~MultilogonWindow();
 };

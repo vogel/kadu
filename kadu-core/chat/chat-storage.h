@@ -32,20 +32,19 @@ class StoragePoint;
 
 class KADUAPI ChatStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatStorage(QObject *parent = nullptr);
-	virtual ~ChatStorage();
+    Q_INVOKABLE explicit ChatStorage(QObject *parent = nullptr);
+    virtual ~ChatStorage();
 
-	Chat create(const QString &type);
-	Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	Chat loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Chat create(const QString &type);
+    Chat loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Chat loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

@@ -32,20 +32,19 @@ class StoragePoint;
 
 class KADUAPI MessageStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MessageStorage(QObject *parent = nullptr);
-	virtual ~MessageStorage();
+    Q_INVOKABLE explicit MessageStorage(QObject *parent = nullptr);
+    virtual ~MessageStorage();
 
-	Message create();
-	Message loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	Message loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Message create();
+    Message loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    Message loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

@@ -41,25 +41,24 @@ class OpenChatRepository;
  */
 class KADUAPI OpenChatService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit OpenChatService(QObject *parent = nullptr);
-	virtual ~OpenChatService();
+    Q_INVOKABLE explicit OpenChatService(QObject *parent = nullptr);
+    virtual ~OpenChatService();
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<OpenChatRepository> m_openChatRepository;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<OpenChatRepository> m_openChatRepository;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setOpenChatRepository(OpenChatRepository *openChatRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setOpenChatRepository(OpenChatRepository *openChatRepository);
+    INJEQT_INIT void init();
 
-	void chatWidgetAdded(ChatWidget *chatWidget);
-	void chatWidgetRemoved(ChatWidget *chatWidget);
-
+    void chatWidgetAdded(ChatWidget *chatWidget);
+    void chatWidgetRemoved(ChatWidget *chatWidget);
 };
 
 /**

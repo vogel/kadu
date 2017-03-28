@@ -19,8 +19,7 @@
 
 #include "plugin-modules-factory.h"
 
-PluginModulesFactory::PluginModulesFactory(QObject *parent) :
-		QObject{parent}
+PluginModulesFactory::PluginModulesFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -30,7 +29,7 @@ PluginModulesFactory::~PluginModulesFactory()
 
 QString PluginModulesFactory::parentInjectorName() const
 {
-	return {};
+    return {};
 }
 
 #include "moc_plugin-modules-factory.cpp"

@@ -22,9 +22,9 @@
 #pragma once
 
 #include "accounts/accounts-aware-object.h"
+#include "exports.h"
 #include "file-transfer/file-transfer.h"
 #include "storage/manager.h"
-#include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -49,80 +49,86 @@ class KaduWindowService;
 
 class KADUAPI FileTransferManager : public Manager<FileTransfer>, AccountsAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FileTransferManager(QObject *parent = nullptr);
-	virtual ~FileTransferManager();
+    Q_INVOKABLE explicit FileTransferManager(QObject *parent = nullptr);
+    virtual ~FileTransferManager();
 
-	virtual QString storageNodeName() override { return QStringLiteral("FileTransfersNew"); }
-	virtual QString storageNodeItemName() override { return QStringLiteral("FileTransfer"); }
+    virtual QString storageNodeName() override
+    {
+        return QStringLiteral("FileTransfersNew");
+    }
+    virtual QString storageNodeItemName() override
+    {
+        return QStringLiteral("FileTransfer");
+    }
 
-	int totalProgress() const;
+    int totalProgress() const;
 
-	void acceptFileTransfer(FileTransfer transfer, QString localFileName);
-	void rejectFileTransfer(FileTransfer transfer);
-	void sendFile(FileTransfer transfer, QString fileName);
-	QString getSaveFileName(QString localFileName, QString remoteFileName, QWidget *parent = nullptr);
-	void showFileTransferWindow();
-	void cleanUp();
+    void acceptFileTransfer(FileTransfer transfer, QString localFileName);
+    void rejectFileTransfer(FileTransfer transfer);
+    void sendFile(FileTransfer transfer, QString fileName);
+    QString getSaveFileName(QString localFileName, QString remoteFileName, QWidget *parent = nullptr);
+    void showFileTransferWindow();
+    void cleanUp();
 
 signals:
-	void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
-	void fileTransferAdded(FileTransfer fileTransfer);
-	void fileTransferAboutToBeRemoved(FileTransfer fileTransfer);
-	void fileTransferRemoved(FileTransfer fileTransfer);
-	void totalProgressChanged(int totalProgress);
+    void fileTransferAboutToBeAdded(FileTransfer fileTransfer);
+    void fileTransferAdded(FileTransfer fileTransfer);
+    void fileTransferAboutToBeRemoved(FileTransfer fileTransfer);
+    void fileTransferRemoved(FileTransfer fileTransfer);
+    void totalProgressChanged(int totalProgress);
 
 protected:
-	virtual FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+    virtual FileTransfer loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void accountAdded(Account account) override;
+    virtual void accountAdded(Account account) override;
 
-	virtual void itemAboutToBeAdded(FileTransfer fileTransfer) override;
-	virtual void itemAdded(FileTransfer fileTransfer) override;
-	virtual void itemAboutToBeRemoved(FileTransfer fileTransfer) override;
-	virtual void itemRemoved(FileTransfer fileTransfer) override;
+    virtual void itemAboutToBeAdded(FileTransfer fileTransfer) override;
+    virtual void itemAdded(FileTransfer fileTransfer) override;
+    virtual void itemAboutToBeRemoved(FileTransfer fileTransfer) override;
+    virtual void itemRemoved(FileTransfer fileTransfer) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<FileTransferActions> m_fileTransferActions;
-	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
-	QPointer<FileTransferNotificationService> m_fileTransferNotificationService;
-	QPointer<FileTransferStorage> m_fileTransferStorage;
-	QPointer<FileTransferWindow> m_window;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	int m_totalProgress;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<FileTransferActions> m_fileTransferActions;
+    QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
+    QPointer<FileTransferNotificationService> m_fileTransferNotificationService;
+    QPointer<FileTransferStorage> m_fileTransferStorage;
+    QPointer<FileTransferWindow> m_window;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    int m_totalProgress;
 
-	void setTotalProgress(int totalProgress);
+    void setTotalProgress(int totalProgress);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFileTransferActions(FileTransferActions *fileTransferActions);
-	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
-	INJEQT_SET void setFileTransferNotificationService(FileTransferNotificationService *fileTransferNotificationService);
-	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setFileTransferActions(FileTransferActions *fileTransferActions);
+    INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+    INJEQT_SET void
+    setFileTransferNotificationService(FileTransferNotificationService *fileTransferNotificationService);
+    INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void incomingFileTransfer(FileTransfer fileTransfer);
-	void updateProgress();
+    void incomingFileTransfer(FileTransfer fileTransfer);
+    void updateProgress();
 
-	void protocolHandlerChanged(Account account);
-
+    void protocolHandlerChanged(Account account);
 };

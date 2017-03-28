@@ -37,26 +37,24 @@ class RosterTask;
   */
 class KADUAPI RosterTaskCollectionStorage
 {
-
 public:
-	/**
-	 * @pre storage != nullptr && storage->storage() != nullptr
-	 */
-	RosterTaskCollectionStorage(std::shared_ptr<StoragePoint> storage);
+    /**
+     * @pre storage != nullptr && storage->storage() != nullptr
+     */
+    RosterTaskCollectionStorage(std::shared_ptr<StoragePoint> storage);
 
-	/**
-	 * @return List of tasks found in storage passed to constructor
-	 */
-	QVector<RosterTask> loadRosterTasks();
+    /**
+     * @return List of tasks found in storage passed to constructor
+     */
+    QVector<RosterTask> loadRosterTasks();
 
-	/**
-	 * @short Stores @p tasks in storage passed to constructor.
-	 */
-	void storeRosterTasks(const QVector<RosterTask> &tasks);
+    /**
+     * @short Stores @p tasks in storage passed to constructor.
+     */
+    void storeRosterTasks(const QVector<RosterTask> &tasks);
 
 private:
-	std::shared_ptr<StoragePoint> m_storage;
-
+    std::shared_ptr<StoragePoint> m_storage;
 };
 
 /**

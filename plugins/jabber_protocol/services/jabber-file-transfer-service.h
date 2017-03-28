@@ -37,34 +37,34 @@ class QXmppTransferManager;
 
 class JabberFileTransferService : public FileTransferService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberFileTransferService(QXmppTransferManager *transferManager, Account account, QObject *parent = nullptr);
-	virtual ~JabberFileTransferService();
+    explicit JabberFileTransferService(
+        QXmppTransferManager *transferManager, Account account, QObject *parent = nullptr);
+    virtual ~JabberFileTransferService();
 
-	void setResourceService(JabberResourceService *resourceService);
+    void setResourceService(JabberResourceService *resourceService);
 
-	virtual FileTransferHandler * createFileTransferHandler(FileTransfer fileTransfer) override;
-	virtual FileTransferCanSendResult canSend(Contact contact) override;
+    virtual FileTransferHandler *createFileTransferHandler(FileTransfer fileTransfer) override;
+    virtual FileTransferCanSendResult canSend(Contact contact) override;
 
 private:
-	QPointer<ContactManager> m_contactManager;
-	QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
-	QPointer<FileTransferStorage> m_fileTransferStorage;
-	QPointer<JabberResourceService> m_resourceService;
-	QPointer<Myself> m_myself;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<FileTransferHandlerManager> m_fileTransferHandlerManager;
+    QPointer<FileTransferStorage> m_fileTransferStorage;
+    QPointer<JabberResourceService> m_resourceService;
+    QPointer<Myself> m_myself;
 
-	QPointer<QXmppTransferManager> m_transferManager;
-	Account m_account;
+    QPointer<QXmppTransferManager> m_transferManager;
+    Account m_account;
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
-	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
-	INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setFileTransferHandlerManager(FileTransferHandlerManager *fileTransferHandlerManager);
+    INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
+    INJEQT_SET void setMyself(Myself *myself);
 
-	void accountUpdated();
-	void fileReceived(QXmppTransferJob *transferJob);
-
+    void accountUpdated();
+    void fileReceived(QXmppTransferJob *transferJob);
 };

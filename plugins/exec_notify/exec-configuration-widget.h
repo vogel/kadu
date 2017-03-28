@@ -34,25 +34,26 @@ class QLineEdit;
 
 class ExecConfigurationWidget : public NotifierConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ExecConfigurationWidget(QWidget *parent = nullptr);
-	virtual ~ExecConfigurationWidget();
+    explicit ExecConfigurationWidget(QWidget *parent = nullptr);
+    virtual ~ExecConfigurationWidget();
 
-	virtual void loadNotifyConfigurations() {}
-	virtual void saveNotifyConfigurations();
-	virtual void switchToEvent(const QString &event);
+    virtual void loadNotifyConfigurations()
+    {
+    }
+    virtual void saveNotifyConfigurations();
+    virtual void switchToEvent(const QString &event);
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	QString m_currentNotificationEvent;
-	QMap<QString, QString> m_commands;
+    QString m_currentNotificationEvent;
+    QMap<QString, QString> m_commands;
 
-	QLineEdit *m_commandLineEdit;
+    QLineEdit *m_commandLineEdit;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 };

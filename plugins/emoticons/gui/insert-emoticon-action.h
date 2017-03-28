@@ -22,8 +22,8 @@
 
 #include "actions/action-description.h"
 #include "configuration/emoticon-configuration.h"
-#include "injeqt-type-roles.h"
 #include "emoticon.h"
+#include "injeqt-type-roles.h"
 
 /**
  * @addtogroup Emoticons
@@ -36,37 +36,36 @@
  */
 class InsertEmoticonAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
-	EmoticonConfiguration Configuration;
+    EmoticonConfiguration Configuration;
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void updateActionState(Action *action);
+    virtual void actionInstanceCreated(Action *action);
+    virtual void updateActionState(Action *action);
 
 public:
-	/**
-	 * @short Create new instance of InsertEmoticonAction.
-	 * @param parent QObject parent
-	 */
-	Q_INVOKABLE explicit InsertEmoticonAction(QObject *parent = nullptr);
-	virtual ~InsertEmoticonAction();
+    /**
+     * @short Create new instance of InsertEmoticonAction.
+     * @param parent QObject parent
+     */
+    Q_INVOKABLE explicit InsertEmoticonAction(QObject *parent = nullptr);
+    virtual ~InsertEmoticonAction();
 
-	virtual void actionTriggered(QAction *sender, bool toggled);
+    virtual void actionTriggered(QAction *sender, bool toggled);
 
-	/**
-	 * @short Configure instance of InsertEmoticonAction.
-	 * @param configuration new configuration
-	 *
-	 * This configuration is used to get list of emoticons to pass to EmoticonSelector widget.
-	 */
-	void setConfiguration(const EmoticonConfiguration &configuration);
-
+    /**
+     * @short Configure instance of InsertEmoticonAction.
+     * @param configuration new configuration
+     *
+     * This configuration is used to get list of emoticons to pass to EmoticonSelector widget.
+     */
+    void setConfiguration(const EmoticonConfiguration &configuration);
 };
 
 /**
  * @}
  */
 
-#endif // INSERT_EMOTICON_ACTION_H
+#endif   // INSERT_EMOTICON_ACTION_H

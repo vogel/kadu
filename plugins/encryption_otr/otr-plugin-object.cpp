@@ -44,176 +44,187 @@
 
 #include <libotr/proto.h>
 
-OtrPluginObject::OtrPluginObject(QObject *parent) :
-		QObject{parent}
+OtrPluginObject::OtrPluginObject(QObject *parent) : QObject{parent}
 {
-	m_otrAvailable = otrl_init(OTRL_VERSION_MAJOR, OTRL_VERSION_MINOR, OTRL_VERSION_SUB) == 0;
+    m_otrAvailable = otrl_init(OTRL_VERSION_MAJOR, OTRL_VERSION_MINOR, OTRL_VERSION_SUB) == 0;
 }
 
 OtrPluginObject::~OtrPluginObject()
 {
 }
 
-void OtrPluginObject::setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository)
+void OtrPluginObject::setAccountConfigurationWidgetFactoryRepository(
+    AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository)
 {
-	m_accountConfigurationWidgetFactoryRepository = accountConfigurationWidgetFactoryRepository;
+    m_accountConfigurationWidgetFactoryRepository = accountConfigurationWidgetFactoryRepository;
 }
 
-void OtrPluginObject::setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
+void OtrPluginObject::setBuddyConfigurationWidgetFactoryRepository(
+    BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
 {
-	m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
+    m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
 }
 
-void OtrPluginObject::setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository)
+void OtrPluginObject::setChatTopBarWidgetFactoryRepository(
+    ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository)
 {
-	m_chatTopBarWidgetFactoryRepository = chatTopBarWidgetFactoryRepository;
+    m_chatTopBarWidgetFactoryRepository = chatTopBarWidgetFactoryRepository;
 }
 
 void OtrPluginObject::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
-void OtrPluginObject::setOtrAccountConfigurationWidgetFactory(OtrAccountConfigurationWidgetFactory *otrAccountConfigurationWidgetFactory)
+void OtrPluginObject::setOtrAccountConfigurationWidgetFactory(
+    OtrAccountConfigurationWidgetFactory *otrAccountConfigurationWidgetFactory)
 {
-	m_otrAccountConfigurationWidgetFactory = otrAccountConfigurationWidgetFactory;
+    m_otrAccountConfigurationWidgetFactory = otrAccountConfigurationWidgetFactory;
 }
 
-void OtrPluginObject::setOtrBuddyConfigurationWidgetFactory(OtrBuddyConfigurationWidgetFactory *otrBuddyConfigurationWidgetFactory)
+void OtrPluginObject::setOtrBuddyConfigurationWidgetFactory(
+    OtrBuddyConfigurationWidgetFactory *otrBuddyConfigurationWidgetFactory)
 {
-	m_otrBuddyConfigurationWidgetFactory = otrBuddyConfigurationWidgetFactory;
+    m_otrBuddyConfigurationWidgetFactory = otrBuddyConfigurationWidgetFactory;
 }
 
 void OtrPluginObject::setOtrChatTopBarWidgetFactory(OtrChatTopBarWidgetFactory *otrChatTopBarWidgetFactory)
 {
-	m_otrChatTopBarWidgetFactory = otrChatTopBarWidgetFactory;
+    m_otrChatTopBarWidgetFactory = otrChatTopBarWidgetFactory;
 }
 
 void OtrPluginObject::setOtrFingerprintService(OtrFingerprintService *otrFingerprintService)
 {
-	m_otrFingerprintService = otrFingerprintService;
+    m_otrFingerprintService = otrFingerprintService;
 }
 
 void OtrPluginObject::setOtrInstanceTagService(OtrInstanceTagService *otrInstanceTagService)
 {
-	m_otrInstanceTagService = otrInstanceTagService;
+    m_otrInstanceTagService = otrInstanceTagService;
 }
 
 void OtrPluginObject::setOtrIsLoggedInService(OtrIsLoggedInService *otrIsLoggedInService)
 {
-	m_otrIsLoggedInService = otrIsLoggedInService;
+    m_otrIsLoggedInService = otrIsLoggedInService;
 }
 
 void OtrPluginObject::setOtrMessageService(OtrMessageService *otrMessageService)
 {
-	m_otrMessageService = otrMessageService;
+    m_otrMessageService = otrMessageService;
 }
 
 void OtrPluginObject::setOtrNotifier(OtrNotifier *otrNotifier)
 {
-	m_otrNotifier = otrNotifier;
+    m_otrNotifier = otrNotifier;
 }
 
-void OtrPluginObject::setOtrPeerIdentityVerificationService(OtrPeerIdentityVerificationService *otrPeerIdentityVerificationService)
+void OtrPluginObject::setOtrPeerIdentityVerificationService(
+    OtrPeerIdentityVerificationService *otrPeerIdentityVerificationService)
 {
-	m_otrPeerIdentityVerificationService = otrPeerIdentityVerificationService;
+    m_otrPeerIdentityVerificationService = otrPeerIdentityVerificationService;
 }
 
-void OtrPluginObject::setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
+void OtrPluginObject::setOtrPeerIdentityVerificationWindowRepository(
+    OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository)
 {
-	m_otrPeerIdentityVerificationWindowRepository = otrPeerIdentityVerificationWindowRepository;
+    m_otrPeerIdentityVerificationWindowRepository = otrPeerIdentityVerificationWindowRepository;
 }
 
 void OtrPluginObject::setOtrPrivateKeyService(OtrPrivateKeyService *otrPrivateKeyService)
 {
-	m_otrPrivateKeyService = otrPrivateKeyService;
+    m_otrPrivateKeyService = otrPrivateKeyService;
 }
 
 void OtrPluginObject::setOtrRawMessageTransformer(OtrRawMessageTransformer *otrRawMessageTransformer)
 {
-	m_otrRawMessageTransformer = otrRawMessageTransformer;
+    m_otrRawMessageTransformer = otrRawMessageTransformer;
 }
 
 void OtrPluginObject::setOtrSessionService(OtrSessionService *otrSessionService)
 {
-	m_otrSessionService = otrSessionService;
+    m_otrSessionService = otrSessionService;
 }
 
 void OtrPluginObject::setOtrTrustLevelService(OtrTrustLevelService *otrTrustLevelService)
 {
-	m_otrTrustLevelService = otrTrustLevelService;
+    m_otrTrustLevelService = otrTrustLevelService;
 }
 
 void OtrPluginObject::setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService)
 {
-	m_rawMessageTransformerService = rawMessageTransformerService;
+    m_rawMessageTransformerService = rawMessageTransformerService;
 }
 
 bool OtrPluginObject::fragmentsFixAvailable() const
 {
-	return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
+    return (OTRL_VERSION_MAJOR > 4) || (OTRL_VERSION_MINOR > 0) || (OTRL_VERSION_SUB > 0);
 }
 
 void OtrPluginObject::init()
 {
-	if (!m_otrAvailable)
-		throw PluginActivationErrorException("encryption_otr", tr("OTR encryption library could not be initialized"));
+    if (!m_otrAvailable)
+        throw PluginActivationErrorException("encryption_otr", tr("OTR encryption library could not be initialized"));
 
-	m_accountConfigurationWidgetFactoryRepository->registerFactory(m_otrAccountConfigurationWidgetFactory);
-	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_otrBuddyConfigurationWidgetFactory);
-	m_chatTopBarWidgetFactoryRepository->registerFactory(m_otrChatTopBarWidgetFactory);
+    m_accountConfigurationWidgetFactoryRepository->registerFactory(m_otrAccountConfigurationWidgetFactory);
+    m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_otrBuddyConfigurationWidgetFactory);
+    m_chatTopBarWidgetFactoryRepository->registerFactory(m_otrChatTopBarWidgetFactory);
 
-	connect(m_otrFingerprintService, SIGNAL(fingerprintsUpdated()), m_otrTrustLevelService, SLOT(updateTrustLevels()));
-	m_otrFingerprintService->readFingerprints();
-	m_otrInstanceTagService->readInstanceTags();
+    connect(m_otrFingerprintService, SIGNAL(fingerprintsUpdated()), m_otrTrustLevelService, SLOT(updateTrustLevels()));
+    m_otrFingerprintService->readFingerprints();
+    m_otrInstanceTagService->readInstanceTags();
 
-	connect(m_otrPeerIdentityVerificationService, SIGNAL(questionAnswerRequested(Contact,QString)),
-			m_otrPeerIdentityVerificationWindowRepository, SLOT(showRespondQuestionAndAnswerVerificationWindow(Contact,QString)));
-	connect(m_otrPeerIdentityVerificationService, SIGNAL(sharedSecretRequested(Contact)),
-			m_otrPeerIdentityVerificationWindowRepository, SLOT(showRespondSharedSecretVerificationWindow(Contact)));
+    connect(
+        m_otrPeerIdentityVerificationService, SIGNAL(questionAnswerRequested(Contact, QString)),
+        m_otrPeerIdentityVerificationWindowRepository,
+        SLOT(showRespondQuestionAndAnswerVerificationWindow(Contact, QString)));
+    connect(
+        m_otrPeerIdentityVerificationService, SIGNAL(sharedSecretRequested(Contact)),
+        m_otrPeerIdentityVerificationWindowRepository, SLOT(showRespondSharedSecretVerificationWindow(Contact)));
 
-	m_otrPrivateKeyService->readPrivateKeys();
+    m_otrPrivateKeyService->readPrivateKeys();
 
-	connect(m_otrPrivateKeyService, SIGNAL(createPrivateKeyStarted(Account)),
-			m_otrNotifier, SLOT(notifyCreatePrivateKeyStarted(Account)));
-	connect(m_otrPrivateKeyService, SIGNAL(createPrivateKeyFinished(Account,bool)),
-			m_otrNotifier, SLOT(notifyCreatePrivateKeyFinished(Account,bool)));
+    connect(
+        m_otrPrivateKeyService, SIGNAL(createPrivateKeyStarted(Account)), m_otrNotifier,
+        SLOT(notifyCreatePrivateKeyStarted(Account)));
+    connect(
+        m_otrPrivateKeyService, SIGNAL(createPrivateKeyFinished(Account, bool)), m_otrNotifier,
+        SLOT(notifyCreatePrivateKeyFinished(Account, bool)));
 
-	connect(m_otrRawMessageTransformer, SIGNAL(peerEndedSession(Contact)),
-			m_otrNotifier, SLOT(notifyPeerEndedSession(Contact)));
+    connect(
+        m_otrRawMessageTransformer, SIGNAL(peerEndedSession(Contact)), m_otrNotifier,
+        SLOT(notifyPeerEndedSession(Contact)));
 
-	connect(m_otrSessionService, SIGNAL(tryingToStartSession(Contact)),
-			m_otrNotifier, SLOT(notifyTryingToStartSession(Contact)));
-	connect(m_otrSessionService, SIGNAL(tryingToRefreshSession(Contact)),
-			m_otrNotifier, SLOT(notifyTryingToRefreshSession(Contact)));
-	connect(m_otrSessionService, SIGNAL(goneSecure(Contact)),
-			m_otrNotifier, SLOT(notifyGoneSecure(Contact)));
-	connect(m_otrSessionService, SIGNAL(goneInsecure(Contact)),
-			m_otrNotifier, SLOT(notifyGoneInsecure(Contact)));
-	connect(m_otrSessionService, SIGNAL(stillSecure(Contact)),
-			m_otrNotifier, SLOT(notifyStillSecure(Contact)));
+    connect(
+        m_otrSessionService, SIGNAL(tryingToStartSession(Contact)), m_otrNotifier,
+        SLOT(notifyTryingToStartSession(Contact)));
+    connect(
+        m_otrSessionService, SIGNAL(tryingToRefreshSession(Contact)), m_otrNotifier,
+        SLOT(notifyTryingToRefreshSession(Contact)));
+    connect(m_otrSessionService, SIGNAL(goneSecure(Contact)), m_otrNotifier, SLOT(notifyGoneSecure(Contact)));
+    connect(m_otrSessionService, SIGNAL(goneInsecure(Contact)), m_otrNotifier, SLOT(notifyGoneInsecure(Contact)));
+    connect(m_otrSessionService, SIGNAL(stillSecure(Contact)), m_otrNotifier, SLOT(notifyStillSecure(Contact)));
 
-	m_otrTrustLevelService->updateTrustLevels();
+    m_otrTrustLevelService->updateTrustLevels();
 
-	m_otrRawMessageTransformer->setEnableFragments(fragmentsFixAvailable());
-	m_rawMessageTransformerService->registerTransformer(m_otrRawMessageTransformer);
+    m_otrRawMessageTransformer->setEnableFragments(fragmentsFixAvailable());
+    m_rawMessageTransformerService->registerTransformer(m_otrRawMessageTransformer);
 
-	for (auto notifyEvent : m_otrNotifier->notifyEvents())
-		m_notificationEventRepository->addNotificationEvent(notifyEvent);
+    for (auto notifyEvent : m_otrNotifier->notifyEvents())
+        m_notificationEventRepository->addNotificationEvent(notifyEvent);
 }
 
 void OtrPluginObject::done()
 {
-	if (!m_otrAvailable)
-		return;
+    if (!m_otrAvailable)
+        return;
 
-	for (auto notifyEvent : m_otrNotifier->notifyEvents())
-		m_notificationEventRepository->removeNotificationEvent(notifyEvent);
+    for (auto notifyEvent : m_otrNotifier->notifyEvents())
+        m_notificationEventRepository->removeNotificationEvent(notifyEvent);
 
-	m_rawMessageTransformerService->unregisterTransformer(m_otrRawMessageTransformer);
-	m_chatTopBarWidgetFactoryRepository->unregisterFactory(m_otrChatTopBarWidgetFactory);
-	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_otrBuddyConfigurationWidgetFactory);
-	m_accountConfigurationWidgetFactoryRepository->unregisterFactory(m_otrAccountConfigurationWidgetFactory);
+    m_rawMessageTransformerService->unregisterTransformer(m_otrRawMessageTransformer);
+    m_chatTopBarWidgetFactoryRepository->unregisterFactory(m_otrChatTopBarWidgetFactory);
+    m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_otrBuddyConfigurationWidgetFactory);
+    m_accountConfigurationWidgetFactoryRepository->unregisterFactory(m_otrAccountConfigurationWidgetFactory);
 }
 
 #include "moc_otr-plugin-object.cpp"

@@ -29,11 +29,11 @@
 
 DockingModule::DockingModule()
 {
-	add_type<DockingConfigurationProvider>();
-	add_type<DockingMenuActionRepository>();
-	add_type<DockingMenuHandler>();
-	add_type<DockingPluginObject>();
-	add_type<DockingTooltipHandler>();
-	add_type<Docking>();
-	add_type<StatusNotifierItem>();
+    add_type<DockingConfigurationProvider>();
+    add_type<DockingMenuActionRepository>();
+    add_type<DockingMenuHandler>();
+    add_type<DockingPluginObject>();
+    add_type<DockingTooltipHandler>();
+    add_type<Docking>();
+    add_type<StatusNotifierItem>();
 }

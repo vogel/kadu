@@ -29,19 +29,18 @@ class QFacebookHttpRequest;
 class QFacebookHttpApi
 {
 public:
-	explicit QFacebookHttpApi(QByteArray deviceId);
+    explicit QFacebookHttpApi(QByteArray deviceId);
 
-	QFacebookHttpReply * auth(const QString &user, const QString &password);
-	QFacebookHttpReply * usersQuery(const QByteArray &token);
-	QFacebookHttpReply * usersQueryAfter(const QByteArray &token, const QString &cursor);
-	QFacebookHttpReply * usersQueryDelta(const QByteArray &token, const QString &deltaCursor);
-	QFacebookHttpReply * threadListQuery(const QByteArray &token);
-	QFacebookHttpReply * unreadThreadListQuery(const QByteArray &token, int unreadCount);
-	QFacebookHttpReply * unreadMessagesListQuery(const QByteArray &token, QFacebookUid uid, int unreadCount);
-	QFacebookHttpReply * get(const QFacebookHttpRequest &request);
+    QFacebookHttpReply *auth(const QString &user, const QString &password);
+    QFacebookHttpReply *usersQuery(const QByteArray &token);
+    QFacebookHttpReply *usersQueryAfter(const QByteArray &token, const QString &cursor);
+    QFacebookHttpReply *usersQueryDelta(const QByteArray &token, const QString &deltaCursor);
+    QFacebookHttpReply *threadListQuery(const QByteArray &token);
+    QFacebookHttpReply *unreadThreadListQuery(const QByteArray &token, int unreadCount);
+    QFacebookHttpReply *unreadMessagesListQuery(const QByteArray &token, QFacebookUid uid, int unreadCount);
+    QFacebookHttpReply *get(const QFacebookHttpRequest &request);
 
 private:
-	QNetworkAccessManager m_nam;
-	QByteArray m_deviceId;
-
+    QNetworkAccessManager m_nam;
+    QByteArray m_deviceId;
 };

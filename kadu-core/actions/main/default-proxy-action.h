@@ -34,33 +34,32 @@ class ProxyEditWindowService;
 
 class DefaultProxyAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit DefaultProxyAction(QObject *parent = nullptr);
-	virtual ~DefaultProxyAction();
+    Q_INVOKABLE explicit DefaultProxyAction(QObject *parent = nullptr);
+    virtual ~DefaultProxyAction();
 
-	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
-	{
-		return QToolButton::InstantPopup;
-	}
+    virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
+    {
+        return QToolButton::InstantPopup;
+    }
 
 protected:
-	virtual QMenu * menuForAction(Action *action);
+    virtual QMenu *menuForAction(Action *action);
 
 private:
-	QPointer<NetworkProxyManager> m_networkProxyManager;
-	QPointer<ProxyEditWindowService> m_proxyEditWindowService;
+    QPointer<NetworkProxyManager> m_networkProxyManager;
+    QPointer<ProxyEditWindowService> m_proxyEditWindowService;
 
-	void populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy);
+    void populateMenu(QMenu *menu, QActionGroup *actionGroup, NetworkProxy defaultProxy);
 
 private slots:
-	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
-	INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
+    INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
+    INJEQT_SET void setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService);
 
-	void prepareMenu();
-	void selectProxyActionTriggered(QAction *action);
-	void editProxyConfiguration();
-
+    void prepareMenu();
+    void selectProxyActionTriggered(QAction *action);
+    void editProxyConfiguration();
 };

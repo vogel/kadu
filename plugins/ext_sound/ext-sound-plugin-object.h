@@ -31,25 +31,24 @@ class SoundManager;
 
 class ExtSoundPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ExtSoundPluginObject(QObject *parent = nullptr);
-	virtual ~ExtSoundPluginObject();
+    Q_INVOKABLE explicit ExtSoundPluginObject(QObject *parent = nullptr);
+    virtual ~ExtSoundPluginObject();
 
 private:
-	QPointer<ExternalPlayer> m_externalPlayer;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SoundManager> m_soundManager;
+    QPointer<ExternalPlayer> m_externalPlayer;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<SoundManager> m_soundManager;
 
 private slots:
-	INJEQT_SET void setExternalPlayer(ExternalPlayer *externalPlayer);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setExternalPlayer(ExternalPlayer *externalPlayer);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setSoundManager(SoundManager *soundManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

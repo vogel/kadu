@@ -25,9 +25,7 @@
 
 class KADUAPI ChatModule : public injeqt::module
 {
-
 public:
-	explicit ChatModule();
-	virtual ~ChatModule();
-
+    explicit ChatModule();
+    virtual ~ChatModule();
 };

@@ -28,8 +28,7 @@
 
 #include <QtCore/QDir>
 
-AdiumStyleEngine::AdiumStyleEngine(QObject *parent) :
-		QObject{parent}
+AdiumStyleEngine::AdiumStyleEngine(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,48 +38,50 @@ AdiumStyleEngine::~AdiumStyleEngine()
 
 void AdiumStyleEngine::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AdiumStyleEngine::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 QString AdiumStyleEngine::isStyleValid(QString stylePath)
 {
-	return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString();
+    return AdiumStyle::isStyleValid(stylePath) ? QDir(stylePath).dirName() : QString();
 }
 
 bool AdiumStyleEngine::styleUsesTransparencyByDefault(QString styleName)
 {
-	auto style = AdiumStyle{m_pathsProvider, styleName};
-	return style.defaultBackgroundIsTransparent();
+    auto style = AdiumStyle{m_pathsProvider, styleName};
+    return style.defaultBackgroundIsTransparent();
 }
 
 QString AdiumStyleEngine::defaultVariant(const QString &styleName)
 {
-	auto style = AdiumStyle{m_pathsProvider, styleName};
-	return style.defaultVariant();
+    auto style = AdiumStyle{m_pathsProvider, styleName};
+    return style.defaultVariant();
 }
 
 QStringList AdiumStyleEngine::styleVariants(QString styleName)
 {
-	QDir dir;
-	QString styleBaseHref = m_pathsProvider->profilePath() + QStringLiteral("syntax/chat/") + styleName + QStringLiteral("/Contents/Resources/Variants/");
-	if (!dir.exists(styleBaseHref))
-		styleBaseHref = m_pathsProvider->dataPath() + QStringLiteral("syntax/chat/") + styleName + QStringLiteral("/Contents/Resources/Variants/");
-	dir.setPath(styleBaseHref);
-	dir.setNameFilters(QStringList("*.css"));
-	return dir.entryList();
+    QDir dir;
+    QString styleBaseHref = m_pathsProvider->profilePath() + QStringLiteral("syntax/chat/") + styleName +
+                            QStringLiteral("/Contents/Resources/Variants/");
+    if (!dir.exists(styleBaseHref))
+        styleBaseHref = m_pathsProvider->dataPath() + QStringLiteral("syntax/chat/") + styleName +
+                        QStringLiteral("/Contents/Resources/Variants/");
+    dir.setPath(styleBaseHref);
+    dir.setNameFilters(QStringList("*.css"));
+    return dir.entryList();
 }
 
 std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
-	auto style = std::make_shared<AdiumStyle>(m_pathsProvider, chatStyle.name());
-	style->setCurrentVariant(chatStyle.variant());
+    auto style = std::make_shared<AdiumStyle>(m_pathsProvider, chatStyle.name());
+    style->setCurrentVariant(chatStyle.variant());
 
-	return m_injectedFactory->makeUnique<AdiumStyleRendererFactory>(style);
+    return m_injectedFactory->makeUnique<AdiumStyleRendererFactory>(style);
 }
 
 #include "moc_adium-style-engine.cpp"

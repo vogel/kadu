@@ -22,10 +22,9 @@
 
 #include "network-reply-wrapper.h"
 
-NetworkReplyWrapper::NetworkReplyWrapper(QNetworkReply *reply) :
-		QObject(reply), Reply(reply)
+NetworkReplyWrapper::NetworkReplyWrapper(QNetworkReply *reply) : QObject(reply), Reply(reply)
 {
-	connect(Reply, SIGNAL(finished()), this, SIGNAL(finished()));
+    connect(Reply, SIGNAL(finished()), this, SIGNAL(finished()));
 }
 
 NetworkReplyWrapper::~NetworkReplyWrapper()
@@ -34,17 +33,17 @@ NetworkReplyWrapper::~NetworkReplyWrapper()
 
 bool NetworkReplyWrapper::ok()
 {
-	return Reply->error() == QNetworkReply::NoError;
+    return Reply->error() == QNetworkReply::NoError;
 }
 
 QString NetworkReplyWrapper::content()
 {
-	return QString::fromUtf8(Reply->readAll());
+    return QString::fromUtf8(Reply->readAll());
 }
 
 QString NetworkReplyWrapper::redirect()
 {
-	return Reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl().toString();
+    return Reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl().toString();
 }
 
 #include "moc_network-reply-wrapper.cpp"

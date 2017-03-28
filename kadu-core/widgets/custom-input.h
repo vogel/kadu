@@ -27,8 +27,8 @@
 #include <injeqt/injeqt.h>
 
 #include "chat/chat.h"
-#include "widgets/paste-acceptor.h"
 #include "exports.h"
+#include "widgets/paste-acceptor.h"
 
 class ChatConfigurationHolder;
 class Configuration;
@@ -40,57 +40,56 @@ class NormalizedHtmlString;
 
 class KADUAPI CustomInput : public QTextEdit, PasteAcceptor
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<Configuration> m_configuration;
-	QPointer<CustomInputMenuManager> m_customInputMenuManager;
-	QPointer<ImageStorageService> m_imageStorageService;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<Configuration> m_configuration;
+    QPointer<CustomInputMenuManager> m_customInputMenuManager;
+    QPointer<ImageStorageService> m_imageStorageService;
+    QPointer<FormattedStringFactory> m_formattedStringFactory;
 
-	Chat CurrentChat;
+    Chat CurrentChat;
 
-	bool CopyPossible;
+    bool CopyPossible;
 
-	virtual void acceptPlainText(QString plainText) override;
-	virtual void acceptFileUrl(QUrl imageUrl) override;
-	virtual void acceptImageData(QByteArray imageData) override;
+    virtual void acceptPlainText(QString plainText) override;
+    virtual void acceptFileUrl(QUrl imageUrl) override;
+    virtual void acceptImageData(QByteArray imageData) override;
 
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager);
-	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager);
+    INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+    INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
 
-	void cursorPositionChangedSlot();
-	void setCopyPossible(bool available);
+    void cursorPositionChangedSlot();
+    void setCopyPossible(bool available);
 
 protected:
-	bool autosend_enabled;
+    bool autosend_enabled;
 
     virtual void showEvent(QShowEvent *e) override;
-	virtual void keyPressEvent(QKeyEvent *e) override;
-	virtual void keyReleaseEvent(QKeyEvent *e) override;
-	virtual void contextMenuEvent(QContextMenuEvent *e) override;
-	virtual bool canInsertFromMimeData(const QMimeData *source) const override;
-	virtual void insertFromMimeData(const QMimeData *source) override;
+    virtual void keyPressEvent(QKeyEvent *e) override;
+    virtual void keyReleaseEvent(QKeyEvent *e) override;
+    virtual void contextMenuEvent(QContextMenuEvent *e) override;
+    virtual bool canInsertFromMimeData(const QMimeData *source) const override;
+    virtual void insertFromMimeData(const QMimeData *source) override;
 
 public:
-	explicit CustomInput(Chat chat, QWidget *parent = nullptr);
+    explicit CustomInput(Chat chat, QWidget *parent = nullptr);
 
-	NormalizedHtmlString htmlMessage() const;
+    NormalizedHtmlString htmlMessage() const;
 
 public slots:
-	void setAutoSend(bool on);
-	void pasteAndSend();
+    void setAutoSend(bool on);
+    void pasteAndSend();
 
 signals:
-	void sendMessage();
+    void sendMessage();
 
-	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
-	void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled);
+    void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
+    void keyReleased(QKeyEvent *e, CustomInput *sender, bool &handled);
 
-	void fontChanged(QFont font);
-
+    void fontChanged(QFont font);
 };

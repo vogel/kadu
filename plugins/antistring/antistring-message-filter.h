@@ -35,25 +35,24 @@ class MessageManager;
 
 class AntistringMessageFilter : public QObject, public MessageFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AntistringMessageFilter(QObject *parent = nullptr);
-	virtual ~AntistringMessageFilter();
+    Q_INVOKABLE explicit AntistringMessageFilter(QObject *parent = nullptr);
+    virtual ~AntistringMessageFilter();
 
-	virtual bool acceptMessage(const Message &message);
+    virtual bool acceptMessage(const Message &message);
 
 private:
-	QPointer<AntistringConfiguration> m_antistringConfiguration;
-	QPointer<AntistringNotificationService> m_antistringNotificationService;
-	QPointer<MessageManager> m_messageManager;
+    QPointer<AntistringConfiguration> m_antistringConfiguration;
+    QPointer<AntistringNotificationService> m_antistringNotificationService;
+    QPointer<MessageManager> m_messageManager;
 
-	int points(const QString &message);
-	void writeLog(Contact sender, const QString &message);
+    int points(const QString &message);
+    void writeLog(Contact sender, const QString &message);
 
 private slots:
-	INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
-	INJEQT_SET void setAntistringNotificationService(AntistringNotificationService *antistringNotificationService);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-
+    INJEQT_SET void setAntistringConfiguration(AntistringConfiguration *antistringConfiguration);
+    INJEQT_SET void setAntistringNotificationService(AntistringNotificationService *antistringNotificationService);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
 };

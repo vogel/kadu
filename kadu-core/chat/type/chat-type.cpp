@@ -27,8 +27,7 @@
  *
  * Creates empty ChatType.
  */
-ChatType::ChatType(QObject *parent) :
-		QObject(parent)
+ChatType::ChatType(QObject *parent) : QObject(parent)
 {
 }
 

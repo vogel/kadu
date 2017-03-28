@@ -29,18 +29,19 @@
  * @author Piotr 'ultr' Dąbrowski
  * @short Proxy model for descriptions.
  *
- * Proxy model for descriptions. Displays every description in a single line with new line characters replaced with a nice indicator.
+ * Proxy model for descriptions. Displays every description in a single line with new line characters replaced with a
+ * nice indicator.
  */
-class StatusWindowDescriptionProxyModel : public QSortFilterProxyModel // TODO: replace with QIdentityProxyModel from Qt 4.8
+class StatusWindowDescriptionProxyModel
+    : public QSortFilterProxyModel   // TODO: replace with QIdentityProxyModel from Qt 4.8
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StatusWindowDescriptionProxyModel(QObject * parent = 0);
-	virtual ~StatusWindowDescriptionProxyModel();
+    explicit StatusWindowDescriptionProxyModel(QObject *parent = 0);
+    virtual ~StatusWindowDescriptionProxyModel();
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
-
+    virtual QVariant data(const QModelIndex &index, int role) const;
 };
 
-#endif // STATUS_WINDOW_DESCRIPTION_PROXY_MODEL_H
+#endif   // STATUS_WINDOW_DESCRIPTION_PROXY_MODEL_H

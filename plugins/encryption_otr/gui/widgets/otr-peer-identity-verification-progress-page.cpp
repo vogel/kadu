@@ -27,10 +27,11 @@
 
 #include "otr-peer-identity-verification-progress-page.h"
 
-OtrPeerIdentityVerificationProgressPage::OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationProgressPage::OtrPeerIdentityVerificationProgressPage(
+    const Contact &contact, QWidget *parent)
+        : QWizardPage(parent), MyContact(contact)
 {
-	createGui();
+    createGui();
 }
 
 OtrPeerIdentityVerificationProgressPage::~OtrPeerIdentityVerificationProgressPage()
@@ -39,77 +40,79 @@ OtrPeerIdentityVerificationProgressPage::~OtrPeerIdentityVerificationProgressPag
 
 void OtrPeerIdentityVerificationProgressPage::createGui()
 {
-	setTitle(tr("Verification Progress"));
+    setTitle(tr("Verification Progress"));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLabel *stateLabel = new QLabel(tr("Verification in progres..."));
-	stateLabel->setWordWrap(true);
+    QLabel *stateLabel = new QLabel(tr("Verification in progres..."));
+    stateLabel->setWordWrap(true);
 
-	QProgressBar *stateProgress = new QProgressBar();
-	stateProgress->setMaximum(100);
+    QProgressBar *stateProgress = new QProgressBar();
+    stateProgress->setMaximum(100);
 
-	registerField("progress", stateProgress, "value");
+    registerField("progress", stateProgress, "value");
 
-	layout->addWidget(stateLabel);
-	layout->addWidget(stateProgress);
+    layout->addWidget(stateLabel);
+    layout->addWidget(stateProgress);
 }
 
 void OtrPeerIdentityVerificationProgressPage::setState(const OtrPeerIdentityVerificationState &state)
 {
-	State = state;
-	setField("progress", State.percentCompleted());
+    State = state;
+    setField("progress", State.percentCompleted());
 
-	if (State.isFinished())
-	{
-		setField("result", static_cast<int>(State.state()));
-		emit finished();
-	}
+    if (State.isFinished())
+    {
+        setField("result", static_cast<int>(State.state()));
+        emit finished();
+    }
 }
 
-void OtrPeerIdentityVerificationProgressPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+void OtrPeerIdentityVerificationProgressPage::setPeerIdentityVerificationService(
+    OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+    PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 void OtrPeerIdentityVerificationProgressPage::cancelVerification()
 {
-	PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+    PeerIdentityVerificationService.data()->cancelVerification(MyContact);
 }
 
 bool OtrPeerIdentityVerificationProgressPage::canCancelVerification() const
 {
-	return State.isFinished();
+    return State.isFinished();
 }
 
 void OtrPeerIdentityVerificationProgressPage::rejected()
 {
-	if (wizard()->currentPage() == this && canCancelVerification())
-		cancelVerification();
+    if (wizard()->currentPage() == this && canCancelVerification())
+        cancelVerification();
 }
 
-void OtrPeerIdentityVerificationProgressPage::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
+void OtrPeerIdentityVerificationProgressPage::updateContactState(
+    const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
-	if (contact == MyContact)
-		setState(state);
+    if (contact == MyContact)
+        setState(state);
 }
 
 int OtrPeerIdentityVerificationProgressPage::nextId() const
 {
-	return OtrPeerIdentityVerificationWindow::ResultPage;
+    return OtrPeerIdentityVerificationWindow::ResultPage;
 }
 
 void OtrPeerIdentityVerificationProgressPage::initializePage()
 {
-	setState(OtrPeerIdentityVerificationState());
+    setState(OtrPeerIdentityVerificationState());
 }
 
 bool OtrPeerIdentityVerificationProgressPage::validatePage()
 {
-	if (!PeerIdentityVerificationService)
-		return true;
+    if (!PeerIdentityVerificationService)
+        return true;
 
-	return State.isFinished();
+    return State.isFinished();
 }
 
 #include "moc_otr-peer-identity-verification-progress-page.cpp"

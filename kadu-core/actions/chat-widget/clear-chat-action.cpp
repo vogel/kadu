@@ -25,14 +25,14 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/webkit-messages-view/webkit-messages-view.h"
 
-ClearChatAction::ClearChatAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ClearChatAction::ClearChatAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"edit-clear"});
-	setName(QStringLiteral("clearChatAction"));
-	setText(tr("Clear Messages in Chat Window"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"edit-clear"});
+    setName(QStringLiteral("clearChatAction"));
+    setText(tr("Clear Messages in Chat Window"));
+    setType(ActionDescription::TypeChat);
 }
 
 ClearChatAction::~ClearChatAction()
@@ -41,35 +41,35 @@ ClearChatAction::~ClearChatAction()
 
 void ClearChatAction::actionInstanceCreated(Action *action)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(action->context()->widget());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(action->context()->widget());
+    if (!chatEditBox)
+        return;
 
-	connect(chatEditBox->chatWidget()->chatMessagesView(), SIGNAL(messagesUpdated()), action, SLOT(checkState()));
-	updateActionState(action);
+    connect(chatEditBox->chatWidget()->chatMessagesView(), SIGNAL(messagesUpdated()), action, SLOT(checkState()));
+    updateActionState(action);
 }
 
 void ClearChatAction::actionTriggered(QAction *sender, bool)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	auto chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-		chatWidget->clearChatWindow();
+    auto chatWidget = chatEditBox->chatWidget();
+    if (chatWidget)
+        chatWidget->clearChatWindow();
 }
 
-void ClearChatAction::updateActionState(Action* action)
+void ClearChatAction::updateActionState(Action *action)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(action->context()->widget());
-	if (!chatEditBox)
-	{
-		action->setEnabled(false);
-		return;
-	}
+    auto chatEditBox = qobject_cast<ChatEditBox *>(action->context()->widget());
+    if (!chatEditBox)
+    {
+        action->setEnabled(false);
+        return;
+    }
 
-	action->setEnabled(0 != chatEditBox->chatWidget()->chatMessagesView()->countMessages());
+    action->setEnabled(0 != chatEditBox->chatWidget()->chatMessagesView()->countMessages());
 }
 
 #include "moc_clear-chat-action.cpp"

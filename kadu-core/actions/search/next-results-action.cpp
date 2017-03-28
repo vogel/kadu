@@ -23,34 +23,33 @@
 
 #include <QtWidgets/QRadioButton>
 
-NextResultsAction::NextResultsAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+NextResultsAction::NextResultsAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"go-next"});
-	setName(QStringLiteral("nextResultsAction"));
-	setText(tr("&Next results"));
-	setType(ActionDescription::TypeSearch);
+    setIcon(KaduIcon{"go-next"});
+    setName(QStringLiteral("nextResultsAction"));
+    setText(tr("&Next results"));
+    setType(ActionDescription::TypeSearch);
 }
 
 NextResultsAction::~NextResultsAction()
 {
 }
 
-void NextResultsAction::actionInstanceCreated(Action* action)
+void NextResultsAction::actionInstanceCreated(Action *action)
 {
-	auto search = qobject_cast<SearchWindow *>(action->parentWidget());
-	if (!search || search->SearchInProgress ||
-			(search->UinRadioButton && search->UinRadioButton->isChecked()) ||
-			search->isPersonalDataEmpty())
-		action->setEnabled(false);
+    auto search = qobject_cast<SearchWindow *>(action->parentWidget());
+    if (!search || search->SearchInProgress || (search->UinRadioButton && search->UinRadioButton->isChecked()) ||
+        search->isPersonalDataEmpty())
+        action->setEnabled(false);
 }
 
 void NextResultsAction::actionTriggered(QAction *sender, bool)
 {
-	auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
-	if (search)
-		search->nextSearch();
+    auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
+    if (search)
+        search->nextSearch();
 }
 
 #include "moc_next-results-action.cpp"

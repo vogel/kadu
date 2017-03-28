@@ -23,9 +23,9 @@
 
 #include "file-transfer/gadu-outgoing-file-transfer-handler.h"
 #include "file-transfer/gadu-url-incoming-file-transfer-handler.h"
-#include "helpers/gadu-protocol-helper.h"
 #include "gadu-account-data.h"
 #include "gadu-protocol.h"
+#include "helpers/gadu-protocol-helper.h"
 
 #include "contacts/contact-manager.h"
 #include "core/myself.h"
@@ -39,12 +39,11 @@
 
 #include <QtCore/QUrl>
 
-
-GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol) :
-		FileTransferService(protocol), Protocol(protocol)
+GaduFileTransferService::GaduFileTransferService(GaduProtocol *protocol)
+        : FileTransferService(protocol), Protocol(protocol)
 {
-	connect(Protocol, SIGNAL(connected(Account)), this, SIGNAL(canSendChanged()));
-	connect(Protocol, SIGNAL(disconnected(Account)), this, SIGNAL(canSendChanged()));
+    connect(Protocol, SIGNAL(connected(Account)), this, SIGNAL(canSendChanged()));
+    connect(Protocol, SIGNAL(disconnected(Account)), this, SIGNAL(canSendChanged()));
 }
 
 GaduFileTransferService::~GaduFileTransferService()
@@ -53,56 +52,56 @@ GaduFileTransferService::~GaduFileTransferService()
 
 void GaduFileTransferService::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void GaduFileTransferService::setFileTransferStorage(FileTransferStorage *fileTransferStorage)
 {
-	m_fileTransferStorage = fileTransferStorage;
+    m_fileTransferStorage = fileTransferStorage;
 }
 
 void GaduFileTransferService::setGaduIMTokenService(GaduIMTokenService *imTokenService)
 {
-	m_imTokenService = imTokenService;
+    m_imTokenService = imTokenService;
 
-	connect(m_imTokenService, SIGNAL(imTokenChanged(QByteArray)), this, SIGNAL(canSendChanged()));
+    connect(m_imTokenService, SIGNAL(imTokenChanged(QByteArray)), this, SIGNAL(canSendChanged()));
 }
 
-FileTransferHandler * GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
+FileTransferHandler *GaduFileTransferService::createFileTransferHandler(FileTransfer fileTransfer)
 {
-	if (fileTransfer.transferDirection() == FileTransferDirection::Incoming)
-		return new GaduUrlIncomingFileTransferHandler{Protocol, fileTransfer};
-	else
-		return new GaduOutgoingFileTransferHandler{Protocol, fileTransfer};
+    if (fileTransfer.transferDirection() == FileTransferDirection::Incoming)
+        return new GaduUrlIncomingFileTransferHandler{Protocol, fileTransfer};
+    else
+        return new GaduOutgoingFileTransferHandler{Protocol, fileTransfer};
 }
 
 FileTransferCanSendResult GaduFileTransferService::canSend(Contact contact)
 {
-	if (m_myself->buddy() == contact.ownerBuddy())
-		return {false, {}};
+    if (m_myself->buddy() == contact.ownerBuddy())
+        return {false, {}};
 
-	if (!Protocol->isConnected())
-		return {false, tr("Connect before sending files.")};
+    if (!Protocol->isConnected())
+        return {false, tr("Connect before sending files.")};
 
-	if (m_imTokenService->imToken().isEmpty())
-		return {false, tr("Unable to login to GG Drive. Reconnect before sending files.")};
+    if (m_imTokenService->imToken().isEmpty())
+        return {false, tr("Unable to login to GG Drive. Reconnect before sending files.")};
 
-	return {true, {}};
+    return {true, {}};
 }
 
 void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloadId, QString fileName)
 {
-	auto transfer = m_fileTransferStorage->create();
-	transfer.setPeer(peer);
-	transfer.setTransferDirection(FileTransferDirection::Incoming);
-	transfer.setTransferType(FileTransferType::Url);
-	transfer.setTransferStatus(FileTransferStatus::ReadyToDownload);
-	transfer.setRemoteFileName(QUrl::fromPercentEncoding(fileName.toUtf8()));
-	transfer.setFileSize(0); // we don't know file size yet
-	transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);
-	transfer.addProperty("gg:remoteFileName", fileName, CustomProperties::Storable);
+    auto transfer = m_fileTransferStorage->create();
+    transfer.setPeer(peer);
+    transfer.setTransferDirection(FileTransferDirection::Incoming);
+    transfer.setTransferType(FileTransferType::Url);
+    transfer.setTransferStatus(FileTransferStatus::ReadyToDownload);
+    transfer.setRemoteFileName(QUrl::fromPercentEncoding(fileName.toUtf8()));
+    transfer.setFileSize(0);   // we don't know file size yet
+    transfer.addProperty("gg:downloadId", downloadId, CustomProperties::Storable);
+    transfer.addProperty("gg:remoteFileName", fileName, CustomProperties::Storable);
 
-	emit incomingFileTransfer(transfer);
+    emit incomingFileTransfer(transfer);
 }
 
 #include "moc_gadu-file-transfer-service.cpp"

@@ -43,8 +43,7 @@
 
 #include <QtGui/QTextDocument>
 
-Protocol::Protocol(Account account, ProtocolFactory *factory) :
-		Factory(factory), CurrentAccount(account)
+Protocol::Protocol(Account account, ProtocolFactory *factory) : Factory(factory), CurrentAccount(account)
 {
 }
 
@@ -54,295 +53,295 @@ Protocol::~Protocol()
 
 void Protocol::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void Protocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Protocol::setSessionService(SessionService *sessionService)
 {
-	m_sessionService = sessionService;
+    m_sessionService = sessionService;
 }
 
-void Protocol::setRosterService(RosterService * const rosterService)
+void Protocol::setRosterService(RosterService *const rosterService)
 {
-	m_rosterService = rosterService;
+    m_rosterService = rosterService;
 }
 
 void Protocol::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void Protocol::init()
 {
-	Machine = m_pluginInjectedFactory->makeInjected<ProtocolStateMachine>(this);
-	/*
-	 * after machine is started we need to re-call changeStatus
-	 * so proper transition can be called
-	 *
-	 * changeStatus was probably called before machine was started by some StatusContainer
-	 * that just restored status from configuration file
-	 */
-	connect(Machine, SIGNAL(started()), this, SLOT(prepareStateMachine()), Qt::QueuedConnection);
+    Machine = m_pluginInjectedFactory->makeInjected<ProtocolStateMachine>(this);
+    /*
+     * after machine is started we need to re-call changeStatus
+     * so proper transition can be called
+     *
+     * changeStatus was probably called before machine was started by some StatusContainer
+     * that just restored status from configuration file
+     */
+    connect(Machine, SIGNAL(started()), this, SLOT(prepareStateMachine()), Qt::QueuedConnection);
 
-	connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(loggingInStateEntered()));
-	connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(loggedInStateEntered()));
-	connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(loggingOutStateEntered()));
-	connect(Machine, SIGNAL(loggedOutOnlineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
-	connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
-	connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogInStateEntered()));
-	connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequiredStateEntered()));
+    connect(Machine, SIGNAL(loggingInStateEntered()), this, SLOT(loggingInStateEntered()));
+    connect(Machine, SIGNAL(loggedInStateEntered()), this, SLOT(loggedInStateEntered()));
+    connect(Machine, SIGNAL(loggingOutStateEntered()), this, SLOT(loggingOutStateEntered()));
+    connect(Machine, SIGNAL(loggedOutOnlineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
+    connect(Machine, SIGNAL(loggedOutOfflineStateEntered()), this, SLOT(loggedOutAnyStateEntered()));
+    connect(Machine, SIGNAL(wantToLogInStateEntered()), this, SLOT(wantToLogInStateEntered()));
+    connect(Machine, SIGNAL(passwordRequiredStateEntered()), this, SLOT(passwordRequiredStateEntered()));
 }
 
-ContactManager * Protocol::contactManager() const
+ContactManager *Protocol::contactManager() const
 {
-	return m_contactManager;
+    return m_contactManager;
 }
 
 PluginInjectedFactory *Protocol::pluginInjectedFactory() const
 {
-	return m_pluginInjectedFactory;
+    return m_pluginInjectedFactory;
 }
 
-StatusTypeManager * Protocol::statusTypeManager() const
+StatusTypeManager *Protocol::statusTypeManager() const
 {
-	return m_statusTypeManager;
+    return m_statusTypeManager;
 }
 
-RosterService * Protocol::rosterService() const
+RosterService *Protocol::rosterService() const
 {
-	return m_rosterService.data();
+    return m_rosterService.data();
 }
 
 KaduIcon Protocol::icon()
 {
-	return Factory->icon();
+    return Factory->icon();
 }
 
 void Protocol::prepareStateMachine()
 {
-	if (!CurrentStatus.isDisconnected())
-		emit stateMachineChangeStatus();
+    if (!CurrentStatus.isDisconnected())
+        emit stateMachineChangeStatus();
 }
 
 void Protocol::passwordProvided()
 {
-	if (CurrentAccount.hasPassword())
-	{
-		emit stateMachinePasswordAvailable();
-		return;
-	}
+    if (CurrentAccount.hasPassword())
+    {
+        emit stateMachinePasswordAvailable();
+        return;
+    }
 
-	LoginStatus = Status();
-	emit stateMachinePasswordNotAvailable();
+    LoginStatus = Status();
+    emit stateMachinePasswordNotAvailable();
 }
 
 void Protocol::setAllOffline()
 {
-	if (m_sessionService->isClosing())
-		return;
+    if (m_sessionService->isClosing())
+        return;
 
-	Status status;
-	Status oldStatus;
+    Status status;
+    Status oldStatus;
 
-	foreach (const Contact &contact, m_contactManager->contacts(CurrentAccount))
-	{
-		oldStatus = contact.currentStatus();
+    foreach (const Contact &contact, m_contactManager->contacts(CurrentAccount))
+    {
+        oldStatus = contact.currentStatus();
 
-		if (oldStatus != status)
-		{
-			contact.setCurrentStatus(status);
-			emit contactStatusChanged(contact, oldStatus);
-		}
-	}
+        if (oldStatus != status)
+        {
+            contact.setCurrentStatus(status);
+            emit contactStatusChanged(contact, oldStatus);
+        }
+    }
 }
 
 void Protocol::disconnectedCleanup()
 {
-	setAllOffline();
+    setAllOffline();
 }
 
 void Protocol::setStatus(Status status, StatusChangeSource source)
 {
-	if (SourceStatusChanger == source && !account().hasPassword())
-		return;
+    if (SourceStatusChanger == source && !account().hasPassword())
+        return;
 
-	LoginStatus = protocolFactory()->adaptStatus(status);
-	doSetStatus(LoginStatus);
+    LoginStatus = protocolFactory()->adaptStatus(status);
+    doSetStatus(LoginStatus);
 }
 
 void Protocol::doSetStatus(Status status)
 {
-	CurrentStatus = status;
+    CurrentStatus = status;
 
-	if (!CurrentStatus.isDisconnected())
-	{
-		emit statusChanged(CurrentAccount, CurrentStatus);
-		sendStatusToServer();
+    if (!CurrentStatus.isDisconnected())
+    {
+        emit statusChanged(CurrentAccount, CurrentStatus);
+        sendStatusToServer();
 
-		emit stateMachineChangeStatus();
-	}
-	else
-		emit stateMachineLogout();
+        emit stateMachineChangeStatus();
+    }
+    else
+        emit stateMachineLogout();
 }
 
 Status Protocol::loginStatus() const
 {
-	return LoginStatus;
+    return LoginStatus;
 }
 
 Status Protocol::status() const
 {
-	return CurrentStatus;
+    return CurrentStatus;
 }
 
 void Protocol::loggedIn()
 {
-	emit stateMachineLoggedIn();
+    emit stateMachineLoggedIn();
 }
 
 void Protocol::loggedOut()
 {
-	emit stateMachineLoggedOut();
+    emit stateMachineLoggedOut();
 }
 
 void Protocol::passwordRequired()
 {
-	emit stateMachinePasswordRequired();
+    emit stateMachinePasswordRequired();
 }
 
 void Protocol::connectionError()
 {
-	statusChanged(Status());
+    statusChanged(Status());
 
-	emit stateMachineConnectionError();
+    emit stateMachineConnectionError();
 }
 
 void Protocol::connectionClosed()
 {
-	doSetStatus(Status());
-	statusChanged(Status());
+    doSetStatus(Status());
+    statusChanged(Status());
 
-	emit stateMachineConnectionClosed();
+    emit stateMachineConnectionClosed();
 }
 
 void Protocol::sslError()
 {
-	statusChanged(Status());
+    statusChanged(Status());
 
-	emit stateMachineSslError();
+    emit stateMachineSslError();
 }
 
 void Protocol::reconnect()
 {
-	setStatus(loginStatus(), SourceUser);
+    setStatus(loginStatus(), SourceUser);
 }
 
 void Protocol::statusChanged(Status status)
 {
-	CurrentStatus = status;
-	emit statusChanged(CurrentAccount, CurrentStatus);
+    CurrentStatus = status;
+    emit statusChanged(CurrentAccount, CurrentStatus);
 }
 
 KaduIcon Protocol::statusIcon()
 {
-	return statusIcon(CurrentStatus);
+    return statusIcon(CurrentStatus);
 }
 
 KaduIcon Protocol::statusIcon(const Status &status)
 {
-	return m_statusTypeManager->statusIcon(statusPixmapPath(), status);
+    return m_statusTypeManager->statusIcon(statusPixmapPath(), status);
 }
 
 void Protocol::loggingInStateEntered()
 {
-	emit disconnected(CurrentAccount);
+    emit disconnected(CurrentAccount);
 
-	// this may be called from our connection error-handling code, when user wants to be logged in
-	// at any cost, so we should assume that we were just disconnected
-	// better do some cleanup then
-	disconnectedCleanup();
+    // this may be called from our connection error-handling code, when user wants to be logged in
+    // at any cost, so we should assume that we were just disconnected
+    // better do some cleanup then
+    disconnectedCleanup();
 
-	if (account().id().isEmpty())
-	{
-		emit stateMachineConnectionClosed();
-		return;
-	}
+    if (account().id().isEmpty())
+    {
+        emit stateMachineConnectionClosed();
+        return;
+    }
 
-	if (!account().hasPassword())
-	{
-		emit stateMachinePasswordRequired();
-		return;
-	}
+    if (!account().hasPassword())
+    {
+        emit stateMachinePasswordRequired();
+        return;
+    }
 
-	// just for status icon now, this signal need to be better
-	emit statusChanged(CurrentAccount, CurrentStatus);
+    // just for status icon now, this signal need to be better
+    emit statusChanged(CurrentAccount, CurrentStatus);
 
-	// call protocol implementation
-	login();
+    // call protocol implementation
+    login();
 }
 
 void Protocol::loggedInStateEntered()
 {
-	statusChanged(loginStatus());
-	afterLoggedIn();
+    statusChanged(loginStatus());
+    afterLoggedIn();
 
-	emit connected(CurrentAccount);
+    emit connected(CurrentAccount);
 }
 
 void Protocol::loggingOutStateEntered()
 {
-	emit disconnected(CurrentAccount);
+    emit disconnected(CurrentAccount);
 
-	// call protocol implementation
-	logout();
+    // call protocol implementation
+    logout();
 }
 
 void Protocol::loggedOutAnyStateEntered()
 {
-	emit disconnected(CurrentAccount);
+    emit disconnected(CurrentAccount);
 
-	disconnectedCleanup();
-	statusChanged(loginStatus());
+    disconnectedCleanup();
+    statusChanged(loginStatus());
 }
 
 void Protocol::wantToLogInStateEntered()
 {
-	emit disconnected(CurrentAccount);
+    emit disconnected(CurrentAccount);
 
-	disconnectedCleanup();
-	statusChanged(Status());
+    disconnectedCleanup();
+    statusChanged(Status());
 
-	emit statusChanged(CurrentAccount, Status());
+    emit statusChanged(CurrentAccount, Status());
 }
 
 void Protocol::passwordRequiredStateEntered()
 {
-	emit disconnected(CurrentAccount);
+    emit disconnected(CurrentAccount);
 
-	disconnectedCleanup();
-	statusChanged(Status());
+    disconnectedCleanup();
+    statusChanged(Status());
 
-	emit invalidPassword(CurrentAccount);
+    emit invalidPassword(CurrentAccount);
 }
 
 bool Protocol::isConnected() const
 {
-	return Machine->isLoggedIn();
+    return Machine->isLoggedIn();
 }
 
 bool Protocol::isConnecting() const
 {
-	return Machine->isLoggingIn();
+    return Machine->isLoggingIn();
 }
 
 bool Protocol::isDisconnecting() const
 {
-	return Machine->isLoggingOut();
+    return Machine->isLoggingOut();
 }
 
 #include "moc_protocol.cpp"

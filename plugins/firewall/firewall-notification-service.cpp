@@ -30,9 +30,10 @@
 #include "notification/notification-service.h"
 #include "notification/notification.h"
 
-FirewallNotificationService::FirewallNotificationService(QObject *parent) :
-		QObject{parent},
-		m_blockedMessageEvent{QStringLiteral("firewallNotification"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Message was firewalled"))}
+FirewallNotificationService::FirewallNotificationService(QObject *parent)
+        : QObject{parent},
+          m_blockedMessageEvent{QStringLiteral("firewallNotification"),
+                                QStringLiteral(QT_TRANSLATE_NOOP("@default", "Message was firewalled"))}
 {
 }
 
@@ -42,48 +43,53 @@ FirewallNotificationService::~FirewallNotificationService()
 
 void FirewallNotificationService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
-void FirewallNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+void FirewallNotificationService::setNotificationEventRepository(
+    NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void FirewallNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void FirewallNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_blockedMessageEvent);
+    m_notificationEventRepository->addNotificationEvent(m_blockedMessageEvent);
 }
 
 void FirewallNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_blockedMessageEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_blockedMessageEvent);
 }
 
 void FirewallNotificationService::notifyBlockedMessage(const Chat &chat, const Contact &sender, const QString &message)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
-	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
-	data.insert(QStringLiteral("contact"), qVariantFromValue(sender));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
+    data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
+    data.insert(QStringLiteral("contact"), qVariantFromValue(sender));
 
-	auto notification = Notification{};
-	notification.type = m_blockedMessageEvent.name();
-	notification.icon = KaduIcon{"kadu_icons/blocking"};
-	notification.title = tr("Message was blocked");
-	notification.text = normalizeHtml(plainToHtml(m_configuration->deprecatedApi()->readEntry("Firewall", "notification_syntax",
-		tr("%u writes")).replace("%u", sender.display(true)).remove("%m")));
-	notification.details = normalizeHtml(plainToHtml(message));
-	notification.callbacks.append("chat-open");
-	notification.callbacks.append("ignore");
-	notification.data = std::move(data);
+    auto notification = Notification{};
+    notification.type = m_blockedMessageEvent.name();
+    notification.icon = KaduIcon{"kadu_icons/blocking"};
+    notification.title = tr("Message was blocked");
+    notification.text = normalizeHtml(
+        plainToHtml(
+            m_configuration->deprecatedApi()
+                ->readEntry("Firewall", "notification_syntax", tr("%u writes"))
+                .replace("%u", sender.display(true))
+                .remove("%m")));
+    notification.details = normalizeHtml(plainToHtml(message));
+    notification.callbacks.append("chat-open");
+    notification.callbacks.append("ignore");
+    notification.data = std::move(data);
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 #include "moc_firewall-notification-service.cpp"

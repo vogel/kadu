@@ -23,14 +23,14 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "os/generic/url-opener.h"
 
-OpenGetInvolvedAction::OpenGetInvolvedAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenGetInvolvedAction::OpenGetInvolvedAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/get-involved"});
-	setName(QStringLiteral("getInvolvedAction"));
-	setText(tr("Get Involved"));
-	setType(ActionDescription::TypeMainMenu);
+    setIcon(KaduIcon{"kadu_icons/get-involved"});
+    setName(QStringLiteral("getInvolvedAction"));
+    setText(tr("Get Involved"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 OpenGetInvolvedAction::~OpenGetInvolvedAction()
@@ -39,20 +39,20 @@ OpenGetInvolvedAction::~OpenGetInvolvedAction()
 
 void OpenGetInvolvedAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void OpenGetInvolvedAction::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void OpenGetInvolvedAction::actionTriggered(QAction *, bool)
 {
-	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		m_urlOpener->openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
-	else
-		m_urlOpener->openUrl("http://www.kadu.im/w/English:GetInvolved");
+    if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
+        m_urlOpener->openUrl("http://www.kadu.im/w/Do%C5%82%C4%85cz");
+    else
+        m_urlOpener->openUrl("http://www.kadu.im/w/English:GetInvolved");
 }
 
 #include "moc_open-get-involved-action.cpp"

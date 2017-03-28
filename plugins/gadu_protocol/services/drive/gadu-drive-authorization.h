@@ -31,25 +31,26 @@ class QNetworkReply;
 
 class GaduDriveAuthorization : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduDriveAuthorization(QString accountId, QString imToken, QString clientName, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~GaduDriveAuthorization();
+    explicit GaduDriveAuthorization(
+        QString accountId, QString imToken, QString clientName, QNetworkAccessManager *networkAccessManager,
+        QObject *parent = nullptr);
+    virtual ~GaduDriveAuthorization();
 
-	void authorize();
+    void authorize();
 
 signals:
-	void authorized(GaduDriveSessionToken token);
+    void authorized(GaduDriveSessionToken token);
 
 private:
-	QString m_accountId;
-	QString m_imToken;
-	QString m_clientName;
-	QNetworkAccessManager *m_networkAccessManager;
-	owned_qptr<QNetworkReply> m_reply;
+    QString m_accountId;
+    QString m_imToken;
+    QString m_clientName;
+    QNetworkAccessManager *m_networkAccessManager;
+    owned_qptr<QNetworkReply> m_reply;
 
 private slots:
-	void requestFinished();
-
+    void requestFinished();
 };

@@ -21,8 +21,8 @@
 
 #include "widgets/webkit-messages-view/webkit-messages-view-display.h"
 
-#include "message/sorted-messages.h"
 #include "exports.h"
+#include "message/sorted-messages.h"
 
 /**
  * @addtogroup WebkitMessagesView
@@ -39,30 +39,28 @@
  */
 class KADUAPI WebkitMessagesViewClearingDisplay : public WebkitMessagesViewDisplay
 {
-
 public:
-	/**
-	 * @short Create new WebkitMessagesViewClearingDisplay operating on provided ChatStyleRenderer.
-	 * @param chatStyleRenderer Renderer used to display messages.
-	 */
-	explicit WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer);
-	virtual ~WebkitMessagesViewClearingDisplay();
+    /**
+     * @short Create new WebkitMessagesViewClearingDisplay operating on provided ChatStyleRenderer.
+     * @param chatStyleRenderer Renderer used to display messages.
+     */
+    explicit WebkitMessagesViewClearingDisplay(ChatStyleRenderer &chatStyleRenderer);
+    virtual ~WebkitMessagesViewClearingDisplay();
 
-	/**
-	 * @short Display new list of messages.
-	 * @param messages New list of messages to display.
-	 *
-	 * If new list contains the same set of messages that previous one with some additional
-	 * ones at the end, new messages are appended to view. In other case, view is cleared,
-	 * and all messages are displayed again.
-	 *
-	 * If new list of messages is exactly the same as old one nothing is done.
-	 */
-	virtual void displayMessages(SortedMessages messages) override;
+    /**
+     * @short Display new list of messages.
+     * @param messages New list of messages to display.
+     *
+     * If new list contains the same set of messages that previous one with some additional
+     * ones at the end, new messages are appended to view. In other case, view is cleared,
+     * and all messages are displayed again.
+     *
+     * If new list of messages is exactly the same as old one nothing is done.
+     */
+    virtual void displayMessages(SortedMessages messages) override;
 
 private:
-	SortedMessages m_currentMessages;
-
+    SortedMessages m_currentMessages;
 };
 
 /**

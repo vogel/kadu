@@ -28,19 +28,27 @@ class ActionDescription;
 
 class MenuItem
 {
-	ActionDescription *Action;
-	KaduMenu::MenuSection Section;
-	int Priority;
+    ActionDescription *Action;
+    KaduMenu::MenuSection Section;
+    int Priority;
 
 public:
-	MenuItem(ActionDescription *action, KaduMenu::MenuSection section, int priority = 0);
+    MenuItem(ActionDescription *action, KaduMenu::MenuSection section, int priority = 0);
 
-	bool operator < (const MenuItem &compareTo) const;
+    bool operator<(const MenuItem &compareTo) const;
 
-	ActionDescription * actionDescription() { return Action; }
-	KaduMenu::MenuSection section() const { return Section; }
-	int priority() const { return Priority; }
-
+    ActionDescription *actionDescription()
+    {
+        return Action;
+    }
+    KaduMenu::MenuSection section() const
+    {
+        return Section;
+    }
+    int priority() const
+    {
+        return Priority;
+    }
 };
 
-#endif // MENU_ITEM_H
+#endif   // MENU_ITEM_H

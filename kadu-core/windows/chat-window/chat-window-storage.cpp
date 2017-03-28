@@ -23,8 +23,7 @@
 #include "storage/chat-list-storage.h"
 #include "storage/storage-point-factory.h"
 
-ChatWindowStorage::ChatWindowStorage(QObject *parent) :
-		QObject{parent}
+ChatWindowStorage::ChatWindowStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,45 +33,45 @@ ChatWindowStorage::~ChatWindowStorage()
 
 void ChatWindowStorage::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void ChatWindowStorage::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
-	m_storagePointFactory = storagePointFactory;
+    m_storagePointFactory = storagePointFactory;
 }
 
 void ChatWindowStorage::setConfiguration(ChatWindowStorageConfiguration configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 std::unique_ptr<StoragePoint> ChatWindowStorage::storagePoint() const
 {
-	if (!m_storagePointFactory)
-		return {};
-	return m_storagePointFactory.data()->createStoragePoint(QStringLiteral("ChatWindows"));
+    if (!m_storagePointFactory)
+        return {};
+    return m_storagePointFactory.data()->createStoragePoint(QStringLiteral("ChatWindows"));
 }
 
 QVector<Chat> ChatWindowStorage::loadChats() const
 {
-	auto storage = storagePoint();
-	if (!storage || !m_configuration.storeOpenedChatWindows())
-		return {};
+    auto storage = storagePoint();
+    if (!storage || !m_configuration.storeOpenedChatWindows())
+        return {};
 
-	auto chatListStorage = ChatListStorage{storage.get(), QStringLiteral("Chat")};
-	chatListStorage.setChatManager(m_chatManager.data());
-	return chatListStorage.load();
+    auto chatListStorage = ChatListStorage{storage.get(), QStringLiteral("Chat")};
+    chatListStorage.setChatManager(m_chatManager.data());
+    return chatListStorage.load();
 }
 
 void ChatWindowStorage::storeChats(const QVector<Chat> &chats)
 {
-	auto storage = storagePoint();
-	if (!storage || !m_configuration.storeOpenedChatWindows())
-		return;
+    auto storage = storagePoint();
+    if (!storage || !m_configuration.storeOpenedChatWindows())
+        return;
 
-	auto chatListStorage = ChatListStorage{storage.get(), QStringLiteral("Chat")};
-	chatListStorage.store(chats);
+    auto chatListStorage = ChatListStorage{storage.get(), QStringLiteral("Chat")};
+    chatListStorage.store(chats);
 }
 
 #include "moc_chat-window-storage.cpp"

@@ -33,29 +33,30 @@ class VideoExpanderDomVisitorProvider;
 
 class ImageLinkPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ImageLinkPluginObject(QObject *parent = nullptr);
-	virtual ~ImageLinkPluginObject();
+    Q_INVOKABLE explicit ImageLinkPluginObject(QObject *parent = nullptr);
+    virtual ~ImageLinkPluginObject();
 
 private:
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
-	QPointer<ImageExpanderDomVisitorProvider> m_imageExpanderDomVisitorProvider;
-	QPointer<ImageLinkConfigurator> m_imageLinkConfigurator;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<VideoExpanderDomVisitorProvider> m_videoExpanderDomVisitorProvider;
+    QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+    QPointer<ImageExpanderDomVisitorProvider> m_imageExpanderDomVisitorProvider;
+    QPointer<ImageLinkConfigurator> m_imageLinkConfigurator;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<VideoExpanderDomVisitorProvider> m_videoExpanderDomVisitorProvider;
 
 private slots:
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
-	INJEQT_SET void setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
-	INJEQT_SET void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setVideoExpanderDomVisitorProvider(VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+    INJEQT_SET void
+    setImageExpanderDomVisitorProvider(ImageExpanderDomVisitorProvider *imageExpanderDomVisitorProvider);
+    INJEQT_SET void setImageLinkConfigurator(ImageLinkConfigurator *imageLinkConfigurator);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void
+    setVideoExpanderDomVisitorProvider(VideoExpanderDomVisitorProvider *videoExpanderDomVisitorProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

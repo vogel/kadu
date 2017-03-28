@@ -21,8 +21,7 @@
 
 #include "idle-module.h"
 
-IdlePluginModulesFactory::IdlePluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+IdlePluginModulesFactory::IdlePluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -32,10 +31,10 @@ IdlePluginModulesFactory::~IdlePluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> IdlePluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<IdleModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<IdleModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_idle-plugin-modules-factory.cpp"

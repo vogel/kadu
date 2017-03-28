@@ -25,8 +25,7 @@
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
 
-GroupEventListener::GroupEventListener(QObject *parent) :
-		QObject{parent}
+GroupEventListener::GroupEventListener(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,44 +35,43 @@ GroupEventListener::~GroupEventListener()
 
 void GroupEventListener::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void GroupEventListener::setGroupManager(GroupManager *groupManager)
 {
-	m_groupManager = groupManager;
+    m_groupManager = groupManager;
 }
 
 void GroupEventListener::init()
 {
-	for (auto const &group : m_groupManager->items())
-		groupAdded(group);
+    for (auto const &group : m_groupManager->items())
+        groupAdded(group);
 }
 
 void GroupEventListener::groupAdded(const Group &group)
 {
-	connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
+    connect(group, SIGNAL(updated()), this, SLOT(groupUpdated()));
 }
 
 void GroupEventListener::groupUpdated()
 {
-	Group group{sender()};
-	if (group.isNull())
-		return;
+    Group group{sender()};
+    if (group.isNull())
+        return;
 
-	bool notify = group.notifyAboutStatusChanges();
+    bool notify = group.notifyAboutStatusChanges();
 
-	for (auto &buddy : m_buddyManager->items())
-	{
-		if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
-			continue;
+    for (auto &buddy : m_buddyManager->items())
+    {
+        if (buddy.isNull() || buddy.isAnonymous() || buddy.groups().contains(group))
+            continue;
 
-		if (notify)
-			buddy.removeProperty("notify:Notify");
-		else
-			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
-	}
+        if (notify)
+            buddy.removeProperty("notify:Notify");
+        else
+            buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
+    }
 }
-
 
 #include "moc_group-event-listener.cpp"

@@ -27,68 +27,74 @@
 class KADUAPI ConfigurationApi
 {
 public:
-	enum GetNodeMode
-	{
-		ModeGet,
-		ModeFind,
-		ModeCreate,
-		ModeAppend
-	};
+    enum GetNodeMode
+    {
+        ModeGet,
+        ModeFind,
+        ModeCreate,
+        ModeAppend
+    };
 
 private:
-	QDomDocument DomDocument;
+    QDomDocument DomDocument;
 
-	bool isElementNamed(const QDomElement &element, const QString &name);
-	bool isElementUuid(const QDomElement &element, const QString &uuid);
+    bool isElementNamed(const QDomElement &element, const QString &name);
+    bool isElementUuid(const QDomElement &element, const QString &uuid);
 
-	void removeNodes(QDomElement parentNode, const QVector<QDomElement> &elements);
-	void removeUuidNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &uuid);
-	void removeNamedNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &name);
+    void removeNodes(QDomElement parentNode, const QVector<QDomElement> &elements);
+    void removeUuidNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &uuid);
+    void removeNamedNodes(QDomElement parentNode, const QVector<QDomElement> &elements, const QString &name);
 
-	QDomNode cdataOrText(const QString &text);
+    QDomNode cdataOrText(const QString &text);
 
 public:
-	explicit ConfigurationApi();
-	explicit ConfigurationApi(const QString &content);
+    explicit ConfigurationApi();
+    explicit ConfigurationApi(const QString &content);
 
-	void touch(const QString &version);
+    void touch(const QString &version);
 
-	QString configuration() const;
+    QString configuration() const;
 
-	QDomElement rootElement();
-	QDomElement createElement(QDomElement parent, const QString &tag_name);
-	QDomElement findElement(const QDomElement &parent, const QString &tag_name) const;
-	QDomElement findElementByProperty(const QDomElement &parent, const QString &tag_name,
-		const QString &property_name, const QString &property_value) const;
-	QDomElement findElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
-		const QString &property_name, const QString &property_value) const;
+    QDomElement rootElement();
+    QDomElement createElement(QDomElement parent, const QString &tag_name);
+    QDomElement findElement(const QDomElement &parent, const QString &tag_name) const;
+    QDomElement findElementByProperty(
+        const QDomElement &parent, const QString &tag_name, const QString &property_name,
+        const QString &property_value) const;
+    QDomElement findElementByFileNameProperty(
+        const QDomElement &parent, const QString &tag_name, const QString &property_name,
+        const QString &property_value) const;
 
-	QDomElement accessElement(const QDomElement &parent, const QString &tag_name);
-	QDomElement accessElementByProperty(const QDomElement &parent, const QString &tag_name,
-		const QString &property_name, const QString &property_value);
-	QDomElement accessElementByFileNameProperty(const QDomElement &parent, const QString &tag_name,
-		const QString &property_name, const QString &property_value);
+    QDomElement accessElement(const QDomElement &parent, const QString &tag_name);
+    QDomElement accessElementByProperty(
+        const QDomElement &parent, const QString &tag_name, const QString &property_name,
+        const QString &property_value);
+    QDomElement accessElementByFileNameProperty(
+        const QDomElement &parent, const QString &tag_name, const QString &property_name,
+        const QString &property_value);
 
-	void removeChildren(QDomElement parent);
+    void removeChildren(QDomElement parent);
 
-	bool hasNode(const QString &nodeTagName);
-	bool hasNode(const QDomElement &parentNode, const QString &nodeTagName);
+    bool hasNode(const QString &nodeTagName);
+    bool hasNode(const QDomElement &parentNode, const QString &nodeTagName);
 
-	QDomElement getNode(const QString &nodeTagName, GetNodeMode getMode = ModeGet);
-	QDomElement getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
-	QDomElement getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
-	QDomElement getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode = ModeGet);
-	QDomElement getNamedNode(QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
-	QDomElement getUuidNode(QDomElement parentNode, const QString &uuidTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
+    QDomElement getNode(const QString &nodeTagName, GetNodeMode getMode = ModeGet);
+    QDomElement getNamedNode(const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
+    QDomElement getUuidNode(const QString &nodeTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
+    QDomElement getNode(QDomElement parentNode, const QString &nodeTagName, GetNodeMode getMode = ModeGet);
+    QDomElement getNamedNode(
+        QDomElement parentNode, const QString &nodeTagName, const QString &nodeName, GetNodeMode getMode = ModeGet);
+    QDomElement getUuidNode(
+        QDomElement parentNode, const QString &uuidTagName, const QString &nodeUuid, GetNodeMode getMode = ModeGet);
 
-	QVector<QDomElement> getNodes(const QDomElement &parent, const QString &nodeTagName);
+    QVector<QDomElement> getNodes(const QDomElement &parent, const QString &nodeTagName);
 
-	void appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent);
-	void createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent);
-	void createNamedTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeName,
-			const QString &nodeContent);
-	QString getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue = QString());
+    void appendTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent);
+    void createTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeContent);
+    void createNamedTextNode(
+        const QDomElement &parentNode, const QString &nodeTagName, const QString &nodeName, const QString &nodeContent);
+    QString
+    getTextNode(const QDomElement &parentNode, const QString &nodeTagName, const QString &defaultValue = QString());
 
-	void removeNode(QDomElement parentNode, const QString &nodeTagName);
-
+    void removeNode(QDomElement parentNode, const QString &nodeTagName);
 };

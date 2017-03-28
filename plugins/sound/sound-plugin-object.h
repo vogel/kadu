@@ -41,43 +41,47 @@ class SoundNotifier;
 
 class SOUNDAPI SoundPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit SoundPluginObject(QObject *parent = nullptr);
-	virtual ~SoundPluginObject();
+    Q_INVOKABLE explicit SoundPluginObject(QObject *parent = nullptr);
+    virtual ~SoundPluginObject();
 
-	SoundManager * soundManager() const;
+    SoundManager *soundManager() const;
 
 private:
-	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
-	QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<NotifierRepository> m_notifierRepository;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<SoundActions> m_soundActions;
-	QPointer<SoundBuddyConfigurationWidgetFactory> m_soundBuddyConfigurationWidgetFactory;
-	QPointer<SoundChatConfigurationWidgetFactory> m_soundChatConfigurationWidgetFactory;
-	QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
-	QPointer<SoundManager> m_soundManager;
-	QPointer<SoundNotifier> m_soundNotifier;
+    QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
+    QPointer<ChatConfigurationWidgetFactoryRepository> m_chatConfigurationWidgetFactoryRepository;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<SoundActions> m_soundActions;
+    QPointer<SoundBuddyConfigurationWidgetFactory> m_soundBuddyConfigurationWidgetFactory;
+    QPointer<SoundChatConfigurationWidgetFactory> m_soundChatConfigurationWidgetFactory;
+    QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
+    QPointer<SoundManager> m_soundManager;
+    QPointer<SoundNotifier> m_soundNotifier;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setSoundActions(SoundActions *soundActions);
-	INJEQT_SET void setSoundBuddyConfigurationWidgetFactory(SoundBuddyConfigurationWidgetFactory *soundBuddyConfigurationWidgetFactory);
-	INJEQT_SET void setSoundChatConfigurationWidgetFactory(SoundChatConfigurationWidgetFactory *soundChatConfigurationWidgetFactory);
-	INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
-	INJEQT_SET void setSoundNotifier(SoundNotifier *soundNotifier);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(
+        BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
+    INJEQT_SET void setChatConfigurationWidgetFactoryRepository(
+        ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository);
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setSoundActions(SoundActions *soundActions);
+    INJEQT_SET void
+    setSoundBuddyConfigurationWidgetFactory(SoundBuddyConfigurationWidgetFactory *soundBuddyConfigurationWidgetFactory);
+    INJEQT_SET void
+    setSoundChatConfigurationWidgetFactory(SoundChatConfigurationWidgetFactory *soundChatConfigurationWidgetFactory);
+    INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
+    INJEQT_SET void setSoundManager(SoundManager *soundManager);
+    INJEQT_SET void setSoundNotifier(SoundNotifier *soundNotifier);
 };

@@ -21,8 +21,8 @@
 
 #include "account-add-widget.h"
 
-AccountAddWidget::AccountAddWidget(QWidget *parent) :
-		ModalConfigurationWidget(parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
+AccountAddWidget::AccountAddWidget(QWidget *parent)
+        : ModalConfigurationWidget(parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
 }
 
@@ -30,12 +30,12 @@ AccountAddWidget::~AccountAddWidget()
 {
 }
 
-SimpleConfigurationValueStateNotifier * AccountAddWidget::simpleStateNotifier() const
+SimpleConfigurationValueStateNotifier *AccountAddWidget::simpleStateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }
 
-const ConfigurationValueStateNotifier * AccountAddWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *AccountAddWidget::stateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }

@@ -36,30 +36,29 @@ class StatusContainer;
 
 class KADUAPI StatusButtons : public QToolBar, private StatusContainerAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StatusButtons(QWidget *parent = nullptr);
-	virtual ~StatusButtons();
+    explicit StatusButtons(QWidget *parent = nullptr);
+    virtual ~StatusButtons();
 
 protected:
-	virtual void statusContainerRegistered(StatusContainer *statusContainer);
-	virtual void statusContainerUnregistered(StatusContainer *statusContainer);
+    virtual void statusContainerRegistered(StatusContainer *statusContainer);
+    virtual void statusContainerUnregistered(StatusContainer *statusContainer);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
-	QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+    QPointer<StatusContainerManager> m_statusContainerManager;
 
-	QMap<StatusContainer *, StatusButton *> Buttons;
+    QMap<StatusContainer *, StatusButton *> Buttons;
 
-	void enableStatusName();
-	void disableStatusName();
+    void enableStatusName();
+    void disableStatusName();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_INIT void init();
 };

@@ -46,213 +46,215 @@ BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 
 BuddyInfoPanel::~BuddyInfoPanel()
 {
-	disconnect(m_buddyPreferredManager, 0, this, 0);
+    disconnect(m_buddyPreferredManager, 0, this, 0);
 }
 
 void BuddyInfoPanel::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void BuddyInfoPanel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void BuddyInfoPanel::setDomProcessorService(DomProcessorService *domProcessorService)
 {
-	m_domProcessorService = domProcessorService;
+    m_domProcessorService = domProcessorService;
 }
 
 void BuddyInfoPanel::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void BuddyInfoPanel::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void BuddyInfoPanel::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void BuddyInfoPanel::init()
 {
-	QPalette p = palette();
-	p.setBrush(QPalette::Base, Qt::transparent);
-	page()->setPalette(p);
-	setAttribute(Qt::WA_OpaquePaintEvent, false);
+    QPalette p = palette();
+    p.setBrush(QPalette::Base, Qt::transparent);
+    page()->setPalette(p);
+    setAttribute(Qt::WA_OpaquePaintEvent, false);
 
-	page()->currentFrame()->evaluateJavaScript(
-		"XMLHttpRequest.prototype.open = function() { return false; };"
-		"XMLHttpRequest.prototype.send = function() { return false; };"
-	);
+    page()->currentFrame()->evaluateJavaScript(
+        "XMLHttpRequest.prototype.open = function() { return false; };"
+        "XMLHttpRequest.prototype.send = function() { return false; };");
 
-	connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
+    connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void BuddyInfoPanel::configurationUpdated()
 {
-	setUserFont(configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
+    setUserFont(configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont").toString(), true);
 
-	update();
+    update();
 }
 
 void BuddyInfoPanel::buddyUpdated(const Buddy &buddy)
 {
-	if (buddy == m_talkableConverter->toBuddy(Item))
-		update();
+    if (buddy == m_talkableConverter->toBuddy(Item))
+        update();
 }
 
 void BuddyInfoPanel::update()
 {
-	if (!configuration())
-		return;
+    if (!configuration())
+        return;
 
-	QFont font = configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont");
-	QString fontFamily = font.family();
-	QString fontSize;
-	if (font.pointSize() > 0)
-		fontSize = QString::number(font.pointSize()) + "pt";
-	else
-		fontSize = QString::number(font.pixelSize()) + "px";
+    QFont font = configuration()->deprecatedApi()->readFontEntry("Look", "PanelFont");
+    QString fontFamily = font.family();
+    QString fontSize;
+    if (font.pointSize() > 0)
+        fontSize = QString::number(font.pointSize()) + "pt";
+    else
+        fontSize = QString::number(font.pixelSize()) + "px";
 
-	QString fontStyle = font.italic() ? "italic" : "normal";
-	QString fontWeight = font.bold() ? "bold" : "normal";
-	QString textDecoration = font.underline() ? "underline" : "none";
-	QString fontColor = configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
-	bool backgroundFilled = configuration()->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
-	if (backgroundFilled)
-		BackgroundColor = configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
-	else
-		BackgroundColor = "transparent";
+    QString fontStyle = font.italic() ? "italic" : "normal";
+    QString fontWeight = font.bold() ? "bold" : "normal";
+    QString textDecoration = font.underline() ? "underline" : "none";
+    QString fontColor = configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelFgColor").name();
+    bool backgroundFilled = configuration()->deprecatedApi()->readBoolEntry("Look", "InfoPanelBgFilled");
+    if (backgroundFilled)
+        BackgroundColor = configuration()->deprecatedApi()->readColorEntry("Look", "InfoPanelBgColor").name();
+    else
+        BackgroundColor = "transparent";
 
-	Template = QString(
-		"<html>"
-		"	<head>"
-		"		<style type='text/css'>"
-		"		html {"
-		"			color: %1;"
-		"			font: %2 %3 %4 %5;"
-		"			text-decoration: %6;"
-		"			margin: 0;"
-		"			padding: 0;"
-		"			background-color: %7;"
-		"		}"
-		"		div {"
-		"			color: %1;"
-		"			font: %2 %3 %4 %5;"
-		"			text-decoration: %6;"
-		"			margin: 0;"
-		"			padding: 0;"
-		"			background-color: %7;"
-		"		}"
-		"		table {"
-		"			color: %1;"
-		"			font: %2 %3 %4 %5;"
-		"			text-decoration: %6;"
-		"		}"
-		"		</style>"
-		"	</head>"
-		"	<body>"
-		"		%8"
-		"	</body>"
-		"</html>"
-		).arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
+    Template = QString(
+                   "<html>"
+                   "	<head>"
+                   "		<style type='text/css'>"
+                   "		html {"
+                   "			color: %1;"
+                   "			font: %2 %3 %4 %5;"
+                   "			text-decoration: %6;"
+                   "			margin: 0;"
+                   "			padding: 0;"
+                   "			background-color: %7;"
+                   "		}"
+                   "		div {"
+                   "			color: %1;"
+                   "			font: %2 %3 %4 %5;"
+                   "			text-decoration: %6;"
+                   "			margin: 0;"
+                   "			padding: 0;"
+                   "			background-color: %7;"
+                   "		}"
+                   "		table {"
+                   "			color: %1;"
+                   "			font: %2 %3 %4 %5;"
+                   "			text-decoration: %6;"
+                   "		}"
+                   "		</style>"
+                   "	</head>"
+                   "	<body>"
+                   "		%8"
+                   "	</body>"
+                   "</html>")
+                   .arg(fontColor, fontStyle, fontWeight, fontSize, fontFamily, textDecoration, BackgroundColor, "%1");
 
-	QString syntaxFile = configuration()->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
-	if (syntaxFile == "default")
-	{
-		syntaxFile = "Old Default";
-		configuration()->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
-	}
+    QString syntaxFile = configuration()->deprecatedApi()->readEntry("Look", "InfoPanelSyntaxFile", "ultr");
+    if (syntaxFile == "default")
+    {
+        syntaxFile = "Old Default";
+        configuration()->deprecatedApi()->writeEntry("Look", "InfoPanelSyntaxFile", syntaxFile);
+    }
 
-	Syntax = SyntaxList::readSyntax(m_pathsProvider, "infopanel", syntaxFile,
-		"<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" src=\"@{x-office-address-book:32x32}\"></td><td> "
-		"<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> [<br>%d]");
-	Syntax = Syntax.remove("file:///");
-	displayItem(Item);
+    Syntax = SyntaxList::readSyntax(
+        m_pathsProvider, "infopanel", syntaxFile,
+        "<table><tr><td><img width=\"32\" height=\"32\" align=\"left\" valign=\"top\" "
+        "src=\"@{x-office-address-book:32x32}\"></td><td> "
+        "<div align=\"left\"> [<b>%a</b>][ (%u)] [<br>tel.: %m][<br>IP: %i]</div></td></tr></table> <hr> <b>%s</b> "
+        "[<br>%d]");
+    Syntax = Syntax.remove("file:///");
+    displayItem(Item);
 
-	if (configuration()->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
-		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
-	else
-		page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+    if (configuration()->deprecatedApi()->readBoolEntry("Look", "PanelVerticalScrollbar"))
+        page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
+    else
+        page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
 void BuddyInfoPanel::connectItem()
 {
-	Buddy buddy = m_talkableConverter->toBuddy(Item);
-	if (buddy)
-	{
-		connect(buddy, SIGNAL(updated()), this, SLOT(update()));
-		if (buddy.buddyAvatar())
-			connect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
-	}
+    Buddy buddy = m_talkableConverter->toBuddy(Item);
+    if (buddy)
+    {
+        connect(buddy, SIGNAL(updated()), this, SLOT(update()));
+        if (buddy.buddyAvatar())
+            connect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
+    }
 
-	Contact contact = m_talkableConverter->toContact(Item);
-	if (contact)
-	{
-		connect(contact, SIGNAL(updated()), this, SLOT(update()));
-		auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
-		if (avatar)
-			connect(avatar, SIGNAL(updated()), this, SLOT(update()));
-	}
+    Contact contact = m_talkableConverter->toContact(Item);
+    if (contact)
+    {
+        connect(contact, SIGNAL(updated()), this, SLOT(update()));
+        auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
+        if (avatar)
+            connect(avatar, SIGNAL(updated()), this, SLOT(update()));
+    }
 }
 
 void BuddyInfoPanel::disconnectItem()
 {
-	Buddy buddy = m_talkableConverter->toBuddy(Item);
-	if (buddy)
-	{
-		disconnect(buddy, 0, this, 0);
-		if (buddy.buddyAvatar())
-			disconnect(buddy.buddyAvatar(), 0, this, 0);
-	}
+    Buddy buddy = m_talkableConverter->toBuddy(Item);
+    if (buddy)
+    {
+        disconnect(buddy, 0, this, 0);
+        if (buddy.buddyAvatar())
+            disconnect(buddy.buddyAvatar(), 0, this, 0);
+    }
 
-	Contact contact = m_talkableConverter->toContact(Item);
-	if (contact)
-	{
-		disconnect(contact, 0, this, 0);
-		auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
-		if (avatar)
-			disconnect(avatar, 0, this, 0);
-	}
+    Contact contact = m_talkableConverter->toContact(Item);
+    if (contact)
+    {
+        disconnect(contact, 0, this, 0);
+        auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
+        if (avatar)
+            disconnect(avatar, 0, this, 0);
+    }
 }
 
 void BuddyInfoPanel::displayItem(Talkable item)
 {
-	disconnectItem();
-	Item = item;
-	connectItem();
+    disconnectItem();
+    Item = item;
+    connectItem();
 
-	if (!isVisible())
-		return;
+    if (!isVisible())
+        return;
 
-	if (item.isEmpty())
-	{
-		setHtml("<body bgcolor=\"" + BackgroundColor + "\"></body>");
-		return;
-	}
+    if (item.isEmpty())
+    {
+        setHtml("<body bgcolor=\"" + BackgroundColor + "\"></body>");
+        return;
+    }
 
-	setHtml(m_domProcessorService->process(Template.arg(m_parser->parse(Syntax, item, ParserEscape::HtmlEscape))));
+    setHtml(m_domProcessorService->process(Template.arg(m_parser->parse(Syntax, item, ParserEscape::HtmlEscape))));
 }
 
 void BuddyInfoPanel::setVisible(bool visible)
 {
-	QWidget::setVisible(visible);
+    QWidget::setVisible(visible);
 
-	if (visible)
-		displayItem(Item);
+    if (visible)
+        displayItem(Item);
 }
 
 void BuddyInfoPanel::styleFixup(QString &syntax)
 {
-	syntax = Template.arg(syntax);
+    syntax = Template.arg(syntax);
 }
 
 #include "moc_buddy-info-panel.cpp"

@@ -32,15 +32,15 @@
 #include <QtGui/QMovie>
 #include <QtWidgets/QMenu>
 
-StatusNotifierItem::StatusNotifierItem(QObject *parent) :
-		QObject{parent},
-		m_needAttention{false}
+StatusNotifierItem::StatusNotifierItem(QObject *parent) : QObject{parent}, m_needAttention{false}
 {
-	m_systemTrayIcon = make_owned<QSystemTrayIcon>(this);
-	m_systemTrayIcon->setContextMenu(new QMenu{});
+    m_systemTrayIcon = make_owned<QSystemTrayIcon>(this);
+    m_systemTrayIcon->setContextMenu(new QMenu{});
 
-	connect(m_systemTrayIcon.get(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this, SLOT(activated(QSystemTrayIcon::ActivationReason)));
-	connect(m_systemTrayIcon.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
+    connect(
+        m_systemTrayIcon.get(), SIGNAL(activated(QSystemTrayIcon::ActivationReason)), this,
+        SLOT(activated(QSystemTrayIcon::ActivationReason)));
+    connect(m_systemTrayIcon.get(), SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 }
 
 StatusNotifierItem::~StatusNotifierItem()
@@ -49,85 +49,87 @@ StatusNotifierItem::~StatusNotifierItem()
 
 void StatusNotifierItem::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void StatusNotifierItem::setConfiguration(StatusNotifierItemConfiguration configuration)
 {
-	m_configuration = std::move(configuration);
-	updateAttention();
+    m_configuration = std::move(configuration);
+    updateAttention();
 }
 
 void StatusNotifierItem::setNeedAttention(bool needAttention)
 {
-	m_needAttention = needAttention;
-	updateAttention();
+    m_needAttention = needAttention;
+    updateAttention();
 }
 
 void StatusNotifierItem::updateAttention()
 {
-	m_attention.reset();
+    m_attention.reset();
 
-	if (!m_needAttention)
-	{
-		m_systemTrayIcon->setIcon(m_iconsManager->iconByPath(m_configuration.Icon));
-		m_systemTrayIcon->show();
-		return;
-	}
+    if (!m_needAttention)
+    {
+        m_systemTrayIcon->setIcon(m_iconsManager->iconByPath(m_configuration.Icon));
+        m_systemTrayIcon->show();
+        return;
+    }
 
-	switch (m_configuration.AttentionMode)
-	{
-		case StatusNotifierItemAttentionMode::StaticIcon:
-			m_attention = new StatusNotifierItemAttentionStatic{m_iconsManager->iconByPath(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
-			break;
-		case StatusNotifierItemAttentionMode::Movie:
-			m_attention = new StatusNotifierItemAttentionAnimator{m_configuration.AttentionMovie, m_systemTrayIcon.get()};
-			break;
-		default:
-			m_attention = new StatusNotifierItemAttentionBlinker{m_iconsManager->iconByPath(m_configuration.Icon), m_iconsManager->iconByPath(m_configuration.AttentionIcon), m_systemTrayIcon.get()};
-			break;
-	}
+    switch (m_configuration.AttentionMode)
+    {
+    case StatusNotifierItemAttentionMode::StaticIcon:
+        m_attention = new StatusNotifierItemAttentionStatic{m_iconsManager->iconByPath(m_configuration.AttentionIcon),
+                                                            m_systemTrayIcon.get()};
+        break;
+    case StatusNotifierItemAttentionMode::Movie:
+        m_attention = new StatusNotifierItemAttentionAnimator{m_configuration.AttentionMovie, m_systemTrayIcon.get()};
+        break;
+    default:
+        m_attention = new StatusNotifierItemAttentionBlinker{m_iconsManager->iconByPath(m_configuration.Icon),
+                                                             m_iconsManager->iconByPath(m_configuration.AttentionIcon),
+                                                             m_systemTrayIcon.get()};
+        break;
+    }
 
-	m_systemTrayIcon->show();
+    m_systemTrayIcon->show();
 }
 
 void StatusNotifierItem::setTooltip(const QString &tooltip)
 {
 #ifdef Q_OS_WIN
-	// checked on XP and 7
-	auto const maxTooltipLength = 127;
-	auto truncatedTooltip = tooltip.length() > maxTooltipLength
-			? tooltip.left(maxTooltipLength - 3) + QStringLiteral("...")
-			: tooltip;
-	m_systemTrayIcon->setToolTip(truncatedTooltip);
+    // checked on XP and 7
+    auto const maxTooltipLength = 127;
+    auto truncatedTooltip =
+        tooltip.length() > maxTooltipLength ? tooltip.left(maxTooltipLength - 3) + QStringLiteral("...") : tooltip;
+    m_systemTrayIcon->setToolTip(truncatedTooltip);
 #else
-	m_systemTrayIcon->setToolTip(tooltip);
+    m_systemTrayIcon->setToolTip(tooltip);
 #endif
 }
 
 void StatusNotifierItem::showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs)
 {
-	m_systemTrayIcon->showMessage(std::move(title), std::move(message), icon, msecs);
+    m_systemTrayIcon->showMessage(std::move(title), std::move(message), icon, msecs);
 }
 
 QPoint StatusNotifierItem::trayPosition()
 {
-	auto rect = m_systemTrayIcon->geometry();
-	if (rect.isValid())
-		m_systemTrayLastPosition = rect.topLeft();
+    auto rect = m_systemTrayIcon->geometry();
+    if (rect.isValid())
+        m_systemTrayLastPosition = rect.topLeft();
 
-	return m_systemTrayLastPosition;
+    return m_systemTrayLastPosition;
 }
 
-QMenu * StatusNotifierItem::contextMenu()
+QMenu *StatusNotifierItem::contextMenu()
 {
-	return m_systemTrayIcon->contextMenu();
+    return m_systemTrayIcon->contextMenu();
 }
 
 void StatusNotifierItem::activated(QSystemTrayIcon::ActivationReason reason)
 {
-	if (reason == QSystemTrayIcon::Trigger)
-		emit activateRequested();
+    if (reason == QSystemTrayIcon::Trigger)
+        emit activateRequested();
 }
 
 #include "moc_status-notifier-item.cpp"

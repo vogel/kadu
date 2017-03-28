@@ -40,108 +40,112 @@ class QLineEdit;
  * @author Rafał 'Vogel' Malinowski
  * @short Firefox-like search bar for web views.
  *
- * This widget is Firefox-like search bar for web views. It has 3 buttons: Close, Previous and Next as well as Find line edit.
- * Signal clearSearch() is emited when this widget is hidden by Esc key or clicking Close button. Signals searchPrevious() and
+ * This widget is Firefox-like search bar for web views. It has 3 buttons: Close, Previous and Next as well as Find line
+ * edit.
+ * Signal clearSearch() is emited when this widget is hidden by Esc key or clicking Close button. Signals
+ * searchPrevious() and
  * searchNext() are emited when proper button is clicked and search string is not empty.
  *
- * Text in line edit can be set by setSearchText() method. If search widget is set by setSearchWidget() method then this search
+ * Text in line edit can be set by setSearchText() method. If search widget is set by setSearchWidget() method then this
+ * search
  * bar will intercept any Ctrl+F keypesses from it and show itself.
  */
 class KADUAPI SearchBar : public QToolBar
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<QWidget> SearchWidget;
-	bool AutoVisibility;
+    QPointer<QWidget> SearchWidget;
+    bool AutoVisibility;
 
-	QLineEdit *FindEdit;
+    QLineEdit *FindEdit;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	void previous();
-	void next();
-	void close();
+    void previous();
+    void next();
+    void close();
 
 protected:
-	virtual bool eventFilter(QObject *object, QEvent *event);
-	virtual void keyPressEvent(QKeyEvent *event);
-	virtual void showEvent(QShowEvent *event);
+    virtual bool eventFilter(QObject *object, QEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void showEvent(QShowEvent *event);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new empty SearchBar.
-	 *
-	 * SearchBar is hidden by default. Use show() to make it visible or set up search widget to allow use show it by using Ctrl+F
-	 * shortcut.
-	 */
-	explicit SearchBar(QWidget *parent = nullptr);
-	virtual ~SearchBar();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new empty SearchBar.
+     *
+     * SearchBar is hidden by default. Use show() to make it visible or set up search widget to allow use show it by
+     * using Ctrl+F
+     * shortcut.
+     */
+    explicit SearchBar(QWidget *parent = nullptr);
+    virtual ~SearchBar();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set auto visibility property.
-	 * @param autoVisibility new value of auto visibility property
-	 *
-	 * If autoVisibility is on, widget will auto hide on Esp and auto show on Ctrl+F, F3 or Shift+F3 shortcuts.
-	 * If autoVisibility is set to false, widget will be visible until hide() is manually called.
-	 *
-	 * Default value of this property is true.
-	 */
-	void setAutoVisibility(bool autoVisibility);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set auto visibility property.
+     * @param autoVisibility new value of auto visibility property
+     *
+     * If autoVisibility is on, widget will auto hide on Esp and auto show on Ctrl+F, F3 or Shift+F3 shortcuts.
+     * If autoVisibility is set to false, widget will be visible until hide() is manually called.
+     *
+     * Default value of this property is true.
+     */
+    void setAutoVisibility(bool autoVisibility);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set search widget for this search bar.
-	 * @param widget new search widget for this search bar
-	 *
-	 * SearchBar will attach itself to keypress event of widget. When Ctrl+F shortcut is used on this widget then search bar
-	 * widget will show itself.
-	 */
-	void setSearchWidget(QWidget * const widget);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set search widget for this search bar.
+     * @param widget new search widget for this search bar
+     *
+     * SearchBar will attach itself to keypress event of widget. When Ctrl+F shortcut is used on this widget then search
+     * bar
+     * widget will show itself.
+     */
+    void setSearchWidget(QWidget *const widget);
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set text visible in find line edit.
-	 * @param search text visible in find line edit
-	 *
-	 * Calling this method will not emit any signal.
-	 */
-	void setSearchText(const QString &search);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set text visible in find line edit.
+     * @param search text visible in find line edit
+     *
+     * Calling this method will not emit any signal.
+     */
+    void setSearchText(const QString &search);
 
-	void somethingFound(bool found);
+    void somethingFound(bool found);
 
-	void searchTextChanged(const QString &text);
+    void searchTextChanged(const QString &text);
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when previous button is clicked and search string is not empty.
-	 * @param search search string entered in Find line edit.
-	 */
-	void searchPrevious(const QString &search);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when previous button is clicked and search string is not empty.
+     * @param search search string entered in Find line edit.
+     */
+    void searchPrevious(const QString &search);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when next button is clicked and search string is not empty.
-	 * @param search search string entered in Find line edit.
-	 */
-	void searchNext(const QString &search);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when next button is clicked and search string is not empty.
+     * @param search search string entered in Find line edit.
+     */
+    void searchNext(const QString &search);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when widget is being closed.
-	 *
-	 * Widget can be closed by Close button or by Esc key.
-	 */
-	void clearSearch();
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when widget is being closed.
+     *
+     * Widget can be closed by Close button or by Esc key.
+     */
+    void clearSearch();
 };
 
 /**
  * @}
  */
 
-#endif // SEARCH_BAR_H
+#endif   // SEARCH_BAR_H

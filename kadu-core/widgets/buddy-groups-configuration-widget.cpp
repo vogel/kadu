@@ -32,11 +32,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
-BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		QWidget{parent},
-		m_buddy{buddy}
+BuddyGroupsConfigurationWidget::BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent)
+        : QWidget{parent}, m_buddy{buddy}
 {
-	setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 BuddyGroupsConfigurationWidget::~BuddyGroupsConfigurationWidget()
@@ -45,31 +44,34 @@ BuddyGroupsConfigurationWidget::~BuddyGroupsConfigurationWidget()
 
 void BuddyGroupsConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void BuddyGroupsConfigurationWidget::init()
 {
-	createGui();
+    createGui();
 }
 
 void BuddyGroupsConfigurationWidget::createGui()
 {
-	auto layout = new QVBoxLayout{this};
+    auto layout = new QVBoxLayout{this};
 
-	QLabel *label = new QLabel{tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.").arg(m_buddy.display()), this};
-	label->setWordWrap(true);
+    QLabel *label =
+        new QLabel{tr("Add <b>%1</b> to the groups below by checking the box next to the appropriate groups.")
+                       .arg(m_buddy.display()),
+                   this};
+    label->setWordWrap(true);
 
-	m_groupList = m_injectedFactory->makeInjected<GroupList>(this);
-	m_groupList->setCheckedGroups(m_buddy.groups());
+    m_groupList = m_injectedFactory->makeInjected<GroupList>(this);
+    m_groupList->setCheckedGroups(m_buddy.groups());
 
-	layout->addWidget(label);
-	layout->addWidget(m_groupList);
+    layout->addWidget(label);
+    layout->addWidget(m_groupList);
 }
 
 void BuddyGroupsConfigurationWidget::save()
 {
-	m_buddy.setGroups(m_groupList->checkedGroups());
+    m_buddy.setGroups(m_groupList->checkedGroups());
 }
 
 #include "moc_buddy-groups-configuration-widget.cpp"

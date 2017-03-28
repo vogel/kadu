@@ -28,20 +28,19 @@ class Configuration;
 
 class NotifyConfigurationImporter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NotifyConfigurationImporter(QObject *parent = nullptr);
-	virtual ~NotifyConfigurationImporter();
+    Q_INVOKABLE explicit NotifyConfigurationImporter(QObject *parent = nullptr);
+    virtual ~NotifyConfigurationImporter();
 
-	void import();
+    void import();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<Configuration> m_configuration;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<Configuration> m_configuration;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 };

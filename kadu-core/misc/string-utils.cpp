@@ -25,17 +25,16 @@
 
 namespace StringUtils
 {
-
 QString ellipsis(const QString &text, quint16 length)
 {
-	if (text.isEmpty() || length == 0)
-		return QString();
+    if (text.isEmpty() || length == 0)
+        return QString();
 
-	auto trimmed = text.left(length);
-	if (!trimmed.isEmpty() && trimmed.length() < text.length())
-		return trimmed + "...";
+    auto trimmed = text.left(length);
+    if (!trimmed.isEmpty() && trimmed.length() < text.length())
+        return trimmed + "...";
 
-	return trimmed;
+    return trimmed;
 }
 
-} // namespace
+}   // namespace

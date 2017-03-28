@@ -29,20 +29,19 @@ class Infos;
 
 class ShowInfosWindowAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowInfosWindowAction(QObject *parent = nullptr);
-	virtual ~ShowInfosWindowAction();
+    Q_INVOKABLE explicit ShowInfosWindowAction(QObject *parent = nullptr);
+    virtual ~ShowInfosWindowAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<Infos> m_infos;
+    QPointer<Infos> m_infos;
 
 private slots:
-	INJEQT_SET void setInfos(Infos *infos);
-
+    INJEQT_SET void setInfos(Infos *infos);
 };

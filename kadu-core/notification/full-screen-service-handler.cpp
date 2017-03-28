@@ -21,13 +21,13 @@
 
 #include "notification/full-screen-service.h"
 
-FullScreenServiceHandler::FullScreenServiceHandler(FullScreenService *fullScreenService) :
-		m_fullScreenService{fullScreenService}
+FullScreenServiceHandler::FullScreenServiceHandler(FullScreenService *fullScreenService)
+        : m_fullScreenService{fullScreenService}
 {
-	m_fullScreenService->start();
+    m_fullScreenService->start();
 }
 
 FullScreenServiceHandler::~FullScreenServiceHandler()
 {
-	m_fullScreenService->stop();
+    m_fullScreenService->stop();
 }

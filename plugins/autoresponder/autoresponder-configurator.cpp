@@ -29,8 +29,7 @@
 
 #include "autoresponder-configurator.h"
 
-AutoresponderConfigurator::AutoresponderConfigurator(QObject *parent) :
-		QObject{parent}
+AutoresponderConfigurator::AutoresponderConfigurator(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,41 +39,46 @@ AutoresponderConfigurator::~AutoresponderConfigurator()
 
 void AutoresponderConfigurator::setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter)
 {
-	m_autoresponderMessageFilter = autoresponderMessageFilter;
+    m_autoresponderMessageFilter = autoresponderMessageFilter;
 }
 
 void AutoresponderConfigurator::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void AutoresponderConfigurator::init()
 {
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void AutoresponderConfigurator::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
-	m_configuration->deprecatedApi()->addVariable("Autoresponder", "OnlyFirstTime", true);
-	m_configuration->deprecatedApi()->addVariable("Autoresponder", "RespondConf", true);
-	m_configuration->deprecatedApi()->addVariable("Autoresponder", "StatusAvailable", false);
-	m_configuration->deprecatedApi()->addVariable("Autoresponder", "StatusBusy", true);
-	m_configuration->deprecatedApi()->addVariable("Autoresponder", "StatusInvisible", false);
+    m_configuration->deprecatedApi()->addVariable(
+        "Autoresponder", "Autotext", QCoreApplication::translate("AutoresponderConfigurator", "I am busy."));
+    m_configuration->deprecatedApi()->addVariable("Autoresponder", "OnlyFirstTime", true);
+    m_configuration->deprecatedApi()->addVariable("Autoresponder", "RespondConf", true);
+    m_configuration->deprecatedApi()->addVariable("Autoresponder", "StatusAvailable", false);
+    m_configuration->deprecatedApi()->addVariable("Autoresponder", "StatusBusy", true);
+    m_configuration->deprecatedApi()->addVariable("Autoresponder", "StatusInvisible", false);
 }
 
 void AutoresponderConfigurator::configurationUpdated()
 {
-	AutoresponderConfiguration configuration;
-	configuration.setAutoRespondText(m_configuration->deprecatedApi()->readEntry("Autoresponder", "Autotext"));
-	configuration.setRespondConferences(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "RespondConf"));
-	configuration.setRespondOnlyFirst(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "OnlyFirstTime"));
-	configuration.setStatusAvailable(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusAvailable"));
-	configuration.setStatusBusy(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusBusy"));
-	configuration.setStatusInvisible(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusInvisible"));
+    AutoresponderConfiguration configuration;
+    configuration.setAutoRespondText(m_configuration->deprecatedApi()->readEntry("Autoresponder", "Autotext"));
+    configuration.setRespondConferences(
+        m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "RespondConf"));
+    configuration.setRespondOnlyFirst(
+        m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "OnlyFirstTime"));
+    configuration.setStatusAvailable(
+        m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusAvailable"));
+    configuration.setStatusBusy(m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusBusy"));
+    configuration.setStatusInvisible(
+        m_configuration->deprecatedApi()->readBoolEntry("Autoresponder", "StatusInvisible"));
 
-	m_autoresponderMessageFilter->setConfiguration(configuration);
+    m_autoresponderMessageFilter->setConfiguration(configuration);
 }
 
 #include "moc_autoresponder-configurator.cpp"

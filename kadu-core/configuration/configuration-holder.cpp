@@ -23,15 +23,14 @@
 
 QList<ConfigurationHolder *> ConfigurationHolder::Instances;
 
-ConfigurationHolder::ConfigurationHolder(QObject *parent) :
-		QObject{parent}
+ConfigurationHolder::ConfigurationHolder(QObject *parent) : QObject{parent}
 {
-	Instances.append(this);
+    Instances.append(this);
 }
 
 ConfigurationHolder::~ConfigurationHolder()
 {
-	Instances.removeOne(this);
+    Instances.removeOne(this);
 }
 
 #include "moc_configuration-holder.cpp"

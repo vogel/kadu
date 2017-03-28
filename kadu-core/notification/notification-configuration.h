@@ -30,30 +30,38 @@ class Configuration;
 
 class KADUAPI NotificationConfiguration : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NotificationConfiguration(QObject *parent = nullptr);
-	virtual ~NotificationConfiguration();
+    Q_INVOKABLE explicit NotificationConfiguration(QObject *parent = nullptr);
+    virtual ~NotificationConfiguration();
 
-	QString notifyConfigurationKey(const QString &eventType) const;
+    QString notifyConfigurationKey(const QString &eventType) const;
 
-	bool notifyIgnoreOnConnection() const { return m_notifyIgnoreOnConnection; }
-	bool ignoreOnlineToOnline() const { return m_ignoreOnlineToOnline; }
-	bool newMessageOnlyIfInactive() const { return m_newMessageOnlyIfInactive; }
+    bool notifyIgnoreOnConnection() const
+    {
+        return m_notifyIgnoreOnConnection;
+    }
+    bool ignoreOnlineToOnline() const
+    {
+        return m_ignoreOnlineToOnline;
+    }
+    bool newMessageOnlyIfInactive() const
+    {
+        return m_newMessageOnlyIfInactive;
+    }
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	bool m_newMessageOnlyIfInactive;
-	bool m_notifyIgnoreOnConnection;
-	bool m_ignoreOnlineToOnline;
+    bool m_newMessageOnlyIfInactive;
+    bool m_notifyIgnoreOnConnection;
+    bool m_ignoreOnlineToOnline;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

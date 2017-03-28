@@ -28,10 +28,10 @@
 
 #include "history-buddy-configuration-widget.h"
 
-HistoryBuddyConfigurationWidget::HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
+HistoryBuddyConfigurationWidget::HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent)
+        : BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("History"));
+    setWindowTitle(tr("History"));
 }
 
 HistoryBuddyConfigurationWidget::~HistoryBuddyConfigurationWidget()
@@ -40,66 +40,66 @@ HistoryBuddyConfigurationWidget::~HistoryBuddyConfigurationWidget()
 
 void HistoryBuddyConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void HistoryBuddyConfigurationWidget::init()
 {
-	createGui();
-	configurationUpdated();
-	loadValues();
+    createGui();
+    configurationUpdated();
+    loadValues();
 }
 
 void HistoryBuddyConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	StoreHistoryCheckBox = new QCheckBox(tr("Store history"));
+    StoreHistoryCheckBox = new QCheckBox(tr("Store history"));
 
-	connect(StoreHistoryCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(StoreHistoryCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 
-	layout->addWidget(StoreHistoryCheckBox);
-	layout->addStretch(100);
+    layout->addWidget(StoreHistoryCheckBox);
+    layout->addStretch(100);
 }
 
 void HistoryBuddyConfigurationWidget::configurationUpdated()
 {
-	GlobalStoreHistory = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
-	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
+    GlobalStoreHistory = m_configuration->deprecatedApi()->readBoolEntry("History", "SaveChats", true);
+    StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 
 void HistoryBuddyConfigurationWidget::loadValues()
 {
-	StoreHistoryCheckBox->setChecked(buddy().property("history:StoreHistory", true).toBool());
-	StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
+    StoreHistoryCheckBox->setChecked(buddy().property("history:StoreHistory", true).toBool());
+    StoreHistoryCheckBox->setEnabled(GlobalStoreHistory);
 }
 
 void HistoryBuddyConfigurationWidget::updateState()
 {
-	if (StoreHistoryCheckBox->isChecked() == buddy().property("history:StoreHistory", true).toBool())
-		StateNotifier->setState(StateNotChanged);
-	else
-		StateNotifier->setState(StateChangedDataValid);
+    if (StoreHistoryCheckBox->isChecked() == buddy().property("history:StoreHistory", true).toBool())
+        StateNotifier->setState(StateNotChanged);
+    else
+        StateNotifier->setState(StateChangedDataValid);
 }
 
-const ConfigurationValueStateNotifier * HistoryBuddyConfigurationWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *HistoryBuddyConfigurationWidget::stateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }
 
 void HistoryBuddyConfigurationWidget::apply()
 {
-	if (StoreHistoryCheckBox->isChecked())
-		buddy().removeProperty("history:StoreHistory");
-	else
-		buddy().addProperty("history:StoreHistory", false, CustomProperties::Storable);
+    if (StoreHistoryCheckBox->isChecked())
+        buddy().removeProperty("history:StoreHistory");
+    else
+        buddy().addProperty("history:StoreHistory", false, CustomProperties::Storable);
 
-	updateState();
+    updateState();
 }
 
 void HistoryBuddyConfigurationWidget::cancel()
 {
-	loadValues();
+    loadValues();
 }
 
 #include "moc_history-buddy-configuration-widget.cpp"

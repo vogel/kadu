@@ -32,45 +32,48 @@ class ConfigGroupBox;
 class ConfigurationWindowDataManager;
 
 /**
-	&lt;list-box caption="caption" id="id"&gt;
-		&lt;item value="value" caption="caption"&gt;
-		...
-	&lt;/list-box&gt;
+        &lt;list-box caption="caption" id="id"&gt;
+                &lt;item value="value" caption="caption"&gt;
+                ...
+        &lt;/list-box&gt;
 
-	@arg value - wartość zapisana do pliku konfiguracyjnego
-	@arg caption - wartość wyświetlana
+        @arg value - wartość zapisana do pliku konfiguracyjnego
+        @arg caption - wartość wyświetlana
  **/
 class KADUAPI ConfigListWidget : public QListWidget, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
-	QStringList itemValues;
-	QStringList itemCaptions;
+    QStringList itemValues;
+    QStringList itemCaptions;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigListWidget(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QStringList &itemValues, const QStringList &itemCaptions,
-		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigListWidget();
+    ConfigListWidget(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox,
+        ConfigurationWindowDataManager *dataManager);
+    ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigListWidget();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
-	void setIcons(const QList<QIcon> &icons);
-	void setCurrentItem(const QString &currentItem);
-	QString currentItemValue() const { return currentRow() != -1 ? itemValues.at(currentRow()) : QString(); }
+    void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+    void setIcons(const QList<QIcon> &icons);
+    void setCurrentItem(const QString &currentItem);
+    QString currentItemValue() const
+    {
+        return currentRow() != -1 ? itemValues.at(currentRow()) : QString();
+    }
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 
-	virtual bool fromDomElement(QDomElement domElement);
-
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

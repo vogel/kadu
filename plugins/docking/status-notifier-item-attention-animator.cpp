@@ -22,14 +22,14 @@
 #include <QtGui/QMovie>
 #include <QtWidgets/QSystemTrayIcon>
 
-StatusNotifierItemAttentionAnimator::StatusNotifierItemAttentionAnimator(QString moviePath, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
-		StatusNotifierItemAttention{parent},
-		m_systemTrayIcon{systemTrayIcon}
+StatusNotifierItemAttentionAnimator::StatusNotifierItemAttentionAnimator(
+    QString moviePath, QSystemTrayIcon *systemTrayIcon, QObject *parent)
+        : StatusNotifierItemAttention{parent}, m_systemTrayIcon{systemTrayIcon}
 {
-	m_movie = make_owned<QMovie>(this);
-	m_movie->setFileName(moviePath);
-	connect(m_movie.get(), SIGNAL(updated(QRect)), this, SLOT(frameChanged()));
-	m_movie->start();
+    m_movie = make_owned<QMovie>(this);
+    m_movie->setFileName(moviePath);
+    connect(m_movie.get(), SIGNAL(updated(QRect)), this, SLOT(frameChanged()));
+    m_movie->start();
 }
 
 StatusNotifierItemAttentionAnimator::~StatusNotifierItemAttentionAnimator()
@@ -38,7 +38,7 @@ StatusNotifierItemAttentionAnimator::~StatusNotifierItemAttentionAnimator()
 
 void StatusNotifierItemAttentionAnimator::frameChanged()
 {
-	m_systemTrayIcon->setIcon(m_movie->currentPixmap());
+    m_systemTrayIcon->setIcon(m_movie->currentPixmap());
 }
 
 #include "moc_status-notifier-item-attention-animator.cpp"

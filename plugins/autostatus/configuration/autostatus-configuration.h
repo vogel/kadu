@@ -30,30 +30,38 @@ class PathsProvider;
 
 class AutostatusConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutostatusConfiguration(QObject *parent = nullptr);
-	virtual ~AutostatusConfiguration();
+    Q_INVOKABLE explicit AutostatusConfiguration(QObject *parent = nullptr);
+    virtual ~AutostatusConfiguration();
 
-	int autoTime() { return AutoTime; }
-	int autoStatus() { return AutoStatus; }
-	const QString & statusFilePath() { return StatusFilePath; }
+    int autoTime()
+    {
+        return AutoTime;
+    }
+    int autoStatus()
+    {
+        return AutoStatus;
+    }
+    const QString &statusFilePath()
+    {
+        return StatusFilePath;
+    }
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	int AutoTime;
-	int AutoStatus;
-	QString StatusFilePath;
+    int AutoTime;
+    int AutoStatus;
+    QString StatusFilePath;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

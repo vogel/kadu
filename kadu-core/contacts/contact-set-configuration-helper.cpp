@@ -34,49 +34,53 @@
 
 #include <QtXml/QDomElement>
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ContactManager *contactManager, StorableObject *parent, const QString &nodeName)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(
+    ContactManager *contactManager, StorableObject *parent, const QString &nodeName)
 {
-	if (!parent->isValidStorage())
-		return ContactSet();
+    if (!parent->isValidStorage())
+        return ContactSet();
 
-	ConfigurationApi *configurationStorage = parent->storage()->storage();
-	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
+    ConfigurationApi *configurationStorage = parent->storage()->storage();
+    QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
 
-	return loadFromConfiguration(contactManager, configurationStorage, contactSetNode);
+    return loadFromConfiguration(contactManager, configurationStorage, contactSetNode);
 }
 
-ContactSet ContactSetConfigurationHelper::loadFromConfiguration(ContactManager *contactManager, ConfigurationApi *configurationStorage, QDomElement contactSetNode)
+ContactSet ContactSetConfigurationHelper::loadFromConfiguration(
+    ContactManager *contactManager, ConfigurationApi *configurationStorage, QDomElement contactSetNode)
 {
-	ContactSet result;
+    ContactSet result;
 
-	QVector<QDomElement> contactElements = configurationStorage->getNodes(contactSetNode, "Contact");
-	result.reserve(contactElements.count());
-	foreach (const QDomElement &contactElement, contactElements)
-	{
-		Contact contact = contactManager->byUuid(contactElement.text());
-		if (!contact.isNull())
-			result.insert(contact);
-	}
+    QVector<QDomElement> contactElements = configurationStorage->getNodes(contactSetNode, "Contact");
+    result.reserve(contactElements.count());
+    foreach (const QDomElement &contactElement, contactElements)
+    {
+        Contact contact = contactManager->byUuid(contactElement.text());
+        if (!contact.isNull())
+            result.insert(contact);
+    }
 
-	return result;
+    return result;
 }
 
-void ContactSetConfigurationHelper::saveToConfiguration(StorableObject *parent, const QString &nodeName, const ContactSet &contactSet)
+void ContactSetConfigurationHelper::saveToConfiguration(
+    StorableObject *parent, const QString &nodeName, const ContactSet &contactSet)
 {
-	if (!parent->isValidStorage())
-		return;
+    if (!parent->isValidStorage())
+        return;
 
-	ConfigurationApi *configurationStorage = parent->storage()->storage();
-	QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
+    ConfigurationApi *configurationStorage = parent->storage()->storage();
+    QDomElement contactSetNode = configurationStorage->getNode(parent->storage()->point(), nodeName);
 
-	saveToConfiguration(configurationStorage, contactSetNode, contactSet);
+    saveToConfiguration(configurationStorage, contactSetNode, contactSet);
 }
 
-void ContactSetConfigurationHelper::saveToConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet)
+void ContactSetConfigurationHelper::saveToConfiguration(
+    ConfigurationApi *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet)
 {
-	while (!contactSetNode.childNodes().isEmpty())
-		contactSetNode.removeChild(contactSetNode.childNodes().at(0));
+    while (!contactSetNode.childNodes().isEmpty())
+        contactSetNode.removeChild(contactSetNode.childNodes().at(0));
 
-	foreach (const Contact &c, contactSet)
-		configurationStorage->appendTextNode(contactSetNode, "Contact", c.uuid().toString());
+    foreach (const Contact &c, contactSet)
+        configurationStorage->appendTextNode(contactSetNode, "Contact", c.uuid().toString());
 }

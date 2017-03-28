@@ -23,7 +23,7 @@
 
 TalkableModule::TalkableModule()
 {
-	add_type<TalkableConverter>();
+    add_type<TalkableConverter>();
 }
 
 TalkableModule::~TalkableModule()

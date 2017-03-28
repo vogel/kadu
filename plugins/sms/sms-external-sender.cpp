@@ -26,9 +26,7 @@
 
 #include "sms-external-sender.h"
 
-SmsExternalSender::SmsExternalSender(const QString &number, QObject *parent) :
-		SmsSender{number, parent},
-		Process{}
+SmsExternalSender::SmsExternalSender(const QString &number, QObject *parent) : SmsSender{number, parent}, Process{}
 {
 }
 
@@ -38,77 +36,77 @@ SmsExternalSender::~SmsExternalSender()
 
 void SmsExternalSender::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 QStringList SmsExternalSender::buildProgramArguments(const QString &message)
 {
-	QStringList programArguments;
+    QStringList programArguments;
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "UseCustomString"))
-	{
-		programArguments = m_configuration->deprecatedApi()->readEntry("SMS", "SmsString").split(' ');
-		programArguments.replaceInStrings("%k", number());
-		programArguments.replaceInStrings("%m", message);
-	}
-	else
-	{
-		programArguments.append(number());
-		programArguments.append(message);
-	}
+    if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "UseCustomString"))
+    {
+        programArguments = m_configuration->deprecatedApi()->readEntry("SMS", "SmsString").split(' ');
+        programArguments.replaceInStrings("%k", number());
+        programArguments.replaceInStrings("%m", message);
+    }
+    else
+    {
+        programArguments.append(number());
+        programArguments.append(message);
+    }
 
-	return programArguments;
+    return programArguments;
 }
 
 void SmsExternalSender::sendMessage(const QString &message)
 {
-	Message = message;
+    Message = message;
 
-	QString smsAppPath = m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp");
+    QString smsAppPath = m_configuration->deprecatedApi()->readEntry("SMS", "SmsApp");
 
-	Process = new QProcess(this);
-	Process->start(smsAppPath, buildProgramArguments(message));
+    Process = new QProcess(this);
+    Process->start(smsAppPath, buildProgramArguments(message));
 
-	if (!Process->waitForStarted())
-	{
-		emit finished(false, "dialog-error", tr("Could not spawn child process. Check if the program is functional"));
-		Process->deleteLater();
-		Process = 0;
-		deleteLater();
-		return;
-	}
+    if (!Process->waitForStarted())
+    {
+        emit finished(false, "dialog-error", tr("Could not spawn child process. Check if the program is functional"));
+        Process->deleteLater();
+        Process = 0;
+        deleteLater();
+        return;
+    }
 
-	connect(Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished()));
+    connect(Process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished()));
 }
 
 void SmsExternalSender::processFinished()
 {
-	if (QProcess::NormalExit == Process->exitStatus())
-	{
-		emit smsSent(number(), Message);
-		emit finished(true, "dialog-information", tr("SMS sent"));
-	}
-	else
-		emit finished(false, "dialog-error", tr("The process exited abnormally. The SMS may not be sent"));
+    if (QProcess::NormalExit == Process->exitStatus())
+    {
+        emit smsSent(number(), Message);
+        emit finished(true, "dialog-information", tr("SMS sent"));
+    }
+    else
+        emit finished(false, "dialog-error", tr("The process exited abnormally. The SMS may not be sent"));
 
-	Process->deleteLater();
-	Process = 0;
+    Process->deleteLater();
+    Process = 0;
 
-	deleteLater();
+    deleteLater();
 }
 
 void SmsExternalSender::cancel()
 {
-	if (Process)
-	{
-		disconnect(Process, 0, this, 0);
-		Process->terminate();
-		Process->kill();
-		Process->deleteLater();
-		Process = 0;
-	}
+    if (Process)
+    {
+        disconnect(Process, 0, this, 0);
+        Process->terminate();
+        Process->kill();
+        Process->deleteLater();
+        Process = 0;
+    }
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_sms-external-sender.cpp"

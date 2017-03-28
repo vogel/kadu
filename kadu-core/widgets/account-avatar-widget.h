@@ -39,50 +39,49 @@ class ProtocolsManager;
 
 class KADUAPI AccountAvatarWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	enum
-	{
-		ModeChange,
-		ModeRemove
-	} Mode;
+    enum
+    {
+        ModeChange,
+        ModeRemove
+    } Mode;
 
 public:
-	explicit AccountAvatarWidget(Account account, QWidget *parent = nullptr);
-	virtual ~AccountAvatarWidget();
+    explicit AccountAvatarWidget(Account account, QWidget *parent = nullptr);
+    virtual ~AccountAvatarWidget();
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ProtocolsManager> m_protocolsManager;
 
-	Account MyAccount;
-	AvatarService *Service;
+    Account MyAccount;
+    AvatarService *Service;
 
-	QLabel *AvatarLabel;
-	QMovie *WaitMovie;
-	QPushButton *ChangePhotoButton;
+    QLabel *AvatarLabel;
+    QMovie *WaitMovie;
+    QPushButton *ChangePhotoButton;
 
-	void createGui();
-	void setupMode();
+    void createGui();
+    void setupMode();
 
-	void uploadAvatar(QImage avatar);
-	void changeAvatar();
-	void removeAvatar();
+    void uploadAvatar(QImage avatar);
+    void changeAvatar();
+    void removeAvatar();
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_INIT void init();
 
-	void avatarUpdated();
+    void avatarUpdated();
 
-	void changeButtonClicked();
-	void avatarUploaded(bool ok, QImage image);
-	void serviceDestroyed();
+    void changeButtonClicked();
+    void avatarUploaded(bool ok, QImage image);
+    void serviceDestroyed();
 
-	void protocolRegistered(ProtocolFactory *protocolFactory);
-	void protocolUnregistered(ProtocolFactory *protocolFactory);
-
+    void protocolRegistered(ProtocolFactory *protocolFactory);
+    void protocolUnregistered(ProtocolFactory *protocolFactory);
 };

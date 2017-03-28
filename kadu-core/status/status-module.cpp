@@ -30,14 +30,14 @@
 
 StatusModule::StatusModule()
 {
-	add_type<AllAccountsStatusContainer>();
-	add_type<DescriptionManager>();
-	add_type<RemoteStatusRequestHandler>();
-	add_type<StatusConfigurationHolder>();
-	add_type<StatusNotificationService>();
-	add_type<StatusSetter>();
-	add_type<StatusTypeManager>();
-	add_type<StatusWindowService>();
+    add_type<AllAccountsStatusContainer>();
+    add_type<DescriptionManager>();
+    add_type<RemoteStatusRequestHandler>();
+    add_type<StatusConfigurationHolder>();
+    add_type<StatusNotificationService>();
+    add_type<StatusSetter>();
+    add_type<StatusTypeManager>();
+    add_type<StatusWindowService>();
 }
 
 StatusModule::~StatusModule()

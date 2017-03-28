@@ -26,45 +26,41 @@
 
 namespace
 {
-
-ChatStateService * converter(ChatStateServiceRepository::WrappedIterator iterator)
+ChatStateService *converter(ChatStateServiceRepository::WrappedIterator iterator)
 {
-	return iterator->second;
+    return iterator->second;
 }
-
 }
 
 ChatStateServiceRepository::Iterator ChatStateServiceRepository::begin()
 {
-	return Iterator{m_chatStateServices.begin(), converter};
+    return Iterator{m_chatStateServices.begin(), converter};
 }
 
 ChatStateServiceRepository::Iterator ChatStateServiceRepository::end()
 {
-	return Iterator{m_chatStateServices.end(), converter};
+    return Iterator{m_chatStateServices.end(), converter};
 }
 
-ChatStateService * ChatStateServiceRepository::chatStateService(const Account &account) const
+ChatStateService *ChatStateServiceRepository::chatStateService(const Account &account) const
 {
-	auto it = m_chatStateServices.find(account);
-	return it == std::end(m_chatStateServices)
-			? nullptr
-			: it->second;
+    auto it = m_chatStateServices.find(account);
+    return it == std::end(m_chatStateServices) ? nullptr : it->second;
 }
 
 void ChatStateServiceRepository::addChatStateService(ChatStateService *chatStateService)
 {
-	assert(m_chatStateServices.find(chatStateService->account()) == std::end(m_chatStateServices));
+    assert(m_chatStateServices.find(chatStateService->account()) == std::end(m_chatStateServices));
 
-	m_chatStateServices.insert(std::make_pair(chatStateService->account(), chatStateService));
-	emit chatStateServiceAdded(chatStateService);
+    m_chatStateServices.insert(std::make_pair(chatStateService->account(), chatStateService));
+    emit chatStateServiceAdded(chatStateService);
 }
 
 void ChatStateServiceRepository::removeChatStateService(ChatStateService *chatStateService)
 {
-	auto it = m_chatStateServices.find(chatStateService->account());
-	assert(it != std::end(m_chatStateServices));
+    auto it = m_chatStateServices.find(chatStateService->account());
+    assert(it != std::end(m_chatStateServices));
 
-	m_chatStateServices.erase(it);
-	emit chatStateServiceRemoved(chatStateService);
+    m_chatStateServices.erase(it);
+    emit chatStateServiceRemoved(chatStateService);
 }

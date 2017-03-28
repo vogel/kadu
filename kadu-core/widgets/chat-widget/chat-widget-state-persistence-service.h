@@ -30,21 +30,20 @@ class ChatWidgetRepository;
 
 class ChatWidgetStatePersistenceService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE ChatWidgetStatePersistenceService();
-	virtual ~ChatWidgetStatePersistenceService();
+    Q_INVOKABLE ChatWidgetStatePersistenceService();
+    virtual ~ChatWidgetStatePersistenceService();
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_INIT void init();
 
-	void storeChatWidgetState(ChatWidget *chatWidget);
-	void restoreChatWidgetState(ChatWidget *chatWidget);
+    void storeChatWidgetState(ChatWidget *chatWidget);
+    void restoreChatWidgetState(ChatWidget *chatWidget);
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 };

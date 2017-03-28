@@ -23,8 +23,8 @@
 
 #include <injeqt/injector.h>
 
-IndicatorDockingPluginModulesFactory::IndicatorDockingPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+IndicatorDockingPluginModulesFactory::IndicatorDockingPluginModulesFactory(QObject *parent)
+        : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +34,10 @@ IndicatorDockingPluginModulesFactory::~IndicatorDockingPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> IndicatorDockingPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<IndicatorDockingModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<IndicatorDockingModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_indicator-docking-plugin-modules-factory.cpp"

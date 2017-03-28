@@ -21,20 +21,19 @@
 
 #include "misc/change-notifier.h"
 
-ChangeNotifierLock::ChangeNotifierLock(ChangeNotifier &notifier, Mode mode)
-		: m_notifier(notifier), m_notifierMode{mode}
+ChangeNotifierLock::ChangeNotifierLock(ChangeNotifier &notifier, Mode mode) : m_notifier(notifier), m_notifierMode{mode}
 {
-	m_notifier.block();
+    m_notifier.block();
 }
 
 ChangeNotifierLock::~ChangeNotifierLock()
 {
-	if (ModeForget == m_notifierMode)
-		m_notifier.forget();
-	m_notifier.unblock();
+    if (ModeForget == m_notifierMode)
+        m_notifier.forget();
+    m_notifier.unblock();
 }
 
 void ChangeNotifierLock::setMode(Mode mode)
 {
-	m_notifierMode = mode;
+    m_notifierMode = mode;
 }

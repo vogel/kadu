@@ -23,15 +23,14 @@
 
 class MediaplayerPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit MediaplayerPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~MediaplayerPluginModulesFactory();
+    explicit MediaplayerPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~MediaplayerPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-	virtual QString parentInjectorName() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
+    virtual QString parentInjectorName() const override;
 };

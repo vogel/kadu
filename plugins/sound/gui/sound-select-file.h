@@ -32,32 +32,31 @@ class SoundManager;
 
 class SoundSelectFile : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SoundSelectFile(SoundManager *manager, QWidget *parent = nullptr);
-	virtual ~SoundSelectFile();
+    explicit SoundSelectFile(SoundManager *manager, QWidget *parent = nullptr);
+    virtual ~SoundSelectFile();
 
-	QString file() const;
-	void setFile(const QString &file);
+    QString file() const;
+    void setFile(const QString &file);
 
-	void stopSound();
+    void stopSound();
 
 signals:
-	void fileChanged();
+    void fileChanged();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SoundManager> m_manager;
-	QPointer<QObject> m_sound;
-	SelectFile *m_selectFile;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SoundManager> m_manager;
+    QPointer<QObject> m_sound;
+    SelectFile *m_selectFile;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 
-	void test();
-
+    void test();
 };

@@ -35,42 +35,43 @@ class SmsTokenReadJob;
 
 class SmsInternalSender : public SmsSender
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<SmsGatewayManager> m_smsGatewayManager;
-	QPointer<SmsScriptsManager> m_smsScriptsManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<SmsGatewayManager> m_smsGatewayManager;
+    QPointer<SmsScriptsManager> m_smsScriptsManager;
 
-	SmsGateway Gateway;
-	SmsTokenReadJob *TokenJob;
+    SmsGateway Gateway;
+    SmsTokenReadJob *TokenJob;
 
-	void queryForGateway();
-	void gatewaySelected();
+    void queryForGateway();
+    void gatewaySelected();
 
-	void sendSms();
+    void sendSms();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 
-	void jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
+    void jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage);
 
 public:
-	explicit SmsInternalSender(SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number, const SmsGateway &gateway, QObject *parent = nullptr);
-	virtual ~SmsInternalSender();
+    explicit SmsInternalSender(
+        SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number,
+        const SmsGateway &gateway, QObject *parent = nullptr);
+    virtual ~SmsInternalSender();
 
-	virtual void sendMessage(const QString &message);
+    virtual void sendMessage(const QString &message);
 
-	void findGatewayForNumber(const QString &number);
+    void findGatewayForNumber(const QString &number);
 
 public slots:
-	void gatewayQueryDone(const QString &gatewayId);
-	void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
+    void gatewayQueryDone(const QString &gatewayId);
+    void readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod);
 
-	QScriptValue readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue);
+    QScriptValue readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue);
 
-	virtual void cancel();
+    virtual void cancel();
 
-	void result();
-	void failure(const QString &errorMessage);
-
+    void result();
+    void failure(const QString &errorMessage);
 };

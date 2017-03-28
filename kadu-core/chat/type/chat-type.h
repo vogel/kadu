@@ -52,72 +52,71 @@ class KaduIcon;
  */
 class KADUAPI ChatType : public QObject
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(ChatType)
+    Q_OBJECT
+    Q_DISABLE_COPY(ChatType)
 
 public:
-	explicit ChatType(QObject *parent = nullptr);
-	virtual ~ChatType();
+    explicit ChatType(QObject *parent = nullptr);
+    virtual ~ChatType();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Internal name of chat type.
-	 * @return internal name of chat type
-	 *
-	 * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
-	 * and also it is stored with @link Chat @endlink data.
-	 */
-	virtual QString name() const = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Internal name of chat type.
+     * @return internal name of chat type
+     *
+     * Chat type internal name. Internal name is used in @link ChatTypeManager @endlink
+     * and also it is stored with @link Chat @endlink data.
+     */
+    virtual QString name() const = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Internal aliases of chat type.
-	 * @return internal aliases of chat type
-	 *
-	 * Chat type internal aliases. Used to import from old confirations where Simple was used
-	 * instead of Contact and Conference instead of ContactSet.
-	 */
-	virtual QStringList aliases() const = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Internal aliases of chat type.
+     * @return internal aliases of chat type
+     *
+     * Chat type internal aliases. Used to import from old confirations where Simple was used
+     * instead of Contact and Conference instead of ContactSet.
+     */
+    virtual QStringList aliases() const = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Icon of chat type.
-	 * @return icon of chat type
-	 *
-	 * Chat type icon. Icon is used in history window and as icon of chat windows.
-	 */
-	virtual KaduIcon icon() const = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Icon of chat type.
+     * @return icon of chat type
+     *
+     * Chat type icon. Icon is used in history window and as icon of chat windows.
+     */
+    virtual KaduIcon icon() const = 0;
 
-	/**
-	 * @author Piotr 'ultr' Dąbrowski
-	 * @short Window role for this chat type.
-	 * @return window role for this chat type.
-	 *
-	 * Kadu window role for this chat type: "kadu-chat-...".
-	 */
-	virtual QString windowRole() const = 0;
+    /**
+     * @author Piotr 'ultr' Dąbrowski
+     * @short Window role for this chat type.
+     * @return window role for this chat type.
+     *
+     * Kadu window role for this chat type: "kadu-chat-...".
+     */
+    virtual QString windowRole() const = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Creates new ChatDetails object for given chat type.
-	 * @return new ChatDetails object for given chat type
-	 *
-	 * Creates new @link ChatDetails @endlink object for given chat type and for
-	 * given @link Chat @endlink (@link ChatShared @endlink).
-	 */
-	virtual ChatDetails * createChatDetails(ChatShared *chatData) const = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Creates new ChatDetails object for given chat type.
+     * @return new ChatDetails object for given chat type
+     *
+     * Creates new @link ChatDetails @endlink object for given chat type and for
+     * given @link Chat @endlink (@link ChatShared @endlink).
+     */
+    virtual ChatDetails *createChatDetails(ChatShared *chatData) const = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Create new ChatEditWidget for editing given chat.
-	 * @param chat chat to edit
-	 * @param parent QWidget parent of new edit widget
-	 * @return ChatEditWidget for editing given chat
-	 *
-	 * May return null.
-	 */
-	virtual ChatEditWidget * createEditWidget(const Chat &chat, QWidget *parent) const = 0;
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Create new ChatEditWidget for editing given chat.
+     * @param chat chat to edit
+     * @param parent QWidget parent of new edit widget
+     * @return ChatEditWidget for editing given chat
+     *
+     * May return null.
+     */
+    virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const = 0;
 };
 
 Q_DECLARE_METATYPE(ChatType *)
@@ -126,4 +125,4 @@ Q_DECLARE_METATYPE(ChatType *)
  * @}
  */
 
-#endif // CHAT_TYPE_H
+#endif   // CHAT_TYPE_H

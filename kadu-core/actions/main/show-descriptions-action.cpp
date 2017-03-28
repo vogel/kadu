@@ -23,15 +23,15 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-ShowDescriptionsAction::ShowDescriptionsAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowDescriptionsAction::ShowDescriptionsAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/show-descriptions"});
-	setName(QStringLiteral("descriptionsAction"));
-	setText(tr("Show Descriptions"));
-	setType(ActionDescription::TypeUserList);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/show-descriptions"});
+    setName(QStringLiteral("descriptionsAction"));
+    setText(tr("Show Descriptions"));
+    setType(ActionDescription::TypeUserList);
 }
 
 ShowDescriptionsAction::~ShowDescriptionsAction()
@@ -40,19 +40,19 @@ ShowDescriptionsAction::~ShowDescriptionsAction()
 
 void ShowDescriptionsAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowDescriptionsAction::actionInstanceCreated(Action *action)
 {
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
-	action->setChecked(enabled);
+    auto enabled = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
+    action->setChecked(enabled);
 }
 
 void ShowDescriptionsAction::actionTriggered(QAction *, bool toggled)
 {
-	m_configuration->deprecatedApi()->writeEntry("Look", "ShowDesc", toggled);
-	ConfigurationAwareObject::notifyAll();
+    m_configuration->deprecatedApi()->writeEntry("Look", "ShowDesc", toggled);
+    ConfigurationAwareObject::notifyAll();
 }
 
 #include "moc_show-descriptions-action.cpp"

@@ -24,15 +24,14 @@
 
 class CopyDescriptionAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit CopyDescriptionAction(QObject *parent = nullptr);
-	virtual ~CopyDescriptionAction();
+    Q_INVOKABLE explicit CopyDescriptionAction(QObject *parent = nullptr);
+    virtual ~CopyDescriptionAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
-
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 };

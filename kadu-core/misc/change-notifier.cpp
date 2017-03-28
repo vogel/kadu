@@ -20,8 +20,7 @@
 
 #include "change-notifier.h"
 
-ChangeNotifier::ChangeNotifier(QObject *parent) :
-		QObject(parent), Blocked(0), Changed(false)
+ChangeNotifier::ChangeNotifier(QObject *parent) : QObject(parent), Blocked(0), Changed(false)
 {
 }
 
@@ -31,36 +30,36 @@ ChangeNotifier::~ChangeNotifier()
 
 void ChangeNotifier::block()
 {
-	Blocked++;
+    Blocked++;
 }
 
 void ChangeNotifier::unblock()
 {
-	Q_ASSERT(Blocked > 0);
+    Q_ASSERT(Blocked > 0);
 
-	Blocked--;
+    Blocked--;
 
-	if (0 == Blocked && Changed)
-	{
-		emit changed();
-		Changed = false;
-	}
+    if (0 == Blocked && Changed)
+    {
+        emit changed();
+        Changed = false;
+    }
 }
 
 void ChangeNotifier::notify()
 {
-	if (0 == Blocked)
-	{
-		emit changed();
-		return;
-	}
+    if (0 == Blocked)
+    {
+        emit changed();
+        return;
+    }
 
-	Changed = true;
+    Changed = true;
 }
 
 void ChangeNotifier::forget()
 {
-	Changed = false;
+    Changed = false;
 }
 
 #include "moc_change-notifier.cpp"

@@ -25,9 +25,7 @@
 
 class KADUAPI ActionsModule : public injeqt::module
 {
-
 public:
-	ActionsModule();
-	virtual ~ActionsModule();
-
+    ActionsModule();
+    virtual ~ActionsModule();
 };

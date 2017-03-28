@@ -33,29 +33,30 @@ class ScreenShotConfiguration;
 
 class ScreenshotPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ScreenshotPluginObject(QObject *parent = nullptr);
-	virtual ~ScreenshotPluginObject();
+    Q_INVOKABLE explicit ScreenshotPluginObject(QObject *parent = nullptr);
+    virtual ~ScreenshotPluginObject();
 
 private:
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<ScreenshotActions> m_screenshotActions;
-	QPointer<ScreenShotConfigurationUiHandler> m_screenShotConfigurationUiHandler;
-	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<ScreenshotActions> m_screenshotActions;
+    QPointer<ScreenShotConfigurationUiHandler> m_screenShotConfigurationUiHandler;
+    QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
 private slots:
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setScreenshotActions(ScreenshotActions *screenshotActions);
-	INJEQT_SET void setScreenShotConfigurationUiHandler(ScreenShotConfigurationUiHandler *screenShotConfigurationUiHandler);
-	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setScreenshotActions(ScreenshotActions *screenshotActions);
+    INJEQT_SET void
+    setScreenShotConfigurationUiHandler(ScreenShotConfigurationUiHandler *screenShotConfigurationUiHandler);
+    INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

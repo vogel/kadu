@@ -19,12 +19,11 @@
 
 #include "multilogon-window-service.h"
 
+#include "activate.h"
 #include "core/injected-factory.h"
 #include "windows/multilogon-window.h"
-#include "activate.h"
 
-MultilogonWindowService::MultilogonWindowService(QObject *parent) :
-		QObject{parent}
+MultilogonWindowService::MultilogonWindowService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,21 +33,21 @@ MultilogonWindowService::~MultilogonWindowService()
 
 void MultilogonWindowService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void MultilogonWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void MultilogonWindowService::show()
 {
-	if (!m_multilogonWindow)
-		m_multilogonWindow = m_injectedFactory->makeInjected<MultilogonWindow>();
+    if (!m_multilogonWindow)
+        m_multilogonWindow = m_injectedFactory->makeInjected<MultilogonWindow>();
 
-	m_multilogonWindow->show();
-	_activateWindow(m_configuration, m_multilogonWindow);
+    m_multilogonWindow->show();
+    _activateWindow(m_configuration, m_multilogonWindow);
 }
 
 #include "moc_multilogon-window-service.cpp"

@@ -41,27 +41,25 @@
  */
 class KADUAPI NamedStorableObject : public StorableObject
 {
-
 protected:
-	virtual std::shared_ptr<StoragePoint> createStoragePoint();
+    virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
 public:
-	NamedStorableObject();
+    NamedStorableObject();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns name of this object.
-	 * @return name of this object
-	 *
-	 * This method returns string that represents name of this object.
-	 * Each derivered class should ovveride that method to return meaningfull name.
-	 */
-	virtual QString name() const = 0;
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns name of this object.
+     * @return name of this object
+     *
+     * This method returns string that represents name of this object.
+     * Each derivered class should ovveride that method to return meaningfull name.
+     */
+    virtual QString name() const = 0;
 };
 
 /**
  * @}
  */
 
-#endif // NAMED_STORABLE_OBJECT_H
+#endif   // NAMED_STORABLE_OBJECT_H

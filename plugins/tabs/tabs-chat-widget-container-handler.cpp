@@ -24,8 +24,7 @@
 
 #include "widgets/chat-widget/chat-widget-container-handler-repository.h"
 
-TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) :
-		ChatWidgetContainerHandler{parent}
+TabsChatWidgetContainerHandler::TabsChatWidgetContainerHandler(QObject *parent) : ChatWidgetContainerHandler{parent}
 {
 }
 
@@ -33,71 +32,73 @@ TabsChatWidgetContainerHandler::~TabsChatWidgetContainerHandler()
 {
 }
 
-void TabsChatWidgetContainerHandler::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+void TabsChatWidgetContainerHandler::setChatWidgetContainerHandlerRepository(
+    ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
 {
-	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+    m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
 }
 
 void TabsChatWidgetContainerHandler::setTabsManager(TabsManager *tabsManager)
 {
-	m_tabsManager = tabsManager;
+    m_tabsManager = tabsManager;
 }
 
 void TabsChatWidgetContainerHandler::init()
 {
-	connect(m_tabsManager.data(), SIGNAL(chatAcceptanceChanged(Chat)),
-			this, SIGNAL(chatAcceptanceChanged(Chat)));
-	connect(m_tabsManager.data(), SIGNAL(chatWidgetActivated(ChatWidget*)),
-			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+    connect(m_tabsManager.data(), SIGNAL(chatAcceptanceChanged(Chat)), this, SIGNAL(chatAcceptanceChanged(Chat)));
+    connect(
+        m_tabsManager.data(), SIGNAL(chatWidgetActivated(ChatWidget *)), this,
+        SIGNAL(chatWidgetActivated(ChatWidget *)));
 
-	connect(m_tabsManager->tabWidget(), SIGNAL(chatWidgetActivated(ChatWidget*)),
-			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+    connect(
+        m_tabsManager->tabWidget(), SIGNAL(chatWidgetActivated(ChatWidget *)), this,
+        SIGNAL(chatWidgetActivated(ChatWidget *)));
 
-	m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(this);
+    m_chatWidgetContainerHandlerRepository->registerChatWidgetContainerHandler(this);
 }
 
 void TabsChatWidgetContainerHandler::done()
 {
-	m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(this);
+    m_chatWidgetContainerHandlerRepository->unregisterChatWidgetContainerHandler(this);
 }
 
 bool TabsChatWidgetContainerHandler::acceptChat(Chat chat) const
 {
-	if (!chat || !m_tabsManager)
-		return false;
+    if (!chat || !m_tabsManager)
+        return false;
 
-	return m_tabsManager.data()->acceptChat(chat);
+    return m_tabsManager.data()->acceptChat(chat);
 }
 
-ChatWidget * TabsChatWidgetContainerHandler::addChat(Chat chat, OpenChatActivation activation)
+ChatWidget *TabsChatWidgetContainerHandler::addChat(Chat chat, OpenChatActivation activation)
 {
-	if (!chat || !m_tabsManager)
-		return nullptr;
+    if (!chat || !m_tabsManager)
+        return nullptr;
 
-	return m_tabsManager.data()->addChat(chat, activation);
+    return m_tabsManager.data()->addChat(chat, activation);
 }
 
 void TabsChatWidgetContainerHandler::removeChat(Chat chat)
 {
-	if (!chat || !m_tabsManager)
-		return;
+    if (!chat || !m_tabsManager)
+        return;
 
-	return m_tabsManager.data()->removeChat(chat);
+    return m_tabsManager.data()->removeChat(chat);
 }
 
 bool TabsChatWidgetContainerHandler::isChatWidgetActive(ChatWidget *chatWidget)
 {
-	return m_tabsManager->tabWidget() ? m_tabsManager->tabWidget()->isChatWidgetActive(chatWidget) : false;
+    return m_tabsManager->tabWidget() ? m_tabsManager->tabWidget()->isChatWidgetActive(chatWidget) : false;
 }
 
 void TabsChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *chatWidget)
 {
-	if (m_tabsManager->tabWidget())
-		m_tabsManager->tabWidget()->tryActivateChatWidget(chatWidget);
+    if (m_tabsManager->tabWidget())
+        m_tabsManager->tabWidget()->tryActivateChatWidget(chatWidget);
 }
 
 void TabsChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget *chatWidget)
 {
-	if (m_tabsManager->tabWidget())
-		m_tabsManager->tabWidget()->tryMinimizeChatWidget(chatWidget);
+    if (m_tabsManager->tabWidget())
+        m_tabsManager->tabWidget()->tryMinimizeChatWidget(chatWidget);
 }

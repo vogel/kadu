@@ -22,9 +22,9 @@
 
 enum class QMessagingMenuStatus
 {
-	Available = 0,
-	Away = 1,
-	Busy = 2,
-	Invisible = 3,
-	Offline = 4
+    Available = 0,
+    Away = 1,
+    Busy = 2,
+    Invisible = 3,
+    Offline = 4
 };

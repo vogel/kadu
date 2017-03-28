@@ -38,34 +38,33 @@ class QModelIndex;
 
 class SelectTalkablePopup : public FilteredTreeView
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	HideAnonymousTalkableFilter *HideAnonymousFilter;
-	ModelChain *Chain;
-	TalkableTreeView *View;
-	TalkableProxyModel *ProxyModel;
+    HideAnonymousTalkableFilter *HideAnonymousFilter;
+    ModelChain *Chain;
+    TalkableTreeView *View;
+    TalkableProxyModel *ProxyModel;
 
 private slots:
-	INJEQT_INIT void init();
+    INJEQT_INIT void init();
 
-	void itemClicked(const QModelIndex &index);
-	void talkableActivated(const Talkable &talkable);
+    void itemClicked(const QModelIndex &index);
+    void talkableActivated(const Talkable &talkable);
 
 public:
-	explicit SelectTalkablePopup(QWidget *parent = nullptr);
-	virtual ~SelectTalkablePopup();
+    explicit SelectTalkablePopup(QWidget *parent = nullptr);
+    virtual ~SelectTalkablePopup();
 
-	virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const;
 
-	void setBaseModel(QAbstractItemModel *model);
-	void setShowAnonymous(bool showAnonymous);
+    void setBaseModel(QAbstractItemModel *model);
+    void setShowAnonymous(bool showAnonymous);
 
-	void show(const Talkable &talkable);
+    void show(const Talkable &talkable);
 
-	void addFilter(TalkableFilter *filter);
-	void removeFilter(TalkableFilter *filter);
+    void addFilter(TalkableFilter *filter);
+    void removeFilter(TalkableFilter *filter);
 
 signals:
-	void talkableSelected(const Talkable &talkable);
-
+    void talkableSelected(const Talkable &talkable);
 };

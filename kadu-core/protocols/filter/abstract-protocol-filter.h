@@ -28,18 +28,20 @@ class ProtocolFactory;
 
 class AbstractProtocolFilter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AbstractProtocolFilter(QObject *parent = nullptr)
-			: QObject(parent) {}
-	virtual ~AbstractProtocolFilter() {}
+    explicit AbstractProtocolFilter(QObject *parent = nullptr) : QObject(parent)
+    {
+    }
+    virtual ~AbstractProtocolFilter()
+    {
+    }
 
-	virtual bool acceptProtocol(ProtocolFactory *factory) = 0;
+    virtual bool acceptProtocol(ProtocolFactory *factory) = 0;
 
 signals:
-	void filterChanged();
-
+    void filterChanged();
 };
 
-#endif // ABSTRACT_PROTOCOL_FILTER_H
+#endif   // ABSTRACT_PROTOCOL_FILTER_H

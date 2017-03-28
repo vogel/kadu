@@ -28,20 +28,22 @@
 
 class KADUAPI ConfigurationHolder : public QObject
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(ConfigurationHolder)
+    Q_OBJECT
+    Q_DISABLE_COPY(ConfigurationHolder)
 
-	static QList<ConfigurationHolder *> Instances;
+    static QList<ConfigurationHolder *> Instances;
 
 protected:
-	explicit ConfigurationHolder(QObject *parent = nullptr);
-	virtual ~ConfigurationHolder();
+    explicit ConfigurationHolder(QObject *parent = nullptr);
+    virtual ~ConfigurationHolder();
 
 public:
-	static const QList<ConfigurationHolder *> & instances() { return Instances; }
+    static const QList<ConfigurationHolder *> &instances()
+    {
+        return Instances;
+    }
 
-	virtual void configurationUpdated() = 0;
-
+    virtual void configurationUpdated() = 0;
 };
 
-#endif // CONFIGURATION_HOLDER_H
+#endif   // CONFIGURATION_HOLDER_H

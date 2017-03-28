@@ -25,59 +25,58 @@
 
 #include <QtCore/QVector>
 
-RosterTaskCollectionStorage::RosterTaskCollectionStorage(std::shared_ptr<StoragePoint> storage) :
-		m_storage{storage}
+RosterTaskCollectionStorage::RosterTaskCollectionStorage(std::shared_ptr<StoragePoint> storage) : m_storage{storage}
 {
-	Q_ASSERT(m_storage);
-	Q_ASSERT(m_storage->storage());
+    Q_ASSERT(m_storage);
+    Q_ASSERT(m_storage->storage());
 }
 
 QVector<RosterTask> RosterTaskCollectionStorage::loadRosterTasks()
 {
-	auto result = QVector<RosterTask>{};
+    auto result = QVector<RosterTask>{};
 
-	auto rosterTasksNode = m_storage->storage()->getNode(m_storage->point(), "RosterTasks");
+    auto rosterTasksNode = m_storage->storage()->getNode(m_storage->point(), "RosterTasks");
 
-	auto rosterTaskNodes = rosterTasksNode.childNodes();
-	auto rosterTaskCount = rosterTaskNodes.count();
+    auto rosterTaskNodes = rosterTasksNode.childNodes();
+    auto rosterTaskCount = rosterTaskNodes.count();
 
-	for (decltype(rosterTaskCount) i = 0; i < rosterTaskCount; i++)
-	{
-		auto rosterTaskElement = rosterTaskNodes.at(i).toElement();
-		if (rosterTaskElement.isNull() || rosterTaskElement.text().isEmpty())
-			continue;
+    for (decltype(rosterTaskCount) i = 0; i < rosterTaskCount; i++)
+    {
+        auto rosterTaskElement = rosterTaskNodes.at(i).toElement();
+        if (rosterTaskElement.isNull() || rosterTaskElement.text().isEmpty())
+            continue;
 
-		if (rosterTaskElement.nodeName() == "Add")
-			result.append(RosterTask(RosterTaskType::Add, rosterTaskElement.text()));
-		else if (rosterTaskElement.nodeName() == "Delete")
-			result.append(RosterTask(RosterTaskType::Delete, rosterTaskElement.text()));
-		else if (rosterTaskElement.nodeName() == "Update")
-			result.append(RosterTask(RosterTaskType::Update, rosterTaskElement.text()));
-	}
+        if (rosterTaskElement.nodeName() == "Add")
+            result.append(RosterTask(RosterTaskType::Add, rosterTaskElement.text()));
+        else if (rosterTaskElement.nodeName() == "Delete")
+            result.append(RosterTask(RosterTaskType::Delete, rosterTaskElement.text()));
+        else if (rosterTaskElement.nodeName() == "Update")
+            result.append(RosterTask(RosterTaskType::Update, rosterTaskElement.text()));
+    }
 
-	return result;
+    return result;
 }
 
 void RosterTaskCollectionStorage::storeRosterTasks(const QVector<RosterTask> &tasks)
 {
-	auto rosterTasksNode = m_storage->storage()->getNode(m_storage->point(), "RosterTasks");
+    auto rosterTasksNode = m_storage->storage()->getNode(m_storage->point(), "RosterTasks");
 
-	while (!rosterTasksNode.childNodes().isEmpty())
-		rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
+    while (!rosterTasksNode.childNodes().isEmpty())
+        rosterTasksNode.removeChild(rosterTasksNode.childNodes().at(0));
 
-	for (auto &&task : tasks)
-		switch (task.type())
-		{
-			case RosterTaskType::Add:
-				m_storage->storage()->createTextNode(rosterTasksNode, "Add", task.id());
-				break;
-			case RosterTaskType::Delete:
-				m_storage->storage()->createTextNode(rosterTasksNode, "Delete", task.id());
-				break;
-			case RosterTaskType::Update:
-				m_storage->storage()->createTextNode(rosterTasksNode, "Update", task.id());
-				break;
-			default:
-				break;
-		}
+    for (auto &&task : tasks)
+        switch (task.type())
+        {
+        case RosterTaskType::Add:
+            m_storage->storage()->createTextNode(rosterTasksNode, "Add", task.id());
+            break;
+        case RosterTaskType::Delete:
+            m_storage->storage()->createTextNode(rosterTasksNode, "Delete", task.id());
+            break;
+        case RosterTaskType::Update:
+            m_storage->storage()->createTextNode(rosterTasksNode, "Update", task.id());
+            break;
+        default:
+            break;
+        }
 }

@@ -22,9 +22,9 @@
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "os/generic/compositing-aware-object.h"
 #include "os/generic/desktop-aware-object.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -39,50 +39,52 @@ class InjectedFactory;
 
 class KADUAPI ChatWindow : public QWidget, ConfigurationAwareObject, CompositingAwareObject, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatWindow(Chat chat, QWidget *parent = nullptr);
-	virtual ~ChatWindow();
+    explicit ChatWindow(Chat chat, QWidget *parent = nullptr);
+    virtual ~ChatWindow();
 
-	Chat chat() const;
-	ChatWidget * chatWidget() const { return m_chatWidget; }
+    Chat chat() const;
+    ChatWidget *chatWidget() const
+    {
+        return m_chatWidget;
+    }
 
-	bool isChatWidgetActive(const ChatWidget *chatWidget);
+    bool isChatWidgetActive(const ChatWidget *chatWidget);
 
-	void setWindowTitle(QString title);
+    void setWindowTitle(QString title);
 
 signals:
-	void activated(ChatWindow *chatWindow);
-	void windowDestroyed(ChatWindow *chatWindow);
+    void activated(ChatWindow *chatWindow);
+    void windowDestroyed(ChatWindow *chatWindow);
 
 protected:
-	virtual void closeEvent(QCloseEvent *e) override;
-	virtual void changeEvent(QEvent *event) override;
+    virtual void closeEvent(QCloseEvent *e) override;
+    virtual void changeEvent(QEvent *event) override;
 
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
-	virtual void compositingEnabled() override;
-	virtual void compositingDisabled() override;
+    virtual void compositingEnabled() override;
+    virtual void compositingDisabled() override;
 
 private:
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	Chat m_chat;
-	ChatWidget *m_chatWidget;
+    Chat m_chat;
+    ChatWidget *m_chatWidget;
 
-	QRect defaultGeometry() const;
+    QRect defaultGeometry() const;
 
 private slots:
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void updateTitle();
-
+    void updateTitle();
 };

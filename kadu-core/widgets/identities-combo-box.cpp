@@ -32,69 +32,67 @@
 #include <QtWidgets/QInputDialog>
 #include <QtWidgets/QLineEdit>
 
-IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) :
-		ActionsComboBox(parent)
+IdentitiesComboBox::IdentitiesComboBox(QWidget *parent) : ActionsComboBox(parent)
 {
 }
 
 IdentitiesComboBox::~IdentitiesComboBox()
 {
-	m_identityManager->removeUnused();
+    m_identityManager->removeUnused();
 }
 
 void IdentitiesComboBox::setIdentityManager(IdentityManager *identityManager)
 {
-	m_identityManager = identityManager;
+    m_identityManager = identityManager;
 }
 
 void IdentitiesComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void IdentitiesComboBox::init()
 {
-	m_identityManager->removeUnused();
+    m_identityManager->removeUnused();
 
-	CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
-	QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
-	createNewIdentityActionFont.setItalic(true);
-	CreateNewIdentityAction->setFont(createNewIdentityActionFont);
-	CreateNewIdentityAction->setData(true);
-	connect(CreateNewIdentityAction, SIGNAL(triggered()), this, SLOT(createNewIdentity()));
-	addAfterAction(CreateNewIdentityAction);
+    CreateNewIdentityAction = new QAction(tr("Create a new identity..."), this);
+    QFont createNewIdentityActionFont = CreateNewIdentityAction->font();
+    createNewIdentityActionFont.setItalic(true);
+    CreateNewIdentityAction->setFont(createNewIdentityActionFont);
+    CreateNewIdentityAction->setData(true);
+    connect(CreateNewIdentityAction, SIGNAL(triggered()), this, SLOT(createNewIdentity()));
+    addAfterAction(CreateNewIdentityAction);
 
-	ModelChain *chain = new ModelChain(this);
-	chain->setBaseModel(m_injectedFactory->makeInjected<IdentityModel>(chain));
-	setUpModel(IdentityRole, chain);
+    ModelChain *chain = new ModelChain(this);
+    chain->setBaseModel(m_injectedFactory->makeInjected<IdentityModel>(chain));
+    setUpModel(IdentityRole, chain);
 
-	setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 }
 
 void IdentitiesComboBox::setCurrentIdentity(Identity identity)
 {
-	setCurrentValue(identity);
+    setCurrentValue(identity);
 }
 
 Identity IdentitiesComboBox::currentIdentity()
 {
-	return currentValue().value<Identity>();
+    return currentValue().value<Identity>();
 }
 
 void IdentitiesComboBox::createNewIdentity()
 {
-	bool ok;
+    bool ok;
 
-	QString identityName = QInputDialog::getText(this, tr("New Identity"),
-			tr("Please enter the name for the new identity:"), QLineEdit::Normal,
-			QString(), &ok);
+    QString identityName = QInputDialog::getText(
+        this, tr("New Identity"), tr("Please enter the name for the new identity:"), QLineEdit::Normal, QString(), &ok);
 
-	if (!ok)
-		return;
+    if (!ok)
+        return;
 
-	Identity newIdentity = m_identityManager->byName(identityName, true);
-	if (newIdentity)
-		setCurrentIdentity(newIdentity);
+    Identity newIdentity = m_identityManager->byName(identityName, true);
+    if (newIdentity)
+        setCurrentIdentity(newIdentity);
 }
 
 #include "moc_identities-combo-box.cpp"

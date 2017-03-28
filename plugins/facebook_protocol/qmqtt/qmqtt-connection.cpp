@@ -29,11 +29,9 @@
 
 #include <QtCore/QIODevice>
 
-QMqttConnection::QMqttConnection(QIODevice &ioDevice, QObject *parent) :
-		QObject{parent},
-		m_ioDevice{ioDevice}
+QMqttConnection::QMqttConnection(QIODevice &ioDevice, QObject *parent) : QObject{parent}, m_ioDevice{ioDevice}
 {
-	connect(&m_ioDevice, &QIODevice::readyRead, this, &QMqttConnection::readyRead);
+    connect(&m_ioDevice, &QIODevice::readyRead, this, &QMqttConnection::readyRead);
 }
 
 QMqttConnection::~QMqttConnection()
@@ -42,22 +40,22 @@ QMqttConnection::~QMqttConnection()
 
 void QMqttConnection::sendMessage(const QMqttMessage &message)
 {
-	auto data = QMqttMessageSender::writeMessage(message);
-	m_ioDevice.write(data);
+    auto data = QMqttMessageSender::writeMessage(message);
+    m_ioDevice.write(data);
 }
 
 void QMqttConnection::readyRead()
 {
-	try
-	{
-		auto data = m_ioDevice.readAll();
-		m_messageReceiver.writeBytes(data);
-		while (auto message = m_messageReceiver.readMessage())
-			emit messageReceived(*message);
-	}
-	catch (QMqttException &)
-	{
-		m_ioDevice.close();
-		emit connectionClosed(QMqttError::MessageTooLarge);
-	}
+    try
+    {
+        auto data = m_ioDevice.readAll();
+        m_messageReceiver.writeBytes(data);
+        while (auto message = m_messageReceiver.readMessage())
+            emit messageReceived(*message);
+    }
+    catch (QMqttException &)
+    {
+        m_ioDevice.close();
+        emit connectionClosed(QMqttError::MessageTooLarge);
+    }
 }

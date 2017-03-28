@@ -41,31 +41,30 @@ class QNetworkAccessManager;
 
 class GaduDriveService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduDriveService(Account account, QObject *parent = nullptr);
-	virtual ~GaduDriveService();
+    explicit GaduDriveService(Account account, QObject *parent = nullptr);
+    virtual ~GaduDriveService();
 
-	void setGaduIMTokenService(GaduIMTokenService *imTokenService);
+    void setGaduIMTokenService(GaduIMTokenService *imTokenService);
 
-	GaduDriveSendTicketRequest * requestSendTicket(QString recipient, QString fileName, qint64 fileSize);
-	GaduDriveGetTransfer * getFromDrive(QString downloadId, QString fileName, QIODevice *destination);
-	GaduDrivePutTransfer * putInOutbox(GaduDriveSendTicket ticket, QString fileName, QIODevice *source);
-	GaduDriveSendStatusUpdateRequest * requestSendStatusUpdate(QString ticketId);
+    GaduDriveSendTicketRequest *requestSendTicket(QString recipient, QString fileName, qint64 fileSize);
+    GaduDriveGetTransfer *getFromDrive(QString downloadId, QString fileName, QIODevice *destination);
+    GaduDrivePutTransfer *putInOutbox(GaduDriveSendTicket ticket, QString fileName, QIODevice *source);
+    GaduDriveSendStatusUpdateRequest *requestSendStatusUpdate(QString ticketId);
 
 private:
-	QPointer<VersionService> m_versionService;
+    QPointer<VersionService> m_versionService;
 
-	owned_qptr<QNetworkAccessManager> m_networkAccessManager;
-	owned_qptr<GaduDriveAuthorization> m_authorization;
-	QPointer<GaduIMTokenService> m_imTokenService;
-	GaduDriveSessionToken m_sessionToken;
+    owned_qptr<QNetworkAccessManager> m_networkAccessManager;
+    owned_qptr<GaduDriveAuthorization> m_authorization;
+    QPointer<GaduIMTokenService> m_imTokenService;
+    GaduDriveSessionToken m_sessionToken;
 
 private slots:
-	INJEQT_SET void setVersionService(VersionService *versionService);
+    INJEQT_SET void setVersionService(VersionService *versionService);
 
-	void authorized(GaduDriveSessionToken sessionToken);
-	void imTokenChanged(QByteArray);
-
+    void authorized(GaduDriveSessionToken sessionToken);
+    void imTokenChanged(QByteArray);
 };

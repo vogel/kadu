@@ -22,9 +22,9 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "icons/kadu-icon.h"
 #include "status/status.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QPushButton>
@@ -34,37 +34,39 @@ class StatusContainer;
 
 class KADUAPI StatusIcon : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	StatusContainer *MyStatusContainer;
-	QTimer *BlinkTimer;
-	bool BlinkOffline;
+    StatusContainer *MyStatusContainer;
+    QTimer *BlinkTimer;
+    bool BlinkOffline;
 
-	KaduIcon Icon;
+    KaduIcon Icon;
 
-	void updateStatus();
+    void updateStatus();
 
-	void enableBlink();
-	void disableBlink();
+    void enableBlink();
+    void disableBlink();
 
-	void setIcon(const KaduIcon &icon);
+    void setIcon(const KaduIcon &icon);
 
 private slots:
-	INJEQT_INIT void init();
+    INJEQT_INIT void init();
 
-	void blink();
-	void statusUpdated(StatusContainer *container = 0);
+    void blink();
+    void statusUpdated(StatusContainer *container = 0);
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	explicit StatusIcon(StatusContainer *statusContainer, QObject *parent = nullptr);
-	virtual ~StatusIcon();
+    explicit StatusIcon(StatusContainer *statusContainer, QObject *parent = nullptr);
+    virtual ~StatusIcon();
 
-	const KaduIcon & icon() const { return Icon; }
+    const KaduIcon &icon() const
+    {
+        return Icon;
+    }
 
 signals:
-	void iconUpdated(const KaduIcon &icon);
-
+    void iconUpdated(const KaduIcon &icon);
 };

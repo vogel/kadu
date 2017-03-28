@@ -26,8 +26,7 @@
 
 #include "menu/menu-inventory.h"
 
-AutostatusActions::AutostatusActions(QObject *parent) :
-		QObject{parent}
+AutostatusActions::AutostatusActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,38 +36,32 @@ AutostatusActions::~AutostatusActions()
 
 void AutostatusActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void AutostatusActions::setToggleAutostatusAction(ToggleAutostatusAction *toggleAutostatusAction)
 {
-	m_toggleAutostatusAction = toggleAutostatusAction;
+    m_toggleAutostatusAction = toggleAutostatusAction;
 }
 
 void AutostatusActions::init()
 {
-	registerActions();
+    registerActions();
 }
 
 void AutostatusActions::done()
 {
-	unregisterActions();
+    unregisterActions();
 }
 
 void AutostatusActions::registerActions()
 {
-	m_menuInventory
-		->menu("main")
-		->addAction(m_toggleAutostatusAction, KaduMenu::SectionMiscTools, 2)
-		->update();
+    m_menuInventory->menu("main")->addAction(m_toggleAutostatusAction, KaduMenu::SectionMiscTools, 2)->update();
 }
 
 void AutostatusActions::unregisterActions()
 {
-	m_menuInventory
-		->menu("main")
-		->removeAction(m_toggleAutostatusAction)
-		->update();
+    m_menuInventory->menu("main")->removeAction(m_toggleAutostatusAction)->update();
 }
 
 #include "moc_autostatus-actions.cpp"

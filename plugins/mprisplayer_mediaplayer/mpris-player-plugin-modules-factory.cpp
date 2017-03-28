@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-MprisPlayerPluginModulesFactory::MprisPlayerPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+MprisPlayerPluginModulesFactory::MprisPlayerPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ MprisPlayerPluginModulesFactory::~MprisPlayerPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> MprisPlayerPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<MprisPlayerModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<MprisPlayerModule>());
 
-	return modules;
+    return modules;
 }
 
 QString MprisPlayerPluginModulesFactory::parentInjectorName() const
 {
-	return "mediaplayer";
+    return "mediaplayer";
 }
 
 #include "moc_mpris-player-plugin-modules-factory.cpp"

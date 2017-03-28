@@ -32,22 +32,22 @@
  */
 enum class RosterTaskType
 {
-	/**
-	 * Do nothing.
-	 */
-	None,
-	/**
-	 * Add roster entry.
-	 */
-	Add,
-	/**
-	 * Delete roster entry.
-	 */
-	Delete,
-	/**
-	 * Update roster entry.
-	 */
-	Update
+    /**
+     * Do nothing.
+     */
+    None,
+    /**
+     * Add roster entry.
+     */
+    Add,
+    /**
+     * Delete roster entry.
+     */
+    Delete,
+    /**
+     * Update roster entry.
+     */
+    Update
 };
 
 /**

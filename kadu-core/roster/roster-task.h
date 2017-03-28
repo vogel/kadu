@@ -39,20 +39,18 @@ enum class RosterTaskType;
  */
 class KADUAPI RosterTask
 {
-
 public:
-	RosterTask();
-	RosterTask(RosterTaskType type, const QString &id);
+    RosterTask();
+    RosterTask(RosterTaskType type, const QString &id);
 
-	RosterTaskType type() const;
-	QString id() const;
+    RosterTaskType type() const;
+    QString id() const;
 
-	friend KADUAPI bool operator == (const RosterTask &x, const RosterTask &y);
+    friend KADUAPI bool operator==(const RosterTask &x, const RosterTask &y);
 
 private:
-	RosterTaskType m_type;
-	QString m_id;
-
+    RosterTaskType m_type;
+    QString m_id;
 };
 
 /**

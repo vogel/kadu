@@ -41,17 +41,16 @@
  */
 class KADUAPI NetworkManagerDummy : public NetworkManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NetworkManagerDummy(QObject *parent = nullptr);
-	virtual ~NetworkManagerDummy();
+    Q_INVOKABLE explicit NetworkManagerDummy(QObject *parent = nullptr);
+    virtual ~NetworkManagerDummy();
 
-	virtual bool isOnline();
+    virtual bool isOnline();
 
 public slots:
-	virtual void forceOnline();
-
+    virtual void forceOnline();
 };
 
 /**

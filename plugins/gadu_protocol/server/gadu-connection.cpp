@@ -19,8 +19,7 @@
 
 #include "gadu-connection.h"
 
-GaduConnection::GaduConnection(QObject *parent) :
-		QObject{parent}
+GaduConnection::GaduConnection(QObject *parent) : QObject{parent}
 {
 }
 

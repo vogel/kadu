@@ -24,9 +24,8 @@
 
 #include "misc/memory.h"
 
-VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider(QObject *parent) :
-		QObject{parent},
-		m_ignoreLinks{std::make_unique<VideoExpander>()}
+VideoExpanderDomVisitorProvider::VideoExpanderDomVisitorProvider(QObject *parent)
+        : QObject{parent}, m_ignoreLinks{std::make_unique<VideoExpander>()}
 {
 }
 
@@ -34,14 +33,14 @@ VideoExpanderDomVisitorProvider::~VideoExpanderDomVisitorProvider()
 {
 }
 
-const DomVisitor * VideoExpanderDomVisitorProvider::provide() const
+const DomVisitor *VideoExpanderDomVisitorProvider::provide() const
 {
-	return m_configuration.showVideos() ? &m_ignoreLinks : nullptr;
+    return m_configuration.showVideos() ? &m_ignoreLinks : nullptr;
 }
 
 void VideoExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 #include "moc_video-expander-dom-visitor-provider.cpp"

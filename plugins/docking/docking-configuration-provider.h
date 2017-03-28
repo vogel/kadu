@@ -31,29 +31,28 @@ class Configuration;
 
 class DockingConfigurationProvider final : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit DockingConfigurationProvider(QObject *parent = nullptr);
-	virtual ~DockingConfigurationProvider();
+    Q_INVOKABLE explicit DockingConfigurationProvider(QObject *parent = nullptr);
+    virtual ~DockingConfigurationProvider();
 
-	const DockingConfiguration & configuration() const;
+    const DockingConfiguration &configuration() const;
 
 signals:
-	void updated();
+    void updated();
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	DockingConfiguration m_dockingConfiguration;
+    DockingConfiguration m_dockingConfiguration;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

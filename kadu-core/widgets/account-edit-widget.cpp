@@ -27,91 +27,93 @@
 #include "account-configuration-widget-factory.h"
 #include "account-edit-widget.h"
 
-AccountEditWidget::AccountEditWidget(Account account, QWidget *parent) :
-		AccountConfigurationWidget(account, parent),
-		StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
-		CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
+AccountEditWidget::AccountEditWidget(Account account, QWidget *parent)
+        : AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this)),
+          CompositeStateNotifier(new CompositeConfigurationValueStateNotifier(this))
 {
-	CompositeStateNotifier->addConfigurationValueStateNotifier(StateNotifier);
+    CompositeStateNotifier->addConfigurationValueStateNotifier(StateNotifier);
 }
 
 AccountEditWidget::~AccountEditWidget()
 {
 }
 
-void AccountEditWidget::setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository)
+void AccountEditWidget::setAccountConfigurationWidgetFactoryRepository(
+    AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository)
 {
-	m_accountConfigurationWidgetFactoryRepository = accountConfigurationWidgetFactoryRepository;
+    m_accountConfigurationWidgetFactoryRepository = accountConfigurationWidgetFactoryRepository;
 }
 
 void AccountEditWidget::init()
 {
-	connect(m_accountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory*)),
-			this, SLOT(factoryRegistered(AccountConfigurationWidgetFactory*)));
-	connect(m_accountConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(AccountConfigurationWidgetFactory*)),
-			this, SLOT(factoryUnregistered(AccountConfigurationWidgetFactory*)));
+    connect(
+        m_accountConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(AccountConfigurationWidgetFactory *)),
+        this, SLOT(factoryRegistered(AccountConfigurationWidgetFactory *)));
+    connect(
+        m_accountConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(AccountConfigurationWidgetFactory *)),
+        this, SLOT(factoryUnregistered(AccountConfigurationWidgetFactory *)));
 
-	for (auto factory : m_accountConfigurationWidgetFactoryRepository->factories())
-		factoryRegistered(factory);
+    for (auto factory : m_accountConfigurationWidgetFactoryRepository->factories())
+        factoryRegistered(factory);
 }
 
-AccountConfigurationWidgetFactoryRepository * AccountEditWidget::accountConfigurationWidgetFactoryRepository() const
+AccountConfigurationWidgetFactoryRepository *AccountEditWidget::accountConfigurationWidgetFactoryRepository() const
 {
-	return m_accountConfigurationWidgetFactoryRepository;
+    return m_accountConfigurationWidgetFactoryRepository;
 }
 
 void AccountEditWidget::factoryRegistered(AccountConfigurationWidgetFactory *factory)
 {
-	AccountConfigurationWidget *widget = factory->createWidget(account(), this);
-	if (widget)
-	{
-		if (widget->stateNotifier())
-			CompositeStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
-		AccountConfigurationWidgets.insert(factory, widget);
-		emit widgetAdded(widget);
-	}
+    AccountConfigurationWidget *widget = factory->createWidget(account(), this);
+    if (widget)
+    {
+        if (widget->stateNotifier())
+            CompositeStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
+        AccountConfigurationWidgets.insert(factory, widget);
+        emit widgetAdded(widget);
+    }
 }
 
 void AccountEditWidget::factoryUnregistered(AccountConfigurationWidgetFactory *factory)
 {
-	if (AccountConfigurationWidgets.contains(factory))
-	{
-		AccountConfigurationWidget *widget = AccountConfigurationWidgets.value(factory);
-		if (!widget)
-			return;
-		if (widget->stateNotifier())
-			CompositeStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
-		AccountConfigurationWidgets.remove(factory);
-		emit widgetRemoved(widget);
-		widget->deleteLater();
-	}
+    if (AccountConfigurationWidgets.contains(factory))
+    {
+        AccountConfigurationWidget *widget = AccountConfigurationWidgets.value(factory);
+        if (!widget)
+            return;
+        if (widget->stateNotifier())
+            CompositeStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+        AccountConfigurationWidgets.remove(factory);
+        emit widgetRemoved(widget);
+        widget->deleteLater();
+    }
 }
 
 QList<AccountConfigurationWidget *> AccountEditWidget::accountConfigurationWidgets() const
 {
-	return AccountConfigurationWidgets.values();
+    return AccountConfigurationWidgets.values();
 }
 
 void AccountEditWidget::applyAccountConfigurationWidgets()
 {
-	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
-		widget->apply();
+    foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+        widget->apply();
 }
 
 void AccountEditWidget::cancelAccountConfigurationWidgets()
 {
-	foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
-		widget->cancel();
+    foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+        widget->cancel();
 }
 
-SimpleConfigurationValueStateNotifier * AccountEditWidget::simpleStateNotifier() const
+SimpleConfigurationValueStateNotifier *AccountEditWidget::simpleStateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }
 
-const ConfigurationValueStateNotifier * AccountEditWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *AccountEditWidget::stateNotifier() const
 {
-	return CompositeStateNotifier;
+    return CompositeStateNotifier;
 }
 
 #include "moc_account-edit-widget.cpp"

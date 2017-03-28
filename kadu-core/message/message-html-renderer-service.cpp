@@ -24,8 +24,7 @@
 #include "html/normalized-html-string.h"
 #include "message/message.h"
 
-MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) :
-		QObject(parent)
+MessageHtmlRendererService::MessageHtmlRendererService(QObject *parent) : QObject(parent)
 {
 }
 
@@ -35,12 +34,13 @@ MessageHtmlRendererService::~MessageHtmlRendererService()
 
 void MessageHtmlRendererService::setDomProcessorService(DomProcessorService *domProcessorService)
 {
-	m_domProcessorService = domProcessorService;
+    m_domProcessorService = domProcessorService;
 }
 
 QString MessageHtmlRendererService::renderMessage(const Message &message)
 {
-	return QString{R"(<span style="white-space: pre-wrap;">%1</span>)"}.arg(m_domProcessorService->process(message.content().string()));
+    return QString{R"(<span style="white-space: pre-wrap;">%1</span>)"}.arg(
+        m_domProcessorService->process(message.content().string()));
 }
 
 #include "moc_message-html-renderer-service.cpp"

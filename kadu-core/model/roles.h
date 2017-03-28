@@ -55,4 +55,4 @@ typedef QSet<int> RoleSet;
 // needed for ActionRole
 Q_DECLARE_METATYPE(QAction *);
 
-#endif // ROLES_H
+#endif   // ROLES_H

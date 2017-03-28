@@ -23,10 +23,10 @@
 
 #include "sql-messages-status-storage.h"
 
-SqlMessagesStatusStorage::SqlMessagesStatusStorage(HistorySqlStorage *sqlStorage) :
-		HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
+SqlMessagesStatusStorage::SqlMessagesStatusStorage(HistorySqlStorage *sqlStorage)
+        : HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
 {
-	Q_ASSERT(SqlStorage);
+    Q_ASSERT(SqlStorage);
 }
 
 SqlMessagesStatusStorage::~SqlMessagesStatusStorage()
@@ -35,22 +35,22 @@ SqlMessagesStatusStorage::~SqlMessagesStatusStorage()
 
 QFuture<QVector<Talkable>> SqlMessagesStatusStorage::talkables()
 {
-	return SqlStorage->statusBuddies();
+    return SqlStorage->statusBuddies();
 }
 
 QFuture<QVector<HistoryQueryResult>> SqlMessagesStatusStorage::dates(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->statusDates(historyQuery);
+    return SqlStorage->statusDates(historyQuery);
 }
 
 QFuture<SortedMessages> SqlMessagesStatusStorage::messages(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->statuses(historyQuery);
+    return SqlStorage->statuses(historyQuery);
 }
 
 void SqlMessagesStatusStorage::deleteMessages(const Talkable &talkable, const QDate &date)
 {
-	SqlStorage->clearStatusHistory(talkable, date);
+    SqlStorage->clearStatusHistory(talkable, date);
 }
 
 #include "moc_sql-messages-status-storage.cpp"

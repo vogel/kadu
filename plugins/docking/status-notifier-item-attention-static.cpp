@@ -21,10 +21,11 @@
 
 #include <QtWidgets/QSystemTrayIcon>
 
-StatusNotifierItemAttentionStatic::StatusNotifierItemAttentionStatic(QIcon icon, QSystemTrayIcon *systemTrayIcon, QObject *parent) :
-		StatusNotifierItemAttention{parent}
+StatusNotifierItemAttentionStatic::StatusNotifierItemAttentionStatic(
+    QIcon icon, QSystemTrayIcon *systemTrayIcon, QObject *parent)
+        : StatusNotifierItemAttention{parent}
 {
-	systemTrayIcon->setIcon(std::move(icon));
+    systemTrayIcon->setIcon(std::move(icon));
 }
 
 StatusNotifierItemAttentionStatic::~StatusNotifierItemAttentionStatic()

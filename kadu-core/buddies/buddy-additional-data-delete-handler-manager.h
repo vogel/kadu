@@ -22,30 +22,32 @@
 
 #pragma once
 
-#include <QtCore/QObject>
 #include "exports.h"
+#include <QtCore/QObject>
 
 class BuddyAdditionalDataDeleteHandler;
 
 class KADUAPI BuddyAdditionalDataDeleteHandlerManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyAdditionalDataDeleteHandlerManager(QObject *parent = nullptr);
-	virtual ~BuddyAdditionalDataDeleteHandlerManager();
+    Q_INVOKABLE explicit BuddyAdditionalDataDeleteHandlerManager(QObject *parent = nullptr);
+    virtual ~BuddyAdditionalDataDeleteHandlerManager();
 
-	const QList<BuddyAdditionalDataDeleteHandler *> & items() const { return m_items; }
-	BuddyAdditionalDataDeleteHandler *byName(const QString &name);
+    const QList<BuddyAdditionalDataDeleteHandler *> &items() const
+    {
+        return m_items;
+    }
+    BuddyAdditionalDataDeleteHandler *byName(const QString &name);
 
-	void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
-	void unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
+    void registerAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
+    void unregisterAdditionalDataDeleteHandler(BuddyAdditionalDataDeleteHandler *handler);
 
 signals:
-	void additionalDataDeleteHandlerRegistered(BuddyAdditionalDataDeleteHandler *handler);
-	void additionalDataDeleteHandlerUnregistered(BuddyAdditionalDataDeleteHandler *handler);
+    void additionalDataDeleteHandlerRegistered(BuddyAdditionalDataDeleteHandler *handler);
+    void additionalDataDeleteHandlerUnregistered(BuddyAdditionalDataDeleteHandler *handler);
 
 private:
-	QList<BuddyAdditionalDataDeleteHandler *> m_items;
-
+    QList<BuddyAdditionalDataDeleteHandler *> m_items;
 };

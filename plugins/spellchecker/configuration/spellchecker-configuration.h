@@ -32,47 +32,73 @@ class Configuration;
 
 class SpellcheckerConfiguration : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SpellcheckerConfiguration(QObject *parent = nullptr);
-	virtual ~SpellcheckerConfiguration();
+    Q_INVOKABLE explicit SpellcheckerConfiguration(QObject *parent = nullptr);
+    virtual ~SpellcheckerConfiguration();
 
-	bool bold() const { return Bold; }
-	bool italic() const { return Italic; }
-	bool underline() const { return Underline; }
-	bool accents() const { return Accents; }
-	bool casesens() const { return Case; }
-	bool suggester() const { return Suggester; }
-	const QColor & color() const { return Color; }
-	const QStringList & checked() const { return Checked; }
-	int suggesterWordCount() const { return SuggesterWordCount; }
+    bool bold() const
+    {
+        return Bold;
+    }
+    bool italic() const
+    {
+        return Italic;
+    }
+    bool underline() const
+    {
+        return Underline;
+    }
+    bool accents() const
+    {
+        return Accents;
+    }
+    bool casesens() const
+    {
+        return Case;
+    }
+    bool suggester() const
+    {
+        return Suggester;
+    }
+    const QColor &color() const
+    {
+        return Color;
+    }
+    const QStringList &checked() const
+    {
+        return Checked;
+    }
+    int suggesterWordCount() const
+    {
+        return SuggesterWordCount;
+    }
 
-	void setChecked(const QStringList &checked);
+    void setChecked(const QStringList &checked);
 
 signals:
-	void updated();
+    void updated();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	bool Bold;
-	bool Italic;
-	bool Underline;
-	bool Accents;
-	bool Case;
-	bool Suggester;
-	QColor Color;
-	QStringList Checked;
-	int SuggesterWordCount;
+    bool Bold;
+    bool Italic;
+    bool Underline;
+    bool Accents;
+    bool Case;
+    bool Suggester;
+    QColor Color;
+    QStringList Checked;
+    int SuggesterWordCount;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

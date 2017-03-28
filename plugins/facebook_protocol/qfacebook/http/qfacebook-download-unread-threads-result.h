@@ -25,11 +25,11 @@
 
 struct QFacebookDownloadUnreadThreadResult
 {
-	QFacebookUid uid;
-	int unreadCount;
+    QFacebookUid uid;
+    int unreadCount;
 };
 
 struct QFacebookDownloadUnreadThreadsResult
 {
-	std::vector<QFacebookDownloadUnreadThreadResult> unreadThreads;
+    std::vector<QFacebookDownloadUnreadThreadResult> unreadThreads;
 };

@@ -19,8 +19,7 @@
 
 #include "buddy-configuration-widget-factory-repository.h"
 
-BuddyConfigurationWidgetFactoryRepository::BuddyConfigurationWidgetFactoryRepository(QObject* parent) :
-		QObject(parent)
+BuddyConfigurationWidgetFactoryRepository::BuddyConfigurationWidgetFactoryRepository(QObject *parent) : QObject(parent)
 {
 }
 
@@ -30,23 +29,23 @@ BuddyConfigurationWidgetFactoryRepository::~BuddyConfigurationWidgetFactoryRepos
 
 void BuddyConfigurationWidgetFactoryRepository::registerFactory(BuddyConfigurationWidgetFactory *factory)
 {
-	if (Factories.contains(factory))
-		return;
+    if (Factories.contains(factory))
+        return;
 
-	Factories.append(factory);
-	emit factoryRegistered(factory);
+    Factories.append(factory);
+    emit factoryRegistered(factory);
 }
 
 void BuddyConfigurationWidgetFactoryRepository::unregisterFactory(BuddyConfigurationWidgetFactory *factory)
 {
-	if (!Factories.contains(factory))
-		return;
+    if (!Factories.contains(factory))
+        return;
 
-	Factories.removeAll(factory);
-	emit factoryUnregistered(factory);
+    Factories.removeAll(factory);
+    emit factoryUnregistered(factory);
 }
 
 QList<BuddyConfigurationWidgetFactory *> BuddyConfigurationWidgetFactoryRepository::factories() const
 {
-	return Factories;
+    return Factories;
 }

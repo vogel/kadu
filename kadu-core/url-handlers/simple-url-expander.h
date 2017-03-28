@@ -26,13 +26,11 @@
 
 class KADUAPI SimpleUrlExpander : public DomTextRegexpVisitor
 {
-
 public:
-	explicit SimpleUrlExpander(QRegExp regExp);
-	virtual ~SimpleUrlExpander();
+    explicit SimpleUrlExpander(QRegExp regExp);
+    virtual ~SimpleUrlExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
-
+    virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 };
 
-#endif // SIMPLE_URL_EXPANDER_H
+#endif   // SIMPLE_URL_EXPANDER_H

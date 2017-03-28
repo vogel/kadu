@@ -45,46 +45,47 @@ class QXmppVCardManager;
  */
 class JabberVCardService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of JabberVCardService.
-	 * @param parent QObject parent
-	 */
-	explicit JabberVCardService(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
-	virtual ~JabberVCardService();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of JabberVCardService.
+     * @param parent QObject parent
+     */
+    explicit JabberVCardService(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
+    virtual ~JabberVCardService();
 
-	/**
-	 * @short Get JabberVCardDownloader for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return JabberVCardDownloader for this service
-	 *
-	 * This method will create and return JabberVCardDownloader class that can be used to download VCard for any contact.
-	 * This method can return null if it is impossible to download a VCard.
-	 *
-	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
-	 * itself after one use, so next instance should be created in case first upload fails.
-	 */
-	JabberVCardDownloader * createVCardDownloader();
+    /**
+     * @short Get JabberVCardDownloader for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return JabberVCardDownloader for this service
+     *
+     * This method will create and return JabberVCardDownloader class that can be used to download VCard for any
+     * contact.
+     * This method can return null if it is impossible to download a VCard.
+     *
+     * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+     * itself after one use, so next instance should be created in case first upload fails.
+     */
+    JabberVCardDownloader *createVCardDownloader();
 
-	/**
-	 * @short Get JabberVCardUploader for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return JabberVCardUploader for this service
-	 *
-	 * This method will create and return JabberVCardUploader class that can be used to upload new VCard for account owner.
-	 * This method can return null if it is impossible to upload a VCard.
-	 *
-	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
-	 * itself after one use, so next instance should be created in case first upload fails.
-	 */
-	JabberVCardUploader * createVCardUploader();
+    /**
+     * @short Get JabberVCardUploader for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return JabberVCardUploader for this service
+     *
+     * This method will create and return JabberVCardUploader class that can be used to upload new VCard for account
+     * owner.
+     * This method can return null if it is impossible to upload a VCard.
+     *
+     * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+     * itself after one use, so next instance should be created in case first upload fails.
+     */
+    JabberVCardUploader *createVCardUploader();
 
 private:
-	QPointer<QXmppVCardManager> m_vcardManager;
-
+    QPointer<QXmppVCardManager> m_vcardManager;
 };
 
 /**

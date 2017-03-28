@@ -25,15 +25,14 @@
 
 class AutoresponderConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutoresponderConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~AutoresponderConfigurationUiHandler();
+    Q_INVOKABLE explicit AutoresponderConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~AutoresponderConfigurationUiHandler();
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };

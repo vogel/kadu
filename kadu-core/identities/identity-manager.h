@@ -22,9 +22,9 @@
 
 #pragma once
 
+#include "exports.h"
 #include "identities/identity.h"
 #include "storage/manager.h"
-#include "exports.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -39,45 +39,50 @@ class Status;
 
 class KADUAPI IdentityManager : public Manager<Identity>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit IdentityManager(QObject *parent = nullptr);
-	virtual ~IdentityManager();
+    Q_INVOKABLE explicit IdentityManager(QObject *parent = nullptr);
+    virtual ~IdentityManager();
 
-	virtual QString storageNodeName() { return QStringLiteral("Identities"); }
-	virtual QString storageNodeItemName() { return QStringLiteral("Identity"); }
+    virtual QString storageNodeName()
+    {
+        return QStringLiteral("Identities");
+    }
+    virtual QString storageNodeItemName()
+    {
+        return QStringLiteral("Identity");
+    }
 
-	Identity byName(const QString &name, bool create = true);
-	Identity identityForAcccount(Account account);
+    Identity byName(const QString &name, bool create = true);
+    Identity identityForAcccount(Account account);
 
-	void removeUnused();
+    void removeUnused();
 
 signals:
-	void identityAboutToBeAdded(Identity);
-	void identityAdded(Identity);
-	void identityAboutToBeRemoved(Identity);
-	void identityRemoved(Identity);
+    void identityAboutToBeAdded(Identity);
+    void identityAdded(Identity);
+    void identityAboutToBeRemoved(Identity);
+    void identityRemoved(Identity);
 
 protected:
-	virtual void itemAboutToBeAdded(Identity item);
-	virtual void itemAdded(Identity item);
-	virtual void itemAboutToBeRemoved(Identity item);
-	virtual void itemRemoved(Identity item);
+    virtual void itemAboutToBeAdded(Identity item);
+    virtual void itemAdded(Identity item);
+    virtual void itemAboutToBeRemoved(Identity item);
+    virtual void itemRemoved(Identity item);
 
-	virtual void load();
-	virtual Identity loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    virtual void load();
+    virtual Identity loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<IdentityStorage> m_identityStorage;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<IdentityStorage> m_identityStorage;
 
-	void addDefaultIdentities();
+    void addDefaultIdentities();
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setIdentityStorage(IdentityStorage *identityStorage);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setIdentityStorage(IdentityStorage *identityStorage);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

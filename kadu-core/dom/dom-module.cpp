@@ -24,8 +24,8 @@
 
 DomModule::DomModule()
 {
-	add_type<DomProcessorServiceImpl>();
-	add_type<DomVisitorProviderRepository>();
+    add_type<DomProcessorServiceImpl>();
+    add_type<DomVisitorProviderRepository>();
 }
 
 DomModule::~DomModule()

@@ -23,10 +23,9 @@
 
 class StatusNotifierItemAttention : public QObject
 {
-	Q_OBJECT
-	
-public:
-	explicit StatusNotifierItemAttention(QObject *parent = nullptr);
-	virtual ~StatusNotifierItemAttention();
+    Q_OBJECT
 
+public:
+    explicit StatusNotifierItemAttention(QObject *parent = nullptr);
+    virtual ~StatusNotifierItemAttention();
 };

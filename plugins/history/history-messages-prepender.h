@@ -44,29 +44,29 @@ class WebkitMessagesView;
  */
 class HistoryMessagesPrepender : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new instance of HistoryMessagesPrepender and starts prepending.
-	 * @param messages future list of messages to prepend
-	 * @param chatMessagesView messages view to display prepended messages
-	 *
-	 * Calling this constructor is all that is needed with this class. Prependng messages will occur as soon as
-	 * messages from QFuture are available. If chatMessagesView is destroyed before that, nothing will happen.
-	 * After this class finishes its work (successfully or not) it deletes itself.
-	 */
-	HistoryMessagesPrepender(QFuture<SortedMessages> messages, WebkitMessagesView *chatMessagesView, QObject *parent = nullptr);
-	virtual ~HistoryMessagesPrepender();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new instance of HistoryMessagesPrepender and starts prepending.
+     * @param messages future list of messages to prepend
+     * @param chatMessagesView messages view to display prepended messages
+     *
+     * Calling this constructor is all that is needed with this class. Prependng messages will occur as soon as
+     * messages from QFuture are available. If chatMessagesView is destroyed before that, nothing will happen.
+     * After this class finishes its work (successfully or not) it deletes itself.
+     */
+    HistoryMessagesPrepender(
+        QFuture<SortedMessages> messages, WebkitMessagesView *chatMessagesView, QObject *parent = nullptr);
+    virtual ~HistoryMessagesPrepender();
 
 private:
-	QFuture<SortedMessages> m_messages;
-	QPointer<WebkitMessagesView> m_messagesView;
+    QFuture<SortedMessages> m_messages;
+    QPointer<WebkitMessagesView> m_messagesView;
 
 private slots:
-	void messagesAvailable();
-
+    void messagesAvailable();
 };
 
 /**

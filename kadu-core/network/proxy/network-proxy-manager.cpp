@@ -29,8 +29,7 @@
 
 #include "network-proxy-manager.h"
 
-NetworkProxyManager::NetworkProxyManager(QObject *parent) :
-		Manager<NetworkProxy>{parent}
+NetworkProxyManager::NetworkProxyManager(QObject *parent) : Manager<NetworkProxy>{parent}
 {
 }
 
@@ -40,119 +39,117 @@ NetworkProxyManager::~NetworkProxyManager()
 
 void NetworkProxyManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void NetworkProxyManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void NetworkProxyManager::setNetworkProxyStorage(NetworkProxyStorage *networkProxyStorage)
 {
-	m_networkProxyStorage = networkProxyStorage;
+    m_networkProxyStorage = networkProxyStorage;
 }
 
 void NetworkProxyManager::init()
 {
-	m_configurationManager->registerStorableObject(this);
-	configurationUpdated();
+    m_configurationManager->registerStorableObject(this);
+    configurationUpdated();
 }
 
 void NetworkProxyManager::done()
 {
-	m_configurationManager->unregisterStorableObject(this);
+    m_configurationManager->unregisterStorableObject(this);
 }
 
 void NetworkProxyManager::load()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	Manager<NetworkProxy>::load();
+    Manager<NetworkProxy>::load();
 }
 
 void NetworkProxyManager::store()
 {
-	QMutexLocker locker(&mutex());
+    QMutexLocker locker(&mutex());
 
-	Manager<NetworkProxy>::store();
+    Manager<NetworkProxy>::store();
 }
 
 NetworkProxy NetworkProxyManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	return m_networkProxyStorage->loadStubFromStorage(storagePoint);
+    return m_networkProxyStorage->loadStubFromStorage(storagePoint);
 }
 
 void NetworkProxyManager::configurationUpdated()
 {
-	DefaultProxy = byUuid(m_configuration->deprecatedApi()->readEntry("Network", "DefaultProxy"));
+    DefaultProxy = byUuid(m_configuration->deprecatedApi()->readEntry("Network", "DefaultProxy"));
 }
 
 void NetworkProxyManager::setDefaultProxy(const NetworkProxy &proxy)
 {
-	DefaultProxy = proxy;
-	m_configuration->deprecatedApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
+    DefaultProxy = proxy;
+    m_configuration->deprecatedApi()->writeEntry("Network", "DefaultProxy", DefaultProxy.uuid().toString());
 }
 
-const NetworkProxy & NetworkProxyManager::defaultProxy()
+const NetworkProxy &NetworkProxyManager::defaultProxy()
 {
-	return DefaultProxy;
+    return DefaultProxy;
 }
 
-NetworkProxy NetworkProxyManager::byConfiguration(const QString &address, int port,
-                                                  const QString &user, const QString &password, NotFoundAction action)
+NetworkProxy NetworkProxyManager::byConfiguration(
+    const QString &address, int port, const QString &user, const QString &password, NotFoundAction action)
 {
-	foreach (const NetworkProxy &networkProxy, items())
-	{
-		if (networkProxy.address() == address &&
-		       networkProxy.port() == port &&
-		       networkProxy.user() == user &&
-		       networkProxy.password() == password)
-			return  networkProxy;
-	}
+    foreach (const NetworkProxy &networkProxy, items())
+    {
+        if (networkProxy.address() == address && networkProxy.port() == port && networkProxy.user() == user &&
+            networkProxy.password() == password)
+            return networkProxy;
+    }
 
-	if (ActionReturnNull == action)
-		return NetworkProxy::null;
+    if (ActionReturnNull == action)
+        return NetworkProxy::null;
 
-	auto networkProxy = m_networkProxyStorage->create();
-	networkProxy.setAddress(address);
-	networkProxy.setPort(port);
-	networkProxy.setUser(user);
-	networkProxy.setPassword(password);
+    auto networkProxy = m_networkProxyStorage->create();
+    networkProxy.setAddress(address);
+    networkProxy.setPort(port);
+    networkProxy.setUser(user);
+    networkProxy.setPassword(password);
 
-	if (ActionCreateAndAdd == action)
-		addItem(networkProxy);
+    if (ActionCreateAndAdd == action)
+        addItem(networkProxy);
 
-	return networkProxy;
+    return networkProxy;
 }
 
 void NetworkProxyManager::networkProxyDataUpdated()
 {
-	NetworkProxy networkProxy(sender());
-	if (!networkProxy.isNull())
-		emit networkProxyUpdated(networkProxy);
+    NetworkProxy networkProxy(sender());
+    if (!networkProxy.isNull())
+        emit networkProxyUpdated(networkProxy);
 }
 
 void NetworkProxyManager::itemAboutToBeAdded(NetworkProxy item)
 {
-	connect(item, SIGNAL(updated()), this, SLOT(networkProxyDataUpdated()));
-	emit networkProxyAboutToBeAdded(item);
+    connect(item, SIGNAL(updated()), this, SLOT(networkProxyDataUpdated()));
+    emit networkProxyAboutToBeAdded(item);
 }
 
 void NetworkProxyManager::itemAdded(NetworkProxy item)
 {
-	emit networkProxyAdded(item);
+    emit networkProxyAdded(item);
 }
 
 void NetworkProxyManager::itemAboutToBeRemoved(NetworkProxy item)
 {
-	emit networkProxyAboutToBeRemoved(item);
+    emit networkProxyAboutToBeRemoved(item);
 }
 
 void NetworkProxyManager::itemRemoved(NetworkProxy item)
 {
-	disconnect(item, 0, this, 0);
-	emit networkProxyRemoved(item);
+    disconnect(item, 0, this, 0);
+    emit networkProxyRemoved(item);
 }
 
 #include "moc_network-proxy-manager.cpp"

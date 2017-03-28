@@ -38,22 +38,22 @@
 
 ChatModule::ChatModule()
 {
-	add_type<BuddyChatManager>();
-	add_type<ChatDataExtractor>();
-	add_type<ChatListMimeDataService>();
-	add_type<ChatManagerImpl>();
-	add_type<ChatServiceRepository>();
-	add_type<ChatStateServiceRepository>();
-	add_type<ChatStorage>();
-	add_type<ChatTypeBuddy>();
-	add_type<ChatTypeContactSet>();
-	add_type<ChatTypeContact>();
-	add_type<ChatTypeManager>();
-	add_type<ChatTypeRoom>();
-	add_type<OpenChatRepository>();
-	add_type<OpenChatService>();
-	add_type<RecentChatRepository>();
-	add_type<RecentChatService>();
+    add_type<BuddyChatManager>();
+    add_type<ChatDataExtractor>();
+    add_type<ChatListMimeDataService>();
+    add_type<ChatManagerImpl>();
+    add_type<ChatServiceRepository>();
+    add_type<ChatStateServiceRepository>();
+    add_type<ChatStorage>();
+    add_type<ChatTypeBuddy>();
+    add_type<ChatTypeContactSet>();
+    add_type<ChatTypeContact>();
+    add_type<ChatTypeManager>();
+    add_type<ChatTypeRoom>();
+    add_type<OpenChatRepository>();
+    add_type<OpenChatService>();
+    add_type<RecentChatRepository>();
+    add_type<RecentChatService>();
 }
 
 ChatModule::~ChatModule()

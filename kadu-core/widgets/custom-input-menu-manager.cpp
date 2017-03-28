@@ -30,9 +30,7 @@
 
 #include "custom-input-menu-manager.h"
 
-CustomInputMenuManager::CustomInputMenuManager(QObject *parent) :
-		QObject{parent},
-		InputContextMenuSorted{true}
+CustomInputMenuManager::CustomInputMenuManager(QObject *parent) : QObject{parent}, InputContextMenuSorted{true}
 {
 }
 
@@ -42,81 +40,82 @@ CustomInputMenuManager::~CustomInputMenuManager()
 
 void CustomInputMenuManager::sortInputContextMenu()
 {
-	if (!InputContextMenuSorted)
-	{
-		qSort(InputContextMenu);
-		InputContextMenuSorted = true;
-	}
+    if (!InputContextMenuSorted)
+    {
+        qSort(InputContextMenu);
+        InputContextMenuSorted = true;
+    }
 }
 
-void CustomInputMenuManager::addActionDescription(ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority)
+void CustomInputMenuManager::addActionDescription(
+    ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority)
 {
-	InputContextMenu.append(CustomInputMenuItem(actionDescription, category, priority));
-	InputContextMenuSorted = false;
+    InputContextMenu.append(CustomInputMenuItem(actionDescription, category, priority));
+    InputContextMenuSorted = false;
 }
 
 void CustomInputMenuManager::removeActionDescription(ActionDescription *actionDescription)
 {
-	QList<CustomInputMenuItem>::iterator i = InputContextMenu.begin();
+    QList<CustomInputMenuItem>::iterator i = InputContextMenu.begin();
 
-	while (i != InputContextMenu.end())
-	{
-		if ((*i).actionDescription() == actionDescription)
-			i = InputContextMenu.erase(i);
-		else
-			++i;
-	}
+    while (i != InputContextMenu.end())
+    {
+        if ((*i).actionDescription() == actionDescription)
+            i = InputContextMenu.erase(i);
+        else
+            ++i;
+    }
 }
 
-QMenu * CustomInputMenuManager::menu(QWidget *parent)
+QMenu *CustomInputMenuManager::menu(QWidget *parent)
 {
-	QMenu *menu = new QMenu(parent);
+    QMenu *menu = new QMenu(parent);
 
-	QWidget *actionContextWidget = parent;
-	ActionContext *actionContext = 0;
+    QWidget *actionContextWidget = parent;
+    ActionContext *actionContext = 0;
 
-	while (actionContextWidget)
-	{
-		ActionContextProvider *actionContextProvider = dynamic_cast<ActionContextProvider *>(actionContextWidget);
-		if (actionContextProvider)
-		{
-			actionContext = actionContextProvider->actionContext();
-			break;
-		}
-		else
-			actionContextWidget = actionContextWidget->parentWidget();
-	}
+    while (actionContextWidget)
+    {
+        ActionContextProvider *actionContextProvider = dynamic_cast<ActionContextProvider *>(actionContextWidget);
+        if (actionContextProvider)
+        {
+            actionContext = actionContextProvider->actionContext();
+            break;
+        }
+        else
+            actionContextWidget = actionContextWidget->parentWidget();
+    }
 
-	if (actionContext)
-	{
-		sortInputContextMenu();
-		QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
-		CustomInputMenuItem::CustomInputMenuCategory lastCategory = CustomInputMenuItem::MenuCategoryTextEdit;
-		bool first = true;
+    if (actionContext)
+    {
+        sortInputContextMenu();
+        QList<CustomInputMenuItem>::const_iterator i = InputContextMenu.constBegin();
+        CustomInputMenuItem::CustomInputMenuCategory lastCategory = CustomInputMenuItem::MenuCategoryTextEdit;
+        bool first = true;
 
-		while (i != InputContextMenu.constEnd())
-		{
-			if ((!first) && (i->category() != lastCategory))
-				menu->addSeparator();
+        while (i != InputContextMenu.constEnd())
+        {
+            if ((!first) && (i->category() != lastCategory))
+                menu->addSeparator();
 
-			Action *action = i->actionDescription()->createAction(actionContext, parent);
+            Action *action = i->actionDescription()->createAction(actionContext, parent);
 
-			if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
-				action->setFont(QFont(QString(), -1, QFont::Bold));
+            if (i->category() == CustomInputMenuItem::MenuCategorySuggestion)
+                action->setFont(QFont(QString(), -1, QFont::Bold));
 
-			menu->addAction(action);
-			action->checkState();
+            menu->addAction(action);
+            action->checkState();
 
-			lastCategory = i->category();
-			first = false;
-			++i;
-		}
+            lastCategory = i->category();
+            first = false;
+            ++i;
+        }
 
-		if (!first)
-			menu->addSeparator();
-	}
+        if (!first)
+            menu->addSeparator();
+    }
 
-	return menu;
+    return menu;
 }
 
 #include "moc_custom-input-menu-manager.cpp"

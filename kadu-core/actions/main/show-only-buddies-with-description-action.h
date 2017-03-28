@@ -30,24 +30,23 @@ class KaduWindowService;
 
 class ShowOnlyBuddiesWithDescriptionAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowOnlyBuddiesWithDescriptionAction(QObject *parent = nullptr);
-	virtual ~ShowOnlyBuddiesWithDescriptionAction();
+    Q_INVOKABLE explicit ShowOnlyBuddiesWithDescriptionAction(QObject *parent = nullptr);
+    virtual ~ShowOnlyBuddiesWithDescriptionAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void configurationUpdated() override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<Configuration> m_configuration;
+    QPointer<KaduWindowService> m_kaduWindowService;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 };

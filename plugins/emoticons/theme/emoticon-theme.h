@@ -40,57 +40,56 @@
  */
 class EmoticonTheme
 {
-	QVector<Emoticon> Emoticons;
-	QVector<Emoticon> Aliases;
+    QVector<Emoticon> Emoticons;
+    QVector<Emoticon> Aliases;
 
 public:
-	/**
-	 * @short Create emoticon theme with no emoticons.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	EmoticonTheme();
+    /**
+     * @short Create emoticon theme with no emoticons.
+     * @author Rafał 'Vogel' Malinowski
+     */
+    EmoticonTheme();
 
-	/**
-	 * @short Create emoticon theme with given emoticons and aliases.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param emoticons emoticons of new theme
-	 * @param aliases aliases of emoticons in new theme
-	 *
-	 * Please note that aliases should be a superset of emoticons.
-	 */
-	EmoticonTheme(const QVector<Emoticon> &emoticons, const QVector<Emoticon> &aliases);
+    /**
+     * @short Create emoticon theme with given emoticons and aliases.
+     * @author Rafał 'Vogel' Malinowski
+     * @param emoticons emoticons of new theme
+     * @param aliases aliases of emoticons in new theme
+     *
+     * Please note that aliases should be a superset of emoticons.
+     */
+    EmoticonTheme(const QVector<Emoticon> &emoticons, const QVector<Emoticon> &aliases);
 
-	/**
-	 * @short Creates a copy of emoticon theme.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe emoticon theme to copy
-	 */
-	EmoticonTheme(const EmoticonTheme &copyMe);
+    /**
+     * @short Creates a copy of emoticon theme.
+     * @author Rafał 'Vogel' Malinowski
+     * @param copyMe emoticon theme to copy
+     */
+    EmoticonTheme(const EmoticonTheme &copyMe);
 
-	EmoticonTheme & operator = (const EmoticonTheme &copyMe);
+    EmoticonTheme &operator=(const EmoticonTheme &copyMe);
 
-	/**
-	 * @short Return collection of emoticons.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return collection of emoticons
-	 *
-	 * Returned collection contains each emoticon image only once with best trigger text.
-	 */
-	QVector<Emoticon> emoticons() const;
+    /**
+     * @short Return collection of emoticons.
+     * @author Rafał 'Vogel' Malinowski
+     * @return collection of emoticons
+     *
+     * Returned collection contains each emoticon image only once with best trigger text.
+     */
+    QVector<Emoticon> emoticons() const;
 
-	/**
-	 * @short Return collection of aliases.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return collection of aliases
-	 *
-	 * Returned collection contains each emoticon image with each trigger text for that image.
-	 */
-	QVector<Emoticon> aliases() const;
-
+    /**
+     * @short Return collection of aliases.
+     * @author Rafał 'Vogel' Malinowski
+     * @return collection of aliases
+     *
+     * Returned collection contains each emoticon image with each trigger text for that image.
+     */
+    QVector<Emoticon> aliases() const;
 };
 
 /**
  * @}
  */
 
-#endif // EMOTICON_THEME_H
+#endif   // EMOTICON_THEME_H

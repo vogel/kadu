@@ -21,8 +21,8 @@
 
 #include "chat-style/engine/chat-style-renderer-factory.h"
 
-ConfiguredChatStyleRendererFactoryProvider::ConfiguredChatStyleRendererFactoryProvider(QObject *parent) :
-		ChatStyleRendererFactoryProvider{parent}
+ConfiguredChatStyleRendererFactoryProvider::ConfiguredChatStyleRendererFactoryProvider(QObject *parent)
+        : ChatStyleRendererFactoryProvider{parent}
 {
 }
 
@@ -32,13 +32,14 @@ ConfiguredChatStyleRendererFactoryProvider::~ConfiguredChatStyleRendererFactoryP
 
 std::shared_ptr<ChatStyleRendererFactory> ConfiguredChatStyleRendererFactoryProvider::chatStyleRendererFactory() const
 {
-	return m_chatStyleRendererFactory;
+    return m_chatStyleRendererFactory;
 }
 
-void ConfiguredChatStyleRendererFactoryProvider::setChatStyleRendererFactory(std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory)
+void ConfiguredChatStyleRendererFactoryProvider::setChatStyleRendererFactory(
+    std::unique_ptr<ChatStyleRendererFactory> chatStyleRendererFactory)
 {
-	m_chatStyleRendererFactory = std::move(chatStyleRendererFactory);
-	emit chatStyleRendererFactoryChanged(m_chatStyleRendererFactory);
+    m_chatStyleRendererFactory = std::move(chatStyleRendererFactory);
+    emit chatStyleRendererFactoryChanged(m_chatStyleRendererFactory);
 }
 
 #include "moc_configured-chat-style-renderer-factory-provider.cpp"

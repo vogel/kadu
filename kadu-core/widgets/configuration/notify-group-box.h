@@ -35,31 +35,33 @@ class QCheckBox;
 
 class KADUAPI NotifyGroupBox : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = nullptr);
-	virtual ~NotifyGroupBox();
+    explicit NotifyGroupBox(Notifier *Notificator, const QString &caption, QWidget *parent = nullptr);
+    virtual ~NotifyGroupBox();
 
-	Notifier * notificator() { return m_notificator; }
+    Notifier *notificator()
+    {
+        return m_notificator;
+    }
 
-	void setChecked(bool checked);
-	void addWidget(QWidget *widget);
+    void setChecked(bool checked);
+    void addWidget(QWidget *widget);
 
 signals:
-	void toggled(Notifier *notificator, bool toggled);
+    void toggled(Notifier *notificator, bool toggled);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	owned_qptr<QCheckBox> m_notifierCheckBox;
-	Notifier *m_notificator;
+    owned_qptr<QCheckBox> m_notifierCheckBox;
+    Notifier *m_notificator;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void toggledSlot(bool toggled);
-	void iconThemeChanged();
-
+    void toggledSlot(bool toggled);
+    void iconThemeChanged();
 };

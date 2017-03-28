@@ -30,23 +30,22 @@ class RecentChatService;
 
 class Scheduler : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit Scheduler(QObject *parent = nullptr);
-	virtual ~Scheduler();
+    Q_INVOKABLE explicit Scheduler(QObject *parent = nullptr);
+    virtual ~Scheduler();
 
 private:
-	QPointer<RecentChatService> m_recentChatService;
+    QPointer<RecentChatService> m_recentChatService;
 
-	QTimer m_everyMinuteAction;
+    QTimer m_everyMinuteAction;
 
-	void everyMinuteAction();
+    void everyMinuteAction();
 
 private slots:
-	INJEQT_SET void setRecentChatService(RecentChatService *recentChatService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setRecentChatService(RecentChatService *recentChatService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

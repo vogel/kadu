@@ -40,10 +40,10 @@
 
 #include "buddy-personal-info-configuration-widget.h"
 
-BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		QWidget(parent), MyBuddy(buddy), InfoWidget(0)
+BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent)
+        : QWidget(parent), MyBuddy(buddy), InfoWidget(0)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
@@ -52,53 +52,53 @@ BuddyPersonalInfoConfigurationWidget::~BuddyPersonalInfoConfigurationWidget()
 
 void BuddyPersonalInfoConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void BuddyPersonalInfoConfigurationWidget::init()
 {
-	createGui();
-	accountSelectionChanged(0);
+    createGui();
+    accountSelectionChanged(0);
 }
 
 void BuddyPersonalInfoConfigurationWidget::createGui()
 {
-	Layout = new QVBoxLayout(this);
+    Layout = new QVBoxLayout(this);
 
-	QWidget *contactWidget = new QWidget(this);
-	Layout->addWidget(contactWidget);
+    QWidget *contactWidget = new QWidget(this);
+    Layout->addWidget(contactWidget);
 
-	QFormLayout *contactLayout = new QFormLayout(contactWidget);
+    QFormLayout *contactLayout = new QFormLayout(contactWidget);
 
-	ContactIdCombo = new QComboBox(contactWidget);
-	auto contactModel = m_injectedFactory->makeInjected<BuddyContactModel>(MyBuddy);
-	contactModel->setIncludeIdentityInDisplay(true);
-	ContactIdCombo->setModel(contactModel);
-	connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
+    ContactIdCombo = new QComboBox(contactWidget);
+    auto contactModel = m_injectedFactory->makeInjected<BuddyContactModel>(MyBuddy);
+    contactModel->setIncludeIdentityInDisplay(true);
+    ContactIdCombo->setModel(contactModel);
+    connect(ContactIdCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(accountSelectionChanged(int)));
 
-	contactLayout->addRow(new QLabel(tr("Buddy contact") + ':', contactWidget), ContactIdCombo);
+    contactLayout->addRow(new QLabel(tr("Buddy contact") + ':', contactWidget), ContactIdCombo);
 
-	Layout->addStretch(100);
+    Layout->addStretch(100);
 }
 
 void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
 {
-  	Contact c = ContactIdCombo->model()->index(index, 0).data(ContactRole).value<Contact>();
+    Contact c = ContactIdCombo->model()->index(index, 0).data(ContactRole).value<Contact>();
 
-	if (!c)
-		return;
+    if (!c)
+        return;
 
-	if (InfoWidget)
-	{
-		InfoWidget->deleteLater();
-		InfoWidget->hide();
-	}
+    if (InfoWidget)
+    {
+        InfoWidget->deleteLater();
+        InfoWidget->hide();
+    }
 
-	if (!c.contactAccount().protocolHandler())
-		return;
+    if (!c.contactAccount().protocolHandler())
+        return;
 
-	InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c, this);
-	Layout->insertWidget(1, InfoWidget);
+    InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c, this);
+    Layout->insertWidget(1, InfoWidget);
 }
 
 #include "moc_buddy-personal-info-configuration-widget.cpp"

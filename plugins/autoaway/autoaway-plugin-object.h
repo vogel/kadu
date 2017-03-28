@@ -36,31 +36,31 @@ class StatusChangerManager;
 
 class AutoawayPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit AutoawayPluginObject(QObject *parent = nullptr);
-	virtual ~AutoawayPluginObject();
+    Q_INVOKABLE explicit AutoawayPluginObject(QObject *parent = nullptr);
+    virtual ~AutoawayPluginObject();
 
 private:
-	QPointer<Autoaway> m_autoaway;
-	QPointer<AutoawayConfigurationUiHandler> m_autoawayConfigurationUiHandler;
-	QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<StatusChangerManager> m_statusChangerManager;
+    QPointer<Autoaway> m_autoaway;
+    QPointer<AutoawayConfigurationUiHandler> m_autoawayConfigurationUiHandler;
+    QPointer<AutoawayStatusChanger> m_autoawayStatusChanger;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<StatusChangerManager> m_statusChangerManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setAutoaway(Autoaway *autoaway);
-	INJEQT_SET void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
-	INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setAutoaway(Autoaway *autoaway);
+    INJEQT_SET void setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler);
+    INJEQT_SET void setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger);
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 };

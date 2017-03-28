@@ -24,20 +24,19 @@
 
 class OtrCreatePrivateKeyWorker : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	void *KeyPointer;
+    void *KeyPointer;
 
 public:
-	explicit OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent = nullptr);
-	virtual ~OtrCreatePrivateKeyWorker();
+    explicit OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent = nullptr);
+    virtual ~OtrCreatePrivateKeyWorker();
 
 public slots:
-	void start();
+    void start();
 
 signals:
-	void finished(bool ok);
-
+    void finished(bool ok);
 };
 
-#endif // OTR_CREAETE_PRIVATE_KEY_WORKER_H
+#endif   // OTR_CREAETE_PRIVATE_KEY_WORKER_H

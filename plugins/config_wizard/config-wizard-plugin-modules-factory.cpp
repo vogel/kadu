@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-ConfigWizardPluginModulesFactory::ConfigWizardPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+ConfigWizardPluginModulesFactory::ConfigWizardPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ ConfigWizardPluginModulesFactory::~ConfigWizardPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> ConfigWizardPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<ConfigWizardModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<ConfigWizardModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_config-wizard-plugin-modules-factory.cpp"

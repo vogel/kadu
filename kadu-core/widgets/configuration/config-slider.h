@@ -32,34 +32,34 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;slider caption="caption" id="id" /&gt;
+        &lt;slider caption="caption" id="id" /&gt;
 
-	@arg minValue - minimalna wartość (obowiązkowo)
-	@arg maxValue - maksymalna wartość (obowiązkowo)
-	@arg pageStep - krok wartości (obowiązkowo)
+        @arg minValue - minimalna wartość (obowiązkowo)
+        @arg maxValue - maksymalna wartość (obowiązkowo)
+        @arg pageStep - krok wartości (obowiązkowo)
  **/
 class KADUAPI ConfigSlider : public QSlider, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigSlider(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		int minValue, int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigSlider();
+    ConfigSlider(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, int minValue,
+        int maxValue, int pageStep, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigSlider(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigSlider();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 
-	virtual bool fromDomElement(QDomElement domElement);
-
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

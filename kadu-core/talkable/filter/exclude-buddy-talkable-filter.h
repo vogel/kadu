@@ -38,29 +38,28 @@
  */
 class ExcludeBuddyTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Buddy ExcludedBuddy;
+    Buddy ExcludedBuddy;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of ExcludeBuddyTalkableFilter with given parent.
-	 * @param excludedBuddy buddy parameter of filter
-	 * @param parent QObject parent of new object
-	 *
-	 * Create new instance of ExcludeBuddyTalkableFilter with given parent. All Buddy items that
-	 * are equal to excludedBuddy will be rejected by this filter.
-	 */
-	explicit ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent = nullptr);
-	virtual ~ExcludeBuddyTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of ExcludeBuddyTalkableFilter with given parent.
+     * @param excludedBuddy buddy parameter of filter
+     * @param parent QObject parent of new object
+     *
+     * Create new instance of ExcludeBuddyTalkableFilter with given parent. All Buddy items that
+     * are equal to excludedBuddy will be rejected by this filter.
+     */
+    explicit ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent = nullptr);
+    virtual ~ExcludeBuddyTalkableFilter();
 
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-
+    virtual FilterResult filterBuddy(const Buddy &buddy);
 };
 
 /**
  * @}
  */
 
-#endif // EXCLUDE_BUDDY_TALKABLE_FILTER_H
+#endif   // EXCLUDE_BUDDY_TALKABLE_FILTER_H

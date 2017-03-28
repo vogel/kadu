@@ -54,9 +54,7 @@
 
 #include "word-fix.h"
 
-
-WordFix::WordFix(QObject *parent) :
-		QObject{parent}
+WordFix::WordFix(QObject *parent) : QObject{parent}
 {
 }
 
@@ -66,95 +64,94 @@ WordFix::~WordFix()
 
 void WordFix::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void WordFix::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void WordFix::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	m_formattedStringFactory = formattedStringFactory;
+    m_formattedStringFactory = formattedStringFactory;
 }
 
 void WordFix::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void WordFix::init()
 {
-	ExtractBody.setPattern("<body[^>]*>.*</body>");
+    ExtractBody.setPattern("<body[^>]*>.*</body>");
 
-	// Loading list
-	QString data = m_configuration->deprecatedApi()->readEntry("word_fix", "WordFix_list");
-	if (data.isEmpty())
-	{
-		QFile defList(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/word_fix/wf_default_list.data"));
-		if (defList.open(QIODevice::ReadOnly))
-		{
-			QTextStream s(&defList);
-			QStringList pair;
-			while (!s.atEnd())
-			{
-				pair = s.readLine().split('|');
-				if (pair.isEmpty())
-					continue;
+    // Loading list
+    QString data = m_configuration->deprecatedApi()->readEntry("word_fix", "WordFix_list");
+    if (data.isEmpty())
+    {
+        QFile defList(m_pathsProvider->dataPath() + QStringLiteral("plugins/data/word_fix/wf_default_list.data"));
+        if (defList.open(QIODevice::ReadOnly))
+        {
+            QTextStream s(&defList);
+            QStringList pair;
+            while (!s.atEnd())
+            {
+                pair = s.readLine().split('|');
+                if (pair.isEmpty())
+                    continue;
 
-				// TODO why we are not checking if there are actually at least 2 items?
-				m_wordsList[pair.at(0)] = pair.at(1);
-			}
-			defList.close();
-		}
-	}
-	else
-	{
-		QStringList list = data.split("\t\t");
-		for (int i = 0; i < list.count(); i++)
-		{
-			if (!list.at(i).isEmpty())
-			{
-				QStringList sp = list.at(i).split('\t');
-				m_wordsList[sp.at(0)] = sp.at(1);
-			}
-		}
-	}
+                // TODO why we are not checking if there are actually at least 2 items?
+                m_wordsList[pair.at(0)] = pair.at(1);
+            }
+            defList.close();
+        }
+    }
+    else
+    {
+        QStringList list = data.split("\t\t");
+        for (int i = 0; i < list.count(); i++)
+        {
+            if (!list.at(i).isEmpty())
+            {
+                QStringList sp = list.at(i).split('\t');
+                m_wordsList[sp.at(0)] = sp.at(1);
+            }
+        }
+    }
 
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget *)),
-		this, SLOT(chatWidgetAdded(ChatWidget *)));
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)),
-		this, SLOT(chatWidgetRemoved(ChatWidget *)));
+    connect(m_chatWidgetRepository, SIGNAL(chatWidgetAdded(ChatWidget *)), this, SLOT(chatWidgetAdded(ChatWidget *)));
+    connect(
+        m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
 
-	for (auto chatWidget : m_chatWidgetRepository)
-		chatWidgetAdded(chatWidget);
+    for (auto chatWidget : m_chatWidgetRepository)
+        chatWidgetAdded(chatWidget);
 }
 
 void WordFix::chatWidgetAdded(ChatWidget *chatWidget)
 {
-	connect(chatWidget, SIGNAL(messageSendRequested(ChatWidget*)), this, SLOT(sendRequest(ChatWidget*)));
+    connect(chatWidget, SIGNAL(messageSendRequested(ChatWidget *)), this, SLOT(sendRequest(ChatWidget *)));
 }
 
 void WordFix::chatWidgetRemoved(ChatWidget *chatWidget)
 {
-	disconnect(chatWidget, 0, this, 0);
+    disconnect(chatWidget, 0, this, 0);
 }
 
-void WordFix::sendRequest(ChatWidget* chat)
+void WordFix::sendRequest(ChatWidget *chat)
 {
-	if (!m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
-		return;
+    if (!m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_word_fix", false))
+        return;
 
-	auto formattedString = m_formattedStringFactory->fromHtml(chat->edit()->htmlMessage());
-	WordFixFormattedStringVisitor fixVisitor(m_wordsList);
-	formattedString->accept(&fixVisitor);
+    auto formattedString = m_formattedStringFactory->fromHtml(chat->edit()->htmlMessage());
+    WordFixFormattedStringVisitor fixVisitor(m_wordsList);
+    formattedString->accept(&fixVisitor);
 
-	auto fixedString = fixVisitor.result();
-	FormattedStringHtmlVisitor htmlVisitor;
-	fixedString->accept(&htmlVisitor);
+    auto fixedString = fixVisitor.result();
+    FormattedStringHtmlVisitor htmlVisitor;
+    fixedString->accept(&htmlVisitor);
 
-	chat->edit()->setHtml(htmlVisitor.result().string());
+    chat->edit()->setHtml(htmlVisitor.result().string());
 }
 
 #include "moc_word-fix.cpp"

@@ -21,14 +21,12 @@
 
 class ChatWindowStorageConfiguration
 {
-
 public:
-	ChatWindowStorageConfiguration();
+    ChatWindowStorageConfiguration();
 
-	void setStoreOpenedChatWindows(bool storeOpenedChatWindows);
-	bool storeOpenedChatWindows() const;
+    void setStoreOpenedChatWindows(bool storeOpenedChatWindows);
+    bool storeOpenedChatWindows() const;
 
 private:
-	bool m_storeOpenedChatWindows;
-
+    bool m_storeOpenedChatWindows;
 };

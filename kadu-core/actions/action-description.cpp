@@ -30,186 +30,187 @@
 #include <QtCore/QLatin1String>
 #include <QtCore/QMetaMethod>
 
-ActionDescription::ActionDescription( QObject *parent) :
-		QObject(parent),
-		Type(TypeAll), Checkable(false), ShortcutContext(Qt::WidgetShortcut)
+ActionDescription::ActionDescription(QObject *parent)
+        : QObject(parent), Type(TypeAll), Checkable(false), ShortcutContext(Qt::WidgetShortcut)
 {
-	Deleting = false;
+    Deleting = false;
 }
 
 ActionDescription::~ActionDescription()
 {
-	Deleting = true;
+    Deleting = true;
 
-	qDeleteAll(MappedActions);
-	MappedActions.clear();
+    qDeleteAll(MappedActions);
+    MappedActions.clear();
 }
 
 void ActionDescription::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ActionDescription::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-Configuration * ActionDescription::configuration() const
+Configuration *ActionDescription::configuration() const
 {
-	return m_configuration;
+    return m_configuration;
 }
 
-InjectedFactory * ActionDescription::injectedFactory() const
+InjectedFactory *ActionDescription::injectedFactory() const
 {
-	return m_injectedFactory;
+    return m_injectedFactory;
 }
 
 void ActionDescription::actionAboutToBeDestroyed(Action *action)
 {
-	if (Deleting)
-		return;
+    if (Deleting)
+        return;
 
-	if (action && MappedActions.contains(action->context()))
-		MappedActions.remove(action->context());
+    if (action && MappedActions.contains(action->context()))
+        MappedActions.remove(action->context());
 }
 
 void ActionDescription::setType(ActionType type)
 {
-	Type = type;
+    Type = type;
 }
 
 void ActionDescription::setName(const QString &name)
 {
-	Name = name;
+    Name = name;
 }
 
 void ActionDescription::setIcon(const KaduIcon &icon)
 {
-	Icon = icon;
+    Icon = icon;
 }
 
 void ActionDescription::setText(const QString &text)
 {
-	Text = text;
+    Text = text;
 }
 
 void ActionDescription::setCheckable(bool checkable)
 {
-	Checkable = checkable;
+    Checkable = checkable;
 }
 
 void ActionDescription::setShortcut(QString configItem, Qt::ShortcutContext context)
 {
-	ShortcutItem = configItem;
-	ShortcutContext = context;
+    ShortcutItem = configItem;
+    ShortcutContext = context;
 
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void ActionDescription::actionTriggeredSlot(QAction *sender, bool toggled)
 {
-	actionTriggered(sender, toggled);
+    actionTriggered(sender, toggled);
 
-	Action *action = qobject_cast<Action *>(sender);
-	if (action)
-		triggered(sender->parentWidget(), action->context(), toggled);
+    Action *action = qobject_cast<Action *>(sender);
+    if (action)
+        triggered(sender->parentWidget(), action->context(), toggled);
 }
 
-QMenu * ActionDescription::menuForAction(Action *action)
+QMenu *ActionDescription::menuForAction(Action *action)
 {
-	Q_UNUSED(action)
+    Q_UNUSED(action)
 
-	return 0;
+    return 0;
 }
 
 void ActionDescription::actionInstanceCreated(Action *action)
 {
-	QMenu *menu = menuForAction(action);
-	if (menu)
-		action->setMenu(menu);
+    QMenu *menu = menuForAction(action);
+    if (menu)
+        action->setMenu(menu);
 }
 
 void ActionDescription::updateActionStates()
 {
-	for (auto &&action : actions())
-		updateActionState(action);
+    for (auto &&action : actions())
+        updateActionState(action);
 }
 
-Action * ActionDescription::createAction(ActionContext *context, QObject *parent)
+Action *ActionDescription::createAction(ActionContext *context, QObject *parent)
 {
-	Action *result = MappedActions.value(context);
-	if (result)
-	{
-		if (result->parent() != parent)
-			qWarning("ActionDescription::createAction(): requested action for already known context but with different parent\n");
+    Action *result = MappedActions.value(context);
+    if (result)
+    {
+        if (result->parent() != parent)
+            qWarning(
+                "ActionDescription::createAction(): requested action for already known context but with different "
+                "parent\n");
 
-		return result;
-	}
+        return result;
+    }
 
-	result = m_injectedFactory->makeInjected<Action>(this, context, parent);
-	MappedActions.insert(context, result);
+    result = m_injectedFactory->makeInjected<Action>(this, context, parent);
+    MappedActions.insert(context, result);
 
-	actionInstanceCreated(result);
-	emit actionCreated(result);
+    actionInstanceCreated(result);
+    emit actionCreated(result);
 
-	if (ShortcutContext != Qt::ApplicationShortcut)
-	{
-		result->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
-		result->setShortcutContext(ShortcutContext);
-	}
-	else if (MappedActions.count() == 1)
-	{
-		result->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
-		result->setShortcutContext(ShortcutContext);
-	}
+    if (ShortcutContext != Qt::ApplicationShortcut)
+    {
+        result->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
+        result->setShortcutContext(ShortcutContext);
+    }
+    else if (MappedActions.count() == 1)
+    {
+        result->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
+        result->setShortcutContext(ShortcutContext);
+    }
 
-	connect(result, SIGNAL(triggered(QAction *, bool)), this, SLOT(actionTriggeredSlot(QAction *, bool)));
-	connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
+    connect(result, SIGNAL(triggered(QAction *, bool)), this, SLOT(actionTriggeredSlot(QAction *, bool)));
+    connect(result, SIGNAL(aboutToBeDestroyed(Action *)), this, SLOT(actionAboutToBeDestroyed(Action *)));
 
-	return result;
+    return result;
 }
 
 QList<Action *> ActionDescription::actions()
 {
-	return MappedActions.values();
+    return MappedActions.values();
 }
 
-Action * ActionDescription::action(ActionContext *context)
+Action *ActionDescription::action(ActionContext *context)
 {
-	if (MappedActions.contains(context))
-		return MappedActions.value(context);
-	else
-		return 0;
+    if (MappedActions.contains(context))
+        return MappedActions.value(context);
+    else
+        return 0;
 }
 
 void ActionDescription::configurationUpdated()
 {
-	if (ShortcutItem.isEmpty())
-		return;
+    if (ShortcutItem.isEmpty())
+        return;
 
-	if (ShortcutContext != Qt::ApplicationShortcut)
-	{
-		foreach (Action *action, MappedActions)
-		{
-			action->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
-			action->setShortcutContext(ShortcutContext);
-		}
-	}
-	else if (!MappedActions.isEmpty())
-	{
-		MappedActions.values().at(0)->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
-		MappedActions.values().at(0)->setShortcutContext(ShortcutContext);
-	}
+    if (ShortcutContext != Qt::ApplicationShortcut)
+    {
+        foreach (Action *action, MappedActions)
+        {
+            action->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
+            action->setShortcutContext(ShortcutContext);
+        }
+    }
+    else if (!MappedActions.isEmpty())
+    {
+        MappedActions.values().at(0)->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
+        MappedActions.values().at(0)->setShortcutContext(ShortcutContext);
+    }
 }
 
 void ActionDescription::connectNotify(const QMetaMethod &signal)
 {
-	QObject::connectNotify(signal);
+    QObject::connectNotify(signal);
 
-	if (signal == QMetaMethod::fromSignal(&ActionDescription::actionCreated))
-		foreach (Action *action, MappedActions)
-			emit actionCreated(action);
+    if (signal == QMetaMethod::fromSignal(&ActionDescription::actionCreated))
+        foreach (Action *action, MappedActions)
+            emit actionCreated(action);
 }
 
 #include "moc_action-description.cpp"

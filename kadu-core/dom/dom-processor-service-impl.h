@@ -31,20 +31,19 @@ class DomVisitor;
 
 class KADUAPI DomProcessorServiceImpl : public DomProcessorService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit DomProcessorServiceImpl(QObject *parent = nullptr);
-	virtual ~DomProcessorServiceImpl();
+    Q_INVOKABLE explicit DomProcessorServiceImpl(QObject *parent = nullptr);
+    virtual ~DomProcessorServiceImpl();
 
-	QString process(const QString &xml);
+    QString process(const QString &xml);
 
 private:
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+    QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
 
-	void process(QDomDocument &domDocument);
+    void process(QDomDocument &domDocument);
 
 private slots:
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
-
+    INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
 };

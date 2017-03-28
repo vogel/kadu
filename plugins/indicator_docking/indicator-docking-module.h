@@ -23,9 +23,7 @@
 
 class IndicatorDockingModule : public injeqt::module
 {
-
 public:
-	explicit IndicatorDockingModule();
-	virtual ~IndicatorDockingModule();
-
+    explicit IndicatorDockingModule();
+    virtual ~IndicatorDockingModule();
 };

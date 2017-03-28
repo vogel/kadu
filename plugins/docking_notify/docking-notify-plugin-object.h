@@ -29,21 +29,20 @@ class NotifierRepository;
 
 class DockingNotifyPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit DockingNotifyPluginObject(QObject *parent = nullptr);
-	virtual ~DockingNotifyPluginObject();
+    Q_INVOKABLE explicit DockingNotifyPluginObject(QObject *parent = nullptr);
+    virtual ~DockingNotifyPluginObject();
 
 private:
-	QPointer<DockingNotifier> m_dockingNotifier;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<DockingNotifier> m_dockingNotifier;
+    QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setDockingNotifier(DockingNotifier *dockingNotifier);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setDockingNotifier(DockingNotifier *dockingNotifier);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 };

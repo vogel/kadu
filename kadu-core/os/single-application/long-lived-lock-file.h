@@ -28,15 +28,14 @@ class QString;
 class LongLivedLockFile
 {
 public:
-	explicit LongLivedLockFile(const QString &fileName, int timeout = 10);
-	LongLivedLockFile(const LongLivedLockFile &) = delete;
-	~LongLivedLockFile();
+    explicit LongLivedLockFile(const QString &fileName, int timeout = 10);
+    LongLivedLockFile(const LongLivedLockFile &) = delete;
+    ~LongLivedLockFile();
 
-	LongLivedLockFile & operator = (const LongLivedLockFile &) = delete;
+    LongLivedLockFile &operator=(const LongLivedLockFile &) = delete;
 
-	bool isLocked() const;
+    bool isLocked() const;
 
 private:
-	std::unique_ptr<QLockFile> m_lockFile;
-
+    std::unique_ptr<QLockFile> m_lockFile;
 };

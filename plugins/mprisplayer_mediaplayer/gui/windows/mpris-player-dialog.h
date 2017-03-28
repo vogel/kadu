@@ -31,30 +31,29 @@ class QLineEdit;
 
 class MPRISPlayerDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLineEdit *PlayerEdit;
-	QLineEdit *ServiceEdit;
-	QLabel *PlayerLabel;
-	QLabel *ServiceLabel;
+    QLineEdit *PlayerEdit;
+    QLineEdit *ServiceEdit;
+    QLabel *PlayerLabel;
+    QLabel *ServiceLabel;
 
-	QDialogButtonBox *Buttons;
+    QDialogButtonBox *Buttons;
 
-	QGridLayout *Layout;
+    QGridLayout *Layout;
 
-	bool IsEdit;
+    bool IsEdit;
 
-	void createGui();
+    void createGui();
 
 public:
-	explicit MPRISPlayerDialog(bool isEdit = false, QWidget *parent = nullptr);
-	virtual ~MPRISPlayerDialog();
+    explicit MPRISPlayerDialog(bool isEdit = false, QWidget *parent = nullptr);
+    virtual ~MPRISPlayerDialog();
 
-	void setPlayer(const QString &player);
-	void setService(const QString &service);
-	QString getPlayer();
-	QString getService();
-
+    void setPlayer(const QString &player);
+    void setService(const QString &service);
+    QString getPlayer();
+    QString getService();
 };
 
 #endif /* MPRIS_PLAYER_DIALOG_H */

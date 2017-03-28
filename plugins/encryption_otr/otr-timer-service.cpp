@@ -20,10 +20,10 @@
 #include <QtCore/QTimer>
 
 extern "C" {
-#	include <gcrypt.h>
-#	include <libotr/proto.h>
-#	include <libotr/userstate.h>
-#	include <libotr/message.h>
+#include <gcrypt.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
+#include <libotr/userstate.h>
 }
 
 #include "otr-app-ops-service.h"
@@ -35,13 +35,12 @@ extern "C" {
 
 void OtrTimerService::wrapperOtrTimerControl(void *data, unsigned int interval)
 {
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->timerService())
-		opData->timerService()->timerControl(interval);
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->timerService())
+        opData->timerService()->timerControl(interval);
 }
 
-OtrTimerService::OtrTimerService() :
-		Timer(0)
+OtrTimerService::OtrTimerService() : Timer(0)
 {
 }
 
@@ -51,52 +50,52 @@ OtrTimerService::~OtrTimerService()
 
 void OtrTimerService::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsService = appOpsService;
+    AppOpsService = appOpsService;
 }
 
 void OtrTimerService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
-	OpDataFactory = opDataFactory;
+    OpDataFactory = opDataFactory;
 }
 
 void OtrTimerService::setUserStateService(OtrUserStateService *userStateService)
 {
-	if (UserStateService)
-	{
-		delete Timer;
-		Timer = 0;
-	}
+    if (UserStateService)
+    {
+        delete Timer;
+        Timer = 0;
+    }
 
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 
-	if (UserStateService)
-	{
-		Timer = new QTimer(this);
-		connect(Timer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
-	}
+    if (UserStateService)
+    {
+        Timer = new QTimer(this);
+        connect(Timer, SIGNAL(timeout()), this, SLOT(otrTimerTimeout()));
+    }
 }
 
 void OtrTimerService::otrTimerTimeout()
 {
-	if (!AppOpsService || !OpDataFactory || !UserStateService)
-		return;
+    if (!AppOpsService || !OpDataFactory || !UserStateService)
+        return;
 
-	OtrlUserState userState = UserStateService->userState();
-	const OtrlMessageAppOps *ops = AppOpsService->appOps();
-	OtrOpData opData = OpDataFactory->opData();
+    OtrlUserState userState = UserStateService->userState();
+    const OtrlMessageAppOps *ops = AppOpsService->appOps();
+    OtrOpData opData = OpDataFactory->opData();
 
-	otrl_message_poll(userState, ops, &opData);
+    otrl_message_poll(userState, ops, &opData);
 }
 
 void OtrTimerService::timerControl(unsigned int intervalInSeconds)
 {
-	if (!Timer)
-		return;
+    if (!Timer)
+        return;
 
-	if (intervalInSeconds)
-		Timer->start(static_cast<int>(intervalInSeconds * 1000));
-	else
-		Timer->stop();
+    if (intervalInSeconds)
+        Timer->start(static_cast<int>(intervalInSeconds * 1000));
+    else
+        Timer->stop();
 }
 
 #include "moc_otr-timer-service.cpp"

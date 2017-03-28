@@ -23,9 +23,7 @@
 
 class ImageLinkModule : public injeqt::module
 {
-
 public:
-	explicit ImageLinkModule();
-	virtual ~ImageLinkModule();
-
+    explicit ImageLinkModule();
+    virtual ~ImageLinkModule();
 };

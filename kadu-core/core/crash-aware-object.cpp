@@ -23,16 +23,16 @@ QList<CrashAwareObject *> CrashAwareObject::Objects;
 
 void CrashAwareObject::notifyCrash()
 {
-	foreach (CrashAwareObject *object, Objects)
-		object->crash();
+    foreach (CrashAwareObject *object, Objects)
+        object->crash();
 }
 
 CrashAwareObject::CrashAwareObject()
 {
-	Objects.append(this);
+    Objects.append(this);
 }
 
 CrashAwareObject::~CrashAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }

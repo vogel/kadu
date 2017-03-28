@@ -30,18 +30,17 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 
-JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget* parent) :
-		QWidget(parent), Id(account.id())
+JabberPersonalInfoWidget::JabberPersonalInfoWidget(Account account, QWidget *parent) : QWidget(parent), Id(account.id())
 {
-	if (account.isNull() || !account.protocolHandler())
-		return;
+    if (account.isNull() || !account.protocolHandler())
+        return;
 
-	Service = account.protocolHandler()->personalInfoService();
-	if (!Service)
-		return;
+    Service = account.protocolHandler()->personalInfoService();
+    if (!Service)
+        return;
 
-	connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
-	Service->fetchPersonalInfo(Id);
+    connect(Service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
+    Service->fetchPersonalInfo(Id);
 }
 
 JabberPersonalInfoWidget::~JabberPersonalInfoWidget()
@@ -50,99 +49,95 @@ JabberPersonalInfoWidget::~JabberPersonalInfoWidget()
 
 void JabberPersonalInfoWidget::setBuddyStorage(BuddyStorage *buddyStorage)
 {
-	m_buddyStorage = buddyStorage;
+    m_buddyStorage = buddyStorage;
 }
 
 void JabberPersonalInfoWidget::init()
 {
-	MyBuddy = m_buddyStorage->create();
+    MyBuddy = m_buddyStorage->create();
 
-	createGui();
-	fillForm();
+    createGui();
+    fillForm();
 }
 
 void JabberPersonalInfoWidget::createGui()
 {
-	QFormLayout *layout = new QFormLayout(this);
+    QFormLayout *layout = new QFormLayout(this);
 
-	FullName = new QLineEdit(this);
-	connect(FullName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    FullName = new QLineEdit(this);
+    connect(FullName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
-	NickName = new QLineEdit(this);
-	connect(NickName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    NickName = new QLineEdit(this);
+    connect(NickName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
-	FamilyName = new QLineEdit(this);
-	connect(FamilyName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    FamilyName = new QLineEdit(this);
+    connect(FamilyName, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
-	BirthYear = new QLineEdit(this);
-	connect(BirthYear, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
-	BirthYear->setInputMask("d000");
+    BirthYear = new QLineEdit(this);
+    connect(BirthYear, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    BirthYear->setInputMask("d000");
 
-	City = new QLineEdit(this);
-	connect(City, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    City = new QLineEdit(this);
+    connect(City, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
-	Email = new QLineEdit(this);
-	connect(Email, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    Email = new QLineEdit(this);
+    connect(Email, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
-	Website = new QLineEdit(this);
-	connect(Website, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
+    Website = new QLineEdit(this);
+    connect(Website, SIGNAL(textChanged(QString)), this, SIGNAL(dataChanged()));
 
-	layout->addRow(tr("Full name"), FullName);
-	layout->addRow(tr("Nick"), NickName);
-	layout->addRow(tr("Family name"), FamilyName);
-	layout->addRow(tr("Birth year"), BirthYear);
-	layout->addRow(tr("City"), City);
-	layout->addRow(tr("E-Mail"), Email);
-	layout->addRow(tr("Website"), Website);
+    layout->addRow(tr("Full name"), FullName);
+    layout->addRow(tr("Nick"), NickName);
+    layout->addRow(tr("Family name"), FamilyName);
+    layout->addRow(tr("Birth year"), BirthYear);
+    layout->addRow(tr("City"), City);
+    layout->addRow(tr("E-Mail"), Email);
+    layout->addRow(tr("Website"), Website);
 }
 
 void JabberPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	MyBuddy = buddy;
-	fillForm();
+    MyBuddy = buddy;
+    fillForm();
 }
 
 void JabberPersonalInfoWidget::fillForm()
 {
-	NickName->setText(MyBuddy.nickName());
-	FullName->setText(MyBuddy.firstName());
-	FamilyName->setText(MyBuddy.familyName());
-	BirthYear->setText(QString::number(MyBuddy.birthYear()));
-	City->setText(MyBuddy.city());
-	Email->setText(MyBuddy.email());
-	Website->setText(MyBuddy.website());
+    NickName->setText(MyBuddy.nickName());
+    FullName->setText(MyBuddy.firstName());
+    FamilyName->setText(MyBuddy.familyName());
+    BirthYear->setText(QString::number(MyBuddy.birthYear()));
+    City->setText(MyBuddy.city());
+    Email->setText(MyBuddy.email());
+    Website->setText(MyBuddy.website());
 }
 
 bool JabberPersonalInfoWidget::isModified()
 {
-	return NickName->text() != MyBuddy.nickName()
-	|| FullName->text() != MyBuddy.firstName()
-	|| FamilyName->text() != MyBuddy.familyName()
-	|| BirthYear->text() != QString::number(MyBuddy.birthYear())
-	|| City->text() != MyBuddy.city()
-	|| Email->text() != MyBuddy.email()
-	|| Website->text() != MyBuddy.website();
+    return NickName->text() != MyBuddy.nickName() || FullName->text() != MyBuddy.firstName() ||
+           FamilyName->text() != MyBuddy.familyName() || BirthYear->text() != QString::number(MyBuddy.birthYear()) ||
+           City->text() != MyBuddy.city() || Email->text() != MyBuddy.email() || Website->text() != MyBuddy.website();
 }
 
 void JabberPersonalInfoWidget::apply()
 {
-	Buddy buddy = m_buddyStorage->create();
+    Buddy buddy = m_buddyStorage->create();
 
-	buddy.setNickName((*NickName).text());
-	buddy.setFirstName((*FullName).text());
-	buddy.setFamilyName((*FamilyName).text());
-	buddy.setBirthYear((*BirthYear).text().toUShort());
-	buddy.setCity((*City).text());
-	buddy.setEmail((*Email).text());
-	buddy.setWebsite((*Website).text());
+    buddy.setNickName((*NickName).text());
+    buddy.setFirstName((*FullName).text());
+    buddy.setFamilyName((*FamilyName).text());
+    buddy.setBirthYear((*BirthYear).text().toUShort());
+    buddy.setCity((*City).text());
+    buddy.setEmail((*Email).text());
+    buddy.setWebsite((*Website).text());
 
-	Service->updatePersonalInfo(Id, buddy);
-	MyBuddy = buddy;
+    Service->updatePersonalInfo(Id, buddy);
+    MyBuddy = buddy;
 }
 
 void JabberPersonalInfoWidget::cancel()
 {
-	fillForm();
+    fillForm();
 }
 
 #include "moc_jabber-personal-info-widget.cpp"

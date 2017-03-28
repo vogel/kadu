@@ -31,82 +31,82 @@
 
 #include <QtWidgets/QApplication>
 
-ConfigurationManager::ConfigurationManager(QObject *parent) :
-		QObject{parent}
+ConfigurationManager::ConfigurationManager(QObject *parent) : QObject{parent}
 {
-	m_toolbarConfiguration = new ToolbarConfigurationManager();
+    m_toolbarConfiguration = new ToolbarConfigurationManager();
 
-	connect(qApp, SIGNAL(commitDataRequest(QSessionManager&)),
-			this, SLOT(flush()));
+    connect(qApp, SIGNAL(commitDataRequest(QSessionManager &)), this, SLOT(flush()));
 }
 
 ConfigurationManager::~ConfigurationManager()
 {
-	delete m_toolbarConfiguration;
-	m_toolbarConfiguration = 0;
+    delete m_toolbarConfiguration;
+    m_toolbarConfiguration = 0;
 }
 
 void ConfigurationManager::setApplication(Application *application)
 {
-	m_application = application;
+    m_application = application;
 }
 
 void ConfigurationManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ConfigurationManager::init()
 {
-	m_application->backupConfiguration();
+    m_application->backupConfiguration();
 
-	importConfiguration();
+    importConfiguration();
 
-	m_uuid = m_configuration->api()->rootElement().attribute("uuid");
-	if (m_uuid.isNull())
-		m_uuid = QUuid::createUuid();
+    m_uuid = m_configuration->api()->rootElement().attribute("uuid");
+    if (m_uuid.isNull())
+        m_uuid = QUuid::createUuid();
 }
 
 void ConfigurationManager::flush()
 {
-	foreach (StorableObject *object, m_registeredStorableObjects)
-		object->ensureStored();
+    foreach (StorableObject *object, m_registeredStorableObjects)
+        object->ensureStored();
 
-	m_configuration->api()->rootElement().setAttribute("uuid", m_uuid.toString());
-	m_application->flushConfiguration();
+    m_configuration->api()->rootElement().setAttribute("uuid", m_uuid.toString());
+    m_application->flushConfiguration();
 }
 
 void ConfigurationManager::registerStorableObject(StorableObject *object)
 {
-	if (m_registeredStorableObjects.contains(object))
-	{
-		qWarning("Someone tried to register already registered storable object.");
-		return;
-	}
+    if (m_registeredStorableObjects.contains(object))
+    {
+        qWarning("Someone tried to register already registered storable object.");
+        return;
+    }
 
-	// Prepend so that store() method calls ensureStored() on objects in reverse order (LIFO).
-	// This way if object A is registered and then object B which depends on A and can
-	// change A's properties is registered, we first call ensureStored() on B, which can
-	// safely change A's properties and they will be stored.
-	m_registeredStorableObjects.prepend(object);
+    // Prepend so that store() method calls ensureStored() on objects in reverse order (LIFO).
+    // This way if object A is registered and then object B which depends on A and can
+    // change A's properties is registered, we first call ensureStored() on B, which can
+    // safely change A's properties and they will be stored.
+    m_registeredStorableObjects.prepend(object);
 }
 
 void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 {
-	object->ensureStored();
+    object->ensureStored();
 
-	if (m_registeredStorableObjects.removeAll(object) <= 0)
-		qWarning("Someone tried to unregister unregistered storable object.");
+    if (m_registeredStorableObjects.removeAll(object) <= 0)
+        qWarning("Someone tried to unregister unregistered storable object.");
 }
 
 void ConfigurationManager::importConfiguration()
 {
-	QDomElement root = m_configuration->api()->rootElement();
-	QDomElement general = m_configuration->api()->findElementByProperty(root.firstChild().firstChild().toElement(), "Group", "name", "General");
-	QDomElement mainConfiguration = m_configuration->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
+    QDomElement root = m_configuration->api()->rootElement();
+    QDomElement general = m_configuration->api()->findElementByProperty(
+        root.firstChild().firstChild().toElement(), "Group", "name", "General");
+    QDomElement mainConfiguration =
+        m_configuration->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
 
-	if (!mainConfiguration.isNull())
-		  mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");
+    if (!mainConfiguration.isNull())
+        mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");
 }
 
 #include "moc_configuration-manager.cpp"

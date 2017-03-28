@@ -28,8 +28,7 @@
 #include "dom/ignore-links-dom-visitor.h"
 #include "misc/memory.h"
 
-EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider(QObject *parent) :
-		QObject{parent}
+EmoticonExpanderDomVisitorProvider::EmoticonExpanderDomVisitorProvider(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,38 +38,41 @@ EmoticonExpanderDomVisitorProvider::~EmoticonExpanderDomVisitorProvider()
 
 void EmoticonExpanderDomVisitorProvider::rebuildExpander()
 {
-	if (!m_tree)
-	{
-		m_ignoreLinksVisitor = nullptr;
-		return;
-	}
+    if (!m_tree)
+    {
+        m_ignoreLinksVisitor = nullptr;
+        return;
+    }
 
-	m_ignoreLinksVisitor = m_configuration.animate()
-			? std::make_unique<IgnoreLinksDomVisitor>(std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<AnimatedEmoticonPathProvider>()))
-			: std::make_unique<IgnoreLinksDomVisitor>(std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<StaticEmoticonPathProvider>()));
+    m_ignoreLinksVisitor =
+        m_configuration.animate()
+            ? std::make_unique<IgnoreLinksDomVisitor>(
+                  std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<AnimatedEmoticonPathProvider>()))
+            : std::make_unique<IgnoreLinksDomVisitor>(
+                  std::make_unique<EmoticonExpander>(m_tree.get(), std::make_unique<StaticEmoticonPathProvider>()));
 }
 
-const DomVisitor * EmoticonExpanderDomVisitorProvider::provide() const
+const DomVisitor *EmoticonExpanderDomVisitorProvider::provide() const
 {
-	return m_ignoreLinksVisitor.get();
+    return m_ignoreLinksVisitor.get();
 }
 
 void EmoticonExpanderDomVisitorProvider::setConfiguration(const EmoticonConfiguration &configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 
-	if (!m_configuration.emoticonTheme().aliases().isEmpty())
-	{
-		EmoticonPrefixTreeBuilder builder;
-		foreach (const Emoticon &emoticon, m_configuration.emoticonTheme().aliases())
-			builder.addEmoticon(emoticon);
+    if (!m_configuration.emoticonTheme().aliases().isEmpty())
+    {
+        EmoticonPrefixTreeBuilder builder;
+        foreach (const Emoticon &emoticon, m_configuration.emoticonTheme().aliases())
+            builder.addEmoticon(emoticon);
 
-		m_tree.reset(builder.tree());
-	}
-	else
-		m_tree.reset();
+        m_tree.reset(builder.tree());
+    }
+    else
+        m_tree.reset();
 
-	rebuildExpander();
+    rebuildExpander();
 }
 
 #include "moc_emoticon-expander-dom-visitor-provider.cpp"

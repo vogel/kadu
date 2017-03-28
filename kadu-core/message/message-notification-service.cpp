@@ -32,12 +32,12 @@
 #include "notification/notification.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 
-MessageNotificationService::MessageNotificationService(QObject *parent) :
-		QObject{parent},
-		m_openChatCallback{QStringLiteral("chat-open"), tr("Chat"),
-			[this](const Notification &notification){ return openChat(notification); }},
-		m_newChatEvent{QStringLiteral("NewChat"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New chat"))},
-		m_newMessageEvent{QStringLiteral("NewMessage"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New message"))}
+MessageNotificationService::MessageNotificationService(QObject *parent)
+        : QObject{parent},
+          m_openChatCallback{QStringLiteral("chat-open"), tr("Chat"),
+                             [this](const Notification &notification) { return openChat(notification); }},
+          m_newChatEvent{QStringLiteral("NewChat"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New chat"))},
+          m_newMessageEvent{QStringLiteral("NewMessage"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New message"))}
 {
 }
 
@@ -47,81 +47,85 @@ MessageNotificationService::~MessageNotificationService()
 
 void MessageNotificationService::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
-void MessageNotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+void MessageNotificationService::setNotificationCallbackRepository(
+    NotificationCallbackRepository *notificationCallbackRepository)
 {
-	m_notificationCallbackRepository = notificationCallbackRepository;
+    m_notificationCallbackRepository = notificationCallbackRepository;
 }
 
-void MessageNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+void MessageNotificationService::setNotificationEventRepository(
+    NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void MessageNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void MessageNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_newChatEvent);
-	m_notificationEventRepository->addNotificationEvent(m_newMessageEvent);
+    m_notificationEventRepository->addNotificationEvent(m_newChatEvent);
+    m_notificationEventRepository->addNotificationEvent(m_newMessageEvent);
 
-	m_notificationCallbackRepository->addCallback(m_openChatCallback);
+    m_notificationCallbackRepository->addCallback(m_openChatCallback);
 }
 
 void MessageNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_newChatEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_newMessageEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_newChatEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_newMessageEvent);
 
-	m_notificationCallbackRepository->removeCallback(m_openChatCallback);
+    m_notificationCallbackRepository->removeCallback(m_openChatCallback);
 }
 
 void MessageNotificationService::notifyNewChat(const Message &message)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(message.messageChat().chatAccount()));
-	data.insert(QStringLiteral("chat"), qVariantFromValue(message.messageChat()));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(message.messageChat().chatAccount()));
+    data.insert(QStringLiteral("chat"), qVariantFromValue(message.messageChat()));
 
-	auto notification = Notification{};
-	notification.type = m_newChatEvent.name();
-	notification.title = (tr("New chat"));
-	notification.text = normalizeHtml(HtmlString{tr("Chat with <b>%1</b>")}.arg(plainToHtml(message.messageSender().display(true))));
-	notification.details = message.content();
-	notification.data = std::move(data);
-	notification.callbacks.append(m_openChatCallback.name());
-	notification.callbacks.append("ignore");
+    auto notification = Notification{};
+    notification.type = m_newChatEvent.name();
+    notification.title = (tr("New chat"));
+    notification.text =
+        normalizeHtml(HtmlString{tr("Chat with <b>%1</b>")}.arg(plainToHtml(message.messageSender().display(true))));
+    notification.details = message.content();
+    notification.data = std::move(data);
+    notification.callbacks.append(m_openChatCallback.name());
+    notification.callbacks.append("ignore");
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 void MessageNotificationService::notifyNewMessage(const Message &message)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(message.messageChat().chatAccount()));
-	data.insert(QStringLiteral("chat"), qVariantFromValue(message.messageChat()));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(message.messageChat().chatAccount()));
+    data.insert(QStringLiteral("chat"), qVariantFromValue(message.messageChat()));
 
-	auto notification = Notification{};
-	notification.type = m_newMessageEvent.name();
-	notification.title = (tr("New message"));
-	notification.text = normalizeHtml(HtmlString{tr("New message from <b>%1</b>")}.arg(plainToHtml(message.messageSender().display(true))));
-	notification.details = message.content();
-	notification.data = std::move(data);
-	notification.callbacks.append(m_openChatCallback.name());
-	notification.callbacks.append("ignore");
+    auto notification = Notification{};
+    notification.type = m_newMessageEvent.name();
+    notification.title = (tr("New message"));
+    notification.text = normalizeHtml(
+        HtmlString{tr("New message from <b>%1</b>")}.arg(plainToHtml(message.messageSender().display(true))));
+    notification.details = message.content();
+    notification.data = std::move(data);
+    notification.callbacks.append(m_openChatCallback.name());
+    notification.callbacks.append("ignore");
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 void MessageNotificationService::openChat(const Notification &notification)
 {
-	auto chat = qvariant_cast<Chat>(notification.data["chat"]);
-	if (chat)
-		m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
+    auto chat = qvariant_cast<Chat>(notification.data["chat"]);
+    if (chat)
+        m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
 
 #include "moc_message-notification-service.cpp"

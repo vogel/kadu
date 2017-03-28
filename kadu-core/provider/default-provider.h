@@ -47,79 +47,76 @@
  * no Custom Provider currently installed. To remove Custom Provider call @link removeCustomProvider
  * @endlink.
  */
-template<typename T>
+template <typename T>
 class DefaultProvider : public Provider<T>
 {
-	std::shared_ptr<Provider<T>> Default;
-	std::shared_ptr<Provider<T>> Custom;
+    std::shared_ptr<Provider<T>> Default;
+    std::shared_ptr<Provider<T>> Custom;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance of DefaultProvider with given Default Provider.
-	 * @param defaultProvider Default Provider value
-	 *
-	 * Given defaultProvider parameter must not be null.
-	 */
-	explicit DefaultProvider(const std::shared_ptr<Provider<T>> &defaultProvider) : Default{defaultProvider}
-	{
-		Q_ASSERT(Default);
-	}
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create instance of DefaultProvider with given Default Provider.
+     * @param defaultProvider Default Provider value
+     *
+     * Given defaultProvider parameter must not be null.
+     */
+    explicit DefaultProvider(const std::shared_ptr<Provider<T>> &defaultProvider) : Default{defaultProvider}
+    {
+        Q_ASSERT(Default);
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Install Custom Provider.
-	 * @param custom Custom Provider to install
-	 * @return true if installation was successfull
-	 *
-	 * This method will take effect only if there is no Custom Provider already set.
-	 * This method will return true if after call given custom Provider is properly installed.
-	 */
-	bool installCustomProvider(const std::shared_ptr<Provider<T>> &custom)
-	{
-		if (Custom)
-			return custom == Custom;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Install Custom Provider.
+     * @param custom Custom Provider to install
+     * @return true if installation was successfull
+     *
+     * This method will take effect only if there is no Custom Provider already set.
+     * This method will return true if after call given custom Provider is properly installed.
+     */
+    bool installCustomProvider(const std::shared_ptr<Provider<T>> &custom)
+    {
+        if (Custom)
+            return custom == Custom;
 
-		Custom = custom;
-		return true;
-	}
+        Custom = custom;
+        return true;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Remove Custom Provider.
-	 * @param custom Custom Provider to remove
-	 * @return true if removing was successfull
-	 *
-	 * This method will take effect only if there is Custom Provider set to value passed as parameter.
-	 * This method will return true if after call no custom Provider is installed.
-	 */
-	bool removeCustomProvider(const std::shared_ptr<Provider<T>> &custom)
-	{
-		if (!Custom || Custom != custom)
-			return false;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Remove Custom Provider.
+     * @param custom Custom Provider to remove
+     * @return true if removing was successfull
+     *
+     * This method will take effect only if there is Custom Provider set to value passed as parameter.
+     * This method will return true if after call no custom Provider is installed.
+     */
+    bool removeCustomProvider(const std::shared_ptr<Provider<T>> &custom)
+    {
+        if (!Custom || Custom != custom)
+            return false;
 
-		Custom.reset();
-		return true;
-	}
+        Custom.reset();
+        return true;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return value.
-	 *
-	 * This method will return value provided by Default Provider if no Custom Provider is installed and
-	 * value provided by Custom Provider otherwise.
-	 */
-	virtual T provide() const
-	{
-		return Custom
-				? Custom->provide()
-				: Default->provide();
-	}
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return value.
+     *
+     * This method will return value provided by Default Provider if no Custom Provider is installed and
+     * value provided by Custom Provider otherwise.
+     */
+    virtual T provide() const
+    {
+        return Custom ? Custom->provide() : Default->provide();
+    }
 };
 
 /**
  * @}
  */
 
-#endif // DEFAULT_PROVIDER_H
+#endif   // DEFAULT_PROVIDER_H

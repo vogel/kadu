@@ -35,29 +35,29 @@ class PathsProvider;
 
 class CenzorPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit CenzorPluginObject(QObject *parent = nullptr);
-	virtual ~CenzorPluginObject();
+    Q_INVOKABLE explicit CenzorPluginObject(QObject *parent = nullptr);
+    virtual ~CenzorPluginObject();
 
 private:
-	QPointer<CenzorConfigurationUiHandler> m_cenzorConfigurationUiHandler;
-	QPointer<CenzorMessageFilter> m_cenzorMessageFilter;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<MessageFilterService> m_messageFilterService;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<CenzorConfigurationUiHandler> m_cenzorConfigurationUiHandler;
+    QPointer<CenzorMessageFilter> m_cenzorMessageFilter;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<MessageFilterService> m_messageFilterService;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setCenzorConfigurationUiHandler(CenzorConfigurationUiHandler *cenzorConfigurationUiHandler);
-	INJEQT_SET void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setCenzorConfigurationUiHandler(CenzorConfigurationUiHandler *cenzorConfigurationUiHandler);
+    INJEQT_SET void setCenzorMessageFilter(CenzorMessageFilter *cenzorMessageFilter);
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 };

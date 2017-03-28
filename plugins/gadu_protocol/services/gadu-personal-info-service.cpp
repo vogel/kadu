@@ -28,8 +28,8 @@
 
 #include "gadu-personal-info-service.h"
 
-GaduPersonalInfoService::GaduPersonalInfoService(Account account, QObject *parent) :
-		PersonalInfoService(account, parent), FetchSeq(0), UpdateSeq(0)
+GaduPersonalInfoService::GaduPersonalInfoService(Account account, QObject *parent)
+        : PersonalInfoService(account, parent), FetchSeq(0), UpdateSeq(0)
 {
 }
 
@@ -39,104 +39,104 @@ GaduPersonalInfoService::~GaduPersonalInfoService()
 
 void GaduPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
 {
-	m_buddyStorage = buddyStorage;
+    m_buddyStorage = buddyStorage;
 }
 
 void GaduPersonalInfoService::setContactStorage(ContactStorage *contactStorage)
 {
-	m_contactStorage = contactStorage;
+    m_contactStorage = contactStorage;
 }
 
 void GaduPersonalInfoService::setConnection(GaduConnection *connection)
 {
-	Connection = connection;
+    Connection = connection;
 }
 
 void GaduPersonalInfoService::handleEventPubdir50Read(struct gg_event *e)
 {
-	gg_pubdir50_t res = e->event.pubdir50;
+    gg_pubdir50_t res = e->event.pubdir50;
 
-	if (FetchSeq != res->seq)
-		return;
+    if (FetchSeq != res->seq)
+        return;
 
-	int count = gg_pubdir50_count(res);
-	if (1 != count)
-	{
-		emit personalInfoAvailable(Buddy::null);
-		return;
-	}
+    int count = gg_pubdir50_count(res);
+    if (1 != count)
+    {
+        emit personalInfoAvailable(Buddy::null);
+        return;
+    }
 
-	Buddy result = GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, m_contactStorage, account(), res, 0);
+    Buddy result = GaduProtocolHelper::searchResultToBuddy(m_buddyStorage, m_contactStorage, account(), res, 0);
 
-	// inverted values for "self" data
-	// this is why gadu protocol suxx
-	if (GenderMale == result.gender())
-		result.setGender(GenderFemale);
-	else if (GenderFemale == result.gender())
-		result.setGender(GenderMale);
+    // inverted values for "self" data
+    // this is why gadu protocol suxx
+    if (GenderMale == result.gender())
+        result.setGender(GenderFemale);
+    else if (GenderFemale == result.gender())
+        result.setGender(GenderMale);
 
-	emit personalInfoAvailable(result);
+    emit personalInfoAvailable(result);
 }
 
 void GaduPersonalInfoService::handleEventPubdir50Write(struct gg_event *e)
 {
-	gg_pubdir50_t res = e->event.pubdir50;
+    gg_pubdir50_t res = e->event.pubdir50;
 
-	if (UpdateSeq != res->seq)
-		return;
+    if (UpdateSeq != res->seq)
+        return;
 
-	emit personalInfoUpdated(true);
+    emit personalInfoUpdated(true);
 }
 
 void GaduPersonalInfoService::fetchPersonalInfo(const QString &id)
 {
-	Q_UNUSED(id)
+    Q_UNUSED(id)
 
-	if (!Connection || !Connection->hasSession())
-		return;
+    if (!Connection || !Connection->hasSession())
+        return;
 
-	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
+    gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_READ);
 
-	auto writableSessionToken = Connection->writableSessionToken();
-	FetchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
-	//gg_pubdir50_free(req);
+    auto writableSessionToken = Connection->writableSessionToken();
+    FetchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
+    // gg_pubdir50_free(req);
 }
 
 void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
 {
-	Q_UNUSED(id)
+    Q_UNUSED(id)
 
-	if (!Connection || !Connection->hasSession())
-		return;
+    if (!Connection || !Connection->hasSession())
+        return;
 
-	gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
+    gg_pubdir50_t req = gg_pubdir50_new(GG_PUBDIR50_WRITE);
 
-	if (!buddy.firstName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, buddy.firstName().toUtf8().constData());
-	if (!buddy.lastName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, buddy.lastName().toUtf8().constData());
-	if (!buddy.nickName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, buddy.nickName().toUtf8().constData());
-	if (!buddy.city().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_CITY, buddy.city().toUtf8().constData());
-	if (0 != buddy.birthYear())
-		gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, QString::number(buddy.birthYear()).toUtf8().constData());
+    if (!buddy.firstName().isEmpty())
+        gg_pubdir50_add(req, GG_PUBDIR50_FIRSTNAME, buddy.firstName().toUtf8().constData());
+    if (!buddy.lastName().isEmpty())
+        gg_pubdir50_add(req, GG_PUBDIR50_LASTNAME, buddy.lastName().toUtf8().constData());
+    if (!buddy.nickName().isEmpty())
+        gg_pubdir50_add(req, GG_PUBDIR50_NICKNAME, buddy.nickName().toUtf8().constData());
+    if (!buddy.city().isEmpty())
+        gg_pubdir50_add(req, GG_PUBDIR50_CITY, buddy.city().toUtf8().constData());
+    if (0 != buddy.birthYear())
+        gg_pubdir50_add(req, GG_PUBDIR50_BIRTHYEAR, QString::number(buddy.birthYear()).toUtf8().constData());
 
-	// inverted values for "self" data
-	// this is why gadu protocol suxx
-	if (GenderMale == buddy.gender())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, "1");
-	else if (GenderFemale == buddy.gender())
-		gg_pubdir50_add(req, GG_PUBDIR50_GENDER, "2");
+    // inverted values for "self" data
+    // this is why gadu protocol suxx
+    if (GenderMale == buddy.gender())
+        gg_pubdir50_add(req, GG_PUBDIR50_GENDER, "1");
+    else if (GenderFemale == buddy.gender())
+        gg_pubdir50_add(req, GG_PUBDIR50_GENDER, "2");
 
-	if (!buddy.familyName().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, buddy.familyName().toUtf8().constData());
-	if (!buddy.familyCity().isEmpty())
-		gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
+    if (!buddy.familyName().isEmpty())
+        gg_pubdir50_add(req, GG_PUBDIR50_FAMILYNAME, buddy.familyName().toUtf8().constData());
+    if (!buddy.familyCity().isEmpty())
+        gg_pubdir50_add(req, GG_PUBDIR50_FAMILYCITY, buddy.familyCity().toUtf8().constData());
 
-	auto writableSessionToken = Connection->writableSessionToken();
-	UpdateSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
-	//gg_pubdir50_free(req);
+    auto writableSessionToken = Connection->writableSessionToken();
+    UpdateSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
+    // gg_pubdir50_free(req);
 }
 
 #include "moc_gadu-personal-info-service.cpp"

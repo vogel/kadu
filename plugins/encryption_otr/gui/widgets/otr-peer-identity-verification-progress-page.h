@@ -30,36 +30,35 @@ class OtrPeerIdentityVerificationService;
 
 class OtrPeerIdentityVerificationProgressPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+    QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
-	Contact MyContact;
-	OtrPeerIdentityVerificationState State;
+    Contact MyContact;
+    OtrPeerIdentityVerificationState State;
 
-	void createGui();
-	void setState(const OtrPeerIdentityVerificationState &state);
-	QString stateToString(const OtrPeerIdentityVerificationState &state);
-	void cancelVerification();
-	bool canCancelVerification() const;
+    void createGui();
+    void setState(const OtrPeerIdentityVerificationState &state);
+    QString stateToString(const OtrPeerIdentityVerificationState &state);
+    void cancelVerification();
+    bool canCancelVerification() const;
 
 public:
-	explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationProgressPage();
+    explicit OtrPeerIdentityVerificationProgressPage(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationProgressPage();
 
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+    void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
-	virtual int nextId() const;
-	virtual void initializePage();
-	virtual bool validatePage();
+    virtual int nextId() const;
+    virtual void initializePage();
+    virtual bool validatePage();
 
 public slots:
-	void rejected();
-	void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
+    void rejected();
+    void updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state);
 
 signals:
-	void finished();
-
+    void finished();
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_PROGRESS_PAGE_H

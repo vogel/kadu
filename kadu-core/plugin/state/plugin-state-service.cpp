@@ -24,8 +24,7 @@
 
 #include <QtCore/QSet>
 
-PluginStateService::PluginStateService(QObject *parent) noexcept :
-		QObject{parent}
+PluginStateService::PluginStateService(QObject *parent) noexcept : QObject{parent}
 {
 }
 
@@ -35,60 +34,58 @@ PluginStateService::~PluginStateService() noexcept
 
 QMap<QString, PluginState> PluginStateService::pluginStates() const noexcept
 {
-	return m_pluginStates;
+    return m_pluginStates;
 }
 
 void PluginStateService::setPluginStates(QMap<QString, PluginState> pluginStates) noexcept
 {
-	auto setToNew = QSet<QString>{};
-	for (auto &plugin : m_pluginStates.keys())
-		if (!pluginStates.contains(plugin))
-			setToNew.insert(plugin);
+    auto setToNew = QSet<QString>{};
+    for (auto &plugin : m_pluginStates.keys())
+        if (!pluginStates.contains(plugin))
+            setToNew.insert(plugin);
 
-	for (auto &plugin : setToNew)
-		setPluginState(plugin, PluginState::New);
+    for (auto &plugin : setToNew)
+        setPluginState(plugin, PluginState::New);
 
-	for (auto &plugin : pluginStates.keys())
-		setPluginState(plugin, pluginStates.value(plugin));
+    for (auto &plugin : pluginStates.keys())
+        setPluginState(plugin, pluginStates.value(plugin));
 }
 
 PluginState PluginStateService::pluginState(const QString &pluginName) const noexcept
 {
-	return m_pluginStates.contains(pluginName)
-			? m_pluginStates.value(pluginName)
-			: PluginState::New;
+    return m_pluginStates.contains(pluginName) ? m_pluginStates.value(pluginName) : PluginState::New;
 }
 
 void PluginStateService::setPluginState(const QString &pluginName, PluginState state) noexcept
 {
-	if (PluginState::New == state)
-	{
-		if (m_pluginStates.contains(pluginName))
-		{
-			m_pluginStates.remove(pluginName);
-			m_changeNotifier.notify();
-			emit pluginStateChanged(pluginName, state);
-		}
-	}
-	else
-	{
-		if (m_pluginStates.value(pluginName) != state)
-		{
-			m_pluginStates.insert(pluginName, state);
-			m_changeNotifier.notify();
-			emit pluginStateChanged(pluginName, state);
-		}
-	}
+    if (PluginState::New == state)
+    {
+        if (m_pluginStates.contains(pluginName))
+        {
+            m_pluginStates.remove(pluginName);
+            m_changeNotifier.notify();
+            emit pluginStateChanged(pluginName, state);
+        }
+    }
+    else
+    {
+        if (m_pluginStates.value(pluginName) != state)
+        {
+            m_pluginStates.insert(pluginName, state);
+            m_changeNotifier.notify();
+            emit pluginStateChanged(pluginName, state);
+        }
+    }
 }
 
 QList<QString> PluginStateService::enabledPlugins() noexcept
 {
-	return m_pluginStates.keys(PluginState::Enabled);
+    return m_pluginStates.keys(PluginState::Enabled);
 }
 
-ChangeNotifier & PluginStateService::changeNotifier()
+ChangeNotifier &PluginStateService::changeNotifier()
 {
-	return m_changeNotifier;
+    return m_changeNotifier;
 }
 
 #include "moc_plugin-state-service.cpp"

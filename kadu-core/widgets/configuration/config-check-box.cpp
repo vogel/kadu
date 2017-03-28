@@ -27,39 +27,42 @@
 #include "widgets/configuration/config-check-box.h"
 #include "widgets/configuration/config-group-box.h"
 
-ConfigCheckBox::ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QCheckBox(widgetCaption, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigCheckBox::ConfigCheckBox(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QCheckBox(widgetCaption, parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
-	createWidgets();
+    createWidgets();
 }
 
-ConfigCheckBox::ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
-		QCheckBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
+ConfigCheckBox::ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QCheckBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
 {
 }
 
 void ConfigCheckBox::createWidgets()
 {
-	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
-	parentConfigGroupBox->addWidget(this, true);
+    setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
+    parentConfigGroupBox->addWidget(this, true);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    if (!ConfigWidget::toolTip.isEmpty())
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 void ConfigCheckBox::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setChecked(dataManager->readEntry(section, item).toBool());
-	emit toggled(isChecked());
+    if (!dataManager)
+        return;
+    setChecked(dataManager->readEntry(section, item).toBool());
+    emit toggled(isChecked());
 }
 
 void ConfigCheckBox::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
 
 #include "moc_config-check-box.cpp"

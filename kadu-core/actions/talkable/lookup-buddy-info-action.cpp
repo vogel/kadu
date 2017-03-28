@@ -28,14 +28,14 @@
 #include "windows/kadu-window.h"
 #include "windows/search-window.h"
 
-LookupBuddyInfoAction::LookupBuddyInfoAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+LookupBuddyInfoAction::LookupBuddyInfoAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"edit-find"});
-	setName(QStringLiteral("lookupUserInfoAction"));
-	setText(tr("Search in Directory"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"edit-find"});
+    setName(QStringLiteral("lookupUserInfoAction"));
+    setText(tr("Search in Directory"));
+    setType(ActionDescription::TypeUser);
 }
 
 LookupBuddyInfoAction::~LookupBuddyInfoAction()
@@ -44,38 +44,38 @@ LookupBuddyInfoAction::~LookupBuddyInfoAction()
 
 void LookupBuddyInfoAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void LookupBuddyInfoAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void LookupBuddyInfoAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto const &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-	{
-		(m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow()))->show();
-		return;
-	}
+    auto const &buddy = action->context()->buddies().toBuddy();
+    if (!buddy)
+    {
+        (m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow()))->show();
+        return;
+    }
 
-	auto sd = m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow(), buddy);
-	sd->show();
-	sd->firstSearch();
+    auto sd = m_injectedFactory->makeInjected<SearchWindow>(m_kaduWindowService->kaduWindow(), buddy);
+    sd->show();
+    sd->firstSearch();
 }
 
-void LookupBuddyInfoAction::updateActionState(Action* action)
+void LookupBuddyInfoAction::updateActionState(Action *action)
 {
-	auto const &contact = action->context()->contacts().toContact();
-	action->setEnabled(contact
-			&& contact.contactAccount().protocolHandler()
-			&& contact.contactAccount().protocolHandler()->searchService());
+    auto const &contact = action->context()->contacts().toContact();
+    action->setEnabled(
+        contact && contact.contactAccount().protocolHandler() &&
+        contact.contactAccount().protocolHandler()->searchService());
 }
 
 #include "moc_lookup-buddy-info-action.cpp"

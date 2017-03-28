@@ -27,14 +27,14 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowMyselfAction::ShowMyselfAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowMyselfAction::ShowMyselfAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setName(QStringLiteral("showMyselfAction"));
-	setText(tr("Show Myself Buddy"));
-	setType(ActionDescription::TypeMainMenu);
+    setCheckable(true);
+    setName(QStringLiteral("showMyselfAction"));
+    setText(tr("Show Myself Buddy"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ShowMyselfAction::~ShowMyselfAction()
@@ -43,57 +43,58 @@ ShowMyselfAction::~ShowMyselfAction()
 
 void ShowMyselfAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowMyselfAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowMyselfAction::actionInstanceCreated(Action *action)
 {
-	auto window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
+    auto window = qobject_cast<MainWindow *>(action->parentWidget());
+    if (!window)
+        return;
+    if (!window->talkableProxyModel())
+        return;
 
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
-	auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
-	if (model)
-	{
-		model->setIncludeMyself(enabled);
-		action->setChecked(enabled);
-	}
+    auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself", false);
+    auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
+    if (model)
+    {
+        model->setIncludeMyself(enabled);
+        action->setChecked(enabled);
+    }
 }
 
 void ShowMyselfAction::actionTriggered(QAction *action, bool toggled)
 {
-	auto window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
+    auto window = qobject_cast<MainWindow *>(action->parentWidget());
+    if (!window)
+        return;
+    if (!window->talkableProxyModel())
+        return;
 
-	auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
-	if (model)
-	{
-		model->setIncludeMyself(toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowMyself", toggled);
-	}
+    auto model = qobject_cast<TalkableModel *>(window->talkableProxyModel()->sourceModel());
+    if (model)
+    {
+        model->setIncludeMyself(toggled);
+        m_configuration->deprecatedApi()->writeEntry("General", "ShowMyself", toggled);
+    }
 }
 
 void ShowMyselfAction::configurationUpdated()
 {
-	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
-		return;
+    if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+        return;
 
-	ActionDescription::configurationUpdated();
+    ActionDescription::configurationUpdated();
 
-	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
-		action(context)->trigger();
+    auto context = m_kaduWindowService->kaduWindow()->actionContext();
+    if (action(context) &&
+        action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
+        action(context)->trigger();
 }
 
 #include "moc_show-myself-action.cpp"

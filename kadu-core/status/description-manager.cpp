@@ -27,8 +27,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "status/description-model.h"
 
-DescriptionManager::DescriptionManager(QObject *parent) :
-		StorableStringList{parent}
+DescriptionManager::DescriptionManager(QObject *parent) : StorableStringList{parent}
 {
 }
 
@@ -38,109 +37,112 @@ DescriptionManager::~DescriptionManager()
 
 void DescriptionManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void DescriptionManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void DescriptionManager::init()
 {
-	m_configurationManager->registerStorableObject(this);
+    m_configurationManager->registerStorableObject(this);
 
-	configurationUpdated();
+    configurationUpdated();
 
-	if (m_configuration->api()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
-		import();
-	else
-		setState(StateNotLoaded);
+    if (m_configuration->api()->getNode("Descriptions", ConfigurationApi::ModeFind).isNull())
+        import();
+    else
+        setState(StateNotLoaded);
 }
 
 void DescriptionManager::done()
 {
-	m_configurationManager->unregisterStorableObject(this);
+    m_configurationManager->unregisterStorableObject(this);
 }
 
-StorableObject * DescriptionManager::storageParent()
+StorableObject *DescriptionManager::storageParent()
 {
-	return 0;
+    return 0;
 }
 
 QString DescriptionManager::storageNodeName()
 {
-	return QStringLiteral("Descriptions");
+    return QStringLiteral("Descriptions");
 }
 
 QString DescriptionManager::storageItemNodeName()
 {
-	return QStringLiteral("Description");
+    return QStringLiteral("Description");
 }
 
-DescriptionModel * DescriptionManager::model()
+DescriptionModel *DescriptionManager::model()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return new DescriptionModel(this);
+    return new DescriptionModel(this);
 }
 
 void DescriptionManager::import()
 {
-	StringList.clear();
-	StringList.append(m_configuration->deprecatedApi()->readEntry("General", "DefaultDescription").split("<-->", QString::SkipEmptyParts));
-	StringList.removeDuplicates();
+    StringList.clear();
+    StringList.append(
+        m_configuration->deprecatedApi()
+            ->readEntry("General", "DefaultDescription")
+            .split("<-->", QString::SkipEmptyParts));
+    StringList.removeDuplicates();
 
-	truncate();
+    truncate();
 
-	ensureStored();
+    ensureStored();
 }
 
 void DescriptionManager::truncate()
 {
-	while (!StringList.isEmpty() && StringList.size() > MaxNumberOfDescriptions)
-	{
-		// We need a copy here, otherwise removeDescription() will emit singal descriptionRemoved()
-		// with a reference to QString which will be already removed by then.
-		QString last = StringList.last();
-		removeDescription(last);
-	}
+    while (!StringList.isEmpty() && StringList.size() > MaxNumberOfDescriptions)
+    {
+        // We need a copy here, otherwise removeDescription() will emit singal descriptionRemoved()
+        // with a reference to QString which will be already removed by then.
+        QString last = StringList.last();
+        removeDescription(last);
+    }
 }
 
 void DescriptionManager::configurationUpdated()
 {
-	MaxNumberOfDescriptions = m_configuration->deprecatedApi()->readNumEntry("General", "NumberOfDescriptions");
-	truncate();
+    MaxNumberOfDescriptions = m_configuration->deprecatedApi()->readNumEntry("General", "NumberOfDescriptions");
+    truncate();
 }
 
 void DescriptionManager::addDescription(const QString &description)
 {
-	if (description.isEmpty())
-		return;
+    if (description.isEmpty())
+        return;
 
-	if (StringList.contains(description))
-		removeDescription(description);
+    if (StringList.contains(description))
+        removeDescription(description);
 
-	emit descriptionAboutToBeAdded(description);
-	StringList.prepend(description);
-	emit descriptionAdded(description);
+    emit descriptionAboutToBeAdded(description);
+    StringList.prepend(description);
+    emit descriptionAdded(description);
 
-	truncate();
+    truncate();
 }
 
-void DescriptionManager::removeDescription(const QString& description)
+void DescriptionManager::removeDescription(const QString &description)
 {
-	if (!StringList.contains(description))
-		return;
+    if (!StringList.contains(description))
+        return;
 
-	emit descriptionAboutToBeRemoved(description);
-	StringList.removeAll(description);
-	emit descriptionRemoved(description);
+    emit descriptionAboutToBeRemoved(description);
+    StringList.removeAll(description);
+    emit descriptionRemoved(description);
 }
 
 void DescriptionManager::clearDescriptions()
 {
-	StringList.clear();
+    StringList.clear();
 }
 
 #include "moc_description-manager.cpp"

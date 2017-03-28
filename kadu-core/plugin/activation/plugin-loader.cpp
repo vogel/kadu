@@ -21,13 +21,13 @@
 #include "plugin-loader.h"
 
 #include "actions/actions.h"
+#include "injeqt-type-roles.h"
 #include "misc/memory.h"
 #include "plugin/activation/plugin-activation-error-exception.h"
 #include "plugin/plugin-injected-factory-module.h"
 #include "plugin/plugin-injected-factory.h"
 #include "plugin/plugin-injector-provider.h"
 #include "plugin/plugin-modules-factory.h"
-#include "injeqt-type-roles.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QEvent>
@@ -35,64 +35,71 @@
 #include <QtCore/QPluginLoader>
 
 #if defined(Q_OS_WIN)
-	#define SO_PREFIX "lib"
-	#define SO_EXT "dll"
+#define SO_PREFIX "lib"
+#define SO_EXT "dll"
 #else
-	#define SO_PREFIX "lib"
-	#define SO_EXT "so"
+#define SO_PREFIX "lib"
+#define SO_EXT "so"
 #endif
 
-PluginLoader::PluginLoader(const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider, QObject *parent) noexcept(false) :
-		// using C++ initializers breaks Qt's lupdate
-		QObject(parent),
-		m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
-		m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)},
-		m_pluginInjectorProviderContainer{pluginName, pluginInjectorProvider, m_pluginInjector},
-		m_injectorRegisteredActions{*m_pluginInjector.get<Actions>(), m_pluginInjector}
+PluginLoader::PluginLoader(
+    const QString &pluginDirPath, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider,
+    QObject *parent) noexcept(false)
+        :   // using C++ initializers breaks Qt's lupdate
+          QObject(parent),
+          m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
+          m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)},
+          m_pluginInjectorProviderContainer{pluginName, pluginInjectorProvider, m_pluginInjector},
+          m_injectorRegisteredActions{*m_pluginInjector.get<Actions>(), m_pluginInjector}
 {
-	m_pluginInjector.instantiate_all_with_type_role(PLUGIN);
-	m_pluginInjector.instantiate_all_with_type_role(SERVICE);
+    m_pluginInjector.instantiate_all_with_type_role(PLUGIN);
+    m_pluginInjector.instantiate_all_with_type_role(SERVICE);
 }
 
 PluginLoader::~PluginLoader() noexcept
 {
-	// do not unload plugin here
-	// if plugin after load adds some static data to glib,
-	// like messaging-menu used in indicator-docking does, then after unload
-	// and next load we are in trouble - application crashes
-	// anyway, I don't expect users to unload plugins very frequently
-	// m_pluginLoader->unload();
+    // do not unload plugin here
+    // if plugin after load adds some static data to glib,
+    // like messaging-menu used in indicator-docking does, then after unload
+    // and next load we are in trouble - application crashes
+    // anyway, I don't expect users to unload plugins very frequently
+    // m_pluginLoader->unload();
 }
 
-std::unique_ptr<QPluginLoader> PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const
+std::unique_ptr<QPluginLoader>
+PluginLoader::createPluginLoader(const QString &pluginDirPath, const QString &pluginName) const
 {
-	auto result = std::make_unique<QPluginLoader>(pluginDirPath + "/" + QStringLiteral(SO_PREFIX) + pluginName + QStringLiteral("." SO_EXT));
-	result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
-	return result;
+    auto result = std::make_unique<QPluginLoader>(
+        pluginDirPath + "/" + QStringLiteral(SO_PREFIX) + pluginName + QStringLiteral("." SO_EXT));
+    result->setLoadHints(QLibrary::ExportExternalSymbolsHint);
+    return result;
 }
 
-injeqt::injector PluginLoader::createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider)
+injeqt::injector
+PluginLoader::createPluginInjector(const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider)
 {
-	try
-	{
-		if (auto pluginModulesFactory = qobject_cast<PluginModulesFactory *>(m_pluginLoader->instance()))
-		{
-			auto parentInjectorName = pluginModulesFactory->parentInjectorName();
-			auto parentInjector = &pluginInjectorProvider->injector(parentInjectorName);
-			auto pluginModules = pluginModulesFactory->createPluginModules();
-			if (parentInjectorName.isEmpty())
-				pluginModules.emplace_back(std::make_unique<PluginInjectedFactoryModule>());
-			auto injector = injeqt::injector{std::vector<injeqt::injector *>{parentInjector}, std::move(pluginModules)};
-			injector.get<PluginInjectedFactory>()->setPluginName(pluginName);
-			return injector;
-		}
-		else
-			return injeqt::injector{};
-	}
-	catch  (injeqt::exception::exception &e)
-	{
-		throw PluginActivationErrorException{pluginName, tr("Creating plugin injector for %1 failed.\n%2: %3").arg(pluginName).arg(typeid(e).name()).arg(e.what())};
-	}
+    try
+    {
+        if (auto pluginModulesFactory = qobject_cast<PluginModulesFactory *>(m_pluginLoader->instance()))
+        {
+            auto parentInjectorName = pluginModulesFactory->parentInjectorName();
+            auto parentInjector = &pluginInjectorProvider->injector(parentInjectorName);
+            auto pluginModules = pluginModulesFactory->createPluginModules();
+            if (parentInjectorName.isEmpty())
+                pluginModules.emplace_back(std::make_unique<PluginInjectedFactoryModule>());
+            auto injector = injeqt::injector{std::vector<injeqt::injector *>{parentInjector}, std::move(pluginModules)};
+            injector.get<PluginInjectedFactory>()->setPluginName(pluginName);
+            return injector;
+        }
+        else
+            return injeqt::injector{};
+    }
+    catch (injeqt::exception::exception &e)
+    {
+        throw PluginActivationErrorException{
+            pluginName,
+            tr("Creating plugin injector for %1 failed.\n%2: %3").arg(pluginName).arg(typeid(e).name()).arg(e.what())};
+    }
 }
 
 #include "moc_plugin-loader.cpp"

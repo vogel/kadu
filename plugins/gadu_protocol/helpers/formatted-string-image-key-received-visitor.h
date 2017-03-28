@@ -41,39 +41,38 @@
  */
 class FormattedStringImageKeyReceivedVisitor : public QObject, public FormattedStringVisitor
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(FormattedStringImageKeyReceivedVisitor);
+    Q_OBJECT
+    Q_DISABLE_COPY(FormattedStringImageKeyReceivedVisitor);
 
-	QString Id;
+    QString Id;
 
 public:
-	/**
-	 * @short Create new instance of FormattedStringImageKeyReceivedVisitor.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id that will be emitted in chatImageKeyReceived() signal
-	 * @param parent QObject parent
-	 */
-	explicit FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent = nullptr);
-	virtual ~FormattedStringImageKeyReceivedVisitor();
+    /**
+     * @short Create new instance of FormattedStringImageKeyReceivedVisitor.
+     * @author Rafał 'Vogel' Malinowski
+     * @param id id that will be emitted in chatImageKeyReceived() signal
+     * @param parent QObject parent
+     */
+    explicit FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent = nullptr);
+    virtual ~FormattedStringImageKeyReceivedVisitor();
 
-	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
+    virtual void beginVisit(const CompositeFormattedString *const compositeFormattedString);
+    virtual void endVisit(const CompositeFormattedString *const compositeFormattedString);
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock);
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock);
 
 signals:
-	/**
-	 * @short Signal emitted each time this object visits FormattedStringImageBlock instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id passed in constructor
-	 * @param chatImage chatImage from visited FormattedStringImageBlock
-	 */
-	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
-
+    /**
+     * @short Signal emitted each time this object visits FormattedStringImageBlock instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param id id passed in constructor
+     * @param chatImage chatImage from visited FormattedStringImageBlock
+     */
+    void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_IMAGE_KEY_RECEIVED_VISITOR_H
+#endif   // FORMATTED_STRING_IMAGE_KEY_RECEIVED_VISITOR_H

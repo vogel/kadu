@@ -24,8 +24,7 @@
 
 #include "unread-messages-talkable-filter.h"
 
-UnreadMessagesTalkableFilter::UnreadMessagesTalkableFilter(QObject *parent) :
-		TalkableFilter(parent)
+UnreadMessagesTalkableFilter::UnreadMessagesTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
 }
 
@@ -35,26 +34,26 @@ UnreadMessagesTalkableFilter::~UnreadMessagesTalkableFilter()
 
 TalkableFilter::FilterResult UnreadMessagesTalkableFilter::filterChat(const Chat &chat)
 {
-	if (chat.unreadMessagesCount() > 0)
-		return Accepted;
-	else
-		return Undecided;
+    if (chat.unreadMessagesCount() > 0)
+        return Accepted;
+    else
+        return Undecided;
 }
 
 TalkableFilter::FilterResult UnreadMessagesTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (buddy.unreadMessagesCount() > 0)
-		return Accepted;
-	else
-		return Undecided;
+    if (buddy.unreadMessagesCount() > 0)
+        return Accepted;
+    else
+        return Undecided;
 }
 
 TalkableFilter::FilterResult UnreadMessagesTalkableFilter::filterContact(const Contact &contact)
 {
-	if (contact.unreadMessagesCount() > 0)
-		return Accepted;
-	else
-		return Undecided;
+    if (contact.unreadMessagesCount() > 0)
+        return Accepted;
+    else
+        return Undecided;
 }
 
 #include "moc_unread-messages-talkable-filter.cpp"

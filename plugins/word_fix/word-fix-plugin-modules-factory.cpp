@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-WordFixPluginModulesFactory::WordFixPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+WordFixPluginModulesFactory::WordFixPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ WordFixPluginModulesFactory::~WordFixPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> WordFixPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<WordFixModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<WordFixModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_word-fix-plugin-modules-factory.cpp"

@@ -25,9 +25,7 @@
 
 class KADUAPI IconsModule : public injeqt::module
 {
-
 public:
-	explicit IconsModule();
-	virtual ~IconsModule();
-
+    explicit IconsModule();
+    virtual ~IconsModule();
 };

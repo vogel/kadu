@@ -25,9 +25,9 @@
 
 class KADUAPI SslModule : public injeqt::module
 {
-
 public:
-	SslModule();
-	virtual ~SslModule() {}
-
+    SslModule();
+    virtual ~SslModule()
+    {
+    }
 };

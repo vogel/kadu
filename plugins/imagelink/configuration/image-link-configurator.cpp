@@ -30,7 +30,7 @@
 
 ImageLinkConfigurator::ImageLinkConfigurator(QObject *parent)
 {
-	Q_UNUSED(parent);
+    Q_UNUSED(parent);
 }
 
 ImageLinkConfigurator::~ImageLinkConfigurator()
@@ -39,45 +39,45 @@ ImageLinkConfigurator::~ImageLinkConfigurator()
 
 void ImageLinkConfigurator::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ImageLinkConfigurator::setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander)
 {
-	m_imageExpander = imageExpander;
+    m_imageExpander = imageExpander;
 }
 
 void ImageLinkConfigurator::setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander)
 {
-	m_videoExpander = videoExpander;
+    m_videoExpander = videoExpander;
 }
 
 void ImageLinkConfigurator::init()
 {
-	createDefaultConfiguration();
+    createDefaultConfiguration();
 }
 
 void ImageLinkConfigurator::configure()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void ImageLinkConfigurator::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Imagelink", "show_image", true);
-	m_configuration->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
+    m_configuration->deprecatedApi()->addVariable("Imagelink", "show_image", true);
+    m_configuration->deprecatedApi()->addVariable("Imagelink", "show_yt", true);
 }
 
 void ImageLinkConfigurator::configurationUpdated()
 {
-	ImageLinkConfiguration configuration;
-	configuration.setShowImages(m_configuration->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
-	configuration.setShowVideos(m_configuration->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
+    ImageLinkConfiguration configuration;
+    configuration.setShowImages(m_configuration->deprecatedApi()->readBoolEntry("Imagelink", "show_image", true));
+    configuration.setShowVideos(m_configuration->deprecatedApi()->readBoolEntry("Imagelink", "show_yt", true));
 
-	if (m_imageExpander)
-		m_imageExpander->setConfiguration(configuration);
-	if (m_videoExpander)
-		m_videoExpander->setConfiguration(configuration);
+    if (m_imageExpander)
+        m_imageExpander->setConfiguration(configuration);
+    if (m_videoExpander)
+        m_videoExpander->setConfiguration(configuration);
 }
 
 #include "moc_image-link-configurator.cpp"

@@ -25,8 +25,8 @@
 #pragma once
 
 #include "contacts/contact.h"
-#include "os/generic/desktop-aware-object.h"
 #include "exports.h"
+#include "os/generic/desktop-aware-object.h"
 
 #include <QtCore/QObject>
 #include <QtWidgets/QComboBox>
@@ -40,32 +40,32 @@ class PluginInjectedFactory;
 
 class KADUAPI SubscriptionWindow : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void getSubscription(PluginInjectedFactory *pluginInjectedFactory, Contact contact, QObject* receiver, const char* slot);
+    static void
+    getSubscription(PluginInjectedFactory *pluginInjectedFactory, Contact contact, QObject *receiver, const char *slot);
 
-	explicit SubscriptionWindow(Contact contact, QWidget* parent = nullptr);
-	virtual ~SubscriptionWindow();
+    explicit SubscriptionWindow(Contact contact, QWidget *parent = nullptr);
+    virtual ~SubscriptionWindow();
 
 signals:
-	void requestConsidered(Contact contact, bool accepted);
+    void requestConsidered(Contact contact, bool accepted);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	Contact m_contact;
+    Contact m_contact;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void accepted();
-	void allowed();
-	void rejected();
-
+    void accepted();
+    void allowed();
+    void rejected();
 };

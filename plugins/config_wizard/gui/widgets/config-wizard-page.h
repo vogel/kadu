@@ -28,25 +28,27 @@ class QTextBrowser;
 
 class ConfigWizardPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QTextBrowser * DescriptionPane;
-	QFormLayout * FormLayout;
+    QTextBrowser *DescriptionPane;
+    QFormLayout *FormLayout;
 
-	void createGui();
+    void createGui();
 
 protected:
-	QFormLayout * formLayout() { return FormLayout; }
+    QFormLayout *formLayout()
+    {
+        return FormLayout;
+    }
 
 public:
-	explicit ConfigWizardPage(QWidget *parent = nullptr);
-	virtual ~ConfigWizardPage();
+    explicit ConfigWizardPage(QWidget *parent = nullptr);
+    virtual ~ConfigWizardPage();
 
-	virtual void acceptPage();
-	virtual void rejectPage();
+    virtual void acceptPage();
+    virtual void rejectPage();
 
-	void setDescription(const QString &description);
-
+    void setDescription(const QString &description);
 };
 
-#endif // CONFIG_WIZARD_PAGE_H
+#endif   // CONFIG_WIZARD_PAGE_H

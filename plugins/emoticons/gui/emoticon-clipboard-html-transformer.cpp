@@ -22,9 +22,8 @@
 // Assume we don't use apostrophes in HTML attributes.
 // Expected string to replace is as follows (capitalics are captured):
 // <img emoticon="EMOTICON_CODE"*>
-EmoticonClipboardHtmlTransformer::EmoticonClipboardHtmlTransformer(QObject *parent) :
-		QObject{parent},
-		EmoticonRegularExpression(R"tag(<img[^>]*emoticon="([^"]+)"[^>]*>)tag")
+EmoticonClipboardHtmlTransformer::EmoticonClipboardHtmlTransformer(QObject *parent)
+        : QObject{parent}, EmoticonRegularExpression(R"tag(<img[^>]*emoticon="([^"]+)"[^>]*>)tag")
 {
 }
 
@@ -34,7 +33,7 @@ EmoticonClipboardHtmlTransformer::~EmoticonClipboardHtmlTransformer()
 
 QString EmoticonClipboardHtmlTransformer::transform(const QString &clipboardHtml)
 {
-	return QString(clipboardHtml).replace(EmoticonRegularExpression, QStringLiteral("\\1"));
+    return QString(clipboardHtml).replace(EmoticonRegularExpression, QStringLiteral("\\1"));
 }
 
 #include "moc_emoticon-clipboard-html-transformer.cpp"

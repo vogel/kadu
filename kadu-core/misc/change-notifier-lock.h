@@ -36,27 +36,25 @@ class ChangeNotifier;
  */
 class KADUAPI ChangeNotifierLock
 {
-
 public:
-	enum Mode
-	{
-		ModeNotify,
-		ModeForget
-	};
+    enum Mode
+    {
+        ModeNotify,
+        ModeForget
+    };
 
-	explicit ChangeNotifierLock(ChangeNotifier &notifier, Mode mode = ModeNotify);
-	~ChangeNotifierLock();
+    explicit ChangeNotifierLock(ChangeNotifier &notifier, Mode mode = ModeNotify);
+    ~ChangeNotifierLock();
 
-	void setMode(Mode mode);
+    void setMode(Mode mode);
 
 private:
-	ChangeNotifier &m_notifier;
-	Mode m_notifierMode;
-
+    ChangeNotifier &m_notifier;
+    Mode m_notifierMode;
 };
 
 /**
  * @}
  */
 
-#endif // CHANGE_NOTIFIER_LOCK_H
+#endif   // CHANGE_NOTIFIER_LOCK_H

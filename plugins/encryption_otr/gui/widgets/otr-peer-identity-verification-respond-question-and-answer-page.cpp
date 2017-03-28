@@ -31,10 +31,11 @@
 
 #include "otr-peer-identity-verification-respond-question-and-answer-page.h"
 
-OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(const Contact &contact, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(
+    const Contact &contact, QWidget *parent)
+        : QWizardPage(parent), MyContact(contact)
 {
-	createGui();
+    createGui();
 }
 
 OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::~OtrPeerIdentityVerificationRespondQuestionAndAnswerPage()
@@ -43,65 +44,69 @@ OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::~OtrPeerIdentityVerific
 
 void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::createGui()
 {
-	setButtonText(QWizard::CommitButton, tr("Answer Question"));
-	setCommitPage(true);
-	setTitle(tr("Respond to Question and Answer"));
+    setButtonText(QWizard::CommitButton, tr("Answer Question"));
+    setCommitPage(true);
+    setTitle(tr("Respond to Question and Answer"));
 
-	QGridLayout *layout = new QGridLayout(this);
+    QGridLayout *layout = new QGridLayout(this);
 
-	QuestionLabel = new QLabel();
-	QuestionLabel->setWordWrap(true);
+    QuestionLabel = new QLabel();
+    QuestionLabel->setWordWrap(true);
 
-	QLineEdit *answerEdit = new QLineEdit();
+    QLineEdit *answerEdit = new QLineEdit();
 
-	layout->setColumnStretch(0, 1);
-	layout->setColumnStretch(1, 100);
+    layout->setColumnStretch(0, 1);
+    layout->setColumnStretch(1, 100);
 
-	layout->addWidget(new QLabel(tr("%1 wants to verify your identity using Question and Answer method.").arg(MyContact.display(true))), 0, 0, 1, 2);
-	layout->addWidget(new QLabel(tr("%1 question:").arg(MyContact.display(true))), 1, 0, 1, 1, Qt::AlignTop);
-	layout->addWidget(QuestionLabel, 1, 1, 1, 1);
-	layout->addWidget(new QLabel(tr("Answer:")), 2, 0, 1, 2);
-	layout->addWidget(answerEdit, 3, 0, 1, 2);
+    layout->addWidget(
+        new QLabel(
+            tr("%1 wants to verify your identity using Question and Answer method.").arg(MyContact.display(true))),
+        0, 0, 1, 2);
+    layout->addWidget(new QLabel(tr("%1 question:").arg(MyContact.display(true))), 1, 0, 1, 1, Qt::AlignTop);
+    layout->addWidget(QuestionLabel, 1, 1, 1, 1);
+    layout->addWidget(new QLabel(tr("Answer:")), 2, 0, 1, 2);
+    layout->addWidget(answerEdit, 3, 0, 1, 2);
 
-	registerField("respondQuestion", QuestionLabel, "text");
-	registerField("respondAnswer*", answerEdit);
+    registerField("respondQuestion", QuestionLabel, "text");
+    registerField("respondAnswer*", answerEdit);
 }
 
-void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::setPeerIdentityVerificationService(
+    OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+    PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::rejected()
 {
-	if (!PeerIdentityVerificationService)
-		return;
+    if (!PeerIdentityVerificationService)
+        return;
 
-	if (wizard()->currentPage() == this)
-		PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+    if (wizard()->currentPage() == this)
+        PeerIdentityVerificationService.data()->cancelVerification(MyContact);
 }
 
 int OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::nextId() const
 {
-	return OtrPeerIdentityVerificationWindow::ProgressPage;
+    return OtrPeerIdentityVerificationWindow::ProgressPage;
 }
 
 void OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::initializePage()
 {
-	setField("respondAnswer", QString());
+    setField("respondAnswer", QString());
 }
 
 bool OtrPeerIdentityVerificationRespondQuestionAndAnswerPage::validatePage()
 {
-	QString respondAnswer = field("respondAnswer").toString();
+    QString respondAnswer = field("respondAnswer").toString();
 
-	if (respondAnswer.isEmpty())
-		return false;
+    if (respondAnswer.isEmpty())
+        return false;
 
-	if (PeerIdentityVerificationService)
-		PeerIdentityVerificationService.data()->respondVerification(MyContact, respondAnswer);
+    if (PeerIdentityVerificationService)
+        PeerIdentityVerificationService.data()->respondVerification(MyContact, respondAnswer);
 
-	return true;
+    return true;
 }
 
 #include "moc_otr-peer-identity-verification-respond-question-and-answer-page.cpp"

@@ -33,44 +33,43 @@ class DescriptionModel;
 
 class KADUAPI DescriptionManager : public StorableStringList, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit DescriptionManager(QObject *parent = nullptr);
-	virtual ~DescriptionManager();
+    Q_INVOKABLE explicit DescriptionManager(QObject *parent = nullptr);
+    virtual ~DescriptionManager();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
-	virtual QString storageItemNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
+    virtual QString storageItemNodeName();
 
-	DescriptionModel * model();
+    DescriptionModel *model();
 
-	void addDescription(const QString &description);
-	void removeDescription(const QString &description);
-	void clearDescriptions();
+    void addDescription(const QString &description);
+    void removeDescription(const QString &description);
+    void clearDescriptions();
 
 signals:
-	void descriptionAboutToBeAdded(const QString &description);
-	void descriptionAdded(const QString &description);
-	void descriptionAboutToBeRemoved(const QString &description);
-	void descriptionRemoved(const QString &description);
+    void descriptionAboutToBeAdded(const QString &description);
+    void descriptionAdded(const QString &description);
+    void descriptionAboutToBeRemoved(const QString &description);
+    void descriptionRemoved(const QString &description);
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
 
-	int MaxNumberOfDescriptions;
+    int MaxNumberOfDescriptions;
 
-	void import();
-	void truncate();
+    void import();
+    void truncate();
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

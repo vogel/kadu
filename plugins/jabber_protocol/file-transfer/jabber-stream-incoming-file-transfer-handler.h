@@ -26,31 +26,30 @@
 
 class JabberStreamIncomingFileTransferHandler : public StreamIncomingFileTransferHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberStreamIncomingFileTransferHandler(FileTransfer fileTransfer);
-	virtual ~JabberStreamIncomingFileTransferHandler();
+    explicit JabberStreamIncomingFileTransferHandler(FileTransfer fileTransfer);
+    virtual ~JabberStreamIncomingFileTransferHandler();
 
-	void setTransferJob(QXmppTransferJob *transferJob);
+    void setTransferJob(QXmppTransferJob *transferJob);
 
-	virtual void accept(QIODevice *destination);
-	virtual void reject();
+    virtual void accept(QIODevice *destination);
+    virtual void reject();
 
 signals:
-	void statusChanged();
+    void statusChanged();
 
 private:
-	QPointer<QXmppTransferJob> m_transferJob;
+    QPointer<QXmppTransferJob> m_transferJob;
 
-	bool m_inProgress;
-	QPointer<QIODevice> m_destination;
+    bool m_inProgress;
+    QPointer<QIODevice> m_destination;
 
-	void cleanup(FileTransferStatus status);
+    void cleanup(FileTransferStatus status);
 
 private slots:
-	void progress(qint64 progress, qint64 total);
-	void stateChanged(QXmppTransferJob::State state);
-	void error(QXmppTransferJob::Error error);
-
+    void progress(qint64 progress, qint64 total);
+    void stateChanged(QXmppTransferJob::State state);
+    void error(QXmppTransferJob::Error error);
 };

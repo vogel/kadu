@@ -35,25 +35,24 @@ class QXmppMessage;
 
 class JabberChatStateService : public ChatStateService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberChatStateService(QXmppClient *client, Account account, QObject *parent = nullptr);
-	virtual ~JabberChatStateService();
+    explicit JabberChatStateService(QXmppClient *client, Account account, QObject *parent = nullptr);
+    virtual ~JabberChatStateService();
 
-	void setResourceService(JabberResourceService *resourceService);
+    void setResourceService(JabberResourceService *resourceService);
 
-	virtual void sendState(const Contact &contact, ChatState state) override;
+    virtual void sendState(const Contact &contact, ChatState state) override;
 
-	void extractReceivedChatState(const QXmppMessage &message);
-	QXmppMessage withSentChatState(QXmppMessage message);
+    void extractReceivedChatState(const QXmppMessage &message);
+    QXmppMessage withSentChatState(QXmppMessage message);
 
 private:
-	QPointer<ContactManager> m_contactManager;
-	QPointer<QXmppClient> m_client;
-	QPointer<JabberResourceService> m_resourceService;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<QXmppClient> m_client;
+    QPointer<JabberResourceService> m_resourceService;
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };

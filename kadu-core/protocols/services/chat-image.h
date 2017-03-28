@@ -26,23 +26,21 @@
 
 class KADUAPI ChatImage
 {
-
 public:
-	ChatImage();
-	ChatImage(QString key, quint32 size);
+    ChatImage();
+    ChatImage(QString key, quint32 size);
 
-	bool operator == (const ChatImage &compareTo) const;
-	bool operator < (const ChatImage &compareTo) const;
+    bool operator==(const ChatImage &compareTo) const;
+    bool operator<(const ChatImage &compareTo) const;
 
-	bool isNull() const;
+    bool isNull() const;
 
-	QString key() const;
-	quint32 size() const;
+    QString key() const;
+    quint32 size() const;
 
 private:
-	QString m_key;
-	quint32 m_size;
-
+    QString m_key;
+    quint32 m_size;
 };
 
 Q_DECLARE_METATYPE(ChatImage);

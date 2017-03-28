@@ -23,15 +23,13 @@ class FullScreenService;
 
 class FullScreenServiceHandler
 {
-
 public:
-	explicit FullScreenServiceHandler(FullScreenService *fullScreenService);
-	~FullScreenServiceHandler();
+    explicit FullScreenServiceHandler(FullScreenService *fullScreenService);
+    ~FullScreenServiceHandler();
 
-	void start();
-	void stop();
+    void start();
+    void stop();
 
 private:
-	FullScreenService *m_fullScreenService;
-
+    FullScreenService *m_fullScreenService;
 };

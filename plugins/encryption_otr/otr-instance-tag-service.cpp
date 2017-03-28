@@ -29,12 +29,12 @@
 
 void OtrInstanceTagService::wrapperOtrCreateInstanceTag(void *data, const char *accountName, const char *protocol)
 {
-	Q_UNUSED(accountName);
-	Q_UNUSED(protocol);
+    Q_UNUSED(accountName);
+    Q_UNUSED(protocol);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->instanceTagService())
-		opData->instanceTagService()->createInstanceTag(opData->contact().contactAccount());
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->instanceTagService())
+        opData->instanceTagService()->createInstanceTag(opData->contact().contactAccount());
 }
 
 OtrInstanceTagService::OtrInstanceTagService()
@@ -47,41 +47,42 @@ OtrInstanceTagService::~OtrInstanceTagService()
 
 void OtrInstanceTagService::setPathService(OtrPathService *pathService)
 {
-	PathService = pathService;
+    PathService = pathService;
 }
 
 void OtrInstanceTagService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 }
 
 void OtrInstanceTagService::readInstanceTags()
 {
-	if (!UserStateService)
-		return;
+    if (!UserStateService)
+        return;
 
-	QString fileName = PathService->instanceTagsStoreFilePath();
-	otrl_instag_read(UserStateService.data()->userState(), fileName.toUtf8().data());
+    QString fileName = PathService->instanceTagsStoreFilePath();
+    otrl_instag_read(UserStateService.data()->userState(), fileName.toUtf8().data());
 }
 
 void OtrInstanceTagService::writeInstanceTags()
 {
-	if (!UserStateService)
-		return;
+    if (!UserStateService)
+        return;
 
-	QString fileName = PathService->instanceTagsStoreFilePath();
-	otrl_instag_write(UserStateService.data()->userState(), fileName.toUtf8().data());
+    QString fileName = PathService->instanceTagsStoreFilePath();
+    otrl_instag_write(UserStateService.data()->userState(), fileName.toUtf8().data());
 }
 
 void OtrInstanceTagService::createInstanceTag(const Account &account)
 {
-	if (!UserStateService)
-		return;
+    if (!UserStateService)
+        return;
 
-	QString fileName = PathService->instanceTagsStoreFilePath();
-	otrl_instag_generate(UserStateService.data()->userState(), fileName.toUtf8().data(),
-						 account.id().toUtf8().data(), account.protocolName().toUtf8().data());
-	writeInstanceTags();
+    QString fileName = PathService->instanceTagsStoreFilePath();
+    otrl_instag_generate(
+        UserStateService.data()->userState(), fileName.toUtf8().data(), account.id().toUtf8().data(),
+        account.protocolName().toUtf8().data());
+    writeInstanceTags();
 }
 
 #include "moc_otr-instance-tag-service.cpp"

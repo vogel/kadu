@@ -60,88 +60,87 @@ class RawMessage;
  */
 class GaduChatService : public ChatService
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<GaduChatImageService> CurrentGaduChatImageService;
-	QPointer<GaduFileTransferService> CurrentFileTransferService;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ImageStorageService> CurrentImageStorageService;
-	QPointer<FormattedStringFactory> m_formattedStringFactory;
-	QPointer<MessageStorage> m_messageStorage;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<GaduChatImageService> CurrentGaduChatImageService;
+    QPointer<GaduFileTransferService> CurrentFileTransferService;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ImageStorageService> CurrentImageStorageService;
+    QPointer<FormattedStringFactory> m_formattedStringFactory;
+    QPointer<MessageStorage> m_messageStorage;
 
-	QPointer<GaduConnection> Connection;
+    QPointer<GaduConnection> Connection;
 
-	QHash<int, Message> UndeliveredMessages;
+    QHash<int, Message> UndeliveredMessages;
 
-	bool isSystemMessage(struct gg_event *e);
-	Contact getSender(struct gg_event *e);
-	bool ignoreSender(gg_event *e, Buddy sender);
-	ContactSet getRecipients(struct gg_event *e);
-	RawMessage getRawMessage(struct gg_event *e);
-	bool ignoreRichText(Contact sender);
+    bool isSystemMessage(struct gg_event *e);
+    Contact getSender(struct gg_event *e);
+    bool ignoreSender(gg_event *e, Buddy sender);
+    ContactSet getRecipients(struct gg_event *e);
+    RawMessage getRawMessage(struct gg_event *e);
+    bool ignoreRichText(Contact sender);
 
-	void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
-	int sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage, bool isPlainText);
-	UinType * contactsToUins(const QVector<Contact> &contacts) const;
+    void handleMsg(Contact sender, ContactSet recipients, MessageType type, struct gg_event *e);
+    int sendRawMessage(const QVector<Contact> &contacts, const RawMessage &rawMessage, bool isPlainText);
+    UinType *contactsToUins(const QVector<Contact> &contacts) const;
 
-	QTimer *RemoveTimer;
+    QTimer *RemoveTimer;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setFormattedStringFactory(FormattedStringFactory *formattedStringFactory);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
+    INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 
-	void removeTimeoutUndeliveredMessages();
+    void removeTimeoutUndeliveredMessages();
 
 public:
-	explicit GaduChatService(Account account, QObject *parent = nullptr);
-	virtual ~GaduChatService();
+    explicit GaduChatService(Account account, QObject *parent = nullptr);
+    virtual ~GaduChatService();
 
-	/**
-	 * @short Set gadu chat image service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param gaduChatImageService chat image service for this service
-	 */
-	void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
+    /**
+     * @short Set gadu chat image service for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param gaduChatImageService chat image service for this service
+     */
+    void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
 
-	void setGaduFileTransferService(GaduFileTransferService *gaduFileTransferService);
+    void setGaduFileTransferService(GaduFileTransferService *gaduFileTransferService);
 
-	/**
-	 * @short Set connection for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param connection connection for this service
-	 */
-	void setConnection(GaduConnection *connection);
+    /**
+     * @short Set connection for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param connection connection for this service
+     */
+    void setConnection(GaduConnection *connection);
 
-	virtual int maxMessageLength() const override;
+    virtual int maxMessageLength() const override;
 
 public slots:
-	virtual bool sendMessage(const Message &message) override;
-	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) override;
+    virtual bool sendMessage(const Message &message) override;
+    virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) override;
 
-	/**
-	 * @short Leave @p chat.
-	 *
-	 * Use to leave chat. Sets IgnoreAllMessages property to true.
-	 */
-	virtual void leaveChat(const Chat &chat) override;
+    /**
+     * @short Leave @p chat.
+     *
+     * Use to leave chat. Sets IgnoreAllMessages property to true.
+     */
+    virtual void leaveChat(const Chat &chat) override;
 
-	void handleEventMsg(struct gg_event *e);
-	void handleEventMultilogonMsg(struct gg_event *e);
-	void handleEventAck(struct gg_event *e);
+    void handleEventMsg(struct gg_event *e);
+    void handleEventMultilogonMsg(struct gg_event *e);
+    void handleEventAck(struct gg_event *e);
 
 signals:
-	void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
-
+    void chatImageKeyReceived(const QString &id, const ChatImage &chatImage);
 };
 
 /**

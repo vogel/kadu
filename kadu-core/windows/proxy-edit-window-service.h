@@ -31,21 +31,20 @@ class ProxyEditWindow;
 
 class KADUAPI ProxyEditWindowService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ProxyEditWindowService(QObject *parent = nullptr);
-	virtual ~ProxyEditWindowService();
+    Q_INVOKABLE explicit ProxyEditWindowService(QObject *parent = nullptr);
+    virtual ~ProxyEditWindowService();
 
-	void show();
+    void show();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<ProxyEditWindow> m_proxyEditWindow;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ProxyEditWindow> m_proxyEditWindow;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

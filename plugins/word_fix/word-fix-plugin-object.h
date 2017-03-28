@@ -32,27 +32,27 @@ class WordFix;
 
 class WordFixPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit WordFixPluginObject(QObject *parent = nullptr);
-	virtual ~WordFixPluginObject();
+    Q_INVOKABLE explicit WordFixPluginObject(QObject *parent = nullptr);
+    virtual ~WordFixPluginObject();
 
 private:
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<WordFixConfigurationUiHandler> m_wordFixConfigurationUiHandler;
-	QPointer<WordFix> m_wordFix;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<WordFixConfigurationUiHandler> m_wordFixConfigurationUiHandler;
+    QPointer<WordFix> m_wordFix;
 
 private slots:
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setWordFixConfigurationUiHandler(WordFixConfigurationUiHandler *wordFixConfigurationUiHandler);
-	INJEQT_SET void setWordFix(WordFix *wordFix);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setWordFixConfigurationUiHandler(WordFixConfigurationUiHandler *wordFixConfigurationUiHandler);
+    INJEQT_SET void setWordFix(WordFix *wordFix);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

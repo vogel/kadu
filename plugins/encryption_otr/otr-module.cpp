@@ -47,31 +47,31 @@
 
 OtrModule::OtrModule()
 {
-	add_type<OtrAccountConfigurationWidgetFactory>();
-	add_type<OtrAppOpsService>();
-	add_type<OtrBuddyConfigurationWidgetFactory>();
-	add_type<OtrChatTopBarWidgetFactory>();
-	add_type<OtrContextConverter>();
-	add_type<OtrErrorMessageService>();
-	add_type<OtrFingerprintService>();
-	add_type<OtrInstanceTagService>();
-	add_type<OtrIsLoggedInService>();
-	add_type<OtrMessageEventService>();
-	add_type<OtrMessageService>();
-	add_type<OtrNotifier>();
-	add_type<OtrOpDataFactory>();
-	add_type<OtrPathService>();
-	add_type<OtrPeerIdentityVerificationService>();
-	add_type<OtrPeerIdentityVerificationWindowFactory>();
-	add_type<OtrPeerIdentityVerificationWindowRepository>();
-	add_type<OtrPluginObject>();
-	add_type<OtrPolicyService>();
-	add_type<OtrPrivateKeyService>();
-	add_type<OtrRawMessageTransformer>();
-	add_type<OtrSessionService>();
-	add_type<OtrTimerService>();
-	add_type<OtrTrustLevelService>();
-	add_type<OtrUserStateService>();
+    add_type<OtrAccountConfigurationWidgetFactory>();
+    add_type<OtrAppOpsService>();
+    add_type<OtrBuddyConfigurationWidgetFactory>();
+    add_type<OtrChatTopBarWidgetFactory>();
+    add_type<OtrContextConverter>();
+    add_type<OtrErrorMessageService>();
+    add_type<OtrFingerprintService>();
+    add_type<OtrInstanceTagService>();
+    add_type<OtrIsLoggedInService>();
+    add_type<OtrMessageEventService>();
+    add_type<OtrMessageService>();
+    add_type<OtrNotifier>();
+    add_type<OtrOpDataFactory>();
+    add_type<OtrPathService>();
+    add_type<OtrPeerIdentityVerificationService>();
+    add_type<OtrPeerIdentityVerificationWindowFactory>();
+    add_type<OtrPeerIdentityVerificationWindowRepository>();
+    add_type<OtrPluginObject>();
+    add_type<OtrPolicyService>();
+    add_type<OtrPrivateKeyService>();
+    add_type<OtrRawMessageTransformer>();
+    add_type<OtrSessionService>();
+    add_type<OtrTimerService>();
+    add_type<OtrTrustLevelService>();
+    add_type<OtrUserStateService>();
 }
 
 OtrModule::~OtrModule()

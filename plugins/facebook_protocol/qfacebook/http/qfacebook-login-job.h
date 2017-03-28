@@ -31,31 +31,31 @@ class QFacebookSessionToken;
 
 enum class QFacebookLoginErrorType
 {
-	Unknown,
-	InvalidPassword
+    Unknown,
+    InvalidPassword
 };
 
 struct QFacebookLoginError
 {
-	QFacebookLoginErrorType type;
-	QString message;
+    QFacebookLoginErrorType type;
+    QString message;
 };
 
 using QFacebookLoginResult = boost::variant<QFacebookLoginError, QFacebookSessionToken>;
 
 class QFacebookLoginJob : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QFacebookLoginJob(QFacebookHttpApi &httpApi, QString userName, QString password, QObject *parent = nullptr);
-	virtual ~QFacebookLoginJob();
+    explicit QFacebookLoginJob(
+        QFacebookHttpApi &httpApi, QString userName, QString password, QObject *parent = nullptr);
+    virtual ~QFacebookLoginJob();
 
 signals:
-	void finished(const QFacebookLoginResult &result);
+    void finished(const QFacebookLoginResult &result);
 
 private:
-	void replyFinished(const std::experimental::optional<QFacebookJsonReader> &result);
-	QFacebookLoginResult loginResult(const std::experimental::optional<QFacebookJsonReader> &result) const;
-
+    void replyFinished(const std::experimental::optional<QFacebookJsonReader> &result);
+    QFacebookLoginResult loginResult(const std::experimental::optional<QFacebookJsonReader> &result) const;
 };

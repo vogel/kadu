@@ -27,43 +27,39 @@
 
 namespace
 {
-
 std::experimental::optional<QThrift::List<QThrift::Struct>> readPresenceList(const QByteArray &data)
 {
-	try
-	{
-		auto thriftReader = QThrift::Reader(data);
-		thriftReader.readString();
-		auto presenceStruct = thriftReader.readValue<QThrift::Struct>();
-		return presenceStruct.get<QThrift::List<QThrift::Struct>>(2);
-	}
-	catch (QThrift::Exception &)
-	{
-		throw QFacebookInvalidDataException{};
-	}
+    try
+    {
+        auto thriftReader = QThrift::Reader(data);
+        thriftReader.readString();
+        auto presenceStruct = thriftReader.readValue<QThrift::Struct>();
+        return presenceStruct.get<QThrift::List<QThrift::Struct>>(2);
+    }
+    catch (QThrift::Exception &)
+    {
+        throw QFacebookInvalidDataException{};
+    }
 }
-
 }
 
 QFacebookPublishPresence QFacebookPublishPresence::decode(const QByteArray &data)
 {
-	auto presenceList = readPresenceList(data);
-	if (!presenceList)
-		throw QFacebookInvalidDataException{};
+    auto presenceList = readPresenceList(data);
+    if (!presenceList)
+        throw QFacebookInvalidDataException{};
 
-	auto result = std::vector<QFacebookPresence>{};
-	for (auto const &presenceItem : *presenceList)
-	{
-		auto id = presenceItem.get<int64_t>(1);
-		auto active = presenceItem.get<int32_t>(2);
-		if (!id || !active)
-			throw QFacebookInvalidDataException{};
+    auto result = std::vector<QFacebookPresence>{};
+    for (auto const &presenceItem : *presenceList)
+    {
+        auto id = presenceItem.get<int64_t>(1);
+        auto active = presenceItem.get<int32_t>(2);
+        if (!id || !active)
+            throw QFacebookInvalidDataException{};
 
-		result.push_back(QFacebookPresence{*id, active == 0
-				? QFacebookPresenceType::Offline
-				: QFacebookPresenceType::Online
-		});
-	}
+        result.push_back(
+            QFacebookPresence{*id, active == 0 ? QFacebookPresenceType::Offline : QFacebookPresenceType::Online});
+    }
 
-	return {result};
+    return {result};
 }

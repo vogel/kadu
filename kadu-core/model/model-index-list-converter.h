@@ -36,47 +36,46 @@ class UnreadMessageRepository;
 
 class ModelIndexListConverter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ModelIndexListConverter(const QModelIndexList &modelIndexList, QObject *parent = nullptr);
-	virtual ~ModelIndexListConverter();
+    explicit ModelIndexListConverter(const QModelIndexList &modelIndexList, QObject *parent = nullptr);
+    virtual ~ModelIndexListConverter();
 
-	RoleSet roles() const;
-	BuddySet buddies() const;
-	ContactSet contacts() const;
-	Chat chat() const;
+    RoleSet roles() const;
+    BuddySet buddies() const;
+    ContactSet contacts() const;
+    Chat chat() const;
 
 private:
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	const QModelIndexList &ModelIndexList;
+    const QModelIndexList &ModelIndexList;
 
-	RoleSet Roles;
-	BuddySet Buddies;
-	ContactSet Contacts;
-	Chat ComputedChat;
+    RoleSet Roles;
+    BuddySet Buddies;
+    ContactSet Contacts;
+    Chat ComputedChat;
 
-	void buildRoles();
-	void buildBuddies();
-	void buildContacts();
-	void buildChat();
+    void buildRoles();
+    void buildBuddies();
+    void buildContacts();
+    void buildChat();
 
-	Chat chatFromIndex(const QModelIndex &index) const;
-	Chat chatFromBuddies() const;
-	Chat chatFromContacts(const Account &account) const;
+    Chat chatFromIndex(const QModelIndex &index) const;
+    Chat chatFromBuddies() const;
+    Chat chatFromContacts(const Account &account) const;
 
-	Account commonAccount() const;
-	Contact contactForAccount(const QModelIndex &inde, const Account &account) const;
+    Account commonAccount() const;
+    Contact contactForAccount(const QModelIndex &inde, const Account &account) const;
 
 private slots:
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_INIT void init();
 };

@@ -29,13 +29,14 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QVBoxLayout>
 
-SoundBuddyConfigurationWidget::SoundBuddyConfigurationWidget(const Buddy &buddy, SoundManager *soundManager, QWidget *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		BuddyConfigurationWidget(buddy, parent),
-		m_soundManager(soundManager),
-		m_stateNotifier(new SimpleConfigurationValueStateNotifier(this))
+SoundBuddyConfigurationWidget::SoundBuddyConfigurationWidget(
+    const Buddy &buddy, SoundManager *soundManager,
+    QWidget *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          BuddyConfigurationWidget(buddy, parent),
+          m_soundManager(soundManager), m_stateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("Sound"));
+    setWindowTitle(tr("Sound"));
 }
 
 SoundBuddyConfigurationWidget::~SoundBuddyConfigurationWidget()
@@ -44,72 +45,72 @@ SoundBuddyConfigurationWidget::~SoundBuddyConfigurationWidget()
 
 void SoundBuddyConfigurationWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundBuddyConfigurationWidget::init()
 {
-	createGui();
-	loadValues();
-	updateState();
+    createGui();
+    loadValues();
+    updateState();
 }
 
 void SoundBuddyConfigurationWidget::createGui()
 {
-	auto layout = new QVBoxLayout(this);
+    auto layout = new QVBoxLayout(this);
 
-	m_useCustomSoundCheckBox = new QCheckBox(tr("Use custom sound"));
-	m_customSoundSelectFile = m_pluginInjectedFactory->makeInjected<SoundSelectFile>(m_soundManager, this);
+    m_useCustomSoundCheckBox = new QCheckBox(tr("Use custom sound"));
+    m_customSoundSelectFile = m_pluginInjectedFactory->makeInjected<SoundSelectFile>(m_soundManager, this);
 
-	connect(m_useCustomSoundCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
-	connect(m_customSoundSelectFile, SIGNAL(fileChanged()), this, SLOT(updateState()));
+    connect(m_useCustomSoundCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(m_customSoundSelectFile, SIGNAL(fileChanged()), this, SLOT(updateState()));
 
-	layout->addWidget(m_useCustomSoundCheckBox);
-	layout->addWidget(m_customSoundSelectFile);
-	layout->addStretch(100);
+    layout->addWidget(m_useCustomSoundCheckBox);
+    layout->addWidget(m_customSoundSelectFile);
+    layout->addStretch(100);
 }
 
 void SoundBuddyConfigurationWidget::loadValues()
 {
-	m_useCustomSoundCheckBox->setChecked(buddy().property("sound:use_custom_sound", false).toBool());
-	m_customSoundSelectFile->setFile(buddy().property("sound:custom_sound", QString{}).toString());
+    m_useCustomSoundCheckBox->setChecked(buddy().property("sound:use_custom_sound", false).toBool());
+    m_customSoundSelectFile->setFile(buddy().property("sound:custom_sound", QString{}).toString());
 }
 
 void SoundBuddyConfigurationWidget::updateState()
 {
-	m_customSoundSelectFile->setEnabled(m_useCustomSoundCheckBox->isChecked());
+    m_customSoundSelectFile->setEnabled(m_useCustomSoundCheckBox->isChecked());
 
-	if (buddy().property("sound:use_custom_sound", false).toBool() != m_useCustomSoundCheckBox->isChecked())
-	{
-		m_stateNotifier->setState(StateChangedDataValid);
-		return;
-	}
+    if (buddy().property("sound:use_custom_sound", false).toBool() != m_useCustomSoundCheckBox->isChecked())
+    {
+        m_stateNotifier->setState(StateChangedDataValid);
+        return;
+    }
 
-	if (!m_useCustomSoundCheckBox->isChecked())
-	{
-		m_stateNotifier->setState(StateNotChanged);
-		return;
-	}
+    if (!m_useCustomSoundCheckBox->isChecked())
+    {
+        m_stateNotifier->setState(StateNotChanged);
+        return;
+    }
 
-	if (buddy().property("sound:custom_sound", QString{}).toString() != m_customSoundSelectFile->file())
-		m_stateNotifier->setState(StateChangedDataValid);
-	else
-		m_stateNotifier->setState(StateNotChanged);
+    if (buddy().property("sound:custom_sound", QString{}).toString() != m_customSoundSelectFile->file())
+        m_stateNotifier->setState(StateChangedDataValid);
+    else
+        m_stateNotifier->setState(StateNotChanged);
 }
 
-const ConfigurationValueStateNotifier * SoundBuddyConfigurationWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *SoundBuddyConfigurationWidget::stateNotifier() const
 {
-	return m_stateNotifier;
+    return m_stateNotifier;
 }
 
 void SoundBuddyConfigurationWidget::apply()
 {
-	buddy().addProperty("sound:use_custom_sound", m_useCustomSoundCheckBox->isChecked(), CustomProperties::Storable);
-	buddy().addProperty("sound:custom_sound", m_customSoundSelectFile->file(), CustomProperties::Storable);
-	updateState();
+    buddy().addProperty("sound:use_custom_sound", m_useCustomSoundCheckBox->isChecked(), CustomProperties::Storable);
+    buddy().addProperty("sound:custom_sound", m_customSoundSelectFile->file(), CustomProperties::Storable);
+    updateState();
 }
 
 void SoundBuddyConfigurationWidget::cancel()
 {
-	loadValues();
+    loadValues();
 }

@@ -22,24 +22,23 @@
 #ifndef LONG_VALIDATOR_H
 #define LONG_VALIDATOR_H
 
-#include <QtGui/QValidator>
 #include "exports.h"
+#include <QtGui/QValidator>
 
 class KADUAPI LongValidator : public QValidator
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(LongValidator)
+    Q_OBJECT
+    Q_DISABLE_COPY(LongValidator)
 
-	qlonglong Bottom;
-	qlonglong Top;
+    qlonglong Bottom;
+    qlonglong Top;
 
 public:
-	LongValidator(qlonglong bottom, qlonglong top, QObject *parent = nullptr);
-	virtual ~LongValidator();
+    LongValidator(qlonglong bottom, qlonglong top, QObject *parent = nullptr);
+    virtual ~LongValidator();
 
-	virtual QValidator::State validate(QString &input, int &) const;
-	virtual void fixup(QString &input) const;
-
+    virtual QValidator::State validate(QString &input, int &) const;
+    virtual void fixup(QString &input) const;
 };
 
-#endif // LONG_VALIDATOR_H
+#endif   // LONG_VALIDATOR_H

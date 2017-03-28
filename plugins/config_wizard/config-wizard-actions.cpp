@@ -30,8 +30,7 @@
 
 #include <QtWidgets/QAction>
 
-ConfigWizardActions::ConfigWizardActions(QObject *parent) :
-		QObject{parent}
+ConfigWizardActions::ConfigWizardActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -41,28 +40,22 @@ ConfigWizardActions::~ConfigWizardActions()
 
 void ConfigWizardActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void ConfigWizardActions::setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction)
 {
-	m_showConfigWizardAction = showConfigWizardAction;
+    m_showConfigWizardAction = showConfigWizardAction;
 }
 
 void ConfigWizardActions::registerActions()
 {
-	m_menuInventory
-		->menu("tools")
-		->addAction(m_showConfigWizardAction, KaduMenu::SectionTools)
-		->update();
+    m_menuInventory->menu("tools")->addAction(m_showConfigWizardAction, KaduMenu::SectionTools)->update();
 }
 
 void ConfigWizardActions::unregisterActions()
 {
-	m_menuInventory
-		->menu("tools")
-		->removeAction(m_showConfigWizardAction)
-		->update();
+    m_menuInventory->menu("tools")->removeAction(m_showConfigWizardAction)->update();
 }
 
 #include "moc_config-wizard-actions.cpp"

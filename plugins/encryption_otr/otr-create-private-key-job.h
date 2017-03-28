@@ -28,31 +28,30 @@ class OtrUserStateService;
 
 class OtrCreatePrivateKeyJob : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrUserStateService> UserStateService;
 
-	Account MyAccount;
-	QString PrivateStoreFileName;
-	QPointer<QThread> CreationThread;
-	void *KeyPointer;
+    Account MyAccount;
+    QString PrivateStoreFileName;
+    QPointer<QThread> CreationThread;
+    void *KeyPointer;
 
 private slots:
-	void workerFinished(bool ok);
+    void workerFinished(bool ok);
 
 public:
-	explicit OtrCreatePrivateKeyJob(QObject *parent = nullptr);
-	virtual ~OtrCreatePrivateKeyJob();
+    explicit OtrCreatePrivateKeyJob(QObject *parent = nullptr);
+    virtual ~OtrCreatePrivateKeyJob();
 
-	void setUserStateService(OtrUserStateService *userStateService);
+    void setUserStateService(OtrUserStateService *userStateService);
 
-	void setAccount(const Account &account);
-	void setPrivateStoreFileName(const QString &privateStoreFileName);
-	void createPrivateKey();
+    void setAccount(const Account &account);
+    void setPrivateStoreFileName(const QString &privateStoreFileName);
+    void createPrivateKey();
 
 signals:
-	void finished(const Account &account, bool ok);
-
+    void finished(const Account &account, bool ok);
 };
 
-#endif // OTR_CREATE_PRIVATE_KEY_JOB_H
+#endif   // OTR_CREATE_PRIVATE_KEY_JOB_H

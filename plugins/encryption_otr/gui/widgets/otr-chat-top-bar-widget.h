@@ -32,41 +32,40 @@ class QPushButton;
 
 class OtrChatTopBarWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<OtrTrustLevelService> TrustLevelService;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<OtrTrustLevelService> TrustLevelService;
 
-	Contact MyContact;
-	QPushButton *OtrStatusButton;
-	QAction *StartAction;
-	QAction *EndAction;
-	QAction *VerifyAction;
+    Contact MyContact;
+    QPushButton *OtrStatusButton;
+    QAction *StartAction;
+    QAction *EndAction;
+    QAction *VerifyAction;
 
-	void createGui();
-	OtrTrustLevelService::TrustLevel trustLevel() const;
-	QString trustStatusString(OtrTrustLevelService::TrustLevel level) const;
+    void createGui();
+    OtrTrustLevelService::TrustLevel trustLevel() const;
+    QString trustStatusString(OtrTrustLevelService::TrustLevel level) const;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void startSession();
-	void endSession();
-	void verifyPeerIdentity();
-	void trustLevelUpdated();
+    void startSession();
+    void endSession();
+    void verifyPeerIdentity();
+    void trustLevelUpdated();
 
 public:
-	explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrChatTopBarWidget();
+    explicit OtrChatTopBarWidget(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrChatTopBarWidget();
 
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 signals:
-	void startSession(const Contact &contact);
-	void endSession(const Contact &contact);
-	void verifyPeerIdentity(const Contact &contact);
-
+    void startSession(const Contact &contact);
+    void endSession(const Contact &contact);
+    void verifyPeerIdentity(const Contact &contact);
 };
 
-#endif // OTR_CHAT_TOP_BAR_WIDGET_H
+#endif   // OTR_CHAT_TOP_BAR_WIDGET_H

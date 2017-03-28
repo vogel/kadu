@@ -32,29 +32,28 @@ class Myself;
 
 class SendFileAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit SendFileAction(QObject *parent = nullptr);
-	virtual ~SendFileAction();
+    Q_INVOKABLE explicit SendFileAction(QObject *parent = nullptr);
+    virtual ~SendFileAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<FileTransferManager> m_fileTransferManager;
-	QPointer<FileTransferStorage> m_fileTransferStorage;
-	QPointer<Myself> m_myself;
+    QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<FileTransferStorage> m_fileTransferStorage;
+    QPointer<Myself> m_myself;
 
-	void selectFilesAndSend(const ContactSet &contacts);
-	QStringList selectFilesToSend() const;
+    void selectFilesAndSend(const ContactSet &contacts);
+    QStringList selectFilesToSend() const;
 
 private slots:
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_SET void setFileTransferStorage(FileTransferStorage *fileTransferStorage);
+    INJEQT_SET void setMyself(Myself *myself);
 };

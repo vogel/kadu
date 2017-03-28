@@ -30,24 +30,24 @@
 
 class OtrPeerIdentityVerificationResultPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrTrustLevelService> TrustLevelService;
+    QPointer<OtrTrustLevelService> TrustLevelService;
 
-	Contact MyContact;
+    Contact MyContact;
 
-	void createGui();
-	QString stateToString(const OtrPeerIdentityVerificationState::State &state, OtrTrustLevelService::TrustLevel trustLevel);
+    void createGui();
+    QString
+    stateToString(const OtrPeerIdentityVerificationState::State &state, OtrTrustLevelService::TrustLevel trustLevel);
 
 public:
-	explicit OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationResultPage();
+    explicit OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationResultPage();
 
-	void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
-	virtual int nextId() const;
-	virtual void initializePage();
-
+    virtual int nextId() const;
+    virtual void initializePage();
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_RESULT_PAGE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_RESULT_PAGE_H

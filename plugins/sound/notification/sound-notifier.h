@@ -31,24 +31,23 @@ class SoundManager;
 
 class SoundNotifier : public QObject, public Notifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotifierRepository> m_notifierRepository;
-	QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
-	QPointer<SoundManager> m_soundManager;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<SoundConfigurationUiHandler> m_soundConfigurationUiHandler;
+    QPointer<SoundManager> m_soundManager;
 
 public:
-	Q_INVOKABLE explicit SoundNotifier(QObject *parent = nullptr);
-	virtual ~SoundNotifier();
+    Q_INVOKABLE explicit SoundNotifier(QObject *parent = nullptr);
+    virtual ~SoundNotifier();
 
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr) override;
-	virtual void notify(const Notification &notification) override;
+    virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) override;
+    virtual void notify(const Notification &notification) override;
 
 private slots:
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
-
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_SET void setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler);
+    INJEQT_SET void setSoundManager(SoundManager *soundManager);
 };

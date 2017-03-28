@@ -30,8 +30,7 @@
  * Constructs object with @link<StorableObject::StateNew state @endlink and null
  * (invalid) @link<StorableObject::storage storage point @endlink.
  */
-UuidStorableObject::UuidStorableObject(QObject *parent) :
-		StorableObject{parent}
+UuidStorableObject::UuidStorableObject(QObject *parent) : StorableObject{parent}
 {
 }
 
@@ -55,22 +54,23 @@ UuidStorableObject::UuidStorableObject(QObject *parent) :
  */
 std::shared_ptr<StoragePoint> UuidStorableObject::createStoragePoint()
 {
-	if (storageNodeName().isEmpty())
-		return {};
+    if (storageNodeName().isEmpty())
+        return {};
 
-	if (!storageParent())
-		return {};
+    if (!storageParent())
+        return {};
 
-	auto parentStoragePoint = storageParent()->storage();
-	if (!parentStoragePoint)
-		return {};
+    auto parentStoragePoint = storageParent()->storage();
+    if (!parentStoragePoint)
+        return {};
 
-	QUuid id = uuid();
-	if (id.isNull())
-		return {};
+    QUuid id = uuid();
+    if (id.isNull())
+        return {};
 
-	QDomElement node = parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id.toString());
-	return std::make_shared<StoragePoint>(parentStoragePoint->storage(), node);
+    QDomElement node =
+        parentStoragePoint->storage()->getUuidNode(parentStoragePoint->point(), storageNodeName(), id.toString());
+    return std::make_shared<StoragePoint>(parentStoragePoint->storage(), node);
 }
 
 /**
@@ -83,5 +83,5 @@ std::shared_ptr<StoragePoint> UuidStorableObject::createStoragePoint()
  */
 bool UuidStorableObject::shouldStore()
 {
-	return StorableObject::shouldStore() && !uuid().isNull();
+    return StorableObject::shouldStore() && !uuid().isNull();
 }

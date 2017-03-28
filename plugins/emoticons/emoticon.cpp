@@ -23,43 +23,43 @@ Emoticon::Emoticon()
 {
 }
 
-Emoticon::Emoticon(const QString &triggerText, const QString &staticFilePath, const QString &animatedFilePath) :
-		TriggerText(triggerText), StaticFilePath(staticFilePath), AnimatedFilePath(animatedFilePath)
+Emoticon::Emoticon(const QString &triggerText, const QString &staticFilePath, const QString &animatedFilePath)
+        : TriggerText(triggerText), StaticFilePath(staticFilePath), AnimatedFilePath(animatedFilePath)
 {
 }
 
 Emoticon::Emoticon(const Emoticon &copyMe)
 {
-	TriggerText = copyMe.TriggerText;
-	StaticFilePath = copyMe.StaticFilePath;
-	AnimatedFilePath = copyMe.AnimatedFilePath;
+    TriggerText = copyMe.TriggerText;
+    StaticFilePath = copyMe.StaticFilePath;
+    AnimatedFilePath = copyMe.AnimatedFilePath;
 }
 
-Emoticon & Emoticon::operator = (const Emoticon &copyMe)
+Emoticon &Emoticon::operator=(const Emoticon &copyMe)
 {
-	TriggerText = copyMe.TriggerText;
-	StaticFilePath = copyMe.StaticFilePath;
-	AnimatedFilePath = copyMe.AnimatedFilePath;
+    TriggerText = copyMe.TriggerText;
+    StaticFilePath = copyMe.StaticFilePath;
+    AnimatedFilePath = copyMe.AnimatedFilePath;
 
-	return *this;
+    return *this;
 }
 
 bool Emoticon::isNull() const
 {
-	return TriggerText.isEmpty();
+    return TriggerText.isEmpty();
 }
 
 QString Emoticon::triggerText() const
 {
-	return TriggerText;
+    return TriggerText;
 }
 
 QString Emoticon::staticFilePath() const
 {
-	return StaticFilePath;
+    return StaticFilePath;
 }
 
 QString Emoticon::animatedFilePath() const
 {
-	return AnimatedFilePath;
+    return AnimatedFilePath;
 }

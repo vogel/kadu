@@ -33,41 +33,40 @@ class QXmppMucRoom;
 
 class JabberRoomChat : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberRoomChat(QXmppMucRoom *room, Chat chat, QObject *parent = nullptr);
-	virtual ~JabberRoomChat();
+    explicit JabberRoomChat(QXmppMucRoom *room, Chat chat, QObject *parent = nullptr);
+    virtual ~JabberRoomChat();
 
-	void setBuddyManager(BuddyManager *buddyManager);
-	void setContactManager(ContactManager *contactManager);
-	void setPresenceService(JabberPresenceService *presenceService);
+    void setBuddyManager(BuddyManager *buddyManager);
+    void setContactManager(ContactManager *contactManager);
+    void setPresenceService(JabberPresenceService *presenceService);
 
-	bool stayInRoomAfterClosingWindow() const;
+    bool stayInRoomAfterClosingWindow() const;
 
-	void join();
-	void leave();
+    void join();
+    void leave();
 
-	Chat chat() const;
-	QString nick() const;
+    Chat chat() const;
+    QString nick() const;
 
 signals:
-	void joined(const Chat &chat);
-	void left(const Chat &chat);
+    void joined(const Chat &chat);
+    void left(const Chat &chat);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<JabberPresenceService> m_presenceService;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<JabberPresenceService> m_presenceService;
 
-	QPointer<QXmppMucRoom> m_room;
-	Chat m_chat;
+    QPointer<QXmppMucRoom> m_room;
+    Chat m_chat;
 
 private slots:
-	void updated();
-	void joined();
-	void left();
-	void participantChanged(const QString &id);
-	void participantRemoved(const QString &id);
-
+    void updated();
+    void joined();
+    void left();
+    void participantChanged(const QString &id);
+    void participantRemoved(const QString &id);
 };

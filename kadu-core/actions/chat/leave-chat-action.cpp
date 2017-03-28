@@ -31,13 +31,12 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "windows/message-dialog.h"
 
-LeaveChatAction::LeaveChatAction(QObject *parent) :
-		ActionDescription(parent)
+LeaveChatAction::LeaveChatAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeChat);
-	setName("leaveChatAction");
-	setIcon(KaduIcon("kadu_icons/block-buddy"));
-	setText(tr("Leave"));
+    setType(ActionDescription::TypeChat);
+    setName("leaveChatAction");
+    setIcon(KaduIcon("kadu_icons/block-buddy"));
+    setText(tr("Leave"));
 }
 
 LeaveChatAction::~LeaveChatAction()
@@ -46,44 +45,46 @@ LeaveChatAction::~LeaveChatAction()
 
 void LeaveChatAction::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
-	m_chatServiceRepository = chatServiceRepository;
+    m_chatServiceRepository = chatServiceRepository;
 }
 
 void LeaveChatAction::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void LeaveChatAction::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(toggled)
+    Q_UNUSED(toggled)
 
-	auto chat = context->chat();
-	if (!chat)
-		return;
+    auto chat = context->chat();
+    if (!chat)
+        return;
 
-	auto chatService = m_chatServiceRepository->chatService(chat.chatAccount());
-	if (!chatService)
-		return;
+    auto chatService = m_chatServiceRepository->chatService(chat.chatAccount());
+    if (!chatService)
+        return;
 
-	auto dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
-		tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this conference?"),
-		widget);
-	dialog->addButton(QMessageBox::Yes, tr("Leave conference"));
-	dialog->addButton(QMessageBox::No, tr("Cancel"));
-	if (!dialog->ask())
-		return;
+    auto dialog = MessageDialog::create(
+        m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+        tr("All messages received in this conference will be ignored\nfrom now on. Are you sure you want to leave this "
+           "conference?"),
+        widget);
+    dialog->addButton(QMessageBox::Yes, tr("Leave conference"));
+    dialog->addButton(QMessageBox::No, tr("Cancel"));
+    if (!dialog->ask())
+        return;
 
-	chatService->leaveChat(chat);
+    chatService->leaveChat(chat);
 
-	auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
-	if (chatWidget)
-		chatWidget->requestClose();
+    auto chatWidget = m_chatWidgetRepository->widgetForChat(chat);
+    if (chatWidget)
+        chatWidget->requestClose();
 }
 
 #include "moc_leave-chat-action.cpp"

@@ -20,12 +20,11 @@
 
 #include <QtCore/QVariant>
 
-#include <configuration/configuration-api.h>
 #include "custom-properties.h"
 #include "storage-point.h"
+#include <configuration/configuration-api.h>
 
-CustomProperties::CustomProperties(QObject *parent) :
-		QObject(parent)
+CustomProperties::CustomProperties(QObject *parent) : QObject(parent)
 {
 }
 
@@ -35,110 +34,110 @@ CustomProperties::~CustomProperties()
 
 bool CustomProperties::shouldStore() const
 {
-	return !StorableProperties.isEmpty();
+    return !StorableProperties.isEmpty();
 }
 
 void CustomProperties::loadFromModuleData(const QDomNode &node)
 {
-	const QDomElement &element = node.toElement();
-	const QString namespaceName = element.attribute("name");
+    const QDomElement &element = node.toElement();
+    const QString namespaceName = element.attribute("name");
 
-	if (namespaceName.isEmpty())
-		return;
+    if (namespaceName.isEmpty())
+        return;
 
-	const QDomNodeList &propertyNodes = element.childNodes();
-	const unsigned int propertyNodesCount = propertyNodes.length();
-	for (unsigned int i = 0; i < propertyNodesCount; i++)
-	{
-		const QDomElement &propertyElement = propertyNodes.at(static_cast<const int>(i)).toElement();
-		if (!propertyElement.isElement())
-			continue;
+    const QDomNodeList &propertyNodes = element.childNodes();
+    const unsigned int propertyNodesCount = propertyNodes.length();
+    for (unsigned int i = 0; i < propertyNodesCount; i++)
+    {
+        const QDomElement &propertyElement = propertyNodes.at(static_cast<const int>(i)).toElement();
+        if (!propertyElement.isElement())
+            continue;
 
-		QString propertyName = QString("%1:%2").arg(namespaceName).arg(propertyElement.tagName());
-		QString propertyValue = propertyElement.text();
+        QString propertyName = QString("%1:%2").arg(namespaceName).arg(propertyElement.tagName());
+        QString propertyValue = propertyElement.text();
 
-		addProperty(propertyName, propertyValue, Storable);
-	}
+        addProperty(propertyName, propertyValue, Storable);
+    }
 }
 
 void CustomProperties::loadFrom(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	if (!storagePoint)
-		return;
+    if (!storagePoint)
+        return;
 
-	QDomElement element = storagePoint->point();
-	const QDomNodeList &moduleDataNodes = element.elementsByTagName("ModuleData");
-	const unsigned int moduleDataNodesCount = moduleDataNodes.length();
-	for (unsigned int i = 0; i < moduleDataNodesCount; i++)
-		loadFromModuleData(moduleDataNodes.at(static_cast<const int>(i)));
-	for (unsigned int i = 0; i < moduleDataNodesCount; i++)
-		element.removeChild(moduleDataNodes.at(static_cast<const int>(i)));
+    QDomElement element = storagePoint->point();
+    const QDomNodeList &moduleDataNodes = element.elementsByTagName("ModuleData");
+    const unsigned int moduleDataNodesCount = moduleDataNodes.length();
+    for (unsigned int i = 0; i < moduleDataNodesCount; i++)
+        loadFromModuleData(moduleDataNodes.at(static_cast<const int>(i)));
+    for (unsigned int i = 0; i < moduleDataNodesCount; i++)
+        element.removeChild(moduleDataNodes.at(static_cast<const int>(i)));
 
-	const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
-	const unsigned int customPropertiesCount = customProperties.length();
-	for (unsigned int i = 0; i < customPropertiesCount; i++)
-	{
-		const QDomElement &propertyElement = customProperties.at(static_cast<int>(i)).toElement();
-		if (!propertyElement.isElement())
-			continue;
+    const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
+    const unsigned int customPropertiesCount = customProperties.length();
+    for (unsigned int i = 0; i < customPropertiesCount; i++)
+    {
+        const QDomElement &propertyElement = customProperties.at(static_cast<int>(i)).toElement();
+        if (!propertyElement.isElement())
+            continue;
 
-		QString propertyName = propertyElement.attribute("name");
-		QString propertyValue = propertyElement.text();
+        QString propertyName = propertyElement.attribute("name");
+        QString propertyValue = propertyElement.text();
 
-		if (!propertyName.isEmpty())
-			addProperty(propertyName, propertyValue, Storable);
-	}
+        if (!propertyName.isEmpty())
+            addProperty(propertyName, propertyValue, Storable);
+    }
 }
 
 void CustomProperties::storeTo(const std::shared_ptr<StoragePoint> &storagePoint) const
 {
-	if (!storagePoint)
-		return;
+    if (!storagePoint)
+        return;
 
-	QDomElement element = storagePoint->point();
-	const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
-	const unsigned int customPropertiesCount = customProperties.length();
-	for (unsigned int i = 0; i < customPropertiesCount; i++)
-		element.removeChild(customProperties.at(static_cast<int>(i)));
+    QDomElement element = storagePoint->point();
+    const QDomNodeList &customProperties = element.elementsByTagName("CustomProperty");
+    const unsigned int customPropertiesCount = customProperties.length();
+    for (unsigned int i = 0; i < customPropertiesCount; i++)
+        element.removeChild(customProperties.at(static_cast<int>(i)));
 
-	foreach (const QString &propertyName, StorableProperties)
-		storagePoint->storage()->createNamedTextNode(storagePoint->point(), "CustomProperty",
-				propertyName, Properties.value(propertyName).toString());
+    foreach (const QString &propertyName, StorableProperties)
+        storagePoint->storage()->createNamedTextNode(
+            storagePoint->point(), "CustomProperty", propertyName, Properties.value(propertyName).toString());
 }
 
 bool CustomProperties::hasProperty(const QString &name) const
 {
-	Q_ASSERT(!name.isEmpty());
+    Q_ASSERT(!name.isEmpty());
 
-	return Properties.contains(name);
+    return Properties.contains(name);
 }
 
 void CustomProperties::addProperty(const QString &name, const QVariant &value, Storability storability)
 {
-	Q_ASSERT(!name.isEmpty());
+    Q_ASSERT(!name.isEmpty());
 
-	if (Storable == storability)
-		StorableProperties.insert(name);
-	else
-		StorableProperties.remove(name);
+    if (Storable == storability)
+        StorableProperties.insert(name);
+    else
+        StorableProperties.remove(name);
 
-	Properties.insert(name, value);
+    Properties.insert(name, value);
 }
 
 void CustomProperties::removeProperty(const QString &name)
 {
-	Q_ASSERT(!name.isEmpty());
+    Q_ASSERT(!name.isEmpty());
 
-	StorableProperties.remove(name);
-	Properties.remove(name);
+    StorableProperties.remove(name);
+    Properties.remove(name);
 }
 
 QVariant CustomProperties::property(const QString &name, const QVariant &defaultValue) const
 {
-	if (Properties.contains(name))
-		return Properties.value(name);
-	else
-		return defaultValue;
+    if (Properties.contains(name))
+        return Properties.value(name);
+    else
+        return defaultValue;
 }
 
 #include "moc_custom-properties.cpp"

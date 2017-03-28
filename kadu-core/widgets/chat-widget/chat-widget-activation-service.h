@@ -47,30 +47,31 @@ class ChatWidgetContainerHandlerRepository;
  */
 class KADUAPI ChatWidgetActivationService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWidgetActivationService(QObject *parent = nullptr);
-	virtual ~ChatWidgetActivationService();
+    Q_INVOKABLE explicit ChatWidgetActivationService(QObject *parent = nullptr);
+    virtual ~ChatWidgetActivationService();
 
-	bool isChatWidgetActive(ChatWidget *chatWidget) const;
-	void tryActivateChatWidget(ChatWidget *chatWidget);
-	void tryMinimizeChatWidget(ChatWidget *chatWidget);
+    bool isChatWidgetActive(ChatWidget *chatWidget) const;
+    void tryActivateChatWidget(ChatWidget *chatWidget);
+    void tryMinimizeChatWidget(ChatWidget *chatWidget);
 
 signals:
-	void chatWidgetActivated(ChatWidget *chatWidget);
+    void chatWidgetActivated(ChatWidget *chatWidget);
 
 private:
-	QPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
-	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+    QPointer<ChatWidgetContainerHandlerMapper> m_chatWidgetContainerHandlerMapper;
+    QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
 
 private slots:
-	INJEQT_SET void setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
-	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+    INJEQT_SET void
+    setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper);
+    INJEQT_SET void
+    setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
 
-	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-
+    void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
 };
 
 /**

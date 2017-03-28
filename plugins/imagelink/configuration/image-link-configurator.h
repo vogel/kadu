@@ -31,29 +31,27 @@ class VideoExpanderDomVisitorProvider;
 
 class ImageLinkConfigurator : public ConfigurationHolder
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ImageLinkConfigurator(QObject *parent = nullptr);
-	virtual ~ImageLinkConfigurator();
+    Q_INVOKABLE explicit ImageLinkConfigurator(QObject *parent = nullptr);
+    virtual ~ImageLinkConfigurator();
 
-	void configure();
+    void configure();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<ImageExpanderDomVisitorProvider> m_imageExpander;
-	QPointer<VideoExpanderDomVisitorProvider> m_videoExpander;
+    QPointer<Configuration> m_configuration;
+    QPointer<ImageExpanderDomVisitorProvider> m_imageExpander;
+    QPointer<VideoExpanderDomVisitorProvider> m_videoExpander;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
-	INJEQT_SET void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setImageExpanderProvider(ImageExpanderDomVisitorProvider *imageExpander);
+    INJEQT_SET void setVideoExpanderProvider(VideoExpanderDomVisitorProvider *videoExpander);
+    INJEQT_INIT void init();
 };
-

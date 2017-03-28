@@ -26,8 +26,7 @@
 
 #include "sound-theme-manager.h"
 
-SoundThemeManager::SoundThemeManager(QObject *parent) :
-		QObject{parent}
+SoundThemeManager::SoundThemeManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,54 +36,55 @@ SoundThemeManager::~SoundThemeManager()
 
 void SoundThemeManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SoundThemeManager::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundThemeManager::init()
 {
-	themes();
+    themes();
 }
 
 void SoundThemeManager::applyTheme(const QString &themeName)
 {
-	m_themes->setTheme(themeName);
-	auto entries = m_themes->getEntries();
-	auto i = entries.constBegin();
+    m_themes->setTheme(themeName);
+    auto entries = m_themes->getEntries();
+    auto i = entries.constBegin();
 
-	while (i != entries.constEnd())
-	{
-		m_configuration->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
-		++i;
-	}
+    while (i != entries.constEnd())
+    {
+        m_configuration->deprecatedApi()->writeEntry("Sounds", i.key() + "_sound", m_themes->themePath() + i.value());
+        ++i;
+    }
 }
 
-Themes * SoundThemeManager::themes()
+Themes *SoundThemeManager::themes()
 {
-	if (!m_themes)
-		loadThemes();
-	return m_themes.get();
+    if (!m_themes)
+        loadThemes();
+    return m_themes.get();
 }
 
 void SoundThemeManager::loadThemes()
 {
-	m_themes = m_pluginInjectedFactory->makeUnique<Themes>("sounds", "sound.conf");
-	m_themes->setPaths(m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
+    m_themes = m_pluginInjectedFactory->makeUnique<Themes>("sounds", "sound.conf");
+    m_themes->setPaths(
+        m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPaths").split('&', QString::SkipEmptyParts));
 
-	auto soundThemes = themes()->themes();
-	auto soundTheme = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundTheme");
-	if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
-	{
-		soundTheme = "default";
-		m_configuration->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
-	}
+    auto soundThemes = themes()->themes();
+    auto soundTheme = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundTheme");
+    if (!soundThemes.isEmpty() && (soundTheme != "Custom") && !soundThemes.contains(soundTheme))
+    {
+        soundTheme = "default";
+        m_configuration->deprecatedApi()->writeEntry("Sounds", "SoundTheme", "default");
+    }
 
-	if (soundTheme != "custom")
-		applyTheme(soundTheme);
+    if (soundTheme != "custom")
+        applyTheme(soundTheme);
 }
 
 #include "moc_sound-theme-manager.cpp"

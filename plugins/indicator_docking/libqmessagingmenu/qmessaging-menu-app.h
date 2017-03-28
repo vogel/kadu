@@ -30,35 +30,34 @@ typedef struct _MessagingMenuApp MessagingMenuApp;
 
 class QMessagingMenuApp : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QMessagingMenuApp(const QString &desktopId, QObject *parent = nullptr);
-	virtual ~QMessagingMenuApp();
+    explicit QMessagingMenuApp(const QString &desktopId, QObject *parent = nullptr);
+    virtual ~QMessagingMenuApp();
 
-	void registerMenu();
-	void unregisterMenu();
+    void registerMenu();
+    void unregisterMenu();
 
-	QMessagingMenuSource * addSource(const QString &id, const QString &label, const QString &icon, int count = 0);
-	void removeSource(const QString &id);
-	QMessagingMenuSource * source(const QString &id);
+    QMessagingMenuSource *addSource(const QString &id, const QString &label, const QString &icon, int count = 0);
+    void removeSource(const QString &id);
+    QMessagingMenuSource *source(const QString &id);
 
-	void setStatus(QMessagingMenuStatus status);
+    void setStatus(QMessagingMenuStatus status);
 
 public Q_SLOTS:
-	void sourceActivatedSlot(const QString &id);
-	void statusChangedSlot(QMessagingMenuStatus status);
+    void sourceActivatedSlot(const QString &id);
+    void statusChangedSlot(QMessagingMenuStatus status);
 
 Q_SIGNALS:
-	void sourceActivated(const QString &id);
-	void statusChanged(QMessagingMenuStatus status);
+    void sourceActivated(const QString &id);
+    void statusChanged(QMessagingMenuStatus status);
 
 private:
-	friend class QMessagingMenuSource;
+    friend class QMessagingMenuSource;
 
-	MessagingMenuApp *m_app;
-	QMap<QString, QMessagingMenuSource *> m_sources;
+    MessagingMenuApp *m_app;
+    QMap<QString, QMessagingMenuSource *> m_sources;
 
-	MessagingMenuApp * app() const;
-
+    MessagingMenuApp *app() const;
 };

@@ -41,44 +41,43 @@ struct Notification;
 
 class FileTransferNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit FileTransferNotificationService(QObject *parent = nullptr);
-	virtual ~FileTransferNotificationService();
+    Q_INVOKABLE explicit FileTransferNotificationService(QObject *parent = nullptr);
+    virtual ~FileTransferNotificationService();
 
 public slots:
-	void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
+    void notifyIncomingFileTransfer(const FileTransfer &fileTransfer);
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<FileTransferManager> m_fileTransferManager;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationCallback m_fileTransferAcceptCallback;
-	NotificationCallback m_fileTransferSaveCallback;
-	NotificationCallback m_fileTransferRejectCallback;
-	NotificationCallback m_fileTransferIgnoreCallback;
-	NotificationEvent m_fileTransferEvent;
-	NotificationEvent m_fileTransferIncomingEvent;
+    NotificationCallback m_fileTransferAcceptCallback;
+    NotificationCallback m_fileTransferSaveCallback;
+    NotificationCallback m_fileTransferRejectCallback;
+    NotificationCallback m_fileTransferIgnoreCallback;
+    NotificationEvent m_fileTransferEvent;
+    NotificationEvent m_fileTransferIncomingEvent;
 
-	NormalizedHtmlString incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer);
+    NormalizedHtmlString incomingFileTransferDetails(const Chat &chat, const FileTransfer &fileTransfer);
 
-	void acceptFileTransfer(const Notification &notification);
-	void rejectFileTransfer(const Notification &notification);
+    void acceptFileTransfer(const Notification &notification);
+    void rejectFileTransfer(const Notification &notification);
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

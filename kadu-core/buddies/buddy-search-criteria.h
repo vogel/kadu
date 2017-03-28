@@ -32,36 +32,35 @@ class ContactStorage;
 
 class KADUAPI BuddySearchCriteria : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddySearchCriteria(QObject *parent = nullptr);
-	virtual ~BuddySearchCriteria();
+    explicit BuddySearchCriteria(QObject *parent = nullptr);
+    virtual ~BuddySearchCriteria();
 
-	Buddy SearchBuddy;
-	QString BirthYearFrom;
-	QString BirthYearTo;
-	bool Active;
-	bool IgnoreResults;
+    Buddy SearchBuddy;
+    QString BirthYearFrom;
+    QString BirthYearTo;
+    bool Active;
+    bool IgnoreResults;
 
-	void reqUin(Account account, const QString& uin);
-	void reqFirstName(const QString& firstName);
-	void reqLastName(const QString& lastName);
-	void reqNickName(const QString& nickName);
-	void reqCity(const QString& city);
-	void reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo);
-	void reqGender(bool female);
-	void reqActive();
+    void reqUin(Account account, const QString &uin);
+    void reqFirstName(const QString &firstName);
+    void reqLastName(const QString &lastName);
+    void reqNickName(const QString &nickName);
+    void reqCity(const QString &city);
+    void reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo);
+    void reqGender(bool female);
+    void reqActive();
 
-	void clearData();
+    void clearData();
 
 private:
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ContactStorage> m_contactStorage;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ContactStorage> m_contactStorage;
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
+    INJEQT_INIT void init();
 };

@@ -47,74 +47,73 @@ class QVBoxLayout;
 
 class GaduEditAccountWidget : public AccountEditWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, Account account, QWidget *parent = nullptr);
-	virtual ~GaduEditAccountWidget();
+    explicit GaduEditAccountWidget(GaduServersManager *gaduServersManager, Account account, QWidget *parent = nullptr);
+    virtual ~GaduEditAccountWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<GaduServersManager> m_gaduServersManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<GaduServersManager> m_gaduServersManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<UrlOpener> m_urlOpener;
 
-	QLineEdit *AccountId;
-	QLineEdit *AccountPassword;
-	QCheckBox *RememberPassword;
+    QLineEdit *AccountId;
+    QLineEdit *AccountPassword;
+    QCheckBox *RememberPassword;
 
-	QCheckBox *ReceiveImagesDuringInvisibility;
+    QCheckBox *ReceiveImagesDuringInvisibility;
 
-	QCheckBox *ChatImageSizeWarning;
+    QCheckBox *ChatImageSizeWarning;
 
-	IdentitiesComboBox *Identities;
+    IdentitiesComboBox *Identities;
 
-	GaduPersonalInfoWidget *gpiw;
+    GaduPersonalInfoWidget *gpiw;
 
-	QCheckBox *ShowStatusToEveryone;
-	QCheckBox *SendTypingNotification;
-	QCheckBox *ReceiveSpam;
+    QCheckBox *ShowStatusToEveryone;
+    QCheckBox *SendTypingNotification;
+    QCheckBox *ReceiveSpam;
 
-	ProxyComboBox *ProxyCombo;
+    ProxyComboBox *ProxyCombo;
 
-	QPushButton *ApplyButton;
-	QPushButton *CancelButton;
+    QPushButton *ApplyButton;
+    QPushButton *CancelButton;
 
-	void createGui();
+    void createGui();
 
-	void createGeneralTab(QTabWidget *);
-	void createGeneralGroupBox(QVBoxLayout *layout);
-	void createPersonalInfoTab(QTabWidget *);
-	void createBuddiesTab(QTabWidget *);
-	void createOptionsTab(QTabWidget *);
+    void createGeneralTab(QTabWidget *);
+    void createGeneralGroupBox(QVBoxLayout *layout);
+    void createPersonalInfoTab(QTabWidget *);
+    void createBuddiesTab(QTabWidget *);
+    void createOptionsTab(QTabWidget *);
 
-	void loadAccountData();
+    void loadAccountData();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+    INJEQT_INIT void init();
 
-	virtual void removeAccount();
-	void dataChanged();
-	void remindUin();
-	void remindPassword();
-	void showStatusToEveryoneToggled(bool toggled);
-	void stateChangedSlot(ConfigurationValueState state);
-
+    virtual void removeAccount();
+    void dataChanged();
+    void remindUin();
+    void remindPassword();
+    void showStatusToEveryoneToggled(bool toggled);
+    void stateChangedSlot(ConfigurationValueState state);
 };

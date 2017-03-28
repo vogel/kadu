@@ -24,36 +24,37 @@
 #include <QtCore/QDebug>
 #include <QtWinExtras/QtWinExtras>
 
-WindowsJumpList::WindowsJumpList(QObject *parent) :
-		JumpList{parent}
+WindowsJumpList::WindowsJumpList(QObject *parent) : JumpList{parent}
 {
-	m_jumpList = make_owned<QWinJumpList>(this);
+    m_jumpList = make_owned<QWinJumpList>(this);
 }
 
 WindowsJumpList::~WindowsJumpList()
 {
-	clear();
+    clear();
 }
 
 void WindowsJumpList::clear()
 {
-	m_jumpList->tasks()->clear();
+    m_jumpList->tasks()->clear();
 }
 
 void WindowsJumpList::addChat(Chat chat)
 {
-	auto title = chat.display().isEmpty() ? chat.name() : chat.display();
-	m_jumpList->tasks()->addLink(title, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()), QStringList{"--open-uuid", chat.uuid().toString()});
+    auto title = chat.display().isEmpty() ? chat.name() : chat.display();
+    m_jumpList->tasks()->addLink(
+        title, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()),
+        QStringList{"--open-uuid", chat.uuid().toString()});
 }
 
 void WindowsJumpList::addSeparator()
 {
-	m_jumpList->tasks()->addSeparator();
+    m_jumpList->tasks()->addSeparator();
 }
 
 void WindowsJumpList::setVisible(bool visible)
 {
-	m_jumpList->tasks()->setVisible(visible);
+    m_jumpList->tasks()->setVisible(visible);
 }
 
 #include "windows-jump-list.moc"

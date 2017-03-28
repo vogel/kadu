@@ -18,13 +18,13 @@
  */
 
 extern "C" {
-#   include <libotr/privkey.h>
+#include <libotr/privkey.h>
 }
 
 #include "otr-create-private-key-worker.h"
 
-OtrCreatePrivateKeyWorker::OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent) :
-		QObject(parent), KeyPointer(keyPointer)
+OtrCreatePrivateKeyWorker::OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent)
+        : QObject(parent), KeyPointer(keyPointer)
 {
 }
 
@@ -34,8 +34,8 @@ OtrCreatePrivateKeyWorker::~OtrCreatePrivateKeyWorker()
 
 void OtrCreatePrivateKeyWorker::start()
 {
-	gcry_error_t err = otrl_privkey_generate_calculate(KeyPointer);
-	emit finished(0 == err);
+    gcry_error_t err = otrl_privkey_generate_calculate(KeyPointer);
+    emit finished(0 == err);
 }
 
 #include "moc_otr-create-private-key-worker.cpp"

@@ -41,80 +41,81 @@ class Notifier;
 
 class NotifyTreeWidgetDelegate : public QStyledItemDelegate
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit NotifyTreeWidgetDelegate(QObject *parent = nullptr);
-	virtual ~NotifyTreeWidgetDelegate();
+    explicit NotifyTreeWidgetDelegate(QObject *parent = nullptr);
+    virtual ~NotifyTreeWidgetDelegate();
 
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 };
-
 
 class NotifyTreeWidgetItem : public QTreeWidgetItem
 {
-	QStringList ActiveNotifiers;
-	bool useCustomSettings;
+    QStringList ActiveNotifiers;
+    bool useCustomSettings;
 
 public:
-	NotifyTreeWidgetItem(QTreeWidget *parent , const QString &eventName, const QString &name, QStringList &notifiers);
-	NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent , const QString &eventName, const QString &name, QStringList &notifiers);
+    NotifyTreeWidgetItem(QTreeWidget *parent, const QString &eventName, const QString &name, QStringList &notifiers);
+    NotifyTreeWidgetItem(
+        NotifyTreeWidgetItem *parent, const QString &eventName, const QString &name, QStringList &notifiers);
 
-	void notifierChecked(Notifier *notifier, bool checked);
-	void parentNotifierChecked();
-	void useCustomSettingsChecked(bool checked);
+    void notifierChecked(Notifier *notifier, bool checked);
+    void parentNotifierChecked();
+    void useCustomSettingsChecked(bool checked);
 
-	const QStringList & activeNotifiers() const { return ActiveNotifiers; }
+    const QStringList &activeNotifiers() const
+    {
+        return ActiveNotifiers;
+    }
 };
 
 class NotifyTreeWidget : public QTreeWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent);
+    NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent);
 
-	QString currentEvent();
+    QString currentEvent();
 
-	void notifierChecked(Notifier *notifier, bool checked);
-	void useCustomSettingsChecked(bool checked);
+    void notifierChecked(Notifier *notifier, bool checked);
+    void useCustomSettingsChecked(bool checked);
 
 public slots:
-	void refresh();
+    void refresh();
 
 protected:
-	virtual void resizeEvent(QResizeEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotifierRepository> m_notifierRepository;
 
-	NotifyConfigurationUiHandler *UiHandler;
+    NotifyConfigurationUiHandler *UiHandler;
 
-	int StateColumnDefaultWidth;
-	int IconWidth;
-	int ColumnWidth;
+    int StateColumnDefaultWidth;
+    int IconWidth;
+    int ColumnWidth;
 
-	inline int eventColumnWidth();
+    inline int eventColumnWidth();
 
-	QMap<QString, NotifyTreeWidgetItem *> TreeItems;
+    QMap<QString, NotifyTreeWidgetItem *> TreeItems;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_INIT void init();
 };

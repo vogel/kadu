@@ -38,274 +38,272 @@
 
 #include "contact-shared.h"
 
-ContactShared::ContactShared(const QUuid &uuid) :
-		Shared(uuid),
-		Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0),
-		Blocking(false), IgnoreNextStatusChange(false)
+ContactShared::ContactShared(const QUuid &uuid)
+        : Shared(uuid), Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0), Blocking(false),
+          IgnoreNextStatusChange(false)
 {
 }
 
 ContactShared::~ContactShared()
 {
-	ref.ref();
+    ref.ref();
 
-	disconnect(m_protocolsManager, 0, this, 0);
+    disconnect(m_protocolsManager, 0, this, 0);
 
-	protocolFactoryUnregistered(m_protocolsManager->byName(ContactAccount->protocolName()));
+    protocolFactoryUnregistered(m_protocolsManager->byName(ContactAccount->protocolName()));
 
-	delete OwnerBuddy;
-	delete ContactAvatar;
-	delete ContactAccount;
+    delete OwnerBuddy;
+    delete ContactAvatar;
+    delete ContactAccount;
 }
 
 void ContactShared::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void ContactShared::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void ContactShared::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void ContactShared::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ContactShared::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void ContactShared::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void ContactShared::init()
 {
-	Entry = new RosterEntry(this);
-	connect(&Entry->hasLocalChangesNotifier(), SIGNAL(changed()), this, SIGNAL(updatedLocally()));
+    Entry = new RosterEntry(this);
+    connect(&Entry->hasLocalChangesNotifier(), SIGNAL(changed()), this, SIGNAL(updatedLocally()));
 
-	ContactAccount = new Account();
-	ContactAvatar = new Avatar();
-	OwnerBuddy = new Buddy();
+    ContactAccount = new Account();
+    ContactAvatar = new Avatar();
+    OwnerBuddy = new Buddy();
 
-	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
-	        this, SLOT(protocolFactoryRegistered(ProtocolFactory*)));
-	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
-	        this, SLOT(protocolFactoryUnregistered(ProtocolFactory*)));
+    connect(
+        m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory *)), this,
+        SLOT(protocolFactoryRegistered(ProtocolFactory *)));
+    connect(
+        m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)), this,
+        SLOT(protocolFactoryUnregistered(ProtocolFactory *)));
 
-	connect(&changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
+    connect(&changeNotifier(), SIGNAL(changed()), this, SLOT(changeNotifierChanged()));
 }
 
-StorableObject * ContactShared::storageParent()
+StorableObject *ContactShared::storageParent()
 {
-	return m_contactManager;
+    return m_contactManager;
 }
 
 QString ContactShared::storageNodeName()
 {
-	return QStringLiteral("Contact");
+    return QStringLiteral("Contact");
 }
 
 void ContactShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	Id = loadValue<QString>("Id");
-	Priority = loadValue<int>("Priority", -1);
+    Id = loadValue<QString>("Id");
+    Priority = loadValue<int>("Priority", -1);
 
-	// TODO: remove after 01.05.2015
-	// It's an explicit hack for update path from 0.10.1-0.11.x to 0.12+. 0.10/0.11 didn't
-	// have Detached property. But they did have an explicit hack for totally ignoring
-	// what Facebook says about groups, thus allowing users to place their Facebook contacts
-	// in groups in Kadu. And without below hack all this group information is overriden
-	// by useless a Facebook-provided group until we try to upload something to roster
-	// for the first time, we fail and only then we set Detached to true, when group
-	// information is already lost.
-	bool detached = hasValue("Detached")
-		? loadValue<bool>("Detached", false)
-		: Id.endsWith(QStringLiteral("@chat.facebook.com"));
-	bool dirty = loadValue<bool>("Dirty", true);
-	if (detached)
-		Entry->setDetached();
-	else if (dirty)
-		Entry->setHasLocalChanges();
-	else
-		Entry->setSynchronized();
+    // TODO: remove after 01.05.2015
+    // It's an explicit hack for update path from 0.10.1-0.11.x to 0.12+. 0.10/0.11 didn't
+    // have Detached property. But they did have an explicit hack for totally ignoring
+    // what Facebook says about groups, thus allowing users to place their Facebook contacts
+    // in groups in Kadu. And without below hack all this group information is overriden
+    // by useless a Facebook-provided group until we try to upload something to roster
+    // for the first time, we fail and only then we set Detached to true, when group
+    // information is already lost.
+    bool detached =
+        hasValue("Detached") ? loadValue<bool>("Detached", false) : Id.endsWith(QStringLiteral("@chat.facebook.com"));
+    bool dirty = loadValue<bool>("Dirty", true);
+    if (detached)
+        Entry->setDetached();
+    else if (dirty)
+        Entry->setHasLocalChanges();
+    else
+        Entry->setSynchronized();
 
-	*ContactAccount = m_accountManager->byUuid(loadValue<QString>("Account"));
-	doSetOwnerBuddy(m_buddyManager->byUuid(loadValue<QString>("Buddy")));
-	doSetContactAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
+    *ContactAccount = m_accountManager->byUuid(loadValue<QString>("Account"));
+    doSetOwnerBuddy(m_buddyManager->byUuid(loadValue<QString>("Buddy")));
+    doSetContactAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
 
-	protocolFactoryRegistered(m_protocolsManager->byName(ContactAccount->protocolName()));
-	addToBuddy();
+    protocolFactoryRegistered(m_protocolsManager->byName(ContactAccount->protocolName()));
+    addToBuddy();
 }
 
 void ContactShared::aboutToBeRemoved()
 {
-	// clean up references
-	*ContactAccount = Account::null;
-	removeFromBuddy();
-	doSetOwnerBuddy(Buddy::null);
+    // clean up references
+    *ContactAccount = Account::null;
+    removeFromBuddy();
+    doSetOwnerBuddy(Buddy::null);
 
-	m_avatarManager->removeItem(*ContactAvatar);
-	doSetContactAvatar(Avatar::null);
+    m_avatarManager->removeItem(*ContactAvatar);
+    doSetContactAvatar(Avatar::null);
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 void ContactShared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	Shared::store();
+    Shared::store();
 
-	storeValue("Id", Id);
-	storeValue("Priority", Priority);
+    storeValue("Id", Id);
+    storeValue("Priority", Priority);
 
-	storeValue("Dirty", RosterEntryState::Synchronized != Entry->state());
-	// Detached property needs to be always stored, see the load() method.
-	storeValue("Detached", RosterEntryState::Detached == Entry->state());
+    storeValue("Dirty", RosterEntryState::Synchronized != Entry->state());
+    // Detached property needs to be always stored, see the load() method.
+    storeValue("Detached", RosterEntryState::Detached == Entry->state());
 
-	storeValue("Account", ContactAccount->uuid().toString());
-	storeValue("Buddy", !isAnonymous()
-			? OwnerBuddy->uuid().toString()
-			: QString());
+    storeValue("Account", ContactAccount->uuid().toString());
+    storeValue("Buddy", !isAnonymous() ? OwnerBuddy->uuid().toString() : QString());
 
-	if (*ContactAvatar)
-		storeValue("Avatar", ContactAvatar->uuid().toString());
+    if (*ContactAvatar)
+        storeValue("Avatar", ContactAvatar->uuid().toString());
 
-	removeValue("Contact");
+    removeValue("Contact");
 }
 
 bool ContactShared::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!UuidStorableObject::shouldStore())
-		return false;
+    if (!UuidStorableObject::shouldStore())
+        return false;
 
-	if (Id.isEmpty() || ContactAccount->uuid().isNull())
-		return false;
+    if (Id.isEmpty() || ContactAccount->uuid().isNull())
+        return false;
 
-	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (m_configuration->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
-		return true;
+    // we dont need data for non-roster contacts only from 4 version of sql schema
+    if (m_configuration->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
+        return true;
 
-	return !isAnonymous() || rosterEntry()->requiresSynchronization() || customProperties()->shouldStore();
+    return !isAnonymous() || rosterEntry()->requiresSynchronization() || customProperties()->shouldStore();
 }
 
 void ContactShared::addToBuddy()
 {
-	// dont add to buddy if details are not available
-	if (*OwnerBuddy)
-		OwnerBuddy->addContact(this);
+    // dont add to buddy if details are not available
+    if (*OwnerBuddy)
+        OwnerBuddy->addContact(this);
 }
 
 void ContactShared::removeFromBuddy()
 {
-	if (*OwnerBuddy)
-		OwnerBuddy->removeContact(this);
+    if (*OwnerBuddy)
+        OwnerBuddy->removeContact(this);
 }
 
 void ContactShared::setOwnerBuddy(const Buddy &buddy)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (*OwnerBuddy == buddy)
-		return;
+    if (*OwnerBuddy == buddy)
+        return;
 
-	/* NOTE: This guard is needed to avoid deleting this object when removing
-	 * Contact from Buddy which may hold last reference to it and thus wants to
-	 * delete it. But we don't want this to happen.
-	 */
-	Contact guard(this);
+    /* NOTE: This guard is needed to avoid deleting this object when removing
+     * Contact from Buddy which may hold last reference to it and thus wants to
+     * delete it. But we don't want this to happen.
+     */
+    Contact guard(this);
 
-	removeFromBuddy();
-	doSetOwnerBuddy(buddy);
-	addToBuddy();
+    removeFromBuddy();
+    doSetOwnerBuddy(buddy);
+    addToBuddy();
 
-	Entry->setHasLocalChanges();
-	changeNotifier().notify();
+    Entry->setHasLocalChanges();
+    changeNotifier().notify();
 
-	emit buddyUpdated();
+    emit buddyUpdated();
 }
 
 void ContactShared::setContactAccount(const Account &account)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (*ContactAccount == account)
-		return;
+    if (*ContactAccount == account)
+        return;
 
-	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
-		protocolFactoryUnregistered(ContactAccount->protocolHandler()->protocolFactory());
+    if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
+        protocolFactoryUnregistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	*ContactAccount = account;
+    *ContactAccount = account;
 
-	if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
-		protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
+    if (*ContactAccount && ContactAccount->protocolHandler() && ContactAccount->protocolHandler()->protocolFactory())
+        protocolFactoryRegistered(ContactAccount->protocolHandler()->protocolFactory());
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 void ContactShared::protocolFactoryRegistered(ProtocolFactory *protocolFactory)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!protocolFactory || !*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
-		return;
+    if (!protocolFactory || !*ContactAccount || ContactAccount->protocolName() != protocolFactory->name())
+        return;
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 void ContactShared::protocolFactoryUnregistered(ProtocolFactory *protocolFactory)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!protocolFactory || ContactAccount->protocolName() != protocolFactory->name())
-		return;
+    if (!protocolFactory || ContactAccount->protocolName() != protocolFactory->name())
+        return;
 
-	/* NOTE: This guard is needed to avoid deleting this object when detaching
-	 * Contact from Buddy which may hold last reference to it and thus wants to
-	 * delete it. But we don't want this to happen.
-	 */
-	Contact guard(this);
-	changeNotifier().notify();
+    /* NOTE: This guard is needed to avoid deleting this object when detaching
+     * Contact from Buddy which may hold last reference to it and thus wants to
+     * delete it. But we don't want this to happen.
+     */
+    Contact guard(this);
+    changeNotifier().notify();
 }
 
 void ContactShared::setId(const QString &id)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Id == id)
-		return;
+    if (Id == id)
+        return;
 
-	QString oldId = Id;
-	Id = id;
+    QString oldId = Id;
+    Id = id;
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
-RosterEntry * ContactShared::rosterEntry()
+RosterEntry *ContactShared::rosterEntry()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Entry;
+    return Entry;
 }
 
 /*
@@ -326,94 +324,94 @@ RosterEntry * ContactShared::rosterEntry()
 
 void ContactShared::avatarUpdated()
 {
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 void ContactShared::changeNotifierChanged()
 {
-	emit updated();
+    emit updated();
 }
 
 void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
 {
-	if (*OwnerBuddy)
-		disconnect(*OwnerBuddy, 0, this, 0);
+    if (*OwnerBuddy)
+        disconnect(*OwnerBuddy, 0, this, 0);
 
-	*OwnerBuddy = buddy;
+    *OwnerBuddy = buddy;
 
-	if (*OwnerBuddy)
-		connect(*OwnerBuddy, SIGNAL(updated()), this, SIGNAL(buddyUpdated()));
+    if (*OwnerBuddy)
+        connect(*OwnerBuddy, SIGNAL(updated()), this, SIGNAL(buddyUpdated()));
 }
 
 void ContactShared::doSetContactAvatar(const Avatar &contactAvatar)
 {
-	if (*ContactAvatar)
-		disconnect(*ContactAvatar, 0, this, 0);
+    if (*ContactAvatar)
+        disconnect(*ContactAvatar, 0, this, 0);
 
-	*ContactAvatar = contactAvatar;
+    *ContactAvatar = contactAvatar;
 
-	if (*ContactAvatar)
-		connect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+    if (*ContactAvatar)
+        connect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 }
 
 void ContactShared::setContactAvatar(const Avatar &contactAvatar)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (*ContactAvatar == contactAvatar)
-		return;
+    if (*ContactAvatar == contactAvatar)
+        return;
 
-	doSetContactAvatar(contactAvatar);
+    doSetContactAvatar(contactAvatar);
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 void ContactShared::setPriority(int priority)
 {
-	ensureLoaded();
-	if (Priority != priority)
-	{
-		Priority = priority;
-		changeNotifier().notify();
-		emit priorityUpdated();
-	}
+    ensureLoaded();
+    if (Priority != priority)
+    {
+        Priority = priority;
+        changeNotifier().notify();
+        emit priorityUpdated();
+    }
 }
 
 bool ContactShared::isAnonymous()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!OwnerBuddy)
-		return true;
+    if (!OwnerBuddy)
+        return true;
 
-	if (!(*OwnerBuddy))
-		return true;
+    if (!(*OwnerBuddy))
+        return true;
 
-	return OwnerBuddy->isAnonymous();
+    return OwnerBuddy->isAnonymous();
 }
 
 QString ContactShared::display(bool useBuddyData)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->display().isEmpty())
-		return Id;
+    if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->display().isEmpty())
+        return Id;
 
-	return OwnerBuddy->display();
+    return OwnerBuddy->display();
 }
 
 Avatar ContactShared::avatar(bool useBuddyData)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->buddyAvatar().isEmpty())
-		return ContactAvatar ? *ContactAvatar : Avatar::null;
+    if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->buddyAvatar().isEmpty())
+        return ContactAvatar ? *ContactAvatar : Avatar::null;
 
-	return OwnerBuddy->buddyAvatar();
+    return OwnerBuddy->buddyAvatar();
 }
 
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
-KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
-KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)
+    KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
+        KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)
 
 #include "moc_contact-shared.cpp"

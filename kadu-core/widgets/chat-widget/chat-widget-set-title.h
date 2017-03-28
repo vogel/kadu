@@ -32,44 +32,43 @@ enum class ChatWidgetTitleComposingStatePosition;
 
 class KADUAPI ChatWidgetSetTitle : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatWidgetSetTitle(QObject *parent = nullptr);
-	virtual ~ChatWidgetSetTitle();
+    explicit ChatWidgetSetTitle(QObject *parent = nullptr);
+    virtual ~ChatWidgetSetTitle();
 
-	void setDefaultTile(QString defaultTitle);
-	void setDefaultIcon(QIcon icon);
-	void setActiveChatWidget(ChatWidget *chatWidget);
+    void setDefaultTile(QString defaultTitle);
+    void setDefaultIcon(QIcon icon);
+    void setActiveChatWidget(ChatWidget *chatWidget);
 
-	QString fullTitle() const;
-	QIcon icon() const;
+    QString fullTitle() const;
+    QIcon icon() const;
 
 public slots:
-	void addChatWidget(ChatWidget *chatWidget);
-	void removeChatWidget(ChatWidget *chatWidget);
+    void addChatWidget(ChatWidget *chatWidget);
+    void removeChatWidget(ChatWidget *chatWidget);
 
 signals:
-	void titleChanged();
+    void titleChanged();
 
 private:
-	QList<ChatWidget *> m_chatWidgets;
-	QPointer<ChatWidget> m_currentChatWidget;
-	QPointer<ChatWidget> m_activeChatWidget;
-	QPointer<ChatWidget> m_unreadMessagesChatWidget;
+    QList<ChatWidget *> m_chatWidgets;
+    QPointer<ChatWidget> m_currentChatWidget;
+    QPointer<ChatWidget> m_activeChatWidget;
+    QPointer<ChatWidget> m_unreadMessagesChatWidget;
 
-	QString m_defaultTitle;
-	QIcon m_defaultIcon;
+    QString m_defaultTitle;
+    QIcon m_defaultIcon;
 
-	void selectNewUnreadMessagesChatWidget();
-	void setUnreadMessagesChatWidget(ChatWidget *chatWidget);
-	void setCurrentChatWidget(ChatWidget *chatWidget);
+    void selectNewUnreadMessagesChatWidget();
+    void setUnreadMessagesChatWidget(ChatWidget *chatWidget);
+    void setCurrentChatWidget(ChatWidget *chatWidget);
 
 private slots:
-	void chatUpdated();
-	void chatWidgetDestroyed(ChatWidget *chatWidget);
-	void chatWidgetDestroyed(Chat chat);
+    void chatUpdated();
+    void chatWidgetDestroyed(ChatWidget *chatWidget);
+    void chatWidgetDestroyed(Chat chat);
 
-	void update();
-
+    void update();
 };

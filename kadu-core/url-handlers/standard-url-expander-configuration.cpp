@@ -19,41 +19,41 @@
 
 #include "standard-url-expander-configuration.h"
 
-StandardUrlExpanderConfiguration::StandardUrlExpanderConfiguration() :
-		FoldLink(false), FoldLinkThreshold(0)
+StandardUrlExpanderConfiguration::StandardUrlExpanderConfiguration() : FoldLink(false), FoldLinkThreshold(0)
 {
 }
 
 StandardUrlExpanderConfiguration::StandardUrlExpanderConfiguration(const StandardUrlExpanderConfiguration &copyMe)
 {
-	FoldLink = copyMe.FoldLink;
-	FoldLinkThreshold = copyMe.FoldLinkThreshold;
+    FoldLink = copyMe.FoldLink;
+    FoldLinkThreshold = copyMe.FoldLinkThreshold;
 }
 
-StandardUrlExpanderConfiguration & StandardUrlExpanderConfiguration::operator = (const StandardUrlExpanderConfiguration &copyMe)
+StandardUrlExpanderConfiguration &StandardUrlExpanderConfiguration::
+operator=(const StandardUrlExpanderConfiguration &copyMe)
 {
-	FoldLink = copyMe.FoldLink;
-	FoldLinkThreshold = copyMe.FoldLinkThreshold;
+    FoldLink = copyMe.FoldLink;
+    FoldLinkThreshold = copyMe.FoldLinkThreshold;
 
-	return *this;
+    return *this;
 }
 
 void StandardUrlExpanderConfiguration::setFoldLink(bool foldLink)
 {
-	FoldLink = foldLink;
+    FoldLink = foldLink;
 }
 
 bool StandardUrlExpanderConfiguration::foldLink() const
 {
-	return FoldLink;
+    return FoldLink;
 }
 
 void StandardUrlExpanderConfiguration::setFoldLinkThreshold(int foldLinkThreshold)
 {
-	FoldLinkThreshold = foldLinkThreshold;
+    FoldLinkThreshold = foldLinkThreshold;
 }
 
 int StandardUrlExpanderConfiguration::foldLinkThreshold() const
 {
-	return FoldLinkThreshold;
+    return FoldLinkThreshold;
 }

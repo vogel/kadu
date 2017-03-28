@@ -23,8 +23,7 @@
 
 #include "menu/menu-inventory.h"
 
-SoundActions::SoundActions(QObject *parent) :
-		QObject{parent}
+SoundActions::SoundActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,35 +33,29 @@ SoundActions::~SoundActions()
 
 void SoundActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void SoundActions::setSoundMuteAction(SoundMuteAction *soundMuteAction)
 {
-	m_soundMuteAction = soundMuteAction;
+    m_soundMuteAction = soundMuteAction;
 }
 
 void SoundActions::init()
 {
-	m_menuInventory
-		->menu("main")
-		->addAction(m_soundMuteAction, KaduMenu::SectionMiscTools, 7)
-		->update();
+    m_menuInventory->menu("main")->addAction(m_soundMuteAction, KaduMenu::SectionMiscTools, 7)->update();
 
-	m_soundMuteAction->updateActionStates();
+    m_soundMuteAction->updateActionStates();
 }
 
 void SoundActions::done()
 {
-	m_menuInventory
-		->menu("main")
-		->removeAction(m_soundMuteAction)
-		->update();
+    m_menuInventory->menu("main")->removeAction(m_soundMuteAction)->update();
 }
 
 void SoundActions::configurationUpdated()
 {
-	m_soundMuteAction->updateActionStates();
+    m_soundMuteAction->updateActionStates();
 }
 
 #include "moc_sound-actions.cpp"

@@ -29,24 +29,23 @@ class AbstractProtocolFilter;
 
 class ProtocolsModelProxy : public QSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<AbstractProtocolFilter *> ProtocolFilters;
+    QList<AbstractProtocolFilter *> ProtocolFilters;
 
-	bool BrokenStringCompare;
-	int compareNames(QString n1, QString n2) const;
+    bool BrokenStringCompare;
+    int compareNames(QString n1, QString n2) const;
 
 protected:
-	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	explicit ProtocolsModelProxy(QObject *parent = nullptr);
-	virtual ~ProtocolsModelProxy();
+    explicit ProtocolsModelProxy(QObject *parent = nullptr);
+    virtual ~ProtocolsModelProxy();
 
-	void addFilter(AbstractProtocolFilter *filter);
-	void removeFilter(AbstractProtocolFilter *filter);
-
+    void addFilter(AbstractProtocolFilter *filter);
+    void removeFilter(AbstractProtocolFilter *filter);
 };
 
-#endif // PROTOCOLS_MODEL_PROXY
+#endif   // PROTOCOLS_MODEL_PROXY

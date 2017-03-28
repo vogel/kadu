@@ -32,21 +32,20 @@ struct MultilogonSession;
 
 class KADUAPI MultilogonService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit MultilogonService(Account account, QObject *parent);
-	virtual ~MultilogonService();
+    explicit MultilogonService(Account account, QObject *parent);
+    virtual ~MultilogonService();
 
-	virtual const QList<MultilogonSession> & sessions() const = 0;
-	virtual void killSession(MultilogonSession session) = 0;
+    virtual const QList<MultilogonSession> &sessions() const = 0;
+    virtual void killSession(MultilogonSession session) = 0;
 
 signals:
-	void multilogonSessionAboutToBeConnected(MultilogonSession session);
-	void multilogonSessionConnected(MultilogonSession session);
-	void multilogonSessionAboutToBeDisconnected(MultilogonSession session);
-	void multilogonSessionDisconnected(MultilogonSession session);
-
+    void multilogonSessionAboutToBeConnected(MultilogonSession session);
+    void multilogonSessionConnected(MultilogonSession session);
+    void multilogonSessionAboutToBeDisconnected(MultilogonSession session);
+    void multilogonSessionDisconnected(MultilogonSession session);
 };
 
-#endif // MULTILOGON_SERVICE_H
+#endif   // MULTILOGON_SERVICE_H

@@ -29,30 +29,30 @@ FormattedStringPlainTextVisitor::~FormattedStringPlainTextVisitor()
 {
 }
 
-void FormattedStringPlainTextVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringPlainTextVisitor::beginVisit(const CompositeFormattedString *const compositeFormattedString)
 {
-	Q_UNUSED(compositeFormattedString);
+    Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringPlainTextVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringPlainTextVisitor::endVisit(const CompositeFormattedString *const compositeFormattedString)
 {
-	Q_UNUSED(compositeFormattedString);
+    Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringPlainTextVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+void FormattedStringPlainTextVisitor::visit(const FormattedStringImageBlock *const formattedStringImageBlock)
 {
-	Q_UNUSED(formattedStringImageBlock);
+    Q_UNUSED(formattedStringImageBlock);
 
-	Result.append(QChar(QChar::Nbsp));
+    Result.append(QChar(QChar::Nbsp));
 }
 
-void FormattedStringPlainTextVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+void FormattedStringPlainTextVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-	Result.append(formattedStringTextBlock->content());
+    Result.append(formattedStringTextBlock->content());
 }
 
 QString FormattedStringPlainTextVisitor::result() const
 {
-	QString fixedResult = Result;
-	return fixedResult.replace(QChar::LineSeparator, "\n");
+    QString fixedResult = Result;
+    return fixedResult.replace(QChar::LineSeparator, "\n");
 }

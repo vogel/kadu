@@ -26,24 +26,23 @@
 
 class AutostatusStatusChanger : public StatusChanger
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool Enabled;
+    bool Enabled;
 
-	// TODO: we have enums in C++
-	// 0 - online
-	// 1 - budy
-	// 2 - invisible
-	int StatusIndex;
-	QString Description;
+    // TODO: we have enums in C++
+    // 0 - online
+    // 1 - budy
+    // 2 - invisible
+    int StatusIndex;
+    QString Description;
 
 public:
-	Q_INVOKABLE explicit AutostatusStatusChanger(QObject *parent = nullptr);
-	virtual ~AutostatusStatusChanger();
+    Q_INVOKABLE explicit AutostatusStatusChanger(QObject *parent = nullptr);
+    virtual ~AutostatusStatusChanger();
 
-	void setEnabled(bool enabled);
-	void setConfiguration(int statusIndex, const QString &description);
+    void setEnabled(bool enabled);
+    void setConfiguration(int statusIndex, const QString &description);
 
-	virtual void changeStatus(StatusContainer *container, Status &status);
-
+    virtual void changeStatus(StatusContainer *container, Status &status);
 };

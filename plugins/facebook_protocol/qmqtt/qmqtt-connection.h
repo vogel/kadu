@@ -30,22 +30,21 @@ class QIODevice;
 
 class QMqttConnection : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QMqttConnection(QIODevice &ioDevice, QObject *parent = nullptr);
-	virtual ~QMqttConnection();
+    explicit QMqttConnection(QIODevice &ioDevice, QObject *parent = nullptr);
+    virtual ~QMqttConnection();
 
-	void sendMessage(const QMqttMessage &message);
+    void sendMessage(const QMqttMessage &message);
 
 signals:
-	void messageReceived(const QMqttMessage &message);
-	void connectionClosed(QMqttError reason);
+    void messageReceived(const QMqttMessage &message);
+    void connectionClosed(QMqttError reason);
 
 private:
-	QIODevice &m_ioDevice;
-	QMqttMessageReceiver m_messageReceiver;
+    QIODevice &m_ioDevice;
+    QMqttMessageReceiver m_messageReceiver;
 
-	void readyRead();
-
+    void readyRead();
 };

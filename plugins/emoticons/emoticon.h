@@ -38,63 +38,62 @@
  */
 class EMOTICONSAPI_TESTS Emoticon
 {
-	QString TriggerText;
-	QString StaticFilePath;
-	QString AnimatedFilePath;
+    QString TriggerText;
+    QString StaticFilePath;
+    QString AnimatedFilePath;
 
 public:
-	/**
-	 * @short Create null emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	Emoticon();
+    /**
+     * @short Create null emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     */
+    Emoticon();
 
-	/**
-	 * @short Create emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param triggerText text that triggers this emoticon to display
-	 * @param staticFilePath file path of not-animated version of emoticon
-	 * @param animatedFilePath file path of animated version of emoticon
-	 */
-	Emoticon(const QString &triggerText, const QString &staticFilePath, const QString &animatedFilePath);
+    /**
+     * @short Create emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     * @param triggerText text that triggers this emoticon to display
+     * @param staticFilePath file path of not-animated version of emoticon
+     * @param animatedFilePath file path of animated version of emoticon
+     */
+    Emoticon(const QString &triggerText, const QString &staticFilePath, const QString &animatedFilePath);
 
-	/**
-	 * @short Create copy of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe emoticon to copy
-	 */
-	Emoticon(const Emoticon &copyMe);
+    /**
+     * @short Create copy of emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     * @param copyMe emoticon to copy
+     */
+    Emoticon(const Emoticon &copyMe);
 
-	Emoticon & operator = (const Emoticon &copyMe);
+    Emoticon &operator=(const Emoticon &copyMe);
 
-	/**
-	 * @short Check if emoticon is null.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true, if emoticon is null
-	 */
-	bool isNull() const;
+    /**
+     * @short Check if emoticon is null.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true, if emoticon is null
+     */
+    bool isNull() const;
 
-	/**
-	 * @short Return text that triggers this emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return text that triggers this emoticon
-	 */
-	QString triggerText() const;
+    /**
+     * @short Return text that triggers this emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     * @return text that triggers this emoticon
+     */
+    QString triggerText() const;
 
-	/**
-	 * @short Return file path of not-animated version of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return file path of not-animated version of emoticon
-	 */
-	QString staticFilePath() const;
+    /**
+     * @short Return file path of not-animated version of emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     * @return file path of not-animated version of emoticon
+     */
+    QString staticFilePath() const;
 
-	/**
-	 * @short Return file path of animated version of emoticon.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return file path of animated version of emoticon
-	 */
-	QString animatedFilePath() const;
-
+    /**
+     * @short Return file path of animated version of emoticon.
+     * @author Rafał 'Vogel' Malinowski
+     * @return file path of animated version of emoticon
+     */
+    QString animatedFilePath() const;
 };
 
 Q_DECLARE_METATYPE(Emoticon);
@@ -103,4 +102,4 @@ Q_DECLARE_METATYPE(Emoticon);
  * @}
  */
 
-#endif // EMOTICON_H
+#endif   // EMOTICON_H

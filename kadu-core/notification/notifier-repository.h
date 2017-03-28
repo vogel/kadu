@@ -28,39 +28,47 @@ class Notifier;
 
 class KADUAPI NotifierRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Storage = std::vector<Notifier *>;
+    using Storage = std::vector<Notifier *>;
 
 public:
-	using Iterator = Storage::iterator;
+    using Iterator = Storage::iterator;
 
-	Q_INVOKABLE explicit NotifierRepository(QObject *parent = nullptr);
-	virtual ~NotifierRepository();
+    Q_INVOKABLE explicit NotifierRepository(QObject *parent = nullptr);
+    virtual ~NotifierRepository();
 
-	void registerNotifier(Notifier *notifier);
-	void unregisterNotifier(Notifier *notifier);
+    void registerNotifier(Notifier *notifier);
+    void unregisterNotifier(Notifier *notifier);
 
-	std::size_t size() const { return m_notifiers.size(); }
+    std::size_t size() const
+    {
+        return m_notifiers.size();
+    }
 
-	Iterator begin() { return std::begin(m_notifiers); }
-	Iterator end() { return std::end(m_notifiers); }
+    Iterator begin()
+    {
+        return std::begin(m_notifiers);
+    }
+    Iterator end()
+    {
+        return std::end(m_notifiers);
+    }
 
 signals:
-	void notifierRegistered(Notifier *notifier);
-	void notifierUnregistered(Notifier *notifier);
+    void notifierRegistered(Notifier *notifier);
+    void notifierUnregistered(Notifier *notifier);
 
 private:
-	Storage m_notifiers;
-
+    Storage m_notifiers;
 };
 
 inline NotifierRepository::Iterator begin(NotifierRepository *notifierRepository)
 {
-	return notifierRepository->begin();
+    return notifierRepository->begin();
 }
 
 inline NotifierRepository::Iterator end(NotifierRepository *notifierRepository)
 {
-	return notifierRepository->end();
+    return notifierRepository->end();
 }

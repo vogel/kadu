@@ -59,134 +59,133 @@ static const int MaximizedIndex = 3;
 static const int FullscreenIndex = 4;
 static const int IndexCount = 5;
 
-WindowGeometryManager::WindowGeometryManager(VariantWrapper *variantWrapper, const QRect &defaultGeometry, QWidget *window) :
-		QObject(window), MyVariantWrapper(variantWrapper), DefaultGeometry(defaultGeometry)
+WindowGeometryManager::WindowGeometryManager(
+    VariantWrapper *variantWrapper, const QRect &defaultGeometry, QWidget *window)
+        : QObject(window), MyVariantWrapper(variantWrapper), DefaultGeometry(defaultGeometry)
 {
-	Q_ASSERT(window);
-	Q_ASSERT(window->isWindow());
-	Q_ASSERT(MyVariantWrapper);
+    Q_ASSERT(window);
+    Q_ASSERT(window->isWindow());
+    Q_ASSERT(MyVariantWrapper);
 
-	Timer.setInterval(100);
-	Timer.setSingleShot(true);
-	connect(&Timer, SIGNAL(timeout()), SLOT(saveGeometry()));
+    Timer.setInterval(100);
+    Timer.setSingleShot(true);
+    connect(&Timer, SIGNAL(timeout()), SLOT(saveGeometry()));
 
-	restoreGeometry();
-	window->installEventFilter(this);
+    restoreGeometry();
+    window->installEventFilter(this);
 }
 
 WindowGeometryManager::~WindowGeometryManager()
 {
-	delete MyVariantWrapper;
-	MyVariantWrapper = 0;
+    delete MyVariantWrapper;
+    MyVariantWrapper = 0;
 }
 
 bool WindowGeometryManager::eventFilter(QObject *watched, QEvent *event)
 {
-	if (watched == parent())
-	{
-		QWidget *parentWidget = qobject_cast<QWidget *>(parent());
-		Q_ASSERT(parentWidget);
+    if (watched == parent())
+    {
+        QWidget *parentWidget = qobject_cast<QWidget *>(parent());
+        Q_ASSERT(parentWidget);
 
-		if (event->type() == QEvent::QEvent::Show)
-		{
-			restoreGeometry();
-		}
-		else if (event->type() == QEvent::Move || event->type() == QEvent::Resize)
-		{
-			if (parentWidget->isWindow())
-			{
-				Qt::WindowStates ws = parentWidget->windowState();
-				if(!(ws & Qt::WindowMaximized) && !(ws & Qt::WindowFullScreen))
-					NormalGeometry = parentWidget->normalGeometry();
-				Timer.start();
-			}
-		}
-		else if (event->type() == QEvent::ParentChange)
-		{
-			if (parentWidget->isWindow())
-				restoreGeometry();
-		}
+        if (event->type() == QEvent::QEvent::Show)
+        {
+            restoreGeometry();
+        }
+        else if (event->type() == QEvent::Move || event->type() == QEvent::Resize)
+        {
+            if (parentWidget->isWindow())
+            {
+                Qt::WindowStates ws = parentWidget->windowState();
+                if (!(ws & Qt::WindowMaximized) && !(ws & Qt::WindowFullScreen))
+                    NormalGeometry = parentWidget->normalGeometry();
+                Timer.start();
+            }
+        }
+        else if (event->type() == QEvent::ParentChange)
+        {
+            if (parentWidget->isWindow())
+                restoreGeometry();
+        }
 
-		return QObject::eventFilter(watched, event);
-	}
+        return QObject::eventFilter(watched, event);
+    }
 
-	return QObject::eventFilter(watched, event);
+    return QObject::eventFilter(watched, event);
 }
 
 void WindowGeometryManager::saveGeometry()
 {
-	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
-	Q_ASSERT(parentWidget);
+    QWidget *parentWidget = qobject_cast<QWidget *>(parent());
+    Q_ASSERT(parentWidget);
 
-	if (!parentWidget->isVisible())
-		return;
+    if (!parentWidget->isVisible())
+        return;
 
-	bool isMaximized = parentWidget->windowState() & Qt::WindowMaximized;
-	QStringList configuration;
-	//if window is maximized normalGeometry() returns null rect. So in this case we use cached geometry
-	configuration.insert(NormalGeometryIndex, rectToString(isMaximized ? NormalGeometry : parentWidget->normalGeometry()));
-	configuration.insert(FrameGeometryIndex, rectToString(parentWidget->frameGeometry()));
-	configuration.insert(ScreenIndex, QString::number(QApplication::desktop()->screenNumber(parentWidget)));
-	configuration.insert(MaximizedIndex, QString::number(int(isMaximized)));
-	configuration.insert(FullscreenIndex, QString::number(int(bool(parentWidget->windowState() & Qt::WindowFullScreen))));
+    bool isMaximized = parentWidget->windowState() & Qt::WindowMaximized;
+    QStringList configuration;
+    // if window is maximized normalGeometry() returns null rect. So in this case we use cached geometry
+    configuration.insert(
+        NormalGeometryIndex, rectToString(isMaximized ? NormalGeometry : parentWidget->normalGeometry()));
+    configuration.insert(FrameGeometryIndex, rectToString(parentWidget->frameGeometry()));
+    configuration.insert(ScreenIndex, QString::number(QApplication::desktop()->screenNumber(parentWidget)));
+    configuration.insert(MaximizedIndex, QString::number(int(isMaximized)));
+    configuration.insert(
+        FullscreenIndex, QString::number(int(bool(parentWidget->windowState() & Qt::WindowFullScreen))));
 
-	MyVariantWrapper->set(configuration.join(":"));
+    MyVariantWrapper->set(configuration.join(":"));
 }
 
 void WindowGeometryManager::restoreGeometry()
 {
-	QWidget *parentWidget = qobject_cast<QWidget *>(parent());
-	Q_ASSERT(parentWidget);
+    QWidget *parentWidget = qobject_cast<QWidget *>(parent());
+    Q_ASSERT(parentWidget);
 
-	if (!parentWidget->window()->isVisible())
-	{
-		return;
-	}
+    if (!parentWidget->window()->isVisible())
+    {
+        return;
+    }
 
-	QString configurationString = MyVariantWrapper->get().toString();
-	QStringList configuration = configurationString.split(':');
-	if (configuration.count() != IndexCount)
-	{
-		QRect rect = stringToRect(configurationString);
-		if (!rect.isValid())
-			rect = DefaultGeometry;
+    QString configurationString = MyVariantWrapper->get().toString();
+    QStringList configuration = configurationString.split(':');
+    if (configuration.count() != IndexCount)
+    {
+        QRect rect = stringToRect(configurationString);
+        if (!rect.isValid())
+            rect = DefaultGeometry;
 
-		rect = properGeometry(rect);
-		parentWidget->move(rect.topLeft());
-		parentWidget->resize(rect.size());
-	}
-	else
-	{
-		// if future Qt versions drop support for restoring from this format old options files
-		// would break anyway. If we want to (e.g. to add other features) we can also reimplement
-		// restoring any other way without breaking the options format at all.
-		// and this way we are sure no Qt version the user happens to have installed writes some
-		// newer version of the format that older Qts can't restore from.
+        rect = properGeometry(rect);
+        parentWidget->move(rect.topLeft());
+        parentWidget->resize(rect.size());
+    }
+    else
+    {
+        // if future Qt versions drop support for restoring from this format old options files
+        // would break anyway. If we want to (e.g. to add other features) we can also reimplement
+        // restoring any other way without breaking the options format at all.
+        // and this way we are sure no Qt version the user happens to have installed writes some
+        // newer version of the format that older Qts can't restore from.
 
-		QByteArray array;
-		QDataStream stream(&array, QIODevice::WriteOnly);
-		stream.setVersion(QDataStream::Qt_4_0);
-		const quint32 magicNumber = 0x1D9D0CB;
-		const quint16 majorVersion = 1;
-		const quint16 minorVersion = 0;
+        QByteArray array;
+        QDataStream stream(&array, QIODevice::WriteOnly);
+        stream.setVersion(QDataStream::Qt_4_0);
+        const quint32 magicNumber = 0x1D9D0CB;
+        const quint16 majorVersion = 1;
+        const quint16 minorVersion = 0;
 
-		NormalGeometry = stringToRect(configuration.at(NormalGeometryIndex));
-		auto storedGeometry = stringToRect(configuration.at(NormalGeometryIndex));
+        NormalGeometry = stringToRect(configuration.at(NormalGeometryIndex));
+        auto storedGeometry = stringToRect(configuration.at(NormalGeometryIndex));
 
-		stream << magicNumber
-				<< majorVersion
-				<< minorVersion
-				<< stringToRect(configuration.at(FrameGeometryIndex))
-				<< storedGeometry
-				<< qint32(configuration.at(ScreenIndex).toInt())
-				<< quint8(bool(configuration.at(MaximizedIndex).toInt()))
-				<< quint8(bool(configuration.at(FullscreenIndex).toInt()));
+        stream << magicNumber << majorVersion << minorVersion << stringToRect(configuration.at(FrameGeometryIndex))
+               << storedGeometry << qint32(configuration.at(ScreenIndex).toInt())
+               << quint8(bool(configuration.at(MaximizedIndex).toInt()))
+               << quint8(bool(configuration.at(FullscreenIndex).toInt()));
 
-		parentWidget->restoreGeometry(array);
+        parentWidget->restoreGeometry(array);
 #ifndef Q_OS_WIN
-		parentWidget->move(storedGeometry.topLeft());
+        parentWidget->move(storedGeometry.topLeft());
 #endif
-	}
+    }
 }
 
 #include "moc_window-geometry-manager.cpp"

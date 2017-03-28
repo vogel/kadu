@@ -40,38 +40,38 @@
  */
 enum class StatusType
 {
-	/**
-	 * Empty (invalid) status type.
-	 */
-	None = -1,
-	/**
-	 * Free for chat status type.
-	 */
-	FreeForChat = 0,
-	/**
-	 * Online status type.
-	 */
-	Online = 10,
-	/**
-	 * Away status type.
-	 */
-	Away = 20,
-	/**
-	 * Not available status type.
-	 */
-	NotAvailable = 30,
-	/**
-	 * Do not disturb status type.
-	 */
-	DoNotDisturb = 40,
-	/**
-	 * Invisible status type.
-	 */
-	Invisible = 50,
-	/**
-	 * Offline status type.
-	 */
-	Offline = 60
+    /**
+     * Empty (invalid) status type.
+     */
+    None = -1,
+    /**
+     * Free for chat status type.
+     */
+    FreeForChat = 0,
+    /**
+     * Online status type.
+     */
+    Online = 10,
+    /**
+     * Away status type.
+     */
+    Away = 20,
+    /**
+     * Not available status type.
+     */
+    NotAvailable = 30,
+    /**
+     * Do not disturb status type.
+     */
+    DoNotDisturb = 40,
+    /**
+     * Invisible status type.
+     */
+    Invisible = 50,
+    /**
+     * Offline status type.
+     */
+    Offline = 60
 };
 
 /**
@@ -81,4 +81,4 @@ enum class StatusType
 
 Q_DECLARE_METATYPE(StatusType)
 
-#endif // STATUS_TYPE_H
+#endif   // STATUS_TYPE_H

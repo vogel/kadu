@@ -21,81 +21,66 @@
 
 Jid Jid::parse(QString jid)
 {
-	auto slashIndex = jid.indexOf("/");
-	auto resource = slashIndex == -1
-			? QString{}
-			: jid.mid(slashIndex + 1);
-	auto rest = slashIndex == -1
-			? jid
-			: jid.mid(0, slashIndex);
-	auto atIndex = rest.indexOf("@");
-	auto domain = atIndex == -1
-			? rest
-			: rest.mid(atIndex + 1);
-	auto node = atIndex == -1
-			? QString{}
-			: rest.mid(0, atIndex);
-	return Jid{node, domain, resource};
+    auto slashIndex = jid.indexOf("/");
+    auto resource = slashIndex == -1 ? QString{} : jid.mid(slashIndex + 1);
+    auto rest = slashIndex == -1 ? jid : jid.mid(0, slashIndex);
+    auto atIndex = rest.indexOf("@");
+    auto domain = atIndex == -1 ? rest : rest.mid(atIndex + 1);
+    auto node = atIndex == -1 ? QString{} : rest.mid(0, atIndex);
+    return Jid{node, domain, resource};
 }
 
 Jid::Jid()
 {
 }
 
-Jid::Jid(QString node, QString domain, QString resource) :
-		m_node{node},
-		m_domain{domain},
-		m_resource{resource}
+Jid::Jid(QString node, QString domain, QString resource) : m_node{node}, m_domain{domain}, m_resource{resource}
 {
-	m_bare = m_node.isEmpty()
-			? m_domain
-			: m_node + "@" + m_domain;
-	m_full = m_resource.isEmpty()
-			? m_bare
-			: m_bare + "/" + m_resource;
+    m_bare = m_node.isEmpty() ? m_domain : m_node + "@" + m_domain;
+    m_full = m_resource.isEmpty() ? m_bare : m_bare + "/" + m_resource;
 }
 
 Jid Jid::withNode(QString node) const
 {
-	return Jid{node, m_domain, m_resource};
+    return Jid{node, m_domain, m_resource};
 }
 
 Jid Jid::withDomain(QString domain) const
 {
-	return Jid{m_node, domain, m_resource};
+    return Jid{m_node, domain, m_resource};
 }
 
 Jid Jid::withResource(QString resource) const
 {
-	return Jid{m_node, m_domain, resource};
+    return Jid{m_node, m_domain, resource};
 }
 
 bool Jid::isEmpty() const
 {
-	return m_full.isEmpty();
+    return m_full.isEmpty();
 }
 
 QString Jid::full() const
 {
-	return m_full;
+    return m_full;
 }
 
 QString Jid::bare() const
 {
-	return m_bare;
+    return m_bare;
 }
 
 QString Jid::node() const
 {
-	return m_node;
+    return m_node;
 }
 
 QString Jid::domain() const
 {
-	return m_domain;
+    return m_domain;
 }
 
 QString Jid::resource() const
 {
-	return m_resource;
+    return m_resource;
 }

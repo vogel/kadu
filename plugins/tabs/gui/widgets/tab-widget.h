@@ -46,164 +46,163 @@ class TabsManager;
 
 class TabWidget : public QTabWidget, CompositingAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Application> m_application;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<OpenChatWithService> m_openChatWithService;
+    QPointer<Application> m_application;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<OpenChatWithService> m_openChatWithService;
 
-	QToolButton *CloseChatButton;
-	QToolButton *TabsListButton;
-	QWidget *OpenChatButtonsWidget;
-	QWidget *RightCornerWidget;
-	RecentChatsMenu *RecentChatsMenuWidget;
-	QMenu *TabsMenu;
-	QToolButton *OpenRecentChatButton;
+    QToolButton *CloseChatButton;
+    QToolButton *TabsListButton;
+    QWidget *OpenChatButtonsWidget;
+    QWidget *RightCornerWidget;
+    RecentChatsMenu *RecentChatsMenuWidget;
+    QMenu *TabsMenu;
+    QToolButton *OpenRecentChatButton;
 
-	TabsManager *Manager;
+    TabsManager *Manager;
 
-	bool config_oldStyleClosing;
+    bool config_oldStyleClosing;
 
-	void updateTabsMenu();
-	void updateTabsListButton();
-	bool isTabVisible(int index);
+    void updateTabsMenu();
+    void updateTabsListButton();
+    bool isTabVisible(int index);
 
 private slots:
-	INJEQT_SET void setApplication(Application *application);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setApplication(Application *application);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
+    INJEQT_INIT void init();
 
-	void onContextMenu(int id, const QPoint &pos);
+    void onContextMenu(int id, const QPoint &pos);
 
-	/**
-	* Slot zostaje wywołany w celu zmiany pozycji karty.
-	* @param from pozycja karty źródłowej.
-	* @param to pozycja karty docelowej.
-	*/
-	void moveTab(int from, int to);
+    /**
+    * Slot zostaje wywołany w celu zmiany pozycji karty.
+    * @param from pozycja karty źródłowej.
+    * @param to pozycja karty docelowej.
+    */
+    void moveTab(int from, int to);
 
-	/**
-	* Slot zostaje wywołany w chwili naciśnięcia przycisku
-	* zamknięcia na karcie lub użycia środkowego przycisku myszy
-	* @param numer karty, która ma zostać zamknięta.
-	*/
-	void onDeleteTab(int);
+    /**
+    * Slot zostaje wywołany w chwili naciśnięcia przycisku
+    * zamknięcia na karcie lub użycia środkowego przycisku myszy
+    * @param numer karty, która ma zostać zamknięta.
+    */
+    void onDeleteTab(int);
 
-	/**
-	* Slot zostaje wywołany w chwili naciśnięcia przycisku
-	* otwracia nowej karty.
-	* Tu otwiera okienko lub przywraca ja na pierwszy plan
-	*/
-	void newChat();
+    /**
+    * Slot zostaje wywołany w chwili naciśnięcia przycisku
+    * otwracia nowej karty.
+    * Tu otwiera okienko lub przywraca ja na pierwszy plan
+    */
+    void newChat();
 
-	/**
-	* Slot that handles click on button with last conversations
-	* Opens a popup QMenu with last conversations
-	*/
-	void openRecentChatsMenu();
+    /**
+    * Slot that handles click on button with last conversations
+    * Opens a popup QMenu with last conversations
+    */
+    void openRecentChatsMenu();
 
-	/**
-	* Slot for handling click on item from popup QMenu with last conversations
-	*/
-	void openRecentChat(QAction *action);
+    /**
+    * Slot for handling click on item from popup QMenu with last conversations
+    */
+    void openRecentChat(QAction *action);
 
-	void deleteTab();
+    void deleteTab();
 
-	void openTabsList();
-	void currentTabChanged(int index);
-	void tabsMenuSelected(QAction *action);
+    void openTabsList();
+    void currentTabChanged(int index);
+    void tabsMenuSelected(QAction *action);
 
-	void closeTab(ChatWidget *chatWidget);
+    void closeTab(ChatWidget *chatWidget);
 
 protected:
-	/**
-	* Metoda wywoływana w chwili naciśnięcia x na ?pasku dekoracji?
-	* Odpowiada za zamykanie wszystkich kart, lub tylko aktywnej karty
-	* w zależności od konfiguracji
-	*/
-	virtual void closeEvent(QCloseEvent *e);
+    /**
+    * Metoda wywoływana w chwili naciśnięcia x na ?pasku dekoracji?
+    * Odpowiada za zamykanie wszystkich kart, lub tylko aktywnej karty
+    * w zależności od konfiguracji
+    */
+    virtual void closeEvent(QCloseEvent *e);
     virtual void showEvent(QShowEvent *e);
-	virtual void resizeEvent(QResizeEvent *e);
-	/**
-	* Metoda wywoływana w chwili przeciągnięcia obiektu na pasek kart
-	* metodą dnd
-	* akceptuje zdarzenie jeśli pochodziło z userbox'a lub z tabbara
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void dragEnterEvent(QDragEnterEvent *e);
+    virtual void resizeEvent(QResizeEvent *e);
+    /**
+    * Metoda wywoływana w chwili przeciągnięcia obiektu na pasek kart
+    * metodą dnd
+    * akceptuje zdarzenie jeśli pochodziło z userbox'a lub z tabbara
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    */
+    virtual void dragEnterEvent(QDragEnterEvent *e);
 
-	/**
-	* Metoda wywoływana w chwili upuszczenia przeciągniętego obiektu
-	* na pasek kart
-	* Wywołuje mętodę odpowiedzialną za przeniesienie karty lub otwarcie
-	* nowej w zależnośći od zdarzenia
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void dropEvent(QDropEvent *event);
+    /**
+    * Metoda wywoływana w chwili upuszczenia przeciągniętego obiektu
+    * na pasek kart
+    * Wywołuje mętodę odpowiedzialną za przeniesienie karty lub otwarcie
+    * nowej w zależnośći od zdarzenia
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    */
+    virtual void dropEvent(QDropEvent *event);
 
-	virtual void changeEvent(QEvent *event);
+    virtual void changeEvent(QEvent *event);
 
-	virtual void tabInserted(int index);
-	virtual void tabRemoved(int index);
+    virtual void tabInserted(int index);
+    virtual void tabRemoved(int index);
 
-	virtual void compositingEnabled();
-	virtual void compositingDisabled();
+    virtual void compositingEnabled();
+    virtual void compositingDisabled();
 
 public:
-	explicit TabWidget(TabsManager *manager);
-	virtual ~TabWidget();
+    explicit TabWidget(TabsManager *manager);
+    virtual ~TabWidget();
 
-	/**
-	* Zmienia aktualną kartę na tą po lewej stronie
-	*/
-	void switchTabLeft();
+    /**
+    * Zmienia aktualną kartę na tą po lewej stronie
+    */
+    void switchTabLeft();
 
-	/**
-	* Zmienia aktualną kartę na tą po prawej stronie
-	*/
-	void switchTabRight();
+    /**
+    * Zmienia aktualną kartę na tą po prawej stronie
+    */
+    void switchTabRight();
 
-	void moveTabLeft();
-	void moveTabRight();
+    void moveTabLeft();
+    void moveTabRight();
 
-	/**
-	* Metoda wywoływana w momencie zaakceptowania zmian
-	* w oknie konfiguracji kadu. Ustawua opcje modułu zgodnie
-	* z konfiguracją
-	*/
-	void configurationUpdated();
+    /**
+    * Metoda wywoływana w momencie zaakceptowania zmian
+    * w oknie konfiguracji kadu. Ustawua opcje modułu zgodnie
+    * z konfiguracją
+    */
+    void configurationUpdated();
 
-	bool isChatWidgetActive(const ChatWidget *chatWidget);
-	void tryActivateChatWidget(ChatWidget *chatWidget);
-	void tryMinimizeChatWidget(ChatWidget *chatWidget);
+    bool isChatWidgetActive(const ChatWidget *chatWidget);
+    void tryActivateChatWidget(ChatWidget *chatWidget);
+    void tryMinimizeChatWidget(ChatWidget *chatWidget);
 
 public slots:
-	/**
-	* Slot zostaje wywołany w momencie wprowadzenia znaku w polu edycji
-	* okna chat. Odpowiada za skórty klawiaturowe modułu, Jeśli handled
-	* zostanie ustawione na true, skrót został przyęjty i wykonany
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	* @param k wskaźnik do pola edycji z którego zostało wywołane zdarzenie.
-	*/
-	virtual void chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled);
+    /**
+    * Slot zostaje wywołany w momencie wprowadzenia znaku w polu edycji
+    * okna chat. Odpowiada za skórty klawiaturowe modułu, Jeśli handled
+    * zostanie ustawione na true, skrót został przyęjty i wykonany
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    * @param k wskaźnik do pola edycji z którego zostało wywołane zdarzenie.
+    */
+    virtual void chatKeyPressed(QKeyEvent *e, CustomInput *k, bool &handled);
 
-	/**
-	* Slot zostaje wywołany w momencie dwukliku myszy
-	* Tu powoduje otwarcie okna openChatWith;
-	* @param e wskaźnik obiektu opisującego to zdarzenie.
-	*/
-	virtual void mouseDoubleClickEvent(QMouseEvent *e);
+    /**
+    * Slot zostaje wywołany w momencie dwukliku myszy
+    * Tu powoduje otwarcie okna openChatWith;
+    * @param e wskaźnik obiektu opisującego to zdarzenie.
+    */
+    virtual void mouseDoubleClickEvent(QMouseEvent *e);
 
 signals:
-	void chatWidgetActivated(ChatWidget *chatWidget);
-	void contextMenu(QWidget *w, const QPoint &pos);
-	void openTab(QStringList altnicks, int index);
-
+    void chatWidgetActivated(ChatWidget *chatWidget);
+    void contextMenu(QWidget *w, const QPoint &pos);
+    void openTab(QStringList altnicks, int index);
 };

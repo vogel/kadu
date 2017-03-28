@@ -25,9 +25,8 @@
 
 #include "hints-widget.h"
 
-HintsNotifier::HintsNotifier(QObject *parent) :
-		QObject{parent},
-		Notifier{"Hints", "Hints", KaduIcon{"kadu_icons/notify-hints"}}
+HintsNotifier::HintsNotifier(QObject *parent)
+        : QObject{parent}, Notifier{"Hints", "Hints", KaduIcon{"kadu_icons/notify-hints"}}
 {
 }
 
@@ -37,19 +36,19 @@ HintsNotifier::~HintsNotifier()
 
 void HintsNotifier::setHintsWidget(HintsWidget *hintsWidget)
 {
-	m_hintsWidget = hintsWidget;
+    m_hintsWidget = hintsWidget;
 }
 
-NotifierConfigurationWidget * HintsNotifier::createConfigurationWidget(QWidget *parent)
+NotifierConfigurationWidget *HintsNotifier::createConfigurationWidget(QWidget *parent)
 {
-	Q_UNUSED(parent);
+    Q_UNUSED(parent);
 
-	return nullptr;
+    return nullptr;
 }
 
 void HintsNotifier::notify(const Notification &notification)
 {
-	m_hintsWidget->addNotification(notification);
+    m_hintsWidget->addNotification(notification);
 }
 
 #include "moc_hints-notifier.cpp"

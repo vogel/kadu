@@ -27,8 +27,8 @@
 
 struct StatusNotifierItemConfiguration
 {
-	StatusNotifierItemAttentionMode AttentionMode = StatusNotifierItemAttentionMode::BlinkingIcon;
-	KaduIcon AttentionIcon;
-	QString AttentionMovie;
-	KaduIcon Icon;
+    StatusNotifierItemAttentionMode AttentionMode = StatusNotifierItemAttentionMode::BlinkingIcon;
+    KaduIcon AttentionIcon;
+    QString AttentionMovie;
+    KaduIcon Icon;
 };

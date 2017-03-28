@@ -35,40 +35,39 @@ class SyntaxList;
 
 class SyntaxEditor : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SyntaxEditor(QWidget *parent = nullptr);
-	virtual ~SyntaxEditor();
+    explicit SyntaxEditor(QWidget *parent = nullptr);
+    virtual ~SyntaxEditor();
 
-	QString currentSyntax();
+    QString currentSyntax();
 
-	void setCategory(const QString &category);
-	void setSyntaxHint(const QString &syntaxHint);
+    void setCategory(const QString &category);
+    void setSyntaxHint(const QString &syntaxHint);
 
 public slots:
-	void setCurrentSyntax(const QString &syntax);
+    void setCurrentSyntax(const QString &syntax);
 
 signals:
-	void syntaxChanged(const QString &newSyntax);
+    void syntaxChanged(const QString &newSyntax);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QSharedPointer<SyntaxList> syntaxList;
-	QComboBox *syntaxListCombo;
+    QSharedPointer<SyntaxList> syntaxList;
+    QComboBox *syntaxListCombo;
 
-	QString category;
-	QString syntaxHint;
+    QString category;
+    QString syntaxHint;
 
-	void updateSyntaxList();
+    void updateSyntaxList();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
-	void syntaxChangedSlot(const QString &newSyntax);
-	void syntaxListUpdated();
-
+    void syntaxChangedSlot(const QString &newSyntax);
+    void syntaxListUpdated();
 };

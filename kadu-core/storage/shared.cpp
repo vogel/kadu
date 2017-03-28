@@ -31,10 +31,9 @@
  * Contructs empty object with given uuid. When uuid is invalid (NULL)
  * new uuid is created and assigned to object.
  */
-Shared::Shared(const QUuid &uuid, QObject *parent) :
-		UuidStorableObject{parent}
+Shared::Shared(const QUuid &uuid, QObject *parent) : UuidStorableObject{parent}
 {
-	setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
+    setUuid(uuid.isNull() ? QUuid::createUuid() : uuid);
 }
 
 /**
@@ -56,7 +55,7 @@ Shared::Shared(const QUuid &uuid, QObject *parent) :
  */
 Shared::~Shared()
 {
-	ref.ref();
+    ref.ref();
 }
 
 /**
@@ -72,11 +71,11 @@ Shared::~Shared()
  */
 void Shared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	UuidStorableObject::load();
-	setUuid(QUuid(loadAttribute<QString>("uuid")));
+    UuidStorableObject::load();
+    setUuid(QUuid(loadAttribute<QString>("uuid")));
 }
 
 /**
@@ -89,11 +88,11 @@ void Shared::load()
  */
 void Shared::loadStub()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	setUuid(QUuid(loadAttribute<QString>("uuid")));
-	setState(StateNotLoaded);
+    setUuid(QUuid(loadAttribute<QString>("uuid")));
+    setState(StateNotLoaded);
 }
 
 /**
@@ -105,12 +104,12 @@ void Shared::loadStub()
  */
 void Shared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	UuidStorableObject::store();
+    UuidStorableObject::store();
 
-	storeAttribute("uuid", uuid().toString());
+    storeAttribute("uuid", uuid().toString());
 }
 
 /**
@@ -126,7 +125,7 @@ void Shared::aboutToBeRemoved()
 {
 }
 
-ChangeNotifier & Shared::changeNotifier()
+ChangeNotifier &Shared::changeNotifier()
 {
-	return MyChangeNotifier;
+    return MyChangeNotifier;
 }

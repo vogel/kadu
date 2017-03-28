@@ -34,8 +34,7 @@
 
 #include <QtWidgets/QApplication>
 
-BuddyDummyFactory::BuddyDummyFactory(QObject *parent) :
-		QObject{parent}
+BuddyDummyFactory::BuddyDummyFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -45,72 +44,72 @@ BuddyDummyFactory::~BuddyDummyFactory()
 
 void BuddyDummyFactory::setAccountStorage(AccountStorage *accountStorage)
 {
-	m_accountStorage = accountStorage;
+    m_accountStorage = accountStorage;
 }
 
 void BuddyDummyFactory::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void BuddyDummyFactory::setBuddyStorage(BuddyStorage *buddyStorage)
 {
-	m_buddyStorage = buddyStorage;
+    m_buddyStorage = buddyStorage;
 }
 
 void BuddyDummyFactory::setContactStorage(ContactStorage *contactStorage)
 {
-	m_contactStorage = contactStorage;
+    m_contactStorage = contactStorage;
 }
 
 void BuddyDummyFactory::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void BuddyDummyFactory::setIdentityStorage(IdentityStorage *identityStorage)
 {
-	m_identityStorage = identityStorage;
+    m_identityStorage = identityStorage;
 }
 
 void BuddyDummyFactory::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Buddy BuddyDummyFactory::dummy()
 {
-	auto example = m_buddyStorage->create();
-	example.setFirstName("Mark");
-	example.setLastName("Smith");
-	example.setNickName("Jimbo");
-	example.setDisplay("Jimbo");
-	example.setMobile("+48123456789");
-	example.setEmail("jimbo@mail.server.net");
-	example.setHomePhone("+481234567890");
+    auto example = m_buddyStorage->create();
+    example.setFirstName("Mark");
+    example.setLastName("Smith");
+    example.setNickName("Jimbo");
+    example.setDisplay("Jimbo");
+    example.setMobile("+48123456789");
+    example.setEmail("jimbo@mail.server.net");
+    example.setHomePhone("+481234567890");
 
-	auto identity = m_identityStorage->create();
-	identity.setName(QApplication::translate("Buddy", "Example identity"));
+    auto identity = m_identityStorage->create();
+    identity.setName(QApplication::translate("Buddy", "Example identity"));
 
-	auto account = m_accountStorage->create("");
-	account.setAccountIdentity(identity);
+    auto account = m_accountStorage->create("");
+    account.setAccountIdentity(identity);
 
-	auto contact = m_contactStorage->create();
-	contact.setContactAccount(account);
-	contact.setOwnerBuddy(example);
-	contact.setId("999999");
-	contact.setCurrentStatus(Status(StatusType::Away, QApplication::translate("Buddy", "Example description")));
+    auto contact = m_contactStorage->create();
+    contact.setContactAccount(account);
+    contact.setOwnerBuddy(example);
+    contact.setId("999999");
+    contact.setCurrentStatus(Status(StatusType::Away, QApplication::translate("Buddy", "Example description")));
 
-	// this is just an example contact, do not add avatar to list
-	auto avatar = m_avatarManager->byContact(contact, ActionCreate);
+    // this is just an example contact, do not add avatar to list
+    auto avatar = m_avatarManager->byContact(contact, ActionCreate);
 
-	avatar.setLastUpdated(QDateTime::currentDateTime());
-	avatar.setFilePath(m_iconsManager->iconPath(KaduIcon("kadu_icons/buddy0", "96x96")));
+    avatar.setLastUpdated(QDateTime::currentDateTime());
+    avatar.setFilePath(m_iconsManager->iconPath(KaduIcon("kadu_icons/buddy0", "96x96")));
 
-	example.addContact(contact);
-	example.setAnonymous(false);
+    example.addContact(contact);
+    example.setAnonymous(false);
 
-	return example;
+    return example;
 }
 
 #include "moc_buddy-dummy-factory.cpp"

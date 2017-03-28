@@ -24,13 +24,11 @@
 
 class ImageExpander : public DomTextRegexpVisitor
 {
-
 public:
-	ImageExpander();
-	virtual ~ImageExpander();
+    ImageExpander();
+    virtual ~ImageExpander();
 
-	virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
-
+    virtual QList<QDomNode> matchToDomNodes(QDomDocument document, QRegExp regExp) const;
 };
 
-#endif // IMAGE_EXPANDER_H
+#endif   // IMAGE_EXPANDER_H

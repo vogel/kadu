@@ -18,8 +18,8 @@
  */
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
 }
 
 #include "accounts/account.h"
@@ -43,30 +43,30 @@ extern "C" {
 
 void OtrSessionService::wrapperOtrGoneSecure(void *data, ConnContext *context)
 {
-	Q_UNUSED(context);
+    Q_UNUSED(context);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->sessionService())
-		emit opData->sessionService()->goneSecure(opData->contact());
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->sessionService())
+        emit opData->sessionService()->goneSecure(opData->contact());
 }
 
 void OtrSessionService::wrapperOtrGoneInsecure(void *data, ConnContext *context)
 {
-	Q_UNUSED(context);
+    Q_UNUSED(context);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->sessionService())
-		emit opData->sessionService()->goneInsecure(opData->contact());
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->sessionService())
+        emit opData->sessionService()->goneInsecure(opData->contact());
 }
 
 void OtrSessionService::wrapperOtrStillSecure(void *data, ConnContext *context, int isReply)
 {
-	Q_UNUSED(context);
-	Q_UNUSED(isReply);
+    Q_UNUSED(context);
+    Q_UNUSED(isReply);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->sessionService())
-		emit opData->sessionService()->stillSecure(opData->contact());
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->sessionService())
+        emit opData->sessionService()->stillSecure(opData->contact());
 }
 
 OtrSessionService::OtrSessionService()
@@ -79,75 +79,75 @@ OtrSessionService::~OtrSessionService()
 
 void OtrSessionService::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsService = appOpsService;
+    AppOpsService = appOpsService;
 }
 
 void OtrSessionService::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void OtrSessionService::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void OtrSessionService::setMessageManager(MessageManager *messageManager)
 {
-	CurrentMessageManager = messageManager;
+    CurrentMessageManager = messageManager;
 }
 
 void OtrSessionService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
-	OpDataFactory = opDataFactory;
+    OpDataFactory = opDataFactory;
 }
 
 void OtrSessionService::setPolicyService(OtrPolicyService *policyService)
 {
-	PolicyService = policyService;
+    PolicyService = policyService;
 }
 
 void OtrSessionService::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
-	TrustLevelService = trustLevelService;
+    TrustLevelService = trustLevelService;
 }
 
 void OtrSessionService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 }
 
 void OtrSessionService::startSession(const Contact &contact)
 {
-	if (!CurrentMessageManager || !PolicyService || !TrustLevelService)
-		return;
+    if (!CurrentMessageManager || !PolicyService || !TrustLevelService)
+        return;
 
-	auto level = TrustLevelService->loadTrustLevelFromContact(contact);
-	auto account = contact.contactAccount();
-	auto otrPolicy = PolicyService->accountPolicy(account);
-	auto message = normalizeHtml(HtmlString{QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()))});
+    auto level = TrustLevelService->loadTrustLevelFromContact(contact);
+    auto account = contact.contactAccount();
+    auto otrPolicy = PolicyService->accountPolicy(account);
+    auto message = normalizeHtml(
+        HtmlString{QString::fromUtf8(otrl_proto_default_query_msg(qPrintable(account.id()), otrPolicy.toOtrPolicy()))});
 
-	if (level == OtrTrustLevelService::TrustLevelNotPrivate)
-		emit tryingToStartSession(contact);
-	else
-		emit tryingToRefreshSession(contact);
+    if (level == OtrTrustLevelService::TrustLevelNotPrivate)
+        emit tryingToStartSession(contact);
+    else
+        emit tryingToRefreshSession(contact);
 
-	CurrentMessageManager->sendMessage(ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd), message, true);
+    CurrentMessageManager->sendMessage(
+        ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd), message, true);
 }
 
 void OtrSessionService::endSession(const Contact &contact)
 {
-	if (!AppOpsService || !OpDataFactory || !UserStateService)
-		return;
+    if (!AppOpsService || !OpDataFactory || !UserStateService)
+        return;
 
-	OtrOpData opData = OpDataFactory->opDataForContact(contact);
-	otrl_message_disconnect_all_instances(UserStateService->userState(),
-										  AppOpsService->appOps(), &opData,
-										  qPrintable(contact.contactAccount().id()),
-										  qPrintable(contact.contactAccount().protocolName()),
-										  qPrintable(contact.id()));
+    OtrOpData opData = OpDataFactory->opDataForContact(contact);
+    otrl_message_disconnect_all_instances(
+        UserStateService->userState(), AppOpsService->appOps(), &opData, qPrintable(contact.contactAccount().id()),
+        qPrintable(contact.contactAccount().protocolName()), qPrintable(contact.id()));
 
-	emit goneInsecure(contact);
+    emit goneInsecure(contact);
 }
 
 #include "moc_otr-session-service.cpp"

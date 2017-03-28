@@ -46,33 +46,32 @@ class PathsProvider;
  */
 class EmoticonsConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QScopedPointer<EmoticonThemeManager> ThemeManager;
-	QPointer<ConfigurationWidget> Widget;
-	QPointer<ConfigListWidget> ThemesList;
+    QScopedPointer<EmoticonThemeManager> ThemeManager;
+    QPointer<ConfigurationWidget> Widget;
+    QPointer<ConfigListWidget> ThemesList;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 
-	void updateEmoticonThemes();
-	void installEmoticonTheme();
+    void updateEmoticonThemes();
+    void installEmoticonTheme();
 
 public:
-	Q_INVOKABLE explicit EmoticonsConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~EmoticonsConfigurationUiHandler();
+    Q_INVOKABLE explicit EmoticonsConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~EmoticonsConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };
 
 /**

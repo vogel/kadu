@@ -23,7 +23,7 @@
 
 IconsModule::IconsModule()
 {
-	add_type<IconsManager>();
+    add_type<IconsManager>();
 }
 
 IconsModule::~IconsModule()

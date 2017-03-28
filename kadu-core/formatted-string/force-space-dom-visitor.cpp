@@ -22,8 +22,7 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomText>
 
-ForceSpaceDomVisitor::ForceSpaceDomVisitor() :
-		DomTextRegexpVisitor{QRegExp{"( |\t)"}}
+ForceSpaceDomVisitor::ForceSpaceDomVisitor() : DomTextRegexpVisitor{QRegExp{"( |\t)"}}
 {
 }
 
@@ -33,8 +32,6 @@ ForceSpaceDomVisitor::~ForceSpaceDomVisitor()
 
 QList<QDomNode> ForceSpaceDomVisitor::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
-	auto entity = document.createEntityReference(regExp.cap(0) == " "
-		? "nbsp"
-		: "emsp");
-	return QList<QDomNode>{} << entity;
+    auto entity = document.createEntityReference(regExp.cap(0) == " " ? "nbsp" : "emsp");
+    return QList<QDomNode>{} << entity;
 }

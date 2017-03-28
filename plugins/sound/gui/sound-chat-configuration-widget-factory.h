@@ -29,20 +29,19 @@ class SoundManager;
 
 class SoundChatConfigurationWidgetFactory : public QObject, public ChatConfigurationWidgetFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE SoundChatConfigurationWidgetFactory(QObject *parent = nullptr);
-	virtual ~SoundChatConfigurationWidgetFactory();
+    Q_INVOKABLE SoundChatConfigurationWidgetFactory(QObject *parent = nullptr);
+    virtual ~SoundChatConfigurationWidgetFactory();
 
-	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent);
+    virtual ChatConfigurationWidget *createWidget(const Chat &chat, QWidget *parent);
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SoundManager> m_soundManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SoundManager> m_soundManager;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSoundManager(SoundManager *soundManager);
 };

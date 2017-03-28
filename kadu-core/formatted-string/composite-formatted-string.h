@@ -40,44 +40,43 @@
  */
 class KADUAPI CompositeFormattedString : public FormattedString
 {
-	Q_DISABLE_COPY(CompositeFormattedString)
+    Q_DISABLE_COPY(CompositeFormattedString)
 
-	std::vector<std::unique_ptr<FormattedString>> Items;
+    std::vector<std::unique_ptr<FormattedString>> Items;
 
 public:
-	/**
-	 * @short Create new instance of CompositeFormattedString.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param items items of composite FormattedString
-	 */
-	explicit CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items);
-	virtual ~CompositeFormattedString();
+    /**
+     * @short Create new instance of CompositeFormattedString.
+     * @author Rafał 'Vogel' Malinowski
+     * @param items items of composite FormattedString
+     */
+    explicit CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items);
+    virtual ~CompositeFormattedString();
 
-	virtual bool operator == (const FormattedString &compareTo);
+    virtual bool operator==(const FormattedString &compareTo);
 
-	/**
-	 * @short Accept a visitor.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitor visitor to accept
-	 *
-	 * This method executes visit() method of passed visitor on itself and then on all items.
-	 */
-	virtual void accept(FormattedStringVisitor *visitor) const;
+    /**
+     * @short Accept a visitor.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitor visitor to accept
+     *
+     * This method executes visit() method of passed visitor on itself and then on all items.
+     */
+    virtual void accept(FormattedStringVisitor *visitor) const;
 
-	/**
-	 * @short Return true if his FormattedString is empty or consists only of empty items.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if his FormattedString is empty or consists only of empty items
-	 */
-	virtual bool isEmpty() const;
+    /**
+     * @short Return true if his FormattedString is empty or consists only of empty items.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if his FormattedString is empty or consists only of empty items
+     */
+    virtual bool isEmpty() const;
 
-	/**
-	 * @short Return all items that compose this CompositeFormattedString.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return all items that compose this CompositeFormattedString
-	 */
-	const std::vector<std::unique_ptr<FormattedString>> & items() const;
-
+    /**
+     * @short Return all items that compose this CompositeFormattedString.
+     * @author Rafał 'Vogel' Malinowski
+     * @return all items that compose this CompositeFormattedString
+     */
+    const std::vector<std::unique_ptr<FormattedString>> &items() const;
 };
 
-#endif // COMPOSITE_FORMATTED_STRING_H
+#endif   // COMPOSITE_FORMATTED_STRING_H

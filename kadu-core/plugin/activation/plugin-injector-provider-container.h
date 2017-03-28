@@ -26,13 +26,12 @@ class PluginInjectorProvider;
 
 class PluginInjectorProviderContainer
 {
-
 public:
-	explicit PluginInjectorProviderContainer(QString pluginName, PluginInjectorProvider *pluginInjectorProvider, injeqt::injector &injector);
-	~PluginInjectorProviderContainer();
+    explicit PluginInjectorProviderContainer(
+        QString pluginName, PluginInjectorProvider *pluginInjectorProvider, injeqt::injector &injector);
+    ~PluginInjectorProviderContainer();
 
 private:
-	QString m_pluginName;
-	PluginInjectorProvider *m_pluginInjectorProvider;
-
+    QString m_pluginName;
+    PluginInjectorProvider *m_pluginInjectorProvider;
 };

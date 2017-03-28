@@ -21,30 +21,29 @@
 
 #include "tab-bar.h"
 
-TabBar::TabBar(QWidget *parent) :
-		QTabBar(parent)
+TabBar::TabBar(QWidget *parent) : QTabBar(parent)
 {
 }
 
 void TabBar::mousePressEvent(QMouseEvent *e)
 {
-	if (tabAt(e->pos()) != -1 && e->button() == Qt::RightButton)
-		emit contextMenu(tabAt(e->pos()), mapToGlobal(e->pos()));
+    if (tabAt(e->pos()) != -1 && e->button() == Qt::RightButton)
+        emit contextMenu(tabAt(e->pos()), mapToGlobal(e->pos()));
 
-	QTabBar::mousePressEvent(e);
+    QTabBar::mousePressEvent(e);
 }
 
 void TabBar::mouseReleaseEvent(QMouseEvent *e)
 {
-	if (tabAt(e->pos()) != -1 && e->button() == Qt::MidButton)
-		emit tabCloseRequested(tabAt(e->pos()));
-	QTabBar::mouseReleaseEvent(e);
+    if (tabAt(e->pos()) != -1 && e->button() == Qt::MidButton)
+        emit tabCloseRequested(tabAt(e->pos()));
+    QTabBar::mouseReleaseEvent(e);
 }
 
 void TabBar::mouseDoubleClickEvent(QMouseEvent *e)
 {
-	// w celu ulatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
-	emit mouseDoubleClickEventSignal(e);
+    // w celu ulatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
+    emit mouseDoubleClickEventSignal(e);
 }
 
 #include "moc_tab-bar.cpp"

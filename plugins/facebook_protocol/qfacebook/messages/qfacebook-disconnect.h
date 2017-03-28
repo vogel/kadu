@@ -27,7 +27,9 @@ struct QMqttMessage;
 class QFacebookDisconnect : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::Disconnect; }
-	virtual QMqttMessage encode() const;
-
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::Disconnect;
+    }
+    virtual QMqttMessage encode() const;
 };

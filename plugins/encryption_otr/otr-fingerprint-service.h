@@ -31,42 +31,41 @@ class OtrUserStateService;
 
 class OtrFingerprintService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperOtrWriteFingerprints(void *data);
+    static void wrapperOtrWriteFingerprints(void *data);
 
-	enum Trust
-	{
-		TrustNotVerified,
-		TrustVerified
-	};
+    enum Trust
+    {
+        TrustNotVerified,
+        TrustVerified
+    };
 
-	Q_INVOKABLE OtrFingerprintService();
-	virtual ~OtrFingerprintService();
+    Q_INVOKABLE OtrFingerprintService();
+    virtual ~OtrFingerprintService();
 
-	void readFingerprints() const;
-	void writeFingerprints() const;
+    void readFingerprints() const;
+    void writeFingerprints() const;
 
-	void setContactFingerprintTrust(const Contact &contact, Trust trust) const;
-	Trust contactFingerprintTrust(const Contact &contact) const;
+    void setContactFingerprintTrust(const Contact &contact, Trust trust) const;
+    Trust contactFingerprintTrust(const Contact &contact) const;
 
-	QString extractAccountFingerprint(const Account &account) const;
-	QString extractContactFingerprint(const Contact &contact) const;
+    QString extractAccountFingerprint(const Account &account) const;
+    QString extractContactFingerprint(const Contact &contact) const;
 
 signals:
-	void fingerprintsUpdated() const;
+    void fingerprintsUpdated() const;
 
 private slots:
-	INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
-	INJEQT_SET void setPathService(OtrPathService *pathService);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setContextConverter(OtrContextConverter *contextConverter);
+    INJEQT_SET void setPathService(OtrPathService *pathService);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
-	QPointer<OtrContextConverter> ContextConverter;
-	QPointer<OtrPathService> PathService;
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrContextConverter> ContextConverter;
+    QPointer<OtrPathService> PathService;
+    QPointer<OtrUserStateService> UserStateService;
 
-	QString fingerprintsStoreFileName() const;
-
+    QString fingerprintsStoreFileName() const;
 };

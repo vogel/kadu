@@ -19,23 +19,26 @@
 
 #include "jabber-change-password.h"
 
+#include "jid.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "services/jabber-error-service.h"
-#include "jid.h"
 
 #include <qxmpp/QXmppRegisterIq.h>
 
-JabberChangePassword::JabberChangePassword(const QString &jid, const QString &newPassword, JabberRegisterExtension *registerExtension, QObject *parent) :
-		QObject{parent}
+JabberChangePassword::JabberChangePassword(
+    const QString &jid, const QString &newPassword, JabberRegisterExtension *registerExtension, QObject *parent)
+        : QObject{parent}
 {
-	auto registerIq = QXmppRegisterIq{};
-	registerIq.setPassword(newPassword);
-	registerIq.setType(QXmppIq::Type::Set);
-	registerIq.setUsername(Jid::parse(jid).node());
+    auto registerIq = QXmppRegisterIq{};
+    registerIq.setPassword(newPassword);
+    registerIq.setType(QXmppIq::Type::Set);
+    registerIq.setUsername(Jid::parse(jid).node());
 
-	m_id = registerIq.id();
-	registerExtension->sendRegisterIq(registerIq);
-	connect(registerExtension, SIGNAL(registerIqReceived(QXmppRegisterIq)), this, SLOT(registerIqReceived(QXmppRegisterIq)));
+    m_id = registerIq.id();
+    registerExtension->sendRegisterIq(registerIq);
+    connect(
+        registerExtension, SIGNAL(registerIqReceived(QXmppRegisterIq)), this,
+        SLOT(registerIqReceived(QXmppRegisterIq)));
 }
 
 JabberChangePassword::~JabberChangePassword()
@@ -44,34 +47,36 @@ JabberChangePassword::~JabberChangePassword()
 
 void JabberChangePassword::setErrorService(JabberErrorService *errorService)
 {
-	m_errorService = errorService;
+    m_errorService = errorService;
 }
 
 void JabberChangePassword::registerIqReceived(const QXmppRegisterIq &registerIq)
 {
-	if (registerIq.id() != m_id)
-		return;
+    if (registerIq.id() != m_id)
+        return;
 
-	if (m_errorService->isErrorIq(registerIq))
-	{
-		auto conditionString = QString{};
-		switch (registerIq.error().condition())
-		{
-			case QXmppStanza::Error::NotAuthorized:
-				conditionString = tr("Current connection is not safe for password change. Use encrypted connection or change password on provider's site.");
-				break;
-			case QXmppStanza::Error::NotAllowed:
-			case QXmppStanza::Error::FeatureNotImplemented:
-				conditionString = tr("Password change is not allowed.");
-			default:
-				break;
-		}
-		emit error(m_errorService->errorMessage(registerIq, conditionString));
-	}
-	else if (registerIq.type() == QXmppIq::Type::Result)
-		emit passwordChanged();
+    if (m_errorService->isErrorIq(registerIq))
+    {
+        auto conditionString = QString{};
+        switch (registerIq.error().condition())
+        {
+        case QXmppStanza::Error::NotAuthorized:
+            conditionString =
+                tr("Current connection is not safe for password change. Use encrypted connection or change password on "
+                   "provider's site.");
+            break;
+        case QXmppStanza::Error::NotAllowed:
+        case QXmppStanza::Error::FeatureNotImplemented:
+            conditionString = tr("Password change is not allowed.");
+        default:
+            break;
+        }
+        emit error(m_errorService->errorMessage(registerIq, conditionString));
+    }
+    else if (registerIq.type() == QXmppIq::Type::Result)
+        emit passwordChanged();
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_jabber-change-password.cpp"

@@ -33,13 +33,17 @@
 #include "protocols/protocol.h"
 #include "protocols/services/multilogon-service.h"
 
-MultilogonNotificationService::MultilogonNotificationService(QObject *parent) :
-		QObject{parent},
-		m_mutlilogonDisconnectCallback{QStringLiteral("multilogon-disconnect"), tr("Disconnect session"),
-			[this](const Notification &notification){ return disconnectSession(notification); }},
-		m_multilogonEvent{QStringLiteral("multilogon"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon"))},
-		m_multilogonConnectedEvent{QStringLiteral("multilogon/sessionConnected"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session connected"))},
-		m_multilogonDisconnectedEvent{QStringLiteral("multilogon/sessionDisconnected"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected"))}
+MultilogonNotificationService::MultilogonNotificationService(QObject *parent)
+        : QObject{parent},
+          m_mutlilogonDisconnectCallback{
+              QStringLiteral("multilogon-disconnect"), tr("Disconnect session"),
+              [this](const Notification &notification) { return disconnectSession(notification); }},
+          m_multilogonEvent{QStringLiteral("multilogon"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon"))},
+          m_multilogonConnectedEvent{QStringLiteral("multilogon/sessionConnected"),
+                                     QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session connected"))},
+          m_multilogonDisconnectedEvent{
+              QStringLiteral("multilogon/sessionDisconnected"),
+              QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session disconnected"))}
 {
 }
 
@@ -47,92 +51,92 @@ MultilogonNotificationService::~MultilogonNotificationService()
 {
 }
 
-void MultilogonNotificationService::setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository)
+void MultilogonNotificationService::setNotificationCallbackRepository(
+    NotificationCallbackRepository *notificationCallbackRepository)
 {
-	m_notificationCallbackRepository = notificationCallbackRepository;
+    m_notificationCallbackRepository = notificationCallbackRepository;
 }
 
-void MultilogonNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+void MultilogonNotificationService::setNotificationEventRepository(
+    NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void MultilogonNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void MultilogonNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_multilogonEvent);
-	m_notificationEventRepository->addNotificationEvent(m_multilogonConnectedEvent);
-	m_notificationEventRepository->addNotificationEvent(m_multilogonDisconnectedEvent);
+    m_notificationEventRepository->addNotificationEvent(m_multilogonEvent);
+    m_notificationEventRepository->addNotificationEvent(m_multilogonConnectedEvent);
+    m_notificationEventRepository->addNotificationEvent(m_multilogonDisconnectedEvent);
 
-	m_notificationCallbackRepository->addCallback(m_mutlilogonDisconnectCallback);
+    m_notificationCallbackRepository->addCallback(m_mutlilogonDisconnectCallback);
 }
 
 void MultilogonNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_multilogonEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_multilogonConnectedEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_multilogonDisconnectedEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_multilogonEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_multilogonConnectedEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_multilogonDisconnectedEvent);
 
-	m_notificationCallbackRepository->removeCallback(m_mutlilogonDisconnectCallback);
+    m_notificationCallbackRepository->removeCallback(m_mutlilogonDisconnectCallback);
 }
 
 void MultilogonNotificationService::notifyMultilogonSessionConnected(const MultilogonSession &session)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(session.account));
-	data.insert(QStringLiteral("multilogon-session"), qVariantFromValue(session));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(session.account));
+    data.insert(QStringLiteral("multilogon-session"), qVariantFromValue(session));
 
-	auto notification = Notification{};
-	notification.type = m_multilogonConnectedEvent.name();
-	notification.title = tr("Multilogon");
-	notification.text = normalizeHtml(plainToHtml(tr("Multilogon session connected")));
-	notification.details = normalizeHtml(HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
-			plainToHtml(session.remoteAddress.toString()),
-			plainToHtml(session.logonTime.toString()),
-			plainToHtml(session.name),
-			plainToHtml(session.account.id())));
-	notification.data = std::move(data);
-	notification.callbacks.append(QStringLiteral("ignore"));
-	notification.callbacks.append(m_mutlilogonDisconnectCallback.name());
+    auto notification = Notification{};
+    notification.type = m_multilogonConnectedEvent.name();
+    notification.title = tr("Multilogon");
+    notification.text = normalizeHtml(plainToHtml(tr("Multilogon session connected")));
+    notification.details = normalizeHtml(
+        HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
+            plainToHtml(session.remoteAddress.toString()), plainToHtml(session.logonTime.toString()),
+            plainToHtml(session.name), plainToHtml(session.account.id())));
+    notification.data = std::move(data);
+    notification.callbacks.append(QStringLiteral("ignore"));
+    notification.callbacks.append(m_mutlilogonDisconnectCallback.name());
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 void MultilogonNotificationService::notifyMultilogonSessionDisonnected(const MultilogonSession &session)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(session.account));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(session.account));
 
-	auto notification = Notification{};
-	notification.type = m_multilogonDisconnectedEvent.name();
-	notification.title = tr("Multilogon");
-	notification.text = normalizeHtml(HtmlString{tr("Multilogon session disconnected")});
-	notification.details = normalizeHtml(HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
-			plainToHtml(session.remoteAddress.toString()),
-			plainToHtml(session.logonTime.toString()),
-			plainToHtml(session.name),
-			plainToHtml(session.account.id())));
+    auto notification = Notification{};
+    notification.type = m_multilogonDisconnectedEvent.name();
+    notification.title = tr("Multilogon");
+    notification.text = normalizeHtml(HtmlString{tr("Multilogon session disconnected")});
+    notification.details = normalizeHtml(
+        HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
+            plainToHtml(session.remoteAddress.toString()), plainToHtml(session.logonTime.toString()),
+            plainToHtml(session.name), plainToHtml(session.account.id())));
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 void MultilogonNotificationService::disconnectSession(const Notification &notification)
 {
-	auto session = qvariant_cast<MultilogonSession>(notification.data[QStringLiteral("multilogon-session")]);
-	if (session == MultilogonSession{})
-		return;
+    auto session = qvariant_cast<MultilogonSession>(notification.data[QStringLiteral("multilogon-session")]);
+    if (session == MultilogonSession{})
+        return;
 
-	auto protocolHandler = session.account.protocolHandler();
-	if (!protocolHandler)
-		return;
+    auto protocolHandler = session.account.protocolHandler();
+    if (!protocolHandler)
+        return;
 
-	auto multilogonService = protocolHandler->multilogonService();
-	if (!multilogonService)
-		return;
+    auto multilogonService = protocolHandler->multilogonService();
+    if (!multilogonService)
+        return;
 
-	multilogonService->killSession(session);
+    multilogonService->killSession(session);
 }

@@ -28,59 +28,63 @@
 
 #include "message-dialog.h"
 
-
-MessageDialog * MessageDialog::create(const QIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
+MessageDialog *
+MessageDialog::create(const QIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
 {
-	return new MessageDialog(icon, title, text, QMessageBox::NoButton, parent, f);
+    return new MessageDialog(icon, title, text, QMessageBox::NoButton, parent, f);
 }
 
-void MessageDialog::show(const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+void MessageDialog::show(
+    const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent,
+    Qt::WindowFlags f)
 {
-	auto dialog = new MessageDialog(icon, title, text, buttons, parent, f);
-	dialog->exec();
+    auto dialog = new MessageDialog(icon, title, text, buttons, parent, f);
+    dialog->exec();
 }
 
-MessageDialog::MessageDialog(const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent, Qt::WindowFlags f)
+MessageDialog::MessageDialog(
+    const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons, QWidget *parent,
+    Qt::WindowFlags f)
 {
-	Box = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
-	connect(Box, SIGNAL(finished(int)), this, SLOT(messageBoxFinished(int)));
-	Box->setAttribute(Qt::WA_DeleteOnClose, true);
+    Box = new QMessageBox(QMessageBox::NoIcon, title, text, buttons, parent, f);
+    connect(Box, SIGNAL(finished(int)), this, SLOT(messageBoxFinished(int)));
+    Box->setAttribute(Qt::WA_DeleteOnClose, true);
 
-	int iconSize = Box->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, Box);
-	QPixmap pixmap(icon.pixmap(iconSize, iconSize));
-	if (!pixmap.isNull())
-		Box->setIconPixmap(pixmap);
+    int iconSize = Box->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, Box);
+    QPixmap pixmap(icon.pixmap(iconSize, iconSize));
+    if (!pixmap.isNull())
+        Box->setIconPixmap(pixmap);
 }
 
 void MessageDialog::messageBoxFinished(int result)
 {
-	Q_UNUSED(result)
+    Q_UNUSED(result)
 
-	deleteLater();
+    deleteLater();
 }
 
-MessageDialog * MessageDialog::addButton(QMessageBox::StandardButton button, const QString &text)
+MessageDialog *MessageDialog::addButton(QMessageBox::StandardButton button, const QString &text)
 {
-	Box->addButton(button);
-	if (!text.isEmpty())
-		Box->setButtonText(button, text);
+    Box->addButton(button);
+    if (!text.isEmpty())
+        Box->setButtonText(button, text);
 
-	return this;
+    return this;
 }
 
 void MessageDialog::setDefaultButton(QMessageBox::StandardButton button)
 {
-	Box->setDefaultButton(button);
+    Box->setDefaultButton(button);
 }
 
 int MessageDialog::exec()
 {
-	return Box->exec();
+    return Box->exec();
 }
 
 bool MessageDialog::ask()
 {
-	return QMessageBox::Yes == Box->exec();
+    return QMessageBox::Yes == Box->exec();
 }
 
 #include "moc_message-dialog.cpp"

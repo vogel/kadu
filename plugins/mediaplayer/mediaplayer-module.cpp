@@ -34,18 +34,18 @@
 
 MediaplayerModule::MediaplayerModule()
 {
-	add_type<MediaplayerConfigurationUiHandler>();
-	add_type<MediaplayerNotificationService>();
-	add_type<MediaplayerMenuAction>();
-	add_type<MediaplayerPluginObject>();
-	add_type<MediaPlayer>();
-	add_type<NextAction>();
-	add_type<PlayAction>();
-	add_type<PrevAction>();
-	add_type<StopAction>();
-	add_type<ToggleMediaplayerStatusesAction>();
-	add_type<VolumeDownAction>();
-	add_type<VolumeUpAction>();
+    add_type<MediaplayerConfigurationUiHandler>();
+    add_type<MediaplayerNotificationService>();
+    add_type<MediaplayerMenuAction>();
+    add_type<MediaplayerPluginObject>();
+    add_type<MediaPlayer>();
+    add_type<NextAction>();
+    add_type<PlayAction>();
+    add_type<PrevAction>();
+    add_type<StopAction>();
+    add_type<ToggleMediaplayerStatusesAction>();
+    add_type<VolumeDownAction>();
+    add_type<VolumeUpAction>();
 }
 
 MediaplayerModule::~MediaplayerModule()

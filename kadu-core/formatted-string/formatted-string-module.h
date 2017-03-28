@@ -27,9 +27,7 @@ class PathsProvider;
 
 class KADUAPI FormattedStringModule : public injeqt::module
 {
-
 public:
-	explicit FormattedStringModule();
-	virtual ~FormattedStringModule();
-
+    explicit FormattedStringModule();
+    virtual ~FormattedStringModule();
 };

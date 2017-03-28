@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "message/message.h"
 #include "exports.h"
+#include "message/message.h"
 
 #include <QtCore/QObject>
 
@@ -42,58 +42,57 @@ class NormalizedHtmlString;
  */
 class KADUAPI MessageManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit MessageManager(QObject *parent = nullptr);
-	virtual ~MessageManager();
+    explicit MessageManager(QObject *parent = nullptr);
+    virtual ~MessageManager();
 
-	/**
-	 * @short Send new message to given chat.
-	 * @param chat chat to send message to
-	 * @param htmlContent HTML content to be sent
-	 * @param silent if true, no messageSent signal will be emitted
-	 *
-	 * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
-	 * free to ignore any HTML formatting.
-	 *
-	 * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
-	 * like firewall or for sending public keys, as messageSent is usually used to add sent message to
-	 * chat view.
-	 */
-	virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) = 0;
+    /**
+     * @short Send new message to given chat.
+     * @param chat chat to send message to
+     * @param htmlContent HTML content to be sent
+     * @param silent if true, no messageSent signal will be emitted
+     *
+     * This methods sends a message to given chat. Message is passed as HTML string. Protocols are
+     * free to ignore any HTML formatting.
+     *
+     * If silent parameter is true, no messageSent signal will be emitted. This is usefull for plugins
+     * like firewall or for sending public keys, as messageSent is usually used to add sent message to
+     * chat view.
+     */
+    virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) = 0;
 
-	/**
-	 * @short Send new raw message to given chat.
-	 * @param chat chat to send message to
-	 * @param content raw content to be sent
-	 *
-	 * This methods sends a message to given chat. Message is passed as QByteArray.
-	 *
-	 * Raw messages will not invoke messageSent signals.
-	 */
-	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) = 0;
+    /**
+     * @short Send new raw message to given chat.
+     * @param chat chat to send message to
+     * @param content raw content to be sent
+     *
+     * This methods sends a message to given chat. Message is passed as QByteArray.
+     *
+     * Raw messages will not invoke messageSent signals.
+     */
+    virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) = 0;
 
 signals:
-	/**
-	 * @short Signal emited every time a message is received from one of registered acocunts.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message received message
-	 *
-	 * This signal is emited every time a message is received from one of registered acocunts. It is not emited
-	 * if message is added to the system in any other way (e.g. by inserting it manually into chat widget).
-	 */
-	void messageReceived(const Message &message);
+    /**
+     * @short Signal emited every time a message is received from one of registered acocunts.
+     * @author Rafał 'Vogel' Malinowski
+     * @param message received message
+     *
+     * This signal is emited every time a message is received from one of registered acocunts. It is not emited
+     * if message is added to the system in any other way (e.g. by inserting it manually into chat widget).
+     */
+    void messageReceived(const Message &message);
 
-	/**
-	 * @short Signal emited every time a message is sent trought one of registered acocunts.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message sent message
-	 *
-	 * This signal is emited every time a message is sent trought one of registered acocunts.
-	 */
-	void messageSent(const Message &message);
-
+    /**
+     * @short Signal emited every time a message is sent trought one of registered acocunts.
+     * @author Rafał 'Vogel' Malinowski
+     * @param message sent message
+     *
+     * This signal is emited every time a message is sent trought one of registered acocunts.
+     */
+    void messageSent(const Message &message);
 };
 
 /**

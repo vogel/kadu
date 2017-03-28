@@ -35,15 +35,14 @@
 
 #include "delete-talkable-action.h"
 
-DeleteTalkableAction::DeleteTalkableAction(QObject *parent) :
-		ActionDescription(parent)
+DeleteTalkableAction::DeleteTalkableAction(QObject *parent) : ActionDescription(parent)
 {
-	// TODO: TypeChat | TypeUser or TypeTalkables
-	setType(TypeUser);
-	setName("deleteUsersAction");
-	setIcon(KaduIcon("edit-delete"));
-	setShortcut("kadu_deleteuser");
-	setText(tr("Delete Buddy"));
+    // TODO: TypeChat | TypeUser or TypeTalkables
+    setType(TypeUser);
+    setName("deleteUsersAction");
+    setIcon(KaduIcon("edit-delete"));
+    setShortcut("kadu_deleteuser");
+    setText(tr("Delete Buddy"));
 }
 
 DeleteTalkableAction::~DeleteTalkableAction()
@@ -52,150 +51,151 @@ DeleteTalkableAction::~DeleteTalkableAction()
 
 void DeleteTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void DeleteTalkableAction::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void DeleteTalkableAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 int DeleteTalkableAction::actionRole(ActionContext *context) const
 {
-	if (context->roles().contains(ContactRole)) // we wont allow deleting contacts
-		return -1;
-	if (context->roles().contains(ChatRole))
-		return ChatRole;
-	if (context->roles().contains(BuddyRole))
-		return BuddyRole;
-	return -1;
+    if (context->roles().contains(ContactRole))   // we wont allow deleting contacts
+        return -1;
+    if (context->roles().contains(ChatRole))
+        return ChatRole;
+    if (context->roles().contains(BuddyRole))
+        return BuddyRole;
+    return -1;
 }
 
 Chat DeleteTalkableAction::actionChat(ActionContext *context) const
 {
-	return context->chat();
+    return context->chat();
 }
 
 Buddy DeleteTalkableAction::actionBuddy(ActionContext *context) const
 {
-	if (context->buddies().size())
-		return context->buddies().toBuddy();
-	else
-		return context->contacts().toContact().ownerBuddy();
+    if (context->buddies().size())
+        return context->buddies().toBuddy();
+    else
+        return context->contacts().toContact().ownerBuddy();
 }
 
 void DeleteTalkableAction::setChatActionTitleAndIcon(Action *action)
 {
-	action->setText(QCoreApplication::translate("KaduWindowActions", "Delete Chat"));
+    action->setText(QCoreApplication::translate("KaduWindowActions", "Delete Chat"));
 }
 
 void DeleteTalkableAction::setBuddyActionTitleAndIcon(Action *action)
 {
-	action->setText(QCoreApplication::translate("KaduWindowActions", "Delete Buddy"));
+    action->setText(QCoreApplication::translate("KaduWindowActions", "Delete Buddy"));
 }
 
 void DeleteTalkableAction::updateChatActionState(Action *action)
 {
-	setChatActionTitleAndIcon(action);
+    setChatActionTitleAndIcon(action);
 
-	auto const &chat = actionChat(action->context());
-	auto chatType = m_chatTypeManager->chatType(chat.type());
-	action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
+    auto const &chat = actionChat(action->context());
+    auto chatType = m_chatTypeManager->chatType(chat.type());
+    action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
 }
 
 void DeleteTalkableAction::updateBuddyActionState(Action *action)
 {
-	setBuddyActionTitleAndIcon(action);
+    setBuddyActionTitleAndIcon(action);
 
-	const BuddySet &buddies = action->context()->buddies();
-	if (buddies.isEmpty() || buddies.contains(m_myself->buddy()))
-		return;
+    const BuddySet &buddies = action->context()->buddies();
+    if (buddies.isEmpty() || buddies.contains(m_myself->buddy()))
+        return;
 
-	action->setEnabled(true);
+    action->setEnabled(true);
 }
 
 void DeleteTalkableAction::actionInstanceCreated(Action *action)
 {
-	switch (actionRole(action->context()))
-	{
-		case ChatRole:
-			setChatActionTitleAndIcon(action);
-			break;
-		case BuddyRole:
-			setBuddyActionTitleAndIcon(action);
-			break;
-	}
+    switch (actionRole(action->context()))
+    {
+    case ChatRole:
+        setChatActionTitleAndIcon(action);
+        break;
+    case BuddyRole:
+        setBuddyActionTitleAndIcon(action);
+        break;
+    }
 
-	updateActionState(action);
+    updateActionState(action);
 }
 
 void DeleteTalkableAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	if (action->context()->buddies().isAnyTemporary())
-		return;
+    if (action->context()->buddies().isAnyTemporary())
+        return;
 
-	switch (actionRole(action->context()))
-	{
-		case ChatRole:
-			updateChatActionState(action);
-			break;
-		case BuddyRole:
-			updateBuddyActionState(action);
-			break;
-	}
+    switch (actionRole(action->context()))
+    {
+    case ChatRole:
+        updateChatActionState(action);
+        break;
+    case BuddyRole:
+        updateBuddyActionState(action);
+        break;
+    }
 }
 
 void DeleteTalkableAction::chatActionTriggered(ActionContext *context)
 {
-	const Chat &chat = actionChat(context);
-	if (!chat)
-		return;
+    const Chat &chat = actionChat(context);
+    if (!chat)
+        return;
 
-	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Delete Chat"),
-	                        tr("<b>%1</b> chat will be deleted.<br/>Are you sure?").arg(chat.display()));
-	dialog->addButton(QMessageBox::Yes, tr("Delete chat"));
-	dialog->addButton(QMessageBox::No, tr("Cancel"));
+    MessageDialog *dialog = MessageDialog::create(
+        m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Delete Chat"),
+        tr("<b>%1</b> chat will be deleted.<br/>Are you sure?").arg(chat.display()));
+    dialog->addButton(QMessageBox::Yes, tr("Delete chat"));
+    dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (dialog->ask())
-		chat.setDisplay(QString());
+    if (dialog->ask())
+        chat.setDisplay(QString());
 }
 
 void DeleteTalkableAction::buddyActionTriggered(ActionContext *context)
 {
-	auto buddySet = context->buddies();
-	if (buddySet.empty())
-		return;
+    auto buddySet = context->buddies();
+    if (buddySet.empty())
+        return;
 
-	auto deleteWindow = injectedFactory()->makeInjected<BuddyDeleteWindow>(buddySet);
-	deleteWindow->show();
+    auto deleteWindow = injectedFactory()->makeInjected<BuddyDeleteWindow>(buddySet);
+    deleteWindow->show();
 }
 
 void DeleteTalkableAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(widget)
-	Q_UNUSED(toggled)
+    Q_UNUSED(widget)
+    Q_UNUSED(toggled)
 
-	trigger(context);
+    trigger(context);
 }
 
 void DeleteTalkableAction::trigger(ActionContext *context)
 {
-	switch (actionRole(context))
-	{
-		case ChatRole:
-			chatActionTriggered(context);
-			break;
-		case BuddyRole:
-			buddyActionTriggered(context);
-			break;
-	}
+    switch (actionRole(context))
+    {
+    case ChatRole:
+        chatActionTriggered(context);
+        break;
+    case BuddyRole:
+        buddyActionTriggered(context);
+        break;
+    }
 }
 
 #include "moc_delete-talkable-action.cpp"

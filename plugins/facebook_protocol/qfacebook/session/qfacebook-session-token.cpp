@@ -23,12 +23,7 @@
 
 QFacebookSessionToken QFacebookSessionToken::fromJson(const QFacebookJsonReader &json)
 {
-	return QFacebookSessionToken{
-		json.readString("session_key").toUtf8(),
-		json.readLong("uid"),
-		json.readString("secret").toUtf8(),
-		json.readString("access_token").toUtf8(),
-		json.readString("machine_id").toUtf8(),
-		json.readString("user_storage_key").toUtf8()
-	};
+    return QFacebookSessionToken{json.readString("session_key").toUtf8(), json.readLong("uid"),
+                                 json.readString("secret").toUtf8(),      json.readString("access_token").toUtf8(),
+                                 json.readString("machine_id").toUtf8(),  json.readString("user_storage_key").toUtf8()};
 }

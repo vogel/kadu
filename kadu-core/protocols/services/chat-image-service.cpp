@@ -22,8 +22,7 @@
 
 #include "chat-image-service.h"
 
-ChatImageService::ChatImageService(Account account, QObject *parent) :
-		AccountService(account, parent)
+ChatImageService::ChatImageService(Account account, QObject *parent) : AccountService(account, parent)
 {
 }
 

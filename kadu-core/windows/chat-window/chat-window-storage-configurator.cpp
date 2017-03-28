@@ -24,32 +24,33 @@
 #include "windows/chat-window/chat-window-storage-configuration.h"
 #include "windows/chat-window/chat-window-storage.h"
 
-ChatWindowStorageConfigurator::ChatWindowStorageConfigurator(Configuration *configuration) :
-		m_configuration{configuration}
+ChatWindowStorageConfigurator::ChatWindowStorageConfigurator(Configuration *configuration)
+        : m_configuration{configuration}
 {
-	createDefaultConfiguration();
+    createDefaultConfiguration();
 }
 
 void ChatWindowStorageConfigurator::setChatWindowStorage(ChatWindowStorage *chatWindowStorage)
 {
-	m_chatWindowStorage = chatWindowStorage;
-	configurationUpdated();
+    m_chatWindowStorage = chatWindowStorage;
+    configurationUpdated();
 }
 
 void ChatWindowStorageConfigurator::configurationUpdated()
 {
-	if (m_chatWindowStorage)
-		m_chatWindowStorage.data()->setConfiguration(loadConfiguration());
+    if (m_chatWindowStorage)
+        m_chatWindowStorage.data()->setConfiguration(loadConfiguration());
 }
 
 void ChatWindowStorageConfigurator::createDefaultConfiguration() const
 {
-	m_configuration->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
+    m_configuration->deprecatedApi()->addVariable("Chat", "SaveOpenedWindows", true);
 }
 
 ChatWindowStorageConfiguration ChatWindowStorageConfigurator::loadConfiguration() const
 {
-	auto configuration = ChatWindowStorageConfiguration();
-	configuration.setStoreOpenedChatWindows(m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
-	return configuration;
+    auto configuration = ChatWindowStorageConfiguration();
+    configuration.setStoreOpenedChatWindows(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "SaveOpenedWindows", true));
+    return configuration;
 }

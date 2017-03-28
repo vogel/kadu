@@ -21,9 +21,9 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "network/proxy/network-proxy.h"
 #include "storage/manager.h"
-#include "exports.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -38,55 +38,60 @@ class NetworkProxy;
 
 class KADUAPI NetworkProxyManager : public Manager<NetworkProxy>, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NetworkProxyManager(QObject *parent = nullptr);
-	virtual ~NetworkProxyManager();
+    Q_INVOKABLE explicit NetworkProxyManager(QObject *parent = nullptr);
+    virtual ~NetworkProxyManager();
 
-	virtual QString storageNodeName() { return QStringLiteral("Proxys"); }
-	virtual QString storageNodeItemName() { return QStringLiteral("Proxy"); }
+    virtual QString storageNodeName()
+    {
+        return QStringLiteral("Proxys");
+    }
+    virtual QString storageNodeItemName()
+    {
+        return QStringLiteral("Proxy");
+    }
 
-	void setDefaultProxy(const NetworkProxy &proxy);
-	const NetworkProxy &defaultProxy();
+    void setDefaultProxy(const NetworkProxy &proxy);
+    const NetworkProxy &defaultProxy();
 
-	NetworkProxy byConfiguration(const QString &address, int port,
-	                             const QString &user, const QString &password, NotFoundAction action);
+    NetworkProxy byConfiguration(
+        const QString &address, int port, const QString &user, const QString &password, NotFoundAction action);
 
 signals:
-	void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
-	void networkProxyAdded(NetworkProxy networkProxy);
-	void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
-	void networkProxyRemoved(NetworkProxy networkProxy);
+    void networkProxyAboutToBeAdded(NetworkProxy networkProxy);
+    void networkProxyAdded(NetworkProxy networkProxy);
+    void networkProxyAboutToBeRemoved(NetworkProxy networkProxy);
+    void networkProxyRemoved(NetworkProxy networkProxy);
 
-	void networkProxyUpdated(NetworkProxy networkProxy);
+    void networkProxyUpdated(NetworkProxy networkProxy);
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    virtual void load();
+    virtual void store();
+    virtual NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
-	virtual void itemAboutToBeAdded(NetworkProxy item);
-	virtual void itemAdded(NetworkProxy item);
-	virtual void itemAboutToBeRemoved(NetworkProxy item);
-	virtual void itemRemoved(NetworkProxy item);
+    virtual void itemAboutToBeAdded(NetworkProxy item);
+    virtual void itemAdded(NetworkProxy item);
+    virtual void itemAboutToBeRemoved(NetworkProxy item);
+    virtual void itemRemoved(NetworkProxy item);
 
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<NetworkProxyStorage> m_networkProxyStorage;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<NetworkProxyStorage> m_networkProxyStorage;
 
-	NetworkProxy DefaultProxy;
+    NetworkProxy DefaultProxy;
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNetworkProxyStorage(NetworkProxyStorage *networkProxyStorage);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setNetworkProxyStorage(NetworkProxyStorage *networkProxyStorage);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void networkProxyDataUpdated();
-
+    void networkProxyDataUpdated();
 };

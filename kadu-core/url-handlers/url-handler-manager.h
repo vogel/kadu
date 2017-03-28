@@ -46,46 +46,46 @@ class UrlOpener;
 
 class KADUAPI UrlHandlerManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit UrlHandlerManager(QObject *parent = nullptr);
-	virtual ~UrlHandlerManager();
+    Q_INVOKABLE explicit UrlHandlerManager(QObject *parent = nullptr);
+    virtual ~UrlHandlerManager();
 
-	void registerUrlHandler(UrlHandler *handler);
-	void unregisterUrlHandler(UrlHandler *handler);
+    void registerUrlHandler(UrlHandler *handler);
+    void unregisterUrlHandler(UrlHandler *handler);
 
-	void openUrl(const QByteArray &url, bool disableMenu = false);
+    void openUrl(const QByteArray &url, bool disableMenu = false);
 
-	// TODO:
-	//for mail validation:
-	const QRegExp & mailRegExp();
+    // TODO:
+    // for mail validation:
+    const QRegExp &mailRegExp();
 
-	//for link validation
-	const QRegExp & urlRegExp();
+    // for link validation
+    const QRegExp &urlRegExp();
 
 private:
-	QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
-	QPointer<Configuration> m_configuration;
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<ClipboardHtmlTransformerService> m_clipboardHtmlTransformerService;
+    QPointer<Configuration> m_configuration;
+    QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+    QPointer<UrlOpener> m_urlOpener;
 
-	QList<UrlHandler *> RegisteredHandlers;
+    QList<UrlHandler *> RegisteredHandlers;
 
-	StandardUrlDomVisitorProvider *StandardUrlVisitorProvider;
-	MailUrlDomVisitorProvider *MailUrlVisitorProvider;
+    StandardUrlDomVisitorProvider *StandardUrlVisitorProvider;
+    MailUrlDomVisitorProvider *MailUrlVisitorProvider;
 
-	StandardUrlHandler standardUrlHandler;
-	MailUrlHandler mailUrlHandler;
+    StandardUrlHandler standardUrlHandler;
+    MailUrlHandler mailUrlHandler;
 
-	QScopedPointer<UrlClipboardHtmlTransformer> ClipboardTransformer;
+    QScopedPointer<UrlClipboardHtmlTransformer> ClipboardTransformer;
 
 private slots:
-	INJEQT_SET void setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void
+    setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

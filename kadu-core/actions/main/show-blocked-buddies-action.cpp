@@ -27,15 +27,15 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowBlockedBuddiesAction::ShowBlockedBuddiesAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowBlockedBuddiesAction::ShowBlockedBuddiesAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/show-blocked-buddies"});
-	setName(QStringLiteral("showIgnoredAction"));
-	setText(tr("Show Blocked Buddies"));
-	setType(ActionDescription::TypeMainMenu);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/show-blocked-buddies"});
+    setName(QStringLiteral("showIgnoredAction"));
+    setText(tr("Show Blocked Buddies"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ShowBlockedBuddiesAction::~ShowBlockedBuddiesAction()
@@ -44,53 +44,54 @@ ShowBlockedBuddiesAction::~ShowBlockedBuddiesAction()
 
 void ShowBlockedBuddiesAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowBlockedBuddiesAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowBlockedBuddiesAction::actionInstanceCreated(Action *action)
 {
-	auto window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
+    auto window = qobject_cast<MainWindow *>(action->parentWidget());
+    if (!window)
+        return;
+    if (!window->talkableProxyModel())
+        return;
 
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked");
-	auto blockedTalkableFilter = new BlockedTalkableFilter{action};
-	blockedTalkableFilter->setEnabled(!enabled);
+    auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked");
+    auto blockedTalkableFilter = new BlockedTalkableFilter{action};
+    blockedTalkableFilter->setEnabled(!enabled);
 
-	action->setData(QVariant::fromValue(blockedTalkableFilter));
-	action->setChecked(enabled);
+    action->setData(QVariant::fromValue(blockedTalkableFilter));
+    action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(blockedTalkableFilter);
+    window->talkableProxyModel()->addFilter(blockedTalkableFilter);
 }
 
 void ShowBlockedBuddiesAction::actionTriggered(QAction *action, bool toggled)
 {
-	auto v = action->data();
-	if (v.canConvert<BlockedTalkableFilter *>())
-	{
-		auto blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
-		blockedTalkableFilter->setEnabled(!toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowBlocked", toggled);
-	}
+    auto v = action->data();
+    if (v.canConvert<BlockedTalkableFilter *>())
+    {
+        auto blockedTalkableFilter = v.value<BlockedTalkableFilter *>();
+        blockedTalkableFilter->setEnabled(!toggled);
+        m_configuration->deprecatedApi()->writeEntry("General", "ShowBlocked", toggled);
+    }
 }
 
 void ShowBlockedBuddiesAction::configurationUpdated()
 {
-	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
-		return;
+    if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+        return;
 
-	ActionDescription::configurationUpdated();
+    ActionDescription::configurationUpdated();
 
-	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
-		action(context)->trigger();
+    auto context = m_kaduWindowService->kaduWindow()->actionContext();
+    if (action(context) &&
+        action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
+        action(context)->trigger();
 }
 
 #include "moc_show-blocked-buddies-action.cpp"

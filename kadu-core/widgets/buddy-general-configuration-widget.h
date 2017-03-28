@@ -48,49 +48,48 @@ class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI BuddyGeneralConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~BuddyGeneralConfigurationWidget();
+    explicit BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~BuddyGeneralConfigurationWidget();
 
-	const ConfigurationValueStateNotifier * valueStateNotifier() const;
+    const ConfigurationValueStateNotifier *valueStateNotifier() const;
 
-	void save();
+    void save();
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QLineEdit *DisplayEdit;
-	QLineEdit *PhoneEdit;
-	QLineEdit *MobileEdit;
-	QLineEdit *EmailEdit;
-	QLineEdit *WebsiteEdit;
+    QLineEdit *DisplayEdit;
+    QLineEdit *PhoneEdit;
+    QLineEdit *MobileEdit;
+    QLineEdit *EmailEdit;
+    QLineEdit *WebsiteEdit;
 
-	CompositeConfigurationValueStateNotifier *ValueStateNotifier;
-	SimpleConfigurationValueStateNotifier *SimpleValueStateNotifier;
+    CompositeConfigurationValueStateNotifier *ValueStateNotifier;
+    SimpleConfigurationValueStateNotifier *SimpleValueStateNotifier;
 
-	BuddyAvatarWidget *AvatarWidget;
-	BuddyContactsTable *ContactsTable;
-	QCheckBox *PreferHigherStatusCheck;
+    BuddyAvatarWidget *AvatarWidget;
+    BuddyContactsTable *ContactsTable;
+    QCheckBox *PreferHigherStatusCheck;
 
-	Buddy MyBuddy;
+    Buddy MyBuddy;
 
-	void createGui();
+    void createGui();
 
-	void removeBuddyAvatar();
-	void setBuddyAvatar(const QPixmap &avatar);
+    void removeBuddyAvatar();
+    void setBuddyAvatar(const QPixmap &avatar);
 
-	bool isValid() const;
+    bool isValid() const;
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void updateStateNotifier();
-
+    void updateStateNotifier();
 };

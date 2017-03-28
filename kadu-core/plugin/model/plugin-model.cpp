@@ -29,8 +29,7 @@
 
 #include <QtCore/QCoreApplication>
 
-PluginModel::PluginModel(QObject *parent) :
-		QAbstractListModel{parent}
+PluginModel::PluginModel(QObject *parent) : QAbstractListModel{parent}
 {
 }
 
@@ -40,87 +39,89 @@ PluginModel::~PluginModel()
 
 void PluginModel::setPluginEntries(QVector<PluginMetadata> pluginEntries)
 {
-	beginResetModel();
-	m_pluginEntries = std::move(pluginEntries);
-	endResetModel();
+    beginResetModel();
+    m_pluginEntries = std::move(pluginEntries);
+    endResetModel();
 }
 
 void PluginModel::setActivePlugins(QSet<QString> activePlugins)
 {
-	m_activePlugins = std::move(activePlugins);
-	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
+    m_activePlugins = std::move(activePlugins);
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
-const QSet<QString> & PluginModel::activePlugins() const
+const QSet<QString> &PluginModel::activePlugins() const
 {
-	return m_activePlugins;
+    return m_activePlugins;
 }
 
 QModelIndex PluginModel::index(int row, int column, const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
+    Q_UNUSED(parent)
 
-	return createIndex(row, column, (row < m_pluginEntries.count()) ? row : 0);
+    return createIndex(row, column, (row < m_pluginEntries.count()) ? row : 0);
 }
 
 QVariant PluginModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid() || index.row() < 0 || index.row() >= m_pluginEntries.count())
-		return {};
+    if (!index.isValid() || index.row() < 0 || index.row() >= m_pluginEntries.count())
+        return {};
 
-	auto pluginMetadata = m_pluginEntries.at(index.row());
+    auto pluginMetadata = m_pluginEntries.at(index.row());
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return !pluginMetadata.displayName.isEmpty() ? pluginMetadata.displayName : pluginMetadata.name;
-		case MetadataRole:
-			return QVariant::fromValue(pluginMetadata);
-		case NameRole:
-			return pluginMetadata.name;
-		case CommentRole:
-			return pluginMetadata.description;
-		case Qt::CheckStateRole:
-			return m_activePlugins.contains(pluginMetadata.name);
-		case CategorizedSortFilterProxyModel::CategoryDisplayRole:
-		case CategorizedSortFilterProxyModel::CategorySortRole:
-		{
-			(void)QT_TR_NOOP("Chat");
-			(void)QT_TR_NOOP("Chats history");
-			(void)QT_TR_NOOP("Desktop");
-			(void)QT_TR_NOOP("Media players");
-			(void)QT_TR_NOOP("Notifications");
-			(void)QT_TR_NOOP("Privacy");
-			(void)QT_TR_NOOP("Protocols");
-			(void)QT_TR_NOOP("Sound");
-			(void)QT_TR_NOOP("Status");
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return !pluginMetadata.displayName.isEmpty() ? pluginMetadata.displayName : pluginMetadata.name;
+    case MetadataRole:
+        return QVariant::fromValue(pluginMetadata);
+    case NameRole:
+        return pluginMetadata.name;
+    case CommentRole:
+        return pluginMetadata.description;
+    case Qt::CheckStateRole:
+        return m_activePlugins.contains(pluginMetadata.name);
+    case CategorizedSortFilterProxyModel::CategoryDisplayRole:
+    case CategorizedSortFilterProxyModel::CategorySortRole:
+    {
+        (void)QT_TR_NOOP("Chat");
+        (void)QT_TR_NOOP("Chats history");
+        (void)QT_TR_NOOP("Desktop");
+        (void)QT_TR_NOOP("Media players");
+        (void)QT_TR_NOOP("Notifications");
+        (void)QT_TR_NOOP("Privacy");
+        (void)QT_TR_NOOP("Protocols");
+        (void)QT_TR_NOOP("Sound");
+        (void)QT_TR_NOOP("Status");
 
-			return !pluginMetadata.category.isEmpty() ? QCoreApplication::translate("PluginModel", pluginMetadata.category.toUtf8().constData()) : tr("Misc");
-		}
-		default:
-			return {};
-	}
+        return !pluginMetadata.category.isEmpty()
+                   ? QCoreApplication::translate("PluginModel", pluginMetadata.category.toUtf8().constData())
+                   : tr("Misc");
+    }
+    default:
+        return {};
+    }
 }
 
 bool PluginModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (index.isValid() && (role == Qt::CheckStateRole))
-	{
-		auto pluginName = index.data(NameRole).toString();
-		if (value.toBool())
-			m_activePlugins.insert(pluginName);
-		else
-			m_activePlugins.remove(pluginName);
-		emit dataChanged(index, index);
-		return true;
-	}
+    if (index.isValid() && (role == Qt::CheckStateRole))
+    {
+        auto pluginName = index.data(NameRole).toString();
+        if (value.toBool())
+            m_activePlugins.insert(pluginName);
+        else
+            m_activePlugins.remove(pluginName);
+        emit dataChanged(index, index);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 int PluginModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : m_pluginEntries.count();
+    return parent.isValid() ? 0 : m_pluginEntries.count();
 }
 
 #include "moc_plugin-model.cpp"

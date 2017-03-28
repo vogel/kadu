@@ -33,20 +33,20 @@ class QNetworkReply;
 
 class GaduDrivePutTransfer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduDrivePutTransfer(GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString fileName, QIODevice *source,
-		QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~GaduDrivePutTransfer();
+    explicit GaduDrivePutTransfer(
+        GaduDriveSessionToken sessionToken, GaduDriveSendTicket ticket, QString fileName, QIODevice *source,
+        QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+    virtual ~GaduDrivePutTransfer();
 
 signals:
-	void finished();
+    void finished();
 
 private:
-	QPointer<QNetworkReply> m_reply;
+    QPointer<QNetworkReply> m_reply;
 
 private slots:
-	void requestFinished();
-
+    void requestFinished();
 };

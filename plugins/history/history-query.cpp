@@ -19,101 +19,100 @@
 
 #include "history-query.h"
 
-HistoryQuery::HistoryQuery() :
-		Limit(0)
+HistoryQuery::HistoryQuery() : Limit(0)
 {
 }
 
-HistoryQuery::HistoryQuery (const HistoryQuery &copyMe)
+HistoryQuery::HistoryQuery(const HistoryQuery &copyMe)
 {
-	QueryTalkable = copyMe.QueryTalkable;
-	QueryString = copyMe.QueryString;
-	FromDate = copyMe.FromDate;
-	ToDate = copyMe.ToDate;
-	FromDateTime = copyMe.FromDateTime;
-	ToDateTime = copyMe.ToDateTime;
-	Limit = copyMe.Limit;
+    QueryTalkable = copyMe.QueryTalkable;
+    QueryString = copyMe.QueryString;
+    FromDate = copyMe.FromDate;
+    ToDate = copyMe.ToDate;
+    FromDateTime = copyMe.FromDateTime;
+    ToDateTime = copyMe.ToDateTime;
+    Limit = copyMe.Limit;
 }
 
-HistoryQuery & HistoryQuery::operator=(const HistoryQuery &copyMe)
+HistoryQuery &HistoryQuery::operator=(const HistoryQuery &copyMe)
 {
-	QueryTalkable = copyMe.QueryTalkable;
-	QueryString = copyMe.QueryString;
-	FromDate = copyMe.FromDate;
-	ToDate = copyMe.ToDate;
-	FromDateTime = copyMe.FromDateTime;
-	ToDateTime = copyMe.ToDateTime;
-	Limit = copyMe.Limit;
+    QueryTalkable = copyMe.QueryTalkable;
+    QueryString = copyMe.QueryString;
+    FromDate = copyMe.FromDate;
+    ToDate = copyMe.ToDate;
+    FromDateTime = copyMe.FromDateTime;
+    ToDateTime = copyMe.ToDateTime;
+    Limit = copyMe.Limit;
 
-	return *this;
+    return *this;
 }
 
 void HistoryQuery::setTalkable(const Talkable &talkable)
 {
-	QueryTalkable = talkable;
+    QueryTalkable = talkable;
 }
 
 Talkable HistoryQuery::talkable() const
 {
-	return QueryTalkable;
+    return QueryTalkable;
 }
 
 void HistoryQuery::setString(const QString &string)
 {
-	QueryString = string;
+    QueryString = string;
 }
 
 QString HistoryQuery::string() const
 {
-	return QueryString;
+    return QueryString;
 }
 
 void HistoryQuery::setFromDate(const QDate &fromDate)
 {
-	FromDate = fromDate;
+    FromDate = fromDate;
 }
 
 QDate HistoryQuery::fromDate() const
 {
-	return FromDate;
+    return FromDate;
 }
 
 void HistoryQuery::setToDate(const QDate &toDate)
 {
-	ToDate = toDate;
+    ToDate = toDate;
 }
 
 QDate HistoryQuery::toDate() const
 {
-	return ToDate;
+    return ToDate;
 }
 
 void HistoryQuery::setFromDateTime(const QDateTime &fromDateTime)
 {
-	FromDateTime = fromDateTime;
+    FromDateTime = fromDateTime;
 }
 
 QDateTime HistoryQuery::fromDateTime() const
 {
-	return FromDateTime;
+    return FromDateTime;
 }
 
 void HistoryQuery::setToDateTime(const QDateTime &toDateTime)
 {
-	ToDateTime = toDateTime;
+    ToDateTime = toDateTime;
 }
 
 QDateTime HistoryQuery::toDateTime() const
 {
-	return ToDateTime;
+    return ToDateTime;
 }
 
 void HistoryQuery::setLimit(int limit)
 {
-	Limit = limit;
+    Limit = limit;
 }
 
 int HistoryQuery::limit() const
 {
-	return Limit;
+    return Limit;
 }

@@ -32,33 +32,33 @@ ContactSet::ContactSet()
 
 ContactSet::ContactSet(const Contact &contact)
 {
-	insert(contact);
+    insert(contact);
 }
 
 QVector<Contact> ContactSet::toContactVector() const
 {
-	QVector<Contact> result;
-	result.reserve(size());
-	foreach (const Contact &contact, *this)
-		result.append(contact);
+    QVector<Contact> result;
+    result.reserve(size());
+    foreach (const Contact &contact, *this)
+        result.append(contact);
 
-	return result;
+    return result;
 }
 
 BuddySet ContactSet::toBuddySet() const
 {
-	BuddySet buddies;
-	foreach (const Contact &contact, *this)
-		if (contact.ownerBuddy())
-			buddies.insert(contact.ownerBuddy());
+    BuddySet buddies;
+    foreach (const Contact &contact, *this)
+        if (contact.ownerBuddy())
+            buddies.insert(contact.ownerBuddy());
 
-	return buddies;
+    return buddies;
 }
 
 Contact ContactSet::toContact() const
 {
-	if (count() != 1)
-		return Contact::null;
+    if (count() != 1)
+        return Contact::null;
 
-	return *constBegin();
+    return *constBegin();
 }

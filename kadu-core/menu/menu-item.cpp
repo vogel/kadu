@@ -19,18 +19,17 @@
 
 #include "menu-item.h"
 
-MenuItem::MenuItem(ActionDescription *action, KaduMenu::MenuSection section, int priority) :
-		Action(action), Section(section), Priority(priority)
+MenuItem::MenuItem(ActionDescription *action, KaduMenu::MenuSection section, int priority)
+        : Action(action), Section(section), Priority(priority)
 {
 }
 
-bool MenuItem::operator < (const MenuItem &compareTo) const
+bool MenuItem::operator<(const MenuItem &compareTo) const
 {
-	if (Section == compareTo.Section)
-	{
-		return Priority < compareTo.Priority;
-	}
+    if (Section == compareTo.Section)
+    {
+        return Priority < compareTo.Priority;
+    }
 
-	return Section < compareTo.Section;
+    return Section < compareTo.Section;
 }
-

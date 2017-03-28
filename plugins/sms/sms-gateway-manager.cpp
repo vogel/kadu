@@ -25,8 +25,7 @@
 
 #include "sms-gateway-manager.h"
 
-SmsGatewayManager::SmsGatewayManager(QObject *parent) :
-		QObject{parent}
+SmsGatewayManager::SmsGatewayManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,38 +35,39 @@ SmsGatewayManager::~SmsGatewayManager()
 
 void SmsGatewayManager::setSmsScriptsManager(SmsScriptsManager *smsScriptsManager)
 {
-	m_smsScriptsManager = smsScriptsManager;
+    m_smsScriptsManager = smsScriptsManager;
 }
 
 void SmsGatewayManager::load()
 {
-	QScriptEngine *engine = m_smsScriptsManager->engine();
-	qint32 length = engine->evaluate("gatewayManager.items.length").toInt32();
+    QScriptEngine *engine = m_smsScriptsManager->engine();
+    qint32 length = engine->evaluate("gatewayManager.items.length").toInt32();
 
-	for (qint32 i = 0; i < length; ++i)
-	{
-		QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.items[%1].name()").arg(i));
-		QScriptValue gatewayId = engine->evaluate(QString("gatewayManager.items[%1].id()").arg(i));
-		QScriptValue gatewayMaxLength = engine->evaluate(QString("gatewayManager.items[%1].maxLength()").arg(i));
-		QScriptValue gatewaySignatureRequired = engine->evaluate(QString("gatewayManager.items[%1].signatureRequired()").arg(i));
+    for (qint32 i = 0; i < length; ++i)
+    {
+        QScriptValue gatewayName = engine->evaluate(QString("gatewayManager.items[%1].name()").arg(i));
+        QScriptValue gatewayId = engine->evaluate(QString("gatewayManager.items[%1].id()").arg(i));
+        QScriptValue gatewayMaxLength = engine->evaluate(QString("gatewayManager.items[%1].maxLength()").arg(i));
+        QScriptValue gatewaySignatureRequired =
+            engine->evaluate(QString("gatewayManager.items[%1].signatureRequired()").arg(i));
 
-		SmsGateway gateway;
-		gateway.setName(gatewayName.toString());
-		gateway.setId(gatewayId.toString());
-		gateway.setMaxLength(gatewayMaxLength.toUInt16());
-		gateway.setSignatureRequired(gatewaySignatureRequired.toBool());
+        SmsGateway gateway;
+        gateway.setName(gatewayName.toString());
+        gateway.setId(gatewayId.toString());
+        gateway.setMaxLength(gatewayMaxLength.toUInt16());
+        gateway.setSignatureRequired(gatewaySignatureRequired.toBool());
 
-		m_items.append(gateway);
-	}
+        m_items.append(gateway);
+    }
 }
 
 SmsGateway SmsGatewayManager::byId(const QString &id) const
 {
-	for (auto gateway : m_items)
-		if (gateway.id() == id)
-			return gateway;
+    for (auto gateway : m_items)
+        if (gateway.id() == id)
+            return gateway;
 
-	return SmsGateway();
+    return SmsGateway();
 }
 
 #include "moc_sms-gateway-manager.cpp"

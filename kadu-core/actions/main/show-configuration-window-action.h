@@ -29,20 +29,19 @@ class MainConfigurationWindowService;
 
 class ShowConfigurationWindowAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowConfigurationWindowAction(QObject *parent = nullptr);
-	virtual ~ShowConfigurationWindowAction();
+    Q_INVOKABLE explicit ShowConfigurationWindowAction(QObject *parent = nullptr);
+    virtual ~ShowConfigurationWindowAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
 
 private slots:
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
 };

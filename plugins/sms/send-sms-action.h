@@ -29,20 +29,19 @@ class SmsActions;
 
 class SendSmsAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit SendSmsAction(QObject *parent = nullptr);
-	virtual ~SendSmsAction();
+    Q_INVOKABLE explicit SendSmsAction(QObject *parent = nullptr);
+    virtual ~SendSmsAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<SmsActions> m_smsActions;
+    QPointer<SmsActions> m_smsActions;
 
 private slots:
-	INJEQT_SET void setSmsActions(SmsActions *smsActions);
-
+    INJEQT_SET void setSmsActions(SmsActions *smsActions);
 };

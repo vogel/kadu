@@ -23,9 +23,9 @@
 
 class AutostatusModule : public injeqt::module
 {
-
 public:
-	AutostatusModule();
-	virtual ~AutostatusModule() {}
-
+    AutostatusModule();
+    virtual ~AutostatusModule()
+    {
+    }
 };

@@ -29,24 +29,26 @@ class SmsScriptsManager;
 
 class SmsGatewayManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SmsGatewayManager(QObject *parent = nullptr);
-	virtual ~SmsGatewayManager();
+    Q_INVOKABLE explicit SmsGatewayManager(QObject *parent = nullptr);
+    virtual ~SmsGatewayManager();
 
-	void load();
+    void load();
 
-	const QList<SmsGateway> & items() const { return m_items; }
+    const QList<SmsGateway> &items() const
+    {
+        return m_items;
+    }
 
-	SmsGateway byId(const QString &id) const;
+    SmsGateway byId(const QString &id) const;
 
 private:
-	QPointer<SmsScriptsManager> m_smsScriptsManager;
+    QPointer<SmsScriptsManager> m_smsScriptsManager;
 
-	QList<SmsGateway> m_items;
+    QList<SmsGateway> m_items;
 
 private slots:
-	INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
-
+    INJEQT_SET void setSmsScriptsManager(SmsScriptsManager *smsScriptsManager);
 };

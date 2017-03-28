@@ -27,8 +27,7 @@
 #include "widgets/webkit-messages-view/webkit-messages-view-display.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-handler.h"
 
-WebkitMessagesViewHandlerFactory::WebkitMessagesViewHandlerFactory(QObject *parent) :
-		QObject{parent}
+WebkitMessagesViewHandlerFactory::WebkitMessagesViewHandlerFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,23 +37,24 @@ WebkitMessagesViewHandlerFactory::~WebkitMessagesViewHandlerFactory()
 
 void WebkitMessagesViewHandlerFactory::setChatStyleManager(ChatStyleManager *chatStyleManager)
 {
-	m_chatStyleManager = chatStyleManager;
+    m_chatStyleManager = chatStyleManager;
 }
 
-void WebkitMessagesViewHandlerFactory::setWebkitMessagesViewDisplayFactory(WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory)
+void WebkitMessagesViewHandlerFactory::setWebkitMessagesViewDisplayFactory(
+    WebkitMessagesViewDisplayFactory *webkitMessagesViewDisplayFactory)
 {
-	m_webkitMessagesViewDisplayFactory = webkitMessagesViewDisplayFactory;
+    m_webkitMessagesViewDisplayFactory = webkitMessagesViewDisplayFactory;
 }
 
-owned_qptr<WebkitMessagesViewHandler> WebkitMessagesViewHandlerFactory::createWebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent)
+owned_qptr<WebkitMessagesViewHandler> WebkitMessagesViewHandlerFactory::createWebkitMessagesViewHandler(
+    not_owned_qptr<ChatStyleRenderer> chatStyleRenderer, QObject *parent)
 {
-	auto display = m_webkitMessagesViewDisplayFactory->createWebkitMessagesViewDisplay(*chatStyleRenderer.get());
+    auto display = m_webkitMessagesViewDisplayFactory->createWebkitMessagesViewDisplay(*chatStyleRenderer.get());
 
-	auto result = make_owned<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(display), parent);
-	result->setMessageLimit(m_chatStyleManager->prune());
-	result->setMessageLimitPolicy(0 == m_chatStyleManager->prune()
-			? MessageLimitPolicy::None
-			: MessageLimitPolicy::Value);
+    auto result = make_owned<WebkitMessagesViewHandler>(std::move(chatStyleRenderer), std::move(display), parent);
+    result->setMessageLimit(m_chatStyleManager->prune());
+    result->setMessageLimitPolicy(
+        0 == m_chatStyleManager->prune() ? MessageLimitPolicy::None : MessageLimitPolicy::Value);
 
-	return result;
+    return result;
 }

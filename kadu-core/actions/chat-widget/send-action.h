@@ -26,16 +26,15 @@
 
 class SendAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit SendAction(QObject *parent = nullptr);
-	virtual ~SendAction();
+    Q_INVOKABLE explicit SendAction(QObject *parent = nullptr);
+    virtual ~SendAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
-
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 };

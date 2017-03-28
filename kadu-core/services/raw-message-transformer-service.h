@@ -23,18 +23,18 @@
 
 #include <QtCore/QObject>
 
+#include "exports.h"
 #include "protocols/services/raw-message-transformer.h"
 #include "services/configurable-transformer-service.h"
-#include "exports.h"
 
-class KADUAPI RawMessageTransformerService : public QObject, public ConfigurableTransformerService<RawMessageTransformer>
+class KADUAPI RawMessageTransformerService : public QObject,
+                                             public ConfigurableTransformerService<RawMessageTransformer>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit RawMessageTransformerService(QObject *parent = nullptr);
-	virtual ~RawMessageTransformerService();
-
+    Q_INVOKABLE explicit RawMessageTransformerService(QObject *parent = nullptr);
+    virtual ~RawMessageTransformerService();
 };
 
-#endif // RAW_MESSAGE_TRANSFORMER_SERVICE_H
+#endif   // RAW_MESSAGE_TRANSFORMER_SERVICE_H

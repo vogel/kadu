@@ -35,12 +35,12 @@ class MainConfigurationWindow;
 
 class KADUAPI ConfigurationUiHandler
 {
-
 public:
-	virtual ~ConfigurationUiHandler() {}
+    virtual ~ConfigurationUiHandler()
+    {
+    }
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
-	virtual void mainConfigurationWindowDestroyed() = 0;
-	virtual void mainConfigurationWindowApplied() = 0;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) = 0;
+    virtual void mainConfigurationWindowDestroyed() = 0;
+    virtual void mainConfigurationWindowApplied() = 0;
 };

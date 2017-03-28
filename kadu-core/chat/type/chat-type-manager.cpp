@@ -27,8 +27,7 @@
 #include "chat/type/chat-type-room.h"
 #include "icons/icons-manager.h"
 
-ChatTypeManager::ChatTypeManager(QObject *parent) :
-		QObject{parent}
+ChatTypeManager::ChatTypeManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,22 +37,22 @@ ChatTypeManager::~ChatTypeManager()
 
 void ChatTypeManager::setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy)
 {
-	m_chatTypes.append(chatTypeBuddy);
+    m_chatTypes.append(chatTypeBuddy);
 }
 
 void ChatTypeManager::setChatTypeContactSet(ChatTypeContactSet *chatTypeContactSet)
 {
-	m_chatTypes.append(chatTypeContactSet);
+    m_chatTypes.append(chatTypeContactSet);
 }
 
 void ChatTypeManager::setChatTypeContact(ChatTypeContact *chatTypeContact)
 {
-	m_chatTypes.append(chatTypeContact);
+    m_chatTypes.append(chatTypeContact);
 }
 
 void ChatTypeManager::setChatTypeRoom(ChatTypeRoom *chatTypeRoom)
 {
-	m_chatTypes.append(chatTypeRoom);
+    m_chatTypes.append(chatTypeRoom);
 }
 
 /**
@@ -64,13 +63,13 @@ void ChatTypeManager::setChatTypeRoom(ChatTypeRoom *chatTypeRoom)
  *
  * Returns chat type with given internal alias or null, if not found.
  */
-ChatType * ChatTypeManager::chatType(const QString &alias) const
+ChatType *ChatTypeManager::chatType(const QString &alias) const
 {
-	for (auto chatType : m_chatTypes)
-		for (auto const &chatTypeAlias : chatType->aliases())
-			if (alias == chatTypeAlias)
-				return chatType;
-	return nullptr;
+    for (auto chatType : m_chatTypes)
+        for (auto const &chatTypeAlias : chatType->aliases())
+            if (alias == chatTypeAlias)
+                return chatType;
+    return nullptr;
 }
 
 #include "moc_chat-type-manager.cpp"

@@ -27,12 +27,12 @@ class ChatConfigurationWidget;
 
 class ChatConfigurationWidgetFactory
 {
-
 public:
-	virtual ~ChatConfigurationWidgetFactory() {}
+    virtual ~ChatConfigurationWidgetFactory()
+    {
+    }
 
-	virtual ChatConfigurationWidget * createWidget(const Chat &chat, QWidget *parent) = 0;
-
+    virtual ChatConfigurationWidget *createWidget(const Chat &chat, QWidget *parent) = 0;
 };
 
-#endif // CHAT_CONFIGURATION_WIDGET_FACTORY_H
+#endif   // CHAT_CONFIGURATION_WIDGET_FACTORY_H

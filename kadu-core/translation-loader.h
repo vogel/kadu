@@ -31,29 +31,28 @@ class PathsProvider;
 
 class TranslationLoader : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(STARTUP)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(STARTUP)
 
 public:
-	Q_INVOKABLE explicit TranslationLoader(QObject *parent = nullptr);
-	virtual ~TranslationLoader();
+    Q_INVOKABLE explicit TranslationLoader(QObject *parent = nullptr);
+    virtual ~TranslationLoader();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QTranslator m_qt;
-	QTranslator m_qtbase;
-	QTranslator m_qtdeclarative;
-	QTranslator m_qtmultimedia;
-	QTranslator m_qtscript;
-	QTranslator m_qtxmlpatterns;
-	QTranslator m_kadu;
+    QTranslator m_qt;
+    QTranslator m_qtbase;
+    QTranslator m_qtdeclarative;
+    QTranslator m_qtmultimedia;
+    QTranslator m_qtscript;
+    QTranslator m_qtxmlpatterns;
+    QTranslator m_kadu;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

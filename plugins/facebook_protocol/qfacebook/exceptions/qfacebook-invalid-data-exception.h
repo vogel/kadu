@@ -23,8 +23,9 @@
 
 class QFacebookInvalidDataException : public QFacebookException
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Invalid data received in QFacebook"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Invalid data received in QFacebook";
+    };
 };

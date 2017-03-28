@@ -24,8 +24,8 @@
 
 MpdPlayerModule::MpdPlayerModule()
 {
-	add_type<MPDMediaPlayer>();
-	add_type<MpdPlayerPluginObject>();
+    add_type<MPDMediaPlayer>();
+    add_type<MpdPlayerPluginObject>();
 }
 
 MpdPlayerModule::~MpdPlayerModule()

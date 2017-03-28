@@ -23,9 +23,7 @@
 
 class SmsModule : public injeqt::module
 {
-
 public:
-	explicit SmsModule();
-	virtual ~SmsModule();
-
+    explicit SmsModule();
+    virtual ~SmsModule();
 };

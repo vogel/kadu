@@ -23,121 +23,118 @@
 
 class OpenChatRepositoryTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void shouldBeEmptyAfterCreation();
-	void shouldContainAddedElementsOnce();
-	void shouldNotContainRemovedElements();
-	void shouldEmitAddedAfterAdding();
-	void shouldEmitRemovedAfterRemoving();
-
+    void shouldBeEmptyAfterCreation();
+    void shouldContainAddedElementsOnce();
+    void shouldNotContainRemovedElements();
+    void shouldEmitAddedAfterAdding();
+    void shouldEmitRemovedAfterRemoving();
 };
 
 class OpenChatReceiver : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	OpenChatReceiver(OpenChatRepository &repository) :
-			m_repository{repository}
-	{
-		connect(&m_repository, &OpenChatRepository::openChatAdded, this, &OpenChatReceiver::openChatAdded);
-		connect(&m_repository, &OpenChatRepository::openChatRemoved, this, &OpenChatReceiver::openChatRemoved);
-	}
+    OpenChatReceiver(OpenChatRepository &repository) : m_repository{repository}
+    {
+        connect(&m_repository, &OpenChatRepository::openChatAdded, this, &OpenChatReceiver::openChatAdded);
+        connect(&m_repository, &OpenChatRepository::openChatRemoved, this, &OpenChatReceiver::openChatRemoved);
+    }
 
-	Chat m_addedChat;
-	Chat m_removedChat;
+    Chat m_addedChat;
+    Chat m_removedChat;
 
 private slots:
-	void openChatAdded(Chat chat)
-	{
-		m_addedChat = chat;
-		QVERIFY(std::find(m_repository.begin(), m_repository.end(), m_addedChat) != m_repository.end());
-	}
+    void openChatAdded(Chat chat)
+    {
+        m_addedChat = chat;
+        QVERIFY(std::find(m_repository.begin(), m_repository.end(), m_addedChat) != m_repository.end());
+    }
 
-	void openChatRemoved(Chat chat)
-	{
-		m_removedChat = chat;
-		QVERIFY(std::find(m_repository.begin(), m_repository.end(), m_removedChat) == m_repository.end());
-	}
+    void openChatRemoved(Chat chat)
+    {
+        m_removedChat = chat;
+        QVERIFY(std::find(m_repository.begin(), m_repository.end(), m_removedChat) == m_repository.end());
+    }
 
 private:
-	OpenChatRepository &m_repository;
-
+    OpenChatRepository &m_repository;
 };
 
 void OpenChatRepositoryTest::shouldBeEmptyAfterCreation()
 {
-	OpenChatRepository openChatRepository{};
+    OpenChatRepository openChatRepository{};
 
-	QCOMPARE(openChatRepository.size(), size_t{0});
-	QVERIFY(openChatRepository.begin() == openChatRepository.end());
+    QCOMPARE(openChatRepository.size(), size_t{0});
+    QVERIFY(openChatRepository.begin() == openChatRepository.end());
 }
 
 void OpenChatRepositoryTest::shouldContainAddedElementsOnce()
 {
-	OpenChatRepository openChatRepository{};
-	auto chat1 = Chat{new ChatShared{}};
-	auto chat2 = Chat{new ChatShared{}};
+    OpenChatRepository openChatRepository{};
+    auto chat1 = Chat{new ChatShared{}};
+    auto chat2 = Chat{new ChatShared{}};
 
-	openChatRepository.addOpenChat(chat1);
-	QCOMPARE(openChatRepository.size(), size_t{1});
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
+    openChatRepository.addOpenChat(chat1);
+    QCOMPARE(openChatRepository.size(), size_t{1});
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
 
-	openChatRepository.addOpenChat(chat2);
-	QCOMPARE(openChatRepository.size(), size_t{2});
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) != openChatRepository.end());
+    openChatRepository.addOpenChat(chat2);
+    QCOMPARE(openChatRepository.size(), size_t{2});
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) != openChatRepository.end());
 
-	openChatRepository.addOpenChat(chat2);
-	QCOMPARE(openChatRepository.size(), size_t{2});
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) != openChatRepository.end());
+    openChatRepository.addOpenChat(chat2);
+    QCOMPARE(openChatRepository.size(), size_t{2});
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) != openChatRepository.end());
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) != openChatRepository.end());
 }
 
 void OpenChatRepositoryTest::shouldNotContainRemovedElements()
 {
-	OpenChatRepository openChatRepository{};
-	auto chat1 = Chat{new ChatShared{}};
-	auto chat2 = Chat{new ChatShared{}};
+    OpenChatRepository openChatRepository{};
+    auto chat1 = Chat{new ChatShared{}};
+    auto chat2 = Chat{new ChatShared{}};
 
-	openChatRepository.addOpenChat(chat1);
-	openChatRepository.addOpenChat(chat2);
+    openChatRepository.addOpenChat(chat1);
+    openChatRepository.addOpenChat(chat2);
 
-	openChatRepository.removeOpenChat(chat1);
-	QCOMPARE(openChatRepository.size(), size_t{1});
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) == openChatRepository.end());
+    openChatRepository.removeOpenChat(chat1);
+    QCOMPARE(openChatRepository.size(), size_t{1});
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat1) == openChatRepository.end());
 
-	openChatRepository.removeOpenChat(chat2);
-	QCOMPARE(openChatRepository.size(), size_t{0});
-	QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) == openChatRepository.end());
+    openChatRepository.removeOpenChat(chat2);
+    QCOMPARE(openChatRepository.size(), size_t{0});
+    QVERIFY(std::find(openChatRepository.begin(), openChatRepository.end(), chat2) == openChatRepository.end());
 }
 
 void OpenChatRepositoryTest::shouldEmitAddedAfterAdding()
 {
-	OpenChatRepository openChatRepository{};
-	auto chat = Chat{new ChatShared{}};
+    OpenChatRepository openChatRepository{};
+    auto chat = Chat{new ChatShared{}};
 
-	OpenChatReceiver receiver{openChatRepository};
-	openChatRepository.addOpenChat(chat);
+    OpenChatReceiver receiver{openChatRepository};
+    openChatRepository.addOpenChat(chat);
 
-	QCOMPARE(receiver.m_addedChat, chat);
-	QCOMPARE(receiver.m_removedChat, Chat::null);
+    QCOMPARE(receiver.m_addedChat, chat);
+    QCOMPARE(receiver.m_removedChat, Chat::null);
 }
 
 void OpenChatRepositoryTest::shouldEmitRemovedAfterRemoving()
 {
-	OpenChatRepository openChatRepository{};
-	auto chat = Chat{new ChatShared{}};
+    OpenChatRepository openChatRepository{};
+    auto chat = Chat{new ChatShared{}};
 
-	openChatRepository.addOpenChat(chat);
+    openChatRepository.addOpenChat(chat);
 
-	OpenChatReceiver receiver{openChatRepository};
-	openChatRepository.removeOpenChat(chat);
+    OpenChatReceiver receiver{openChatRepository};
+    openChatRepository.removeOpenChat(chat);
 
-	QCOMPARE(receiver.m_addedChat, Chat::null);
-	QCOMPARE(receiver.m_removedChat, chat);
+    QCOMPARE(receiver.m_addedChat, Chat::null);
+    QCOMPARE(receiver.m_removedChat, chat);
 }
 
 QTEST_APPLESS_MAIN(OpenChatRepositoryTest)

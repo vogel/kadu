@@ -23,9 +23,7 @@
 
 class SpeechModule : public injeqt::module
 {
-
 public:
-	explicit SpeechModule();
-	virtual ~SpeechModule();
-
+    explicit SpeechModule();
+    virtual ~SpeechModule();
 };

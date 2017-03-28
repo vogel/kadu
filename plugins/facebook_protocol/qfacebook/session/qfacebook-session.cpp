@@ -28,62 +28,61 @@
 #include "qfacebook/http/qfacebook-http-api.h"
 #include "qfacebook/mqtt/qfacebook-mqtt-api.h"
 
-QFacebookSession::QFacebookSession(QFacebookSessionToken sessionToken, std::unique_ptr<QFacebookHttpApi> &&httpApi, std::unique_ptr<QFacebookMqttApi> &&mqttApi) :
-		m_sessionToken{std::move(sessionToken)},
-		m_httpApi{std::move(httpApi)},
-		m_mqttApi{std::move(mqttApi)}
+QFacebookSession::QFacebookSession(
+    QFacebookSessionToken sessionToken, std::unique_ptr<QFacebookHttpApi> &&httpApi,
+    std::unique_ptr<QFacebookMqttApi> &&mqttApi)
+        : m_sessionToken{std::move(sessionToken)}, m_httpApi{std::move(httpApi)}, m_mqttApi{std::move(mqttApi)}
 {
-	connect(m_mqttApi.get(), &QFacebookMqttApi::disconnected,
-			this, &QFacebookSession::disconnected);
-	connect(m_mqttApi.get(), &QFacebookMqttApi::invalidDataReceived,
-			this, &QFacebookSession::invalidDataReceived);
+    connect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookSession::disconnected);
+    connect(m_mqttApi.get(), &QFacebookMqttApi::invalidDataReceived, this, &QFacebookSession::invalidDataReceived);
 
-	connect(m_mqttApi.get(), &QFacebookMqttApi::sendMessageResponseReceived,
-			this, &QFacebookSession::sendMessageResponseReceived);
-	connect(m_mqttApi.get(), &QFacebookMqttApi::orcaMessageNotificationsReceived,
-			this, &QFacebookSession::messageNotificationsReceived);
-	connect(m_mqttApi.get(), &QFacebookMqttApi::presenceReceived,
-			this, &QFacebookSession::presenceReceived);
+    connect(
+        m_mqttApi.get(), &QFacebookMqttApi::sendMessageResponseReceived, this,
+        &QFacebookSession::sendMessageResponseReceived);
+    connect(
+        m_mqttApi.get(), &QFacebookMqttApi::orcaMessageNotificationsReceived, this,
+        &QFacebookSession::messageNotificationsReceived);
+    connect(m_mqttApi.get(), &QFacebookMqttApi::presenceReceived, this, &QFacebookSession::presenceReceived);
 }
 
 QFacebookSession::~QFacebookSession() = default;
 
 void QFacebookSession::downloadContacts()
 {
-	auto job = make_owned<QFacebookDownloadContactsJob>(*m_httpApi, m_sessionToken, this);
-	connect(job, &QFacebookDownloadContactsJob::finished, this, &QFacebookSession::contactsReceived);
+    auto job = make_owned<QFacebookDownloadContactsJob>(*m_httpApi, m_sessionToken, this);
+    connect(job, &QFacebookDownloadContactsJob::finished, this, &QFacebookSession::contactsReceived);
 }
 
 void QFacebookSession::downloadContactsDelta(QByteArray deltaCursor)
 {
-	auto job = make_owned<QFacebookDownloadContactsDeltaJob>(*m_httpApi, m_sessionToken, std::move(deltaCursor), this);
-	connect(job, &QFacebookDownloadContactsDeltaJob::finished, this, &QFacebookSession::contactsDeltaReceived);
+    auto job = make_owned<QFacebookDownloadContactsDeltaJob>(*m_httpApi, m_sessionToken, std::move(deltaCursor), this);
+    connect(job, &QFacebookDownloadContactsDeltaJob::finished, this, &QFacebookSession::contactsDeltaReceived);
 }
 
 void QFacebookSession::downloadThreads()
 {
-	auto job = make_owned<QFacebookDownloadThreadsJob>(*m_httpApi, m_sessionToken, this);
-	connect(job, &QFacebookDownloadThreadsJob::finished, this, &QFacebookSession::threadsReceived);
+    auto job = make_owned<QFacebookDownloadThreadsJob>(*m_httpApi, m_sessionToken, this);
+    connect(job, &QFacebookDownloadThreadsJob::finished, this, &QFacebookSession::threadsReceived);
 }
 
 void QFacebookSession::downloadUnreadThreads(int unreadCount)
 {
-	auto job = make_owned<QFacebookDownloadUnreadThreadsJob>(*m_httpApi, m_sessionToken, unreadCount, this);
-	connect(job, &QFacebookDownloadUnreadThreadsJob::finished, this, &QFacebookSession::unreadThreadsReceived);
+    auto job = make_owned<QFacebookDownloadUnreadThreadsJob>(*m_httpApi, m_sessionToken, unreadCount, this);
+    connect(job, &QFacebookDownloadUnreadThreadsJob::finished, this, &QFacebookSession::unreadThreadsReceived);
 }
 
 void QFacebookSession::downloadUnreadMessages(QFacebookUid uid, int unreadCount)
 {
-	auto job = make_owned<QFacebookDownloadUnreadMessagesJob>(*m_httpApi, m_sessionToken, uid, unreadCount, this);
-	connect(job, &QFacebookDownloadUnreadMessagesJob::finished, this, &QFacebookSession::unreadMessagesReceived);
+    auto job = make_owned<QFacebookDownloadUnreadMessagesJob>(*m_httpApi, m_sessionToken, uid, unreadCount, this);
+    connect(job, &QFacebookDownloadUnreadMessagesJob::finished, this, &QFacebookSession::unreadMessagesReceived);
 }
 
 void QFacebookSession::markRead(QFacebookUid uid, int syncSequenceId)
 {
-	m_mqttApi->markThread(uid, "read", true, syncSequenceId);
+    m_mqttApi->markThread(uid, "read", true, syncSequenceId);
 }
 
 QFacebookMsgId QFacebookSession::sendMessage(QFacebookUid to, const QByteArray &body)
 {
-	return m_mqttApi->sendMessage(to, body);
+    return m_mqttApi->sendMessage(to, body);
 }

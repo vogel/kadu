@@ -26,16 +26,15 @@
 
 class ClearChatAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ClearChatAction(QObject *parent = nullptr);
-	virtual ~ClearChatAction();
+    Q_INVOKABLE explicit ClearChatAction(QObject *parent = nullptr);
+    virtual ~ClearChatAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action * action) override;
-
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 };

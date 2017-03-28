@@ -39,39 +39,38 @@ class Speech;
 
 class SpeechConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
-	QPointer<Configuration> m_configuration;
-	QPointer<Parser> m_parser;
-	QPointer<Speech> m_speech;
+    QPointer<BuddyDummyFactory> m_buddyDummyFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<Parser> m_parser;
+    QPointer<Speech> m_speech;
 
-	QSlider *frequencySlider;
-	QSlider *tempoSlider;
-	QSlider *baseFrequencySlider;
-	QLineEdit *dspDeviceLineEdit;
-	QCheckBox *klattSyntCheckBox;
-	QCheckBox *melodyCheckBox;
+    QSlider *frequencySlider;
+    QSlider *tempoSlider;
+    QSlider *baseFrequencySlider;
+    QLineEdit *dspDeviceLineEdit;
+    QCheckBox *klattSyntCheckBox;
+    QCheckBox *melodyCheckBox;
 
-	SelectFile *programSelectFile;
+    SelectFile *programSelectFile;
 
-	ConfigComboBox *soundSystemComboBox;
+    ConfigComboBox *soundSystemComboBox;
 
 private slots:
-	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setSpeech(Speech *speech);
+    INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setSpeech(Speech *speech);
 
-	void testSpeech();
-	void soundSystemChanged(int index);
+    void testSpeech();
+    void soundSystemChanged(int index);
 
 public:
-	Q_INVOKABLE explicit SpeechConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~SpeechConfigurationUiHandler();
+    Q_INVOKABLE explicit SpeechConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~SpeechConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };

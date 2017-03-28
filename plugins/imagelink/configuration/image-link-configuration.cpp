@@ -23,45 +23,44 @@
 
 #include "image-link-configuration.h"
 
-ImageLinkConfiguration::ImageLinkConfiguration() :
-		ShowImages(true), ShowVideos(true)
+ImageLinkConfiguration::ImageLinkConfiguration() : ShowImages(true), ShowVideos(true)
 {
 }
 
 ImageLinkConfiguration::ImageLinkConfiguration(const ImageLinkConfiguration &copyMe)
 {
-	ShowImages = copyMe.ShowImages;
-	ShowVideos = copyMe.ShowVideos;
+    ShowImages = copyMe.ShowImages;
+    ShowVideos = copyMe.ShowVideos;
 }
 
 ImageLinkConfiguration::~ImageLinkConfiguration()
 {
 }
 
-ImageLinkConfiguration & ImageLinkConfiguration::operator = (const ImageLinkConfiguration &copyMe)
+ImageLinkConfiguration &ImageLinkConfiguration::operator=(const ImageLinkConfiguration &copyMe)
 {
-	ShowImages = copyMe.ShowImages;
-	ShowVideos = copyMe.ShowVideos;
+    ShowImages = copyMe.ShowImages;
+    ShowVideos = copyMe.ShowVideos;
 
-	return *this;
+    return *this;
 }
 
 void ImageLinkConfiguration::setShowImages(bool showImages)
 {
-	ShowImages = showImages;
+    ShowImages = showImages;
 }
 
 bool ImageLinkConfiguration::showImages() const
 {
-	return ShowImages;
+    return ShowImages;
 }
 
 void ImageLinkConfiguration::setShowVideos(bool showVideos)
 {
-	ShowVideos = showVideos;
+    ShowVideos = showVideos;
 }
 
 bool ImageLinkConfiguration::showVideos() const
 {
-	return ShowVideos;
+    return ShowVideos;
 }

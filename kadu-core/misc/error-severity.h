@@ -32,27 +32,27 @@
  */
 enum ErrorSeverity
 {
-	/**
-	 * @short No error - everything is fine.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	NoError,
+    /**
+     * @short No error - everything is fine.
+     * @author Rafał 'Vogel' Malinowski
+     */
+    NoError,
 
-	/**
-	 * @short Low severity error - can be ignored.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	ErrorLow,
+    /**
+     * @short Low severity error - can be ignored.
+     * @author Rafał 'Vogel' Malinowski
+     */
+    ErrorLow,
 
-	/**
-	 * @short High severity error - should not be ignored.
-	 * @author Rafał 'Vogel' Malinowski
-	 */
-	ErrorHigh
+    /**
+     * @short High severity error - should not be ignored.
+     * @author Rafał 'Vogel' Malinowski
+     */
+    ErrorHigh
 };
 
 /**
  * @}
  */
 
-#endif // ERROR_SEVERITY_H
+#endif   // ERROR_SEVERITY_H

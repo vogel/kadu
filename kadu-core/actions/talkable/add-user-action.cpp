@@ -25,15 +25,15 @@
 #include "core/injected-factory.h"
 #include "windows/add-buddy-window.h"
 
-AddUserAction::AddUserAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+AddUserAction::AddUserAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"contact-new"});
-	setName(QStringLiteral("addUserAction"));
-	setShortcut("kadu_adduser", Qt::ApplicationShortcut);
-	setText(tr("Add Buddy..."));
-	setType(ActionDescription::TypeGlobal);
+    setIcon(KaduIcon{"contact-new"});
+    setName(QStringLiteral("addUserAction"));
+    setShortcut("kadu_adduser", Qt::ApplicationShortcut);
+    setText(tr("Add Buddy..."));
+    setType(ActionDescription::TypeGlobal);
 }
 
 AddUserAction::~AddUserAction()
@@ -42,21 +42,21 @@ AddUserAction::~AddUserAction()
 
 void AddUserAction::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void AddUserAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto const &buddy = action->context()->buddies().toBuddy();
+    auto const &buddy = action->context()->buddies().toBuddy();
 
-	if (buddy.isAnonymous())
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget(), buddy, true))->show();
-	else
-		(m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget()))->show();
+    if (buddy.isAnonymous())
+        (m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget(), buddy, true))->show();
+    else
+        (m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget()))->show();
 }
 
 #include "moc_add-user-action.cpp"

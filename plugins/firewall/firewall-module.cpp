@@ -26,10 +26,10 @@
 
 FirewallModule::FirewallModule()
 {
-	add_type<FirewallConfigurationUiHandler>();
-	add_type<FirewallMessageFilter>();
-	add_type<FirewallNotificationService>();
-	add_type<FirewallPluginObject>();
+    add_type<FirewallConfigurationUiHandler>();
+    add_type<FirewallMessageFilter>();
+    add_type<FirewallNotificationService>();
+    add_type<FirewallPluginObject>();
 }
 
 FirewallModule::~FirewallModule()

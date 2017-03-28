@@ -25,12 +25,11 @@
 
 class SOUNDAPI SoundPlayer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SoundPlayer(QObject *parent = nullptr);
-	virtual ~SoundPlayer();
+    explicit SoundPlayer(QObject *parent = nullptr);
+    virtual ~SoundPlayer();
 
-	virtual QObject *  playSound(const QString &soundFilePath) = 0;
-
+    virtual QObject *playSound(const QString &soundFilePath) = 0;
 };

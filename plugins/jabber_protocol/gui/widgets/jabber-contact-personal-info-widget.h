@@ -34,30 +34,29 @@ class QLabel;
 
 class JabberContactPersonalInfoWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<UrlOpener> m_urlOpener;
 
-	QLabel *FullNameText;
-	QLabel *FamilyNameText;
-	QLabel *NicknameText;
-	QLabel *BirthdateText;
-	QLabel *CityText;
-	QLabel *EmailText;
-	QLabel *WebsiteText;
+    QLabel *FullNameText;
+    QLabel *FamilyNameText;
+    QLabel *NicknameText;
+    QLabel *BirthdateText;
+    QLabel *CityText;
+    QLabel *EmailText;
+    QLabel *WebsiteText;
 
-	Contact MyContact;
-	void createGui();
-	void reset();
+    Contact MyContact;
+    void createGui();
+    void reset();
 
 private slots:
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
 
-	void personalInfoAvailable(Buddy buddy);
-	void urlClicked(const QString &link);
+    void personalInfoAvailable(Buddy buddy);
+    void urlClicked(const QString &link);
 
 public:
-	explicit JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~JabberContactPersonalInfoWidget();
-
+    explicit JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~JabberContactPersonalInfoWidget();
 };

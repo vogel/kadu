@@ -24,8 +24,7 @@
 
 #include "blocked-talkable-filter.h"
 
-BlockedTalkableFilter::BlockedTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), Enabled(false)
+BlockedTalkableFilter::BlockedTalkableFilter(QObject *parent) : TalkableFilter(parent), Enabled(false)
 {
 }
 
@@ -35,33 +34,33 @@ BlockedTalkableFilter::~BlockedTalkableFilter()
 
 TalkableFilter::FilterResult BlockedTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (buddy.isBlocked())
-		return Rejected;
-	else
-		return Undecided;
+    if (buddy.isBlocked())
+        return Rejected;
+    else
+        return Undecided;
 }
 
 TalkableFilter::FilterResult BlockedTalkableFilter::filterContact(const Contact &contact)
 {
-	if (!Enabled)
-		return Undecided;
+    if (!Enabled)
+        return Undecided;
 
-	if (contact.ownerBuddy().isBlocked())
-		return Rejected;
-	else
-		return Undecided;
+    if (contact.ownerBuddy().isBlocked())
+        return Rejected;
+    else
+        return Undecided;
 }
 
 void BlockedTalkableFilter::setEnabled(bool enabled)
 {
-	if (Enabled == enabled)
-		return;
+    if (Enabled == enabled)
+        return;
 
-	Enabled = enabled;
-	emit filterChanged();
+    Enabled = enabled;
+    emit filterChanged();
 }
 
 #include "moc_blocked-talkable-filter.cpp"

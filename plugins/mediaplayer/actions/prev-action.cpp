@@ -23,14 +23,14 @@
 
 #include "actions/actions.h"
 
-PrevAction::PrevAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+PrevAction::PrevAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"external_modules/mediaplayer-media-skip-backward"});
-	setName(QStringLiteral("mediaplayer_prev"));
-	setText(tr("Previous Track"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"external_modules/mediaplayer-media-skip-backward"});
+    setName(QStringLiteral("mediaplayer_prev"));
+    setText(tr("Previous Track"));
+    setType(ActionDescription::TypeChat);
 }
 
 PrevAction::~PrevAction()
@@ -39,12 +39,12 @@ PrevAction::~PrevAction()
 
 void PrevAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void PrevAction::actionTriggered(QAction *, bool)
 {
-	m_mediaPlayer->prevTrack();
+    m_mediaPlayer->prevTrack();
 }
 
 #include "moc_prev-action.cpp"

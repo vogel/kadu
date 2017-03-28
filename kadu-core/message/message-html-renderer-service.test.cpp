@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "message/message-html-renderer-service.h"
 #include "dom/dom-processor-service.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
-#include "message/message-html-renderer-service.h"
 #include "message/message.h"
 
 #include <QtTest/QtTest>
@@ -29,53 +29,57 @@
 
 class MessageHtmlRendererServiceTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	injeqt::injector makeInjector() const;
+    injeqt::injector makeInjector() const;
 
 private slots:
-	void shouldUsePreWrapCssStyle();
-
+    void shouldUsePreWrapCssStyle();
 };
 
 class DomProcessorServiceStub : public DomProcessorService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE DomProcessorServiceStub() {}
-	virtual QString process(const QString &xml) override { return xml; }
+    Q_INVOKABLE DomProcessorServiceStub()
+    {
+    }
+    virtual QString process(const QString &xml) override
+    {
+        return xml;
+    }
 };
 
 injeqt::injector MessageHtmlRendererServiceTest::makeInjector() const
 {
-	class module : public injeqt::module
-	{
-	public:
-		module()
-		{
-			add_type<DomProcessorServiceStub>();
-			add_type<MessageHtmlRendererService>();
-		}
-	};
+    class module : public injeqt::module
+    {
+    public:
+        module()
+        {
+            add_type<DomProcessorServiceStub>();
+            add_type<MessageHtmlRendererService>();
+        }
+    };
 
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<module>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<module>());
 
-	return injeqt::injector{std::move(modules)};
+    return injeqt::injector{std::move(modules)};
 }
 
 void MessageHtmlRendererServiceTest::shouldUsePreWrapCssStyle()
 {
-	auto injector = makeInjector();
-	auto messageHtmlRendererService = injector.get<MessageHtmlRendererService>();
-	auto message = Message{new MessageShared{}};
-	message.setContent(normalizeHtml(plainToHtml("html content")));
+    auto injector = makeInjector();
+    auto messageHtmlRendererService = injector.get<MessageHtmlRendererService>();
+    auto message = Message{new MessageShared{}};
+    message.setContent(normalizeHtml(plainToHtml("html content")));
 
-	auto renderedMessage = messageHtmlRendererService->renderMessage(message);
-	QVERIFY(renderedMessage.contains(R"(html content)"));
-	QVERIFY(renderedMessage.contains(R"(style="white-space: pre-wrap;")"));
+    auto renderedMessage = messageHtmlRendererService->renderMessage(message);
+    QVERIFY(renderedMessage.contains(R"(html content)"));
+    QVERIFY(renderedMessage.contains(R"(style="white-space: pre-wrap;")"));
 }
 
 QTEST_APPLESS_MAIN(MessageHtmlRendererServiceTest)

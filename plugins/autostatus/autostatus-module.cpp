@@ -19,19 +19,19 @@
 
 #include "autostatus-module.h"
 
-#include "configuration/autostatus-configuration.h"
 #include "autostatus-actions.h"
 #include "autostatus-plugin-object.h"
 #include "autostatus-service.h"
 #include "autostatus-status-changer.h"
+#include "configuration/autostatus-configuration.h"
 #include "toggle-autostatus-action.h"
 
 AutostatusModule::AutostatusModule()
 {
-	add_type<AutostatusActions>();
-	add_type<AutostatusConfiguration>();
-	add_type<AutostatusPluginObject>();
-	add_type<AutostatusService>();
-	add_type<AutostatusStatusChanger>();
-	add_type<ToggleAutostatusAction>();
+    add_type<AutostatusActions>();
+    add_type<AutostatusConfiguration>();
+    add_type<AutostatusPluginObject>();
+    add_type<AutostatusService>();
+    add_type<AutostatusStatusChanger>();
+    add_type<ToggleAutostatusAction>();
 }

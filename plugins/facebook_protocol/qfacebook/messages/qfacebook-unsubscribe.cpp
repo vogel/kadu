@@ -25,15 +25,12 @@
 
 QMqttMessage QFacebookUnsubscribe::encode() const
 {
-	auto mqttWriter = QMqttWriter{};
-	mqttWriter.write(mid);
+    auto mqttWriter = QMqttWriter{};
+    mqttWriter.write(mid);
 
-	for (auto const &t : topics)
-		mqttWriter.write(t);
+    for (auto const &t : topics)
+        mqttWriter.write(t);
 
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		static_cast<uint8_t>(QMqttMessageFlag::QoS1),
-		mqttWriter.result()
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), static_cast<uint8_t>(QMqttMessageFlag::QoS1),
+                        mqttWriter.result()};
 }

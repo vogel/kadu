@@ -24,8 +24,7 @@
 
 #include <QtWidgets/QSpinBox>
 
-AutoHideConfigurationUiHandler::AutoHideConfigurationUiHandler(QObject *parent) :
-		QObject{parent}
+AutoHideConfigurationUiHandler::AutoHideConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,10 +34,11 @@ AutoHideConfigurationUiHandler::~AutoHideConfigurationUiHandler()
 
 void AutoHideConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	QObject::connect(
-			mainConfigurationWindow->widget()->widgetById("auto_hide/use_auto_hide"), SIGNAL(toggled(bool)),
-			mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"), SLOT(setEnabled(bool)));
-	static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"))->setSpecialValueText(tr("Don't hide"));
+    QObject::connect(
+        mainConfigurationWindow->widget()->widgetById("auto_hide/use_auto_hide"), SIGNAL(toggled(bool)),
+        mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"), SLOT(setEnabled(bool)));
+    static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("auto_hide/idle_time"))
+        ->setSpecialValueText(tr("Don't hide"));
 }
 
 void AutoHideConfigurationUiHandler::mainConfigurationWindowDestroyed()

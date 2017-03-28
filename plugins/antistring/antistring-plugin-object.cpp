@@ -28,9 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-AntistringPluginObject::AntistringPluginObject(QObject *parent) :
-		QObject{parent},
-		m_antistringConfigurationUiHandler{}
+AntistringPluginObject::AntistringPluginObject(QObject *parent) : QObject{parent}, m_antistringConfigurationUiHandler{}
 {
 }
 
@@ -38,48 +36,53 @@ AntistringPluginObject::~AntistringPluginObject()
 {
 }
 
-void AntistringPluginObject::setAntistringConfigurationUiHandler(AntistringConfigurationUiHandler *antistringConfigurationUiHandler)
+void AntistringPluginObject::setAntistringConfigurationUiHandler(
+    AntistringConfigurationUiHandler *antistringConfigurationUiHandler)
 {
-	m_antistringConfigurationUiHandler = antistringConfigurationUiHandler;
+    m_antistringConfigurationUiHandler = antistringConfigurationUiHandler;
 }
 
 void AntistringPluginObject::setAntistringMessageFilter(AntistringMessageFilter *antistringMessageFilter)
 {
-	m_antistringMessageFilter = antistringMessageFilter;
+    m_antistringMessageFilter = antistringMessageFilter;
 }
 
-void AntistringPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void AntistringPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void AntistringPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void AntistringPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void AntistringPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
-	m_messageFilterService = messageFilterService;
+    m_messageFilterService = messageFilterService;
 }
 
 void AntistringPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AntistringPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_antistringConfigurationUiHandler);
-	m_messageFilterService->registerMessageFilter(m_antistringMessageFilter);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_antistringConfigurationUiHandler);
+    m_messageFilterService->registerMessageFilter(m_antistringMessageFilter);
 }
 
 void AntistringPluginObject::done()
 {
-	m_messageFilterService->unregisterMessageFilter(m_antistringMessageFilter);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_antistringConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
+    m_messageFilterService->unregisterMessageFilter(m_antistringMessageFilter);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_antistringConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
 }
 
 #include "moc_antistring-plugin-object.cpp"

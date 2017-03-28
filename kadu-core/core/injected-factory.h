@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -31,50 +31,49 @@ class InjectorProvider;
 
 class KADUAPI InjectedFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit InjectedFactory(QObject *parent = nullptr);
-	virtual ~InjectedFactory();
+    Q_INVOKABLE explicit InjectedFactory(QObject *parent = nullptr);
+    virtual ~InjectedFactory();
 
-	template<typename T, typename ...Args>
-	T * makeInjected(Args&& ...args)
-	{
-		auto result = new T(std::forward<Args>(args)...);
-		injectInto(result);
-		return result;
-	}
+    template <typename T, typename... Args>
+    T *makeInjected(Args &&... args)
+    {
+        auto result = new T(std::forward<Args>(args)...);
+        injectInto(result);
+        return result;
+    }
 
-	template<typename T, typename ...Args>
-	owned_qptr<T> makeOwned(Args&& ...args)
-	{
-		auto result = make_owned<T>(std::forward<Args>(args)...);
-		injectInto(result);
-		return result;
-	}
+    template <typename T, typename... Args>
+    owned_qptr<T> makeOwned(Args &&... args)
+    {
+        auto result = make_owned<T>(std::forward<Args>(args)...);
+        injectInto(result);
+        return result;
+    }
 
-	template<typename T, typename ...Args>
-	not_owned_qptr<T> makeNotOwned(Args&& ...args)
-	{
-		auto result = make_not_owned<T>(std::forward<Args>(args)...);
-		injectInto(result);
-		return result;
-	}
+    template <typename T, typename... Args>
+    not_owned_qptr<T> makeNotOwned(Args &&... args)
+    {
+        auto result = make_not_owned<T>(std::forward<Args>(args)...);
+        injectInto(result);
+        return result;
+    }
 
-	template<typename T, typename ...Args>
-	std::unique_ptr<T> makeUnique(Args&& ...args)
-	{
-		auto result = std::make_unique<T>(std::forward<Args>(args)...);
-		injectInto(result.get());
-		return result;
-	}
+    template <typename T, typename... Args>
+    std::unique_ptr<T> makeUnique(Args &&... args)
+    {
+        auto result = std::make_unique<T>(std::forward<Args>(args)...);
+        injectInto(result.get());
+        return result;
+    }
 
-	void injectInto(QObject *object);
+    void injectInto(QObject *object);
 
 private:
-	QPointer<InjectorProvider> m_injectorProvider;
+    QPointer<InjectorProvider> m_injectorProvider;
 
 private slots:
-	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
-
+    INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
 };

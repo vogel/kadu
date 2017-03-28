@@ -26,15 +26,14 @@
 
 class NotifyAboutBuddyAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit NotifyAboutBuddyAction(QObject *parent = nullptr);
-	virtual ~NotifyAboutBuddyAction();
+    Q_INVOKABLE explicit NotifyAboutBuddyAction(QObject *parent = nullptr);
+    virtual ~NotifyAboutBuddyAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
-
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 };

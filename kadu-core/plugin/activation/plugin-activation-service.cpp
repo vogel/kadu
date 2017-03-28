@@ -32,8 +32,7 @@
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
 
-PluginActivationService::PluginActivationService(QObject *parent) :
-		QObject{parent}
+PluginActivationService::PluginActivationService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -43,125 +42,125 @@ PluginActivationService::~PluginActivationService()
 
 void PluginActivationService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void PluginActivationService::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
-void PluginActivationService::setPluginActivationErrorHandler(PluginActivationErrorHandler *pluginActivationErrorHandler)
+void PluginActivationService::setPluginActivationErrorHandler(
+    PluginActivationErrorHandler *pluginActivationErrorHandler)
 {
-	m_pluginActivationErrorHandler = pluginActivationErrorHandler;
+    m_pluginActivationErrorHandler = pluginActivationErrorHandler;
 }
 
 void PluginActivationService::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
-	m_pluginDependencyHandler = pluginDependencyHandler;
+    m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
 void PluginActivationService::setPluginInjectorProvider(PluginInjectorProvider *pluginInjectorProvider)
 {
-	m_pluginInjectorProvider = pluginInjectorProvider;
+    m_pluginInjectorProvider = pluginInjectorProvider;
 }
 
 void PluginActivationService::setPluginStateService(PluginStateService *pluginStateService)
 {
-	m_pluginStateService = pluginStateService;
+    m_pluginStateService = pluginStateService;
 }
 
 QVector<QString> PluginActivationService::activatePluginWithDependencies(const QString &pluginName)
 {
-	if (isActive(pluginName) || !m_pluginDependencyHandler || !m_pluginStateService)
-		return {};
+    if (isActive(pluginName) || !m_pluginDependencyHandler || !m_pluginStateService)
+        return {};
 
-	auto result = QVector<QString>{};
-	try
-	{
-		auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
-		if (withDependencies.isEmpty())
-			throw PluginActivationErrorException(pluginName, tr("Plugin %1 not found").arg(pluginName));
+    auto result = QVector<QString>{};
+    try
+    {
+        auto withDependencies = m_pluginDependencyHandler->withDependencies(pluginName);
+        if (withDependencies.isEmpty())
+            throw PluginActivationErrorException(pluginName, tr("Plugin %1 not found").arg(pluginName));
 
-		for (auto plugin : withDependencies)
-		{
-			auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(plugin).provides);
-			if (!conflict.isEmpty() && conflict != plugin)
-				throw PluginActivationErrorException(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin, conflict));
-		}
+        for (auto plugin : withDependencies)
+        {
+            auto conflict = findActiveProviding(m_pluginDependencyHandler->pluginMetadata(plugin).provides);
+            if (!conflict.isEmpty() && conflict != plugin)
+                throw PluginActivationErrorException(plugin, tr("Plugin %1 conflicts with: %2").arg(plugin, conflict));
+        }
 
-		for (auto plugin : withDependencies)
-		{
-			activatePlugin(plugin);
-			result.append(plugin);
-		}
-	}
-	catch (PluginActivationErrorException &e)
-	{
-		if (m_pluginActivationErrorHandler)
-			m_pluginActivationErrorHandler->handleActivationError(e.pluginName(), e.errorMessage());
-	}
+        for (auto plugin : withDependencies)
+        {
+            activatePlugin(plugin);
+            result.append(plugin);
+        }
+    }
+    catch (PluginActivationErrorException &e)
+    {
+        if (m_pluginActivationErrorHandler)
+            m_pluginActivationErrorHandler->handleActivationError(e.pluginName(), e.errorMessage());
+    }
 
-	return result;
+    return result;
 }
 
 QString PluginActivationService::findActiveProviding(const QString &feature) const
 {
-	if (feature.isEmpty() || !m_pluginDependencyHandler)
-		return {};
+    if (feature.isEmpty() || !m_pluginDependencyHandler)
+        return {};
 
-	for (auto const &activePlugin : m_activePlugins)
-		if (m_pluginDependencyHandler->hasPluginMetadata(activePlugin.first))
-			if (m_pluginDependencyHandler->pluginMetadata(activePlugin.first).provides == feature)
-				return activePlugin.first;
+    for (auto const &activePlugin : m_activePlugins)
+        if (m_pluginDependencyHandler->hasPluginMetadata(activePlugin.first))
+            if (m_pluginDependencyHandler->pluginMetadata(activePlugin.first).provides == feature)
+                return activePlugin.first;
 
-	return {};
+    return {};
 }
 
 QVector<QString> PluginActivationService::deactivatePluginWithDependents(const QString &pluginName)
 {
-	if (!isActive(pluginName) || !m_pluginDependencyHandler)
-		return {};
+    if (!isActive(pluginName) || !m_pluginDependencyHandler)
+        return {};
 
-	auto result = m_pluginDependencyHandler->withDependents(pluginName);
-	for (auto const &plugin : result)
-		deactivatePlugin(plugin);
+    auto result = m_pluginDependencyHandler->withDependents(pluginName);
+    for (auto const &plugin : result)
+        deactivatePlugin(plugin);
 
-	return result;
+    return result;
 }
 
 void PluginActivationService::activatePlugin(const QString &pluginName)
 {
-	if (!contains(m_activePlugins, pluginName))
-		m_activePlugins.insert(std::make_pair(pluginName, std::make_unique<ActivePlugin>(
-			m_pathsProvider->pluginsLibPath(),
-			m_pathsProvider->dataPath() + QStringLiteral("plugins/translations"),
-			m_configuration->deprecatedApi()->readEntry("General", "Language"),
-			pluginName,
-			m_pluginInjectorProvider)));
+    if (!contains(m_activePlugins, pluginName))
+        m_activePlugins.insert(
+            std::make_pair(
+                pluginName, std::make_unique<ActivePlugin>(
+                                m_pathsProvider->pluginsLibPath(),
+                                m_pathsProvider->dataPath() + QStringLiteral("plugins/translations"),
+                                m_configuration->deprecatedApi()->readEntry("General", "Language"), pluginName,
+                                m_pluginInjectorProvider)));
 }
 
 void PluginActivationService::deactivatePlugin(const QString &pluginName)
 {
-	m_activePlugins.erase(pluginName);
+    m_activePlugins.erase(pluginName);
 }
 
 bool PluginActivationService::isActive(const QString &pluginName) const
 {
-	return contains(m_activePlugins, pluginName);
+    return contains(m_activePlugins, pluginName);
 }
 
 QSet<QString> PluginActivationService::activePlugins() const
 {
-	auto result = QSet<QString>{};
-	for (auto const &activePlugin : m_activePlugins)
-		result.insert(activePlugin.first);
-	return result;
+    auto result = QSet<QString>{};
+    for (auto const &activePlugin : m_activePlugins)
+        result.insert(activePlugin.first);
+    return result;
 }
 
-ActivePlugin * PluginActivationService::activePlugin(const QString& pluginName) const
+ActivePlugin *PluginActivationService::activePlugin(const QString &pluginName) const
 {
-	return isActive(pluginName)
-			? m_activePlugins.at(pluginName).get()
-			: nullptr;
+    return isActive(pluginName) ? m_activePlugins.at(pluginName).get() : nullptr;
 }

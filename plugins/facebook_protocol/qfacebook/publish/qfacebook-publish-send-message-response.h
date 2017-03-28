@@ -26,11 +26,11 @@
 
 struct QFacebookPublishSendMessageResponse
 {
-	static QFacebookPublishSendMessageResponse decode(const QByteArray &content);
-	QByteArray encode();
+    static QFacebookPublishSendMessageResponse decode(const QByteArray &content);
+    QByteArray encode();
 
-	bool succeeded;
-	QFacebookMsgId msgid;
-	int err;
-	bool isRetryable;
+    bool succeeded;
+    QFacebookMsgId msgid;
+    int err;
+    bool isRetryable;
 };

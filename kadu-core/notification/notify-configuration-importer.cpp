@@ -23,8 +23,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-NotifyConfigurationImporter::NotifyConfigurationImporter(QObject *parent) :
-		QObject{parent}
+NotifyConfigurationImporter::NotifyConfigurationImporter(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,32 +33,33 @@ NotifyConfigurationImporter::~NotifyConfigurationImporter()
 
 void NotifyConfigurationImporter::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void NotifyConfigurationImporter::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void NotifyConfigurationImporter::import()
 {
-	if (m_configuration->deprecatedApi()->readBoolEntry("General", "ImportedPre10"))
-		return;
+    if (m_configuration->deprecatedApi()->readBoolEntry("General", "ImportedPre10"))
+        return;
 
-	for (auto const &buddy : m_buddyManager->items())
-	{
-		if (buddy.isNull() || buddy.isAnonymous())
-			continue;
+    for (auto const &buddy : m_buddyManager->items())
+    {
+        if (buddy.isNull() || buddy.isAnonymous())
+            continue;
 
-		auto notify = buddy.property("notify:Notify", false).toBool() || m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyAboutAll");
-		if (notify)
-			buddy.removeProperty("notify:Notify");
-		else
-			buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
-	}
+        auto notify = buddy.property("notify:Notify", false).toBool() ||
+                      m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyAboutAll");
+        if (notify)
+            buddy.removeProperty("notify:Notify");
+        else
+            buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
+    }
 
-	m_configuration->deprecatedApi()->addVariable("General", "ImportedPre10", true);
+    m_configuration->deprecatedApi()->addVariable("General", "ImportedPre10", true);
 }
 
 #include "moc_notify-configuration-importer.cpp"

@@ -30,22 +30,21 @@ class QLineEdit;
 
 class KADUAPI SelectFont : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QFont currentFont;
-	QLineEdit *fontEdit;
+    QFont currentFont;
+    QLineEdit *fontEdit;
 
 private slots:
-	void onClick();
+    void onClick();
 
 public:
-	SelectFont(QWidget *parent = nullptr);
-	const QFont &font() const;
-	void setFont(const QFont &font);
+    SelectFont(QWidget *parent = nullptr);
+    const QFont &font() const;
+    void setFont(const QFont &font);
 
 signals:
-	void fontChanged(QFont font);
-
+    void fontChanged(QFont font);
 };
 
-#endif // SELECT_FONT_H
+#endif   // SELECT_FONT_H

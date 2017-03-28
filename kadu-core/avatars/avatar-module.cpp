@@ -25,9 +25,9 @@
 
 AvatarModule::AvatarModule()
 {
-	add_type<AvatarJobManager>();
-	add_type<AvatarManager>();
-	add_type<AvatarStorage>();
+    add_type<AvatarJobManager>();
+    add_type<AvatarManager>();
+    add_type<AvatarStorage>();
 }
 
 AvatarModule::~AvatarModule()

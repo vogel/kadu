@@ -25,8 +25,7 @@
 
 #include "model-chain.h"
 
-ModelChain::ModelChain(QObject *parent) :
-		QObject(parent), Model(0), KaduModel(0)
+ModelChain::ModelChain(QObject *parent) : QObject(parent), Model(0), KaduModel(0)
 {
 }
 
@@ -36,66 +35,66 @@ ModelChain::~ModelChain()
 
 void ModelChain::setBaseModel(QAbstractItemModel *model)
 {
-	Model = model;
+    Model = model;
 
-	if (Model)
-	{
-		KaduModel = dynamic_cast<KaduAbstractModel *>(model);
-		Q_ASSERT(KaduModel);
-	}
-	else
-		KaduModel = nullptr;
+    if (Model)
+    {
+        KaduModel = dynamic_cast<KaduAbstractModel *>(model);
+        Q_ASSERT(KaduModel);
+    }
+    else
+        KaduModel = nullptr;
 
-	if (!ProxyModels.empty())
-		ProxyModels.at(0)->setSourceModel(Model);
+    if (!ProxyModels.empty())
+        ProxyModels.at(0)->setSourceModel(Model);
 }
 
 void ModelChain::addProxyModel(QAbstractProxyModel *proxyModel)
 {
-	if (!proxyModel)
-		return;
+    if (!proxyModel)
+        return;
 
-	if (ProxyModels.empty())
-		proxyModel->setSourceModel(Model);
-	else
-		proxyModel->setSourceModel(ProxyModels.last());
+    if (ProxyModels.empty())
+        proxyModel->setSourceModel(Model);
+    else
+        proxyModel->setSourceModel(ProxyModels.last());
 
-	ProxyModels.append(proxyModel);
+    ProxyModels.append(proxyModel);
 }
 
-QAbstractItemModel * ModelChain::firstModel() const
+QAbstractItemModel *ModelChain::firstModel() const
 {
-	return Model;
+    return Model;
 }
 
-QAbstractItemModel * ModelChain::lastModel() const
+QAbstractItemModel *ModelChain::lastModel() const
 {
-	if (!ProxyModels.empty())
-		return ProxyModels.last();
+    if (!ProxyModels.empty())
+        return ProxyModels.last();
 
-	return Model;
+    return Model;
 }
 
 QModelIndexList ModelChain::indexListForValue(const QVariant &value) const
 {
-	if (!Model || !KaduModel)
-		return QModelIndexList();
+    if (!Model || !KaduModel)
+        return QModelIndexList();
 
-	QModelIndexList indexes = KaduModel->indexListForValue(value);
-	QModelIndexList result;
+    QModelIndexList indexes = KaduModel->indexListForValue(value);
+    QModelIndexList result;
 
-	const int size = indexes.size();
-	result.reserve(size);
+    const int size = indexes.size();
+    result.reserve(size);
 
-	for (int i = 0; i < size; i++)
-	{
-		QModelIndex index = indexes.at(i);
-		foreach (QAbstractProxyModel *proxyModel, ProxyModels)
-			index = proxyModel->mapFromSource(index);
-		result.append(index);
-	}
+    for (int i = 0; i < size; i++)
+    {
+        QModelIndex index = indexes.at(i);
+        foreach (QAbstractProxyModel *proxyModel, ProxyModels)
+            index = proxyModel->mapFromSource(index);
+        result.append(index);
+    }
 
-	return result;
+    return result;
 }
 
 #include "moc_model-chain.cpp"

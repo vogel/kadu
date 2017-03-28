@@ -22,8 +22,7 @@
 
 #include "standard-url-expander.h"
 
-StandardUrlExpander::StandardUrlExpander(QRegExp regExp) :
-		DomTextRegexpVisitor(regExp)
+StandardUrlExpander::StandardUrlExpander(QRegExp regExp) : DomTextRegexpVisitor(regExp)
 {
 }
 
@@ -33,45 +32,45 @@ StandardUrlExpander::~StandardUrlExpander()
 
 bool StandardUrlExpander::shouldFold(int length) const
 {
-	return Configuration.foldLink() && (length > Configuration.foldLinkThreshold());
+    return Configuration.foldLink() && (length > Configuration.foldLinkThreshold());
 }
 
 QString StandardUrlExpander::displayLink(const QString &link) const
 {
-	int partLength = Configuration.foldLinkThreshold() / 2;
+    int partLength = Configuration.foldLinkThreshold() / 2;
 
-	if (shouldFold(link.length()))
-		return QString("%1...%2").arg(link.mid(0, partLength)).arg(link.mid(link.length() - partLength, partLength));
-	else
-		return link;
+    if (shouldFold(link.length()))
+        return QString("%1...%2").arg(link.mid(0, partLength)).arg(link.mid(link.length() - partLength, partLength));
+    else
+        return link;
 }
 
 void StandardUrlExpander::setConfiguration(const StandardUrlExpanderConfiguration &configuration)
 {
-	Configuration = configuration;
+    Configuration = configuration;
 }
 
 QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
-	QDomElement linkElement = document.createElement("a");
+    QDomElement linkElement = document.createElement("a");
 
-	QString link = regExp.cap();
-	QString display = displayLink(link);
+    QString link = regExp.cap();
+    QString display = displayLink(link);
 
-	if (link.contains("://"))
-		linkElement.setAttribute("href", link);
-	else
-		linkElement.setAttribute("href", QString("http://%1").arg(link));
+    if (link.contains("://"))
+        linkElement.setAttribute("href", link);
+    else
+        linkElement.setAttribute("href", QString("http://%1").arg(link));
 
-	linkElement.setAttribute("title", link);
-	if (shouldFold(link.length()))
-	{
-		linkElement.setAttribute("folded", "1");
-		linkElement.setAttribute("displaystr", display);
-	}
+    linkElement.setAttribute("title", link);
+    if (shouldFold(link.length()))
+    {
+        linkElement.setAttribute("folded", "1");
+        linkElement.setAttribute("displaystr", display);
+    }
 
-	linkElement.appendChild(document.createTextNode(display));
-	return QList<QDomNode>() << linkElement;
+    linkElement.appendChild(document.createTextNode(display));
+    return QList<QDomNode>() << linkElement;
 }
 
 #include "moc_standard-url-expander.cpp"

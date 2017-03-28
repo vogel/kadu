@@ -26,9 +26,10 @@
 #include "notification/notification-service.h"
 #include "notification/notification.h"
 
-MediaplayerNotificationService::MediaplayerNotificationService(QObject *parent) :
-		QObject{parent},
-		m_playingTitleEvent{QStringLiteral("MediaPlayerOsd"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"))}
+MediaplayerNotificationService::MediaplayerNotificationService(QObject *parent)
+        : QObject{parent},
+          m_playingTitleEvent{QStringLiteral("MediaPlayerOsd"),
+                              QStringLiteral(QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"))}
 {
 }
 
@@ -36,34 +37,35 @@ MediaplayerNotificationService::~MediaplayerNotificationService()
 {
 }
 
-void MediaplayerNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+void MediaplayerNotificationService::setNotificationEventRepository(
+    NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void MediaplayerNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void MediaplayerNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_playingTitleEvent);
+    m_notificationEventRepository->addNotificationEvent(m_playingTitleEvent);
 }
 
 void MediaplayerNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_playingTitleEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_playingTitleEvent);
 }
 
 void MediaplayerNotificationService::notifyPlayingTitle(const QString &title)
 {
-	auto notification = Notification{};
-	notification.type = m_playingTitleEvent.name();
-	notification.icon = KaduIcon{"external_modules/mediaplayer-media-playback-play"};
-	notification.text = normalizeHtml(plainToHtml(title));
+    auto notification = Notification{};
+    notification.type = m_playingTitleEvent.name();
+    notification.icon = KaduIcon{"external_modules/mediaplayer-media-playback-play"};
+    notification.text = normalizeHtml(plainToHtml(title));
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 #include "moc_mediaplayer-notification-service.cpp"

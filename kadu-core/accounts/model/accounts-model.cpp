@@ -32,21 +32,14 @@
 
 #include "accounts-model.h"
 
-AccountsModel::AccountsModel(AccountManager *accountManager, QObject *parent) :
-		QAbstractListModel{parent},
-		m_accountManager{accountManager},
-		m_includeIdInDisplay{}
+AccountsModel::AccountsModel(AccountManager *accountManager, QObject *parent)
+        : QAbstractListModel{parent}, m_accountManager{accountManager}, m_includeIdInDisplay{}
 {
-	connect(m_accountManager, SIGNAL(accountUpdated(Account)),
-			this, SLOT(accountUpdated(Account)));
-	connect(m_accountManager, SIGNAL(accountAboutToBeAdded(Account)),
-			this, SLOT(accountAboutToBeAdded(Account)));
-	connect(m_accountManager, SIGNAL(accountAdded(Account)),
-			this, SLOT(accountAdded(Account)));
-	connect(m_accountManager, SIGNAL(accountAboutToBeRemoved(Account)),
-			this, SLOT(accountAboutToBeRemoved(Account)));
-	connect(m_accountManager, SIGNAL(accountRemoved(Account)),
-			this, SLOT(accountRemoved(Account)));
+    connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
+    connect(m_accountManager, SIGNAL(accountAboutToBeAdded(Account)), this, SLOT(accountAboutToBeAdded(Account)));
+    connect(m_accountManager, SIGNAL(accountAdded(Account)), this, SLOT(accountAdded(Account)));
+    connect(m_accountManager, SIGNAL(accountAboutToBeRemoved(Account)), this, SLOT(accountAboutToBeRemoved(Account)));
+    connect(m_accountManager, SIGNAL(accountRemoved(Account)), this, SLOT(accountRemoved(Account)));
 }
 
 AccountsModel::~AccountsModel()
@@ -55,117 +48,115 @@ AccountsModel::~AccountsModel()
 
 void AccountsModel::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 int AccountsModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 1;
+    return parent.isValid() ? 0 : 1;
 }
 
 int AccountsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : m_accountManager->count();
+    return parent.isValid() ? 0 : m_accountManager->count();
 }
 
 QVariant AccountsModel::data(const QModelIndex &index, int role) const
 {
-	Account acc = account(index);
-	if (acc.isNull())
-		return QVariant();
+    Account acc = account(index);
+    if (acc.isNull())
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			if (m_includeIdInDisplay)
-				return QString("%1 (%2)").arg(acc.accountIdentity().name(), acc.id());
-			else
-				return acc.accountIdentity().name();
-		case Qt::DecorationRole:
-			return acc.protocolHandler()
-					? m_iconsManager->iconByPath(acc.protocolHandler()->icon())
-					: QVariant();
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        if (m_includeIdInDisplay)
+            return QString("%1 (%2)").arg(acc.accountIdentity().name(), acc.id());
+        else
+            return acc.accountIdentity().name();
+    case Qt::DecorationRole:
+        return acc.protocolHandler() ? m_iconsManager->iconByPath(acc.protocolHandler()->icon()) : QVariant();
 
-		case AccountRole:
-			return QVariant::fromValue<Account>(acc);
+    case AccountRole:
+        return QVariant::fromValue<Account>(acc);
 
-		case ItemTypeRole:
-			return AccountRole;
+    case ItemTypeRole:
+        return AccountRole;
 
-		default:
-			return QVariant();
-	}
+    default:
+        return QVariant();
+    }
 }
 
 Account AccountsModel::account(const QModelIndex &index) const
 {
-	if (!index.isValid())
-		return Account::null;
+    if (!index.isValid())
+        return Account::null;
 
-	if (index.row() < 0 || index.row() >= rowCount())
-		return Account::null;
+    if (index.row() < 0 || index.row() >= rowCount())
+        return Account::null;
 
-	return m_accountManager->byIndex(index.row());
+    return m_accountManager->byIndex(index.row());
 }
 
 int AccountsModel::accountIndex(Account account) const
 {
-	return m_accountManager->indexOf(account);
+    return m_accountManager->indexOf(account);
 }
 
 QModelIndexList AccountsModel::indexListForValue(const QVariant &value) const
 {
-	QModelIndexList result;
+    QModelIndexList result;
 
-	const int i = accountIndex(value.value<Account>());
-	if (-1 != i)
-		result.append(index(i));
+    const int i = accountIndex(value.value<Account>());
+    if (-1 != i)
+        result.append(index(i));
 
-	return result;
+    return result;
 }
 
 void AccountsModel::accountUpdated(Account account)
 {
-	const QModelIndexList &indexes = indexListForValue(account);
-	foreach (const QModelIndex &index, indexes)
-		emit dataChanged(index, index);
+    const QModelIndexList &indexes = indexListForValue(account);
+    foreach (const QModelIndex &index, indexes)
+        emit dataChanged(index, index);
 }
 
 void AccountsModel::accountAboutToBeAdded(Account account)
 {
-	Q_UNUSED(account)
+    Q_UNUSED(account)
 
-	int count = rowCount();
-	beginInsertRows(QModelIndex(), count, count);
+    int count = rowCount();
+    beginInsertRows(QModelIndex(), count, count);
 }
 
 void AccountsModel::accountAdded(Account account)
 {
-	Q_UNUSED(account)
+    Q_UNUSED(account)
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void AccountsModel::accountAboutToBeRemoved(Account account)
 {
-	int index = accountIndex(account);
-	beginRemoveRows(QModelIndex(), index, index);
+    int index = accountIndex(account);
+    beginRemoveRows(QModelIndex(), index, index);
 }
 
 void AccountsModel::accountRemoved(Account account)
 {
-	Q_UNUSED(account)
+    Q_UNUSED(account)
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
 void AccountsModel::setIncludeIdInDisplay(bool includeIdInDisplay)
 {
-	if (m_includeIdInDisplay == includeIdInDisplay)
-		return;
+    if (m_includeIdInDisplay == includeIdInDisplay)
+        return;
 
-	m_includeIdInDisplay = includeIdInDisplay;
-	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
+    m_includeIdInDisplay = includeIdInDisplay;
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
 #include "moc_accounts-model.cpp"

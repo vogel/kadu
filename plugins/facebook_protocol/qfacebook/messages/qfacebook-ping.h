@@ -27,7 +27,9 @@ struct QMqttMessage;
 class QFacebookPing : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::Ping; }
-	virtual QMqttMessage encode() const;
-
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::Ping;
+    }
+    virtual QMqttMessage encode() const;
 };

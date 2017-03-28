@@ -38,34 +38,33 @@ class StatusTypeManager;
 
 class AutoresponderMessageFilter : public QObject, public MessageFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutoresponderMessageFilter(QObject *parent = nullptr);
-	virtual ~AutoresponderMessageFilter();
+    Q_INVOKABLE explicit AutoresponderMessageFilter(QObject *parent = nullptr);
+    virtual ~AutoresponderMessageFilter();
 
-	void setConfiguration(const AutoresponderConfiguration &configuration);
+    void setConfiguration(const AutoresponderConfiguration &configuration);
 
-	virtual bool acceptMessage(const Message &message);
+    virtual bool acceptMessage(const Message &message);
 
 public slots:
-	void chatWidgetClosed(ChatWidget *chat);
+    void chatWidgetClosed(ChatWidget *chat);
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<MessageManager> m_messageManager;
-	QPointer<Parser> m_parser;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<MessageManager> m_messageManager;
+    QPointer<Parser> m_parser;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	AutoresponderConfiguration Configuration;
+    AutoresponderConfiguration Configuration;
 
-	QSet<Chat> RepliedChats;
+    QSet<Chat> RepliedChats;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 };

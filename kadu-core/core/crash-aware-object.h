@@ -29,17 +29,16 @@
 
 class KADUAPI CrashAwareObject
 {
-	static QList<CrashAwareObject *> Objects;
+    static QList<CrashAwareObject *> Objects;
 
 protected:
-	virtual void crash() = 0;
+    virtual void crash() = 0;
 
 public:
-	static void notifyCrash();
+    static void notifyCrash();
 
-	CrashAwareObject();
-	virtual ~CrashAwareObject();
-
+    CrashAwareObject();
+    virtual ~CrashAwareObject();
 };
 
-#endif // CRASH_AWARE_OBJECT_H
+#endif   // CRASH_AWARE_OBJECT_H

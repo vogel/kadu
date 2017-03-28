@@ -30,13 +30,12 @@
 
 #include "insert-emoticon-action.h"
 
-InsertEmoticonAction::InsertEmoticonAction(QObject *parent) :
-		ActionDescription(parent)
+InsertEmoticonAction::InsertEmoticonAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeChat);
-	setName("insertEmoticonAction");
-	setIcon(KaduIcon("face-smile"));
-	setText(tr("Insert Emoticon"));
+    setType(ActionDescription::TypeChat);
+    setName("insertEmoticonAction");
+    setIcon(KaduIcon("face-smile"));
+    setText(tr("Insert Emoticon"));
 }
 
 InsertEmoticonAction::~InsertEmoticonAction()
@@ -45,58 +44,58 @@ InsertEmoticonAction::~InsertEmoticonAction()
 
 void InsertEmoticonAction::actionInstanceCreated(Action *action)
 {
-	ActionDescription::actionInstanceCreated(action);
+    ActionDescription::actionInstanceCreated(action);
 
-	updateActionState(action);
+    updateActionState(action);
 }
 
 void InsertEmoticonAction::updateActionState(Action *action)
 {
-	ActionDescription::updateActionState(action);
+    ActionDescription::updateActionState(action);
 
-	if (Configuration.enabled())
-	{
-		action->setToolTip(tr("Insert emoticon"));
-		action->setEnabled(true);
-	}
-	else
-	{
-		action->setToolTip(tr("Insert emoticon - enable in configuration"));
-		action->setEnabled(false);
-	}
+    if (Configuration.enabled())
+    {
+        action->setToolTip(tr("Insert emoticon"));
+        action->setEnabled(true);
+    }
+    else
+    {
+        action->setToolTip(tr("Insert emoticon - enable in configuration"));
+        action->setEnabled(false);
+    }
 }
 
 void InsertEmoticonAction::actionTriggered(QAction *sender, bool toggled)
 {
-	Q_UNUSED(toggled)
+    Q_UNUSED(toggled)
 
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	QList<QWidget *> widgets = sender->associatedWidgets();
-	if (widgets.isEmpty())
-		return;
+    QList<QWidget *> widgets = sender->associatedWidgets();
+    if (widgets.isEmpty())
+        return;
 
-	if (Configuration.emoticonTheme().emoticons().isEmpty())
-		return;
+    if (Configuration.emoticonTheme().emoticons().isEmpty())
+        return;
 
-	EmoticonPathProvider *emoticonPathProvider = Configuration.animate()
-			? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
-			: static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
+    EmoticonPathProvider *emoticonPathProvider =
+        Configuration.animate() ? static_cast<EmoticonPathProvider *>(new AnimatedEmoticonPathProvider())
+                                : static_cast<EmoticonPathProvider *>(new StaticEmoticonPathProvider());
 
-	EmoticonSelector *emoticonSelector = new EmoticonSelector(Configuration.emoticonTheme().emoticons(), emoticonPathProvider,
-			widgets.at(widgets.size() - 1));
-	connect(emoticonSelector, SIGNAL(emoticonClicked(QString)), chatEditBox, SLOT(insertPlainText(QString)));
-	emoticonSelector->show();
+    EmoticonSelector *emoticonSelector = new EmoticonSelector(
+        Configuration.emoticonTheme().emoticons(), emoticonPathProvider, widgets.at(widgets.size() - 1));
+    connect(emoticonSelector, SIGNAL(emoticonClicked(QString)), chatEditBox, SLOT(insertPlainText(QString)));
+    emoticonSelector->show();
 }
 
 void InsertEmoticonAction::setConfiguration(const EmoticonConfiguration &configuration)
 {
-	Configuration = configuration;
+    Configuration = configuration;
 
-	foreach (Action *action, actions())
-		updateActionState(action);
+    foreach (Action *action, actions())
+        updateActionState(action);
 }
 
 #include "moc_insert-emoticon-action.cpp"

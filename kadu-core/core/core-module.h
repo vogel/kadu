@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <injeqt/module.h>
 
@@ -28,12 +28,10 @@ class PathsProvider;
 
 class KADUAPI CoreModule : public injeqt::module
 {
-
 public:
-	explicit CoreModule(QString profileDirectory);
-	virtual ~CoreModule();
+    explicit CoreModule(QString profileDirectory);
+    virtual ~CoreModule();
 
 private:
-	not_owned_qptr<PathsProvider> m_pathsProvider;
-
+    not_owned_qptr<PathsProvider> m_pathsProvider;
 };

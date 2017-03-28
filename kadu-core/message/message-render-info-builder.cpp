@@ -21,63 +21,53 @@
 
 #include "message/message-render-info.h"
 
-MessageRenderInfoBuilder::MessageRenderInfoBuilder() :
-		m_includeHeader{true}, m_separatorSize{}, m_showServerTime{}
+MessageRenderInfoBuilder::MessageRenderInfoBuilder() : m_includeHeader{true}, m_separatorSize{}, m_showServerTime{}
 {
 }
 
-MessageRenderInfoBuilder & MessageRenderInfoBuilder::setMessage(Message message)
+MessageRenderInfoBuilder &MessageRenderInfoBuilder::setMessage(Message message)
 {
-	m_message = std::move(message);
-	return *this;
+    m_message = std::move(message);
+    return *this;
 }
 
-MessageRenderInfoBuilder & MessageRenderInfoBuilder::setBackgroundColor(QString backgroundColor)
+MessageRenderInfoBuilder &MessageRenderInfoBuilder::setBackgroundColor(QString backgroundColor)
 {
-	m_backgroundColor = std::move(backgroundColor);
-	return *this;
+    m_backgroundColor = std::move(backgroundColor);
+    return *this;
 }
 
-MessageRenderInfoBuilder & MessageRenderInfoBuilder::setFontColor(QString fontColor)
+MessageRenderInfoBuilder &MessageRenderInfoBuilder::setFontColor(QString fontColor)
 {
-	m_fontColor = std::move(fontColor);
-	return *this;
+    m_fontColor = std::move(fontColor);
+    return *this;
 }
 
-MessageRenderInfoBuilder & MessageRenderInfoBuilder::setNickColor(QString nickColor)
+MessageRenderInfoBuilder &MessageRenderInfoBuilder::setNickColor(QString nickColor)
 {
-	m_nickColor = std::move(nickColor);
-	return *this;
+    m_nickColor = std::move(nickColor);
+    return *this;
 }
 
 MessageRenderInfoBuilder &MessageRenderInfoBuilder::setIncludeHeader(bool includeHeader)
 {
-	m_includeHeader = includeHeader;
-	return *this;
+    m_includeHeader = includeHeader;
+    return *this;
 }
 
-MessageRenderInfoBuilder & MessageRenderInfoBuilder::setSeparatorSize(int separatorSize)
+MessageRenderInfoBuilder &MessageRenderInfoBuilder::setSeparatorSize(int separatorSize)
 {
-	m_separatorSize = separatorSize;
-	return *this;
+    m_separatorSize = separatorSize;
+    return *this;
 }
 
-MessageRenderInfoBuilder & MessageRenderInfoBuilder::setShowServerTime(bool showServerTime)
+MessageRenderInfoBuilder &MessageRenderInfoBuilder::setShowServerTime(bool showServerTime)
 {
-	m_showServerTime = showServerTime;
-	return *this;
+    m_showServerTime = showServerTime;
+    return *this;
 }
 
 MessageRenderInfo MessageRenderInfoBuilder::create()
 {
-	return
-	{
-		m_message,
-		m_backgroundColor,
-		m_fontColor,
-		m_nickColor,
-		m_includeHeader,
-		m_separatorSize,
-		m_showServerTime
-	};
+    return {m_message, m_backgroundColor, m_fontColor, m_nickColor, m_includeHeader, m_separatorSize, m_showServerTime};
 }

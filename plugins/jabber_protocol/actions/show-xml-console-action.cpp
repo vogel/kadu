@@ -32,123 +32,114 @@
 #include <QtCore/QTimer>
 #include <QtWidgets/QMenu>
 
-ShowXmlConsoleAction::ShowXmlConsoleAction(QObject *parent) :
-		ActionDescription(parent)
+ShowXmlConsoleAction::ShowXmlConsoleAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeMainMenu);
-	setName("showXmlConsole");
-	setText(tr("Show XML Console"));
+    setType(ActionDescription::TypeMainMenu);
+    setName("showXmlConsole");
+    setText(tr("Show XML Console"));
 }
 
 ShowXmlConsoleAction::~ShowXmlConsoleAction()
 {
-	// actions will delete their menus
-	m_menuInventory
-		->menu("tools")
-		->removeAction(this)
-		->update();
+    // actions will delete their menus
+    m_menuInventory->menu("tools")->removeAction(this)->update();
 }
 
 void ShowXmlConsoleAction::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void ShowXmlConsoleAction::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void ShowXmlConsoleAction::init()
 {
-	connect(m_accountManager, SIGNAL(accountAdded(Account)),
-			this, SLOT(updateShowXmlConsoleMenu()));
-	connect(m_accountManager, SIGNAL(accountRemoved(Account)),
-			this, SLOT(updateShowXmlConsoleMenu()));
+    connect(m_accountManager, SIGNAL(accountAdded(Account)), this, SLOT(updateShowXmlConsoleMenu()));
+    connect(m_accountManager, SIGNAL(accountRemoved(Account)), this, SLOT(updateShowXmlConsoleMenu()));
 
-	// It is needed bacause of loading protocol plugins before creating GUI.
-	// TODO: Fix somehow. Maybe creating all action descriptions could be delayed.
-	QTimer::singleShot(0, this, SLOT(insertMenuActionDescription()));
+    // It is needed bacause of loading protocol plugins before creating GUI.
+    // TODO: Fix somehow. Maybe creating all action descriptions could be delayed.
+    QTimer::singleShot(0, this, SLOT(insertMenuActionDescription()));
 }
 
 void ShowXmlConsoleAction::insertMenuActionDescription()
 {
-	m_menuInventory
-		->menu("tools")
-		->addAction(this, KaduMenu::SectionTools)
-		->update();
+    m_menuInventory->menu("tools")->addAction(this, KaduMenu::SectionTools)->update();
 }
 
 void ShowXmlConsoleAction::actionInstanceCreated(Action *action)
 {
-	Q_UNUSED(action)
+    Q_UNUSED(action)
 
-	// It may look like it was suboptimal but in reality there will be
-	// only one action instance.
-	updateShowXmlConsoleMenu();
+    // It may look like it was suboptimal but in reality there will be
+    // only one action instance.
+    updateShowXmlConsoleMenu();
 }
 
 void ShowXmlConsoleAction::actionTriggered(QAction *sender, bool toggled)
 {
-	Q_UNUSED(toggled)
+    Q_UNUSED(toggled)
 
-	menuActionTriggered(sender);
+    menuActionTriggered(sender);
 }
 
 void ShowXmlConsoleAction::updateShowXmlConsoleMenu()
 {
-	QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
+    QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
 
-	foreach (Action *action, actions())
-	{
-		QMenu *menu = action->menu();
-		if (jabberAccounts.isEmpty() || 1 == m_accountManager->items().count())
-		{
-			delete menu;
-			action->setMenu(0);
+    foreach (Action *action, actions())
+    {
+        QMenu *menu = action->menu();
+        if (jabberAccounts.isEmpty() || 1 == m_accountManager->items().count())
+        {
+            delete menu;
+            action->setMenu(0);
 
-			if (jabberAccounts.isEmpty())
-			{
-				action->setData(QVariant());
-				action->setVisible(false);
-			}
-			else
-			{
-				action->setData(QVariant::fromValue(jabberAccounts.at(0)));
-				action->setVisible(true);
-			}
-		}
-		else
-		{
-			if (menu)
-				menu->clear();
-			else
-			{
-				menu = new QMenu();
-				action->setMenu(menu);
-				connect(menu, SIGNAL(triggered(QAction*)),
-						this, SLOT(menuActionTriggered(QAction*)));
-			}
+            if (jabberAccounts.isEmpty())
+            {
+                action->setData(QVariant());
+                action->setVisible(false);
+            }
+            else
+            {
+                action->setData(QVariant::fromValue(jabberAccounts.at(0)));
+                action->setVisible(true);
+            }
+        }
+        else
+        {
+            if (menu)
+                menu->clear();
+            else
+            {
+                menu = new QMenu();
+                action->setMenu(menu);
+                connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(menuActionTriggered(QAction *)));
+            }
 
-			foreach (const Account &account, jabberAccounts)
-			{
-				QAction *menuAction = menu->addAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()));
-				menuAction->setData(QVariant::fromValue(account));
-			}
+            foreach (const Account &account, jabberAccounts)
+            {
+                QAction *menuAction =
+                    menu->addAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()));
+                menuAction->setData(QVariant::fromValue(account));
+            }
 
-			action->setData(QVariant());
-			action->setVisible(true);
-		}
-	}
+            action->setData(QVariant());
+            action->setVisible(true);
+        }
+    }
 }
 
 void ShowXmlConsoleAction::menuActionTriggered(QAction *action)
 {
-	Account account = action->data().value<Account>();
-	if (!account)
-		return;
+    Account account = action->data().value<Account>();
+    if (!account)
+        return;
 
-	(new XmlConsole(account))->show();
+    (new XmlConsole(account))->show();
 }
 
 #include "moc_show-xml-console-action.cpp"

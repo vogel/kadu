@@ -28,30 +28,29 @@ class AbstractAccountFilter;
 
 class AccountsProxyModel : public QSortFilterProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<AbstractAccountFilter *> Filters;
+    QList<AbstractAccountFilter *> Filters;
 
-	bool BrokenStringCompare;
-	int compareNames(QString n1, QString n2) const;
+    bool BrokenStringCompare;
+    int compareNames(QString n1, QString n2) const;
 
 private slots:
-	void filterChangedSlot();
+    void filterChangedSlot();
 
 protected:
-	virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
-	virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
+    virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
+    virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;
 
 public:
-	AccountsProxyModel(QObject *parent = nullptr);
-	virtual ~AccountsProxyModel();
+    AccountsProxyModel(QObject *parent = nullptr);
+    virtual ~AccountsProxyModel();
 
-	void addFilter(AbstractAccountFilter *filter);
-	void removeFilter(AbstractAccountFilter *filter);
+    void addFilter(AbstractAccountFilter *filter);
+    void removeFilter(AbstractAccountFilter *filter);
 
 signals:
-	void filterChanged();
-
+    void filterChanged();
 };
 
-#endif // ACCOUNTS_PROXY_MODEL_H
+#endif   // ACCOUNTS_PROXY_MODEL_H

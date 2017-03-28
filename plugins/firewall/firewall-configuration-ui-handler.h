@@ -36,34 +36,33 @@ class QTextEdit;
 
 class FirewallConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FirewallConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~FirewallConfigurationUiHandler();
+    Q_INVOKABLE explicit FirewallConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~FirewallConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<Configuration> m_configuration;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<Configuration> m_configuration;
 
-	QListWidget *AllList;
-	QListWidget *SecureList;
-	QTextEdit *QuestionEdit;
-	QLineEdit *AnswerEdit;
+    QListWidget *AllList;
+    QListWidget *SecureList;
+    QTextEdit *QuestionEdit;
+    QLineEdit *AnswerEdit;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 
-	void left(QListWidgetItem *);
-	void right(QListWidgetItem *);
-	void allLeft();
-	void allRight();
+    void left(QListWidgetItem *);
+    void right(QListWidgetItem *);
+    void allLeft();
+    void allRight();
 
-	void configurationApplied();
-
+    void configurationApplied();
 };

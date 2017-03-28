@@ -37,33 +37,32 @@ class PluginInjectedFactory;
 
 class PCSpeakerNotifier : public QObject, public Notifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PCSpeakerNotifier(QObject *parent = nullptr);
-	~PCSpeakerNotifier();
+    Q_INVOKABLE explicit PCSpeakerNotifier(QObject *parent = nullptr);
+    ~PCSpeakerNotifier();
 
-	virtual void notify(const Notification &notification) override;
-	virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) override;
+    virtual void notify(const Notification &notification) override;
+    virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr) override;
 
-	void parseAndPlay(QString linia);
+    void parseAndPlay(QString linia);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 #if defined(Q_OS_UNIX)
-	Display *xdisplay;
+    Display *xdisplay;
 #endif
-	int volume;
+    int volume;
 
-	void createDefaultConfiguration();
-	void parseStringToSound(QString linia, int tablica[21], int tablica2[20]);
-	void beep(int pitch, int duration);
-	void play(int sound[21], int soundlength[20]);
+    void createDefaultConfiguration();
+    void parseStringToSound(QString linia, int tablica[21], int tablica2[20]);
+    void beep(int pitch, int duration);
+    void play(int sound[21], int soundlength[20]);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

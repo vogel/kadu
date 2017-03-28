@@ -24,26 +24,25 @@
 
 #include "can-register-protocol-filter.h"
 
-CanRegisterProtocolFilter::CanRegisterProtocolFilter(QObject *parent) :
-		AbstractProtocolFilter(parent), Enabled(false)
+CanRegisterProtocolFilter::CanRegisterProtocolFilter(QObject *parent) : AbstractProtocolFilter(parent), Enabled(false)
 {
 }
 
 void CanRegisterProtocolFilter::setEnabled(bool enabled)
 {
-	if (enabled == Enabled)
-		return;
+    if (enabled == Enabled)
+        return;
 
-	Enabled = enabled;
-	emit filterChanged();
+    Enabled = enabled;
+    emit filterChanged();
 }
 
 bool CanRegisterProtocolFilter::acceptProtocol(ProtocolFactory *factory)
 {
-	if (!Enabled)
-		return true;
+    if (!Enabled)
+        return true;
 
-	return factory->canRegister();
+    return factory->canRegister();
 }
 
 #include "moc_can-register-protocol-filter.cpp"

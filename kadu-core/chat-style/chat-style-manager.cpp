@@ -43,244 +43,246 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 
-ChatStyleManager::ChatStyleManager(QObject *parent) :
-		QObject{parent},
-		CurrentEngine{},
-		CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{},
-		CfgNoHeaderInterval{}, ParagraphSeparator{}, Prune{}, NoServerTime{},
-		NoServerTimeDiff{}
+ChatStyleManager::ChatStyleManager(QObject *parent)
+        : QObject{parent}, CurrentEngine{}, CfgNoHeaderRepeat{}, CfgHeaderSeparatorHeight{}, CfgNoHeaderInterval{},
+          ParagraphSeparator{}, Prune{}, NoServerTime{}, NoServerTimeDiff{}
 {
 }
 
 ChatStyleManager::~ChatStyleManager()
 {
-	unregisterChatStyleEngine("Kadu");
-	unregisterChatStyleEngine("Adium");
+    unregisterChatStyleEngine("Kadu");
+    unregisterChatStyleEngine("Adium");
 }
 
 void ChatStyleManager::setAdiumStyleEngine(AdiumStyleEngine *adiumStyleEngine)
 {
-	m_adiumStyleEngine = adiumStyleEngine;
+    m_adiumStyleEngine = adiumStyleEngine;
 }
 
 void ChatStyleManager::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatConfigurationHolder = chatConfigurationHolder;
+    m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
 void ChatStyleManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
-void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider)
+void ChatStyleManager::setConfiguredChatStyleRendererFactoryProvider(
+    ConfiguredChatStyleRendererFactoryProvider *configuredChatStyleRendererFactoryProvider)
 {
-	m_configuredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
+    m_configuredChatStyleRendererFactoryProvider = configuredChatStyleRendererFactoryProvider;
 }
 
 void ChatStyleManager::setKaduStyleEngine(KaduStyleEngine *kaduStyleEngine)
 {
-	m_kaduStyleEngine = kaduStyleEngine;
+    m_kaduStyleEngine = kaduStyleEngine;
 }
 
 void ChatStyleManager::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void ChatStyleManager::init()
 {
-	registerChatStyleEngine("Kadu", m_kaduStyleEngine);
-	registerChatStyleEngine("Adium", m_adiumStyleEngine);
+    registerChatStyleEngine("Kadu", m_kaduStyleEngine);
+    registerChatStyleEngine("Adium", m_adiumStyleEngine);
 
-	loadStyles();
-	configurationUpdated();
-
+    loadStyles();
+    configurationUpdated();
 }
 
 void ChatStyleManager::registerChatStyleEngine(const QString &name, ChatStyleEngine *engine)
 {
-	m_engines.insert(std::make_pair(name, engine));
+    m_engines.insert(std::make_pair(name, engine));
 }
 
 void ChatStyleManager::unregisterChatStyleEngine(const QString &name)
 {
-	m_engines.erase(name);
+    m_engines.erase(name);
 }
 
 void ChatStyleManager::configurationUpdated()
 {
-	if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatPrune", true))
-		Prune = m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatPruneLen");
-	else
-	{
-		m_configuration->deprecatedApi()->writeEntry("Chat", "ChatPrune", true);
-		m_configuration->deprecatedApi()->writeEntry("Chat", "ChatPruneLen", 0);
-		Prune = 0;
-	}
+    if (m_configuration->deprecatedApi()->readBoolEntry("Chat", "ChatPrune", true))
+        Prune = m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatPruneLen");
+    else
+    {
+        m_configuration->deprecatedApi()->writeEntry("Chat", "ChatPrune", true);
+        m_configuration->deprecatedApi()->writeEntry("Chat", "ChatPruneLen", 0);
+        Prune = 0;
+    }
 
-	ParagraphSeparator = m_configuration->deprecatedApi()->readNumEntry("Look", "ParagraphSeparator");
+    ParagraphSeparator = m_configuration->deprecatedApi()->readNumEntry("Look", "ParagraphSeparator");
 
-	QFont font = m_configuration->deprecatedApi()->readFontEntry("Look","ChatFont");
+    QFont font = m_configuration->deprecatedApi()->readFontEntry("Look", "ChatFont");
 
-	QString fontFamily = font.family();
-	QString fontSize;
-	if (font.pointSize() > 0)
-		fontSize = QString::number(font.pointSize()) + "pt";
-	else
-		fontSize = QString::number(font.pixelSize()) + "px";
-	QString fontStyle = font.italic() ? "italic" : "normal";
-	QString fontWeight = font.bold() ? "bold" : "normal";
-	QString textDecoration = font.underline() ? "underline" : "none";
-	QString backgroundColor = "transparent";
-	if (m_chatConfigurationHolder->chatBgFilled())
-		backgroundColor = m_chatConfigurationHolder->chatBgColor().name();
+    QString fontFamily = font.family();
+    QString fontSize;
+    if (font.pointSize() > 0)
+        fontSize = QString::number(font.pointSize()) + "pt";
+    else
+        fontSize = QString::number(font.pixelSize()) + "px";
+    QString fontStyle = font.italic() ? "italic" : "normal";
+    QString fontWeight = font.bold() ? "bold" : "normal";
+    QString textDecoration = font.underline() ? "underline" : "none";
+    QString backgroundColor = "transparent";
+    if (m_chatConfigurationHolder->chatBgFilled())
+        backgroundColor = m_chatConfigurationHolder->chatBgColor().name();
 
-	MainStyle = QString(
-		"html {"
-		"	font: %1 %2 %3 %4;"
-		"	text-decoration: %5;"
-		"	word-wrap: break-word;"
-		"}"
-		"a {"
-		"	text-decoration: underline;"
-		"}"
-		"body {"
-		"	margin: %6;"
-		"	padding: 0;"
-		"	background-color: %7;"
-		"}"
-		"p {"
-		"	margin: 0;"
-		"	padding: 3px;"
-		"}").arg(fontStyle, fontWeight, fontSize, fontFamily, textDecoration, QString::number(ParagraphSeparator), backgroundColor);
+    MainStyle = QString(
+                    "html {"
+                    "	font: %1 %2 %3 %4;"
+                    "	text-decoration: %5;"
+                    "	word-wrap: break-word;"
+                    "}"
+                    "a {"
+                    "	text-decoration: underline;"
+                    "}"
+                    "body {"
+                    "	margin: %6;"
+                    "	padding: 0;"
+                    "	background-color: %7;"
+                    "}"
+                    "p {"
+                    "	margin: 0;"
+                    "	padding: 3px;"
+                    "}")
+                    .arg(
+                        fontStyle, fontWeight, fontSize, fontFamily, textDecoration,
+                        QString::number(ParagraphSeparator), backgroundColor);
 
-	CfgNoHeaderRepeat = m_configuration->deprecatedApi()->readBoolEntry("Look", "NoHeaderRepeat", true);
+    CfgNoHeaderRepeat = m_configuration->deprecatedApi()->readBoolEntry("Look", "NoHeaderRepeat", true);
 
-	// headers removal stuff
-	if (CfgNoHeaderRepeat)
-	{
-		CfgHeaderSeparatorHeight = m_configuration->deprecatedApi()->readNumEntry("Look", "HeaderSeparatorHeight");
-		CfgNoHeaderInterval = m_configuration->deprecatedApi()->readNumEntry("Look", "NoHeaderInterval");
-	}
-	else
-	{
-		CfgHeaderSeparatorHeight = 0;
-		CfgNoHeaderInterval = 0;
-	}
+    // headers removal stuff
+    if (CfgNoHeaderRepeat)
+    {
+        CfgHeaderSeparatorHeight = m_configuration->deprecatedApi()->readNumEntry("Look", "HeaderSeparatorHeight");
+        CfgNoHeaderInterval = m_configuration->deprecatedApi()->readNumEntry("Look", "NoHeaderInterval");
+    }
+    else
+    {
+        CfgHeaderSeparatorHeight = 0;
+        CfgNoHeaderInterval = 0;
+    }
 
-	NoServerTime = m_configuration->deprecatedApi()->readBoolEntry("Look", "NoServerTime");
-	NoServerTimeDiff = m_configuration->deprecatedApi()->readNumEntry("Look", "NoServerTimeDiff");
+    NoServerTime = m_configuration->deprecatedApi()->readBoolEntry("Look", "NoServerTime");
+    NoServerTimeDiff = m_configuration->deprecatedApi()->readNumEntry("Look", "NoServerTimeDiff");
 
-	auto newChatStyle = ChatStyle{m_configuration->deprecatedApi()->readEntry("Look", "Style"), m_configuration->deprecatedApi()->readEntry("Look", "ChatStyleVariant")};
+    auto newChatStyle = ChatStyle{m_configuration->deprecatedApi()->readEntry("Look", "Style"),
+                                  m_configuration->deprecatedApi()->readEntry("Look", "ChatStyleVariant")};
 
-	// if Style was changed, load new Style
-	if (!CurrentEngine || newChatStyle != m_currentChatStyle)
-	{
-		auto newStyleName = fixedStyleName(newChatStyle.name());
-		CurrentEngine = AvailableStyles.value(newStyleName).engine;
-		auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
-		m_currentChatStyle = {newStyleName, newVariantName};
+    // if Style was changed, load new Style
+    if (!CurrentEngine || newChatStyle != m_currentChatStyle)
+    {
+        auto newStyleName = fixedStyleName(newChatStyle.name());
+        CurrentEngine = AvailableStyles.value(newStyleName).engine;
+        auto newVariantName = fixedVariantName(newStyleName, newChatStyle.variant());
+        m_currentChatStyle = {newStyleName, newVariantName};
 
-		if (m_configuredChatStyleRendererFactoryProvider)
-			m_configuredChatStyleRendererFactoryProvider->setChatStyleRendererFactory(CurrentEngine->createRendererFactory(m_currentChatStyle));
-	}
+        if (m_configuredChatStyleRendererFactoryProvider)
+            m_configuredChatStyleRendererFactoryProvider->setChatStyleRendererFactory(
+                CurrentEngine->createRendererFactory(m_currentChatStyle));
+    }
 
-	emit chatStyleConfigurationUpdated();
+    emit chatStyleConfigurationUpdated();
 }
 
 QString ChatStyleManager::fixedStyleName(QString styleName)
 {
-	if (!AvailableStyles.contains(styleName))
-	{
-		styleName = "Satin";
-		if (!AvailableStyles.contains(styleName))
-		{
-			styleName = "kadu";
-			if (!AvailableStyles.contains(styleName))
-				styleName = *AvailableStyles.keys().constBegin();
-		}
-	}
+    if (!AvailableStyles.contains(styleName))
+    {
+        styleName = "Satin";
+        if (!AvailableStyles.contains(styleName))
+        {
+            styleName = "kadu";
+            if (!AvailableStyles.contains(styleName))
+                styleName = *AvailableStyles.keys().constBegin();
+        }
+    }
 
-	return styleName;
+    return styleName;
 }
 
 QString ChatStyleManager::fixedVariantName(const QString &styleName, QString variantName)
 {
-	if (!CurrentEngine->styleVariants(styleName).contains(variantName))
-		return CurrentEngine->defaultVariant(styleName);
+    if (!CurrentEngine->styleVariants(styleName).contains(variantName))
+        return CurrentEngine->defaultVariant(styleName);
 
-	return variantName;
+    return variantName;
 }
 
-//any better ideas?
+// any better ideas?
 void ChatStyleManager::loadStyles()
 {
-	QDir dir;
-	QString path, StyleName;
-	QFileInfo fi;
-	QStringList files;
+    QDir dir;
+    QString path, StyleName;
+    QFileInfo fi;
+    QStringList files;
 
-	path = m_pathsProvider->profilePath() + QStringLiteral("syntax/chat/");
-	dir.setPath(path);
+    path = m_pathsProvider->profilePath() + QStringLiteral("syntax/chat/");
+    dir.setPath(path);
 
-	files = dir.entryList();
+    files = dir.entryList();
 
-	AvailableStyles.clear(); // allow reloading of styles
+    AvailableStyles.clear();   // allow reloading of styles
 
-	foreach (const QString &file, files)
-	{
-		fi.setFile(path + file);
-		if (fi.isReadable() && !AvailableStyles.contains(file))
-		{
-			for (auto &&engine : m_engines)
-			{
-				StyleName = engine.second->isStyleValid(path + file);
-				if (!StyleName.isNull())
-				{
-					AvailableStyles[StyleName].engine = engine.second;
-					AvailableStyles[StyleName].global = false;
-					break;
-				}
-			}
-		}
-	}
+    foreach (const QString &file, files)
+    {
+        fi.setFile(path + file);
+        if (fi.isReadable() && !AvailableStyles.contains(file))
+        {
+            for (auto &&engine : m_engines)
+            {
+                StyleName = engine.second->isStyleValid(path + file);
+                if (!StyleName.isNull())
+                {
+                    AvailableStyles[StyleName].engine = engine.second;
+                    AvailableStyles[StyleName].global = false;
+                    break;
+                }
+            }
+        }
+    }
 
-	path = m_pathsProvider->dataPath() + QStringLiteral("syntax/chat/");
-	dir.setPath(path);
+    path = m_pathsProvider->dataPath() + QStringLiteral("syntax/chat/");
+    dir.setPath(path);
 
-	files = dir.entryList();
+    files = dir.entryList();
 
-	foreach (const QString &file, files)
-	{
-		fi.setFile(path + file);
-		if (fi.isReadable() && !AvailableStyles.contains(file))
-		{
-			for (auto &&engine : m_engines)
-			{
-				StyleName = engine.second->isStyleValid(path + file);
-				if (!StyleName.isNull())
-				{
-					AvailableStyles[StyleName].engine = engine.second;
-					AvailableStyles[StyleName].global = true;
-					break;
-				}
-			}
-		}
-	}
+    foreach (const QString &file, files)
+    {
+        fi.setFile(path + file);
+        if (fi.isReadable() && !AvailableStyles.contains(file))
+        {
+            for (auto &&engine : m_engines)
+            {
+                StyleName = engine.second->isStyleValid(path + file);
+                if (!StyleName.isNull())
+                {
+                    AvailableStyles[StyleName].engine = engine.second;
+                    AvailableStyles[StyleName].global = true;
+                    break;
+                }
+            }
+        }
+    }
 }
 
 bool ChatStyleManager::isChatStyleValid(const QString &name) const
 {
-	return AvailableStyles.contains(name) && AvailableStyles.value(name).engine;
+    return AvailableStyles.contains(name) && AvailableStyles.value(name).engine;
 }
 
 StyleInfo ChatStyleManager::chatStyleInfo(const QString &name) const
 {
-	if (AvailableStyles.contains(name))
-		return AvailableStyles.value(name);
-	else
-		return StyleInfo();
+    if (AvailableStyles.contains(name))
+        return AvailableStyles.value(name);
+    else
+        return StyleInfo();
 }
 
 #include "moc_chat-style-manager.cpp"

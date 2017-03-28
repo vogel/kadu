@@ -27,11 +27,11 @@
 
 FileTransferModule::FileTransferModule()
 {
-	add_type<FileTransferActions>();
-	add_type<FileTransferHandlerManager>();
-	add_type<FileTransferManager>();
-	add_type<FileTransferNotificationService>();
-	add_type<FileTransferStorage>();
+    add_type<FileTransferActions>();
+    add_type<FileTransferHandlerManager>();
+    add_type<FileTransferManager>();
+    add_type<FileTransferNotificationService>();
+    add_type<FileTransferStorage>();
 }
 
 FileTransferModule::~FileTransferModule()

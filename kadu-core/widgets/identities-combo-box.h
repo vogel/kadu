@@ -22,9 +22,9 @@
 
 #pragma once
 
+#include "exports.h"
 #include "identities/identity.h"
 #include "widgets/actions-combo-box.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -34,26 +34,25 @@ class InjectedFactory;
 
 class KADUAPI IdentitiesComboBox : public ActionsComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit IdentitiesComboBox(QWidget *parent = nullptr);
-	virtual ~IdentitiesComboBox();
+    explicit IdentitiesComboBox(QWidget *parent = nullptr);
+    virtual ~IdentitiesComboBox();
 
-	void setCurrentIdentity(Identity identity);
-	Identity currentIdentity();
+    void setCurrentIdentity(Identity identity);
+    Identity currentIdentity();
 
 private:
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QAction *CreateNewIdentityAction;
+    QAction *CreateNewIdentityAction;
 
 private slots:
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void createNewIdentity();
-
+    void createNewIdentity();
 };

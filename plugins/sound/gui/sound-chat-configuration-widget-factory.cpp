@@ -23,8 +23,7 @@
 #include "plugin/plugin-injected-factory.h"
 #include "sound-manager.h"
 
-SoundChatConfigurationWidgetFactory::SoundChatConfigurationWidgetFactory(QObject *parent) :
-		QObject{parent}
+SoundChatConfigurationWidgetFactory::SoundChatConfigurationWidgetFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,15 +33,15 @@ SoundChatConfigurationWidgetFactory::~SoundChatConfigurationWidgetFactory()
 
 void SoundChatConfigurationWidgetFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundChatConfigurationWidgetFactory::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
-ChatConfigurationWidget * SoundChatConfigurationWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
+ChatConfigurationWidget *SoundChatConfigurationWidgetFactory::createWidget(const Chat &chat, QWidget *parent)
 {
-	return m_pluginInjectedFactory->makeInjected<SoundChatConfigurationWidget>(chat, m_soundManager, parent);
+    return m_pluginInjectedFactory->makeInjected<SoundChatConfigurationWidget>(chat, m_soundManager, parent);
 }

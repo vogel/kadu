@@ -31,23 +31,22 @@
 
 #define PREVIEW_DEFAULT_HEIGHT 250
 
-Preview::Preview(QWidget *parent) :
-		QFrame(parent)
+Preview::Preview(QWidget *parent) : QFrame(parent)
 {
-	setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-	setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
-	setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    setFixedHeight(PREVIEW_DEFAULT_HEIGHT);
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setContentsMargins(0, 0, 0, 0);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setContentsMargins(0, 0, 0, 0);
 
-	m_webView = new KaduWebView(this);
-	layout->addWidget(m_webView);
+    m_webView = new KaduWebView(this);
+    layout->addWidget(m_webView);
 
-	QPalette p = palette();
-	p.setBrush(QPalette::Base, Qt::transparent);
-	m_webView->page()->setPalette(p);
-	m_webView->setAttribute(Qt::WA_OpaquePaintEvent, false);
+    QPalette p = palette();
+    p.setBrush(QPalette::Base, Qt::transparent);
+    m_webView->page()->setPalette(p);
+    m_webView->setAttribute(Qt::WA_OpaquePaintEvent, false);
 }
 
 Preview::~Preview()
@@ -56,26 +55,26 @@ Preview::~Preview()
 
 void Preview::setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory)
 {
-	m_buddyDummyFactory = buddyDummyFactory;
+    m_buddyDummyFactory = buddyDummyFactory;
 }
 
 void Preview::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
-KaduWebView * Preview::webView() const
+KaduWebView *Preview::webView() const
 {
-	return m_webView;
+    return m_webView;
 }
 
 void Preview::syntaxChanged(const QString &content)
 {
-	QString syntax = content;
-	QString text = m_parser->parse(syntax, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
-	emit needFixup(text);
+    QString syntax = content;
+    QString text = m_parser->parse(syntax, Talkable(m_buddyDummyFactory->dummy()), ParserEscape::HtmlEscape);
+    emit needFixup(text);
 
-	m_webView->setHtml(text);
+    m_webView->setHtml(text);
 }
 
 #include "moc_preview.cpp"

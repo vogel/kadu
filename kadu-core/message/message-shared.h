@@ -20,10 +20,10 @@
 
 #pragma once
 
+#include "exports.h"
 #include "html/normalized-html-string.h"
 #include "message/message-common.h"
 #include "storage/shared.h"
-#include "exports.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QPointer>
@@ -37,59 +37,57 @@ class UnreadMessageRepository;
 
 class KADUAPI MessageShared : public Shared
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit MessageShared(const QUuid &uuid = QUuid());
-	virtual ~MessageShared();
+    explicit MessageShared(const QUuid &uuid = QUuid());
+    virtual ~MessageShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	void setStatus(MessageStatus status);
+    void setStatus(MessageStatus status);
 
-	KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
-	KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
-	KaduShared_Property(const NormalizedHtmlString &, content, Content)
-	KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
-	KaduShared_Property(const QDateTime &, sendDate, SendDate)
-	KaduShared_PropertyRead(MessageStatus, status, Status)
-	KaduShared_Property(MessageType, type, Type)
-	KaduShared_Property(const QString &, id, Id)
+    KaduShared_PropertyDeclCRW(Chat, messageChat, MessageChat)
+        KaduShared_PropertyDeclCRW(Contact, messageSender, MessageSender)
+            KaduShared_Property(const NormalizedHtmlString &, content, Content)
+                KaduShared_Property(const QDateTime &, receiveDate, ReceiveDate)
+                    KaduShared_Property(const QDateTime &, sendDate, SendDate)
+                        KaduShared_PropertyRead(MessageStatus, status, Status)
+                            KaduShared_Property(MessageType, type, Type) KaduShared_Property(const QString &, id, Id)
 
-signals:
-	/**
-	 * @short Signal emited when message status was changed.
-	 * @param previousStatus status before change
-	 *
-	 * This signal is emited when message status changes.
-	 */
-	void statusChanged(MessageStatus previousStatus);
+                                signals :
+        /**
+         * @short Signal emited when message status was changed.
+         * @param previousStatus status before change
+         *
+         * This signal is emited when message status changes.
+         */
+        void statusChanged(MessageStatus previousStatus);
 
-	void updated();
+    void updated();
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	Chat *MessageChat;
-	Contact *MessageSender;
-	NormalizedHtmlString Content;
-	QDateTime ReceiveDate;
-	QDateTime SendDate;
-	MessageStatus Status;
-	MessageType Type;
-	QString Id;
+    Chat *MessageChat;
+    Contact *MessageSender;
+    NormalizedHtmlString Content;
+    QDateTime ReceiveDate;
+    QDateTime SendDate;
+    MessageStatus Status;
+    MessageType Type;
+    QString Id;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 };

@@ -25,14 +25,13 @@
 
 class KADUAPI VersionService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit VersionService(QObject *parent = nullptr);
-	virtual ~VersionService();
+    Q_INVOKABLE explicit VersionService(QObject *parent = nullptr);
+    virtual ~VersionService();
 
-	QString name() const;
-	QString version() const;
-	QString nameWithVersion() const;
-
+    QString name() const;
+    QString version() const;
+    QString nameWithVersion() const;
 };

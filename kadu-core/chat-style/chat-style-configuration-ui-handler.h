@@ -35,39 +35,38 @@ class QComboBox;
 
 class ChatStyleConfigurationUiHandler : public QObject, CompositingAwareObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatStyleConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~ChatStyleConfigurationUiHandler();
+    Q_INVOKABLE explicit ChatStyleConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~ChatStyleConfigurationUiHandler();
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
-	virtual void compositingEnabled() override;
-	virtual void compositingDisabled() override;
+    virtual void compositingEnabled() override;
+    virtual void compositingDisabled() override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	bool m_compositingEnabled;
+    bool m_compositingEnabled;
 
-	ChatStyleManager *m_chatStyleManager;
+    ChatStyleManager *m_chatStyleManager;
 
-	QComboBox *m_syntaxListCombo;
-	QComboBox *m_variantListCombo;
-	QCheckBox *m_turnOnTransparency;
-	ChatStylePreview *m_enginePreview;
+    QComboBox *m_syntaxListCombo;
+    QComboBox *m_variantListCombo;
+    QCheckBox *m_turnOnTransparency;
+    ChatStylePreview *m_enginePreview;
 
 private slots:
-	INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setChatStyleManager(ChatStyleManager *chatStyleManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void styleChangedSlot(const QString &styleName);
-	void variantChangedSlot(const QString &variantName);
-
+    void styleChangedSlot(const QString &styleName);
+    void variantChangedSlot(const QString &variantName);
 };

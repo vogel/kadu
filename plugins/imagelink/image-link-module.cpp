@@ -26,10 +26,10 @@
 
 ImageLinkModule::ImageLinkModule()
 {
-	add_type<ImageExpanderDomVisitorProvider>();
-	add_type<ImageLinkConfigurator>();
-	add_type<ImageLinkPluginObject>();
-	add_type<VideoExpanderDomVisitorProvider>();
+    add_type<ImageExpanderDomVisitorProvider>();
+    add_type<ImageLinkConfigurator>();
+    add_type<ImageLinkPluginObject>();
+    add_type<VideoExpanderDomVisitorProvider>();
 }
 
 ImageLinkModule::~ImageLinkModule()

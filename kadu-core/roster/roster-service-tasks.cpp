@@ -27,21 +27,20 @@
 
 QVector<RosterTask> RosterServiceTasks::updateTasksForContacts(const QVector<Contact> &contacts)
 {
-	auto result = QVector<RosterTask>{};
-	for (auto &&contact : contacts)
-	{
-		if (!contact.rosterEntry())
-			continue;
-		// add also synchronizing and detached contacts, roster service will take care
-		// of whether it should really do the merging
-		if (contact.rosterEntry()->state() != RosterEntryState::Synchronized)
-			result.append(RosterTask{RosterTaskType::Update, contact.id()});
-	}
-	return result;
+    auto result = QVector<RosterTask>{};
+    for (auto &&contact : contacts)
+    {
+        if (!contact.rosterEntry())
+            continue;
+        // add also synchronizing and detached contacts, roster service will take care
+        // of whether it should really do the merging
+        if (contact.rosterEntry()->state() != RosterEntryState::Synchronized)
+            result.append(RosterTask{RosterTaskType::Update, contact.id()});
+    }
+    return result;
 }
 
-RosterServiceTasks::RosterServiceTasks(QObject *parent) :
-		QObject{parent}
+RosterServiceTasks::RosterServiceTasks(QObject *parent) : QObject{parent}
 {
 }
 
@@ -51,79 +50,77 @@ RosterServiceTasks::~RosterServiceTasks()
 
 bool RosterServiceTasks::containsTask(const QString &id) const
 {
-	return m_idToTask.contains(id);
+    return m_idToTask.contains(id);
 }
 
 QVector<RosterTask> RosterServiceTasks::tasks()
 {
-	return m_tasks.toVector();
+    return m_tasks.toVector();
 }
 
 bool RosterServiceTasks::shouldReplaceTask(RosterTaskType taskType, RosterTaskType replacementType)
 {
-	Q_ASSERT(RosterTaskType::None != taskType);
-	Q_ASSERT(RosterTaskType::None != replacementType);
+    Q_ASSERT(RosterTaskType::None != taskType);
+    Q_ASSERT(RosterTaskType::None != replacementType);
 
-	if (RosterTaskType::Delete == taskType)
-		return true;
+    if (RosterTaskType::Delete == taskType)
+        return true;
 
-	if (RosterTaskType::Add == taskType)
-		return RosterTaskType::Delete == replacementType;
+    if (RosterTaskType::Add == taskType)
+        return RosterTaskType::Delete == replacementType;
 
-	return RosterTaskType::Update != replacementType;
+    return RosterTaskType::Update != replacementType;
 }
 
 void RosterServiceTasks::addTask(const RosterTask &task)
 {
-	if (!m_idToTask.contains(task.id()))
-	{
-		m_tasks.enqueue(task);
-		return;
-	}
+    if (!m_idToTask.contains(task.id()))
+    {
+        m_tasks.enqueue(task);
+        return;
+    }
 
-	auto existingTask = m_idToTask.value(task.id());
-	if (shouldReplaceTask(existingTask.type(), task.type()))
-	{
-		m_tasks.removeAll(existingTask);
-		m_idToTask.remove(task.id());
-		m_idToTask.insert(task.id(), task);
-		m_tasks.enqueue(task);
-	}
+    auto existingTask = m_idToTask.value(task.id());
+    if (shouldReplaceTask(existingTask.type(), task.type()))
+    {
+        m_tasks.removeAll(existingTask);
+        m_idToTask.remove(task.id());
+        m_idToTask.insert(task.id(), task);
+        m_tasks.enqueue(task);
+    }
 }
 
 void RosterServiceTasks::addTasks(const QVector<RosterTask> &tasks)
 {
-	for (auto const &task : tasks)
-		addTask(task);
+    for (auto const &task : tasks)
+        addTask(task);
 }
 
 RosterTaskType RosterServiceTasks::taskType(const QString &id)
 {
-	if (!m_idToTask.contains(id))
-		return RosterTaskType::None;
-	else
-		return m_idToTask.value(id).type();
+    if (!m_idToTask.contains(id))
+        return RosterTaskType::None;
+    else
+        return m_idToTask.value(id).type();
 }
 
 bool RosterServiceTasks::isEmpty() const
 {
-	return m_tasks.isEmpty();
+    return m_tasks.isEmpty();
 }
 
 RosterTask RosterServiceTasks::dequeue()
 {
-	Q_ASSERT(!isEmpty());
+    Q_ASSERT(!isEmpty());
 
-	auto result = m_tasks.dequeue();
-	m_idToTask.remove(result.id());
-	return result;
+    auto result = m_tasks.dequeue();
+    m_idToTask.remove(result.id());
+    return result;
 }
 
-RosterServiceTasks * rosterServiceTasks(RosterService *rs)
+RosterServiceTasks *rosterServiceTasks(RosterService *rs)
 {
-	return rs
-			? rs->tasks()
-			: nullptr;
+    return rs ? rs->tasks() : nullptr;
 }
 
 #include "moc_roster-service-tasks.cpp"

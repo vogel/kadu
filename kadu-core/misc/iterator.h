@@ -21,45 +21,45 @@
 
 #include <functional>
 
-template<typename Iterator, typename Type>
+template <typename Iterator, typename Type>
 class IteratorWrapper
 {
-
 public:
-	using Converter = std::function<Type(Iterator)>;
+    using Converter = std::function<Type(Iterator)>;
 
-	inline IteratorWrapper(Iterator iterator, Converter converter) : m_iterator{iterator}, m_converter{converter} {}
+    inline IteratorWrapper(Iterator iterator, Converter converter) : m_iterator{iterator}, m_converter{converter}
+    {
+    }
 
-	friend inline bool operator == (const IteratorWrapper &x, const IteratorWrapper &y)
-	{
-		return x.m_iterator == y.m_iterator;
-	}
+    friend inline bool operator==(const IteratorWrapper &x, const IteratorWrapper &y)
+    {
+        return x.m_iterator == y.m_iterator;
+    }
 
-	friend inline bool operator != (const IteratorWrapper &x, const IteratorWrapper &y)
-	{
-		return !(x == y);
-	}
+    friend inline bool operator!=(const IteratorWrapper &x, const IteratorWrapper &y)
+    {
+        return !(x == y);
+    }
 
-	inline IteratorWrapper & operator ++ ()
-	{
-		++m_iterator;
-		return *this;
-	}
+    inline IteratorWrapper &operator++()
+    {
+        ++m_iterator;
+        return *this;
+    }
 
-	inline IteratorWrapper operator ++ (int)
-	{
-		auto copy = m_iterator;
-		m_iterator++;
-		return IteratorWrapper{copy, m_converter};
-	}
+    inline IteratorWrapper operator++(int)
+    {
+        auto copy = m_iterator;
+        m_iterator++;
+        return IteratorWrapper{copy, m_converter};
+    }
 
-	inline Type operator * () const
-	{
-		return m_converter(m_iterator);
-	}
+    inline Type operator*() const
+    {
+        return m_converter(m_iterator);
+    }
 
 private:
-	Iterator m_iterator;
-	Converter m_converter;
-
+    Iterator m_iterator;
+    Converter m_converter;
 };

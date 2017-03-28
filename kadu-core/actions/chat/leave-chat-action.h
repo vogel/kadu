@@ -31,24 +31,23 @@ class IconsManager;
 
 class LeaveChatAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit LeaveChatAction(QObject *parent = nullptr);
-	virtual ~LeaveChatAction();
+    Q_INVOKABLE explicit LeaveChatAction(QObject *parent = nullptr);
+    virtual ~LeaveChatAction();
 
 protected:
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 private:
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

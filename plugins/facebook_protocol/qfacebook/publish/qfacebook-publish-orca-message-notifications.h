@@ -27,11 +27,11 @@
 
 struct QFacebookPublishOrcaMessageNotifications
 {
-	static QFacebookPublishOrcaMessageNotifications decode(const QByteArray &content);
+    static QFacebookPublishOrcaMessageNotifications decode(const QByteArray &content);
 
-	QFacebookUid otherUserFbid;
-	QFacebookUid senderFbid;
-	long long timestamp;
-	QFacebookMsgId offlineThreadingId;
-	QString body;
+    QFacebookUid otherUserFbid;
+    QFacebookUid senderFbid;
+    long long timestamp;
+    QFacebookMsgId offlineThreadingId;
+    QString body;
 };

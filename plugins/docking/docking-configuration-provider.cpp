@@ -24,8 +24,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-DockingConfigurationProvider::DockingConfigurationProvider(QObject *parent) :
-		QObject{parent}
+DockingConfigurationProvider::DockingConfigurationProvider(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,37 +34,36 @@ DockingConfigurationProvider::~DockingConfigurationProvider()
 
 void DockingConfigurationProvider::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void DockingConfigurationProvider::init()
 {
-	createDefaultConfiguration();
-	configurationUpdated();
+    createDefaultConfiguration();
+    configurationUpdated();
 }
 
 void DockingConfigurationProvider::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("General", "RunDocked", false);
-	m_configuration->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
-	m_configuration->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
+    m_configuration->deprecatedApi()->addVariable("General", "RunDocked", false);
+    m_configuration->deprecatedApi()->addVariable("General", "ShowTooltipInTray", true);
+    m_configuration->deprecatedApi()->addVariable("Look", "NewMessageIcon", 0);
 }
 
-const DockingConfiguration & DockingConfigurationProvider::configuration() const
+const DockingConfiguration &DockingConfigurationProvider::configuration() const
 {
-	return m_dockingConfiguration;
+    return m_dockingConfiguration;
 }
 
 void DockingConfigurationProvider::configurationUpdated()
 {
-	m_dockingConfiguration = DockingConfiguration
-	{
-		m_configuration->deprecatedApi()->readBoolEntry("General", "RunDocked"),
-		m_configuration->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"),
-		static_cast<StatusNotifierItemAttentionMode>(m_configuration->deprecatedApi()->readNumEntry("Look", "NewMessageIcon"))
-	};
+    m_dockingConfiguration =
+        DockingConfiguration{m_configuration->deprecatedApi()->readBoolEntry("General", "RunDocked"),
+                             m_configuration->deprecatedApi()->readBoolEntry("General", "ShowTooltipInTray"),
+                             static_cast<StatusNotifierItemAttentionMode>(
+                                 m_configuration->deprecatedApi()->readNumEntry("Look", "NewMessageIcon"))};
 
-	emit updated();
+    emit updated();
 }
 
 #include "moc_docking-configuration-provider.cpp"

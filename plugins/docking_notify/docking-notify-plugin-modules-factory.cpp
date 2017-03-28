@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-DockingNotifyPluginModulesFactory::DockingNotifyPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+DockingNotifyPluginModulesFactory::DockingNotifyPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ DockingNotifyPluginModulesFactory::~DockingNotifyPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> DockingNotifyPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<DockingNotifyModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<DockingNotifyModule>());
 
-	return modules;
+    return modules;
 }
 
 QString DockingNotifyPluginModulesFactory::parentInjectorName() const
 {
-	return "docking";
+    return "docking";
 }
 
 #include "moc_docking-notify-plugin-modules-factory.cpp"

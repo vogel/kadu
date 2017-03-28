@@ -23,14 +23,14 @@
 
 #include "actions/actions.h"
 
-StopAction::StopAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+StopAction::StopAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-stop"});
-	setName(QStringLiteral("mediaplayer_stop"));
-	setText(tr("Stop"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"external_modules/mediaplayer-media-playback-stop"});
+    setName(QStringLiteral("mediaplayer_stop"));
+    setText(tr("Stop"));
+    setType(ActionDescription::TypeChat);
 }
 
 StopAction::~StopAction()
@@ -39,12 +39,12 @@ StopAction::~StopAction()
 
 void StopAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void StopAction::actionTriggered(QAction *, bool)
 {
-	m_mediaPlayer->stop();
+    m_mediaPlayer->stop();
 }
 
 #include "moc_stop-action.cpp"

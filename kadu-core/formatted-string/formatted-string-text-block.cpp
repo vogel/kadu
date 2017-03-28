@@ -21,8 +21,9 @@
 
 #include "formatted-string-text-block.h"
 
-FormattedStringTextBlock::FormattedStringTextBlock(const QString &content, bool bold, bool italic, bool underline, QColor color) :
-		Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
+FormattedStringTextBlock::FormattedStringTextBlock(
+    const QString &content, bool bold, bool italic, bool underline, QColor color)
+        : Content(content), Bold(bold), Italic(italic), Underline(underline), Color(color)
 {
 }
 
@@ -30,51 +31,48 @@ FormattedStringTextBlock::~FormattedStringTextBlock()
 {
 }
 
-
-bool FormattedStringTextBlock::operator == (const FormattedString &compareTo)
+bool FormattedStringTextBlock::operator==(const FormattedString &compareTo)
 {
-	const FormattedStringTextBlock *compareToPointer = dynamic_cast<const FormattedStringTextBlock *>(&compareTo);
-	if (!compareToPointer)
-		return false;
+    const FormattedStringTextBlock *compareToPointer = dynamic_cast<const FormattedStringTextBlock *>(&compareTo);
+    if (!compareToPointer)
+        return false;
 
-	return Content == compareToPointer->Content
-	    && Bold == compareToPointer->Bold
-	    && Italic == compareToPointer->Italic
-	    && Underline == compareToPointer->Underline
-	    && Color == compareToPointer->Color;
+    return Content == compareToPointer->Content && Bold == compareToPointer->Bold &&
+           Italic == compareToPointer->Italic && Underline == compareToPointer->Underline &&
+           Color == compareToPointer->Color;
 }
 
 void FormattedStringTextBlock::accept(FormattedStringVisitor *visitor) const
 {
-	visitor->visit(this);
+    visitor->visit(this);
 }
 
 bool FormattedStringTextBlock::isEmpty() const
 {
-	return Content.isEmpty();
+    return Content.isEmpty();
 }
 
 QString FormattedStringTextBlock::content() const
 {
-	return Content;
+    return Content;
 }
 
 bool FormattedStringTextBlock::bold() const
 {
-	return Bold;
+    return Bold;
 }
 
 bool FormattedStringTextBlock::italic() const
 {
-	return Italic;
+    return Italic;
 }
 
 bool FormattedStringTextBlock::underline() const
 {
-	return Underline;
+    return Underline;
 }
 
 QColor FormattedStringTextBlock::color() const
 {
-	return Color;
+    return Color;
 }

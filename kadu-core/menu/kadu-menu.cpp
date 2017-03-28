@@ -25,18 +25,15 @@
 #include "actions/action.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
+#include "menu-item.h"
 #include "menu/menu-inventory.h"
 #include "protocols/protocol-menu-manager.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
-#include "menu-item.h"
 
 #include "kadu-menu.h"
 
-KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) :
-		QObject{parent},
-		Category{category},
-		IsSorted{true}
+KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) : QObject{parent}, Category{category}, IsSorted{true}
 {
 }
 
@@ -46,188 +43,184 @@ KaduMenu::~KaduMenu()
 
 void KaduMenu::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void KaduMenu::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void KaduMenu::menuDestroyed(QObject *object)
 {
-	Menus.removeAll(object);
+    Menus.removeAll(object);
 }
 
 void KaduMenu::attachToMenu(QMenu *menu)
 {
-	if (!menu)
-		return;
+    if (!menu)
+        return;
 
-	Menus.append(menu);
-	connect(menu, SIGNAL(destroyed(QObject*)), this, SLOT(menuDestroyed(QObject*)));
+    Menus.append(menu);
+    connect(menu, SIGNAL(destroyed(QObject *)), this, SLOT(menuDestroyed(QObject *)));
 }
 
-void KaduMenu::detachFromMenu(QMenu* menu)
+void KaduMenu::detachFromMenu(QMenu *menu)
 {
-	if (!menu)
-		return;
+    if (!menu)
+        return;
 
-	Menus.removeAll(menu);
-	disconnect(menu, SIGNAL(destroyed(QObject*)), this, SLOT(menuDestroyed(QObject*)));
+    Menus.removeAll(menu);
+    disconnect(menu, SIGNAL(destroyed(QObject *)), this, SLOT(menuDestroyed(QObject *)));
 }
 
 bool KaduMenu::empty() const
 {
-	return Items.empty();
+    return Items.empty();
 }
 
-KaduMenu * KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority)
+KaduMenu *KaduMenu::addAction(ActionDescription *actionDescription, KaduMenu::MenuSection section, int priority)
 {
-	Items.append(new MenuItem(actionDescription, section, priority));
-	IsSorted = false;
+    Items.append(new MenuItem(actionDescription, section, priority));
+    IsSorted = false;
 
-	return this;
+    return this;
 }
 
-KaduMenu * KaduMenu::removeAction(ActionDescription *actionDescription)
+KaduMenu *KaduMenu::removeAction(ActionDescription *actionDescription)
 {
-	QList<MenuItem*>::iterator i = Items.begin();
+    QList<MenuItem *>::iterator i = Items.begin();
 
-	while (i != Items.end())
-	{
-		if ((*i)->actionDescription() == actionDescription)
-			i = Items.erase(i);
-		else
-			++i;
-	}
+    while (i != Items.end())
+    {
+        if ((*i)->actionDescription() == actionDescription)
+            i = Items.erase(i);
+        else
+            ++i;
+    }
 
-	return this;
+    return this;
 }
 
 bool KaduMenu::lessThan(const MenuItem *a, const MenuItem *b)
 {
-	if (a->section() == b->section())
-	{
-		return a->priority() > b->priority();
-	}
+    if (a->section() == b->section())
+    {
+        return a->priority() > b->priority();
+    }
 
-	return a->section() < b->section();
+    return a->section() < b->section();
 }
 
 void KaduMenu::sort()
 {
-	if (IsSorted)
-		return;
+    if (IsSorted)
+        return;
 
-	qSort(Items.begin(), Items.end(), lessThan);
-	IsSorted = true;
+    qSort(Items.begin(), Items.end(), lessThan);
+    IsSorted = true;
 }
 
 void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 {
-	sort();
+    sort();
 
-	ActionContext *actionContext = context
-		? context
-		: getActionContext();
+    ActionContext *actionContext = context ? context : getActionContext();
 
-	auto firstItem = true;
-	auto actionsFirstItem = true;
-	MenuSection latestSection = KaduMenu::SectionAbout; // prevent 4.9 from complaining
+    auto firstItem = true;
+    auto actionsFirstItem = true;
+    MenuSection latestSection = KaduMenu::SectionAbout;   // prevent 4.9 from complaining
 
-	QMenu *actions = new QMenu(tr("More Actions..."), menu);
+    QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
-	foreach (MenuItem *menuItem, Items)
-	{
-		if (!menuItem->actionDescription())
-			continue;
+    foreach (MenuItem *menuItem, Items)
+    {
+        if (!menuItem->actionDescription())
+            continue;
 
-		auto isActions = menuItem->section() == KaduMenu::SectionActions || menuItem->section() == KaduMenu::KaduMenu::SectionActionsGui;
-		auto currentMenu = isActions
-			? actions
-			: menu;
-		auto menuFirstItem = isActions
-			? &actionsFirstItem
-			: &firstItem;
+        auto isActions = menuItem->section() == KaduMenu::SectionActions ||
+                         menuItem->section() == KaduMenu::KaduMenu::SectionActionsGui;
+        auto currentMenu = isActions ? actions : menu;
+        auto menuFirstItem = isActions ? &actionsFirstItem : &firstItem;
 
-		if (!*menuFirstItem && latestSection != menuItem->section())
-			currentMenu->addSeparator();
+        if (!*menuFirstItem && latestSection != menuItem->section())
+            currentMenu->addSeparator();
 
-		auto parent = currentMenu->parent() ? currentMenu->parent() : currentMenu;
-		Action *action = menuItem->actionDescription()->createAction(actionContext, parent);
-		currentMenu->addAction(action);
-		action->checkState();
+        auto parent = currentMenu->parent() ? currentMenu->parent() : currentMenu;
+        Action *action = menuItem->actionDescription()->createAction(actionContext, parent);
+        currentMenu->addAction(action);
+        action->checkState();
 
-		latestSection = menuItem->section();
-		*menuFirstItem = false;
-	}
+        latestSection = menuItem->section();
+        *menuFirstItem = false;
+    }
 
-	if ("buddy-list" != Category)
-		return;
+    if ("buddy-list" != Category)
+        return;
 
-	auto isContact = actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size();
-	auto isOneContactbuddy = actionContext->roles().contains(BuddyRole) && 1 == actionContext->buddies().size() && 1 == actionContext->buddies().begin()->contacts().size();
-	if (isContact || isOneContactbuddy)
-	{
-		foreach (ProtocolMenuManager *manager, m_menuInventory->protocolMenuManagers())
-		{
-			Contact contact = *actionContext->contacts().constBegin();
-			if (contact.contactAccount().protocolName() != manager->protocolName())
-				continue;
+    auto isContact = actionContext->roles().contains(ContactRole) && 1 == actionContext->contacts().size();
+    auto isOneContactbuddy = actionContext->roles().contains(BuddyRole) && 1 == actionContext->buddies().size() &&
+                             1 == actionContext->buddies().begin()->contacts().size();
+    if (isContact || isOneContactbuddy)
+    {
+        foreach (ProtocolMenuManager *manager, m_menuInventory->protocolMenuManagers())
+        {
+            Contact contact = *actionContext->contacts().constBegin();
+            if (contact.contactAccount().protocolName() != manager->protocolName())
+                continue;
 
-			if (!firstItem && !manager->protocolActions().isEmpty())
-				actions->addSeparator();
+            if (!firstItem && !manager->protocolActions().isEmpty())
+                actions->addSeparator();
 
-			foreach (ActionDescription *actionDescription, manager->protocolActions())
-			{
-				if (actionDescription)
-				{
-					Action *action = actionDescription->createAction(actionContext, menu->parent());
-					actions->addAction(action);
-					action->checkState();
-				}
-				else
-					actions->addSeparator();
-			}
-		}
-	}
+            foreach (ActionDescription *actionDescription, manager->protocolActions())
+            {
+                if (actionDescription)
+                {
+                    Action *action = actionDescription->createAction(actionContext, menu->parent());
+                    actions->addAction(action);
+                    action->checkState();
+                }
+                else
+                    actions->addSeparator();
+            }
+        }
+    }
 
-	if (actions->actions().size() > 0)
-		menu->addMenu(actions);
-	else
-		delete actions;
+    if (actions->actions().size() > 0)
+        menu->addMenu(actions);
+    else
+        delete actions;
 }
 
 void KaduMenu::applyTo(QMenu *menu, ActionContext *context)
 {
-	menu->clear();
-	appendTo(menu, context);
+    menu->clear();
+    appendTo(menu, context);
 }
 
 void KaduMenu::updateGuiMenuLater()
 {
-	QTimer::singleShot(1000, this, SLOT(updateGuiMenuSlot()));
+    QTimer::singleShot(1000, this, SLOT(updateGuiMenuSlot()));
 }
 
 void KaduMenu::updateGuiMenuSlot()
 {
-	for (auto menu : Menus)
-	{
-		auto m = qobject_cast<QMenu *>(menu);
-		if (m)
-			applyTo(m);
-	}
+    for (auto menu : Menus)
+    {
+        auto m = qobject_cast<QMenu *>(menu);
+        if (m)
+            applyTo(m);
+    }
 }
 
-ActionContext * KaduMenu::getActionContext()
+ActionContext *KaduMenu::getActionContext()
 {
-	return m_kaduWindowService->kaduWindow()->actionContext();
+    return m_kaduWindowService->kaduWindow()->actionContext();
 }
 
 void KaduMenu::update()
 {
-	updateGuiMenuLater();
+    updateGuiMenuLater();
 }
 
 #include "moc_kadu-menu.cpp"

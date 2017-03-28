@@ -26,8 +26,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLineEdit>
 
-AutoresponderConfigurationUiHandler::AutoresponderConfigurationUiHandler(QObject *parent) :
-		QObject{parent}
+AutoresponderConfigurationUiHandler::AutoresponderConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,10 +34,12 @@ AutoresponderConfigurationUiHandler::~AutoresponderConfigurationUiHandler()
 {
 }
 
-void AutoresponderConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
+void AutoresponderConfigurationUiHandler::mainConfigurationWindowCreated(
+    MainConfigurationWindow *mainConfigurationWindow)
 {
-	auto autoRespondTextLineEdit = qobject_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
-	autoRespondTextLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxText));
+    auto autoRespondTextLineEdit =
+        qobject_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoresponder/autoRespondText"));
+    autoRespondTextLineEdit->setToolTip(QCoreApplication::translate("@default", MainConfigurationWindow::SyntaxText));
 }
 
 void AutoresponderConfigurationUiHandler::mainConfigurationWindowDestroyed()

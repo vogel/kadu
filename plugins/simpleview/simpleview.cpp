@@ -47,226 +47,228 @@
 #include "simpleview-config-ui.h"
 #include "simpleview.h"
 
-SimpleView::SimpleView(QObject *parent) :
-	QObject{parent},
-	SimpleViewActive(false)
+SimpleView::SimpleView(QObject *parent) : QObject{parent}, SimpleViewActive(false)
 {
 }
 
 SimpleView::~SimpleView()
 {
-	simpleViewToggle(false);
+    simpleViewToggle(false);
 }
 
 void SimpleView::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SimpleView::setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository)
 {
-	m_dockingMenuActionRepository = dockingMenuActionRepository;
+    m_dockingMenuActionRepository = dockingMenuActionRepository;
 }
 
 void SimpleView::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void SimpleView::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void SimpleView::init()
 {
-	SimpleViewConfigUi::createDefaultConfiguration(m_configuration);
+    SimpleViewConfigUi::createDefaultConfiguration(m_configuration);
 
-	DockAction = new QAction(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Simple view"), this);
-	DockAction->setCheckable(true);
-	connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
+    DockAction = new QAction(m_iconsManager->iconByPath(KaduIcon("view-refresh")), tr("Simple view"), this);
+    DockAction->setCheckable(true);
+    connect(DockAction, SIGNAL(triggered(bool)), this, SLOT(simpleViewToggle(bool)));
 
-	KaduWindowHandle = m_kaduWindowService->kaduWindow();
-	MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
-	auto roster = KaduWindowHandle->findChild<RosterWidget *>();
-	GroupTabBarHandle = roster->findChild<GroupTabBar *>();
-	TalkableTreeViewHandle = roster->talkableTreeView();
-	StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
+    KaduWindowHandle = m_kaduWindowService->kaduWindow();
+    MainWindowHandle = KaduWindowHandle->findMainWindow(KaduWindowHandle);
+    auto roster = KaduWindowHandle->findChild<RosterWidget *>();
+    GroupTabBarHandle = roster->findChild<GroupTabBar *>();
+    TalkableTreeViewHandle = roster->talkableTreeView();
+    StatusButtonsHandle = KaduWindowHandle->findChild<StatusButtons *>();
 
-	m_dockingMenuActionRepository->addAction(DockAction);
+    m_dockingMenuActionRepository->addAction(DockAction);
 
-	DiffRect = m_configuration->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
-	if (DiffRect != QRect(0,0,0,0))
-		simpleViewToggle(true);
-	configurationUpdated();
+    DiffRect = m_configuration->deprecatedApi()->readRectEntry("Look", "SimpleViewGeometry");
+    if (DiffRect != QRect(0, 0, 0, 0))
+        simpleViewToggle(true);
+    configurationUpdated();
 }
 
 void SimpleView::done()
 {
-	m_configuration->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
-	m_dockingMenuActionRepository->removeAction(DockAction);
+    m_configuration->deprecatedApi()->writeEntry("Look", "SimpleViewGeometry", DiffRect);
+    m_dockingMenuActionRepository->removeAction(DockAction);
 }
 
 void SimpleView::simpleViewToggle(bool activate)
 {
-	/* This is very 'el hacha',
-	 * but this way we do not change the main code.
-	 *
-	 * The parent-child tree is:
-	 * MainWindow/KaduWindow
-	 * +-QWidget (MainWidget)
-	 *   =QVBoxLayout (MainLayout)
-	 *   +-QSplitter (Split)
-	 *     +-RosterWidget (Roster)
-	 *     | +-GroupTabBar (GroupBar)
-	 *     | + TalkableTreeView (TalkableTree)
-	 *     |   This contains buddy list tree
-	 *     +-BuddyInfoPanel (InfoPanel)
-	 */
-	if (activate != SimpleViewActive)
-	{
-		Qt::WindowFlags flags;
-		QRect mr, r;
+    /* This is very 'el hacha',
+     * but this way we do not change the main code.
+     *
+     * The parent-child tree is:
+     * MainWindow/KaduWindow
+     * +-QWidget (MainWidget)
+     *   =QVBoxLayout (MainLayout)
+     *   +-QSplitter (Split)
+     *     +-RosterWidget (Roster)
+     *     | +-GroupTabBar (GroupBar)
+     *     | + TalkableTreeView (TalkableTree)
+     *     |   This contains buddy list tree
+     *     +-BuddyInfoPanel (InfoPanel)
+     */
+    if (activate != SimpleViewActive)
+    {
+        Qt::WindowFlags flags;
+        QRect mr, r;
 
-		SimpleViewActive = activate;
+        SimpleViewActive = activate;
 
-		flags = MainWindowHandle->windowFlags();
-		mr = MainWindowHandle->geometry();
+        flags = MainWindowHandle->windowFlags();
+        mr = MainWindowHandle->geometry();
 
-		if (SimpleViewActive)
-		{
-			if (DiffRect == QRect(0,0,0,0))
-			{
-				if (KeepSize)
-				{
-					r.setTopLeft(TalkableTreeViewHandle->mapToGlobal(TalkableTreeViewHandle->rect().topLeft()));
-					r.setSize(TalkableTreeViewHandle->rect().size());
-				}
-				else
-					r = MainWindowHandle->frameGeometry();
+        if (SimpleViewActive)
+        {
+            if (DiffRect == QRect(0, 0, 0, 0))
+            {
+                if (KeepSize)
+                {
+                    r.setTopLeft(TalkableTreeViewHandle->mapToGlobal(TalkableTreeViewHandle->rect().topLeft()));
+                    r.setSize(TalkableTreeViewHandle->rect().size());
+                }
+                else
+                    r = MainWindowHandle->frameGeometry();
 
-				DiffRect.setRect(mr.x() - r.x(), mr.y() - r.y(), mr.width() - r.width(), mr.height() - r.height());
-			}
-			else
-				/* Since latest changes main window position is stored into the config
-				 * BEFORE the plugins are done(). It means the modified position is stored
-				 * instead original one.
-				 * r.setRect(mr.x() - DiffRect.x(), mr.y() - DiffRect.y(), mr.width() - DiffRect.width(), mr.height() - DiffRect.height());
-				 * So now simply use unchanged window position.
-				 */
-				 r = mr;
+                DiffRect.setRect(mr.x() - r.x(), mr.y() - r.y(), mr.width() - r.width(), mr.height() - r.height());
+            }
+            else
+                /* Since latest changes main window position is stored into the config
+                 * BEFORE the plugins are done(). It means the modified position is stored
+                 * instead original one.
+                 * r.setRect(mr.x() - DiffRect.x(), mr.y() - DiffRect.y(), mr.width() - DiffRect.width(), mr.height() -
+                 * DiffRect.height());
+                 * So now simply use unchanged window position.
+                 */
+                r = mr;
 
-			if (Borderless)
-				BuddiesListViewStyle = TalkableTreeViewHandle->styleSheet();
+            if (Borderless)
+                BuddiesListViewStyle = TalkableTreeViewHandle->styleSheet();
 
-			MainWindowHandle->hide();
+            MainWindowHandle->hide();
 
-			/* Toolbars */
-			foreach (QObject *object, MainWindowHandle->children())
-			{
-				QToolBar *toolBar = qobject_cast<QToolBar *>(object);
-				if (toolBar)
-					toolBar->setVisible(false);
-			}
+            /* Toolbars */
+            foreach (QObject *object, MainWindowHandle->children())
+            {
+                QToolBar *toolBar = qobject_cast<QToolBar *>(object);
+                if (toolBar)
+                    toolBar->setVisible(false);
+            }
 
-			/* Menu bar */
-			KaduWindowHandle->menuBar()->hide();
+            /* Menu bar */
+            KaduWindowHandle->menuBar()->hide();
 
-			/* GroupBar */
-			GroupTabBarHandle->setVisible(false);
+            /* GroupBar */
+            GroupTabBarHandle->setVisible(false);
 
-			/* Filter */
-			/* Note: filter hides/shows now automatically.
-			 * BuddiesListWidgetHandle->nameFilterWidget()->hide();
-			 */
+            /* Filter */
+            /* Note: filter hides/shows now automatically.
+             * BuddiesListWidgetHandle->nameFilterWidget()->hide();
+             */
 
-			/* ScrollBar */
-			if (NoScrollBar)
-				TalkableTreeViewHandle->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+            /* ScrollBar */
+            if (NoScrollBar)
+                TalkableTreeViewHandle->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-			/* Info panel*/
-			KaduWindowHandle->infoPanel()->hide();
+            /* Info panel*/
+            KaduWindowHandle->infoPanel()->hide();
 
-			/* Status button */
-			StatusButtonsHandle->hide();
+            /* Status button */
+            StatusButtonsHandle->hide();
 
-			MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
+            MainWindowHandle->setWindowFlags(flags | Qt::FramelessWindowHint);
 
-			MainWindowHandle->setGeometry(r);
+            MainWindowHandle->setGeometry(r);
 
-			if (Borderless)
-				TalkableTreeViewHandle->setStyleSheet(QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
-		}
-		else
-		{
-			MainWindowHandle->hide();
+            if (Borderless)
+                TalkableTreeViewHandle->setStyleSheet(
+                    QString("QTreeView { border-style: none; }") + BuddiesListViewStyle);
+        }
+        else
+        {
+            MainWindowHandle->hide();
 
-			if (Borderless)
-				TalkableTreeViewHandle->setStyleSheet(BuddiesListViewStyle);
+            if (Borderless)
+                TalkableTreeViewHandle->setStyleSheet(BuddiesListViewStyle);
 
-			r.setRect(mr.x() + DiffRect.x(), mr.y() + DiffRect.y(), mr.width() + DiffRect.width(), mr.height() + DiffRect.height());
+            r.setRect(
+                mr.x() + DiffRect.x(), mr.y() + DiffRect.y(), mr.width() + DiffRect.width(),
+                mr.height() + DiffRect.height());
 
-			MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
+            MainWindowHandle->setWindowFlags(flags & ~(Qt::FramelessWindowHint));
 
-			MainWindowHandle->setGeometry(r);
+            MainWindowHandle->setGeometry(r);
 
-			/* Status button */
-			StatusButtonsHandle->setVisible(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
+            /* Status button */
+            StatusButtonsHandle->setVisible(
+                m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowStatusButton"));
 
-			/* Info panel*/
-			if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
-				KaduWindowHandle->infoPanel()->show();
+            /* Info panel*/
+            if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+                KaduWindowHandle->infoPanel()->show();
 
-			/* ScrollBar */
-			TalkableTreeViewHandle->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+            /* ScrollBar */
+            TalkableTreeViewHandle->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
-			/* Filter */
-			/* Note: filter hides/shows now automatically.
-			 * BuddiesListWidgetHandle->nameFilterWidget()->show();
-			 */
+            /* Filter */
+            /* Note: filter hides/shows now automatically.
+             * BuddiesListWidgetHandle->nameFilterWidget()->show();
+             */
 
-			/* GroupBar */
-			if (m_configuration->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
-				GroupTabBarHandle->setVisible(true);
+            /* GroupBar */
+            if (m_configuration->deprecatedApi()->readBoolEntry("Look", "DisplayGroupTabs"))
+                GroupTabBarHandle->setVisible(true);
 
-			/* Menu bar */
-			KaduWindowHandle->menuBar()->show();
+            /* Menu bar */
+            KaduWindowHandle->menuBar()->show();
 
-			/* Toolbars */
-			foreach (QObject *object, MainWindowHandle->children())
-			{
-				QToolBar *toolBar = qobject_cast<QToolBar *>(object);
-				if (toolBar)
-					toolBar->setVisible(true);
-			}
+            /* Toolbars */
+            foreach (QObject *object, MainWindowHandle->children())
+            {
+                QToolBar *toolBar = qobject_cast<QToolBar *>(object);
+                if (toolBar)
+                    toolBar->setVisible(true);
+            }
 
-			DiffRect = QRect(0,0,0,0);
-		}
-		MainWindowHandle->show();
-		DockAction->setChecked(SimpleViewActive);
-	}
+            DiffRect = QRect(0, 0, 0, 0);
+        }
+        MainWindowHandle->show();
+        DockAction->setChecked(SimpleViewActive);
+    }
 }
 
 void SimpleView::compositingEnabled()
 {
-	/* Give the kadu update the GUI */
-	simpleViewToggle(false);
+    /* Give the kadu update the GUI */
+    simpleViewToggle(false);
 }
 void SimpleView::compositingDisabled()
 {
-	/* Give the kadu update the GUI */
-	simpleViewToggle(false);
+    /* Give the kadu update the GUI */
+    simpleViewToggle(false);
 }
 
 void SimpleView::configurationUpdated()
 {
-	/* Give the kadu update the GUI with old configuration */
-	simpleViewToggle(false);
+    /* Give the kadu update the GUI with old configuration */
+    simpleViewToggle(false);
 
-	KeepSize = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
-	NoScrollBar = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
-	Borderless = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
-
+    KeepSize = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewKeepSize", true);
+    NoScrollBar = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
+    Borderless = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 }
 
 #include "moc_simpleview.cpp"

@@ -25,9 +25,8 @@
 
 #include <QtCore/QMimeData>
 
-ChatListMimeDataService::ChatListMimeDataService(QObject *parent) :
-		QObject{parent},
-		m_mimeType{"application/x-kadu-chat-list"}
+ChatListMimeDataService::ChatListMimeDataService(QObject *parent)
+        : QObject{parent}, m_mimeType{"application/x-kadu-chat-list"}
 {
 }
 
@@ -37,44 +36,44 @@ ChatListMimeDataService::~ChatListMimeDataService()
 
 void ChatListMimeDataService::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 QStringList ChatListMimeDataService::mimeTypes()
 {
-	return QStringList{} << m_mimeType;
+    return QStringList{} << m_mimeType;
 }
 
 std::unique_ptr<QMimeData> ChatListMimeDataService::toMimeData(const QList<Chat> &chatList)
 {
-	if (chatList.isEmpty())
-		return 0;
+    if (chatList.isEmpty())
+        return 0;
 
-	auto mimeData = std::make_unique<QMimeData>();
-	auto chatListStrings = QStringList{};
-	for (auto const &chat : chatList)
-		chatListStrings << chat.uuid().toString();
+    auto mimeData = std::make_unique<QMimeData>();
+    auto chatListStrings = QStringList{};
+    for (auto const &chat : chatList)
+        chatListStrings << chat.uuid().toString();
 
-	mimeData->setData(m_mimeType, chatListStrings.join(":").toUtf8());
-	return mimeData;
+    mimeData->setData(m_mimeType, chatListStrings.join(":").toUtf8());
+    return mimeData;
 }
 
 QList<Chat> ChatListMimeDataService::fromMimeData(const QMimeData *mimeData)
 {
-	auto result = QList<Chat>{};
-	auto chatListString = QString{mimeData->data(m_mimeType)};
-	if (chatListString.isEmpty())
-		return result;
+    auto result = QList<Chat>{};
+    auto chatListString = QString{mimeData->data(m_mimeType)};
+    if (chatListString.isEmpty())
+        return result;
 
-	auto chatListStrings = chatListString.split(':');
-	for (auto const &chatListString : chatListStrings)
-	{
-		auto chat = m_chatManager->byUuid(chatListString);
-		if (!chat.isNull())
-			result << chat;
-	}
+    auto chatListStrings = chatListString.split(':');
+    for (auto const &chatListString : chatListStrings)
+    {
+        auto chat = m_chatManager->byUuid(chatListString);
+        if (!chat.isNull())
+            result << chat;
+    }
 
-	return result;
+    return result;
 }
 
 #include "moc_chat-list-mime-data-service.cpp"

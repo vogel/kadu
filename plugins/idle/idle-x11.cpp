@@ -27,43 +27,42 @@
 static Display *display = 0;
 static XScreenSaverInfo *ss_info = 0;
 
-Idle::Idle(QObject *parent) :
-		QObject(parent)
+Idle::Idle(QObject *parent) : QObject(parent)
 {
-	if (!ss_info)
-	{
-		display = XOpenDisplay(0);
+    if (!ss_info)
+    {
+        display = XOpenDisplay(0);
 
-		int event_base = 0, error_base = 0;
-		if (XScreenSaverQueryExtension(display, &event_base, &error_base))
-			ss_info = XScreenSaverAllocInfo();
-	}
+        int event_base = 0, error_base = 0;
+        if (XScreenSaverQueryExtension(display, &event_base, &error_base))
+            ss_info = XScreenSaverAllocInfo();
+    }
 }
 
 Idle::~Idle()
 {
-	if (ss_info)
-	{
-		XFree(ss_info);
-		ss_info = 0;
-	}
+    if (ss_info)
+    {
+        XFree(ss_info);
+        ss_info = 0;
+    }
 
-	if (display)
-	{
-		XCloseDisplay(display);
-		display = 0;
-	}
+    if (display)
+    {
+        XCloseDisplay(display);
+        display = 0;
+    }
 }
 
 long Idle::secondsIdle()
 {
-	if (!ss_info)
-		return -1;
+    if (!ss_info)
+        return -1;
 
-	if (!XScreenSaverQueryInfo(display, DefaultRootWindow(display), ss_info))
-		return -1;
+    if (!XScreenSaverQueryInfo(display, DefaultRootWindow(display), ss_info))
+        return -1;
 
-	return ss_info->idle / 1000;
+    return ss_info->idle / 1000;
 }
 
 #include "moc_idle.cpp"

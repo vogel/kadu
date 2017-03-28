@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-FiledescPluginModulesFactory::FiledescPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+FiledescPluginModulesFactory::FiledescPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ FiledescPluginModulesFactory::~FiledescPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> FiledescPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<FiledescModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<FiledescModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_filedesc-plugin-modules-factory.cpp"

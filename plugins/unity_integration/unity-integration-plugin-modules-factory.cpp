@@ -23,8 +23,8 @@
 
 #include <injeqt/injector.h>
 
-UnityIntegrationPluginModulesFactory::UnityIntegrationPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+UnityIntegrationPluginModulesFactory::UnityIntegrationPluginModulesFactory(QObject *parent)
+        : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +34,10 @@ UnityIntegrationPluginModulesFactory::~UnityIntegrationPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> UnityIntegrationPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<UnityIntegrationModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<UnityIntegrationModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_unity-integration-plugin-modules-factory.cpp"

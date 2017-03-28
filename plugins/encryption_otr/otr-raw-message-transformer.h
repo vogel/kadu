@@ -25,8 +25,8 @@
 #include "protocols/services/raw-message-transformer.h"
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
 }
 
 class Contact;
@@ -36,36 +36,35 @@ class OtrOpDataFactory;
 class OtrSessionService;
 class OtrUserStateService;
 
-class OtrRawMessageTransformer: public QObject, public RawMessageTransformer
+class OtrRawMessageTransformer : public QObject, public RawMessageTransformer
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE OtrRawMessageTransformer();
-	virtual ~OtrRawMessageTransformer();
+    Q_INVOKABLE OtrRawMessageTransformer();
+    virtual ~OtrRawMessageTransformer();
 
-	void setEnableFragments(bool enableFragments);
+    void setEnableFragments(bool enableFragments);
 
-	virtual RawMessage transform(const RawMessage &rawMessage, const Message &message) override;
+    virtual RawMessage transform(const RawMessage &rawMessage, const Message &message) override;
 
 signals:
-	void peerEndedSession(const Contact &contact) const;
+    void peerEndedSession(const Contact &contact) const;
 
 private slots:
-	INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
-	INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
-	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setAppOpsService(OtrAppOpsService *appOpsService);
+    INJEQT_SET void setOpDataFactory(OtrOpDataFactory *opDataFactory);
+    INJEQT_SET void setSessionService(OtrSessionService *sessionService);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
-	QPointer<OtrAppOpsService> AppOpsService;
-	QPointer<OtrOpDataFactory> OpDataFactory;
-	QPointer<OtrSessionService> SessionService;
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrAppOpsService> AppOpsService;
+    QPointer<OtrOpDataFactory> OpDataFactory;
+    QPointer<OtrSessionService> SessionService;
+    QPointer<OtrUserStateService> UserStateService;
 
-	bool EnableFragments;
+    bool EnableFragments;
 
-	RawMessage transformReceived(const RawMessage &RawMessage, const Message &message);
-	RawMessage transformSent(const RawMessage &rawMessage, const Message &message);
-
+    RawMessage transformReceived(const RawMessage &RawMessage, const Message &message);
+    RawMessage transformSent(const RawMessage &rawMessage, const Message &message);
 };

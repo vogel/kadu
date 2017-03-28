@@ -23,14 +23,13 @@
 
 class AutoresponderPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit AutoresponderPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~AutoresponderPluginModulesFactory();
+    explicit AutoresponderPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~AutoresponderPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

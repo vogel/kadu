@@ -30,24 +30,23 @@ class Myself;
 
 class BlockUserAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit BlockUserAction(QObject *parent = nullptr);
-	virtual ~BlockUserAction();
+    Q_INVOKABLE explicit BlockUserAction(QObject *parent = nullptr);
+    virtual ~BlockUserAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<Myself> m_myself;
+    QPointer<Myself> m_myself;
 
-	void updateBlockingActions(Buddy buddy);
+    void updateBlockingActions(Buddy buddy);
 
 private slots:
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setMyself(Myself *myself);
 };

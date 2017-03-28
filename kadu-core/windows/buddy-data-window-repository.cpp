@@ -17,14 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "windows/buddy-data-window.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
-#include "windows/buddy-data-window.h"
 
 #include "buddy-data-window-repository.h"
 
-BuddyDataWindowRepository::BuddyDataWindowRepository(QObject *parent) :
-		QObject(parent)
+BuddyDataWindowRepository::BuddyDataWindowRepository(QObject *parent) : QObject(parent)
 {
 }
 
@@ -34,45 +33,45 @@ BuddyDataWindowRepository::~BuddyDataWindowRepository()
 
 void BuddyDataWindowRepository::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void BuddyDataWindowRepository::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
-BuddyDataWindow * BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
+BuddyDataWindow *BuddyDataWindowRepository::windowForBuddy(const Buddy &buddy)
 {
-	if (Windows.contains(buddy))
-		return Windows.value(buddy);
+    if (Windows.contains(buddy))
+        return Windows.value(buddy);
 
-	if (buddy == m_myself->buddy())
-		return 0;
+    if (buddy == m_myself->buddy())
+        return 0;
 
-	auto result = m_injectedFactory->makeInjected<BuddyDataWindow>(buddy);
-	connect(result, SIGNAL(destroyed(Buddy)), this, SLOT(windowDestroyed(Buddy)));
-	Windows.insert(buddy, result);
+    auto result = m_injectedFactory->makeInjected<BuddyDataWindow>(buddy);
+    connect(result, SIGNAL(destroyed(Buddy)), this, SLOT(windowDestroyed(Buddy)));
+    Windows.insert(buddy, result);
 
-	return result;
+    return result;
 }
 
-const QMap<Buddy, BuddyDataWindow *> & BuddyDataWindowRepository::windows() const
+const QMap<Buddy, BuddyDataWindow *> &BuddyDataWindowRepository::windows() const
 {
-	return Windows;
+    return Windows;
 }
 
 void BuddyDataWindowRepository::windowDestroyed(const Buddy &buddy)
 {
-	Windows.remove(buddy);
+    Windows.remove(buddy);
 }
 
 void BuddyDataWindowRepository::showBuddyWindow(const Buddy &buddy)
 {
-	BuddyDataWindow *window = windowForBuddy(buddy);
-	if (window)
-	{
-		window->show();
-		window->raise();
-	}
+    BuddyDataWindow *window = windowForBuddy(buddy);
+    if (window)
+    {
+        window->show();
+        window->raise();
+    }
 }

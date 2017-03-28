@@ -27,125 +27,132 @@
 #include "widgets/configuration/config-combo-box.h"
 #include "widgets/configuration/config-group-box.h"
 
-ConfigComboBox::ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0),
-	    saveIndexNotCaption(0)
+ConfigComboBox::ConfigComboBox(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox,
+    ConfigurationWindowDataManager *dataManager)
+        : QComboBox(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0),
+          saveIndexNotCaption(0)
 {
-	Q_UNUSED(itemValues)
-	Q_UNUSED(itemCaptions)
+    Q_UNUSED(itemValues)
+    Q_UNUSED(itemCaptions)
 
-	createWidgets();
+    createWidgets();
 }
 
 ConfigComboBox::ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0), saveIndexNotCaption(0)
+        : QComboBox(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0),
+          saveIndexNotCaption(0)
 {
 }
 
 ConfigComboBox::~ConfigComboBox()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigComboBox::setItems(const QStringList &itemValues, const QStringList &itemCaptions)
 {
-	this->itemValues = itemValues;
-	this->itemCaptions = itemCaptions;
+    this->itemValues = itemValues;
+    this->itemCaptions = itemCaptions;
 
-	clear();
-	insertItems(0, itemCaptions);
+    clear();
+    insertItems(0, itemCaptions);
 }
 
 void ConfigComboBox::setCurrentItem(const QString &value)
 {
-	setCurrentIndex(itemValues.indexOf(value));
+    setCurrentIndex(itemValues.indexOf(value));
 }
 
 QString ConfigComboBox::currentItemValue()
 {
-	int index = currentIndex();
+    int index = currentIndex();
 
-	if ((index < 0) || (index >= itemValues.size()))
-		return QString();
+    if ((index < 0) || (index >= itemValues.size()))
+        return QString();
 
-	return itemValues.at(index);
+    return itemValues.at(index);
 }
 
 void ConfigComboBox::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	clear();
-	insertItems(0, itemCaptions);
+    clear();
+    insertItems(0, itemCaptions);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigComboBox::loadConfiguration()
 {
-	if (!dataManager)
-		return;
+    if (!dataManager)
+        return;
 
-	if (saveIndexNotCaption)
-		setCurrentIndex(dataManager->readEntry(section, item).toInt());
-	else
-		setCurrentIndex(itemValues.indexOf(dataManager->readEntry(section, item).toString()));
+    if (saveIndexNotCaption)
+        setCurrentIndex(dataManager->readEntry(section, item).toInt());
+    else
+        setCurrentIndex(itemValues.indexOf(dataManager->readEntry(section, item).toString()));
 
-	emit activated(currentIndex());
+    emit activated(currentIndex());
 }
 
 void ConfigComboBox::saveConfiguration()
 {
-	if (!dataManager)
-		return;
+    if (!dataManager)
+        return;
 
-	int index = currentIndex();
+    int index = currentIndex();
 
-	if ((index < 0) || (index >= itemValues.size()))
-		return;
+    if ((index < 0) || (index >= itemValues.size()))
+        return;
 
-	if (saveIndexNotCaption)
-		dataManager->writeEntry(section, item, currentIndex());
-	else
-		dataManager->writeEntry(section, item, QVariant(itemValues[currentIndex()]));
+    if (saveIndexNotCaption)
+        dataManager->writeEntry(section, item, currentIndex());
+    else
+        dataManager->writeEntry(section, item, QVariant(itemValues[currentIndex()]));
 }
 
 void ConfigComboBox::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	QComboBox::setVisible(visible);
+    label->setVisible(visible);
+    QComboBox::setVisible(visible);
 }
 
 bool ConfigComboBox::fromDomElement(QDomElement domElement)
 {
-	saveIndexNotCaption = QVariant(domElement.attribute("save-index", "false")).toBool();
+    saveIndexNotCaption = QVariant(domElement.attribute("save-index", "false")).toBool();
 
-	QDomNodeList children = domElement.childNodes();
-	uint length = children.length();
-	for (uint i = 0; i < length; i++)
-	{
-		QDomNode node = children.item(static_cast<int>(i));
-		if (node.isElement())
-		{
-			QDomElement element = node.toElement();
-			if (element.tagName() != "item")
-				continue;
+    QDomNodeList children = domElement.childNodes();
+    uint length = children.length();
+    for (uint i = 0; i < length; i++)
+    {
+        QDomNode node = children.item(static_cast<int>(i));
+        if (node.isElement())
+        {
+            QDomElement element = node.toElement();
+            if (element.tagName() != "item")
+                continue;
 
-			itemValues.append(element.attribute("value"));
-			itemCaptions.append(QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
+            itemValues.append(element.attribute("value"));
+            itemCaptions.append(
+                QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
 
-			addItem(QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
-		}
-	}
+            addItem(QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
+        }
+    }
 
-	return ConfigWidgetValue::fromDomElement(domElement);
+    return ConfigWidgetValue::fromDomElement(domElement);
 }
 
 #include "moc_config-combo-box.cpp"

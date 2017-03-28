@@ -29,20 +29,19 @@ class Actions;
 
 class MoreActionsAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit MoreActionsAction(QObject *parent = nullptr);
-	virtual ~MoreActionsAction();
+    Q_INVOKABLE explicit MoreActionsAction(QObject *parent = nullptr);
+    virtual ~MoreActionsAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<Actions> m_actions;
+    QPointer<Actions> m_actions;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-
+    INJEQT_SET void setActions(Actions *actions);
 };

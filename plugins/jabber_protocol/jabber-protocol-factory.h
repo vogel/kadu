@@ -31,39 +31,44 @@ class PluginInjectedFactory;
 
 class JabberProtocolFactory : public ProtocolFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberProtocolFactory(QObject *parent = nullptr);
-	virtual ~JabberProtocolFactory();
+    Q_INVOKABLE explicit JabberProtocolFactory(QObject *parent = nullptr);
+    virtual ~JabberProtocolFactory();
 
-	virtual Protocol * createProtocolHandler(Account account) override;
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent) override;
-	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent) override;
-	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*) override;
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
-    virtual ProtocolMenuManager * protocolMenuManager() override;
-	virtual QList<StatusType> supportedStatusTypes() override;
-	virtual Status adaptStatus(Status) const override;
-	virtual QString idLabel() override;
-	virtual QValidator::State validateId(QString id) override;
-	virtual bool canRegister() override;
+    virtual Protocol *createProtocolHandler(Account account) override;
+    virtual AccountAddWidget *newAddAccountWidget(bool showButtons, QWidget *parent) override;
+    virtual AccountCreateWidget *newCreateAccountWidget(bool showButtons, QWidget *parent) override;
+    virtual AccountEditWidget *newEditAccountWidget(Account, QWidget *) override;
+    virtual QWidget *newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
+    virtual ProtocolMenuManager *protocolMenuManager() override;
+    virtual QList<StatusType> supportedStatusTypes() override;
+    virtual Status adaptStatus(Status) const override;
+    virtual QString idLabel() override;
+    virtual QValidator::State validateId(QString id) override;
+    virtual bool canRegister() override;
 
-	virtual QString name() override { return "jabber"; }
-	virtual QString displayName() override { return "Jabber/XMPP"; }
+    virtual QString name() override
+    {
+        return "jabber";
+    }
+    virtual QString displayName() override
+    {
+        return "Jabber/XMPP";
+    }
 
-	virtual KaduIcon icon() override;
+    virtual KaduIcon icon() override;
 
 private:
-	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
-	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
+    QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	QList<StatusType> m_supportedStatusTypes;
+    QList<StatusType> m_supportedStatusTypes;
 
 private slots:
-	INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
-	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
+    INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

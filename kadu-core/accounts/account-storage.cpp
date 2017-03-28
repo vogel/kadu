@@ -23,8 +23,7 @@
 #include "accounts/account.h"
 #include "core/injected-factory.h"
 
-AccountStorage::AccountStorage(QObject *parent) :
-		QObject{parent}
+AccountStorage::AccountStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,29 +33,29 @@ AccountStorage::~AccountStorage()
 
 void AccountStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Account AccountStorage::create(const QString &protocolName)
 {
-	return m_injectedFactory->makeInjected<AccountShared>(protocolName);
+    return m_injectedFactory->makeInjected<AccountShared>(protocolName);
 }
 
 Account AccountStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<AccountShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<AccountShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Account AccountStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<AccountShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<AccountShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_account-storage.cpp"

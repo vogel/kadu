@@ -25,14 +25,14 @@
 
 #include <QtWidgets/QMenu>
 
-InsertImageAction::InsertImageAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+InsertImageAction::InsertImageAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"insert-image"});
-	setName(QStringLiteral("insertImageAction"));
-	setText(tr("Insert Image"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"insert-image"});
+    setName(QStringLiteral("insertImageAction"));
+    setText(tr("Insert Image"));
+    setType(ActionDescription::TypeChat);
 }
 
 InsertImageAction::~InsertImageAction()
@@ -41,30 +41,30 @@ InsertImageAction::~InsertImageAction()
 
 void InsertImageAction::actionTriggered(QAction *sender, bool)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	chatEditBox->openInsertImageDialog();
+    chatEditBox->openInsertImageDialog();
 }
 
-void InsertImageAction::updateActionState(Action* action)
+void InsertImageAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	auto chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+    if (!chatEditBox)
+        return;
 
-	auto account = action->context()->chat().chatAccount();
-	if (!account)
-		return;
+    auto account = action->context()->chat().chatAccount();
+    if (!account)
+        return;
 
-	auto protocol = account.protocolHandler();
-	if (!protocol)
-		return;
+    auto protocol = account.protocolHandler();
+    if (!protocol)
+        return;
 
-	action->setEnabled(protocol->chatImageService());
+    action->setEnabled(protocol->chatImageService());
 }
 
 #include "moc_insert-image-action.cpp"

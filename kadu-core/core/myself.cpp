@@ -24,8 +24,7 @@
 #include "core/injector-provider.h"
 #include "misc/memory.h"
 
-Myself::Myself(QObject *parent) :
-		QObject{parent}
+Myself::Myself(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,30 +34,30 @@ Myself::~Myself()
 
 void Myself::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void Myself::setInjectorProvider(InjectorProvider *injectorProvider)
 {
-	m_injectorProvider = injectorProvider;
+    m_injectorProvider = injectorProvider;
 }
 
 void Myself::makeMyself()
 {
-	m_buddy = Buddy{new BuddyShared{}};
-	m_buddy.setAnonymous(false);
-	configurationUpdated();
-	m_injectorProvider->injector().inject_into(m_buddy.data());
+    m_buddy = Buddy{new BuddyShared{}};
+    m_buddy.setAnonymous(false);
+    configurationUpdated();
+    m_injectorProvider->injector().inject_into(m_buddy.data());
 }
 
 void Myself::configurationUpdated()
 {
-	m_buddy.setDisplay(m_configuration->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
+    m_buddy.setDisplay(m_configuration->deprecatedApi()->readEntry("General", "Nick", tr("Me")));
 }
 
 Buddy Myself::buddy()
 {
-	if (!m_buddy)
-		makeMyself();
-	return m_buddy;
+    if (!m_buddy)
+        makeMyself();
+    return m_buddy;
 }

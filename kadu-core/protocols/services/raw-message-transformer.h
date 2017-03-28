@@ -37,7 +37,8 @@ class RawMessage;
  * @short Interface to transform raw content of messages.
  * @author Rafał 'Vogel' Malinowski
  *
- * This interface allows arbitraty tranformations of raw content of messages - the one that is directly sent or received.
+ * This interface allows arbitraty tranformations of raw content of messages - the one that is directly sent or
+ * received.
  */
 class KADUAPI RawMessageTransformer : public ConfigurableTransformer<RawMessage, Message>
 {
@@ -47,4 +48,4 @@ class KADUAPI RawMessageTransformer : public ConfigurableTransformer<RawMessage,
  * @}
  */
 
-#endif // RAW_MESSAGE_TRANSFORMER_H
+#endif   // RAW_MESSAGE_TRANSFORMER_H

@@ -35,29 +35,28 @@ class StatusChangerManager;
 
 class AutostatusPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit AutostatusPluginObject(QObject *parent = nullptr);
-	virtual ~AutostatusPluginObject();
+    Q_INVOKABLE explicit AutostatusPluginObject(QObject *parent = nullptr);
+    virtual ~AutostatusPluginObject();
 
 private:
-	QPointer<AutostatusActions> m_autostatusActions;
-	QPointer<AutostatusService> m_autostatusService;
-	QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<StatusChangerManager> m_statusChangerManager;
+    QPointer<AutostatusActions> m_autostatusActions;
+    QPointer<AutostatusService> m_autostatusService;
+    QPointer<AutostatusStatusChanger> m_autostatusStatusChanger;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<StatusChangerManager> m_statusChangerManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setAutostatusActions(AutostatusActions *autostatusActions);
-	INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
-	INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setAutostatusActions(AutostatusActions *autostatusActions);
+    INJEQT_SET void setAutostatusService(AutostatusService *autostatusService);
+    INJEQT_SET void setAutostatusStatusChanger(AutostatusStatusChanger *autostatusStatusChanger);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
 };

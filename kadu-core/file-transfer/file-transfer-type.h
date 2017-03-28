@@ -19,8 +19,9 @@
 
 #pragma once
 
-enum class FileTransferType {
-	Unknown,
-	Stream,
-	Url
+enum class FileTransferType
+{
+    Unknown,
+    Stream,
+    Url
 };

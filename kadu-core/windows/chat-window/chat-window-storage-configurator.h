@@ -30,20 +30,18 @@ class Configuration;
 
 class ChatWindowStorageConfigurator : private ConfigurationAwareObject
 {
-
 public:
-	ChatWindowStorageConfigurator(Configuration *configuration);
+    ChatWindowStorageConfigurator(Configuration *configuration);
 
-	void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
-	ChatWindowStorageConfiguration loadConfiguration() const;
+    void setChatWindowStorage(ChatWindowStorage *chatWindowStorage);
+    ChatWindowStorageConfiguration loadConfiguration() const;
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<ChatWindowStorage> m_chatWindowStorage;
-	QPointer<Configuration> m_configuration;
+    QPointer<ChatWindowStorage> m_chatWindowStorage;
+    QPointer<Configuration> m_configuration;
 
-	void createDefaultConfiguration() const;
-
+    void createDefaultConfiguration() const;
 };

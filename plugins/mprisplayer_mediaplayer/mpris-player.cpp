@@ -36,10 +36,10 @@
 #include "mpris-player.h"
 
 const QString MPRISPlayer::UserPlayersListFile = "mprisplayer-players.data";
-const QString MPRISPlayer::GlobalPlayersListFile = "plugins/data/mprisplayer_mediaplayer/" + MPRISPlayer::UserPlayersListFile;
+const QString MPRISPlayer::GlobalPlayersListFile =
+    "plugins/data/mprisplayer_mediaplayer/" + MPRISPlayer::UserPlayersListFile;
 
-MPRISPlayer::MPRISPlayer(QObject *parent) :
-		MPRISMediaPlayer(parent)
+MPRISPlayer::MPRISPlayer(QObject *parent) : MPRISMediaPlayer(parent)
 {
 }
 
@@ -49,96 +49,97 @@ MPRISPlayer::~MPRISPlayer()
 
 void MPRISPlayer::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void MPRISPlayer::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void MPRISPlayer::setPluginStateService(PluginStateService *pluginStateService)
 {
-	m_pluginStateService = pluginStateService;
+    m_pluginStateService = pluginStateService;
 }
 
 void MPRISPlayer::init()
 {
-	prepareUserPlayersFile();
-	replacePlugin();
+    prepareUserPlayersFile();
+    replacePlugin();
 }
 
 void MPRISPlayer::prepareUserPlayersFile()
 {
-	if (QFile::exists(MPRISPlayer::userPlayersListFileName(m_pathsProvider)))
-		return;
+    if (QFile::exists(MPRISPlayer::userPlayersListFileName(m_pathsProvider)))
+        return;
 
-	QFile userFile(MPRISPlayer::userPlayersListFileName(m_pathsProvider));
-	if (!userFile.open(QIODevice::ReadWrite))
-		return;
+    QFile userFile(MPRISPlayer::userPlayersListFileName(m_pathsProvider));
+    if (!userFile.open(QIODevice::ReadWrite))
+        return;
 
-	userFile.close();
+    userFile.close();
 }
 
 void MPRISPlayer::replacePlugin()
 {
-	QMap<QString, QString> replaceMap;
-	replaceMap.insert("amarok2_mediaplayer", 	"Amarok");
-	replaceMap.insert("audacious_mediaplayer", 	"Audacious");
-	replaceMap.insert("bmpx_mediaplayer", 		"BMPx");
-	replaceMap.insert("dragon_mediaplayer", 	"Dragon Player");
-	replaceMap.insert("mpris_mediaplayer",		"MPRIS Media Player");
-	replaceMap.insert("vlc_mediaplayer", 		"VLC");
-	replaceMap.insert("xmms2_mediaplayer", 		"XMMS2");
+    QMap<QString, QString> replaceMap;
+    replaceMap.insert("amarok2_mediaplayer", "Amarok");
+    replaceMap.insert("audacious_mediaplayer", "Audacious");
+    replaceMap.insert("bmpx_mediaplayer", "BMPx");
+    replaceMap.insert("dragon_mediaplayer", "Dragon Player");
+    replaceMap.insert("mpris_mediaplayer", "MPRIS Media Player");
+    replaceMap.insert("vlc_mediaplayer", "VLC");
+    replaceMap.insert("xmms2_mediaplayer", "XMMS2");
 
-	foreach (const QString &value, replaceMap)
-	{
-		QString key = replaceMap.key(value);
-		if (m_pluginStateService->pluginState(key) == PluginState::Enabled)
-		{
-			choosePlayer(key, value);
-			m_pluginStateService->setPluginState(key, PluginState::Disabled);
-			break;
-		}
-	}
+    foreach (const QString &value, replaceMap)
+    {
+        QString key = replaceMap.key(value);
+        if (m_pluginStateService->pluginState(key) == PluginState::Enabled)
+        {
+            choosePlayer(key, value);
+            m_pluginStateService->setPluginState(key, PluginState::Disabled);
+            break;
+        }
+    }
 }
 
 void MPRISPlayer::choosePlayer(const QString &key, const QString &value)
 {
-	// Save service value from mpris_mediaplayer module
-	if (key == "mpris_mediaplayer")
-	{
-		QString oldMPRISService = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPRISService");
-		QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
-		userPlayersSettings.setIniCodec("ISO8859-2");
+    // Save service value from mpris_mediaplayer module
+    if (key == "mpris_mediaplayer")
+    {
+        QString oldMPRISService = m_configuration->deprecatedApi()->readEntry("MediaPlayer", "MPRISService");
+        QSettings userPlayersSettings(MPRISPlayer::userPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
+        userPlayersSettings.setIniCodec("ISO8859-2");
 
-		userPlayersSettings.setValue(value + "/player", value);
-		userPlayersSettings.setValue(value +  "/service", oldMPRISService);
-		userPlayersSettings.sync();
+        userPlayersSettings.setValue(value + "/player", value);
+        userPlayersSettings.setValue(value + "/service", oldMPRISService);
+        userPlayersSettings.sync();
 
-		m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Player", value);
-		m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Service", oldMPRISService);
-	}
-	else // Choose player based on old module loaded.
-	{
-		QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
-		globalPlayersSettings.setIniCodec("ISO8859-2");
+        m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Player", value);
+        m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Service", oldMPRISService);
+    }
+    else   // Choose player based on old module loaded.
+    {
+        QSettings globalPlayersSettings(MPRISPlayer::globalPlayersListFileName(m_pathsProvider), QSettings::IniFormat);
+        globalPlayersSettings.setIniCodec("ISO8859-2");
 
-		m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Player", value);
-		m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Service", globalPlayersSettings.value(value + "/service").toString());
-	}
+        m_configuration->deprecatedApi()->writeEntry("MPRISPlayer", "Player", value);
+        m_configuration->deprecatedApi()->writeEntry(
+            "MPRISPlayer", "Service", globalPlayersSettings.value(value + "/service").toString());
+    }
 }
 
 void MPRISPlayer::configurationApplied()
 {
-	auto name = m_configuration->deprecatedApi()->readEntry("MPRISPlayer", "Player");
-	setName(name);
-	setService(m_configuration->deprecatedApi()->readEntry("MPRISPlayer", "Service"));
+    auto name = m_configuration->deprecatedApi()->readEntry("MPRISPlayer", "Player");
+    setName(name);
+    setService(m_configuration->deprecatedApi()->readEntry("MPRISPlayer", "Service"));
 
-	if (name == "Audacious")
-		m_mediaPlayer->setInterval(5);
-	else
-		m_mediaPlayer->setInterval(0);
+    if (name == "Audacious")
+        m_mediaPlayer->setInterval(5);
+    else
+        m_mediaPlayer->setInterval(0);
 }
 
 #include "moc_mpris-player.cpp"

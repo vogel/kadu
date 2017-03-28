@@ -38,56 +38,54 @@
 
 #include "filter-widget.h"
 
-
 QString FilterWidget::filterText() const
 {
-	return NameFilterEdit->text();
+    return NameFilterEdit->text();
 }
 
 void FilterWidget::updateVisibility()
 {
-	if (!AutoVisibility)
-	{
-		show();
-		return;
-	}
+    if (!AutoVisibility)
+    {
+        show();
+        return;
+    }
 
-	if (NameFilterEdit->text().isEmpty())
-		hide();
-	else
-		show();
+    if (NameFilterEdit->text().isEmpty())
+        hide();
+    else
+        show();
 }
 
 void FilterWidget::filterTextChanged(const QString &s)
 {
-	emit textChanged(s);
+    emit textChanged(s);
 
-	if (!View)
-		return;
+    if (!View)
+        return;
 
-	if (NameFilterEdit->text().isEmpty())
-	{
-		QModelIndexList selection = View->selectionModel()->selectedIndexes();
-		if (!selection.isEmpty())
-		{
-			qSort(selection);
-			View->scrollTo(selection.at(0));
-		}
-	}
-	else
-	{
-		if (!isVisible() || View->selectionModel()->selectedIndexes().isEmpty())
-		{
-			View->setCurrentIndex(View->model()->index(0, 0));
-			View->selectionModel()->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
-		}
-	}
+    if (NameFilterEdit->text().isEmpty())
+    {
+        QModelIndexList selection = View->selectionModel()->selectedIndexes();
+        if (!selection.isEmpty())
+        {
+            qSort(selection);
+            View->scrollTo(selection.at(0));
+        }
+    }
+    else
+    {
+        if (!isVisible() || View->selectionModel()->selectedIndexes().isEmpty())
+        {
+            View->setCurrentIndex(View->model()->index(0, 0));
+            View->selectionModel()->select(View->model()->index(0, 0), QItemSelectionModel::SelectCurrent);
+        }
+    }
 
-	updateVisibility();
+    updateVisibility();
 }
 
-FilterWidget::FilterWidget(QWidget *parent) :
-		QWidget(parent), View(0), AutoVisibility(true)
+FilterWidget::FilterWidget(QWidget *parent) : QWidget(parent), View(0), AutoVisibility(true)
 {
 }
 
@@ -97,81 +95,78 @@ FilterWidget::~FilterWidget()
 
 void FilterWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void FilterWidget::init()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(3);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(3);
 
-	NameFilterEdit = m_injectedFactory->makeInjected<LineEditWithClearButton>(this);
-	Label = new QLabel(tr("Search") + ":", this);
+    NameFilterEdit = m_injectedFactory->makeInjected<LineEditWithClearButton>(this);
+    Label = new QLabel(tr("Search") + ":", this);
 
-	setFocusProxy(NameFilterEdit);
+    setFocusProxy(NameFilterEdit);
 
-	layout->addWidget(Label);
-	layout->addWidget(NameFilterEdit);
+    layout->addWidget(Label);
+    layout->addWidget(NameFilterEdit);
 
-	connect(NameFilterEdit, SIGNAL(textChanged(const QString &)),
-			this, SLOT(filterTextChanged(const QString &)));
+    connect(NameFilterEdit, SIGNAL(textChanged(const QString &)), this, SLOT(filterTextChanged(const QString &)));
 
-	updateVisibility();
+    updateVisibility();
 }
 
 void FilterWidget::setLabel(const QString &label)
 {
-	Label->setText(label);
+    Label->setText(label);
 }
 
 void FilterWidget::setFilter(const QString &filter)
 {
-	NameFilterEdit->setText(filter);
+    NameFilterEdit->setText(filter);
 }
 
 void FilterWidget::setView(QAbstractItemView *view)
 {
-	View = view;
+    View = view;
 }
 
 void FilterWidget::setAutoVisibility(bool autoVisiblity)
 {
-	AutoVisibility = autoVisiblity;
-	updateVisibility();
+    AutoVisibility = autoVisiblity;
+    updateVisibility();
 }
 
 bool FilterWidget::sendKeyEventToView(QKeyEvent *event)
 {
-	switch (event->key())
-	{
-		case Qt::Key_Enter:
-		case Qt::Key_Return:
-		case Qt::Key_Down:
-		case Qt::Key_Up:
-		case Qt::Key_PageDown:
-		case Qt::Key_PageUp:
-			QCoreApplication::sendEvent(View, event);
-			return true;
-	}
+    switch (event->key())
+    {
+    case Qt::Key_Enter:
+    case Qt::Key_Return:
+    case Qt::Key_Down:
+    case Qt::Key_Up:
+    case Qt::Key_PageDown:
+    case Qt::Key_PageUp:
+        QCoreApplication::sendEvent(View, event);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 void FilterWidget::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape &&
-			!NameFilterEdit->text().isEmpty()
-			)
-	{
-		setFilter(QString());
-		event->accept();
-		return;
-	}
+    if (event->key() == Qt::Key_Escape && !NameFilterEdit->text().isEmpty())
+    {
+        setFilter(QString());
+        event->accept();
+        return;
+    }
 
-	if (View && sendKeyEventToView(event))
-		return;
+    if (View && sendKeyEventToView(event))
+        return;
 
-	QWidget::keyPressEvent(event);
+    QWidget::keyPressEvent(event);
 }
 
 #include "moc_filter-widget.cpp"

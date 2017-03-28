@@ -23,9 +23,7 @@
 
 class OtrModule : public injeqt::module
 {
-
 public:
-	explicit OtrModule();
-	virtual ~OtrModule();
-
+    explicit OtrModule();
+    virtual ~OtrModule();
 };

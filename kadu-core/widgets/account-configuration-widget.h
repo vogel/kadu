@@ -27,16 +27,15 @@
 
 class KADUAPI AccountConfigurationWidget : public ModalConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Account MyAccount;
+    Account MyAccount;
 
 public:
-	explicit AccountConfigurationWidget(const Account &account, QWidget *parent = nullptr);
-	virtual ~AccountConfigurationWidget();
+    explicit AccountConfigurationWidget(const Account &account, QWidget *parent = nullptr);
+    virtual ~AccountConfigurationWidget();
 
-	Account account() const;
-
+    Account account() const;
 };
 
-#endif // ACCOUNT_CONFIGURATION_WIDGET_H
+#endif   // ACCOUNT_CONFIGURATION_WIDGET_H

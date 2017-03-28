@@ -23,8 +23,7 @@
 #include "actions/talkable/send-file-action.h"
 #include "menu/menu-inventory.h"
 
-FileTransferActions::FileTransferActions(QObject *parent) :
-		QObject{parent}
+FileTransferActions::FileTransferActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -34,39 +33,31 @@ FileTransferActions::~FileTransferActions()
 
 void FileTransferActions::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void FileTransferActions::setSendFileAction(SendFileAction *sendFileAction)
 {
-	m_sendFileAction = sendFileAction;
+    m_sendFileAction = sendFileAction;
 }
 
 void FileTransferActions::setShowFileTransferWindowAction(ShowFileTransferWindowAction *showFileTransferWindowAction)
 {
-	m_showFileTransferWindowAction = showFileTransferWindowAction;
+    m_showFileTransferWindowAction = showFileTransferWindowAction;
 }
 
 void FileTransferActions::init()
 {
-	m_menuInventory
-		->menu("buddy-list")
-		->addAction(m_sendFileAction, KaduMenu::SectionSend, 100);
+    m_menuInventory->menu("buddy-list")->addAction(m_sendFileAction, KaduMenu::SectionSend, 100);
 
-	m_menuInventory
-		->menu("tools")
-		->addAction(m_showFileTransferWindowAction, KaduMenu::SectionTools, 5);
+    m_menuInventory->menu("tools")->addAction(m_showFileTransferWindowAction, KaduMenu::SectionTools, 5);
 }
 
 void FileTransferActions::done()
 {
-	m_menuInventory
-		->menu("buddy-list")
-		->removeAction(m_sendFileAction);
+    m_menuInventory->menu("buddy-list")->removeAction(m_sendFileAction);
 
-	m_menuInventory
-		->menu("tools")
-		->removeAction(m_showFileTransferWindowAction);
+    m_menuInventory->menu("tools")->removeAction(m_showFileTransferWindowAction);
 }
 
 #include "moc_file-transfer-actions.cpp"

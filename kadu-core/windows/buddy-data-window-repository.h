@@ -30,28 +30,27 @@ class Myself;
 
 class BuddyDataWindowRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyDataWindowRepository(QObject *parent = nullptr);
-	virtual ~BuddyDataWindowRepository();
+    Q_INVOKABLE explicit BuddyDataWindowRepository(QObject *parent = nullptr);
+    virtual ~BuddyDataWindowRepository();
 
-	BuddyDataWindow * windowForBuddy(const Buddy &buddy);
-	const QMap<Buddy, BuddyDataWindow *> & windows() const;
+    BuddyDataWindow *windowForBuddy(const Buddy &buddy);
+    const QMap<Buddy, BuddyDataWindow *> &windows() const;
 
 public slots:
-	void showBuddyWindow(const Buddy &buddy);
+    void showBuddyWindow(const Buddy &buddy);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<Myself> m_myself;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<Myself> m_myself;
 
-	QMap<Buddy, BuddyDataWindow *> Windows;
+    QMap<Buddy, BuddyDataWindow *> Windows;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMyself(Myself *myself);
 
-	void windowDestroyed(const Buddy &buddy);
-
+    void windowDestroyed(const Buddy &buddy);
 };

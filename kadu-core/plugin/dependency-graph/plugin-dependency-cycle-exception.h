@@ -32,7 +32,10 @@
  */
 class PluginDependencyCycleException : public std::exception
 {
-	virtual const char *what() const noexcept { return "Found cycle in plugin dependencies"; }
+    virtual const char *what() const noexcept
+    {
+        return "Found cycle in plugin dependencies";
+    }
 };
 
 /**

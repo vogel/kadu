@@ -27,23 +27,22 @@ class UnreadMessageRepository;
 
 class AttentionService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AttentionService(QObject *parent = nullptr);
-	virtual ~AttentionService();
+    Q_INVOKABLE explicit AttentionService(QObject *parent = nullptr);
+    virtual ~AttentionService();
 
-	bool needAttention();
+    bool needAttention();
 
 signals:
-	void needAttentionChanged(bool needAttention);
+    void needAttentionChanged(bool needAttention);
 
 private:
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
-	void unreadMessageCountChanged();
-
+    void unreadMessageCountChanged();
 };

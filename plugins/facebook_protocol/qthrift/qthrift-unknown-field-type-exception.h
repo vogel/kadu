@@ -23,13 +23,12 @@
 
 namespace QThrift
 {
-
 class UnknownFieldTypeException : public Exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Unknown field type in Thfift data"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Unknown field type in Thfift data";
+    };
 };
-
 }

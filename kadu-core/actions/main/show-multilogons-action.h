@@ -30,24 +30,23 @@ class MultilogonWindowService;
 
 class ShowMultilogonsAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowMultilogonsAction(QObject *parent = nullptr);
-	virtual ~ShowMultilogonsAction();
+    Q_INVOKABLE explicit ShowMultilogonsAction(QObject *parent = nullptr);
+    virtual ~ShowMultilogonsAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<MultilogonWindowService> m_multilogonWindowService;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<MultilogonWindowService> m_multilogonWindowService;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
-
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setMultilogonWindowService(MultilogonWindowService *multilogonWindowService);
 };

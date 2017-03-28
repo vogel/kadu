@@ -22,14 +22,14 @@
 #include "generic/system-info.h"
 
 #ifndef Q_OS_WIN
-#	include "os/unix/unix-signal-handler.h"
+#include "os/unix/unix-signal-handler.h"
 #endif
 
 OsModule::OsModule()
 {
-	add_type<SystemInfo>();
+    add_type<SystemInfo>();
 #ifndef Q_OS_WIN
-	add_type<UnixSignalHandler>();
+    add_type<UnixSignalHandler>();
 #endif
 }
 

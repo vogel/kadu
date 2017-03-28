@@ -28,81 +28,79 @@
 
 QKeySequence HotKey::shortCutFromFile(Configuration *configuration, const QString &groupname, const QString &name)
 {
-	return QKeySequence::fromString(configuration->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
+    return QKeySequence::fromString(
+        configuration->deprecatedApi()->readEntry(groupname, name), QKeySequence::PortableText);
 }
 
 bool HotKey::shortCut(Configuration *configuration, QKeyEvent *e, const QString &groupname, const QString &name)
 {
-	QString config = configuration->deprecatedApi()->readEntry(groupname, name);
-	return !config.isEmpty() && config == keyEventToString(e, QKeySequence::PortableText);
+    QString config = configuration->deprecatedApi()->readEntry(groupname, name);
+    return !config.isEmpty() && config == keyEventToString(e, QKeySequence::PortableText);
 }
 
 QString HotKey::keyEventToString(QKeyEvent *e, QKeySequence::SequenceFormat format)
 {
-	QString result;
-	if ((e->modifiers() & Qt::ControlModifier) || (e->key() == Qt::Key_Control))
-		result = "Ctrl+";
+    QString result;
+    if ((e->modifiers() & Qt::ControlModifier) || (e->key() == Qt::Key_Control))
+        result = "Ctrl+";
 
-	if ((e->modifiers() & Qt::MetaModifier) || (e->key() == Qt::Key_Meta))
-		result += "Shift+Alt+";
-	else
-	{
-		if ((e->modifiers() & Qt::ShiftModifier) || (e->key() == Qt::Key_Shift))
-			result+= "Shift+";
-		if ((e->modifiers() & Qt::AltModifier) || (e->key() == Qt::Key_Alt))
-			result += "Alt+";
-	}
+    if ((e->modifiers() & Qt::MetaModifier) || (e->key() == Qt::Key_Meta))
+        result += "Shift+Alt+";
+    else
+    {
+        if ((e->modifiers() & Qt::ShiftModifier) || (e->key() == Qt::Key_Shift))
+            result += "Shift+";
+        if ((e->modifiers() & Qt::AltModifier) || (e->key() == Qt::Key_Alt))
+            result += "Alt+";
+    }
 
-	if (!((e->key() == Qt::Key_Control) ||
-		(e->key() == Qt::Key_Shift) ||
-		(e->key() == Qt::Key_Alt) ||
-		(e->key() == Qt::Key_Meta)))
-		result += QKeySequence(e->key()).toString(format);
+    if (!((e->key() == Qt::Key_Control) || (e->key() == Qt::Key_Shift) || (e->key() == Qt::Key_Alt) ||
+          (e->key() == Qt::Key_Meta)))
+        result += QKeySequence(e->key()).toString(format);
 
-	return result;
+    return result;
 }
 
-HotKeyEdit::HotKeyEdit(QWidget *parent)
-	: LineEditWithClearButton(parent)
+HotKeyEdit::HotKeyEdit(QWidget *parent) : LineEditWithClearButton(parent)
 {
 }
 
 QString HotKeyEdit::shortCutString() const
 {
-	return shortCut().toString(QKeySequence::PortableText);
+    return shortCut().toString(QKeySequence::PortableText);
 }
 
 QKeySequence HotKeyEdit::shortCut() const
 {
-	return QKeySequence::fromString(text(), QKeySequence::NativeText);
+    return QKeySequence::fromString(text(), QKeySequence::NativeText);
 }
 
 void HotKeyEdit::setShortCut(const QString &shortcut)
 {
-	if (QKeySequence::fromString(shortcut, QKeySequence::PortableText).isEmpty())
-		clear();
-	else
-		setText(shortcut);
+    if (QKeySequence::fromString(shortcut, QKeySequence::PortableText).isEmpty())
+        clear();
+    else
+        setText(shortcut);
 }
 
 void HotKeyEdit::setShortCut(const QKeySequence &shortcut)
 {
-	setText(shortcut.toString(QKeySequence::NativeText));
+    setText(shortcut.toString(QKeySequence::NativeText));
 }
 
 void HotKeyEdit::keyPressEvent(QKeyEvent *e)
 {
-	setText(HotKey::keyEventToString(e, QKeySequence::NativeText));
+    setText(HotKey::keyEventToString(e, QKeySequence::NativeText));
 }
 
 void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
 {
-	// sprawdzenie czy ostatnim znakiem jest "+"
-	// jesli tak to nie ma takiego skrotu klawiszowego
-	if (text().isEmpty())
-		return;
-	if (text().at(text().length() - 1) == '+')
-		clear();
+    // sprawdzenie czy ostatnim znakiem jest "+"
+    // jesli tak to nie ma takiego skrotu klawiszowego
+    if (text().isEmpty())
+        return;
+    if (text().at(text().length() - 1) == '+')
+        clear();
 }
 
 #include "moc_hot-key.cpp"

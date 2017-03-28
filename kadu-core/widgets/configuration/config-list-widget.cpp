@@ -27,111 +27,116 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-list-widget.h"
 
-ConfigListWidget::ConfigListWidget(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QListWidget(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigListWidget::ConfigListWidget(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox,
+    ConfigurationWindowDataManager *dataManager)
+        : QListWidget(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	Q_UNUSED(itemValues)
-	Q_UNUSED(itemCaptions)
+    Q_UNUSED(itemValues)
+    Q_UNUSED(itemCaptions)
 
-	createWidgets();
+    createWidgets();
 }
 
 ConfigListWidget::ConfigListWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QListWidget(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+        : QListWidget(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigListWidget::~ConfigListWidget()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigListWidget::setItems(const QStringList &itemValues, const QStringList &itemCaptions)
 {
-	this->itemValues = itemValues;
-	this->itemCaptions = itemCaptions;
+    this->itemValues = itemValues;
+    this->itemCaptions = itemCaptions;
 
-	clear();
-	addItems(itemCaptions);
+    clear();
+    addItems(itemCaptions);
 }
 
 void ConfigListWidget::setIcons(const QList<QIcon> &icons)
 {
-	const int c = qMin(count(), icons.count());
-	for (int i = 0; i < c; i++)
-	{
-		QListWidgetItem *listItem = QListWidget::item(i);
-		listItem->setIcon(icons.at(i));
-	}
+    const int c = qMin(count(), icons.count());
+    for (int i = 0; i < c; i++)
+    {
+        QListWidgetItem *listItem = QListWidget::item(i);
+        listItem->setIcon(icons.at(i));
+    }
 }
 
 void ConfigListWidget::setCurrentItem(const QString &currentItem)
 {
-	setCurrentRow(itemValues.indexOf(currentItem));
+    setCurrentRow(itemValues.indexOf(currentItem));
 }
 
 void ConfigListWidget::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this, Qt::AlignRight | Qt::AlignTop);
 
-	clear();
-	addItems(itemCaptions);
+    clear();
+    addItems(itemCaptions);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigListWidget::loadConfiguration()
 {
-	if (!dataManager)
-		return;
+    if (!dataManager)
+        return;
 
-	if (!section.isEmpty() && !ConfigWidgetValue::item.isEmpty())
-		setCurrentItem(dataManager->readEntry(section, ConfigWidgetValue::item).toString());
+    if (!section.isEmpty() && !ConfigWidgetValue::item.isEmpty())
+        setCurrentItem(dataManager->readEntry(section, ConfigWidgetValue::item).toString());
 }
 
 void ConfigListWidget::saveConfiguration()
 {
-	if (!dataManager)
-		return;
+    if (!dataManager)
+        return;
 
-	if (!section.isEmpty() && !ConfigWidgetValue::item.isEmpty())
-		dataManager->writeEntry(section, ConfigWidgetValue::item, currentItemValue());
+    if (!section.isEmpty() && !ConfigWidgetValue::item.isEmpty())
+        dataManager->writeEntry(section, ConfigWidgetValue::item, currentItemValue());
 }
 
 void ConfigListWidget::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	QListWidget::setVisible(visible);
+    label->setVisible(visible);
+    QListWidget::setVisible(visible);
 }
 
 bool ConfigListWidget::fromDomElement(QDomElement domElement)
 {
-	QDomNodeList children = domElement.childNodes();
-	uint length = children.length();
-	for (uint i = 0; i < length; i++)
-	{
-		QDomNode node = children.item(static_cast<int>(i));
-		if (node.isElement())
-		{
-			QDomElement element = node.toElement();
-			if (element.tagName() != "item")
-				continue;
+    QDomNodeList children = domElement.childNodes();
+    uint length = children.length();
+    for (uint i = 0; i < length; i++)
+    {
+        QDomNode node = children.item(static_cast<int>(i));
+        if (node.isElement())
+        {
+            QDomElement element = node.toElement();
+            if (element.tagName() != "item")
+                continue;
 
-			itemValues.append(element.attribute("value"));
-			itemCaptions.append(element.attribute("caption"));
+            itemValues.append(element.attribute("value"));
+            itemCaptions.append(element.attribute("caption"));
 
-			addItem(QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
-		}
-	}
+            addItem(QCoreApplication::translate("@default", element.attribute("caption").toUtf8().constData()));
+        }
+    }
 
-	return ConfigWidgetValue::fromDomElement(domElement);
+    return ConfigWidgetValue::fromDomElement(domElement);
 }
 
 #include "moc_config-list-widget.cpp"

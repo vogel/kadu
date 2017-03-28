@@ -35,31 +35,30 @@ class QListWidgetItem;
 
 class SpellcheckerConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SpellcheckerConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~SpellcheckerConfigurationUiHandler();
+    Q_INVOKABLE explicit SpellcheckerConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~SpellcheckerConfigurationUiHandler();
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
-	QPointer<SpellChecker> m_spellChecker;
+    QPointer<SpellcheckerConfiguration> m_spellcheckerConfiguration;
+    QPointer<SpellChecker> m_spellChecker;
 
-	owned_qptr<QListWidget> m_availableLanguagesList;
-	owned_qptr<QListWidget> m_checkedLanguagesList;
+    owned_qptr<QListWidget> m_availableLanguagesList;
+    owned_qptr<QListWidget> m_checkedLanguagesList;
 
 private slots:
-	INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
-	INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
+    INJEQT_SET void setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration);
+    INJEQT_SET void setSpellChecker(SpellChecker *spellChecker);
 
-	void configForward();
-	void configBackward();
-	void configForward2(QListWidgetItem *item);
-	void configBackward2(QListWidgetItem *item);
-
+    void configForward();
+    void configBackward();
+    void configForward2(QListWidgetItem *item);
+    void configBackward2(QListWidgetItem *item);
 };

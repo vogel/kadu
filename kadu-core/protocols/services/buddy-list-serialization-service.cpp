@@ -19,8 +19,8 @@
 
 #include "buddy-list-serialization-service.h"
 
-BuddyListSerializationService::BuddyListSerializationService(Account account, QObject *parent) :
-		AccountService{account, parent}
+BuddyListSerializationService::BuddyListSerializationService(Account account, QObject *parent)
+        : AccountService{account, parent}
 {
 }
 

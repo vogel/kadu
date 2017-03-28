@@ -25,75 +25,74 @@
 
 #include "network-proxy-shared.h"
 
-NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) :
-		Shared(uuid), Port(0)
+NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) : Shared(uuid), Port(0)
 {
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+    connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 NetworkProxyShared::~NetworkProxyShared()
 {
-	ref.ref();
+    ref.ref();
 }
 
 void NetworkProxyShared::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
-	m_networkProxyManager = networkProxyManager;
+    m_networkProxyManager = networkProxyManager;
 }
 
-StorableObject * NetworkProxyShared::storageParent()
+StorableObject *NetworkProxyShared::storageParent()
 {
-	return m_networkProxyManager;
+    return m_networkProxyManager;
 }
 
 QString NetworkProxyShared::storageNodeName()
 {
-	return QStringLiteral("Proxy");
+    return QStringLiteral("Proxy");
 }
 
 void NetworkProxyShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	Type = loadValue<QString>("Type");
-	if (Type.isEmpty())
-		Type = "http";
+    Type = loadValue<QString>("Type");
+    if (Type.isEmpty())
+        Type = "http";
 
-	Address = loadValue<QString>("Address");
-	Port = loadValue<int>("Port", 0);
-	User = loadValue<QString>("User");
-	Password = loadValue<QString>("Password");
-	PollingUrl = loadValue<QString>("PollingUrl");
+    Address = loadValue<QString>("Address");
+    Port = loadValue<int>("Port", 0);
+    User = loadValue<QString>("User");
+    Password = loadValue<QString>("Password");
+    PollingUrl = loadValue<QString>("PollingUrl");
 }
 
 void NetworkProxyShared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	Shared::store();
+    Shared::store();
 
-	storeValue("Type", Type);
-	storeValue("Address", Address);
-	storeValue("Port", Port);
-	storeValue("User", User);
-	storeValue("Password", Password);
-	storeValue("PollingUrl", PollingUrl);
+    storeValue("Type", Type);
+    storeValue("Address", Address);
+    storeValue("Port", Port);
+    storeValue("User", User);
+    storeValue("Password", Password);
+    storeValue("PollingUrl", PollingUrl);
 }
 
 QString NetworkProxyShared::displayName()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (User.isEmpty())
-		return Address + ":" + QString::number(Port);
-	else
-		return User + "@" + Address + ":" + QString::number(Port);
+    if (User.isEmpty())
+        return Address + ":" + QString::number(Port);
+    else
+        return User + "@" + Address + ":" + QString::number(Port);
 }
 
 #include "moc_network-proxy-shared.cpp"

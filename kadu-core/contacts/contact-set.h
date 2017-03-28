@@ -35,15 +35,13 @@ class BuddySet;
 
 class KADUAPI ContactSet : public QSet<Contact>
 {
-
 public:
-	ContactSet();
-	explicit ContactSet(const Contact &contact);
+    ContactSet();
+    explicit ContactSet(const Contact &contact);
 
-	QVector<Contact> toContactVector() const;
-	BuddySet toBuddySet() const;
-	Contact toContact() const;
-
+    QVector<Contact> toContactVector() const;
+    BuddySet toBuddySet() const;
+    Contact toContact() const;
 };
 
-#endif // CONTACT_SET_H
+#endif   // CONTACT_SET_H

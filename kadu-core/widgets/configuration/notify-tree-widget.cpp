@@ -51,218 +51,224 @@ NotifyTreeWidgetDelegate::~NotifyTreeWidgetDelegate()
 
 void NotifyTreeWidgetDelegate::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void NotifyTreeWidgetDelegate::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
-void NotifyTreeWidgetDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void NotifyTreeWidgetDelegate::paint(
+    QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	if (index.column() != 1)
-		return QStyledItemDelegate::paint(painter, option, index);
+    if (index.column() != 1)
+        return QStyledItemDelegate::paint(painter, option, index);
 
-	QStringList notifiers = index.data(Qt::UserRole).toStringList();
+    QStringList notifiers = index.data(Qt::UserRole).toStringList();
 
-	QStyledItemDelegate::paint(painter, option, index);
+    QStyledItemDelegate::paint(painter, option, index);
 
-	QRect rect = option.rect;
+    QRect rect = option.rect;
 
-	int position = 0;
+    int position = 0;
 
-	int iconWidth = option.decorationSize.width();
-	int iconHeight = option.decorationSize.height();
+    int iconWidth = option.decorationSize.width();
+    int iconHeight = option.decorationSize.height();
 
-	for (auto notifier : m_notifierRepository)
-	{
-		if (notifiers.contains(notifier->name()))
-			m_iconsManager->iconByPath(notifier->icon()).paint(painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth, iconHeight);
-		position += iconWidth + 4;
-	}
-
+    for (auto notifier : m_notifierRepository)
+    {
+        if (notifiers.contains(notifier->name()))
+            m_iconsManager->iconByPath(notifier->icon())
+                .paint(
+                    painter, rect.left() + position + 4, rect.top() + (rect.height() - iconHeight) / 2, iconWidth,
+                    iconHeight);
+        position += iconWidth + 4;
+    }
 }
 
 NotifyTreeWidget::NotifyTreeWidget(NotifyConfigurationUiHandler *uiHandler, QWidget *parent)
-	: QTreeWidget(parent), UiHandler(uiHandler)
+        : QTreeWidget(parent), UiHandler(uiHandler)
 {
 }
 
 void NotifyTreeWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void NotifyTreeWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void NotifyTreeWidget::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void NotifyTreeWidget::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void NotifyTreeWidget::init()
 {
-	QStringList headerLabels;
-	headerLabels << tr("Event") << tr("Notification");
-	setHeaderLabels(headerLabels);
+    QStringList headerLabels;
+    headerLabels << tr("Event") << tr("Notification");
+    setHeaderLabels(headerLabels);
 
-	setItemDelegate(m_injectedFactory->makeInjected<NotifyTreeWidgetDelegate>(this));
-	setAlternatingRowColors(true);
-	setItemsExpandable(true);
-	setExpandsOnDoubleClick(true);
+    setItemDelegate(m_injectedFactory->makeInjected<NotifyTreeWidgetDelegate>(this));
+    setAlternatingRowColors(true);
+    setItemsExpandable(true);
+    setExpandsOnDoubleClick(true);
 
-	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(refresh()));
+    connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(refresh()));
 
-	//Extract icon size as the font height (as h=w on icons)
-	QStyleOptionViewItem iconOption;
-	iconOption.initFrom(this);
-	IconWidth = iconOption.fontMetrics.height() - 2 ; //1px margin top & bottom
-	StateColumnDefaultWidth = header()->sectionSizeHint(1);
+    // Extract icon size as the font height (as h=w on icons)
+    QStyleOptionViewItem iconOption;
+    iconOption.initFrom(this);
+    IconWidth = iconOption.fontMetrics.height() - 2;   // 1px margin top & bottom
+    StateColumnDefaultWidth = header()->sectionSizeHint(1);
 
-	setIconSize(QSize(IconWidth, IconWidth));
+    setIconSize(QSize(IconWidth, IconWidth));
 
-	header()->setResizeMode(0, QHeaderView::Fixed);
-	header()->setResizeMode(1, QHeaderView::Fixed);
+    header()->setResizeMode(0, QHeaderView::Fixed);
+    header()->setResizeMode(1, QHeaderView::Fixed);
 
-	refresh();
+    refresh();
 }
 
 void NotifyTreeWidget::refresh()
 {
-	QString currentName;
-	if (currentItem())
-		currentName = currentItem()->text(0);
-	clear();
-	TreeItems.clear();
+    QString currentName;
+    if (currentItem())
+        currentName = currentItem()->text(0);
+    clear();
+    TreeItems.clear();
 
-	ColumnWidth = (IconWidth + 4) * m_notifierRepository->size();
-	header()->resizeSection(0, eventColumnWidth());
+    ColumnWidth = (IconWidth + 4) * m_notifierRepository->size();
+    header()->resizeSection(0, eventColumnWidth());
 
-	const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
-	const QMap<QString, NotificationEventConfigurationItem> &notifyEventItem = UiHandler->notifyEvents();
+    const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGuiItems = UiHandler->notifierGui();
+    const QMap<QString, NotificationEventConfigurationItem> &notifyEventItem = UiHandler->notifyEvents();
 
-	QStringList notifiersNames;
-	QString eventName;
-	for (auto &&notifyEvent : m_notificationEventRepository->notificationEvents())
-	{
-		eventName = notifyEvent.name();
-		for (auto notifier : m_notifierRepository)
-			if (notifierGuiItems[notifier].Events[eventName])
-				notifiersNames << notifier->name();
+    QStringList notifiersNames;
+    QString eventName;
+    for (auto &&notifyEvent : m_notificationEventRepository->notificationEvents())
+    {
+        eventName = notifyEvent.name();
+        for (auto notifier : m_notifierRepository)
+            if (notifierGuiItems[notifier].Events[eventName])
+                notifiersNames << notifier->name();
 
-		if (notifyEvent.category().isEmpty())
-			TreeItems.insert(eventName, new NotifyTreeWidgetItem(this, eventName,
-						notifyEvent.description(), notifiersNames));
-		else
-		{
-			TreeItems[eventName] = new NotifyTreeWidgetItem(TreeItems[notifyEvent.category()], eventName,
-						notifyEvent.description(), notifiersNames);
-			TreeItems[eventName]->useCustomSettingsChecked(notifyEventItem[eventName].useCustomSettings);
-		}
-		notifiersNames.clear();
-	}
+        if (notifyEvent.category().isEmpty())
+            TreeItems.insert(
+                eventName, new NotifyTreeWidgetItem(this, eventName, notifyEvent.description(), notifiersNames));
+        else
+        {
+            TreeItems[eventName] = new NotifyTreeWidgetItem(
+                TreeItems[notifyEvent.category()], eventName, notifyEvent.description(), notifiersNames);
+            TreeItems[eventName]->useCustomSettingsChecked(notifyEventItem[eventName].useCustomSettings);
+        }
+        notifiersNames.clear();
+    }
 
-	if (!currentName.isNull())
-	{
-		QList<QTreeWidgetItem *> items = findItems(currentName, Qt::MatchExactly, 0);
-		if (!items.isEmpty())
-			setCurrentItem(items.at(0));
-	}
+    if (!currentName.isNull())
+    {
+        QList<QTreeWidgetItem *> items = findItems(currentName, Qt::MatchExactly, 0);
+        if (!items.isEmpty())
+            setCurrentItem(items.at(0));
+    }
 
-	expandAll();
+    expandAll();
 }
 
 QString NotifyTreeWidget::currentEvent()
 {
-	return currentItem()->data(0, Qt::UserRole).toString();
+    return currentItem()->data(0, Qt::UserRole).toString();
 }
 
 void NotifyTreeWidget::notifierChecked(Notifier *notifier, bool checked)
 {
-	NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
-	if (item)
-		item->notifierChecked(notifier, checked);
+    NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
+    if (item)
+        item->notifierChecked(notifier, checked);
 }
 
 void NotifyTreeWidget::useCustomSettingsChecked(bool checked)
 {
-   	NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
-	if (item)
-		item->useCustomSettingsChecked(checked);
+    NotifyTreeWidgetItem *item = dynamic_cast<NotifyTreeWidgetItem *>(currentItem());
+    if (item)
+        item->useCustomSettingsChecked(checked);
 }
 
 int NotifyTreeWidget::eventColumnWidth()
 {
-	return ColumnWidth > StateColumnDefaultWidth ? width() - OFFSET - ColumnWidth : width() - OFFSET - StateColumnDefaultWidth;
+    return ColumnWidth > StateColumnDefaultWidth ? width() - OFFSET - ColumnWidth
+                                                 : width() - OFFSET - StateColumnDefaultWidth;
 }
 
 void NotifyTreeWidget::resizeEvent(QResizeEvent *event)
 {
-	Q_UNUSED(event)
+    Q_UNUSED(event)
 
-	header()->resizeSection(0, eventColumnWidth());
+    header()->resizeSection(0, eventColumnWidth());
 }
 
-NotifyTreeWidgetItem::NotifyTreeWidgetItem(QTreeWidget *parent, const QString &eventName, const QString &name, QStringList &notifiers)
-	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
+NotifyTreeWidgetItem::NotifyTreeWidgetItem(
+    QTreeWidget *parent, const QString &eventName, const QString &name, QStringList &notifiers)
+        : QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
 {
-	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
+    setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 
-	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
-	setData(0, Qt::UserRole, QVariant(eventName));
-	setText(0, QCoreApplication::translate("@default", name.toUtf8()));
+    setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+    setData(0, Qt::UserRole, QVariant(eventName));
+    setText(0, QCoreApplication::translate("@default", name.toUtf8()));
 }
 
-NotifyTreeWidgetItem::NotifyTreeWidgetItem(NotifyTreeWidgetItem *parent, const QString &eventName, const QString &name, QStringList &notifiers)
-	: QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
+NotifyTreeWidgetItem::NotifyTreeWidgetItem(
+    NotifyTreeWidgetItem *parent, const QString &eventName, const QString &name, QStringList &notifiers)
+        : QTreeWidgetItem(parent), ActiveNotifiers(notifiers), useCustomSettings(true)
 {
-	setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
+    setChildIndicatorPolicy(QTreeWidgetItem::DontShowIndicatorWhenChildless);
 
-	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
-	setData(0, Qt::UserRole, QVariant(eventName));
-	setText(0, QCoreApplication::translate("@default", name.toUtf8()));
+    setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+    setData(0, Qt::UserRole, QVariant(eventName));
+    setText(0, QCoreApplication::translate("@default", name.toUtf8()));
 }
 
 void NotifyTreeWidgetItem::notifierChecked(Notifier *notifier, bool checked)
 {
-	if (checked)
-		ActiveNotifiers << notifier->name();
-	else
-		ActiveNotifiers.removeAll(notifier->name());
+    if (checked)
+        ActiveNotifiers << notifier->name();
+    else
+        ActiveNotifiers.removeAll(notifier->name());
 
-	setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+    setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
 
-	for (int i = 0; i < childCount(); ++i)
-		static_cast<NotifyTreeWidgetItem *>(child(i))->parentNotifierChecked();
+    for (int i = 0; i < childCount(); ++i)
+        static_cast<NotifyTreeWidgetItem *>(child(i))->parentNotifierChecked();
 }
 
 void NotifyTreeWidgetItem::useCustomSettingsChecked(bool checked)
 {
-	if (!parent() || useCustomSettings == checked)
-		return;
+    if (!parent() || useCustomSettings == checked)
+        return;
 
-	useCustomSettings = checked;
-	if (useCustomSettings)
-		setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
-	else
-		setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
-    }
+    useCustomSettings = checked;
+    if (useCustomSettings)
+        setData(1, Qt::UserRole, QVariant(ActiveNotifiers));
+    else
+        setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
+}
 
- void NotifyTreeWidgetItem::parentNotifierChecked()
- {
-	if (useCustomSettings)
-		return;
+void NotifyTreeWidgetItem::parentNotifierChecked()
+{
+    if (useCustomSettings)
+        return;
 
-	setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
- }
+    setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
+}
 
 #include "moc_notify-tree-widget.cpp"

@@ -37,8 +37,8 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
-AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent) :
-		QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
+AccountAvatarWidget::AccountAvatarWidget(Account account, QWidget *parent)
+        : QWidget(parent), MyAccount(account), Service(0), WaitMovie(0)
 {
 }
 
@@ -48,163 +48,166 @@ AccountAvatarWidget::~AccountAvatarWidget()
 
 void AccountAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void AccountAvatarWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void AccountAvatarWidget::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void AccountAvatarWidget::init()
 {
-	WaitMovie = new QMovie(m_iconsManager->iconPath(KaduIcon("kadu_icons/please-wait", "16x16")), QByteArray(), this);
+    WaitMovie = new QMovie(m_iconsManager->iconPath(KaduIcon("kadu_icons/please-wait", "16x16")), QByteArray(), this);
 
-	createGui();
+    createGui();
 
-	connect(m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory*)),
-	        this, SLOT(protocolRegistered(ProtocolFactory*)));
-	connect(m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory*)),
-	        this, SLOT(protocolUnregistered(ProtocolFactory*)));
+    connect(
+        m_protocolsManager, SIGNAL(protocolFactoryRegistered(ProtocolFactory *)), this,
+        SLOT(protocolRegistered(ProtocolFactory *)));
+    connect(
+        m_protocolsManager, SIGNAL(protocolFactoryUnregistered(ProtocolFactory *)), this,
+        SLOT(protocolUnregistered(ProtocolFactory *)));
 
-	for (auto factory : m_protocolsManager->protocolFactories())
-		protocolRegistered(factory);
+    for (auto factory : m_protocolsManager->protocolFactories())
+        protocolRegistered(factory);
 }
 
 void AccountAvatarWidget::serviceDestroyed()
 {
-	Service = 0;
-	setEnabled(false);
+    Service = 0;
+    setEnabled(false);
 }
 
 void AccountAvatarWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	AvatarLabel = new QLabel();
-	AvatarLabel->setAlignment(Qt::AlignCenter);
-	AvatarLabel->setFixedWidth(128);
+    AvatarLabel = new QLabel();
+    AvatarLabel->setAlignment(Qt::AlignCenter);
+    AvatarLabel->setFixedWidth(128);
 
-	layout->addWidget(AvatarLabel);
+    layout->addWidget(AvatarLabel);
 
-	ChangePhotoButton = new QPushButton(this);
-	connect(ChangePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeButtonClicked()));
-	setupMode();
+    ChangePhotoButton = new QPushButton(this);
+    connect(ChangePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeButtonClicked()));
+    setupMode();
 
-	layout->addWidget(ChangePhotoButton, 0, Qt::AlignHCenter);
+    layout->addWidget(ChangePhotoButton, 0, Qt::AlignHCenter);
 
-	auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
-	connect(avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-	avatarUpdated();
+    auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
+    connect(avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
+    avatarUpdated();
 }
 
 void AccountAvatarWidget::setupMode()
 {
-	auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
-	if (MyAccount.protocolHandler()->protocolFactory()->canRemoveAvatar() && !avatar.isEmpty())
-		Mode = ModeRemove;
-	else
-		Mode = ModeChange;
+    auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
+    if (MyAccount.protocolHandler()->protocolFactory()->canRemoveAvatar() && !avatar.isEmpty())
+        Mode = ModeRemove;
+    else
+        Mode = ModeChange;
 
-	if (ModeRemove == Mode)
-		ChangePhotoButton->setText(tr("Remove Photo..."));
-	else
-		ChangePhotoButton->setText(tr("Change Photo..."));
+    if (ModeRemove == Mode)
+        ChangePhotoButton->setText(tr("Remove Photo..."));
+    else
+        ChangePhotoButton->setText(tr("Change Photo..."));
 }
 
 void AccountAvatarWidget::protocolRegistered(ProtocolFactory *protocolFactory)
 {
-	Q_UNUSED(protocolFactory)
+    Q_UNUSED(protocolFactory)
 
-	if (Service)
-		disconnect(Service, 0, this, 0);
+    if (Service)
+        disconnect(Service, 0, this, 0);
 
-	Protocol *protocol = MyAccount.protocolHandler();
-	if (!protocol)
-		return;
+    Protocol *protocol = MyAccount.protocolHandler();
+    if (!protocol)
+        return;
 
-	Service = protocol->avatarService();
-	setEnabled(0 != Service);
+    Service = protocol->avatarService();
+    setEnabled(0 != Service);
 
-	if (Service)
-		connect(Service, SIGNAL(destroyed()), this, SLOT(serviceDestroyed()));
+    if (Service)
+        connect(Service, SIGNAL(destroyed()), this, SLOT(serviceDestroyed()));
 }
 
 void AccountAvatarWidget::protocolUnregistered(ProtocolFactory *protocolFactory)
 {
-	protocolRegistered(protocolFactory);
+    protocolRegistered(protocolFactory);
 }
 
 void AccountAvatarWidget::avatarUpdated()
 {
-	WaitMovie->stop();
-	AvatarLabel->setMovie(0);
-	QPixmap avatar = MyAccount.accountContact().contactAvatar().pixmap();
+    WaitMovie->stop();
+    AvatarLabel->setMovie(0);
+    QPixmap avatar = MyAccount.accountContact().contactAvatar().pixmap();
 
-	if (avatar.width() > 128 || avatar.height() > 128)
-		avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-	AvatarLabel->setPixmap(avatar);
+    if (avatar.width() > 128 || avatar.height() > 128)
+        avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    AvatarLabel->setPixmap(avatar);
 
-	setupMode();
+    setupMode();
 }
 
 void AccountAvatarWidget::changeButtonClicked()
 {
-	if (ModeRemove == Mode)
-		removeAvatar();
-	else
-		changeAvatar();
+    if (ModeRemove == Mode)
+        removeAvatar();
+    else
+        changeAvatar();
 }
 
 void AccountAvatarWidget::uploadAvatar(QImage avatar)
 {
-	AvatarLabel->setScaledContents(false);
-	AvatarLabel->setMovie(WaitMovie);
-	WaitMovie->start();
+    AvatarLabel->setScaledContents(false);
+    AvatarLabel->setMovie(WaitMovie);
+    WaitMovie->start();
 
-	AvatarUploader *uploader = Service->createAvatarUploader();
-	if (!uploader)
-	{
-		avatarUploaded(false, QImage());
-		return;
-	}
+    AvatarUploader *uploader = Service->createAvatarUploader();
+    if (!uploader)
+    {
+        avatarUploaded(false, QImage());
+        return;
+    }
 
-	connect(uploader, SIGNAL(avatarUploaded(bool,QImage)), this, SLOT(avatarUploaded(bool,QImage)));
-	uploader->uploadAvatar(MyAccount.id(), MyAccount.password(), avatar);
+    connect(uploader, SIGNAL(avatarUploaded(bool, QImage)), this, SLOT(avatarUploaded(bool, QImage)));
+    uploader->uploadAvatar(MyAccount.id(), MyAccount.password(), avatar);
 
-	ChangePhotoButton->setEnabled(false);
+    ChangePhotoButton->setEnabled(false);
 }
 
 void AccountAvatarWidget::changeAvatar()
 {
-	QString fileName = QFileDialog::getOpenFileName(this, tr("Select avatar file"), QString(), tr("Images (*.jpeg *.jpg *.png);;All Files (*)"));
-	if (fileName.isEmpty())
-		return;
+    QString fileName = QFileDialog::getOpenFileName(
+        this, tr("Select avatar file"), QString(), tr("Images (*.jpeg *.jpg *.png);;All Files (*)"));
+    if (fileName.isEmpty())
+        return;
 
-	QImage avatar(fileName);
-	if (avatar.isNull())
-		return;
+    QImage avatar(fileName);
+    if (avatar.isNull())
+        return;
 
-	uploadAvatar(avatar);
+    uploadAvatar(avatar);
 }
 
 void AccountAvatarWidget::removeAvatar()
 {
-	uploadAvatar(QImage());
+    uploadAvatar(QImage());
 }
 
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 {
-	if (ok)
-		m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
+    if (ok)
+        m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
 
-	avatarUpdated();
-	ChangePhotoButton->setEnabled(true);
+    avatarUpdated();
+    ChangePhotoButton->setEnabled(true);
 }
 
 #include "moc_account-avatar-widget.cpp"

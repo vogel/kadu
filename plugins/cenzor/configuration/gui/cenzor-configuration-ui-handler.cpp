@@ -29,10 +29,8 @@
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
 
-CenzorConfigurationUiHandler::CenzorConfigurationUiHandler(QObject *parent) :
-		QObject{parent},
-		m_swearwordsWidget{},
-		m_exclusionsWidget{}
+CenzorConfigurationUiHandler::CenzorConfigurationUiHandler(QObject *parent)
+        : QObject{parent}, m_swearwordsWidget{}, m_exclusionsWidget{}
 {
 }
 
@@ -42,21 +40,23 @@ CenzorConfigurationUiHandler::~CenzorConfigurationUiHandler()
 
 void CenzorConfigurationUiHandler::setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration)
 {
-	m_cenzorConfiguration = cenzorConfiguration;
+    m_cenzorConfiguration = cenzorConfiguration;
 }
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	ConfigGroupBox *swearwordGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Swearwords");
-	m_swearwordsWidget = new ListEditWidget(swearwordGroupBox->widget());
-	swearwordGroupBox->addWidgets(0, m_swearwordsWidget);
+    ConfigGroupBox *swearwordGroupBox =
+        mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Swearwords");
+    m_swearwordsWidget = new ListEditWidget(swearwordGroupBox->widget());
+    swearwordGroupBox->addWidgets(0, m_swearwordsWidget);
 
-	ConfigGroupBox *exclusionsGroupBox = mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Exclusions");
-	m_exclusionsWidget = new ListEditWidget(exclusionsGroupBox->widget());
-	exclusionsGroupBox->addWidgets(0, m_exclusionsWidget);
+    ConfigGroupBox *exclusionsGroupBox =
+        mainConfigurationWindow->widget()->configGroupBox("Chat", "Cenzor", "Exclusions");
+    m_exclusionsWidget = new ListEditWidget(exclusionsGroupBox->widget());
+    exclusionsGroupBox->addWidgets(0, m_exclusionsWidget);
 
-	m_swearwordsWidget->setList(CenzorConfiguration::toStringList(m_cenzorConfiguration->swearList()));
-	m_exclusionsWidget->setList(CenzorConfiguration::toStringList(m_cenzorConfiguration->exclusionList()));
+    m_swearwordsWidget->setList(CenzorConfiguration::toStringList(m_cenzorConfiguration->swearList()));
+    m_exclusionsWidget->setList(CenzorConfiguration::toStringList(m_cenzorConfiguration->exclusionList()));
 }
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -65,9 +65,9 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowDestroyed()
 
 void CenzorConfigurationUiHandler::mainConfigurationWindowApplied()
 {
-	m_cenzorConfiguration->setSwearList(CenzorConfiguration::toRegExpList(m_swearwordsWidget->list()));
-	m_cenzorConfiguration->setExclusionList(CenzorConfiguration::toRegExpList(m_exclusionsWidget->list()));
-	m_cenzorConfiguration->saveConfiguration();
+    m_cenzorConfiguration->setSwearList(CenzorConfiguration::toRegExpList(m_swearwordsWidget->list()));
+    m_cenzorConfiguration->setExclusionList(CenzorConfiguration::toRegExpList(m_exclusionsWidget->list()));
+    m_cenzorConfiguration->saveConfiguration();
 }
 
 #include "moc_cenzor-configuration-ui-handler.cpp"

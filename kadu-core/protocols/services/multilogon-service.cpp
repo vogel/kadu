@@ -21,8 +21,7 @@
 
 #include "multilogon/multilogon-session.h"
 
-MultilogonService::MultilogonService(Account account, QObject *parent) :
-		AccountService{account, parent}
+MultilogonService::MultilogonService(Account account, QObject *parent) : AccountService{account, parent}
 {
 }
 

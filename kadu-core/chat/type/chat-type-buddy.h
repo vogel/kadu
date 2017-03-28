@@ -44,28 +44,27 @@ class InjectedFactory;
  */
 class KADUAPI ChatTypeBuddy : public ChatType
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatTypeBuddy(QObject *parent = nullptr);
-	virtual ~ChatTypeBuddy();
+    Q_INVOKABLE explicit ChatTypeBuddy(QObject *parent = nullptr);
+    virtual ~ChatTypeBuddy();
 
-	virtual QString name() const;
-	virtual QStringList aliases() const;
-	virtual KaduIcon icon() const;
-	virtual QString windowRole() const;
+    virtual QString name() const;
+    virtual QStringList aliases() const;
+    virtual KaduIcon icon() const;
+    virtual QString windowRole() const;
 
-	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
-	virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
+    virtual ChatDetails *createChatDetails(ChatShared *chatData) const;
+    virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QStringList m_aliases;
+    QStringList m_aliases;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };
 
 Q_DECLARE_METATYPE(ChatTypeBuddy *)

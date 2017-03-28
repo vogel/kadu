@@ -26,6 +26,6 @@
 
 struct QFacebookPublishPresence
 {
-	static QFacebookPublishPresence decode(const QByteArray &data);
-	std::vector<QFacebookPresence> presence;
+    static QFacebookPublishPresence decode(const QByteArray &data);
+    std::vector<QFacebookPresence> presence;
 };

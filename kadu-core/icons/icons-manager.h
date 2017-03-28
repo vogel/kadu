@@ -21,8 +21,8 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "themes/theme.h"
 #include "exports.h"
+#include "themes/theme.h"
 
 #include <QtCore/QHash>
 #include <QtCore/QPointer>
@@ -36,48 +36,47 @@ class KaduIcon;
 
 class KADUAPI IconsManager : public QObject, public ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum AllowEmpty
-	{
-		EmptyNotAllowed,
-		EmptyAllowed
-	};
+    enum AllowEmpty
+    {
+        EmptyNotAllowed,
+        EmptyAllowed
+    };
 
-	Q_INVOKABLE explicit IconsManager(QObject *parent = nullptr);
-	virtual ~IconsManager();
+    Q_INVOKABLE explicit IconsManager(QObject *parent = nullptr);
+    virtual ~IconsManager();
 
-	QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
-	QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
-	QIcon iconByPath(const KaduIcon &icon);
+    QString iconPath(const KaduIcon &icon, AllowEmpty allowEmpty = EmptyNotAllowed) const;
+    QIcon iconByPath(const QString &themePath, const QString &path, AllowEmpty allowEmpty = EmptyNotAllowed);
+    QIcon iconByPath(const KaduIcon &icon);
 
-	QSize getIconsSize();
+    QSize getIconsSize();
 
 signals:
-	void themeChanged();
+    void themeChanged();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconThemeManager> m_iconThemeManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconThemeManager> m_iconThemeManager;
 
-	QHash<QString, QIcon> IconCache;
+    QHash<QString, QIcon> IconCache;
 
-	void clearCache();
+    void clearCache();
 
-	QString localProtocolPath;
+    QString localProtocolPath;
 
-	QIcon buildPngIcon(const QString &themePath, const QString &path);
-	QIcon buildSvgIcon(const QString &themePath, const QString &path);
+    QIcon buildPngIcon(const QString &themePath, const QString &path);
+    QIcon buildSvgIcon(const QString &themePath, const QString &path);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconThemeManager(IconThemeManager *iconThemeManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconThemeManager(IconThemeManager *iconThemeManager);
+    INJEQT_INIT void init();
 };

@@ -23,9 +23,7 @@
 
 class SpellcheckerModule : public injeqt::module
 {
-
 public:
-	explicit SpellcheckerModule();
-	virtual ~SpellcheckerModule();
-
+    explicit SpellcheckerModule();
+    virtual ~SpellcheckerModule();
 };

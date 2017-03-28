@@ -21,8 +21,7 @@
 
 #include <algorithm>
 
-OpenChatRepository::OpenChatRepository(QObject *parent) :
-		QObject{parent}
+OpenChatRepository::OpenChatRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,29 +31,29 @@ OpenChatRepository::~OpenChatRepository()
 
 OpenChatRepository::Iterator OpenChatRepository::begin() const
 {
-	return m_chats.cbegin();
+    return m_chats.cbegin();
 }
 
 OpenChatRepository::Iterator OpenChatRepository::end() const
 {
-	return m_chats.cend();
+    return m_chats.cend();
 }
 
 void OpenChatRepository::addOpenChat(Chat chat)
 {
-	m_chats.insert(chat);
-	emit openChatAdded(chat);
+    m_chats.insert(chat);
+    emit openChatAdded(chat);
 }
 
 void OpenChatRepository::removeOpenChat(Chat chat)
 {
-	m_chats.erase(chat);
-	emit openChatRemoved(chat);
+    m_chats.erase(chat);
+    emit openChatRemoved(chat);
 }
 
 size_t OpenChatRepository::size() const
 {
-	return m_chats.size();
+    return m_chats.size();
 }
 
 #include "open-chat-repository.moc"

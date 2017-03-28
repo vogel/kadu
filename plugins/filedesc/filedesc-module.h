@@ -23,9 +23,7 @@
 
 class FiledescModule : public injeqt::module
 {
-
 public:
-	explicit FiledescModule();
-	virtual ~FiledescModule();
-
+    explicit FiledescModule();
+    virtual ~FiledescModule();
 };

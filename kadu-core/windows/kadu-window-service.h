@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include "exports.h"
 #include "provider/default-provider.h"
 #include "provider/simple-provider.h"
-#include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -32,32 +32,31 @@ class KaduWindow;
 
 class KADUAPI KaduWindowService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit KaduWindowService(QObject *parent = nullptr);
-	virtual ~KaduWindowService();
+    Q_INVOKABLE explicit KaduWindowService(QObject *parent = nullptr);
+    virtual ~KaduWindowService();
 
-	void createWindow();
+    void createWindow();
 
-	KaduWindow * kaduWindow();
-	void showMainWindow();
+    KaduWindow *kaduWindow();
+    void showMainWindow();
 
-	void setShowMainWindowOnStart(bool showMainWindowOnStart);
-	std::shared_ptr<DefaultProvider<QWidget *>> mainWindowProvider() const;
+    void setShowMainWindowOnStart(bool showMainWindowOnStart);
+    std::shared_ptr<DefaultProvider<QWidget *>> mainWindowProvider() const;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	KaduWindow *m_kaduWindow;
-	std::shared_ptr<SimpleProvider<QWidget *>> m_kaduWindowProvider;
-	std::shared_ptr<DefaultProvider<QWidget *>> m_mainWindowProvider;
-	bool m_showMainWindowOnStart; // TODO: it is a hack for docking
+    KaduWindow *m_kaduWindow;
+    std::shared_ptr<SimpleProvider<QWidget *>> m_kaduWindowProvider;
+    std::shared_ptr<DefaultProvider<QWidget *>> m_mainWindowProvider;
+    bool m_showMainWindowOnStart;   // TODO: it is a hack for docking
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_DONE void done();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_DONE void done();
 
-	void kaduWindowDestroyed();
-
+    void kaduWindowDestroyed();
 };

@@ -24,8 +24,8 @@
 
 SimpleviewModule::SimpleviewModule()
 {
-	add_type<SimpleviewPluginObject>();
-	add_type<SimpleView>();
+    add_type<SimpleviewPluginObject>();
+    add_type<SimpleView>();
 }
 
 SimpleviewModule::~SimpleviewModule()

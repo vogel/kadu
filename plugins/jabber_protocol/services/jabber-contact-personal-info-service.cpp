@@ -30,8 +30,8 @@
 #include <QtCore/QDate>
 #include <qxmpp/QXmppVCardIq.h>
 
-JabberContactPersonalInfoService::JabberContactPersonalInfoService(Account account, QObject *parent) :
-		ContactPersonalInfoService(account, parent)
+JabberContactPersonalInfoService::JabberContactPersonalInfoService(Account account, QObject *parent)
+        : ContactPersonalInfoService(account, parent)
 {
 }
 
@@ -41,47 +41,48 @@ JabberContactPersonalInfoService::~JabberContactPersonalInfoService()
 
 void JabberContactPersonalInfoService::setBuddyStorage(BuddyStorage *buddyStorage)
 {
-	m_buddyStorage = buddyStorage;
+    m_buddyStorage = buddyStorage;
 }
 
 void JabberContactPersonalInfoService::setVCardService(JabberVCardService *vCardService)
 {
-	VCardService = vCardService;
+    VCardService = vCardService;
 }
 
 void JabberContactPersonalInfoService::fetchPersonalInfo(Contact contact)
 {
-	CurrentBuddy = m_buddyStorage->create();
-	if (!VCardService)
-		return;
+    CurrentBuddy = m_buddyStorage->create();
+    if (!VCardService)
+        return;
 
-	JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
-	if (!vCardDownloader)
-		return;
+    JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+    if (!vCardDownloader)
+        return;
 
-	connect(vCardDownloader, SIGNAL(vCardDownloaded(bool,QXmppVCardIq)), this, SLOT(vCardDownloaded(bool,QXmppVCardIq)));
-	vCardDownloader->downloadVCard(contact.id());
+    connect(
+        vCardDownloader, SIGNAL(vCardDownloaded(bool, QXmppVCardIq)), this, SLOT(vCardDownloaded(bool, QXmppVCardIq)));
+    vCardDownloader->downloadVCard(contact.id());
 }
 
 void JabberContactPersonalInfoService::vCardDownloaded(bool ok, const QXmppVCardIq &vCard)
 {
-	if (!ok)
-		return;
+    if (!ok)
+        return;
 
-	CurrentBuddy.setNickName(vCard.nickName());
-	CurrentBuddy.setFirstName(vCard.fullName());
-	CurrentBuddy.setFamilyName(vCard.middleName());
-	auto bday = vCard.birthday();
-	if (bday.isValid() && !bday.isNull())
-		CurrentBuddy.setBirthYear(bday.year());
+    CurrentBuddy.setNickName(vCard.nickName());
+    CurrentBuddy.setFirstName(vCard.fullName());
+    CurrentBuddy.setFamilyName(vCard.middleName());
+    auto bday = vCard.birthday();
+    if (bday.isValid() && !bday.isNull())
+        CurrentBuddy.setBirthYear(bday.year());
 
-	if (!vCard.addresses().isEmpty())
-		CurrentBuddy.setCity(vCard.addresses().at(0).locality());
-	if (!vCard.emails().isEmpty())
-		CurrentBuddy.setEmail(vCard.emails().at(0).address());
-	CurrentBuddy.setWebsite(vCard.url());
+    if (!vCard.addresses().isEmpty())
+        CurrentBuddy.setCity(vCard.addresses().at(0).locality());
+    if (!vCard.emails().isEmpty())
+        CurrentBuddy.setEmail(vCard.emails().at(0).address());
+    CurrentBuddy.setWebsite(vCard.url());
 
-	emit personalInfoAvailable(CurrentBuddy);
+    emit personalInfoAvailable(CurrentBuddy);
 }
 
 #include "moc_jabber-contact-personal-info-service.cpp"

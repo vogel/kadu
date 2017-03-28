@@ -28,8 +28,10 @@ class ContactManager;
 
 namespace ContactSetConfigurationHelper
 {
-	ContactSet loadFromConfiguration(ContactManager *contactManager, StorableObject *parent, const QString &nodeName);
-	ContactSet loadFromConfiguration(ContactManager *contactManager, ConfigurationApi *configurationStorage, QDomElement contactSetNode);
-	void saveToConfiguration(StorableObject *parent, const QString &nodeName, const ContactSet &contactSet);
-	void saveToConfiguration(ConfigurationApi *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet);
+ContactSet loadFromConfiguration(ContactManager *contactManager, StorableObject *parent, const QString &nodeName);
+ContactSet loadFromConfiguration(
+    ContactManager *contactManager, ConfigurationApi *configurationStorage, QDomElement contactSetNode);
+void saveToConfiguration(StorableObject *parent, const QString &nodeName, const ContactSet &contactSet);
+void saveToConfiguration(
+    ConfigurationApi *configurationStorage, QDomElement contactSetNode, const ContactSet &contactSet);
 }

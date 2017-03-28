@@ -23,33 +23,33 @@
 
 #include <QtWidgets/QTreeWidget>
 
-AddFoundBuddyAction::AddFoundBuddyAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+AddFoundBuddyAction::AddFoundBuddyAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"contact-new"});
-	setName(QStringLiteral("addSearchedAction"));
-	setText(tr("Add selected user"));
-	setType(ActionDescription::TypeSearch);
+    setIcon(KaduIcon{"contact-new"});
+    setName(QStringLiteral("addSearchedAction"));
+    setText(tr("Add selected user"));
+    setType(ActionDescription::TypeSearch);
 }
 
 AddFoundBuddyAction::~AddFoundBuddyAction()
 {
 }
 
-void AddFoundBuddyAction::actionInstanceCreated(Action* action)
+void AddFoundBuddyAction::actionInstanceCreated(Action *action)
 {
-	auto search = qobject_cast<SearchWindow *>(action->parentWidget());
+    auto search = qobject_cast<SearchWindow *>(action->parentWidget());
 
-	if (!search || !search->ResultsListWidget || search->ResultsListWidget->selectedItems().isEmpty())
-		action->setEnabled(false);
+    if (!search || !search->ResultsListWidget || search->ResultsListWidget->selectedItems().isEmpty())
+        action->setEnabled(false);
 }
 
 void AddFoundBuddyAction::actionTriggered(QAction *sender, bool)
 {
-	auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
-	if (search)
-		search->addFound();
+    auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
+    if (search)
+        search->addFound();
 }
 
 #include "moc_add-found-buddy-action.cpp"

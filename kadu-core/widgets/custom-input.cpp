@@ -47,290 +47,291 @@
 #include "custom-input-menu-manager.h"
 #include "custom-input.h"
 
-CustomInput::CustomInput(Chat chat, QWidget *parent) :
-		QTextEdit(parent), CurrentChat(chat), CopyPossible(false), autosend_enabled(true)
+CustomInput::CustomInput(Chat chat, QWidget *parent)
+        : QTextEdit(parent), CurrentChat(chat), CopyPossible(false), autosend_enabled(true)
 {
-	setAcceptRichText(false);
-	setAcceptDrops(true);
+    setAcceptRichText(false);
+    setAcceptDrops(true);
 
-	connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(setCopyPossible(bool)));
-	connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChangedSlot()));
+    connect(this, SIGNAL(copyAvailable(bool)), this, SLOT(setCopyPossible(bool)));
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(cursorPositionChangedSlot()));
 }
 
 void CustomInput::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatConfigurationHolder = chatConfigurationHolder;
+    m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
 void CustomInput::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void CustomInput::setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager)
 {
-	m_customInputMenuManager = customInputMenuManager;
+    m_customInputMenuManager = customInputMenuManager;
 }
 
 void CustomInput::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	m_imageStorageService = imageStorageService;
+    m_imageStorageService = imageStorageService;
 }
 
 void CustomInput::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	m_formattedStringFactory = formattedStringFactory;
+    m_formattedStringFactory = formattedStringFactory;
 }
 
 NormalizedHtmlString CustomInput::htmlMessage() const
 {
-	auto formattedString = m_formattedStringFactory->fromTextDocument(*document());
-	FormattedStringHtmlVisitor visitor{};
-	formattedString->accept(&visitor);
-	return normalizeHtml(visitor.result());
+    auto formattedString = m_formattedStringFactory->fromTextDocument(*document());
+    FormattedStringHtmlVisitor visitor{};
+    formattedString->accept(&visitor);
+    return normalizeHtml(visitor.result());
 }
 
 void CustomInput::showEvent(QShowEvent *e)
 {
-	QTextEdit::showEvent(e);
+    QTextEdit::showEvent(e);
 
-	// see #2837 - windows bug
-	setFont(m_chatConfigurationHolder->chatFont());
+    // see #2837 - windows bug
+    setFont(m_chatConfigurationHolder->chatFont());
 }
 
 void CustomInput::keyPressEvent(QKeyEvent *e)
 {
-	/* Ctrl+Return and Ctrl+Enter have a special meaning:
-	 * 1) autosend_enabled -> new line is entered
-	 * 2) message is sent
-	 */
-	bool isCtrlEnter = (e->key() == Qt::Key_Return && e->modifiers() == Qt::ControlModifier)
-			|| (e->key() == Qt::Key_Enter && e->modifiers() == (Qt::KeypadModifier | Qt::ControlModifier));
+    /* Ctrl+Return and Ctrl+Enter have a special meaning:
+     * 1) autosend_enabled -> new line is entered
+     * 2) message is sent
+     */
+    bool isCtrlEnter = (e->key() == Qt::Key_Return && e->modifiers() == Qt::ControlModifier) ||
+                       (e->key() == Qt::Key_Enter && e->modifiers() == (Qt::KeypadModifier | Qt::ControlModifier));
 
-	if ((autosend_enabled
-			&& ((e->key() == Qt::Key_Return && e->modifiers() == Qt::NoModifier)
-				|| (e->key() == Qt::Key_Enter && e->modifiers() == Qt::KeypadModifier)))
-		|| (!autosend_enabled && isCtrlEnter) || HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_sendmessage"))
-	{
-		emit sendMessage();
-		e->accept();
-		return;
-	}
-	else if (isCtrlEnter)
-	{
-		// now surely autosend_enabled == true, so we can emulate Shift+Return to get a new line
-		QKeyEvent emulateNewLineEvent(QEvent::KeyPress, Qt::Key_Return, Qt::ShiftModifier, "\n", false, 2);
-		QTextEdit::keyPressEvent(&emulateNewLineEvent);
+    if ((autosend_enabled && ((e->key() == Qt::Key_Return && e->modifiers() == Qt::NoModifier) ||
+                              (e->key() == Qt::Key_Enter && e->modifiers() == Qt::KeypadModifier))) ||
+        (!autosend_enabled && isCtrlEnter) || HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_sendmessage"))
+    {
+        emit sendMessage();
+        e->accept();
+        return;
+    }
+    else if (isCtrlEnter)
+    {
+        // now surely autosend_enabled == true, so we can emulate Shift+Return to get a new line
+        QKeyEvent emulateNewLineEvent(QEvent::KeyPress, Qt::Key_Return, Qt::ShiftModifier, "\n", false, 2);
+        QTextEdit::keyPressEvent(&emulateNewLineEvent);
 
-		e->accept();
-		return;
-	}
-	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_bold"))
-	{
-		if (QFont::Normal == fontWeight())
-			setFontWeight(QFont::Bold);
-		else
-			setFontWeight(QFont::Normal);
+        e->accept();
+        return;
+    }
+    else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_bold"))
+    {
+        if (QFont::Normal == fontWeight())
+            setFontWeight(QFont::Bold);
+        else
+            setFontWeight(QFont::Normal);
 
-		emit fontChanged(currentFont());
+        emit fontChanged(currentFont());
 
-		e->accept();
-		return;
-	}
-	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_italic"))
-	{
-		setFontItalic(!fontItalic());
+        e->accept();
+        return;
+    }
+    else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_italic"))
+    {
+        setFontItalic(!fontItalic());
 
-		emit fontChanged(currentFont());
+        emit fontChanged(currentFont());
 
-		e->accept();
-		return;
-	}
-	else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_underline"))
-	{
-		setFontUnderline(!fontUnderline());
+        e->accept();
+        return;
+    }
+    else if (HotKey::shortCut(m_configuration, e, "ShortCuts", "chat_underline"))
+    {
+        setFontUnderline(!fontUnderline());
 
-		emit fontChanged(currentFont());
+        emit fontChanged(currentFont());
 
-		e->accept();
-		return;
-	}
-	else if (e->matches(QKeySequence::SelectAll))
-	{
-		selectAll();
-		e->accept();
-		return;
-	}
-	else if (CopyPossible && e->matches(QKeySequence::Copy))
-	{
-		copy();
-		e->accept();
-		return;
-	}
-	else if (e->key() == Qt::Key_Tab)
-	{
-		e->accept();
-		return;
-	}
+        e->accept();
+        return;
+    }
+    else if (e->matches(QKeySequence::SelectAll))
+    {
+        selectAll();
+        e->accept();
+        return;
+    }
+    else if (CopyPossible && e->matches(QKeySequence::Copy))
+    {
+        copy();
+        e->accept();
+        return;
+    }
+    else if (e->key() == Qt::Key_Tab)
+    {
+        e->accept();
+        return;
+    }
 
-	bool handled = false;
-	emit keyPressed(e, this, handled);
-	if (handled)
-	{
-		e->accept();
-		return;
-	}
+    bool handled = false;
+    emit keyPressed(e, this, handled);
+    if (handled)
+    {
+        e->accept();
+        return;
+    }
 
-	QTextEdit::keyPressEvent(e);
+    QTextEdit::keyPressEvent(e);
 }
 
 void CustomInput::keyReleaseEvent(QKeyEvent *e)
 {
-	bool handled = false;
-	emit keyReleased(e, this, handled);
-	if (handled)
-	{
-		e->accept();
-		return;
-	}
-	if (e->key() == Qt::Key_Tab)
-	{
-		insertPlainText("    ");
-		e->accept();
-		return;
-	}
+    bool handled = false;
+    emit keyReleased(e, this, handled);
+    if (handled)
+    {
+        e->accept();
+        return;
+    }
+    if (e->key() == Qt::Key_Tab)
+    {
+        insertPlainText("    ");
+        e->accept();
+        return;
+    }
 
-	QTextEdit::keyReleaseEvent(e);
+    QTextEdit::keyReleaseEvent(e);
 }
 
 void CustomInput::contextMenuEvent(QContextMenuEvent *e)
 {
-	QScopedPointer<QMenu> menu(m_customInputMenuManager->menu(this));
+    QScopedPointer<QMenu> menu(m_customInputMenuManager->menu(this));
 
-	QAction *undo = new QAction(tr("Undo"), menu.data());
-	undo->setShortcut(QKeySequence::Undo);
-	connect(undo, SIGNAL(triggered()), this, SLOT(undo()));
-	menu->addAction(undo);
+    QAction *undo = new QAction(tr("Undo"), menu.data());
+    undo->setShortcut(QKeySequence::Undo);
+    connect(undo, SIGNAL(triggered()), this, SLOT(undo()));
+    menu->addAction(undo);
 
-	QAction *redo = new QAction(tr("Redo"), menu.data());
-	redo->setShortcut(QKeySequence::Redo);
-	connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
-	menu->addAction(redo);
+    QAction *redo = new QAction(tr("Redo"), menu.data());
+    redo->setShortcut(QKeySequence::Redo);
+    connect(redo, SIGNAL(triggered()), this, SLOT(redo()));
+    menu->addAction(redo);
 
-	menu->addSeparator();
+    menu->addSeparator();
 
-	QAction *cut = new QAction(tr("Cut"), menu.data());
-	cut->setShortcut(QKeySequence::Cut);
-	connect(cut, SIGNAL(triggered()), this, SLOT(cut()));
-	menu->addAction(cut);
+    QAction *cut = new QAction(tr("Cut"), menu.data());
+    cut->setShortcut(QKeySequence::Cut);
+    connect(cut, SIGNAL(triggered()), this, SLOT(cut()));
+    menu->addAction(cut);
 
-	QAction *copy = new QAction(tr("Copy"), menu.data());
-	copy->setShortcut(QKeySequence::Copy);
-	connect(copy, SIGNAL(triggered()), this, SLOT(copy()));
-	menu->addAction(copy);
+    QAction *copy = new QAction(tr("Copy"), menu.data());
+    copy->setShortcut(QKeySequence::Copy);
+    connect(copy, SIGNAL(triggered()), this, SLOT(copy()));
+    menu->addAction(copy);
 
-	QAction *paste = new QAction(tr("Paste"), menu.data());
-	paste->setShortcut(QKeySequence::Paste);
-	connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
-	menu->addAction(paste);
+    QAction *paste = new QAction(tr("Paste"), menu.data());
+    paste->setShortcut(QKeySequence::Paste);
+    connect(paste, SIGNAL(triggered()), this, SLOT(paste()));
+    menu->addAction(paste);
 
-	auto pasteAndSend = new QAction(tr("Paste and send"), menu.data());
-	connect(pasteAndSend, SIGNAL(triggered()), this, SLOT(pasteAndSend()));
-	menu->addAction(pasteAndSend);
+    auto pasteAndSend = new QAction(tr("Paste and send"), menu.data());
+    connect(pasteAndSend, SIGNAL(triggered()), this, SLOT(pasteAndSend()));
+    menu->addAction(pasteAndSend);
 
-	QAction *clear = new QAction(tr("Clear"), menu.data());
-	connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
-	menu->addAction(clear);
+    QAction *clear = new QAction(tr("Clear"), menu.data());
+    connect(clear, SIGNAL(triggered()), this, SLOT(clear()));
+    menu->addAction(clear);
 
-	menu->addSeparator();
+    menu->addSeparator();
 
-	QAction *all = new QAction(tr("Select All"), menu.data());
-	all->setShortcut(QKeySequence::SelectAll);
-	connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
-	menu->addAction(all);
+    QAction *all = new QAction(tr("Select All"), menu.data());
+    all->setShortcut(QKeySequence::SelectAll);
+    connect(all, SIGNAL(triggered()), this, SLOT(selectAll()));
+    menu->addAction(all);
 
-	menu->exec(e->globalPos());
+    menu->exec(e->globalPos());
 }
 
 void CustomInput::setAutoSend(bool on)
 {
-	autosend_enabled = on;
+    autosend_enabled = on;
 }
 
 void CustomInput::cursorPositionChangedSlot()
 {
-	emit fontChanged(currentFont());
+    emit fontChanged(currentFont());
 }
 
 void CustomInput::setCopyPossible(bool available)
 {
-	CopyPossible = available;
+    CopyPossible = available;
 }
 
 void CustomInput::pasteAndSend()
 {
-	paste();
-	emit sendMessage();
+    paste();
+    emit sendMessage();
 }
 
 bool CustomInput::canInsertFromMimeData(const QMimeData *source) const
 {
-	if (CurrentChat.chatAccount().protocolHandler() && CurrentChat.chatAccount().protocolHandler()->chatImageService())
-	{
-		if (source->hasUrls())
-			return true;
-		if (source->hasFormat(QStringLiteral("application/x-qt-image")))
-			return true;
-	}
-	return QTextEdit::canInsertFromMimeData(source);
+    if (CurrentChat.chatAccount().protocolHandler() && CurrentChat.chatAccount().protocolHandler()->chatImageService())
+    {
+        if (source->hasUrls())
+            return true;
+        if (source->hasFormat(QStringLiteral("application/x-qt-image")))
+            return true;
+    }
+    return QTextEdit::canInsertFromMimeData(source);
 }
 
 void CustomInput::acceptPlainText(QString plainText)
 {
-	insertPlainText(plainText.replace("\t", "    "));
+    insertPlainText(plainText.replace("\t", "    "));
 }
 
 void CustomInput::acceptFileUrl(QUrl imageUrl)
 {
-	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
-		return;
+    if (!CurrentChat.chatAccount().protocolHandler() ||
+        !CurrentChat.chatAccount().protocolHandler()->chatImageService())
+        return;
 
-	imageUrl = m_imageStorageService->toFileUrl(imageUrl);
-	if (!imageUrl.toString().isEmpty() && imageUrl.scheme() == "file")
-	{
-		auto path = QDir::cleanPath(imageUrl.path());
-		if (QImage(path).isNull())
-			return;
-		insertHtml(QString{"<img src='%1' />"}.arg(path));
-	}
+    imageUrl = m_imageStorageService->toFileUrl(imageUrl);
+    if (!imageUrl.toString().isEmpty() && imageUrl.scheme() == "file")
+    {
+        auto path = QDir::cleanPath(imageUrl.path());
+        if (QImage(path).isNull())
+            return;
+        insertHtml(QString{"<img src='%1' />"}.arg(path));
+    }
 }
 
 void CustomInput::acceptImageData(QByteArray imageData)
 {
-	if (!CurrentChat.chatAccount().protocolHandler() || !CurrentChat.chatAccount().protocolHandler()->chatImageService())
-		return;
+    if (!CurrentChat.chatAccount().protocolHandler() ||
+        !CurrentChat.chatAccount().protocolHandler()->chatImageService())
+        return;
 
-	QBuffer buffer{&imageData};
-	buffer.open(QIODevice::ReadOnly);
-	auto ext = QString::fromUtf8(QImageReader{&buffer}.format().toLower());
-	auto filename = QString{"drop%1.%2"}.arg(QDateTime::currentDateTime().toTime_t()).arg(ext);
+    QBuffer buffer{&imageData};
+    buffer.open(QIODevice::ReadOnly);
+    auto ext = QString::fromUtf8(QImageReader{&buffer}.format().toLower());
+    auto filename = QString{"drop%1.%2"}.arg(QDateTime::currentDateTime().toTime_t()).arg(ext);
 
-	auto path = m_imageStorageService->fullPath(filename);
-	QFile file(path);
-	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		file.write(imageData);
-		file.close();
+    auto path = m_imageStorageService->fullPath(filename);
+    QFile file(path);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        file.write(imageData);
+        file.close();
 
-		insertHtml(QString{"<img src='%1' />"}.arg(path));
-	}
-	else
-		return;
+        insertHtml(QString{"<img src='%1' />"}.arg(path));
+    }
+    else
+        return;
 }
 
 void CustomInput::insertFromMimeData(const QMimeData *source)
 {
-	acceptPasteData(source, this);
+    acceptPasteData(source, this);
 }
 
 #include "moc_custom-input.cpp"

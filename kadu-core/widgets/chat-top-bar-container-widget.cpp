@@ -25,8 +25,7 @@
 
 #include "chat-top-bar-container-widget.h"
 
-ChatTopBarContainerWidget::ChatTopBarContainerWidget(const Chat &chat, QWidget *parent) :
-		QWidget(parent),MyChat(chat)
+ChatTopBarContainerWidget::ChatTopBarContainerWidget(const Chat &chat, QWidget *parent) : QWidget(parent), MyChat(chat)
 {
 }
 
@@ -34,46 +33,49 @@ ChatTopBarContainerWidget::~ChatTopBarContainerWidget()
 {
 }
 
-void ChatTopBarContainerWidget::setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository)
+void ChatTopBarContainerWidget::setChatTopBarWidgetFactoryRepository(
+    ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository)
 {
-	m_chatTopBarWidgetFactoryRepository = chatTopBarWidgetFactoryRepository;
+    m_chatTopBarWidgetFactoryRepository = chatTopBarWidgetFactoryRepository;
 }
 
 void ChatTopBarContainerWidget::init()
 {
-	createGui();
+    createGui();
 
-	connect(m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatTopBarWidgetFactory*)),
-			this, SLOT(factoryRegistered(ChatTopBarWidgetFactory*)));
-	connect(m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatTopBarWidgetFactory*)),
-			this, SLOT(factoryUnregistered(ChatTopBarWidgetFactory*)));
+    connect(
+        m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatTopBarWidgetFactory *)), this,
+        SLOT(factoryRegistered(ChatTopBarWidgetFactory *)));
+    connect(
+        m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatTopBarWidgetFactory *)), this,
+        SLOT(factoryUnregistered(ChatTopBarWidgetFactory *)));
 
-	foreach (ChatTopBarWidgetFactory *factory, m_chatTopBarWidgetFactoryRepository->factories())
-		factoryRegistered(factory);
+    foreach (ChatTopBarWidgetFactory *factory, m_chatTopBarWidgetFactoryRepository->factories())
+        factoryRegistered(factory);
 }
 
 void ChatTopBarContainerWidget::createGui()
 {
-	Layout = new QVBoxLayout(this);
-	Layout->setMargin(0);
-	Layout->setSpacing(0);
+    Layout = new QVBoxLayout(this);
+    Layout->setMargin(0);
+    Layout->setSpacing(0);
 }
 
 void ChatTopBarContainerWidget::factoryRegistered(ChatTopBarWidgetFactory *factory)
 {
-	QWidget *widget = factory->createWidget(MyChat, this);
-	if (widget)
-	{
-		TopBarWidgets.insert(factory, widget);
-		Layout->addWidget(widget);
-	}
+    QWidget *widget = factory->createWidget(MyChat, this);
+    if (widget)
+    {
+        TopBarWidgets.insert(factory, widget);
+        Layout->addWidget(widget);
+    }
 }
 
 void ChatTopBarContainerWidget::factoryUnregistered(ChatTopBarWidgetFactory *factory)
 {
-	if (TopBarWidgets.contains(factory))
-	{
-		QWidget *widget = TopBarWidgets.value(factory);
-		widget->deleteLater();
-	}
+    if (TopBarWidgets.contains(factory))
+    {
+        QWidget *widget = TopBarWidgets.value(factory);
+        widget->deleteLater();
+    }
 }

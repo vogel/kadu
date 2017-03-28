@@ -27,127 +27,130 @@
 
 #include "talkable.h"
 
-Talkable::Talkable() :
-		Type(ItemNone)
+Talkable::Talkable() : Type(ItemNone)
 {
 }
 
-Talkable::Talkable(const Buddy &buddy) :
-		Type(ItemBuddy), MyBuddy(buddy)
+Talkable::Talkable(const Buddy &buddy) : Type(ItemBuddy), MyBuddy(buddy)
 {
 }
 
-Talkable::Talkable(const Contact &contact) :
-		Type(ItemContact), MyContact(contact)
+Talkable::Talkable(const Contact &contact) : Type(ItemContact), MyContact(contact)
 {
 }
 
-Talkable::Talkable(const Chat &chat) :
-		Type(ItemChat), MyChat(chat)
+Talkable::Talkable(const Chat &chat) : Type(ItemChat), MyChat(chat)
 {
 }
 
 Talkable::Talkable(const Talkable &copyMe)
 {
-	Type = copyMe.Type;
+    Type = copyMe.Type;
 
-	switch (Type)
-	{
-		case ItemBuddy:
-			MyBuddy = copyMe.MyBuddy;
-			break;
-		case ItemContact:
-			MyContact = copyMe.MyContact;
-			break;
-		case ItemChat:
-			MyChat = copyMe.MyChat;
-			break;
-		default:
-			break;
-	}
+    switch (Type)
+    {
+    case ItemBuddy:
+        MyBuddy = copyMe.MyBuddy;
+        break;
+    case ItemContact:
+        MyContact = copyMe.MyContact;
+        break;
+    case ItemChat:
+        MyChat = copyMe.MyChat;
+        break;
+    default:
+        break;
+    }
 }
 
-Talkable & Talkable::operator = (const Talkable &copyMe)
+Talkable &Talkable::operator=(const Talkable &copyMe)
 {
-	Type = copyMe.Type;
+    Type = copyMe.Type;
 
-	switch (Type)
-	{
-		case ItemBuddy:
-			MyBuddy = copyMe.MyBuddy;
-			break;
-		case ItemContact:
-			MyContact = copyMe.MyContact;
-			break;
-		case ItemChat:
-			MyChat = copyMe.MyChat;
-			break;
-		default:
-			break;
-	}
+    switch (Type)
+    {
+    case ItemBuddy:
+        MyBuddy = copyMe.MyBuddy;
+        break;
+    case ItemContact:
+        MyContact = copyMe.MyContact;
+        break;
+    case ItemChat:
+        MyChat = copyMe.MyChat;
+        break;
+    default:
+        break;
+    }
 
-	return *this;
+    return *this;
 }
 
-bool Talkable::operator == (const Talkable &compareTo) const
+bool Talkable::operator==(const Talkable &compareTo) const
 {
-	if (Type != compareTo.Type)
-		return false;
+    if (Type != compareTo.Type)
+        return false;
 
-	switch (Type)
-	{
-		case ItemNone: return true;
-		case ItemBuddy: return MyBuddy == compareTo.MyBuddy;
-		case ItemContact: return MyContact == compareTo.MyContact;
-		case ItemChat: return MyChat == compareTo.MyChat;
-		default:
-			return false;
-	}
+    switch (Type)
+    {
+    case ItemNone:
+        return true;
+    case ItemBuddy:
+        return MyBuddy == compareTo.MyBuddy;
+    case ItemContact:
+        return MyContact == compareTo.MyContact;
+    case ItemChat:
+        return MyChat == compareTo.MyChat;
+    default:
+        return false;
+    }
 }
 
-bool Talkable::operator != (const Talkable &compareTo) const
+bool Talkable::operator!=(const Talkable &compareTo) const
 {
-	return !(*this == compareTo);
+    return !(*this == compareTo);
 }
 
 bool Talkable::isEmpty() const
 {
-	switch (Type)
-	{
-		case ItemBuddy: return MyBuddy.isNull();
-		case ItemContact: return MyContact.isNull();
-		case ItemChat: return MyChat.isNull();
-		default:
-			return true;
-	}
+    switch (Type)
+    {
+    case ItemBuddy:
+        return MyBuddy.isNull();
+    case ItemContact:
+        return MyContact.isNull();
+    case ItemChat:
+        return MyChat.isNull();
+    default:
+        return true;
+    }
 }
 
 Buddy Talkable::buddy() const
 {
-	return MyBuddy;
+    return MyBuddy;
 }
 
 Chat Talkable::chat() const
 {
-	return MyChat;
+    return MyChat;
 }
 
 Contact Talkable::contact() const
 {
-	return MyContact;
+    return MyContact;
 }
 
 bool Talkable::isValidChat() const
 {
-	return ItemChat == Type && MyChat;
+    return ItemChat == Type && MyChat;
 }
 
 bool Talkable::isValidBuddy() const
 {
-	return ItemBuddy == Type && MyBuddy;
+    return ItemBuddy == Type && MyBuddy;
 }
 
 bool Talkable::isValidContact() const
 {
-	return ItemContact == Type && MyContact;
+    return ItemContact == Type && MyContact;
 }

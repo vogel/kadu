@@ -26,16 +26,15 @@ class IconsManager;
 
 class GroupFilterTabData
 {
-	GroupFilter Filter;
+    GroupFilter Filter;
 
 public:
-	explicit GroupFilterTabData(const GroupFilter &filter);
+    explicit GroupFilterTabData(const GroupFilter &filter);
 
-	GroupFilter filter() const;
+    GroupFilter filter() const;
 
-	QString tabName() const;
-	QIcon tabIcon(IconsManager *iconsManager) const;
-
+    QString tabName() const;
+    QIcon tabIcon(IconsManager *iconsManager) const;
 };
 
-#endif // GROUP_FILTER_TAB_DATA_H
+#endif   // GROUP_FILTER_TAB_DATA_H

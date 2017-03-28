@@ -24,13 +24,13 @@
 
 #include <QtWidgets/QTreeView>
 
-ExpandAction::ExpandAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ExpandAction::ExpandAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setType(ActionDescription::TypeUserList);
-	setName("expandAction");
-	setText(tr("Expand"));
+    setType(ActionDescription::TypeUserList);
+    setName("expandAction");
+    setText(tr("Expand"));
 }
 
 ExpandAction::~ExpandAction()
@@ -39,33 +39,33 @@ ExpandAction::~ExpandAction()
 
 void ExpandAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(widget)
-	Q_UNUSED(toggled)
+    Q_UNUSED(widget)
+    Q_UNUSED(toggled)
 
-	auto treeViewWidget = qobject_cast<QTreeView *>(context->widget());
-	if (!treeViewWidget)
-		return;
+    auto treeViewWidget = qobject_cast<QTreeView *>(context->widget());
+    if (!treeViewWidget)
+        return;
 
-	auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
-	for (auto &&selectedIndex : selectedIndexes)
-		treeViewWidget->expand(selectedIndex);
+    auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
+    for (auto &&selectedIndex : selectedIndexes)
+        treeViewWidget->expand(selectedIndex);
 }
 
 void ExpandAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	auto treeViewWidget = qobject_cast<QTreeView *>(action->context()->widget());
-	if (!treeViewWidget)
-		return;
+    auto treeViewWidget = qobject_cast<QTreeView *>(action->context()->widget());
+    if (!treeViewWidget)
+        return;
 
-	auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
-	for (auto &&selectedIndex : selectedIndexes)
-		if (treeViewWidget->model()->rowCount(selectedIndex) > 0)
-		{
-			action->setEnabled(true);
-			return;
-		}
+    auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
+    for (auto &&selectedIndex : selectedIndexes)
+        if (treeViewWidget->model()->rowCount(selectedIndex) > 0)
+        {
+            action->setEnabled(true);
+            return;
+        }
 }
 
 #include "moc_expand-action.cpp"

@@ -20,8 +20,7 @@
 
 #include "status-container.h"
 
-StatusContainer::StatusContainer(QObject *parent) :
-		QObject(parent)
+StatusContainer::StatusContainer(QObject *parent) : QObject(parent)
 {
 }
 
@@ -31,9 +30,9 @@ StatusContainer::~StatusContainer()
 
 QList<StatusContainer *> StatusContainer::subStatusContainers()
 {
-	QList<StatusContainer *> list;
-	list.append(this);
-	return list;
+    QList<StatusContainer *> list;
+    list.append(this);
+    return list;
 }
 
 #include "moc_status-container.cpp"

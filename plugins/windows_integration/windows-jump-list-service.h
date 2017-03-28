@@ -33,24 +33,23 @@ class RecentChatRepository;
 
 class Q_DECL_EXPORT WindowsJumpListService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit WindowsJumpListService(QObject *parent = nullptr);
-	virtual ~WindowsJumpListService();
+    Q_INVOKABLE explicit WindowsJumpListService(QObject *parent = nullptr);
+    virtual ~WindowsJumpListService();
 
 private:
-	QPointer<JumpList> m_jumpList;
-	QPointer<OpenChatRepository> m_openChatRepository;
-	QPointer<RecentChatRepository> m_recentChatRepository;
+    QPointer<JumpList> m_jumpList;
+    QPointer<OpenChatRepository> m_openChatRepository;
+    QPointer<RecentChatRepository> m_recentChatRepository;
 
 private slots:
-	INJEQT_SET void setJumpList(JumpList *jumpList);
-	INJEQT_SET void setOpenChatRepository(OpenChatRepository *openChatRepository);
-	INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setJumpList(JumpList *jumpList);
+    INJEQT_SET void setOpenChatRepository(OpenChatRepository *openChatRepository);
+    INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
+    INJEQT_INIT void init();
 
-	void updateJumpList();
-
+    void updateJumpList();
 };

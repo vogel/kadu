@@ -23,32 +23,32 @@
 
 #include <QtWidgets/QTreeWidget>
 
-ChatFoundAction::ChatFoundAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ChatFoundAction::ChatFoundAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"internet-group-chat"});
-	setName(QStringLiteral("chatSearchedAction"));
-	setText(tr("&Chat"));
-	setType(ActionDescription::TypeSearch);
+    setIcon(KaduIcon{"internet-group-chat"});
+    setName(QStringLiteral("chatSearchedAction"));
+    setText(tr("&Chat"));
+    setType(ActionDescription::TypeSearch);
 }
 
 ChatFoundAction::~ChatFoundAction()
 {
 }
 
-void ChatFoundAction::actionInstanceCreated(Action* action)
+void ChatFoundAction::actionInstanceCreated(Action *action)
 {
-	auto search = qobject_cast<SearchWindow *>(action->parentWidget());
-	if (!search || !search->ResultsListWidget || search->ResultsListWidget->selectedItems().isEmpty())
-		action->setEnabled(false);
+    auto search = qobject_cast<SearchWindow *>(action->parentWidget());
+    if (!search || !search->ResultsListWidget || search->ResultsListWidget->selectedItems().isEmpty())
+        action->setEnabled(false);
 }
 
 void ChatFoundAction::actionTriggered(QAction *sender, bool)
 {
-	auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
-	if (search)
-		search->chatFound();
+    auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
+    if (search)
+        search->chatFound();
 }
 
 #include "moc_chat-found-action.cpp"

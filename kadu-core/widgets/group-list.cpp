@@ -23,8 +23,7 @@
 
 #include "buddies/group-manager.h"
 
-GroupList::GroupList(QWidget *parent) :
-		QListWidget(parent)
+GroupList::GroupList(QWidget *parent) : QListWidget(parent)
 {
 }
 
@@ -34,48 +33,48 @@ GroupList::~GroupList()
 
 void GroupList::setGroupManager(GroupManager *groupManager)
 {
-	m_groupManager = groupManager;
+    m_groupManager = groupManager;
 }
 
 void GroupList::init()
 {
-	for (auto const &group : m_groupManager->items())
-	{
-		auto groupItem = new QListWidgetItem(this);
-		groupItem->setText(group.name());
-	}
+    for (auto const &group : m_groupManager->items())
+    {
+        auto groupItem = new QListWidgetItem(this);
+        groupItem->setText(group.name());
+    }
 }
 
 void GroupList::setCheckedGroups(const QSet<Group> groups)
 {
-	QSet<QString> checkedNames;
-	foreach (const Group &group, groups)
-		checkedNames.insert(group.name());
+    QSet<QString> checkedNames;
+    foreach (const Group &group, groups)
+        checkedNames.insert(group.name());
 
-	const int itemCount = count();
-	for (int i = 0; i < itemCount; i++)
-	{
-		QListWidgetItem * const groupItem = item(i);
-		if (checkedNames.contains(groupItem->text()))
-			groupItem->setCheckState(Qt::Checked);
-		else
-			groupItem->setCheckState(Qt::Unchecked);
-	}
+    const int itemCount = count();
+    for (int i = 0; i < itemCount; i++)
+    {
+        QListWidgetItem *const groupItem = item(i);
+        if (checkedNames.contains(groupItem->text()))
+            groupItem->setCheckState(Qt::Checked);
+        else
+            groupItem->setCheckState(Qt::Unchecked);
+    }
 }
 
 QSet<Group> GroupList::checkedGroups()
 {
-	QSet<Group> result;
+    QSet<Group> result;
 
-	const int itemCount = count();
-	for (int i = 0; i < itemCount; i++)
-	{
-		const QListWidgetItem * const groupItem = item(i);
-		if (Qt::Checked == groupItem->checkState())
-			result.insert(m_groupManager->byName(groupItem->text()));
-	}
+    const int itemCount = count();
+    for (int i = 0; i < itemCount; i++)
+    {
+        const QListWidgetItem *const groupItem = item(i);
+        if (Qt::Checked == groupItem->checkState())
+            result.insert(m_groupManager->byName(groupItem->text()));
+    }
 
-	return result;
+    return result;
 }
 
 #include "moc_group-list.cpp"

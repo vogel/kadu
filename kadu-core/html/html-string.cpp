@@ -19,12 +19,11 @@
 
 #include "html-string.h"
 
-HtmlString::HtmlString(QString string) :
-		m_string{std::move(string)}
+HtmlString::HtmlString(QString string) : m_string{std::move(string)}
 {
 }
 
-const QString & HtmlString::string() const
+const QString &HtmlString::string() const
 {
-	return m_string;
+    return m_string;
 }

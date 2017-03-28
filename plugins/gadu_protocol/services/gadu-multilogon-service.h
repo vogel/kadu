@@ -29,34 +29,33 @@ class GaduConnection;
 
 class GaduMultilogonService : public MultilogonService
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<GaduConnection> Connection;
-	QList<MultilogonSession> Sessions;
+    QPointer<GaduConnection> Connection;
+    QList<MultilogonSession> Sessions;
 
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventMultilogonInfo(struct gg_event *e);
+    friend class GaduProtocolSocketNotifiers;
+    void handleEventMultilogonInfo(struct gg_event *e);
 
-	bool containsSession(const gg_multilogon_session &session);
-	bool containsSession(const gg_event_multilogon_info &multilogonInfo, const gg_multilogon_id_t &id);
-	void addNewSessions(const gg_event_multilogon_info &multilogonInfo);
-	void removeOldSessions(const gg_event_multilogon_info &multilogonInfo);
+    bool containsSession(const gg_multilogon_session &session);
+    bool containsSession(const gg_event_multilogon_info &multilogonInfo, const gg_multilogon_id_t &id);
+    void addNewSessions(const gg_event_multilogon_info &multilogonInfo);
+    void removeOldSessions(const gg_event_multilogon_info &multilogonInfo);
 
-	friend class GaduProtocol;
-	void removeAllSessions();
+    friend class GaduProtocol;
+    void removeAllSessions();
 
 public:
-	explicit GaduMultilogonService(Account account, QObject *parent);
-	virtual ~GaduMultilogonService();
+    explicit GaduMultilogonService(Account account, QObject *parent);
+    virtual ~GaduMultilogonService();
 
-	void setConnection(GaduConnection *connection);
+    void setConnection(GaduConnection *connection);
 
-	virtual const QList<MultilogonSession> & sessions() const;
-	virtual void killSession(MultilogonSession session);
+    virtual const QList<MultilogonSession> &sessions() const;
+    virtual void killSession(MultilogonSession session);
 
-	gg_multilogon_id_t toMultilogonId(QByteArray byteArray);
-	QByteArray toByteArray(const gg_multilogon_id_t &multilogonId);
-
+    gg_multilogon_id_t toMultilogonId(QByteArray byteArray);
+    QByteArray toByteArray(const gg_multilogon_id_t &multilogonId);
 };
 
-#endif // GADU_MULTILOGON_SERVICE_H
+#endif   // GADU_MULTILOGON_SERVICE_H

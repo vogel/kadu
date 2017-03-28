@@ -34,11 +34,11 @@
  */
 class KADUAPI PluginModule : public injeqt::module
 {
-
 public:
-	PluginModule();
-	virtual ~PluginModule() {}
-
+    PluginModule();
+    virtual ~PluginModule()
+    {
+    }
 };
 
 /**

@@ -21,32 +21,32 @@
 
 #include "windows/search-window.h"
 
-StopSearchAction::StopSearchAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+StopSearchAction::StopSearchAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"dialog-cancel"});
-	setName(QStringLiteral("stopSearchAction"));
-	setText(tr("Stop"));
-	setType(ActionDescription::TypeSearch);
+    setIcon(KaduIcon{"dialog-cancel"});
+    setName(QStringLiteral("stopSearchAction"));
+    setText(tr("Stop"));
+    setType(ActionDescription::TypeSearch);
 }
 
 StopSearchAction::~StopSearchAction()
 {
 }
 
-void StopSearchAction::actionInstanceCreated(Action* action)
+void StopSearchAction::actionInstanceCreated(Action *action)
 {
-	auto search = qobject_cast<SearchWindow *>(action->parentWidget());
-	if (!search || !search->SearchInProgress)
-		action->setEnabled(false);
+    auto search = qobject_cast<SearchWindow *>(action->parentWidget());
+    if (!search || !search->SearchInProgress)
+        action->setEnabled(false);
 }
 
 void StopSearchAction::actionTriggered(QAction *sender, bool)
 {
-	auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
-	if (search)
-		search->stopSearch();
+    auto search = qobject_cast<SearchWindow *>(sender->parentWidget());
+    if (search)
+        search->stopSearch();
 }
 
 #include "moc_stop-search-action.cpp"

@@ -37,66 +37,65 @@ class SimpleConfigurationValueStateNotifier;
 
 class BuddyContactsTableModel : public QAbstractTableModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = nullptr);
-	virtual ~BuddyContactsTableModel();
+    explicit BuddyContactsTableModel(Buddy buddy, QObject *parent = nullptr);
+    virtual ~BuddyContactsTableModel();
 
-	const ConfigurationValueStateNotifier * valueStateNotifier() const;
+    const ConfigurationValueStateNotifier *valueStateNotifier() const;
 
-	void save();
+    void save();
 
-	BuddyContactsTableItem * item(int row);
+    BuddyContactsTableItem *item(int row);
 
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	// NOTE: insertRows() always appends, ignores `row' argument.
-	virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
-	virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    // NOTE: insertRows() always appends, ignores `row' argument.
+    virtual bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    virtual bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
+    virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<Roster> m_roster;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<Roster> m_roster;
 
-	Buddy ModelBuddy;
-	QList<BuddyContactsTableItem *> Contacts;
-	SimpleConfigurationValueStateNotifier *StateNotifier;
+    Buddy ModelBuddy;
+    QList<BuddyContactsTableItem *> Contacts;
+    SimpleConfigurationValueStateNotifier *StateNotifier;
 
-	int CurrentMaxPriority;
+    int CurrentMaxPriority;
 
-	void contactsFromBuddy();
-	void buddyFromContacts();
-	void performItemAction(BuddyContactsTableItem *);
-	void performItemActionEdit(BuddyContactsTableItem *item);
-	void performItemActionAdd(BuddyContactsTableItem *);
-	void performItemActionDetach(BuddyContactsTableItem *);
-	void performItemActionRemove(BuddyContactsTableItem *);
+    void contactsFromBuddy();
+    void buddyFromContacts();
+    void performItemAction(BuddyContactsTableItem *);
+    void performItemActionEdit(BuddyContactsTableItem *item);
+    void performItemActionAdd(BuddyContactsTableItem *);
+    void performItemActionDetach(BuddyContactsTableItem *);
+    void performItemActionRemove(BuddyContactsTableItem *);
 
-	void addItem(BuddyContactsTableItem *item, bool emitRowsInserted = true);
+    void addItem(BuddyContactsTableItem *item, bool emitRowsInserted = true);
 
-	void sendAuthorization(const Contact &contact);
+    void sendAuthorization(const Contact &contact);
 
-	bool isValid() const;
-	void updateStateNotifier();
+    bool isValid() const;
+    void updateStateNotifier();
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setRoster(Roster *roster);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setRoster(Roster *roster);
+    INJEQT_INIT void init();
 
-	void itemUpdated(BuddyContactsTableItem *item);
-
+    void itemUpdated(BuddyContactsTableItem *item);
 };

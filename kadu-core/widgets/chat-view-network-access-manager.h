@@ -30,18 +30,18 @@ class ImageStorageService;
 // http://doc.trolltech.com/qq/32/qq32-webkit-protocols.html
 class ChatViewNetworkAccessManager : public QNetworkAccessManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ImageStorageService> CurrentImageStorageService;
+    QPointer<ImageStorageService> CurrentImageStorageService;
 
 public:
-	explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = nullptr);
-	virtual ~ChatViewNetworkAccessManager();
+    explicit ChatViewNetworkAccessManager(QNetworkAccessManager *oldManager, QObject *parent = nullptr);
+    virtual ~ChatViewNetworkAccessManager();
 
 protected:
-	virtual QNetworkReply * createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device) override;
+    virtual QNetworkReply *
+    createRequest(Operation operation, const QNetworkRequest &request, QIODevice *device) override;
 
 private slots:
-	INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
-
+    INJEQT_SET void setImageStorageService(ImageStorageService *imageStorageService);
 };

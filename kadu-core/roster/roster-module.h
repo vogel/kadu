@@ -38,11 +38,11 @@
  */
 class KADUAPI RosterModule : public injeqt::module
 {
-
 public:
-	RosterModule();
-	virtual ~RosterModule() {}
-
+    RosterModule();
+    virtual ~RosterModule()
+    {
+    }
 };
 
 /**

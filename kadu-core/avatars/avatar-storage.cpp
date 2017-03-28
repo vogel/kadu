@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-AvatarStorage::AvatarStorage(QObject *parent) :
-		QObject{parent}
+AvatarStorage::AvatarStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,29 +35,29 @@ AvatarStorage::~AvatarStorage()
 
 void AvatarStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Avatar AvatarStorage::create()
 {
-	return m_injectedFactory->makeInjected<AvatarShared>();
+    return m_injectedFactory->makeInjected<AvatarShared>();
 }
 
 Avatar AvatarStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<AvatarShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<AvatarShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Avatar AvatarStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<AvatarShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<AvatarShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_avatar-storage.cpp"

@@ -29,11 +29,11 @@
 
 bool FilteredTreeView::shouldEventGoToFilter(QKeyEvent *event)
 {
-	return !event->text().trimmed().isEmpty() && event->text().at(0).isPrint();
+    return !event->text().trimmed().isEmpty() && event->text().at(0).isPrint();
 }
 
-FilteredTreeView::FilteredTreeView(FilteredTreeView::FilterPosition filterPosition, QWidget *parent, Qt::WindowFlags f) :
-		QWidget(parent, f), CurrentFilterPosition(filterPosition), View(0)
+FilteredTreeView::FilteredTreeView(FilteredTreeView::FilterPosition filterPosition, QWidget *parent, Qt::WindowFlags f)
+        : QWidget(parent, f), CurrentFilterPosition(filterPosition), View(0)
 {
 }
 
@@ -43,75 +43,74 @@ FilteredTreeView::~FilteredTreeView()
 
 void FilteredTreeView::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void FilteredTreeView::init()
 {
-	Layout = new QVBoxLayout(this);
-	Layout->setMargin(0);
-	Layout->setSpacing(0);
+    Layout = new QVBoxLayout(this);
+    Layout->setMargin(0);
+    Layout->setSpacing(0);
 
-	NameFilterWidget = m_injectedFactory->makeInjected<FilterWidget>(this);
-	connect(NameFilterWidget, SIGNAL(textChanged(const QString &)),
-		this, SIGNAL(filterChanged(const QString &)));
+    NameFilterWidget = m_injectedFactory->makeInjected<FilterWidget>(this);
+    connect(NameFilterWidget, SIGNAL(textChanged(const QString &)), this, SIGNAL(filterChanged(const QString &)));
 
-	Layout->addWidget(NameFilterWidget);
+    Layout->addWidget(NameFilterWidget);
 }
 
-InjectedFactory * FilteredTreeView::injectedFactory() const
+InjectedFactory *FilteredTreeView::injectedFactory() const
 {
-	return m_injectedFactory;
+    return m_injectedFactory;
 }
 
 void FilteredTreeView::removeView()
 {
-	if (View)
-		Layout->removeWidget(View);
+    if (View)
+        Layout->removeWidget(View);
 }
 
 void FilteredTreeView::insertView()
 {
-	if (!View)
-		return;
+    if (!View)
+        return;
 
-	if (FilterAtTop == CurrentFilterPosition)
-		Layout->insertWidget(1, View);
-	else
-		Layout->insertWidget(0, View);
+    if (FilterAtTop == CurrentFilterPosition)
+        Layout->insertWidget(1, View);
+    else
+        Layout->insertWidget(0, View);
 
-	setFocusProxy(View);
+    setFocusProxy(View);
 }
 
 void FilteredTreeView::setPosition(FilterPosition filterPosition)
 {
-	if (CurrentFilterPosition == filterPosition)
-		return;
+    if (CurrentFilterPosition == filterPosition)
+        return;
 
-	removeView();
-	CurrentFilterPosition = filterPosition;
-	insertView();
+    removeView();
+    CurrentFilterPosition = filterPosition;
+    insertView();
 }
 
 void FilteredTreeView::setView(QAbstractItemView *view)
 {
-	removeView();
-	View = view;
-	NameFilterWidget->setView(View);
-	insertView();
+    removeView();
+    View = view;
+    NameFilterWidget->setView(View);
+    insertView();
 }
 
 void FilteredTreeView::keyPressEvent(QKeyEvent *event)
 {
-	if (shouldEventGoToFilter(event))
-	{
-		NameFilterWidget->setFilter(event->text());
-		NameFilterWidget->setFocus(Qt::OtherFocusReason);
-		event->accept();
-		return;
-	}
+    if (shouldEventGoToFilter(event))
+    {
+        NameFilterWidget->setFilter(event->text());
+        NameFilterWidget->setFocus(Qt::OtherFocusReason);
+        event->accept();
+        return;
+    }
 
-	QWidget::keyPressEvent(event);
+    QWidget::keyPressEvent(event);
 }
 
 #include "moc_filtered-tree-view.cpp"

@@ -26,15 +26,15 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowInfoPanelAction::ShowInfoPanelAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowInfoPanelAction::ShowInfoPanelAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/show-information-panel"});
-	setName(QStringLiteral("showInfoPanelAction"));
-	setText(tr("Show Information Panel"));
-	setType(ActionDescription::TypeMainMenu);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/show-information-panel"});
+    setName(QStringLiteral("showInfoPanelAction"));
+    setText(tr("Show Information Panel"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ShowInfoPanelAction::~ShowInfoPanelAction()
@@ -43,35 +43,36 @@ ShowInfoPanelAction::~ShowInfoPanelAction()
 
 void ShowInfoPanelAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowInfoPanelAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowInfoPanelAction::actionInstanceCreated(Action *action)
 {
-	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"));
+    action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"));
 }
 
 void ShowInfoPanelAction::actionTriggered(QAction *, bool toggled)
 {
-	m_kaduWindowService->kaduWindow()->infoPanel()->setVisible(toggled);
-	m_configuration->deprecatedApi()->writeEntry("Look", "ShowInfoPanel", toggled);
+    m_kaduWindowService->kaduWindow()->infoPanel()->setVisible(toggled);
+    m_configuration->deprecatedApi()->writeEntry("Look", "ShowInfoPanel", toggled);
 }
 
 void ShowInfoPanelAction::configurationUpdated()
 {
-	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
-		return;
+    if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+        return;
 
-	ActionDescription::configurationUpdated();
+    ActionDescription::configurationUpdated();
 
-	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) &&action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
-		action(context)->trigger();
+    auto context = m_kaduWindowService->kaduWindow()->actionContext();
+    if (action(context) &&
+        action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
+        action(context)->trigger();
 }
 
 #include "moc_show-info-panel-action.cpp"

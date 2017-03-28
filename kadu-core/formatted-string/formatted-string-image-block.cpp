@@ -25,48 +25,45 @@ FormattedStringImageBlock::FormattedStringImageBlock()
 {
 }
 
-FormattedStringImageBlock::FormattedStringImageBlock(QString imagePath) :
-		ImagePath{imagePath}, Image{imagePath, 0}
+FormattedStringImageBlock::FormattedStringImageBlock(QString imagePath) : ImagePath{imagePath}, Image{imagePath, 0}
 {
 }
 
-FormattedStringImageBlock::FormattedStringImageBlock(ChatImage image) :
-		Image{std::move(image)}
+FormattedStringImageBlock::FormattedStringImageBlock(ChatImage image) : Image{std::move(image)}
 {
-	if (!Image.isNull())
-		ImagePath = Image.key();
+    if (!Image.isNull())
+        ImagePath = Image.key();
 }
 
 FormattedStringImageBlock::~FormattedStringImageBlock()
 {
 }
 
-bool FormattedStringImageBlock::operator == (const FormattedString &compareTo)
+bool FormattedStringImageBlock::operator==(const FormattedString &compareTo)
 {
-	const FormattedStringImageBlock *compareToPointer = dynamic_cast<const FormattedStringImageBlock *>(&compareTo);
-	if (!compareToPointer)
-		return false;
+    const FormattedStringImageBlock *compareToPointer = dynamic_cast<const FormattedStringImageBlock *>(&compareTo);
+    if (!compareToPointer)
+        return false;
 
-	return ImagePath == compareToPointer->ImagePath
-	    && Image == compareToPointer->Image;
+    return ImagePath == compareToPointer->ImagePath && Image == compareToPointer->Image;
 }
 
 void FormattedStringImageBlock::accept(FormattedStringVisitor *visitor) const
 {
-	visitor->visit(this);
+    visitor->visit(this);
 }
 
 bool FormattedStringImageBlock::isEmpty() const
 {
-	return ImagePath.isEmpty() && Image.isNull();
+    return ImagePath.isEmpty() && Image.isNull();
 }
 
 QString FormattedStringImageBlock::imagePath() const
 {
-	return ImagePath;
+    return ImagePath;
 }
 
 ChatImage FormattedStringImageBlock::image() const
 {
-	return Image;
+    return Image;
 }

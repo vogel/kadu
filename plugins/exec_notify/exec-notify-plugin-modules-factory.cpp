@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-ExecNotifyPluginModulesFactory::ExecNotifyPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+ExecNotifyPluginModulesFactory::ExecNotifyPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ ExecNotifyPluginModulesFactory::~ExecNotifyPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> ExecNotifyPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<ExecNotifyModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<ExecNotifyModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_exec-notify-plugin-modules-factory.cpp"

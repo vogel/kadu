@@ -19,8 +19,7 @@
 
 #include "notifier-repository.h"
 
-NotifierRepository::NotifierRepository(QObject *parent) :
-		QObject{parent}
+NotifierRepository::NotifierRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -30,22 +29,22 @@ NotifierRepository::~NotifierRepository()
 
 void NotifierRepository::registerNotifier(Notifier *notifier)
 {
-	auto found = std::find(begin(), end(), notifier);
-	if (found == end())
-	{
-		m_notifiers.push_back(notifier);
-		emit notifierRegistered(notifier);
-	}
+    auto found = std::find(begin(), end(), notifier);
+    if (found == end())
+    {
+        m_notifiers.push_back(notifier);
+        emit notifierRegistered(notifier);
+    }
 }
 
 void NotifierRepository::unregisterNotifier(Notifier *notifier)
 {
-	auto found = std::find(begin(), end(), notifier);
-	if (found != end())
-	{
-		m_notifiers.erase(found);
-		emit notifierUnregistered(notifier);
-	}
+    auto found = std::find(begin(), end(), notifier);
+    if (found != end())
+    {
+        m_notifiers.erase(found);
+        emit notifierUnregistered(notifier);
+    }
 }
 
 #include "notifier-repository.h"

@@ -21,6 +21,6 @@
 
 enum class QMqttError
 {
-	NoError,
-	MessageTooLarge
+    NoError,
+    MessageTooLarge
 };

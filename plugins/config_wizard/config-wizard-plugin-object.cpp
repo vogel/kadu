@@ -25,8 +25,7 @@
 #include "plugin/state/plugin-state-service.h"
 #include "plugin/state/plugin-state.h"
 
-ConfigWizardPluginObject::ConfigWizardPluginObject(QObject *parent) :
-		QObject{parent}
+ConfigWizardPluginObject::ConfigWizardPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,30 +35,30 @@ ConfigWizardPluginObject::~ConfigWizardPluginObject()
 
 void ConfigWizardPluginObject::setConfigWizardActions(ConfigWizardActions *configWizardActions)
 {
-	m_configWizardActions = configWizardActions;
+    m_configWizardActions = configWizardActions;
 }
 
 void ConfigWizardPluginObject::setPluginStateService(PluginStateService *pluginStateService)
 {
-	m_pluginStateService = pluginStateService;
+    m_pluginStateService = pluginStateService;
 }
 
 void ConfigWizardPluginObject::setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction)
 {
-	m_showConfigWizardAction = showConfigWizardAction;
+    m_showConfigWizardAction = showConfigWizardAction;
 }
 
 void ConfigWizardPluginObject::init()
 {
-	m_configWizardActions->registerActions();
+    m_configWizardActions->registerActions();
 
-	if (m_pluginStateService->pluginState("config_wizard") == PluginState::New)
-		m_showConfigWizardAction->showConfigWindow();
+    if (m_pluginStateService->pluginState("config_wizard") == PluginState::New)
+        m_showConfigWizardAction->showConfigWindow();
 }
 
 void ConfigWizardPluginObject::done()
 {
-	m_configWizardActions->unregisterActions();
+    m_configWizardActions->unregisterActions();
 }
 
 #include "moc_config-wizard-plugin-object.cpp"

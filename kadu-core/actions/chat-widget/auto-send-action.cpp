@@ -24,15 +24,15 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "gui/configuration/chat-configuration-holder.h"
 
-AutoSendAction::AutoSendAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+AutoSendAction::AutoSendAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/enter"});
-	setName(QStringLiteral("autoSendAction"));
-	setText(tr("More..."));
-	setType(ActionDescription::TypeChat);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/enter"});
+    setName(QStringLiteral("autoSendAction"));
+    setText(tr("More..."));
+    setType(ActionDescription::TypeChat);
 }
 
 AutoSendAction::~AutoSendAction()
@@ -41,38 +41,38 @@ AutoSendAction::~AutoSendAction()
 
 void AutoSendAction::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatConfigurationHolder = chatConfigurationHolder;
+    m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
 void AutoSendAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void AutoSendAction::actionInstanceCreated(Action *action)
 {
-	action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
-	action->setToolTip(tr("Return Sends Message"));
+    action->setChecked(m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend"));
+    action->setToolTip(tr("Return Sends Message"));
 }
 
 void AutoSendAction::actionTriggered(QAction *, bool toggled)
 {
-	m_configuration->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
-	m_chatConfigurationHolder->configurationUpdated();
-	autoSendActionCheck();
+    m_configuration->deprecatedApi()->writeEntry("Chat", "AutoSend", toggled);
+    m_chatConfigurationHolder->configurationUpdated();
+    autoSendActionCheck();
 }
 
 void AutoSendAction::configurationUpdated()
 {
-	ActionDescription::configurationUpdated();
-	autoSendActionCheck();
+    ActionDescription::configurationUpdated();
+    autoSendActionCheck();
 }
 
 void AutoSendAction::autoSendActionCheck()
 {
- 	auto check = m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
- 	for (auto const action : actions())
- 		action->setChecked(check);
+    auto check = m_configuration->deprecatedApi()->readBoolEntry("Chat", "AutoSend");
+    for (auto const action : actions())
+        action->setChecked(check);
 }
 
 #include "moc_auto-send-action.cpp"

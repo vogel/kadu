@@ -36,15 +36,14 @@
 
 #include "updates-dialog.h"
 
-UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this),
-		m_newestVersion{newestVersion}
+UpdatesDialog::UpdatesDialog(const QString &newestVersion, QWidget *parent)
+        : QDialog(parent), DesktopAwareObject(this), m_newestVersion{newestVersion}
 {
-	setWindowRole("kadu-updates");
-	setWindowTitle(tr("New version is available. Please update"));
+    setWindowRole("kadu-updates");
+    setWindowTitle(tr("New version is available. Please update"));
 
-	setAttribute(Qt::WA_DeleteOnClose);
-	setMinimumSize(QSize(450, 150));
+    setAttribute(Qt::WA_DeleteOnClose);
+    setMinimumSize(QSize(450, 150));
 }
 
 UpdatesDialog::~UpdatesDialog()
@@ -53,75 +52,81 @@ UpdatesDialog::~UpdatesDialog()
 
 void UpdatesDialog::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void UpdatesDialog::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void UpdatesDialog::init()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLabel *messageLabel = new QLabel(this);
-	messageLabel->setWordWrap(true);
+    QLabel *messageLabel = new QLabel(this);
+    messageLabel->setWordWrap(true);
 
 #if defined(Q_OS_UNIX)
-	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
-							 "Please <a href='download'>download</a> an installer and upgrade or use "
-							 "your package management system to update Kadu.")).arg(m_newestVersion));
+    messageLabel->setText(
+        QString(
+            tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
+               "Please <a href='download'>download</a> an installer and upgrade or use "
+               "your package management system to update Kadu."))
+            .arg(m_newestVersion));
 #else
-	messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
-							 "Please <a href='download'>download</a> an installer and upgrade.")).arg(m_newestVersion));
+    messageLabel->setText(
+        QString(
+            tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
+               "Please <a href='download'>download</a> an installer and upgrade."))
+            .arg(m_newestVersion));
 #endif
 
-	connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));
+    connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));
 
-	m_checkForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
-	m_checkForUpdates->setChecked(m_configuration->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
+    m_checkForUpdates = new QCheckBox(tr("Check for updates when Kadu is opened"));
+    m_checkForUpdates->setChecked(m_configuration->deprecatedApi()->readBoolEntry("General", "CheckUpdates", true));
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+    QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
-	okButton->setDefault(true);
-	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+    QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
+    okButton->setDefault(true);
+    buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
+    connect(okButton, SIGNAL(clicked(bool)), this, SLOT(accepted()));
 
-	layout->addWidget(messageLabel);
-	layout->addSpacing(5);
-	layout->addWidget(m_checkForUpdates);
-	layout->setAlignment(m_checkForUpdates, Qt::AlignRight);
-	layout->addStretch(100);
-	layout->addWidget(buttons);
+    layout->addWidget(messageLabel);
+    layout->addSpacing(5);
+    layout->addWidget(m_checkForUpdates);
+    layout->setAlignment(m_checkForUpdates, Qt::AlignRight);
+    layout->addStretch(100);
+    layout->addWidget(buttons);
 }
 
 void UpdatesDialog::downloadClicked()
 {
-	if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
-		m_urlOpener->openUrl("http://www.kadu.im/w/Pobierz");
-	else
-		m_urlOpener->openUrl("http://www.kadu.im/w/English:Download");
+    if (m_configuration->deprecatedApi()->readEntry("General", "Language") == "pl")
+        m_urlOpener->openUrl("http://www.kadu.im/w/Pobierz");
+    else
+        m_urlOpener->openUrl("http://www.kadu.im/w/English:Download");
 }
 
 void UpdatesDialog::accepted()
 {
-	m_configuration->deprecatedApi()->writeEntry("General", "CheckUpdates", m_checkForUpdates->isChecked());
+    m_configuration->deprecatedApi()->writeEntry("General", "CheckUpdates", m_checkForUpdates->isChecked());
 
-	close();
+    close();
 }
 
 void UpdatesDialog::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(e);
+    if (e->key() == Qt::Key_Escape)
+    {
+        e->accept();
+        close();
+    }
+    else
+        QWidget::keyPressEvent(e);
 }
 
 #include "moc_updates-dialog.cpp"

@@ -29,8 +29,7 @@
 
 #include <QtCore/QTimer>
 
-PluginActivationErrorHandler::PluginActivationErrorHandler(QObject *parent) :
-		QObject{parent}
+PluginActivationErrorHandler::PluginActivationErrorHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,44 +39,45 @@ PluginActivationErrorHandler::~PluginActivationErrorHandler()
 
 void PluginActivationErrorHandler::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void PluginActivationErrorHandler::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
-	m_pluginActivationService = pluginActivationService;
+    m_pluginActivationService = pluginActivationService;
 }
 
 void PluginActivationErrorHandler::setPluginStateService(PluginStateService *pluginStateService)
 {
-	m_pluginStateService = pluginStateService;
+    m_pluginStateService = pluginStateService;
 }
 
 void PluginActivationErrorHandler::handleActivationError(const QString &pluginName, const QString &errorMessage)
 {
-	if (pluginName.isEmpty())
-		return;
+    if (pluginName.isEmpty())
+        return;
 
-	auto state = m_pluginStateService ? m_pluginStateService->pluginState(pluginName) : PluginState::Disabled;
-	auto offerLoadInFutureChoice = PluginState::Enabled == state;
+    auto state = m_pluginStateService ? m_pluginStateService->pluginState(pluginName) : PluginState::Disabled;
+    auto offerLoadInFutureChoice = PluginState::Enabled == state;
 
-	// TODO: set parent to MainConfigurationWindow is it exists
-	auto errorDialog = m_injectedFactory->makeInjected<PluginErrorDialog>(pluginName, errorMessage, offerLoadInFutureChoice, nullptr);
-	if (offerLoadInFutureChoice)
-		connect(errorDialog, SIGNAL(accepted(QString,bool)), this, SLOT(setStateEnabledIfInactive(QString,bool)));
+    // TODO: set parent to MainConfigurationWindow is it exists
+    auto errorDialog =
+        m_injectedFactory->makeInjected<PluginErrorDialog>(pluginName, errorMessage, offerLoadInFutureChoice, nullptr);
+    if (offerLoadInFutureChoice)
+        connect(errorDialog, SIGNAL(accepted(QString, bool)), this, SLOT(setStateEnabledIfInactive(QString, bool)));
 
-	QTimer::singleShot(0, errorDialog, SLOT(open()));
+    QTimer::singleShot(0, errorDialog, SLOT(open()));
 }
 
 void PluginActivationErrorHandler::setStateEnabledIfInactive(const QString &pluginName, bool enable)
 {
-	if (!m_pluginActivationService || !m_pluginStateService)
-		return;
+    if (!m_pluginActivationService || !m_pluginStateService)
+        return;
 
-	if (m_pluginActivationService->isActive(pluginName))
-		return;
+    if (m_pluginActivationService->isActive(pluginName))
+        return;
 
-	m_pluginStateService->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
+    m_pluginStateService->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
 }
 
 #include "moc_plugin-activation-error-handler.cpp"

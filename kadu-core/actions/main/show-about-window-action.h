@@ -30,22 +30,21 @@ class KaduWindowService;
 
 class ShowAboutWindowAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowAboutWindowAction(QObject *parent = nullptr);
-	virtual ~ShowAboutWindowAction();
+    Q_INVOKABLE explicit ShowAboutWindowAction(QObject *parent = nullptr);
+    virtual ~ShowAboutWindowAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<KaduWindowService> m_kaduWindowService;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
 };

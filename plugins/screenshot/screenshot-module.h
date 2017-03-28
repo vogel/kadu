@@ -23,9 +23,7 @@
 
 class ScreenshotModule : public injeqt::module
 {
-
 public:
-	explicit ScreenshotModule();
-	virtual ~ScreenshotModule();
-
+    explicit ScreenshotModule();
+    virtual ~ScreenshotModule();
 };

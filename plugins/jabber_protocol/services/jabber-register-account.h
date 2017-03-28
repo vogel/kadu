@@ -24,8 +24,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injector.h>
-#include <qxmpp/QXmppClient.h>
 #include <memory>
+#include <qxmpp/QXmppClient.h>
 
 class PluginInjectedFactory;
 class JabberErrorService;
@@ -35,56 +35,55 @@ class QXmppRegisterIq;
 
 class JabberRegisterAccount : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberRegisterAccount(Jid jid, QString password, QString email, QObject *parent = nullptr);
-	virtual ~JabberRegisterAccount();
+    explicit JabberRegisterAccount(Jid jid, QString password, QString email, QObject *parent = nullptr);
+    virtual ~JabberRegisterAccount();
 
-	void setErrorService(JabberErrorService *errorService);
+    void setErrorService(JabberErrorService *errorService);
 
-	void start();
+    void start();
 
-	Jid jid() const;
+    Jid jid() const;
 
 signals:
-	void statusMessage(const QString &statusMessage);
-	void success();
-	void error(const QString &error);
+    void statusMessage(const QString &statusMessage);
+    void success();
+    void error(const QString &error);
 
 private:
-	enum class State
-	{
-		None,
-		Connecting,
-		WaitForRegistrationForm,
-		WaitForRegistrationConfirmation
-	};
+    enum class State
+    {
+        None,
+        Connecting,
+        WaitForRegistrationForm,
+        WaitForRegistrationConfirmation
+    };
 
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<JabberErrorService> m_errorService;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<JabberErrorService> m_errorService;
 
-	QPointer<QXmppClient> m_client;
-	std::unique_ptr<JabberRegisterExtension> m_registerExtension;
+    QPointer<QXmppClient> m_client;
+    std::unique_ptr<JabberRegisterExtension> m_registerExtension;
 
-	Jid m_jid;
-	QString m_password;
-	QString m_email;
+    Jid m_jid;
+    QString m_password;
+    QString m_email;
 
-	State m_state;
-	QString m_id;
+    State m_state;
+    QString m_id;
 
-	void handleSuccess();
-	void handleError(const QString &errorMessage);
+    void handleSuccess();
+    void handleError(const QString &errorMessage);
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
-	void clientError(QXmppClient::Error error);
-	void askForRegistration();
-	void registerIqReceived(const QXmppRegisterIq &registerIq);
-	void handleRegistrationForm(const QXmppRegisterIq &registerIq);
-	void sendFilledRegistrationForm();
-	void handleRegistrationConfirmation(const QXmppRegisterIq &registerIq);
-
+    void clientError(QXmppClient::Error error);
+    void askForRegistration();
+    void registerIqReceived(const QXmppRegisterIq &registerIq);
+    void handleRegistrationForm(const QXmppRegisterIq &registerIq);
+    void sendFilledRegistrationForm();
+    void handleRegistrationConfirmation(const QXmppRegisterIq &registerIq);
 };

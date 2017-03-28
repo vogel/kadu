@@ -30,24 +30,23 @@ class TalkableConverter;
 
 class ChatHistoryTab : public HistoryMessagesTab
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatHistoryTab(QWidget *parent = nullptr);
-	virtual ~ChatHistoryTab();
+    explicit ChatHistoryTab(QWidget *parent = nullptr);
+    virtual ~ChatHistoryTab();
 
-	void selectTalkable(const Talkable &talkable);
+    void selectTalkable(const Talkable &talkable);
 
 protected:
-	virtual void talkablesAvailable();
+    virtual void talkablesAvailable();
 
 private:
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	Talkable m_talkableToSelect;
+    Talkable m_talkableToSelect;
 
 private slots:
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
 };

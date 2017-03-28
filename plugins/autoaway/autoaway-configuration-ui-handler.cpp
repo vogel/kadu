@@ -25,8 +25,7 @@
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSpinBox>
 
-AutoawayConfigurationUiHandler::AutoawayConfigurationUiHandler(QObject *parent) :
-		QObject{parent}
+AutoawayConfigurationUiHandler::AutoawayConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,22 +35,29 @@ AutoawayConfigurationUiHandler::~AutoawayConfigurationUiHandler()
 
 void AutoawayConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	m_autoAwaySpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoAway"));
-	m_autoExtendedAwaySpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoExtendedAway"));
-	m_autoInvisibleSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoInvisible"));
-	m_autoOfflineSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoOffline"));
-	m_autoRefreshSpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoRefresh"));
+    m_autoAwaySpinBox = static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoAway"));
+    m_autoExtendedAwaySpinBox =
+        static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoExtendedAway"));
+    m_autoInvisibleSpinBox =
+        static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoInvisible"));
+    m_autoOfflineSpinBox =
+        static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoOffline"));
+    m_autoRefreshSpinBox =
+        static_cast<QSpinBox *>(mainConfigurationWindow->widget()->widgetById("autoaway/autoRefresh"));
 
-	m_descriptionTextLineEdit = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionText"));
+    m_descriptionTextLineEdit =
+        static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionText"));
 
-	connect(m_autoAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoAwaySpinBoxValueChanged(int)));
-	connect(m_autoExtendedAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoExtendedAwaySpinBoxValueChanged(int)));
-	connect(m_autoInvisibleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoInvisibleSpinBoxValueChanged(int)));
-	connect(m_autoOfflineSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoOfflineSpinBoxValueChanged(int)));
+    connect(m_autoAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoAwaySpinBoxValueChanged(int)));
+    connect(m_autoExtendedAwaySpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoExtendedAwaySpinBoxValueChanged(int)));
+    connect(m_autoInvisibleSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoInvisibleSpinBoxValueChanged(int)));
+    connect(m_autoOfflineSpinBox, SIGNAL(valueChanged(int)), this, SLOT(autoOfflineSpinBoxValueChanged(int)));
 
-	connect(mainConfigurationWindow->widget()->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this, SLOT(descriptionChangeChanged(int)));
+    connect(
+        mainConfigurationWindow->widget()->widgetById("autoaway/descriptionChange"), SIGNAL(activated(int)), this,
+        SLOT(descriptionChangeChanged(int)));
 
-	m_autoRefreshSpinBox->setSpecialValueText(tr("Don't refresh"));
+    m_autoRefreshSpinBox->setSpecialValueText(tr("Don't refresh"));
 }
 
 void AutoawayConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -64,40 +70,40 @@ void AutoawayConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void AutoawayConfigurationUiHandler::autoAwaySpinBoxValueChanged(int value)
 {
-	if (m_autoInvisibleSpinBox->value() < value)
-		m_autoInvisibleSpinBox->setValue(value);
-	if (m_autoExtendedAwaySpinBox->value() < value)
-		m_autoExtendedAwaySpinBox->setValue(value);
+    if (m_autoInvisibleSpinBox->value() < value)
+        m_autoInvisibleSpinBox->setValue(value);
+    if (m_autoExtendedAwaySpinBox->value() < value)
+        m_autoExtendedAwaySpinBox->setValue(value);
 }
 
 void AutoawayConfigurationUiHandler::autoExtendedAwaySpinBoxValueChanged(int value)
 {
-	if (m_autoInvisibleSpinBox->value() < value)
-		m_autoInvisibleSpinBox->setValue(value);
-	if (m_autoAwaySpinBox->value() > value)
-		m_autoAwaySpinBox->setValue(value);
+    if (m_autoInvisibleSpinBox->value() < value)
+        m_autoInvisibleSpinBox->setValue(value);
+    if (m_autoAwaySpinBox->value() > value)
+        m_autoAwaySpinBox->setValue(value);
 }
 
 void AutoawayConfigurationUiHandler::autoInvisibleSpinBoxValueChanged(int value)
 {
-	if (m_autoAwaySpinBox->value() > value)
-		m_autoAwaySpinBox->setValue(value);
-	if (m_autoExtendedAwaySpinBox->value() > value)
-		m_autoExtendedAwaySpinBox->setValue(value);
-	if (m_autoOfflineSpinBox->value() < value)
-		m_autoOfflineSpinBox->setValue(value);
+    if (m_autoAwaySpinBox->value() > value)
+        m_autoAwaySpinBox->setValue(value);
+    if (m_autoExtendedAwaySpinBox->value() > value)
+        m_autoExtendedAwaySpinBox->setValue(value);
+    if (m_autoOfflineSpinBox->value() < value)
+        m_autoOfflineSpinBox->setValue(value);
 }
 
 void AutoawayConfigurationUiHandler::autoOfflineSpinBoxValueChanged(int value)
 {
-	if (m_autoInvisibleSpinBox->value() > value)
-		m_autoInvisibleSpinBox->setValue(value);
+    if (m_autoInvisibleSpinBox->value() > value)
+        m_autoInvisibleSpinBox->setValue(value);
 }
 
 void AutoawayConfigurationUiHandler::descriptionChangeChanged(int index)
 {
-	m_descriptionTextLineEdit->setEnabled(index != 0);
-	m_autoRefreshSpinBox->setEnabled(index != 0);
+    m_descriptionTextLineEdit->setEnabled(index != 0);
+    m_autoRefreshSpinBox->setEnabled(index != 0);
 }
 
 #include "moc_autoaway-configuration-ui-handler.cpp"

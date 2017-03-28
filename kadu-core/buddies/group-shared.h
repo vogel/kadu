@@ -33,55 +33,50 @@ class GroupManager;
 
 class KADUAPI GroupShared : public Shared
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GroupShared(const QUuid &uuid = QUuid());
-	virtual ~GroupShared();
+    explicit GroupShared(const QUuid &uuid = QUuid());
+    virtual ~GroupShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	virtual void aboutToBeRemoved();
+    virtual void aboutToBeRemoved();
 
-	KaduShared_PropertyRead(const QString &, name, Name)
-	void setName(const QString &name);
+    KaduShared_PropertyRead(const QString &, name, Name) void setName(const QString &name);
 
-	KaduShared_Property(const QString &, icon, Icon)
-	KaduShared_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
-	KaduShared_Property(bool, showInAllGroup, ShowInAllGroup)
-	KaduShared_Property(bool, offlineToGroup, OfflineToGroup)
-	KaduShared_Property(bool, showIcon, ShowIcon)
-	KaduShared_Property(bool, showName, ShowName)
-	KaduShared_Property(int, tabPosition, TabPosition)
+    KaduShared_Property(const QString &, icon, Icon)
+        KaduShared_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
+            KaduShared_Property(bool, showInAllGroup, ShowInAllGroup)
+                KaduShared_Property(bool, offlineToGroup, OfflineToGroup) KaduShared_Property(bool, showIcon, ShowIcon)
+                    KaduShared_Property(bool, showName, ShowName) KaduShared_Property(int, tabPosition, TabPosition)
 
-signals:
-	void updated();
-	void nameChanged();
-	void groupAboutToBeRemoved();
+                        signals : void updated();
+    void nameChanged();
+    void groupAboutToBeRemoved();
 
 protected:
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<GroupManager> m_groupManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<GroupManager> m_groupManager;
 
-	QString Name;
-	QString Icon;
-	bool NotifyAboutStatusChanges;
-	bool ShowInAllGroup;
-	bool OfflineToGroup;
-	bool ShowIcon;
-	bool ShowName;
-	int TabPosition;
+    QString Name;
+    QString Icon;
+    bool NotifyAboutStatusChanges;
+    bool ShowInAllGroup;
+    bool OfflineToGroup;
+    bool ShowIcon;
+    bool ShowName;
+    int TabPosition;
 
-	friend class GroupManager;
-	void importConfiguration(const QString &name);
+    friend class GroupManager;
+    void importConfiguration(const QString &name);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
 };

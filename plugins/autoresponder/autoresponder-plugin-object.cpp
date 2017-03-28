@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-AutoresponderPluginObject::AutoresponderPluginObject(QObject *parent) :
-		QObject{parent}
+AutoresponderPluginObject::AutoresponderPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,48 +36,53 @@ AutoresponderPluginObject::~AutoresponderPluginObject()
 {
 }
 
-void AutoresponderPluginObject::setAutoresponderConfigurationUiHandler(AutoresponderConfigurationUiHandler *autoresponderConfigurationUiHandler)
+void AutoresponderPluginObject::setAutoresponderConfigurationUiHandler(
+    AutoresponderConfigurationUiHandler *autoresponderConfigurationUiHandler)
 {
-	m_autoresponderConfigurationUiHandler = autoresponderConfigurationUiHandler;
+    m_autoresponderConfigurationUiHandler = autoresponderConfigurationUiHandler;
 }
 
 void AutoresponderPluginObject::setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter)
 {
-	m_autoresponderMessageFilter = autoresponderMessageFilter;
+    m_autoresponderMessageFilter = autoresponderMessageFilter;
 }
 
-void AutoresponderPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void AutoresponderPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void AutoresponderPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void AutoresponderPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void AutoresponderPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
-	m_messageFilterService = messageFilterService;
+    m_messageFilterService = messageFilterService;
 }
 
 void AutoresponderPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AutoresponderPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
-	m_messageFilterService->registerMessageFilter(m_autoresponderMessageFilter);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
+    m_messageFilterService->registerMessageFilter(m_autoresponderMessageFilter);
 }
 
 void AutoresponderPluginObject::done()
 {
-	m_messageFilterService->unregisterMessageFilter(m_autoresponderMessageFilter);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
+    m_messageFilterService->unregisterMessageFilter(m_autoresponderMessageFilter);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoresponderConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
 }
 
 #include "moc_autoresponder-plugin-object.cpp"

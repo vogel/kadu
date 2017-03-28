@@ -23,8 +23,9 @@
 
 class QMqttMessageSizeExceededException : public QMqttException
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Received packet contains too large message"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Received packet contains too large message";
+    };
 };

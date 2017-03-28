@@ -26,9 +26,8 @@
 
 #include "buddy-search-criteria.h"
 
-BuddySearchCriteria::BuddySearchCriteria(QObject *parent) :
-		QObject{parent},
-		BirthYearTo(), Active(false), IgnoreResults(false)
+BuddySearchCriteria::BuddySearchCriteria(QObject *parent)
+        : QObject{parent}, BirthYearTo(), Active(false), IgnoreResults(false)
 {
 }
 
@@ -38,74 +37,74 @@ BuddySearchCriteria::~BuddySearchCriteria()
 
 void BuddySearchCriteria::setBuddyStorage(BuddyStorage *buddyStorage)
 {
-	m_buddyStorage = buddyStorage;
+    m_buddyStorage = buddyStorage;
 }
 
 void BuddySearchCriteria::setContactStorage(ContactStorage *contactStorage)
 {
-	m_contactStorage = contactStorage;
+    m_contactStorage = contactStorage;
 }
 
 void BuddySearchCriteria::init()
 {
-	SearchBuddy = m_buddyStorage->create();
+    SearchBuddy = m_buddyStorage->create();
 }
 
 void BuddySearchCriteria::reqUin(Account account, const QString &uin)
 {
-	// TODO ???
-	QVector<Contact> contactslist = SearchBuddy.contacts(account);
-	Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
-	if (!contact)
-	{
-		contact = m_contactStorage->create();
-		contact.setContactAccount(account);
-		contact.setOwnerBuddy(SearchBuddy);
-	}
-	contact.setId(uin);
+    // TODO ???
+    QVector<Contact> contactslist = SearchBuddy.contacts(account);
+    Contact contact = contactslist.isEmpty() ? Contact::null : contactslist.at(0);
+    if (!contact)
+    {
+        contact = m_contactStorage->create();
+        contact.setContactAccount(account);
+        contact.setOwnerBuddy(SearchBuddy);
+    }
+    contact.setId(uin);
 }
 
 void BuddySearchCriteria::reqFirstName(const QString &firstName)
 {
-	SearchBuddy.setFirstName(firstName);
+    SearchBuddy.setFirstName(firstName);
 }
 
 void BuddySearchCriteria::reqLastName(const QString &lastName)
 {
-	SearchBuddy.setLastName(lastName);
+    SearchBuddy.setLastName(lastName);
 }
 
 void BuddySearchCriteria::reqNickName(const QString &nickName)
 {
-	SearchBuddy.setNickName(nickName);
+    SearchBuddy.setNickName(nickName);
 }
 
 void BuddySearchCriteria::reqCity(const QString &city)
 {
-	SearchBuddy.setCity(city);
+    SearchBuddy.setCity(city);
 }
 
 void BuddySearchCriteria::reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo)
 {
-	BirthYearFrom = birthYearFrom;
-	BirthYearTo = birthYearTo;
+    BirthYearFrom = birthYearFrom;
+    BirthYearTo = birthYearTo;
 }
 
 void BuddySearchCriteria::reqGender(bool female)
 {
-	SearchBuddy.setGender(female ? GenderFemale : GenderMale);
+    SearchBuddy.setGender(female ? GenderFemale : GenderMale);
 }
 
 void BuddySearchCriteria::reqActive()
 {
-	Active = true;
+    Active = true;
 }
 
 void BuddySearchCriteria::clearData()
 {
-	SearchBuddy = m_buddyStorage->create();
-	BirthYearFrom.clear();
-	BirthYearTo.clear();
-	Active = false;
-	IgnoreResults = false;
+    SearchBuddy = m_buddyStorage->create();
+    BirthYearFrom.clear();
+    BirthYearTo.clear();
+    Active = false;
+    IgnoreResults = false;
 }

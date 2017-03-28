@@ -43,33 +43,32 @@ class Message;
  */
 class KADUAPI MessageHtmlRendererService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MessageHtmlRendererService(QObject *parent = nullptr);
-	virtual ~MessageHtmlRendererService();
+    Q_INVOKABLE explicit MessageHtmlRendererService(QObject *parent = nullptr);
+    virtual ~MessageHtmlRendererService();
 
-	/**
-	 * @short Render Message into HTML fragment,
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message to render
-	 * @return HTML representation of Message
-	 */
-	QString renderMessage(const Message &message);
+    /**
+     * @short Render Message into HTML fragment,
+     * @author Rafał 'Vogel' Malinowski
+     * @param message to render
+     * @return HTML representation of Message
+     */
+    QString renderMessage(const Message &message);
 
 private:
-	QPointer<DomProcessorService> m_domProcessorService;
+    QPointer<DomProcessorService> m_domProcessorService;
 
 private slots:
-	/**
-	 * @short Set domProcessorService,
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domProcessorService domProcessorService
-	 *
-	 * This service will be used to process DOM representation of HTML version of messages.
-	 */
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
-
+    /**
+     * @short Set domProcessorService,
+     * @author Rafał 'Vogel' Malinowski
+     * @param domProcessorService domProcessorService
+     *
+     * This service will be used to process DOM representation of HTML version of messages.
+     */
+    INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
 };
 
 /**

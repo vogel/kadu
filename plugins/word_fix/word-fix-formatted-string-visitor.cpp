@@ -22,8 +22,7 @@
 
 #include "word-fix-formatted-string-visitor.h"
 
-WordFixFormattedStringVisitor::WordFixFormattedStringVisitor(QMap<QString, QString> words) :
-		Words(words)
+WordFixFormattedStringVisitor::WordFixFormattedStringVisitor(QMap<QString, QString> words) : Words(words)
 {
 }
 
@@ -33,68 +32,66 @@ WordFixFormattedStringVisitor::~WordFixFormattedStringVisitor()
 
 QString WordFixFormattedStringVisitor::fixWord(const QString &content, const QString &word, const QString &fix)
 {
-	QString result = content;
-	const int wordLength = word.length();
-	const int fixLength = fix.length();
+    QString result = content;
+    const int wordLength = word.length();
+    const int fixLength = fix.length();
 
-	int pos = 0;
-	while ((pos = result.indexOf(word, pos)) != -1)
-	{
-		bool beginsWord = (pos == 0);
-		if (!beginsWord)
-		{
-			const QChar ch(result.at(pos - 1));
-			beginsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
+    int pos = 0;
+    while ((pos = result.indexOf(word, pos)) != -1)
+    {
+        bool beginsWord = (pos == 0);
+        if (!beginsWord)
+        {
+            const QChar ch(result.at(pos - 1));
+            beginsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
 
-			if (!beginsWord)
-			{
-				pos += wordLength;
-				continue;
-			}
-		}
+            if (!beginsWord)
+            {
+                pos += wordLength;
+                continue;
+            }
+        }
 
-		bool endsWord = (pos + wordLength == result.length());
-		if (!endsWord)
-		{
-			const QChar ch(result.at(pos + wordLength));
-			endsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
+        bool endsWord = (pos + wordLength == result.length());
+        if (!endsWord)
+        {
+            const QChar ch(result.at(pos + wordLength));
+            endsWord = !ch.isLetterOrNumber() && !ch.isMark() && ch != QLatin1Char('_');
 
-			if (!endsWord)
-			{
-				pos += wordLength;
-				continue;
-			}
-		}
+            if (!endsWord)
+            {
+                pos += wordLength;
+                continue;
+            }
+        }
 
-		result.replace(pos, wordLength, fix);
-		pos += fixLength;
-	}
+        result.replace(pos, wordLength, fix);
+        pos += fixLength;
+    }
 
-	return result;
+    return result;
 }
 
 QString WordFixFormattedStringVisitor::fixWords(const QString &content)
 {
-	QString result = content;
+    QString result = content;
 
-	for (QMap<QString, QString>::const_iterator i = Words.constBegin(); i != Words.constEnd(); ++i)
-		result = fixWord(result, i.key(), i.value());
+    for (QMap<QString, QString>::const_iterator i = Words.constBegin(); i != Words.constEnd(); ++i)
+        result = fixWord(result, i.key(), i.value());
 
-	return result;
+    return result;
 }
 
-void WordFixFormattedStringVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+void WordFixFormattedStringVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-	cloned(std::make_unique<FormattedStringTextBlock>(
-		fixWords(formattedStringTextBlock->content()),
-		formattedStringTextBlock->bold(),
-		formattedStringTextBlock->italic(),
-		formattedStringTextBlock->underline(),
-		formattedStringTextBlock->color()
-	));
+    cloned(
+        std::make_unique<FormattedStringTextBlock>(
+            fixWords(formattedStringTextBlock->content()), formattedStringTextBlock->bold(),
+            formattedStringTextBlock->italic(), formattedStringTextBlock->underline(),
+            formattedStringTextBlock->color()));
 }
 
-void WordFixFormattedStringVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+void WordFixFormattedStringVisitor::visit(const FormattedStringImageBlock *const formattedStringImageBlock)
 {
-	FormattedStringCloneVisitor::visit(formattedStringImageBlock);
+    FormattedStringCloneVisitor::visit(formattedStringImageBlock);
 }

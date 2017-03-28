@@ -23,7 +23,7 @@
 
 struct QMqttMessage
 {
-	uint8_t type;
-	uint8_t flags;
-	QByteArray content;
+    uint8_t type;
+    uint8_t flags;
+    QByteArray content;
 };

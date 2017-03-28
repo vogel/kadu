@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "message/sorted-messages.h"
 #include "exports.h"
+#include "message/sorted-messages.h"
 
 #include <QtCore/QPointer>
 
@@ -49,51 +49,49 @@ enum class MessageRenderHeaderBehavior;
  */
 class KADUAPI WebkitMessagesViewDisplay
 {
-
 public:
-	/**
-	 * @short Create new WebkitMessagesViewDisplay operating on provided ChatStyleRenderer.
-	 * @param chatStyleRenderer Renderer used to display messages.
-	 */
-	explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
-	virtual ~WebkitMessagesViewDisplay();
+    /**
+     * @short Create new WebkitMessagesViewDisplay operating on provided ChatStyleRenderer.
+     * @param chatStyleRenderer Renderer used to display messages.
+     */
+    explicit WebkitMessagesViewDisplay(ChatStyleRenderer &chatStyleRenderer);
+    virtual ~WebkitMessagesViewDisplay();
 
-	/**
-	 * @short Set instance of MessageRenderInfoFactory service.
-	 * @param messageRenderInfoFactory Instance of MessageRenderInfoFactory service.
-	 *
-	 * MessageRenderInfoFactory service is used to get information about how message
-	 * should be rendered after previous one (with/without header, which fonts to use).
-	 */
-	void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
+    /**
+     * @short Set instance of MessageRenderInfoFactory service.
+     * @param messageRenderInfoFactory Instance of MessageRenderInfoFactory service.
+     *
+     * MessageRenderInfoFactory service is used to get information about how message
+     * should be rendered after previous one (with/without header, which fonts to use).
+     */
+    void setMessageRenderInfoFactory(MessageRenderInfoFactory *messageRenderInfoFactory);
 
-	/**
-	 * @short Display new list of messages.
-	 * @param messages New list of messages to display.
-	 */
-	virtual void displayMessages(SortedMessages messages) = 0;
+    /**
+     * @short Display new list of messages.
+     * @param messages New list of messages to display.
+     */
+    virtual void displayMessages(SortedMessages messages) = 0;
 
 protected:
-	/**
-	 * @return Renderer used to display messages.
-	 */
-	ChatStyleRenderer & chatStyleRenderer() const;
+    /**
+     * @return Renderer used to display messages.
+     */
+    ChatStyleRenderer &chatStyleRenderer() const;
 
-	using I = decltype(begin(std::declval<SortedMessages>()));
-	/**
-	 * @short Appends range of messages to current renderer.
-	 * @param from Iterator to first message in range.
-	 * @param to Iterator to one-past-last message in range.
-	 * @param previousMessage Message that is displayed just before *from one (or null message).
-	 * @param headerBehavior Flag that alters when messages are displayed with headers and when not.
-	 */
-	void appendMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const;
+    using I = decltype(begin(std::declval<SortedMessages>()));
+    /**
+     * @short Appends range of messages to current renderer.
+     * @param from Iterator to first message in range.
+     * @param to Iterator to one-past-last message in range.
+     * @param previousMessage Message that is displayed just before *from one (or null message).
+     * @param headerBehavior Flag that alters when messages are displayed with headers and when not.
+     */
+    void appendMessagesRange(I from, I to, Message previousMessage, MessageRenderHeaderBehavior headerBehavior) const;
 
 private:
-	QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
+    QPointer<MessageRenderInfoFactory> m_messageRenderInfoFactory;
 
-	ChatStyleRenderer &m_chatStyleRenderer;
-
+    ChatStyleRenderer &m_chatStyleRenderer;
 };
 
 /**

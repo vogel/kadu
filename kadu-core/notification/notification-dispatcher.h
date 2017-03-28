@@ -30,22 +30,21 @@ class NotifierRepository;
 
 class NotificationDispatcher : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NotificationDispatcher(QObject *parent = nullptr);
-	virtual ~NotificationDispatcher();
+    Q_INVOKABLE explicit NotificationDispatcher(QObject *parent = nullptr);
+    virtual ~NotificationDispatcher();
 
-	bool dispatchNotification(const Notification &notification);
+    bool dispatchNotification(const Notification &notification);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<NotifierRepository> m_notifierRepository;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
 };

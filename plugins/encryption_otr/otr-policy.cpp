@@ -25,60 +25,56 @@ OtrPolicy OtrPolicy::PolicyManual(OTRL_POLICY_MANUAL, "manual");
 OtrPolicy OtrPolicy::PolicyOpportunistic(OTRL_POLICY_OPPORTUNISTIC, "opportunistic");
 OtrPolicy OtrPolicy::PolicyAlways(OTRL_POLICY_ALWAYS, "always");
 
-QList<OtrPolicy> OtrPolicy::Values = QList<OtrPolicy>()
-		<< OtrPolicy::PolicyUndefined
-		<< OtrPolicy::PolicyManual
-		<< OtrPolicy::PolicyOpportunistic
-		<< OtrPolicy::PolicyAlways
-		<< OtrPolicy::PolicyNever;
+QList<OtrPolicy> OtrPolicy::Values = QList<OtrPolicy>() << OtrPolicy::PolicyUndefined << OtrPolicy::PolicyManual
+                                                        << OtrPolicy::PolicyOpportunistic << OtrPolicy::PolicyAlways
+                                                        << OtrPolicy::PolicyNever;
 
 OtrPolicy OtrPolicy::fromPolicy(OtrlPolicy otrPolicy)
 {
-	foreach (const OtrPolicy &policy, Values)
-		if (otrPolicy == policy.toOtrPolicy())
-			return policy;
+    foreach (const OtrPolicy &policy, Values)
+        if (otrPolicy == policy.toOtrPolicy())
+            return policy;
 
-	return Values.at(0);
+    return Values.at(0);
 }
 
 OtrPolicy OtrPolicy::fromString(const QString &policyString)
 {
-	foreach (const OtrPolicy &policy, Values)
-		if (policyString == policy.toString())
-			return policy;
+    foreach (const OtrPolicy &policy, Values)
+        if (policyString == policy.toString())
+            return policy;
 
-	return Values.at(0);
+    return Values.at(0);
 }
 
-OtrPolicy::OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString)
-		: Policy(otrPolicy), PolicyString(policyString)
+OtrPolicy::OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString) : Policy(otrPolicy), PolicyString(policyString)
 {
 }
 
 OtrPolicy::OtrPolicy(const OtrPolicy &copyFrom)
 {
-	*this = copyFrom;
+    *this = copyFrom;
 }
 
-OtrPolicy & OtrPolicy::operator = (const OtrPolicy &copyFrom)
+OtrPolicy &OtrPolicy::operator=(const OtrPolicy &copyFrom)
 {
-	Policy = copyFrom.Policy;
-	PolicyString = copyFrom.PolicyString;
+    Policy = copyFrom.Policy;
+    PolicyString = copyFrom.PolicyString;
 
-	return *this;
+    return *this;
 }
 
-bool OtrPolicy::operator == (const OtrPolicy &compareTo) const
+bool OtrPolicy::operator==(const OtrPolicy &compareTo) const
 {
-	return PolicyString == compareTo.PolicyString;
+    return PolicyString == compareTo.PolicyString;
 }
 
 OtrlPolicy OtrPolicy::toOtrPolicy() const
 {
-	return Policy;
+    return Policy;
 }
 
-const QString& OtrPolicy::toString() const
+const QString &OtrPolicy::toString() const
 {
-	return PolicyString;
+    return PolicyString;
 }

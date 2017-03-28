@@ -20,8 +20,8 @@
 #include "sms-module.h"
 
 #include "gui/windows/sms-dialog-repository.h"
-#include "scripts/sms-script-manager.h"
 #include "mobile-number-manager.h"
+#include "scripts/sms-script-manager.h"
 #include "send-sms-action.h"
 #include "sms-actions.h"
 #include "sms-configuration-ui-handler.h"
@@ -30,14 +30,14 @@
 
 SmsModule::SmsModule()
 {
-	add_type<MobileNumberManager>();
-	add_type<SendSmsAction>();
-	add_type<SmsActions>();
-	add_type<SmsConfigurationUiHandler>();
-	add_type<SmsDialogRepository>();
-	add_type<SmsGatewayManager>();
-	add_type<SmsPluginObject>();
-	add_type<SmsScriptsManager>();
+    add_type<MobileNumberManager>();
+    add_type<SendSmsAction>();
+    add_type<SmsActions>();
+    add_type<SmsConfigurationUiHandler>();
+    add_type<SmsDialogRepository>();
+    add_type<SmsGatewayManager>();
+    add_type<SmsPluginObject>();
+    add_type<SmsScriptsManager>();
 }
 
 SmsModule::~SmsModule()

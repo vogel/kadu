@@ -63,113 +63,118 @@ class QTreeWidgetItem;
 
 class KADUAPI SearchWindow : public MainWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void createDefaultToolbars(Configuration *configuration, const QDomElement &toolbarsConfig);
+    static void createDefaultToolbars(Configuration *configuration, const QDomElement &toolbarsConfig);
 
-	explicit SearchWindow(QWidget *parent = nullptr, Buddy buddy = Buddy::null);
-	virtual ~SearchWindow();
+    explicit SearchWindow(QWidget *parent = nullptr, Buddy buddy = Buddy::null);
+    virtual ~SearchWindow();
 
-	virtual bool supportsActionType(ActionDescription::ActionType type) { return (type & ActionDescription::TypeSearch); }
-	virtual TalkableProxyModel * talkableProxyModel() { return 0; }
+    virtual bool supportsActionType(ActionDescription::ActionType type)
+    {
+        return (type & ActionDescription::TypeSearch);
+    }
+    virtual TalkableProxyModel *talkableProxyModel()
+    {
+        return 0;
+    }
 
-	void nextSearch();
-	void stopSearch();
-	void clearResults();
+    void nextSearch();
+    void stopSearch();
+    void clearResults();
 
-	void addFound();
-	void chatFound();
+    void addFound();
+    void chatFound();
 
 public slots:
-	void firstSearch();
+    void firstSearch();
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 private:
-	friend class AddFoundBuddyAction;
-	friend class ChatFoundAction;
-	friend class ClearResultsAction;
-	friend class FirstSearchAction;
-	friend class NextResultsAction;
-	friend class StopSearchAction;
+    friend class AddFoundBuddyAction;
+    friend class ChatFoundAction;
+    friend class ClearResultsAction;
+    friend class FirstSearchAction;
+    friend class NextResultsAction;
+    friend class StopSearchAction;
 
-	QPointer<AccountManager> m_accountManager;
-	QPointer<Actions> m_actions;
-	QPointer<AddFoundBuddyAction> m_addFoundBuddyAction;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<ChatFoundAction> m_chatFoundAction;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ClearResultsAction> m_clearResultsAction;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<FirstSearchAction> m_firstSearchAction;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<NextResultsAction> m_nextResultsAction;
-	QPointer<StopSearchAction> m_stopSearchAction;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<Actions> m_actions;
+    QPointer<AddFoundBuddyAction> m_addFoundBuddyAction;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<ChatFoundAction> m_chatFoundAction;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ClearResultsAction> m_clearResultsAction;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<FirstSearchAction> m_firstSearchAction;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<NextResultsAction> m_nextResultsAction;
+    QPointer<StopSearchAction> m_stopSearchAction;
 
-	Buddy m_buddy;
-	Account CurrentAccount;
-	SearchService *CurrentSearchService;
+    Buddy m_buddy;
+    Account CurrentAccount;
+    SearchService *CurrentSearchService;
 
-	owned_qptr<BuddySearchCriteria> CurrentSearchCriteria;
+    owned_qptr<BuddySearchCriteria> CurrentSearchCriteria;
 
-	QLineEdit *UinEdit;
-	QLineEdit *FirstNameEdit;
-	QLineEdit *LastNameEdit;
-	QLineEdit *NickNameEdit;
-	QLineEdit *StartBirthYearEdit;
-	QLineEdit *EndBirthYearEdit;
-	QLineEdit *CityEdit;
-	QComboBox *GenderComboBox;
-	QCheckBox *OnlyActiveCheckBox;
-	QRadioButton *UinRadioButton;
-	QRadioButton *PersonalDataRadioButton;
-	QTreeWidget *ResultsListWidget;
+    QLineEdit *UinEdit;
+    QLineEdit *FirstNameEdit;
+    QLineEdit *LastNameEdit;
+    QLineEdit *NickNameEdit;
+    QLineEdit *StartBirthYearEdit;
+    QLineEdit *EndBirthYearEdit;
+    QLineEdit *CityEdit;
+    QComboBox *GenderComboBox;
+    QCheckBox *OnlyActiveCheckBox;
+    QRadioButton *UinRadioButton;
+    QRadioButton *PersonalDataRadioButton;
+    QTreeWidget *ResultsListWidget;
 
-	bool SearchInProgress;
-	bool DoNotTransferFocus; // TODO: remove
+    bool SearchInProgress;
+    bool DoNotTransferFocus;   // TODO: remove
 
-	void createGui();
+    void createGui();
 
-	QTreeWidgetItem * selectedItem() const;
-	ContactSet selectedContacts() const;
+    QTreeWidgetItem *selectedItem() const;
+    ContactSet selectedContacts() const;
 
-	bool isPersonalDataEmpty() const;
+    bool isPersonalDataEmpty() const;
 
-	void setActionEnabled(ActionDescription *actionDescription, bool enable);
+    void setActionEnabled(ActionDescription *actionDescription, bool enable);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setAddFoundBuddyAction(AddFoundBuddyAction *addFoundBuddyAction);
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setChatFoundAction(ChatFoundAction *chatFoundAction);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setClearResultsAction(ClearResultsAction *clearResultsAction);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setFirstSearchAction(FirstSearchAction *firstSearchAction);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setNextResultsAction(NextResultsAction *nextResultsAction);
-	INJEQT_SET void setStopSearchAction(StopSearchAction *stopSearchAction);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setActions(Actions *actions);
+    INJEQT_SET void setAddFoundBuddyAction(AddFoundBuddyAction *addFoundBuddyAction);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setChatFoundAction(ChatFoundAction *chatFoundAction);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setClearResultsAction(ClearResultsAction *clearResultsAction);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setFirstSearchAction(FirstSearchAction *firstSearchAction);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setNextResultsAction(NextResultsAction *nextResultsAction);
+    INJEQT_SET void setStopSearchAction(StopSearchAction *stopSearchAction);
+    INJEQT_INIT void init();
 
-	void uinTyped();
-	void personalDataTyped();
-	void endBirthYearTyped();
-	void personalDataToggled(bool toggled);
-	void uinToggled(bool toggled);
-	void selectionChanged();
-	void newSearchResults(const BuddyList &buddies);
-
+    void uinTyped();
+    void personalDataTyped();
+    void endBirthYearTyped();
+    void personalDataToggled(bool toggled);
+    void uinToggled(bool toggled);
+    void selectionChanged();
+    void newSearchResults(const BuddyList &buddies);
 };

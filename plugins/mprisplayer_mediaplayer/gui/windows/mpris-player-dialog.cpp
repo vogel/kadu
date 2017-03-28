@@ -28,64 +28,62 @@
 
 #include "mpris-player-dialog.h"
 
-MPRISPlayerDialog::MPRISPlayerDialog(bool isEdit, QWidget *parent) :
-	QDialog(parent, Qt::Dialog), IsEdit(isEdit)
+MPRISPlayerDialog::MPRISPlayerDialog(bool isEdit, QWidget *parent) : QDialog(parent, Qt::Dialog), IsEdit(isEdit)
 {
-	createGui();
+    createGui();
 }
 
 MPRISPlayerDialog::~MPRISPlayerDialog()
 {
-
 }
 
 void MPRISPlayerDialog::createGui()
 {
-	PlayerEdit = new QLineEdit(this);
-	ServiceEdit = new QLineEdit(this);
+    PlayerEdit = new QLineEdit(this);
+    ServiceEdit = new QLineEdit(this);
 
-	PlayerLabel = new QLabel(tr("Player:"), this);
-	ServiceLabel = new QLabel(tr("Service:"), this);
+    PlayerLabel = new QLabel(tr("Player:"), this);
+    ServiceLabel = new QLabel(tr("Service:"), this);
 
-	Buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    Buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-	connect(Buttons, SIGNAL(accepted()), this, SLOT(accept()));
-	connect(Buttons, SIGNAL(rejected()), this, SLOT(reject()));
+    connect(Buttons, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(Buttons, SIGNAL(rejected()), this, SLOT(reject()));
 
-	Layout = new QGridLayout(this);
+    Layout = new QGridLayout(this);
 
-	Layout->addWidget(PlayerLabel, 0, 0);
-	Layout->addWidget(PlayerEdit, 0, 1, 1, 5);
-	Layout->addWidget(ServiceLabel, 1, 0);
-	Layout->addWidget(ServiceEdit, 1, 1, 1, 5);
-	Layout->addWidget(Buttons, 2, 5);
+    Layout->addWidget(PlayerLabel, 0, 0);
+    Layout->addWidget(PlayerEdit, 0, 1, 1, 5);
+    Layout->addWidget(ServiceLabel, 1, 0);
+    Layout->addWidget(ServiceEdit, 1, 1, 1, 5);
+    Layout->addWidget(Buttons, 2, 5);
 
-	setLayout(Layout);
+    setLayout(Layout);
 
-	if (IsEdit)
-		setWindowTitle(tr("Edit Player"));
-	else
-		setWindowTitle(tr("Add Player"));
+    if (IsEdit)
+        setWindowTitle(tr("Edit Player"));
+    else
+        setWindowTitle(tr("Add Player"));
 }
 
 void MPRISPlayerDialog::setPlayer(const QString &player)
 {
-	PlayerEdit->setText(player);
+    PlayerEdit->setText(player);
 }
 
 void MPRISPlayerDialog::setService(const QString &service)
 {
-	ServiceEdit->setText(service);
+    ServiceEdit->setText(service);
 }
 
 QString MPRISPlayerDialog::getPlayer()
 {
-	return PlayerEdit->text();
+    return PlayerEdit->text();
 }
 
 QString MPRISPlayerDialog::getService()
 {
-	return ServiceEdit->text();
+    return ServiceEdit->text();
 }
 
 #include "moc_mpris-player-dialog.cpp"

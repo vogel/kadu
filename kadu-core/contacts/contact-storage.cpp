@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-ContactStorage::ContactStorage(QObject *parent) :
-		QObject{parent}
+ContactStorage::ContactStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,29 +35,29 @@ ContactStorage::~ContactStorage()
 
 void ContactStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Contact ContactStorage::create()
 {
-	return m_injectedFactory->makeInjected<ContactShared>();
+    return m_injectedFactory->makeInjected<ContactShared>();
 }
 
 Contact ContactStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<ContactShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<ContactShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Contact ContactStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<ContactShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<ContactShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_contact-storage.cpp"

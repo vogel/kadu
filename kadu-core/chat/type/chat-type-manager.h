@@ -48,23 +48,22 @@ class ChatTypeRoom;
  */
 class KADUAPI ChatTypeManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QList<QPointer<ChatType>> m_chatTypes;
+    QList<QPointer<ChatType>> m_chatTypes;
 
 public:
-	Q_INVOKABLE explicit ChatTypeManager(QObject *parent = nullptr);
-	virtual ~ChatTypeManager();
+    Q_INVOKABLE explicit ChatTypeManager(QObject *parent = nullptr);
+    virtual ~ChatTypeManager();
 
-	ChatType * chatType(const QString &alias) const;
+    ChatType *chatType(const QString &alias) const;
 
 private slots:
-	INJEQT_SET void setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy);
-	INJEQT_SET void setChatTypeContactSet(ChatTypeContactSet *chatTypeContactSet);
-	INJEQT_SET void setChatTypeContact(ChatTypeContact *chatTypeContact);
-	INJEQT_SET void setChatTypeRoom(ChatTypeRoom *chatTypeRoom);
-
+    INJEQT_SET void setChatTypeBuddy(ChatTypeBuddy *chatTypeBuddy);
+    INJEQT_SET void setChatTypeContactSet(ChatTypeContactSet *chatTypeContactSet);
+    INJEQT_SET void setChatTypeContact(ChatTypeContact *chatTypeContact);
+    INJEQT_SET void setChatTypeRoom(ChatTypeRoom *chatTypeRoom);
 };
 
 /**

@@ -36,8 +36,7 @@
  * @{
  */
 
-ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) :
-		QWizard(parent)
+ConfigWizardWindow::ConfigWizardWindow(QWidget *parent) : QWizard(parent)
 {
 }
 
@@ -47,94 +46,90 @@ ConfigWizardWindow::~ConfigWizardWindow()
 
 void ConfigWizardWindow::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ConfigWizardWindow::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void ConfigWizardWindow::init()
 {
-	setWindowRole("kadu-wizard");
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Kadu Wizard"));
+    setWindowRole("kadu-wizard");
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Kadu Wizard"));
 
-	#ifdef Q_OS_WIN
-		// NOTE: Workaround for bug #1912.
-		// TODO: Remove this as soon as QTBUG-10478 is fixed in
-		// a release we bundle in the Windows build.
-		setWizardStyle(QWizard::ModernStyle);
-	#endif
-	setMinimumSize(500, 500);
+#ifdef Q_OS_WIN
+    // NOTE: Workaround for bug #1912.
+    // TODO: Remove this as soon as QTBUG-10478 is fixed in
+    // a release we bundle in the Windows build.
+    setWizardStyle(QWizard::ModernStyle);
+#endif
+    setMinimumSize(500, 500);
 
-	setPage(ProfilePage, m_pluginInjectedFactory->makeInjected<ConfigWizardProfilePage>(this));
-	setPage(ChooseNetworkPage, m_pluginInjectedFactory->makeInjected<ConfigWizardChooseNetworkPage>(this));
-	setPage(SetUpAccountPage, m_pluginInjectedFactory->makeInjected<ConfigWizardSetUpAccountPage>(this));
-	setPage(CompletedPage, m_pluginInjectedFactory->makeInjected<ConfigWizardCompletedPage>(this));
+    setPage(ProfilePage, m_pluginInjectedFactory->makeInjected<ConfigWizardProfilePage>(this));
+    setPage(ChooseNetworkPage, m_pluginInjectedFactory->makeInjected<ConfigWizardChooseNetworkPage>(this));
+    setPage(SetUpAccountPage, m_pluginInjectedFactory->makeInjected<ConfigWizardSetUpAccountPage>(this));
+    setPage(CompletedPage, m_pluginInjectedFactory->makeInjected<ConfigWizardCompletedPage>(this));
 
-	connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
-	connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
+    connect(this, SIGNAL(accepted()), this, SLOT(acceptedSlot()));
+    connect(this, SIGNAL(rejected()), this, SLOT(rejectedSlot()));
 }
 
 void ConfigWizardWindow::setPage(int id, ConfigWizardPage *page)
 {
-	ConfigWizardPages.append(page);
+    ConfigWizardPages.append(page);
 
-	QWizard::setPage(id, page);
+    QWizard::setPage(id, page);
 }
 
 bool ConfigWizardWindow::goToChooseNetwork() const
 {
-	return m_protocolsManager->count() > 0;
+    return m_protocolsManager->count() > 0;
 }
 
 bool ConfigWizardWindow::goToAccountSetUp() const
 {
-	if (field("choose-network.ignore").toBool())
-		return false;
+    if (field("choose-network.ignore").toBool())
+        return false;
 
-	ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
-	if (!pf)
-		return false;
+    ProtocolFactory *pf = field("choose-network.protocol-factory").value<ProtocolFactory *>();
+    if (!pf)
+        return false;
 
-	if (field("choose-network.new").toBool() && !pf->canRegister())
-		return false;
+    if (field("choose-network.new").toBool() && !pf->canRegister())
+        return false;
 
-	return true;
+    return true;
 }
 
 int ConfigWizardWindow::nextId() const
 {
-	switch (currentId())
-	{
-		case ProfilePage:
-			return goToChooseNetwork()
-					? ChooseNetworkPage
-					: CompletedPage;
-		case ChooseNetworkPage:
-			return goToAccountSetUp()
-					? SetUpAccountPage
-					: CompletedPage;
-		case SetUpAccountPage:
-			return CompletedPage;
-		case CompletedPage:
-		default:
-			return -1;
-	}
+    switch (currentId())
+    {
+    case ProfilePage:
+        return goToChooseNetwork() ? ChooseNetworkPage : CompletedPage;
+    case ChooseNetworkPage:
+        return goToAccountSetUp() ? SetUpAccountPage : CompletedPage;
+    case SetUpAccountPage:
+        return CompletedPage;
+    case CompletedPage:
+    default:
+        return -1;
+    }
 }
 
 void ConfigWizardWindow::acceptedSlot()
 {
-	foreach (ConfigWizardPage *page, ConfigWizardPages)
-		page->acceptPage();
+    foreach (ConfigWizardPage *page, ConfigWizardPages)
+        page->acceptPage();
 }
 
 void ConfigWizardWindow::rejectedSlot()
 {
-	foreach (ConfigWizardPage *page, ConfigWizardPages)
-		page->rejectPage();
+    foreach (ConfigWizardPage *page, ConfigWizardPages)
+        page->rejectPage();
 }
 
 /** @} */

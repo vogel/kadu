@@ -21,13 +21,13 @@
 
 #include <QtWidgets/QWidget>
 
-ScopedUpdatesDisabler::ScopedUpdatesDisabler(QWidget &widget) :
-		m_widget(widget), m_wasEnabled{m_widget.updatesEnabled()}
+ScopedUpdatesDisabler::ScopedUpdatesDisabler(QWidget &widget)
+        : m_widget(widget), m_wasEnabled{m_widget.updatesEnabled()}
 {
-	m_widget.setUpdatesEnabled(false);
+    m_widget.setUpdatesEnabled(false);
 }
 
 ScopedUpdatesDisabler::~ScopedUpdatesDisabler()
 {
-	m_widget.setUpdatesEnabled(m_wasEnabled);
+    m_widget.setUpdatesEnabled(m_wasEnabled);
 }

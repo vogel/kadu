@@ -28,14 +28,14 @@
 #include "core/myself.h"
 #include "talkable/talkable.h"
 
-ClearHistoryAction::ClearHistoryAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ClearHistoryAction::ClearHistoryAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/clear-history"});
-	setName(QStringLiteral("clearHistoryAction"));
-	setText(tr("Clear History"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"kadu_icons/clear-history"});
+    setName(QStringLiteral("clearHistoryAction"));
+    setText(tr("Clear History"));
+    setType(ActionDescription::TypeUser);
 }
 
 ClearHistoryAction::~ClearHistoryAction()
@@ -44,40 +44,40 @@ ClearHistoryAction::~ClearHistoryAction()
 
 void ClearHistoryAction::setHistory(History *history)
 {
-	m_history = history;
+    m_history = history;
 }
 
 void ClearHistoryAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void ClearHistoryAction::actionTriggered(QAction *sender, bool)
 {
-	if (!m_history->currentStorage())
-		return;
+    if (!m_history->currentStorage())
+        return;
 
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	if (action->context()->chat())
-		m_history->currentStorage()->clearChatHistory(action->context()->chat());
+    if (action->context()->chat())
+        m_history->currentStorage()->clearChatHistory(action->context()->chat());
 }
 
 void ClearHistoryAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
-	auto const &contacts = action->context()->contacts();
+    action->setEnabled(false);
+    auto const &contacts = action->context()->contacts();
 
-	if (contacts.isEmpty())
-		return;
+    if (contacts.isEmpty())
+        return;
 
-	for (auto const &contact : contacts)
-		if (m_myself->buddy() == contact.ownerBuddy())
-			return;
+    for (auto const &contact : contacts)
+        if (m_myself->buddy() == contact.ownerBuddy())
+            return;
 
-	action->setEnabled(true);
+    action->setEnabled(true);
 }
 
 #include "moc_clear-history-action.cpp"

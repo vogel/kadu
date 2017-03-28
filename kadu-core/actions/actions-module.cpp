@@ -78,73 +78,73 @@
 
 ActionsModule::ActionsModule()
 {
-	// chat
-	add_type<AddConferenceAction>();
-	add_type<AddRoomChatAction>();
-	add_type<LeaveChatAction>();
+    // chat
+    add_type<AddConferenceAction>();
+    add_type<AddRoomChatAction>();
+    add_type<LeaveChatAction>();
 
-	// chat-widget
-	add_type<AutoSendAction>();
-	add_type<BlockUserAction>();
-	add_type<BoldAction>();
-	add_type<ClearChatAction>();
-	add_type<InsertImageAction>();
-	add_type<ItalicAction>();
-	add_type<MoreActionsAction>();
-	add_type<OpenChatAction>();
-	add_type<OpenChatWithAction>();
-	add_type<SendAction>();
-	add_type<UnderlineAction>();
+    // chat-widget
+    add_type<AutoSendAction>();
+    add_type<BlockUserAction>();
+    add_type<BoldAction>();
+    add_type<ClearChatAction>();
+    add_type<InsertImageAction>();
+    add_type<ItalicAction>();
+    add_type<MoreActionsAction>();
+    add_type<OpenChatAction>();
+    add_type<OpenChatWithAction>();
+    add_type<SendAction>();
+    add_type<UnderlineAction>();
 
-	// main
-	add_type<ChangeStatusAction>();
-	add_type<DefaultProxyAction>();
-	add_type<ExitAction>();
-	add_type<OpenForumAction>();
-	add_type<OpenGetInvolvedAction>();
-	add_type<OpenRedmineAction>();
-	add_type<OpenTranslateAction>();
-	add_type<RecentChatsAction>();
-	add_type<ShowAboutWindowAction>();
-	add_type<ShowBlockedBuddiesAction>();
-	add_type<ShowConfigurationWindowAction>();
-	add_type<ShowDescriptionsAction>();
-	add_type<ShowFileTransferWindowAction>();
-	add_type<ShowInfoPanelAction>();
-	add_type<ShowMultilogonsAction>();
-	add_type<ShowMyselfAction>();
-	add_type<ShowOfflineBuddiesAction>();
-	add_type<ShowOnlyBuddiesWithDescriptionAction>();
-	add_type<ShowOnlyBuddiesWithDescriptionOrOnlineAction>();
-	add_type<ShowYourAccountsAction>();
-	add_type<ToggleSilentModeAction>();
+    // main
+    add_type<ChangeStatusAction>();
+    add_type<DefaultProxyAction>();
+    add_type<ExitAction>();
+    add_type<OpenForumAction>();
+    add_type<OpenGetInvolvedAction>();
+    add_type<OpenRedmineAction>();
+    add_type<OpenTranslateAction>();
+    add_type<RecentChatsAction>();
+    add_type<ShowAboutWindowAction>();
+    add_type<ShowBlockedBuddiesAction>();
+    add_type<ShowConfigurationWindowAction>();
+    add_type<ShowDescriptionsAction>();
+    add_type<ShowFileTransferWindowAction>();
+    add_type<ShowInfoPanelAction>();
+    add_type<ShowMultilogonsAction>();
+    add_type<ShowMyselfAction>();
+    add_type<ShowOfflineBuddiesAction>();
+    add_type<ShowOnlyBuddiesWithDescriptionAction>();
+    add_type<ShowOnlyBuddiesWithDescriptionOrOnlineAction>();
+    add_type<ShowYourAccountsAction>();
+    add_type<ToggleSilentModeAction>();
 
-	// search
-	add_type<AddFoundBuddyAction>();
-	add_type<ChatFoundAction>();
-	add_type<ClearResultsAction>();
-	add_type<FirstSearchAction>();
-	add_type<NextResultsAction>();
-	add_type<StopSearchAction>();
+    // search
+    add_type<AddFoundBuddyAction>();
+    add_type<ChatFoundAction>();
+    add_type<ClearResultsAction>();
+    add_type<FirstSearchAction>();
+    add_type<NextResultsAction>();
+    add_type<StopSearchAction>();
 
-	// talkable
-	add_type<AddGroupAction>();
-	add_type<AddUserAction>();
-	add_type<CopyDescriptionAction>();
-	add_type<CopyPersonalInfoAction>();
-	add_type<DeleteTalkableAction>();
-	add_type<EditTalkableAction>();
-	add_type<LookupBuddyInfoAction>();
-	add_type<MergeBuddiesAction>();
-	add_type<NotifyAboutBuddyAction>();
-	add_type<OpenBuddyEmailAction>();
-	add_type<OpenDescriptionLinkAction>();
-	add_type<OpenSearchAction>();
-	add_type<SendFileAction>();
+    // talkable
+    add_type<AddGroupAction>();
+    add_type<AddUserAction>();
+    add_type<CopyDescriptionAction>();
+    add_type<CopyPersonalInfoAction>();
+    add_type<DeleteTalkableAction>();
+    add_type<EditTalkableAction>();
+    add_type<LookupBuddyInfoAction>();
+    add_type<MergeBuddiesAction>();
+    add_type<NotifyAboutBuddyAction>();
+    add_type<OpenBuddyEmailAction>();
+    add_type<OpenDescriptionLinkAction>();
+    add_type<OpenSearchAction>();
+    add_type<SendFileAction>();
 
-	// tree-view
-	add_type<CollapseAction>();
-	add_type<ExpandAction>();
+    // tree-view
+    add_type<CollapseAction>();
+    add_type<ExpandAction>();
 }
 
 ActionsModule::~ActionsModule()

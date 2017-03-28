@@ -23,15 +23,14 @@
 
 class WinampPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit WinampPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~WinampPluginModulesFactory();
+    explicit WinampPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~WinampPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-	virtual QString parentInjectorName() const;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
+    virtual QString parentInjectorName() const;
 };

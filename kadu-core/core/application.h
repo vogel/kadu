@@ -40,22 +40,21 @@ class ConfigurationWriter;
 
 class KADUAPI Application : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Application(QObject *parent = nullptr);
-	virtual ~Application();
+    Q_INVOKABLE explicit Application(QObject *parent = nullptr);
+    virtual ~Application();
 
-	void flushConfiguration();
-	void backupConfiguration();
+    void flushConfiguration();
+    void backupConfiguration();
 
-	bool isSavingSession() const;
-	void quit();
+    bool isSavingSession() const;
+    void quit();
 
 private:
-	QPointer<ConfigurationWriter> m_configurationWriter;
+    QPointer<ConfigurationWriter> m_configurationWriter;
 
 public slots:
-	INJEQT_SET void setConfigurationWriter(ConfigurationWriter *configurationWriter);
-
+    INJEQT_SET void setConfigurationWriter(ConfigurationWriter *configurationWriter);
 };

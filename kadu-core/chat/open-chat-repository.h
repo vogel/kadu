@@ -37,41 +37,40 @@
  */
 class KADUAPI OpenChatRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Storage = std::set<Chat>;
+    using Storage = std::set<Chat>;
 
 public:
-	using Iterator = Storage::const_iterator;
+    using Iterator = Storage::const_iterator;
 
-	Q_INVOKABLE explicit OpenChatRepository(QObject *parent = nullptr);
-	virtual ~OpenChatRepository();
+    Q_INVOKABLE explicit OpenChatRepository(QObject *parent = nullptr);
+    virtual ~OpenChatRepository();
 
-	Iterator begin() const;
-	Iterator end() const;
-	size_t size() const;
+    Iterator begin() const;
+    Iterator end() const;
+    size_t size() const;
 
 public slots:
-	void addOpenChat(Chat chat);
-	void removeOpenChat(Chat chat);
+    void addOpenChat(Chat chat);
+    void removeOpenChat(Chat chat);
 
 signals:
-	void openChatAdded(Chat chat);
-	void openChatRemoved(Chat chat);
+    void openChatAdded(Chat chat);
+    void openChatRemoved(Chat chat);
 
 private:
-	Storage m_chats;
-
+    Storage m_chats;
 };
 
 inline OpenChatRepository::Iterator begin(OpenChatRepository *openChatRepository)
 {
-	return openChatRepository->begin();
+    return openChatRepository->begin();
 }
 
 inline OpenChatRepository::Iterator end(OpenChatRepository *openChatRepository)
 {
-	return openChatRepository->end();
+    return openChatRepository->end();
 }
 
 /**

@@ -20,8 +20,7 @@
 
 #include "message-transformer-service.h"
 
-MessageTransformerService::MessageTransformerService(QObject *parent) :
-		QObject(parent)
+MessageTransformerService::MessageTransformerService(QObject *parent) : QObject(parent)
 {
 }
 

@@ -28,13 +28,12 @@
 
 #include "token-window.h"
 
-TokenWindow::TokenWindow(const QPixmap &tokenPixmap, QWidget *parent) :
-		QDialog(parent)
+TokenWindow::TokenWindow(const QPixmap &tokenPixmap, QWidget *parent) : QDialog(parent)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Enter Token Value"));
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Enter Token Value"));
 
-	createGui(tokenPixmap);
+    createGui(tokenPixmap);
 }
 
 TokenWindow::~TokenWindow()
@@ -43,47 +42,48 @@ TokenWindow::~TokenWindow()
 
 void TokenWindow::createGui(const QPixmap &tokenPixmap)
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLabel *imageLabel = new QLabel(this);
-	imageLabel->setPixmap(tokenPixmap);
+    QLabel *imageLabel = new QLabel(this);
+    imageLabel->setPixmap(tokenPixmap);
 
-	TokenValue = new QLineEdit(this);
+    TokenValue = new QLineEdit(this);
 
-	QWidget *formWidget = new QWidget(this);
-	layout->addWidget(formWidget);
+    QWidget *formWidget = new QWidget(this);
+    layout->addWidget(formWidget);
 
-	QFormLayout *formLayout = new QFormLayout(formWidget);
-	formLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
-	formLayout->addRow(0, imageLabel);
-	formLayout->addRow(tr("Enter text from the picture:"), TokenValue);
+    QFormLayout *formLayout = new QFormLayout(formWidget);
+    formLayout->setRowWrapPolicy(QFormLayout::WrapAllRows);
+    formLayout->addRow(0, imageLabel);
+    formLayout->addRow(tr("Enter text from the picture:"), TokenValue);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
+    QDialogButtonBox *buttons = new QDialogButtonBox(this);
 
-	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), buttons);
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), buttons);
+    QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), buttons);
+    QPushButton *cancelButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), buttons);
 
-	buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
-	buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);
+    buttons->addButton(okButton, QDialogButtonBox::AcceptRole);
+    buttons->addButton(cancelButton, QDialogButtonBox::DestructiveRole);
 
-	layout->addSpacing(16);
-	layout->addWidget(buttons);
+    layout->addSpacing(16);
+    layout->addWidget(buttons);
 
-	connect(TokenValue, SIGNAL(returnPressed()), this, SLOT(accept()));
-	connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(TokenValue, SIGNAL(returnPressed()), this, SLOT(accept()));
+    connect(okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
 }
 
 void TokenWindow::accept()
 {
-	emit tokenValueEntered(TokenValue->text());
-	QDialog::accept();
+    emit tokenValueEntered(TokenValue->text());
+    QDialog::accept();
 }
 
 void TokenWindow::reject()
 {
-	emit tokenValueEntered(QString());
-	QDialog::reject();
+    emit tokenValueEntered(QString());
+    QDialog::reject();
 }
 
 #include "moc_token-window.cpp"

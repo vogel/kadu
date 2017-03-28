@@ -26,10 +26,10 @@
 
 ChatWindowModule::ChatWindowModule()
 {
-	add_type<ChatWindowManager>();
-	add_type<ChatWindowRepository>();
-	add_type<ChatWindowStorage>();
-	add_type<WindowChatWidgetContainerHandler>();
+    add_type<ChatWindowManager>();
+    add_type<ChatWindowRepository>();
+    add_type<ChatWindowStorage>();
+    add_type<WindowChatWidgetContainerHandler>();
 }
 
 ChatWindowModule::~ChatWindowModule()

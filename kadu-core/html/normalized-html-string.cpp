@@ -19,12 +19,11 @@
 
 #include "normalized-html-string.h"
 
-NormalizedHtmlString::NormalizedHtmlString(QString string) :
-		m_string{std::move(string)}
+NormalizedHtmlString::NormalizedHtmlString(QString string) : m_string{std::move(string)}
 {
 }
 
-const QString & NormalizedHtmlString::string() const
+const QString &NormalizedHtmlString::string() const
 {
-	return m_string;
+    return m_string;
 }

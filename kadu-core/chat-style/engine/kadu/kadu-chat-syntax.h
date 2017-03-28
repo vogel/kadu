@@ -23,20 +23,31 @@
 
 class KaduChatSyntax
 {
-	QString Syntax;
-	QString Top;
-	QString WithHeader;
-	QString WithoutHeader;
+    QString Syntax;
+    QString Top;
+    QString WithHeader;
+    QString WithoutHeader;
 
 public:
-	KaduChatSyntax() {};
-	explicit KaduChatSyntax(const QString &syntax);
+    KaduChatSyntax(){};
+    explicit KaduChatSyntax(const QString &syntax);
 
-	void setSyntax(const QString &syntax);
+    void setSyntax(const QString &syntax);
 
-	const QString & syntax() { return Syntax; };
-	const QString & top() { return Top; };
-	const QString & withHeader() { return WithHeader; };
-	const QString & withoutHeader() { return WithoutHeader; };
-
+    const QString &syntax()
+    {
+        return Syntax;
+    };
+    const QString &top()
+    {
+        return Top;
+    };
+    const QString &withHeader()
+    {
+        return WithHeader;
+    };
+    const QString &withoutHeader()
+    {
+        return WithoutHeader;
+    };
 };

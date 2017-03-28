@@ -31,29 +31,28 @@ class GaduConnection;
 
 class GaduChatStateService : public ChatStateService
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ContactManager> m_contactManager;
-	QPointer<GaduConnection> Connection;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<GaduConnection> Connection;
 
-	bool SendTypingNotifications;
+    bool SendTypingNotifications;
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 
 public:
-	explicit GaduChatStateService(Account account, QObject *parent = nullptr);
-	virtual ~GaduChatStateService();
+    explicit GaduChatStateService(Account account, QObject *parent = nullptr);
+    virtual ~GaduChatStateService();
 
-	void setConnection(GaduConnection *connection);
+    void setConnection(GaduConnection *connection);
 
-	virtual void sendState(const Contact &contact, ChatState state) override;
+    virtual void sendState(const Contact &contact, ChatState state) override;
 
-	void setSendTypingNotifications(bool sendTypingNotifications);
+    void setSendTypingNotifications(bool sendTypingNotifications);
 
 public slots:
-	void handleEventTypingNotify(struct gg_event *e);
+    void handleEventTypingNotify(struct gg_event *e);
 
-	void messageReceived(const Message & message);
-
+    void messageReceived(const Message &message);
 };

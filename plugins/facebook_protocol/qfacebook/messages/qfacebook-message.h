@@ -27,9 +27,8 @@ struct QMqttMessage;
 class QFacebookMessage
 {
 public:
-	virtual ~QFacebookMessage() = default;
+    virtual ~QFacebookMessage() = default;
 
-	virtual QFacebookMessageType messageType() const = 0;
-	virtual QMqttMessage encode() const = 0;
-
+    virtual QFacebookMessageType messageType() const = 0;
+    virtual QMqttMessage encode() const = 0;
 };

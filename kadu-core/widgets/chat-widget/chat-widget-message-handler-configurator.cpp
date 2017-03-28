@@ -24,8 +24,7 @@
 #include "widgets/chat-widget/chat-widget-message-handler-configuration.h"
 #include "widgets/chat-widget/chat-widget-message-handler.h"
 
-ChatWidgetMessageHandlerConfigurator::ChatWidgetMessageHandlerConfigurator(QObject *parent) :
-		QObject{parent}
+ChatWidgetMessageHandlerConfigurator::ChatWidgetMessageHandlerConfigurator(QObject *parent) : QObject{parent}
 {
 }
 
@@ -33,41 +32,45 @@ ChatWidgetMessageHandlerConfigurator::~ChatWidgetMessageHandlerConfigurator()
 {
 }
 
-void ChatWidgetMessageHandlerConfigurator::setChatWidgetMessageHandler(ChatWidgetMessageHandler *chatWidgetMessageHandler)
+void ChatWidgetMessageHandlerConfigurator::setChatWidgetMessageHandler(
+    ChatWidgetMessageHandler *chatWidgetMessageHandler)
 {
-	m_chatWidgetMessageHandler = chatWidgetMessageHandler;
+    m_chatWidgetMessageHandler = chatWidgetMessageHandler;
 }
 
 void ChatWidgetMessageHandlerConfigurator::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ChatWidgetMessageHandlerConfigurator::init()
 {
-	createDefaultConfiguration();
+    createDefaultConfiguration();
 }
 
 void ChatWidgetMessageHandlerConfigurator::configurationUpdated()
 {
-	if (m_chatWidgetMessageHandler)
-		m_chatWidgetMessageHandler.data()->setChatWidgetMessageHandlerConfiguration(loadConfiguration());
+    if (m_chatWidgetMessageHandler)
+        m_chatWidgetMessageHandler.data()->setChatWidgetMessageHandlerConfiguration(loadConfiguration());
 }
 
 void ChatWidgetMessageHandlerConfigurator::createDefaultConfiguration() const
 {
-	m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
-	m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
-	m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
+    m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessage", false);
+    m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageWhenOnline", true);
+    m_configuration->deprecatedApi()->addVariable("Chat", "OpenChatOnMessageMinimized", false);
 }
 
 ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::loadConfiguration() const
 {
-	auto configuration = ChatWidgetMessageHandlerConfiguration();
-	configuration.setOpenChatOnMessage(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
-	configuration.setOpenChatOnMessageOnlyWhenOnline(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
-	configuration.setOpenChatOnMessageMinimized(m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
-	return configuration;
+    auto configuration = ChatWidgetMessageHandlerConfiguration();
+    configuration.setOpenChatOnMessage(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessage", false));
+    configuration.setOpenChatOnMessageOnlyWhenOnline(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageWhenOnline", true));
+    configuration.setOpenChatOnMessageMinimized(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
+    return configuration;
 }
 
 #include "moc_chat-widget-message-handler-configurator.cpp"

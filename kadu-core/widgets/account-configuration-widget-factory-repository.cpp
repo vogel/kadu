@@ -19,8 +19,8 @@
 
 #include "account-configuration-widget-factory-repository.h"
 
-AccountConfigurationWidgetFactoryRepository::AccountConfigurationWidgetFactoryRepository(QObject* parent) :
-		QObject(parent)
+AccountConfigurationWidgetFactoryRepository::AccountConfigurationWidgetFactoryRepository(QObject *parent)
+        : QObject(parent)
 {
 }
 
@@ -30,23 +30,23 @@ AccountConfigurationWidgetFactoryRepository::~AccountConfigurationWidgetFactoryR
 
 void AccountConfigurationWidgetFactoryRepository::registerFactory(AccountConfigurationWidgetFactory *factory)
 {
-	if (Factories.contains(factory))
-		return;
+    if (Factories.contains(factory))
+        return;
 
-	Factories.append(factory);
-	emit factoryRegistered(factory);
+    Factories.append(factory);
+    emit factoryRegistered(factory);
 }
 
 void AccountConfigurationWidgetFactoryRepository::unregisterFactory(AccountConfigurationWidgetFactory *factory)
 {
-	if (!Factories.contains(factory))
-		return;
+    if (!Factories.contains(factory))
+        return;
 
-	Factories.removeAll(factory);
-	emit factoryUnregistered(factory);
+    Factories.removeAll(factory);
+    emit factoryUnregistered(factory);
 }
 
 QList<AccountConfigurationWidgetFactory *> AccountConfigurationWidgetFactoryRepository::factories() const
 {
-	return Factories;
+    return Factories;
 }

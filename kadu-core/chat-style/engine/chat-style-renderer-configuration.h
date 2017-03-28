@@ -37,25 +37,23 @@ class QWebFrame;
  */
 class ChatStyleRendererConfiguration
 {
-
 public:
-	ChatStyleRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency);
+    ChatStyleRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency);
 
-	Chat chat() const;
-	QWebFrame & webFrame() const;
-	QString javaScript() const;
-	bool useTransparency() const;
+    Chat chat() const;
+    QWebFrame &webFrame() const;
+    QString javaScript() const;
+    bool useTransparency() const;
 
 private:
-	Chat m_chat;
-	QWebFrame &m_webFrame;
-	QString m_javaScript;
-	bool m_useTransparency;
-
+    Chat m_chat;
+    QWebFrame &m_webFrame;
+    QString m_javaScript;
+    bool m_useTransparency;
 };
 
-bool operator == (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
-bool operator != (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
+bool operator==(const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
+bool operator!=(const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right);
 
 /**
  * @}

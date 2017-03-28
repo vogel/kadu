@@ -34,37 +34,36 @@ class SoundThemeManager;
 
 class SoundConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~SoundConfigurationUiHandler();
+    Q_INVOKABLE explicit SoundConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~SoundConfigurationUiHandler();
 
-	NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
+    NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SoundManager> m_soundManager;
-	QPointer<SoundThemeManager> m_soundThemeManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SoundManager> m_soundManager;
+    QPointer<SoundThemeManager> m_soundThemeManager;
 
-	QPointer<SoundConfigurationWidget> m_configurationWidget;
-	QPointer<ConfigComboBox> m_themesComboBox;
-	QPointer<PathListEdit> m_themesPaths;
+    QPointer<SoundConfigurationWidget> m_configurationWidget;
+    QPointer<ConfigComboBox> m_themesComboBox;
+    QPointer<PathListEdit> m_themesPaths;
 
-	void connectWidgets();
-	void setSoundThemes();
+    void connectWidgets();
+    void setSoundThemes();
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
-	INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSoundManager(SoundManager *soundManager);
+    INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
 
-	void themeChanged(const QString &theme);
-	void soundFileEdited();
-
+    void themeChanged(const QString &theme);
+    void soundFileEdited();
 };

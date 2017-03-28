@@ -23,9 +23,9 @@
 
 #pragma once
 
+#include "exports.h"
 #include "file-transfer/file-transfer-shared.h"
 #include "storage/shared-base.h"
-#include "exports.h"
 
 class QFile;
 
@@ -33,30 +33,27 @@ class Contact;
 
 class KADUAPI FileTransfer : public SharedBase<FileTransferShared>
 {
-	KaduSharedBaseClass(FileTransfer)
+    KaduSharedBaseClass(FileTransfer)
 
-public:
-	static FileTransfer null;
+        public : static FileTransfer null;
 
-	FileTransfer();
-	FileTransfer(FileTransferShared *data);
-	explicit FileTransfer(QObject *data);
-	FileTransfer(const FileTransfer &copy);
-	virtual ~FileTransfer();
+    FileTransfer();
+    FileTransfer(FileTransferShared *data);
+    explicit FileTransfer(QObject *data);
+    FileTransfer(const FileTransfer &copy);
+    virtual ~FileTransfer();
 
-	KaduSharedBase_PropertyCRW(Contact, peer, Peer)
-	KaduSharedBase_PropertyCRW(QString, localFileName, LocalFileName)
-	KaduSharedBase_PropertyCRW(QString, remoteFileName, RemoteFileName)
-	KaduSharedBase_Property(unsigned long, fileSize, FileSize)
-	KaduSharedBase_Property(unsigned long, transferredSize, TransferredSize)
-	KaduSharedBase_Property(QString, error, Error)
-	KaduSharedBase_Property(FileTransferDirection, transferDirection, TransferDirection)
-	KaduSharedBase_Property(FileTransferStatus, transferStatus, TransferStatus)
-	KaduSharedBase_Property(FileTransferType, transferType, TransferType)
-	KaduSharedBase_Property(FileTransferHandler *, handler, Handler)
+    KaduSharedBase_PropertyCRW(Contact, peer, Peer) KaduSharedBase_PropertyCRW(QString, localFileName, LocalFileName)
+        KaduSharedBase_PropertyCRW(QString, remoteFileName, RemoteFileName)
+            KaduSharedBase_Property(unsigned long, fileSize, FileSize)
+                KaduSharedBase_Property(unsigned long, transferredSize, TransferredSize)
+                    KaduSharedBase_Property(QString, error, Error)
+                        KaduSharedBase_Property(FileTransferDirection, transferDirection, TransferDirection)
+                            KaduSharedBase_Property(FileTransferStatus, transferStatus, TransferStatus)
+                                KaduSharedBase_Property(FileTransferType, transferType, TransferType)
+                                    KaduSharedBase_Property(FileTransferHandler *, handler, Handler)
 
-	unsigned int percent();
-
+                                        unsigned int percent();
 };
 
 Q_DECLARE_METATYPE(FileTransfer)

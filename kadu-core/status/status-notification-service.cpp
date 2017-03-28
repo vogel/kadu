@@ -35,15 +35,21 @@
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 
-StatusNotificationService::StatusNotificationService(QObject *parent) :
-		QObject{parent},
-		m_statusChangedEvent{QStringLiteral("StatusChanged"), QT_TRANSLATE_NOOP("@default", QStringLiteral("User changed status"))},
-		m_statusChangedToFreeForChatEvent{QStringLiteral("StatusChanged/ToFreeForChat"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to free for chat"))},
-		m_statusChangedToOnlineEvent{QStringLiteral("StatusChanged/ToOnline"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to online"))},
-		m_statusChangedToAwayEvent{QStringLiteral("StatusChanged/ToAway"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to away"))},
-		m_statusChangedToNotAvailableEvent{QStringLiteral("StatusChanged/ToNotAvailable"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to not available"))},
-		m_statusChangedToDoNotDisturbEvent{QStringLiteral("StatusChanged/ToDoNotDisturb"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to do not disturb"))},
-		m_statusChangedToOfflineEvent{QStringLiteral("StatusChanged/ToOffline"), QT_TRANSLATE_NOOP("@default", QStringLiteral("to offline"))}
+StatusNotificationService::StatusNotificationService(QObject *parent)
+        : QObject{parent}, m_statusChangedEvent{QStringLiteral("StatusChanged"),
+                                                QT_TRANSLATE_NOOP("@default", QStringLiteral("User changed status"))},
+          m_statusChangedToFreeForChatEvent{QStringLiteral("StatusChanged/ToFreeForChat"),
+                                            QT_TRANSLATE_NOOP("@default", QStringLiteral("to free for chat"))},
+          m_statusChangedToOnlineEvent{QStringLiteral("StatusChanged/ToOnline"),
+                                       QT_TRANSLATE_NOOP("@default", QStringLiteral("to online"))},
+          m_statusChangedToAwayEvent{QStringLiteral("StatusChanged/ToAway"),
+                                     QT_TRANSLATE_NOOP("@default", QStringLiteral("to away"))},
+          m_statusChangedToNotAvailableEvent{QStringLiteral("StatusChanged/ToNotAvailable"),
+                                             QT_TRANSLATE_NOOP("@default", QStringLiteral("to not available"))},
+          m_statusChangedToDoNotDisturbEvent{QStringLiteral("StatusChanged/ToDoNotDisturb"),
+                                             QT_TRANSLATE_NOOP("@default", QStringLiteral("to do not disturb"))},
+          m_statusChangedToOfflineEvent{QStringLiteral("StatusChanged/ToOffline"),
+                                        QT_TRANSLATE_NOOP("@default", QStringLiteral("to offline"))}
 {
 }
 
@@ -53,118 +59,120 @@ StatusNotificationService::~StatusNotificationService()
 
 void StatusNotificationService::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void StatusNotificationService::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void StatusNotificationService::setNotificationConfiguration(NotificationConfiguration *notificationConfiguration)
 {
-	m_notificationConfiguration = notificationConfiguration;
+    m_notificationConfiguration = notificationConfiguration;
 }
 
 void StatusNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void StatusNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void StatusNotificationService::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void StatusNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedEvent);
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedToFreeForChatEvent);
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedToOnlineEvent);
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedToAwayEvent);
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedToNotAvailableEvent);
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedToDoNotDisturbEvent);
-	m_notificationEventRepository->addNotificationEvent(m_statusChangedToOfflineEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedToFreeForChatEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedToOnlineEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedToAwayEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedToNotAvailableEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedToDoNotDisturbEvent);
+    m_notificationEventRepository->addNotificationEvent(m_statusChangedToOfflineEvent);
 }
 
 void StatusNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToFreeForChatEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToOnlineEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToAwayEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToNotAvailableEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToDoNotDisturbEvent);
-	m_notificationEventRepository->removeNotificationEvent(m_statusChangedToOfflineEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedToFreeForChatEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedToOnlineEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedToAwayEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedToNotAvailableEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedToDoNotDisturbEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_statusChangedToOfflineEvent);
 }
- 
+
 void StatusNotificationService::notifyStatusChanged(Contact contact, Status oldStatus)
 {
-	if (contact.isAnonymous() || !contact.contactAccount())
-		return;
+    if (contact.isAnonymous() || !contact.contactAccount())
+        return;
 
-	auto protocol = contact.contactAccount().protocolHandler();
-	if (!protocol || !protocol->isConnected())
-		return;
+    auto protocol = contact.contactAccount().protocolHandler();
+    if (!protocol || !protocol->isConnected())
+        return;
 
-	if (m_notificationConfiguration->notifyIgnoreOnConnection())
-	{
-		auto dateTime = contact.contactAccount().property(QStringLiteral("notify:notify-account-connected"), QDateTime()).toDateTime();
-		if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
-			return;
-	}
+    if (m_notificationConfiguration->notifyIgnoreOnConnection())
+    {
+        auto dateTime = contact.contactAccount()
+                            .property(QStringLiteral("notify:notify-account-connected"), QDateTime())
+                            .toDateTime();
+        if (dateTime.isValid() && dateTime >= QDateTime::currentDateTime())
+            return;
+    }
 
-	if (!contact.ownerBuddy().property(QStringLiteral("notify:Notify"), true).toBool())
-		return;
+    if (!contact.ownerBuddy().property(QStringLiteral("notify:Notify"), true).toBool())
+        return;
 
-	if (contact == contact.contactAccount().accountContact()) // myself
-		return;
+    if (contact == contact.contactAccount().accountContact())   // myself
+        return;
 
-	auto status = contact.currentStatus();
-	if (oldStatus == status)
-		return;
+    auto status = contact.currentStatus();
+    if (oldStatus == status)
+        return;
 
-	auto statusDisplayName = m_statusTypeManager->statusTypeData(status.type()).displayName();
-	auto description = status.description();
+    auto statusDisplayName = m_statusTypeManager->statusTypeData(status.type()).displayName();
+    auto description = status.description();
 
-	if (contact.ownerBuddy().property(QStringLiteral("kadu:HideDescription"), false).toBool())
-	{
-		if (oldStatus.type() == status.type())
-			return;
-		else
-			description.clear();
-	}
+    if (contact.ownerBuddy().property(QStringLiteral("kadu:HideDescription"), false).toBool())
+    {
+        if (oldStatus.type() == status.type())
+            return;
+        else
+            description.clear();
+    }
 
-	if (m_notificationConfiguration->ignoreOnlineToOnline() &&
-			!status.isDisconnected() &&
-			!oldStatus.isDisconnected())
-		return;
+    if (m_notificationConfiguration->ignoreOnlineToOnline() && !status.isDisconnected() && !oldStatus.isDisconnected())
+        return;
 
-	auto const &typeData = m_statusTypeManager->statusTypeData(status.type());
-	auto notificationEventName = QStringLiteral("StatusChanged/To%1").arg(typeData.name());
+    auto const &typeData = m_statusTypeManager->statusTypeData(status.type());
+    auto notificationEventName = QStringLiteral("StatusChanged/To%1").arg(typeData.name());
 
-	auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
+    auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{contact.currentStatus().type()});
-	
-	auto notification = Notification{};
-	notification.type = notificationEventName;
-	notification.icon = icon;
-	notification.title = tr("Status changed");
-	notification.text = normalizeHtml(HtmlString{tr("<b>%1</b> changed status")}.arg(plainToHtml(contact.display(true))));
-	notification.details = description.isEmpty()
-			? normalizeHtml(plainToHtml(statusDisplayName))
-			: normalizeHtml(HtmlString{tr("%1: %2")}.arg(plainToHtml(statusDisplayName), plainToHtml(description)));
-	notification.data = std::move(data);
-	notification.callbacks.append("chat-open");
-	notification.callbacks.append("ignore");
+    auto icon = contact.contactAccount().protocolHandler()->statusIcon(Status{contact.currentStatus().type()});
 
-	m_notificationService->notify(notification);
+    auto notification = Notification{};
+    notification.type = notificationEventName;
+    notification.icon = icon;
+    notification.title = tr("Status changed");
+    notification.text =
+        normalizeHtml(HtmlString{tr("<b>%1</b> changed status")}.arg(plainToHtml(contact.display(true))));
+    notification.details =
+        description.isEmpty()
+            ? normalizeHtml(plainToHtml(statusDisplayName))
+            : normalizeHtml(HtmlString{tr("%1: %2")}.arg(plainToHtml(statusDisplayName), plainToHtml(description)));
+    notification.data = std::move(data);
+    notification.callbacks.append("chat-open");
+    notification.callbacks.append("ignore");
+
+    m_notificationService->notify(notification);
 }

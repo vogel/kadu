@@ -26,34 +26,34 @@ QList<IdentitiesAwareObject *> IdentitiesAwareObject::Objects;
 
 void IdentitiesAwareObject::notifyIdentityAdded(Identity identity)
 {
-	for (IdentitiesAwareObject *object : Objects)
-		object->identityAdded(identity);
+    for (IdentitiesAwareObject *object : Objects)
+        object->identityAdded(identity);
 }
 
 void IdentitiesAwareObject::notifyIdentityRemoved(Identity identity)
 {
-	for (IdentitiesAwareObject *object : Objects)
-		object->identityRemoved(identity);
+    for (IdentitiesAwareObject *object : Objects)
+        object->identityRemoved(identity);
 }
 
 IdentitiesAwareObject::IdentitiesAwareObject()
 {
-	Objects.append(this);
+    Objects.append(this);
 }
 
 IdentitiesAwareObject::~IdentitiesAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }
 
 void IdentitiesAwareObject::triggerAllIdentitiesAdded(IdentityManager *identityManager)
 {
-	for (const Identity &identity : identityManager->items())
-		identityAdded(identity);
+    for (const Identity &identity : identityManager->items())
+        identityAdded(identity);
 }
 
 void IdentitiesAwareObject::triggerAllIdentitiesRemoved(IdentityManager *identityManager)
 {
-	for (const Identity &identity : identityManager->items())
-		identityRemoved(identity);
+    for (const Identity &identity : identityManager->items())
+        identityRemoved(identity);
 }

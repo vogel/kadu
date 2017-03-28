@@ -24,14 +24,14 @@
 
 QByteArray QFacebookPublishSendMessage2::encode()
 {
-	auto json = QJsonObject{};
-	json.insert("body", QString::fromUtf8(body));
-	json.insert("msgid", static_cast<double>(msgid));
-	json.insert("sender_fbid", static_cast<double>(uid));
-	json.insert("to", static_cast<double>(to));
+    auto json = QJsonObject{};
+    json.insert("body", QString::fromUtf8(body));
+    json.insert("msgid", static_cast<double>(msgid));
+    json.insert("sender_fbid", static_cast<double>(uid));
+    json.insert("to", static_cast<double>(to));
 
-	auto document = QJsonDocument{};
-	document.setObject(json);
+    auto document = QJsonDocument{};
+    document.setObject(json);
 
-	return document.toJson(QJsonDocument::Compact);
+    return document.toJson(QJsonDocument::Compact);
 }

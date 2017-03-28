@@ -25,37 +25,35 @@
 
 #include <QtNetwork/QNetworkReply>
 
-QFacebookHttpReply::QFacebookHttpReply(owned_qptr<QNetworkReply> networkReply) :
-		m_networkReply{std::move(networkReply)}
+QFacebookHttpReply::QFacebookHttpReply(owned_qptr<QNetworkReply> networkReply) : m_networkReply{std::move(networkReply)}
 {
-	connect(m_networkReply, &QNetworkReply::finished, this, &QFacebookHttpReply::httpReplyFinished);
+    connect(m_networkReply, &QNetworkReply::finished, this, &QFacebookHttpReply::httpReplyFinished);
 }
 
 QFacebookHttpReply::~QFacebookHttpReply()
 {
-	m_networkReply->deleteLater();
+    m_networkReply->deleteLater();
 }
 
 void QFacebookHttpReply::httpReplyFinished()
 {
-	deleteLater();
+    deleteLater();
 
-	if (m_networkReply->error() != 0)
-	{
-		emit finished({});
-		return;
-	}
+    if (m_networkReply->error() != 0)
+    {
+        emit finished({});
+        return;
+    }
 
-	auto content = m_networkReply->readAll();
-	try
-	{
-		auto reader = QFacebookJsonReader{content};
-		emit finished(reader);
-	}
-	catch (QFacebookInvalidDataException &)
-	{
-		emit finished({});
-		return;
-	}
-
+    auto content = m_networkReply->readAll();
+    try
+    {
+        auto reader = QFacebookJsonReader{content};
+        emit finished(reader);
+    }
+    catch (QFacebookInvalidDataException &)
+    {
+        emit finished({});
+        return;
+    }
 }

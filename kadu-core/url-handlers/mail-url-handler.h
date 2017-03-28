@@ -28,16 +28,18 @@
 
 class MailUrlHandler : public UrlHandler
 {
-	QRegExp MailRegExp;
+    QRegExp MailRegExp;
 
 public:
-	MailUrlHandler();
+    MailUrlHandler();
 
-	virtual bool isUrlValid(const QByteArray &url);
-	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
+    virtual bool isUrlValid(const QByteArray &url);
+    virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
 
-	const QRegExp & mailRegExp() { return MailRegExp; }
-
+    const QRegExp &mailRegExp()
+    {
+        return MailRegExp;
+    }
 };
 
-#endif // MAIL_URL_HANDLER_H
+#endif   // MAIL_URL_HANDLER_H

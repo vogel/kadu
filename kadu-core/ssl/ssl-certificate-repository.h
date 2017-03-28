@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/iterator.h"
 #include "exports.h"
+#include "misc/iterator.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QSet>
@@ -30,45 +30,44 @@ class SslCertificate;
 
 class KADUAPI SslCertificateRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	using Storage = QSet<SslCertificate>;
+    using Storage = QSet<SslCertificate>;
 
 public:
-	using Iterator = Storage::iterator;
+    using Iterator = Storage::iterator;
 
-	Q_INVOKABLE explicit SslCertificateRepository(QObject *parent = nullptr);
-	virtual ~SslCertificateRepository();
+    Q_INVOKABLE explicit SslCertificateRepository(QObject *parent = nullptr);
+    virtual ~SslCertificateRepository();
 
-	Iterator begin();
-	Iterator end();
+    Iterator begin();
+    Iterator end();
 
-	QSet<SslCertificate> certificates() const;
+    QSet<SslCertificate> certificates() const;
 
-	void setPersistentCertificates(const QSet<SslCertificate> &certificates);
-	QSet<SslCertificate> persistentCertificates() const;
+    void setPersistentCertificates(const QSet<SslCertificate> &certificates);
+    QSet<SslCertificate> persistentCertificates() const;
 
-	bool containsCertificate(const SslCertificate &certificate) const;
+    bool containsCertificate(const SslCertificate &certificate) const;
 
 public slots:
-	void addCertificate(SslCertificate certificate);
-	void addPersistentCertificate(SslCertificate certificate);
-	void removeCertificate(SslCertificate certificate);
+    void addCertificate(SslCertificate certificate);
+    void addPersistentCertificate(SslCertificate certificate);
+    void removeCertificate(SslCertificate certificate);
 
 private:
-	Storage m_certificates;
-	Storage m_persistentCertificates;
-
+    Storage m_certificates;
+    Storage m_persistentCertificates;
 };
 
 inline SslCertificateRepository::Iterator begin(SslCertificateRepository *sslCertificateRepository)
 {
-	return sslCertificateRepository->begin();
+    return sslCertificateRepository->begin();
 }
 
 inline SslCertificateRepository::Iterator end(SslCertificateRepository *sslCertificateRepository)
 {
-	return sslCertificateRepository->end();
+    return sslCertificateRepository->end();
 }
 
 /**

@@ -38,33 +38,32 @@ class QAction;
 
 class JabberUrlHandler : public QObject, public UrlHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberUrlHandler(QObject *parent = nullptr);
-	virtual ~JabberUrlHandler();
+    Q_INVOKABLE explicit JabberUrlHandler(QObject *parent = nullptr);
+    virtual ~JabberUrlHandler();
 
-	virtual bool isUrlValid(const QByteArray &url);
-	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
+    virtual bool isUrlValid(const QByteArray &url);
+    virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	QRegExp m_jabberRegExp;
+    QRegExp m_jabberRegExp;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void accountSelected(QAction *action);
-
+    void accountSelected(QAction *action);
 };

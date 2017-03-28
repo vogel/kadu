@@ -39,20 +39,21 @@ class DomVisitor;
 class DomVisitorProvider : public Provider<const DomVisitor *>
 {
 public:
-	virtual ~DomVisitorProvider() {}
+    virtual ~DomVisitorProvider()
+    {
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Provide DomVisitor.
-	 *
-	 * This method can return null value.
-	 */
-	virtual const DomVisitor * provide() const = 0;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Provide DomVisitor.
+     *
+     * This method can return null value.
+     */
+    virtual const DomVisitor *provide() const = 0;
 };
 
 /**
  * @}
  */
 
-#endif // DOM_VISITOR_PROVIDER_H
+#endif   // DOM_VISITOR_PROVIDER_H

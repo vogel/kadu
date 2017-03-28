@@ -33,30 +33,30 @@ JabberRegisterExtension::~JabberRegisterExtension()
 
 void JabberRegisterExtension::sendRegisterIq(const QXmppRegisterIq &registerIq)
 {
-	if (client()->isConnected())
-	{
-		m_pendingIds.insert(registerIq.id());
-		client()->sendPacket(registerIq);
-	}
+    if (client()->isConnected())
+    {
+        m_pendingIds.insert(registerIq.id());
+        client()->sendPacket(registerIq);
+    }
 }
 
 bool JabberRegisterExtension::handleStanza(const QDomElement &stanza)
 {
-	if (stanza.tagName() != "iq")
-		return false;
+    if (stanza.tagName() != "iq")
+        return false;
 
-	auto id = stanza.attribute("id");
-	auto isRegisterIq = QXmppRegisterIq::isRegisterIq(stanza) || m_pendingIds.contains(id);
+    auto id = stanza.attribute("id");
+    auto isRegisterIq = QXmppRegisterIq::isRegisterIq(stanza) || m_pendingIds.contains(id);
 
-	if (!isRegisterIq)
-		return false;
+    if (!isRegisterIq)
+        return false;
 
-	m_pendingIds.remove(id);
+    m_pendingIds.remove(id);
 
-	auto registerIq = QXmppRegisterIq{};
-	registerIq.parse(stanza);
-	emit registerIqReceived(registerIq);
-	return true;
+    auto registerIq = QXmppRegisterIq{};
+    registerIq.parse(stanza);
+    emit registerIqReceived(registerIq);
+    return true;
 }
 
 #include "moc_jabber-register-extension.cpp"

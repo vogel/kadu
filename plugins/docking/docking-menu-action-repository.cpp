@@ -19,10 +19,9 @@
 
 #include "docking-menu-action-repository.h"
 
-#include <QtWidgets//QAction>
+#include <QtWidgets/QAction>
 
-DockingMenuActionRepository::DockingMenuActionRepository(QObject *parent) :
-		QObject{parent}
+DockingMenuActionRepository::DockingMenuActionRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,31 +31,31 @@ DockingMenuActionRepository::~DockingMenuActionRepository()
 
 void DockingMenuActionRepository::addAction(QAction *action)
 {
-	if (m_actions.contains(action))
-		return;
+    if (m_actions.contains(action))
+        return;
 
-	m_actions.append(action);
-	connect(action, SIGNAL(destroyed(QObject*)), this, SLOT(actionDestroyed(QObject*)));
-	emit actionAdded(action);
+    m_actions.append(action);
+    connect(action, SIGNAL(destroyed(QObject *)), this, SLOT(actionDestroyed(QObject *)));
+    emit actionAdded(action);
 }
 
 void DockingMenuActionRepository::removeAction(QAction *action)
 {
-	if (!m_actions.contains(action))
-		return;
+    if (!m_actions.contains(action))
+        return;
 
-	m_actions.removeAll(action);
-	emit actionRemoved(action);
+    m_actions.removeAll(action);
+    emit actionRemoved(action);
 }
 
 QList<QAction *> DockingMenuActionRepository::actions() const
 {
-	return m_actions;
+    return m_actions;
 }
 
 void DockingMenuActionRepository::actionDestroyed(QObject *action)
 {
-	removeAction(static_cast<QAction *>(action));
+    removeAction(static_cast<QAction *>(action));
 }
 
 #include "moc_docking-menu-action-repository.cpp"

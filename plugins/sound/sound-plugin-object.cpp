@@ -34,8 +34,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-SoundPluginObject::SoundPluginObject(QObject *parent) :
-		QObject{parent}
+SoundPluginObject::SoundPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -43,87 +42,95 @@ SoundPluginObject::~SoundPluginObject()
 {
 }
 
-void SoundPluginObject::setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
+void SoundPluginObject::setBuddyConfigurationWidgetFactoryRepository(
+    BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository)
 {
-	m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
+    m_buddyConfigurationWidgetFactoryRepository = buddyConfigurationWidgetFactoryRepository;
 }
 
-void SoundPluginObject::setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
+void SoundPluginObject::setChatConfigurationWidgetFactoryRepository(
+    ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
 {
-	m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
+    m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
 }
 
-void SoundPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void SoundPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void SoundPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void SoundPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void SoundPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void SoundPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SoundPluginObject::setSoundActions(SoundActions *soundActions)
 {
-	m_soundActions = soundActions;
+    m_soundActions = soundActions;
 }
 
-void SoundPluginObject::setSoundBuddyConfigurationWidgetFactory(SoundBuddyConfigurationWidgetFactory *soundBuddyConfigurationWidgetFactory)
+void SoundPluginObject::setSoundBuddyConfigurationWidgetFactory(
+    SoundBuddyConfigurationWidgetFactory *soundBuddyConfigurationWidgetFactory)
 {
-	m_soundBuddyConfigurationWidgetFactory = soundBuddyConfigurationWidgetFactory;
+    m_soundBuddyConfigurationWidgetFactory = soundBuddyConfigurationWidgetFactory;
 }
 
-void SoundPluginObject::setSoundChatConfigurationWidgetFactory(SoundChatConfigurationWidgetFactory *soundChatConfigurationWidgetFactory)
+void SoundPluginObject::setSoundChatConfigurationWidgetFactory(
+    SoundChatConfigurationWidgetFactory *soundChatConfigurationWidgetFactory)
 {
-	m_soundChatConfigurationWidgetFactory = soundChatConfigurationWidgetFactory;
+    m_soundChatConfigurationWidgetFactory = soundChatConfigurationWidgetFactory;
 }
 
 void SoundPluginObject::setSoundConfigurationUiHandler(SoundConfigurationUiHandler *soundConfigurationUiHandler)
 {
-	m_soundConfigurationUiHandler = soundConfigurationUiHandler;
+    m_soundConfigurationUiHandler = soundConfigurationUiHandler;
 }
 
 void SoundPluginObject::setSoundManager(SoundManager *soundManager)
 {
-	m_soundManager = soundManager;
+    m_soundManager = soundManager;
 }
 
 void SoundPluginObject::setSoundNotifier(SoundNotifier *soundNotifier)
 {
-	m_soundNotifier = soundNotifier;
+    m_soundNotifier = soundNotifier;
 }
 
-SoundManager * SoundPluginObject::soundManager() const
+SoundManager *SoundPluginObject::soundManager() const
 {
-	return m_soundManager;
+    return m_soundManager;
 }
 
 void SoundPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sound.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_soundConfigurationUiHandler);
-	m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_soundBuddyConfigurationWidgetFactory);
-	m_chatConfigurationWidgetFactoryRepository->registerFactory(m_soundChatConfigurationWidgetFactory);
-	m_notifierRepository->registerNotifier(m_soundNotifier);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sound.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_soundConfigurationUiHandler);
+    m_buddyConfigurationWidgetFactoryRepository->registerFactory(m_soundBuddyConfigurationWidgetFactory);
+    m_chatConfigurationWidgetFactoryRepository->registerFactory(m_soundChatConfigurationWidgetFactory);
+    m_notifierRepository->registerNotifier(m_soundNotifier);
 }
 
 void SoundPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_soundNotifier);
-	m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_soundChatConfigurationWidgetFactory);
-	m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_soundBuddyConfigurationWidgetFactory);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_soundConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sound.ui"));
+    m_notifierRepository->unregisterNotifier(m_soundNotifier);
+    m_chatConfigurationWidgetFactoryRepository->unregisterFactory(m_soundChatConfigurationWidgetFactory);
+    m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_soundBuddyConfigurationWidgetFactory);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_soundConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sound.ui"));
 }
 
 #include "moc_sound-plugin-object.cpp"

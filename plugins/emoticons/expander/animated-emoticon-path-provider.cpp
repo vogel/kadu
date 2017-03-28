@@ -27,5 +27,5 @@ AnimatedEmoticonPathProvider::~AnimatedEmoticonPathProvider()
 
 QString AnimatedEmoticonPathProvider::emoticonPath(const Emoticon &emoticon)
 {
-	return emoticon.animatedFilePath();
+    return emoticon.animatedFilePath();
 }

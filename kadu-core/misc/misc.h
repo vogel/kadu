@@ -29,7 +29,8 @@ class QChar;
 class QRect;
 class QString;
 class QWidget;
-template<typename T> class QList;
+template <typename T>
+class QList;
 
 KADUAPI QString replacedNewLine(const QString &text, const QString &newLineText);
 
@@ -38,7 +39,7 @@ KADUAPI QString pwHash(const QString &text);
 KADUAPI QRect properGeometry(const QRect &rect);
 
 QRect stringToRect(const QString &value, const QRect *def = 0);
-QString rectToString(const QRect& rect);
+QString rectToString(const QRect &rect);
 
 QList<int> stringToIntList(const QString &in);
 QString intListToString(const QList<int> &in);
@@ -49,4 +50,4 @@ KADUAPI QChar extractLetter(QChar c);
 
 KADUAPI QByteArray prettyHex(const QByteArray &data);
 
-#endif // MISC_H
+#endif   // MISC_H

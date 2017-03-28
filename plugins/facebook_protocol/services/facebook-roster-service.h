@@ -37,31 +37,30 @@ class Contact;
 
 class FacebookRosterService : public RosterService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FacebookRosterService(QVector<Contact> contacts, Protocol &protocol, QFacebookSession &facebookSession);
-	virtual ~FacebookRosterService();
+    explicit FacebookRosterService(QVector<Contact> contacts, Protocol &protocol, QFacebookSession &facebookSession);
+    virtual ~FacebookRosterService();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
 
-	QFacebookSession &m_facebookSession;
+    QFacebookSession &m_facebookSession;
 
-	void downloadRoster();
-	void downloadFullRoster();
-	void scheduleDownloadRoster();
+    void downloadRoster();
+    void downloadFullRoster();
+    void scheduleDownloadRoster();
 
-	void contactsReceived(const QFacebookDownloadContactsResult &downloadContactsResult);
-	void contactsDeltaReceived(const QFacebookDownloadContactsDeltaResult &downloadContactsDeltaResult);
+    void contactsReceived(const QFacebookDownloadContactsResult &downloadContactsResult);
+    void contactsDeltaReceived(const QFacebookDownloadContactsDeltaResult &downloadContactsDeltaResult);
 
-	void replaceContacts(std::vector<QFacebookContact> newContacts);
-	void addContact(const QFacebookContact &c);
-	void removeContact(const QString &id);
+    void replaceContacts(std::vector<QFacebookContact> newContacts);
+    void addContact(const QFacebookContact &c);
+    void removeContact(const QString &id);
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };

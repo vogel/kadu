@@ -45,47 +45,47 @@ class StatusContainer;
 
 class KADUAPI NotificationService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationDispatcher> m_notificationDispatcher;
-	QPointer<NotifyAboutBuddyAction> m_notifyAboutBuddyAction;
-	QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
-	QPointer<Parser> m_parser;
-	QPointer<SilentModeService> m_silentModeService;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ConfigurationUiHandlerRepository> m_configurationUiHandlerRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+    QPointer<NotificationDispatcher> m_notificationDispatcher;
+    QPointer<NotifyAboutBuddyAction> m_notifyAboutBuddyAction;
+    QPointer<NotifyConfigurationUiHandler> m_notifyConfigurationUiHandler;
+    QPointer<Parser> m_parser;
+    QPointer<SilentModeService> m_silentModeService;
 
-	void createDefaultConfiguration();
-	void createActionDescriptions();
+    void createDefaultConfiguration();
+    void createActionDescriptions();
 
-	bool silentMode() const;
-	void setSilentMode(bool silentMode);
+    bool silentMode() const;
+    void setSilentMode(bool silentMode);
 
 public:
-	Q_INVOKABLE explicit NotificationService(QObject *parent = nullptr);
-	virtual ~NotificationService();
+    Q_INVOKABLE explicit NotificationService(QObject *parent = nullptr);
+    virtual ~NotificationService();
 
-	void notify(const Notification &notification);
-	void acceptNotification(const Notification &notification);
-	void discardNotification(const Notification &notification);
+    void notify(const Notification &notification);
+    void acceptNotification(const Notification &notification);
+    void discardNotification(const Notification &notification);
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationDispatcher(NotificationDispatcher *notificationDispatcher);
-	INJEQT_SET void setNotifyAboutBuddyAction(NotifyAboutBuddyAction *notifyAboutBuddyAction);
-	INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void
+    setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+    INJEQT_SET void setNotificationDispatcher(NotificationDispatcher *notificationDispatcher);
+    INJEQT_SET void setNotifyAboutBuddyAction(NotifyAboutBuddyAction *notifyAboutBuddyAction);
+    INJEQT_SET void setNotifyConfigurationUiHandler(NotifyConfigurationUiHandler *notifyConfigurationUiHandler);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

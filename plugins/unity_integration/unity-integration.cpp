@@ -24,41 +24,40 @@
 #include "file-transfer/file-transfer-manager.h"
 #include "message/unread-message-repository.h"
 
-UnityIntegration::UnityIntegration(QObject *parent) :
-	QObject{parent}
+UnityIntegration::UnityIntegration(QObject *parent) : QObject{parent}
 {
-	m_unity = new QUnity{"kadu.desktop", this};
+    m_unity = new QUnity{"kadu.desktop", this};
 }
 
 UnityIntegration::~UnityIntegration()
 {
-	unreadMessagesChanged();
+    unreadMessagesChanged();
 }
 
 void UnityIntegration::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
-	connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(fileTransferProgressChanged(int)));
-	fileTransferProgressChanged(fileTransferManager->totalProgress());
+    connect(fileTransferManager, SIGNAL(totalProgressChanged(int)), this, SLOT(fileTransferProgressChanged(int)));
+    fileTransferProgressChanged(fileTransferManager->totalProgress());
 }
 
 void UnityIntegration::fileTransferProgressChanged(int progress)
 {
-	m_unity->updateProgress(progress);
+    m_unity->updateProgress(progress);
 }
 
 void UnityIntegration::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 
-	unreadMessagesChanged();
+    unreadMessagesChanged();
 
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessagesChanged()));
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessagesChanged()));
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessagesChanged()));
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessagesChanged()));
 }
 
 void UnityIntegration::unreadMessagesChanged()
 {
-	m_unity->updateCount(m_unreadMessageRepository->allUnreadMessages().count());
+    m_unity->updateCount(m_unreadMessageRepository->allUnreadMessages().count());
 }
 
 #include "moc_unity-integration.cpp"

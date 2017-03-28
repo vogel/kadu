@@ -41,39 +41,40 @@ class QByteArray;
 
 class QFacebookSession : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QFacebookSession(QFacebookSessionToken sessionToken, std::unique_ptr<QFacebookHttpApi> &&httpApi, std::unique_ptr<QFacebookMqttApi> &&mqttApi);
-	~QFacebookSession();
+    explicit QFacebookSession(
+        QFacebookSessionToken sessionToken, std::unique_ptr<QFacebookHttpApi> &&httpApi,
+        std::unique_ptr<QFacebookMqttApi> &&mqttApi);
+    ~QFacebookSession();
 
-	void downloadContacts();
-	void downloadContactsDelta(QByteArray deltaCursor);
+    void downloadContacts();
+    void downloadContactsDelta(QByteArray deltaCursor);
 
-	void downloadThreads();
-	void downloadUnreadThreads(int unreadCount);
-	void downloadUnreadMessages(QFacebookUid uid, int unreadCount);
-	void markRead(QFacebookUid uid, int syncSequenceId);
-	QFacebookMsgId sendMessage(QFacebookUid to, const QByteArray &body);
+    void downloadThreads();
+    void downloadUnreadThreads(int unreadCount);
+    void downloadUnreadMessages(QFacebookUid uid, int unreadCount);
+    void markRead(QFacebookUid uid, int syncSequenceId);
+    QFacebookMsgId sendMessage(QFacebookUid to, const QByteArray &body);
 
 signals:
-	void disconnected();
-	void invalidDataReceived(const QByteArray &data);
+    void disconnected();
+    void invalidDataReceived(const QByteArray &data);
 
-	void contactsReceived(const QFacebookDownloadContactsResult &downloadContactsResult);
-	void contactsDeltaReceived(const QFacebookDownloadContactsDeltaResult &downloadContactsDeltaResult);
+    void contactsReceived(const QFacebookDownloadContactsResult &downloadContactsResult);
+    void contactsDeltaReceived(const QFacebookDownloadContactsDeltaResult &downloadContactsDeltaResult);
 
-	void presenceReceived(const QFacebookPublishPresence &presence);
+    void presenceReceived(const QFacebookPublishPresence &presence);
 
-	void threadsReceived(const QFacebookDownloadThreadsResult &result);
-	void unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result);
-	void unreadMessagesReceived(const QFacebookDownloadUnreadMessagesResult &result);
-	void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
-	void messageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
+    void threadsReceived(const QFacebookDownloadThreadsResult &result);
+    void unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result);
+    void unreadMessagesReceived(const QFacebookDownloadUnreadMessagesResult &result);
+    void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
+    void messageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
 
 private:
-	const QFacebookSessionToken m_sessionToken;
-	const std::unique_ptr<QFacebookHttpApi> m_httpApi;
-	const std::unique_ptr<QFacebookMqttApi> m_mqttApi;
-
+    const QFacebookSessionToken m_sessionToken;
+    const std::unique_ptr<QFacebookHttpApi> m_httpApi;
+    const std::unique_ptr<QFacebookMqttApi> m_mqttApi;
 };

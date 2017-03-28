@@ -31,22 +31,20 @@ class Account;
 
 class KADUAPI AccountsAwareObject
 {
-
 public:
-	static void notifyAccountAdded(Account account);
-	static void notifyAccountRemoved(Account account);
+    static void notifyAccountAdded(Account account);
+    static void notifyAccountRemoved(Account account);
 
-	AccountsAwareObject();
-	virtual ~AccountsAwareObject();
+    AccountsAwareObject();
+    virtual ~AccountsAwareObject();
 
-	void triggerAllAccountsAdded(AccountManager *accountManager);
-	void triggerAllAccountsRemoved(AccountManager *accountManager);
+    void triggerAllAccountsAdded(AccountManager *accountManager);
+    void triggerAllAccountsRemoved(AccountManager *accountManager);
 
 protected:
-	virtual void accountAdded(Account account);
-	virtual void accountRemoved(Account account);
+    virtual void accountAdded(Account account);
+    virtual void accountRemoved(Account account);
 
 private:
-	static QList<AccountsAwareObject *> Objects;
-
+    static QList<AccountsAwareObject *> Objects;
 };

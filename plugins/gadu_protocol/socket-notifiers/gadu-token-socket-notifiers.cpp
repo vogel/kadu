@@ -28,88 +28,85 @@
 
 void GaduTokenSocketNotifiers::watchFor(struct gg_http *h)
 {
-	H = h;
-	GaduSocketNotifiers::watchFor(H ? H->fd : -1);
+    H = h;
+    GaduSocketNotifiers::watchFor(H ? H->fd : -1);
 }
 
 bool GaduTokenSocketNotifiers::checkRead()
 {
-	return H && (H->check & GG_CHECK_READ);
+    return H && (H->check & GG_CHECK_READ);
 }
 
 bool GaduTokenSocketNotifiers::checkWrite()
 {
-	return H && (H->check & GG_CHECK_WRITE);
+    return H && (H->check & GG_CHECK_WRITE);
 }
 
-void GaduTokenSocketNotifiers::finished(const QString& tokenId, const QPixmap& tokenPixmap)
+void GaduTokenSocketNotifiers::finished(const QString &tokenId, const QPixmap &tokenPixmap)
 {
-	emit done(tokenId, tokenPixmap);
-	watchFor(0);
-	deleteLater();
+    emit done(tokenId, tokenPixmap);
+    watchFor(0);
+    deleteLater();
 }
 
 void GaduTokenSocketNotifiers::socketEvent()
 {
-	if (gg_token_watch_fd(H) == -1)
-	{
-		finished(QString(), QPixmap());
-		return;
-	}
+    if (gg_token_watch_fd(H) == -1)
+    {
+        finished(QString(), QPixmap());
+        return;
+    }
 
-	struct gg_pubdir *p = (struct gg_pubdir *)H->data;
+    struct gg_pubdir *p = (struct gg_pubdir *)H->data;
 
-	switch (H->state)
-	{
+    switch (H->state)
+    {
+    case GG_STATE_CONNECTING:
+        watchFor(H);
+        break;
 
-		case GG_STATE_CONNECTING:
-			watchFor(H);
-			break;
+    case GG_STATE_ERROR:
+        finished(QString(), QPixmap());
+        break;
 
-		case GG_STATE_ERROR:
-			finished(QString(), QPixmap());
-			break;
+    case GG_STATE_DONE:
+        if (p->success)
+        {
+            struct gg_token *t = (struct gg_token *)H->data;
+            QString tokenId = QString::fromUtf8(t->tokenid);
 
-		case GG_STATE_DONE:
-			if (p->success)
-			{
-				struct gg_token *t = (struct gg_token *)H->data;
-				QString tokenId = QString::fromUtf8(t->tokenid);
+            // nie optymalizowac!!!
+            QByteArray buf(H->body_size, '0');
+            for (unsigned int i = 0; i < H->body_size; ++i)
+                buf[i] = H->body[i];
 
-				//nie optymalizowac!!!
-				QByteArray buf(H->body_size, '0');
-				for (unsigned int i = 0; i < H->body_size; ++i)
-					buf[i] = H->body[i];
+            QPixmap tokenImage;
+            tokenImage.loadFromData(buf);
 
-				QPixmap tokenImage;
-				tokenImage.loadFromData(buf);
+            finished(tokenId, tokenImage);
+        }
+        else
+        {
+            finished(QString(), QPixmap());
+        }
 
-				finished(tokenId, tokenImage);
-			}
-			else
-			{
-				finished(QString(), QPixmap());
-			}
-
-			break;
-	}
+        break;
+    }
 }
 
 int GaduTokenSocketNotifiers::timeout()
 {
-	return H
-		? H->timeout * 1000
-		: -1;
+    return H ? H->timeout * 1000 : -1;
 }
 
 bool GaduTokenSocketNotifiers::handleSoftTimeout()
 {
-	return false;
+    return false;
 }
 
 void GaduTokenSocketNotifiers::connectionTimeout()
 {
-	finished(QString(), QPixmap());
+    finished(QString(), QPixmap());
 }
 
 #include "moc_gadu-token-socket-notifiers.cpp"

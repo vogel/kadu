@@ -52,17 +52,9 @@
 
 #include "sms-configuration-ui-handler.h"
 
-SmsConfigurationUiHandler::SmsConfigurationUiHandler(QObject *parent) :
-	QObject{parent},
-	useBuiltIn{},
-	customApp{},
-	useCustomString{},
-	customString{},
-	EraGatewayComboBox{},
-	EraSponsoredUser{},
-	EraSponsoredPassword{},
-	EraOmnixUser{},
-	EraOmnixPassword{}
+SmsConfigurationUiHandler::SmsConfigurationUiHandler(QObject *parent)
+        : QObject{parent}, useBuiltIn{}, customApp{}, useCustomString{}, customString{}, EraGatewayComboBox{},
+          EraSponsoredUser{}, EraSponsoredPassword{}, EraOmnixUser{}, EraOmnixPassword{}
 {
 }
 
@@ -72,71 +64,76 @@ SmsConfigurationUiHandler::~SmsConfigurationUiHandler()
 
 void SmsConfigurationUiHandler::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SmsConfigurationUiHandler::init()
 {
-	createDefaultConfiguration();
+    createDefaultConfiguration();
 }
 
 void SmsConfigurationUiHandler::onSmsBuildInCheckToggle(bool value)
 {
-	if (value)
-	{
-		customApp->setEnabled(false);
-		useCustomString->setEnabled(false);
-		customString->setEnabled(false);
-	}
-	else
-	{
-		customApp->setEnabled(true);
-		useCustomString->setEnabled(true);
-		customString->setEnabled(useCustomString->isChecked());
-	}
+    if (value)
+    {
+        customApp->setEnabled(false);
+        useCustomString->setEnabled(false);
+        customString->setEnabled(false);
+    }
+    else
+    {
+        customApp->setEnabled(true);
+        useCustomString->setEnabled(true);
+        customString->setEnabled(useCustomString->isChecked());
+    }
 }
 
 void SmsConfigurationUiHandler::onEraGatewayChanged(int index)
 {
-	Q_UNUSED(index)
+    Q_UNUSED(index)
 
-	QString gateway = EraGatewayComboBox->currentItemValue();
+    QString gateway = EraGatewayComboBox->currentItemValue();
 
-	if (gateway == "Sponsored")
-	{
-	    EraSponsoredUser->show();
-	    EraSponsoredPassword->show();
-	    EraOmnixUser->hide();
-	    EraOmnixPassword->hide();
-	}
-	else
-	{
-	    EraSponsoredUser->hide();
-	    EraSponsoredPassword->hide();
-	    EraOmnixUser->show();
-	    EraOmnixPassword->show();
-	}
+    if (gateway == "Sponsored")
+    {
+        EraSponsoredUser->show();
+        EraSponsoredPassword->show();
+        EraOmnixUser->hide();
+        EraOmnixPassword->hide();
+    }
+    else
+    {
+        EraSponsoredUser->hide();
+        EraSponsoredPassword->hide();
+        EraOmnixUser->show();
+        EraOmnixPassword->show();
+    }
 }
 
 void SmsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	useBuiltIn = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useBuildInApp"));
-	customApp = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customApp"));
-	useCustomString = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useCustomString"));
-	customString = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customString"));
+    useBuiltIn = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useBuildInApp"));
+    customApp = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customApp"));
+    useCustomString = static_cast<QCheckBox *>(mainConfigurationWindow->widget()->widgetById("sms/useCustomString"));
+    customString = static_cast<QLineEdit *>(mainConfigurationWindow->widget()->widgetById("sms/customString"));
 
-	connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
+    connect(useBuiltIn, SIGNAL(toggled(bool)), this, SLOT(onSmsBuildInCheckToggle(bool)));
 
-	EraGatewayComboBox = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("default_sms/eraGateway"));
-	connect(EraGatewayComboBox, SIGNAL(activated(int)), this, SLOT(onEraGatewayChanged(int)));
+    EraGatewayComboBox =
+        static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("default_sms/eraGateway"));
+    connect(EraGatewayComboBox, SIGNAL(activated(int)), this, SLOT(onEraGatewayChanged(int)));
 
-	EraSponsoredUser = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredUser"));
-	EraSponsoredPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredPassword"));
-	EraOmnixUser = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaUser"));
-	EraOmnixPassword = static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaPassword"));
+    EraSponsoredUser =
+        static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredUser"));
+    EraSponsoredPassword =
+        static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/sponsoredPassword"));
+    EraOmnixUser =
+        static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaUser"));
+    EraOmnixPassword =
+        static_cast<ConfigLineEdit *>(mainConfigurationWindow->widget()->widgetById("default_sms/multimediaPassword"));
 
-	EraSponsoredPassword->setEchoMode(QLineEdit::Password);
-	EraOmnixPassword->setEchoMode(QLineEdit::Password);
+    EraSponsoredPassword->setEchoMode(QLineEdit::Password);
+    EraOmnixPassword->setEchoMode(QLineEdit::Password);
 }
 
 void SmsConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -149,12 +146,12 @@ void SmsConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void SmsConfigurationUiHandler::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("SMS", "Priority", QString());
-	m_configuration->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
-	m_configuration->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
-	m_configuration->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
+    m_configuration->deprecatedApi()->addVariable("SMS", "Priority", QString());
+    m_configuration->deprecatedApi()->addVariable("SMS", "BuiltInApp", true);
+    m_configuration->deprecatedApi()->addVariable("SMS", "SmsNick", QString());
+    m_configuration->deprecatedApi()->addVariable("SMS", "UseCustomString", false);
 
-	m_configuration->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
+    m_configuration->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
 
 #include "moc_sms-configuration-ui-handler.cpp"

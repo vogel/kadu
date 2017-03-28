@@ -38,40 +38,39 @@ class QLineEdit;
 
 class KADUAPI FilterWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QLabel *Label;
-	QLineEdit *NameFilterEdit;
+    QLabel *Label;
+    QLineEdit *NameFilterEdit;
 
-	QAbstractItemView *View;
-	bool AutoVisibility;
+    QAbstractItemView *View;
+    bool AutoVisibility;
 
-	void updateVisibility();
-	bool sendKeyEventToView(QKeyEvent *);
+    void updateVisibility();
+    bool sendKeyEventToView(QKeyEvent *);
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void filterTextChanged(const QString &);
+    void filterTextChanged(const QString &);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *);
+    virtual void keyPressEvent(QKeyEvent *);
 
 public:
-	explicit FilterWidget(QWidget *parent = nullptr);
-	virtual ~FilterWidget();
+    explicit FilterWidget(QWidget *parent = nullptr);
+    virtual ~FilterWidget();
 
-	void setLabel(const QString &label);
-	void setFilter(const QString &filter);
-	void setView(QAbstractItemView *view);
-	void setAutoVisibility(bool autoVisibility);
+    void setLabel(const QString &label);
+    void setFilter(const QString &filter);
+    void setView(QAbstractItemView *view);
+    void setAutoVisibility(bool autoVisibility);
 
-	QString filterText() const;
+    QString filterText() const;
 
 signals:
-	void textChanged(const QString &text);
-
+    void textChanged(const QString &text);
 };

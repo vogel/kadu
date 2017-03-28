@@ -31,36 +31,41 @@ class MobileNumber;
 
 class MobileNumberManager : public StorableObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	QList<MobileNumber *> Numbers;
+    QList<MobileNumber *> Numbers;
 
 protected:
-	virtual std::shared_ptr<StoragePoint> createStoragePoint();
+    virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 public:
-	Q_INVOKABLE explicit MobileNumberManager(QObject *parent = nullptr);
-	virtual ~MobileNumberManager();
+    Q_INVOKABLE explicit MobileNumberManager(QObject *parent = nullptr);
+    virtual ~MobileNumberManager();
 
-	void registerNumber(QString number, QString gatewayId);
-	void unregisterNumber(QString number);
+    void registerNumber(QString number, QString gatewayId);
+    void unregisterNumber(QString number);
 
-	virtual QString storageNodeName() { return QStringLiteral("MobileNumbers"); }
-	virtual QString storageNodeItemName() { return QStringLiteral("MobileNumber"); }
-	virtual StorableObject * storageParent();
+    virtual QString storageNodeName()
+    {
+        return QStringLiteral("MobileNumbers");
+    }
+    virtual QString storageNodeItemName()
+    {
+        return QStringLiteral("MobileNumber");
+    }
+    virtual StorableObject *storageParent();
 
-	QString gatewayId(const QString &mobileNumber);
+    QString gatewayId(const QString &mobileNumber);
 
 private slots:
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

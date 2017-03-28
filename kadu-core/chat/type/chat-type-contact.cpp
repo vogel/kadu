@@ -18,58 +18,58 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat/chat.h"
 #include "chat/chat-details-contact.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-storage.h"
-#include "chat/chat.h"
 #include "contacts/contact-set.h"
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact.h"
 
-Chat ChatTypeContact::findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction)
+Chat ChatTypeContact::findChat(
+    ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction)
 {
-	Account account = contact.contactAccount();
-	if (!account)
-		return Chat::null;
+    Account account = contact.contactAccount();
+    if (!account)
+        return Chat::null;
 
-	if (contact.id() == account.id())
-		return Chat::null;
+    if (contact.id() == account.id())
+        return Chat::null;
 
-	foreach (const Chat &chat, chatManager->items())
-		if (chat.type() == QStringLiteral("Contact") || chat.type() == QStringLiteral("Simple"))
-			if (chat.contacts().toContact() == contact)
-			{
-				// when contacts changed their accounts we need to change account of chat too
-				chat.setChatAccount(account);
-				return chat;
-			}
+    foreach (const Chat &chat, chatManager->items())
+        if (chat.type() == QStringLiteral("Contact") || chat.type() == QStringLiteral("Simple"))
+            if (chat.contacts().toContact() == contact)
+            {
+                // when contacts changed their accounts we need to change account of chat too
+                chat.setChatAccount(account);
+                return chat;
+            }
 
-	if (ActionReturnNull == notFoundAction)
-		return Chat::null;
+    if (ActionReturnNull == notFoundAction)
+        return Chat::null;
 
-	auto chat = chatStorage->create("Contact");
-	chat.setChatAccount(account);
+    auto chat = chatStorage->create("Contact");
+    chat.setChatAccount(account);
 
-	ChatDetailsContact *chatDetailsContact = dynamic_cast<ChatDetailsContact *>(chat.details());
-	if (chatDetailsContact)
-	{
-		chatDetailsContact->setState(StorableObject::StateNew);
-		chatDetailsContact->setContact(contact);
-	}
+    ChatDetailsContact *chatDetailsContact = dynamic_cast<ChatDetailsContact *>(chat.details());
+    if (chatDetailsContact)
+    {
+        chatDetailsContact->setState(StorableObject::StateNew);
+        chatDetailsContact->setContact(contact);
+    }
 
-	if (ActionCreateAndAdd == notFoundAction)
-		chatManager->addItem(chat);
+    if (ActionCreateAndAdd == notFoundAction)
+        chatManager->addItem(chat);
 
-	return chat;
+    return chat;
 }
 
-ChatTypeContact::ChatTypeContact(QObject *parent) :
-		ChatType(parent)
+ChatTypeContact::ChatTypeContact(QObject *parent) : ChatType(parent)
 {
-	Aliases.append("Contact");
-	Aliases.append("Simple");
+    Aliases.append("Contact");
+    Aliases.append("Simple");
 }
 
 ChatTypeContact::~ChatTypeContact()
@@ -78,7 +78,7 @@ ChatTypeContact::~ChatTypeContact()
 
 void ChatTypeContact::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 /**
@@ -93,7 +93,7 @@ void ChatTypeContact::setInjectedFactory(InjectedFactory *injectedFactory)
  */
 QString ChatTypeContact::name() const
 {
-	return "Contact";
+    return "Contact";
 }
 
 /**
@@ -107,7 +107,7 @@ QString ChatTypeContact::name() const
  */
 QStringList ChatTypeContact::aliases() const
 {
-	return Aliases;
+    return Aliases;
 }
 
 /**
@@ -121,7 +121,7 @@ QStringList ChatTypeContact::aliases() const
  */
 KaduIcon ChatTypeContact::icon() const
 {
-	return KaduIcon("internet-group-chat");
+    return KaduIcon("internet-group-chat");
 }
 
 /**
@@ -134,7 +134,7 @@ KaduIcon ChatTypeContact::icon() const
  */
 QString ChatTypeContact::windowRole() const
 {
-	return QStringLiteral("kadu-chat-contact");
+    return QStringLiteral("kadu-chat-contact");
 }
 
 /**
@@ -145,17 +145,17 @@ QString ChatTypeContact::windowRole() const
  * Creates new @link ChatDetailsContact @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeContact::createChatDetails(ChatShared *chatData) const
+ChatDetails *ChatTypeContact::createChatDetails(ChatShared *chatData) const
 {
-	return m_injectedFactory->makeInjected<ChatDetailsContact>(chatData);
+    return m_injectedFactory->makeInjected<ChatDetailsContact>(chatData);
 }
 
-ChatEditWidget * ChatTypeContact::createEditWidget(const Chat &chat, QWidget *parent) const
+ChatEditWidget *ChatTypeContact::createEditWidget(const Chat &chat, QWidget *parent) const
 {
-	Q_UNUSED(chat);
-	Q_UNUSED(parent);
+    Q_UNUSED(chat);
+    Q_UNUSED(parent);
 
-	return 0;
+    return 0;
 }
 
 #include "moc_chat-type-contact.cpp"

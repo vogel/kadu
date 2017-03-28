@@ -32,6 +32,8 @@
 #include "status-notifier-item-configuration.h"
 #include "status-notifier-item.h"
 
+#include "activate.h"
+#include "attention-service.h"
 #include "core/session-service.h"
 #include "gui/status-icon.h"
 #include "icons/icons-manager.h"
@@ -44,138 +46,135 @@
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
-#include "activate.h"
-#include "attention-service.h"
 
-Docking::Docking(QObject *parent) :
-		QObject{parent}
+Docking::Docking(QObject *parent) : QObject{parent}
 {
 }
 
 Docking::~Docking()
 {
-	if (!m_sessionService->isClosing())
-		m_kaduWindowService->kaduWindow()->window()->show();
-	m_kaduWindowService->kaduWindow()->setDocked(false);
+    if (!m_sessionService->isClosing())
+        m_kaduWindowService->kaduWindow()->window()->show();
+    m_kaduWindowService->kaduWindow()->setDocked(false);
 }
 
 void Docking::setAttentionService(AttentionService *attentionService)
 {
-	connect(attentionService, SIGNAL(needAttentionChanged(bool)), this, SLOT(needAttentionChanged(bool)));
+    connect(attentionService, SIGNAL(needAttentionChanged(bool)), this, SLOT(needAttentionChanged(bool)));
 }
 
 void Docking::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void Docking::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void Docking::setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider)
 {
-	m_dockingConfigurationProvider = dockingConfigurationProvider;
+    m_dockingConfigurationProvider = dockingConfigurationProvider;
 }
 
 void Docking::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void Docking::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Docking::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void Docking::setSessionService(SessionService *sessionService)
 {
-	m_sessionService = sessionService;
+    m_sessionService = sessionService;
 }
 
 void Docking::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void Docking::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
 {
-	m_statusNotifierItem = statusNotifierItem;
+    m_statusNotifierItem = statusNotifierItem;
 }
 
 void Docking::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
+    m_unreadMessageRepository = unreadMessageRepository;
 }
 
 void Docking::init()
 {
-	auto statusIcon = m_pluginInjectedFactory->makeOwned<StatusIcon>(m_statusContainerManager, this);
-	connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
+    auto statusIcon = m_pluginInjectedFactory->makeOwned<StatusIcon>(m_statusContainerManager, this);
+    connect(statusIcon.get(), SIGNAL(iconUpdated(KaduIcon)), this, SLOT(configurationUpdated()));
 
-	connect(m_statusNotifierItem, SIGNAL(activateRequested()), this, SLOT(activateRequested()));
-	connect(m_statusNotifierItem, SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
+    connect(m_statusNotifierItem, SIGNAL(activateRequested()), this, SLOT(activateRequested()));
+    connect(m_statusNotifierItem, SIGNAL(messageClicked()), this, SIGNAL(messageClicked()));
 
-	connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(configurationUpdated()));
-	configurationUpdated();
+    connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(configurationUpdated()));
+    configurationUpdated();
 
-	if (m_dockingConfigurationProvider->configuration().RunDocked)
-		m_kaduWindowService->setShowMainWindowOnStart(false);
-	m_kaduWindowService->kaduWindow()->setDocked(true);
+    if (m_dockingConfigurationProvider->configuration().RunDocked)
+        m_kaduWindowService->setShowMainWindowOnStart(false);
+    m_kaduWindowService->kaduWindow()->setDocked(true);
 }
 
 void Docking::needAttentionChanged(bool needAttention)
 {
-	m_statusNotifierItem->setNeedAttention(needAttention);
+    m_statusNotifierItem->setNeedAttention(needAttention);
 }
 
 void Docking::openUnreadMessages()
 {
-	auto message = m_unreadMessageRepository->unreadMessage();
-	m_chatWidgetManager->openChat(message.messageChat(), OpenChatActivation::Activate);
+    auto message = m_unreadMessageRepository->unreadMessage();
+    m_chatWidgetManager->openChat(message.messageChat(), OpenChatActivation::Activate);
 }
 
 void Docking::showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs)
 {
-	m_statusNotifierItem->showMessage(title, message, icon, msecs);
+    m_statusNotifierItem->showMessage(title, message, icon, msecs);
 }
 
 void Docking::activateRequested()
 {
-	if (m_unreadMessageRepository->hasUnreadMessages())
-	{
-		openUnreadMessages();
-		return;
-	}
+    if (m_unreadMessageRepository->hasUnreadMessages())
+    {
+        openUnreadMessages();
+        return;
+    }
 
-	auto kaduWindow = m_kaduWindowService->kaduWindow()->window();
-	if (kaduWindow->isMinimized() || !kaduWindow->isVisible()
+    auto kaduWindow = m_kaduWindowService->kaduWindow()->window();
+    if (kaduWindow->isMinimized() || !kaduWindow->isVisible()
 #ifndef Q_OS_WIN
-			// NOTE: It won't work as expected on Windows since when you click on tray icon,
-			// the tray will become active and any other window will loose focus.
-			// See bug #1915.
-			|| !_isActiveWindow(kaduWindow)
+        // NOTE: It won't work as expected on Windows since when you click on tray icon,
+        // the tray will become active and any other window will loose focus.
+        // See bug #1915.
+        || !_isActiveWindow(kaduWindow)
 #endif
-			)
-		_activateWindow(m_configuration, kaduWindow);
-	else
-		kaduWindow->hide();
+            )
+        _activateWindow(m_configuration, kaduWindow);
+    else
+        kaduWindow->hide();
 }
 
 void Docking::configurationUpdated()
 {
-	auto configuration = StatusNotifierItemConfiguration{};
-	configuration.AttentionMode = m_dockingConfigurationProvider->configuration().NewMessageIcon;
-	configuration.AttentionIcon = KaduIcon{"protocols/common/message"};
-	configuration.AttentionMovie = m_iconsManager->iconPath(KaduIcon{"protocols/common/message_anim", "16x16"});
-	configuration.Icon = m_statusContainerManager->statusIcon();
-	m_statusNotifierItem->setConfiguration(configuration);
+    auto configuration = StatusNotifierItemConfiguration{};
+    configuration.AttentionMode = m_dockingConfigurationProvider->configuration().NewMessageIcon;
+    configuration.AttentionIcon = KaduIcon{"protocols/common/message"};
+    configuration.AttentionMovie = m_iconsManager->iconPath(KaduIcon{"protocols/common/message_anim", "16x16"});
+    configuration.Icon = m_statusContainerManager->statusIcon();
+    m_statusNotifierItem->setConfiguration(configuration);
 }
 
 #include "moc_docking.cpp"

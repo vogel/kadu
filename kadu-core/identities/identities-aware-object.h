@@ -31,22 +31,20 @@ class Identity;
 
 class KADUAPI IdentitiesAwareObject
 {
-
 protected:
-	virtual void identityAdded(Identity identity) = 0;
-	virtual void identityRemoved(Identity identity) = 0;
+    virtual void identityAdded(Identity identity) = 0;
+    virtual void identityRemoved(Identity identity) = 0;
 
 public:
-	static void notifyIdentityAdded(Identity identity);
-	static void notifyIdentityRemoved(Identity identity);
+    static void notifyIdentityAdded(Identity identity);
+    static void notifyIdentityRemoved(Identity identity);
 
-	IdentitiesAwareObject();
-	virtual ~IdentitiesAwareObject();
+    IdentitiesAwareObject();
+    virtual ~IdentitiesAwareObject();
 
-	void triggerAllIdentitiesAdded(IdentityManager *identityManager);
-	void triggerAllIdentitiesRemoved(IdentityManager *identityManager);
+    void triggerAllIdentitiesAdded(IdentityManager *identityManager);
+    void triggerAllIdentitiesRemoved(IdentityManager *identityManager);
 
 private:
-	static QList<IdentitiesAwareObject *> Objects;
-
+    static QList<IdentitiesAwareObject *> Objects;
 };

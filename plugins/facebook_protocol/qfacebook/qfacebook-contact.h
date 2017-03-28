@@ -26,17 +26,25 @@ class QFacebookJsonReader;
 class QFacebookContact
 {
 public:
-	static QFacebookContact fromJson(const QFacebookJsonReader &json);
+    static QFacebookContact fromJson(const QFacebookJsonReader &json);
 
-	explicit QFacebookContact(QByteArray id, QString name, QByteArray avatarUrl);
+    explicit QFacebookContact(QByteArray id, QString name, QByteArray avatarUrl);
 
-	QByteArray id() const { return m_id; }
-	QString name() const { return m_name; }
-	QByteArray avatarUrl() const { return m_avatarUrl; }
+    QByteArray id() const
+    {
+        return m_id;
+    }
+    QString name() const
+    {
+        return m_name;
+    }
+    QByteArray avatarUrl() const
+    {
+        return m_avatarUrl;
+    }
 
 private:
-	QByteArray m_id;
-	QString m_name;
-	QByteArray m_avatarUrl;
-
+    QByteArray m_id;
+    QString m_name;
+    QByteArray m_avatarUrl;
 };

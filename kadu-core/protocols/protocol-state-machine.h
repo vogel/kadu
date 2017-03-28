@@ -199,104 +199,103 @@ class Protocol;
  */
 class ProtocolStateMachine : public QStateMachine
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<NetworkManager> m_networkManager;
+    QPointer<NetworkManager> m_networkManager;
 
-	Protocol *CurrentProtocol;
+    Protocol *CurrentProtocol;
 
-	QTimer TryToGoOnlineTimer;
-	QTimer DelayTimer;
+    QTimer TryToGoOnlineTimer;
+    QTimer DelayTimer;
 
-	QState *LoggingOutState;
-	QState *LoggedOutOnlineState;
-	QState *LoggedOutOfflineState;
-	QState *WantToLogInState;
-	QState *PasswordRequiredState;
-	QState *LoggingInState;
-	QState *LoggingInDelayState;
-	QState *LoggingInMaybeOnlineState;
-	QState *LoggedInState;
-	QState *WaitForSslErrorResult;
+    QState *LoggingOutState;
+    QState *LoggedOutOnlineState;
+    QState *LoggedOutOfflineState;
+    QState *WantToLogInState;
+    QState *PasswordRequiredState;
+    QState *LoggingInState;
+    QState *LoggingInDelayState;
+    QState *LoggingInMaybeOnlineState;
+    QState *LoggedInState;
+    QState *WaitForSslErrorResult;
 
 private slots:
-	INJEQT_SET void setNetworkManager(NetworkManager *networkManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setNetworkManager(NetworkManager *networkManager);
+    INJEQT_INIT void init();
 
-	void printConfiguration();
+    void printConfiguration();
 
 public:
-	explicit ProtocolStateMachine(Protocol *protocol);
-	virtual ~ProtocolStateMachine();
+    explicit ProtocolStateMachine(Protocol *protocol);
+    virtual ~ProtocolStateMachine();
 
-	bool isLoggedIn();
-	bool isLoggingIn();
-	bool isLoggingOut();
+    bool isLoggedIn();
+    bool isLoggingIn();
+    bool isLoggingOut();
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when logging out state is entered.
-	 *
-	 * Signal emited when logging out state is entered. Protocol implementations should use it
-	 * to start logging out.
-	 */
-	void loggingOutStateEntered();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when logging out state is entered.
+     *
+     * Signal emited when logging out state is entered. Protocol implementations should use it
+     * to start logging out.
+     */
+    void loggingOutStateEntered();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when logged out, online state is entered.
-	 *
-	 * Signal emited when logged out, online state is entered. Protocol implementations should use it
-	 * to do clean-up of resources after logging out.
-	 */
-	void loggedOutOnlineStateEntered();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when logged out, online state is entered.
+     *
+     * Signal emited when logged out, online state is entered. Protocol implementations should use it
+     * to do clean-up of resources after logging out.
+     */
+    void loggedOutOnlineStateEntered();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when logged out, offline state is entered.
-	 *
-	 * Signal emited when logged out, offline state is entered. Protocol implementations should use it
-	 * to do clean-up of resources after logging out.
-	 */
-	void loggedOutOfflineStateEntered();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when logged out, offline state is entered.
+     *
+     * Signal emited when logged out, offline state is entered. Protocol implementations should use it
+     * to do clean-up of resources after logging out.
+     */
+    void loggedOutOfflineStateEntered();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when want to log in state is entered.
-	 *
-	 * Signal emited when want to log in state is entered. Protocol implementations should use it
-	 * to do clean-up of resources after disconnecting.
-	 */
-	void wantToLogInStateEntered();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when want to log in state is entered.
+     *
+     * Signal emited when want to log in state is entered. Protocol implementations should use it
+     * to do clean-up of resources after disconnecting.
+     */
+    void wantToLogInStateEntered();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when logging in state is entered.
-	 *
-	 * Signal emited when logging in state is entered. Protocol implementations should use it
-	 * to start logging in.
-	 */
-	void loggingInStateEntered();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when logging in state is entered.
+     *
+     * Signal emited when logging in state is entered. Protocol implementations should use it
+     * to start logging in.
+     */
+    void loggingInStateEntered();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when logged in state is entered.
-	 *
-	 * Signal emited when logged in state is entered. Protocol implementations should use it
-	 * to do after-log-in work (like asking server for roster).
-	 */
-	void loggedInStateEntered();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when logged in state is entered.
+     *
+     * Signal emited when logged in state is entered. Protocol implementations should use it
+     * to do after-log-in work (like asking server for roster).
+     */
+    void loggedInStateEntered();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when password required state is entered.
-	 *
-	 * Signal emited when logging password required is entered. Protocol implementations should use it
-	 * to get password data from user.
-	 */
-	void passwordRequiredStateEntered();
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when password required state is entered.
+     *
+     * Signal emited when logging password required is entered. Protocol implementations should use it
+     * to get password data from user.
+     */
+    void passwordRequiredStateEntered();
 };
 
 /**

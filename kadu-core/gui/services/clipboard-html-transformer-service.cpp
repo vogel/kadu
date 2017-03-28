@@ -20,8 +20,7 @@
 
 #include "clipboard-html-transformer-service.h"
 
-ClipboardHtmlTransformerService::ClipboardHtmlTransformerService(QObject *parent) :
-		QObject(parent)
+ClipboardHtmlTransformerService::ClipboardHtmlTransformerService(QObject *parent) : QObject(parent)
 {
 }
 

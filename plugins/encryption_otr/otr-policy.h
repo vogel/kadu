@@ -24,36 +24,35 @@
 #include <QtCore/QString>
 
 extern "C" {
-#	include <libotr/proto.h>
+#include <libotr/proto.h>
 }
 
 class OtrPolicy
 {
-	static QList<OtrPolicy> Values;
+    static QList<OtrPolicy> Values;
 
-	OtrlPolicy Policy;
-	QString PolicyString;
+    OtrlPolicy Policy;
+    QString PolicyString;
 
-	explicit OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString);
+    explicit OtrPolicy(OtrlPolicy otrPolicy, const QString &policyString);
 
 public:
-	static OtrPolicy PolicyUndefined;
-	static OtrPolicy PolicyNever;
-	static OtrPolicy PolicyManual;
-	static OtrPolicy PolicyOpportunistic;
-	static OtrPolicy PolicyAlways;
+    static OtrPolicy PolicyUndefined;
+    static OtrPolicy PolicyNever;
+    static OtrPolicy PolicyManual;
+    static OtrPolicy PolicyOpportunistic;
+    static OtrPolicy PolicyAlways;
 
-	static OtrPolicy fromPolicy(OtrlPolicy otrPolicy);
-	static OtrPolicy fromString(const QString &policyString);
+    static OtrPolicy fromPolicy(OtrlPolicy otrPolicy);
+    static OtrPolicy fromString(const QString &policyString);
 
-	OtrPolicy(const OtrPolicy &copyFrom);
+    OtrPolicy(const OtrPolicy &copyFrom);
 
-	OtrPolicy & operator = (const OtrPolicy &copyFrom);
-	bool operator == (const OtrPolicy &compareTo) const;
+    OtrPolicy &operator=(const OtrPolicy &copyFrom);
+    bool operator==(const OtrPolicy &compareTo) const;
 
-	OtrlPolicy toOtrPolicy() const;
-	const QString & toString() const;
-
+    OtrlPolicy toOtrPolicy() const;
+    const QString &toString() const;
 };
 
-#endif // OTR_POLICY_H
+#endif   // OTR_POLICY_H

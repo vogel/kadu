@@ -17,13 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core/injected-factory.h"
 #include "windows/chat-data-window.h"
+#include "core/injected-factory.h"
 
 #include "chat-data-window-repository.h"
 
-ChatDataWindowRepository::ChatDataWindowRepository(QObject *parent) :
-		QObject(parent)
+ChatDataWindowRepository::ChatDataWindowRepository(QObject *parent) : QObject(parent)
 {
 }
 
@@ -33,37 +32,37 @@ ChatDataWindowRepository::~ChatDataWindowRepository()
 
 void ChatDataWindowRepository::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-ChatDataWindow * ChatDataWindowRepository::windowForChat(const Chat &chat)
+ChatDataWindow *ChatDataWindowRepository::windowForChat(const Chat &chat)
 {
-	if (Windows.contains(chat))
-		return Windows.value(chat);
+    if (Windows.contains(chat))
+        return Windows.value(chat);
 
-	auto result = m_injectedFactory->makeInjected<ChatDataWindow>(chat);
-	connect(result, SIGNAL(destroyed(Chat)), this, SLOT(windowDestroyed(Chat)));
-	Windows.insert(chat, result);
+    auto result = m_injectedFactory->makeInjected<ChatDataWindow>(chat);
+    connect(result, SIGNAL(destroyed(Chat)), this, SLOT(windowDestroyed(Chat)));
+    Windows.insert(chat, result);
 
-	return result;
+    return result;
 }
 
-const QMap<Chat, ChatDataWindow *> & ChatDataWindowRepository::windows() const
+const QMap<Chat, ChatDataWindow *> &ChatDataWindowRepository::windows() const
 {
-	return Windows;
+    return Windows;
 }
 
 void ChatDataWindowRepository::windowDestroyed(const Chat &chat)
 {
-	Windows.remove(chat);
+    Windows.remove(chat);
 }
 
 void ChatDataWindowRepository::showChatWindow(const Chat &chat)
 {
-	ChatDataWindow *window = windowForChat(chat);
-	if (window)
-	{
-		window->show();
-		window->raise();
-	}
+    ChatDataWindow *window = windowForChat(chat);
+    if (window)
+    {
+        window->show();
+        window->raise();
+    }
 }

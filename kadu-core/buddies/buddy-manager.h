@@ -25,8 +25,8 @@
 
 #include "buddies/buddy-list.h"
 #include "buddies/buddy.h"
-#include "storage/manager.h"
 #include "exports.h"
+#include "storage/manager.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -43,71 +43,76 @@ class ContactManager;
 
 class KADUAPI BuddyManager : public Manager<Buddy>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyManager(QObject *parent = nullptr);
-	virtual ~BuddyManager();
+    Q_INVOKABLE explicit BuddyManager(QObject *parent = nullptr);
+    virtual ~BuddyManager();
 
-	virtual QString storageNodeName() override { return QStringLiteral("Buddies"); }
-	virtual QString storageNodeItemName() override { return QStringLiteral("Buddy"); }
+    virtual QString storageNodeName() override
+    {
+        return QStringLiteral("Buddies");
+    }
+    virtual QString storageNodeItemName() override
+    {
+        return QStringLiteral("Buddy");
+    }
 
-	BuddyList buddies(Account account, bool includeAnonymous = false);
-	void mergeBuddies(Buddy destination, Buddy source);
+    BuddyList buddies(Account account, bool includeAnonymous = false);
+    void mergeBuddies(Buddy destination, Buddy source);
 
-	Buddy byDisplay(const QString &display, NotFoundAction action);
-	Buddy byId(Account account, const QString &id, NotFoundAction action);
-	Buddy byContact(Contact contact, NotFoundAction action);
-	Buddy byUuid(const QUuid &uuid);
+    Buddy byDisplay(const QString &display, NotFoundAction action);
+    Buddy byId(Account account, const QString &id, NotFoundAction action);
+    Buddy byContact(Contact contact, NotFoundAction action);
+    Buddy byUuid(const QUuid &uuid);
 
-	void removeBuddyIfEmpty(Buddy buddy, bool checkOnlyForContacts = false);
-	void clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts = false);
+    void removeBuddyIfEmpty(Buddy buddy, bool checkOnlyForContacts = false);
+    void clearOwnerAndRemoveEmptyBuddy(Contact contact, bool checkBuddyOnlyForOtherContacts = false);
 
 protected:
-	virtual void load() override;
-	virtual Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+    virtual void load() override;
+    virtual Buddy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeAdded(Buddy buddy) override;
-	virtual void itemAdded(Buddy buddy) override;
-	virtual void itemAboutToBeRemoved(Buddy buddy) override;
-	virtual void itemRemoved(Buddy buddy) override;
+    virtual void itemAboutToBeAdded(Buddy buddy) override;
+    virtual void itemAdded(Buddy buddy) override;
+    virtual void itemAboutToBeRemoved(Buddy buddy) override;
+    virtual void itemRemoved(Buddy buddy) override;
 
 signals:
-	void buddyAboutToBeAdded(const Buddy &buddy);
-	void buddyAdded(const Buddy &buddy);
-	void buddyAboutToBeRemoved(const Buddy &buddy);
-	void buddyRemoved(const Buddy &buddy);
+    void buddyAboutToBeAdded(const Buddy &buddy);
+    void buddyAdded(const Buddy &buddy);
+    void buddyAboutToBeRemoved(const Buddy &buddy);
+    void buddyRemoved(const Buddy &buddy);
 
-	void buddyContactAboutToBeAdded(const Buddy &buddy, const Contact &contact);
-	void buddyContactAdded(const Buddy &buddy, const Contact &contact);
-	void buddyContactAboutToBeRemoved(const Buddy &buddy, const Contact &contact);
-	void buddyContactRemoved(const Buddy &buddy, const Contact &contact);
+    void buddyContactAboutToBeAdded(const Buddy &buddy, const Contact &contact);
+    void buddyContactAdded(const Buddy &buddy, const Contact &contact);
+    void buddyContactAboutToBeRemoved(const Buddy &buddy, const Contact &contact);
+    void buddyContactRemoved(const Buddy &buddy, const Contact &contact);
 
-	void buddyUpdated(const Buddy &buddy);
-	void buddySubscriptionChanged(const Buddy &buddy);
+    void buddyUpdated(const Buddy &buddy);
+    void buddySubscriptionChanged(const Buddy &buddy);
 
 private:
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactManager> m_contactManager;
 
-	QString mergeValue(const QString &destination, const QString &source) const;
+    QString mergeValue(const QString &destination, const QString &source) const;
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void buddyDataUpdated();
-	void buddySubscriptionChanged();
+    void buddyDataUpdated();
+    void buddySubscriptionChanged();
 
-	void buddyContactAboutToBeAdded(const Contact &contact);
-	void buddyContactAdded(const Contact &contact);
-	void buddyContactAboutToBeRemoved(const Contact &contact);
-	void buddyContactRemoved(const Contact &contact);
-
+    void buddyContactAboutToBeAdded(const Contact &contact);
+    void buddyContactAdded(const Contact &contact);
+    void buddyContactAboutToBeRemoved(const Contact &contact);
+    void buddyContactRemoved(const Contact &contact);
 };

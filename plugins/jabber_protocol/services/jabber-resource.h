@@ -25,20 +25,18 @@
 
 class JabberResource
 {
-
 public:
-	JabberResource();
-	explicit JabberResource(Jid jid, int priority, Status status);
+    JabberResource();
+    explicit JabberResource(Jid jid, int priority, Status status);
 
-	bool isEmpty() const;
+    bool isEmpty() const;
 
-	Jid jid() const;
-	int priority() const;
-	Status status() const;
+    Jid jid() const;
+    int priority() const;
+    Status status() const;
 
 private:
-	Jid _jid;
-	int _priority;
-	Status _status;
-
+    Jid _jid;
+    int _priority;
+    Status _status;
 };

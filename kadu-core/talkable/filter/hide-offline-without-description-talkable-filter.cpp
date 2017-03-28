@@ -24,8 +24,8 @@
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
 
-HideOfflineWithoutDescriptionTalkableFilter::HideOfflineWithoutDescriptionTalkableFilter(QObject *parent) :
-		TalkableFilter(parent), m_enabled(false)
+HideOfflineWithoutDescriptionTalkableFilter::HideOfflineWithoutDescriptionTalkableFilter(QObject *parent)
+        : TalkableFilter(parent), m_enabled(false)
 {
 }
 
@@ -35,40 +35,40 @@ HideOfflineWithoutDescriptionTalkableFilter::~HideOfflineWithoutDescriptionTalka
 
 void HideOfflineWithoutDescriptionTalkableFilter::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 TalkableFilter::FilterResult HideOfflineWithoutDescriptionTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!m_enabled)
-		return Undecided;
+    if (!m_enabled)
+        return Undecided;
 
-	auto const &contact = m_buddyPreferredManager->preferredContact(buddy, false);
-	if (!contact)
-		return Rejected;
+    auto const &contact = m_buddyPreferredManager->preferredContact(buddy, false);
+    if (!contact)
+        return Rejected;
 
-	return filterContact(contact);
+    return filterContact(contact);
 }
 
 TalkableFilter::FilterResult HideOfflineWithoutDescriptionTalkableFilter::filterContact(const Contact &contact)
 {
-	if (!m_enabled)
-		return Undecided;
+    if (!m_enabled)
+        return Undecided;
 
-	auto const &status = contact.currentStatus();
-	if (status.isDisconnected() && status.description().isEmpty())
-		return Rejected;
-	else
-		return Undecided;
+    auto const &status = contact.currentStatus();
+    if (status.isDisconnected() && status.description().isEmpty())
+        return Rejected;
+    else
+        return Undecided;
 }
 
 void HideOfflineWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
 {
-	if (m_enabled == enabled)
-		return;
+    if (m_enabled == enabled)
+        return;
 
-	m_enabled = enabled;
-	emit filterChanged();
+    m_enabled = enabled;
+    emit filterChanged();
 }
 
 #include "moc_hide-offline-without-description-talkable-filter.cpp"

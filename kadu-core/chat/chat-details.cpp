@@ -21,11 +21,10 @@
 
 #include "misc/change-notifier.h"
 
-ChatDetails::ChatDetails(ChatShared *mainData, QObject *parent) :
-		Details<ChatShared>{mainData, parent}
+ChatDetails::ChatDetails(ChatShared *mainData, QObject *parent) : Details<ChatShared>{mainData, parent}
 {
-	m_changeNotifier = new ChangeNotifier{this};
-	connect(m_changeNotifier, SIGNAL(changed()), this, SIGNAL(updated()));
+    m_changeNotifier = new ChangeNotifier{this};
+    connect(m_changeNotifier, SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 ChatDetails::~ChatDetails()
@@ -34,7 +33,7 @@ ChatDetails::~ChatDetails()
 
 void ChatDetails::notifyChanged()
 {
-	m_changeNotifier->notify();
+    m_changeNotifier->notify();
 }
 
 #include "moc_chat-details.cpp"

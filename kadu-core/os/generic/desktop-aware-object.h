@@ -41,29 +41,28 @@ class DesktopAwareObjectHelper;
  */
 class KADUAPI DesktopAwareObject
 {
-	static DesktopAwareObjectHelper *Helper;
+    static DesktopAwareObjectHelper *Helper;
 
-	QWidget *Widget;
+    QWidget *Widget;
 
 private:
-	static QList<DesktopAwareObject *> Objects;
+    static QList<DesktopAwareObject *> Objects;
 
 protected:
-	/**
-	* @author Piotr 'ultr' Dąbrowski
-	* @short Method is called when resolution changes
-	*
-	* Method is called when resolution changes.
-	* The default implementation moves the window to the closest available desktop.
-	*/
-	virtual void desktopModified();
+    /**
+    * @author Piotr 'ultr' Dąbrowski
+    * @short Method is called when resolution changes
+    *
+    * Method is called when resolution changes.
+    * The default implementation moves the window to the closest available desktop.
+    */
+    virtual void desktopModified();
 
 public:
-	DesktopAwareObject(QWidget *widget);
-	virtual ~DesktopAwareObject();
+    DesktopAwareObject(QWidget *widget);
+    virtual ~DesktopAwareObject();
 
-	static void notifyDesktopModified();
-
+    static void notifyDesktopModified();
 };
 
-#endif // DESKTOP_AWARE_OBJECT
+#endif   // DESKTOP_AWARE_OBJECT

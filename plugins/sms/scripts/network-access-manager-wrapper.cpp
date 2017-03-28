@@ -33,8 +33,8 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtScript/QScriptEngine>
 
-NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent) :
-		QNetworkAccessManager(parent), Engine(engine), Utf8(false)
+NetworkAccessManagerWrapper::NetworkAccessManagerWrapper(QScriptEngine *engine, QObject *parent)
+        : QNetworkAccessManager(parent), Engine(engine), Utf8(false)
 {
 }
 
@@ -44,75 +44,75 @@ NetworkAccessManagerWrapper::~NetworkAccessManagerWrapper()
 
 void NetworkAccessManagerWrapper::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void NetworkAccessManagerWrapper::setNetworkProxyManager(NetworkProxyManager *networkProxyManager)
 {
-	m_networkProxyManager = networkProxyManager;
+    m_networkProxyManager = networkProxyManager;
 }
 
 void NetworkAccessManagerWrapper::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void NetworkAccessManagerWrapper::configurationUpdated()
 {
-	NetworkProxy networkProxy;
+    NetworkProxy networkProxy;
 
-	if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
-		networkProxy = m_networkProxyManager->defaultProxy();
-	else
-		networkProxy = m_networkProxyManager->byUuid(m_configuration->deprecatedApi()->readEntry("SMS", "Proxy"));
+    if (m_configuration->deprecatedApi()->readBoolEntry("SMS", "DefaultProxy", true))
+        networkProxy = m_networkProxyManager->defaultProxy();
+    else
+        networkProxy = m_networkProxyManager->byUuid(m_configuration->deprecatedApi()->readEntry("SMS", "Proxy"));
 
-	QNetworkProxy proxy;
+    QNetworkProxy proxy;
 
-	if (networkProxy)
-	{
-		proxy.setType(QNetworkProxy::HttpProxy);
-		proxy.setHostName(networkProxy.address());
-		proxy.setPort(networkProxy.port());
-		proxy.setUser(networkProxy.user());
-		proxy.setPassword(networkProxy.password());
-	}
-	else
-		proxy.setType(QNetworkProxy::NoProxy);
+    if (networkProxy)
+    {
+        proxy.setType(QNetworkProxy::HttpProxy);
+        proxy.setHostName(networkProxy.address());
+        proxy.setPort(networkProxy.port());
+        proxy.setUser(networkProxy.user());
+        proxy.setPassword(networkProxy.password());
+    }
+    else
+        proxy.setType(QNetworkProxy::NoProxy);
 
-	setProxy(proxy);
+    setProxy(proxy);
 }
 
 QScriptValue NetworkAccessManagerWrapper::get(const QString &url)
 {
-	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::get(QNetworkRequest(url))));
+    return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::get(QNetworkRequest(url))));
 }
 
 void NetworkAccessManagerWrapper::setHeader(const QString &headerName, const QString &headerValue)
 {
-	// Note that QtScript by default doesn't support conversion to QByteArray,
-	// so we cannot simply convert arguments to QByteArray.
-	Headers.insert(headerName.toAscii(), headerValue.toAscii());
+    // Note that QtScript by default doesn't support conversion to QByteArray,
+    // so we cannot simply convert arguments to QByteArray.
+    Headers.insert(headerName.toAscii(), headerValue.toAscii());
 }
 
 void NetworkAccessManagerWrapper::clearHeaders()
 {
-	Headers.clear();
+    Headers.clear();
 }
 
 QScriptValue NetworkAccessManagerWrapper::post(const QString &url, const QString &data)
 {
-	QNetworkRequest request;
-	request.setUrl(url);
-	for (QMap<QByteArray, QByteArray>::const_iterator i = Headers.constBegin(); i != Headers.constEnd(); ++i)
-		request.setRawHeader(i.key(), i.value());
+    QNetworkRequest request;
+    request.setUrl(url);
+    for (QMap<QByteArray, QByteArray>::const_iterator i = Headers.constBegin(); i != Headers.constEnd(); ++i)
+        request.setRawHeader(i.key(), i.value());
 
-	QByteArray requestData;
-	if (Utf8)
-		requestData = data.toUtf8();
-	else
-		requestData = data.toAscii();
+    QByteArray requestData;
+    if (Utf8)
+        requestData = data.toUtf8();
+    else
+        requestData = data.toAscii();
 
-	return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::post(request, requestData)));
+    return Engine->newQObject(new NetworkReplyWrapper(QNetworkAccessManager::post(request, requestData)));
 }
 
 #include "moc_network-access-manager-wrapper.cpp"

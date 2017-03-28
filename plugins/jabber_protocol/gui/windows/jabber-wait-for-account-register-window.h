@@ -28,21 +28,21 @@ class Jid;
 
 class JabberWaitForAccountRegisterWindow : public ProgressWindow
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberWaitForAccountRegisterWindow(JabberRegisterAccount *jabberRegisterAccount, QWidget *parent = nullptr);
-	virtual ~JabberWaitForAccountRegisterWindow();
+    explicit JabberWaitForAccountRegisterWindow(
+        JabberRegisterAccount *jabberRegisterAccount, QWidget *parent = nullptr);
+    virtual ~JabberWaitForAccountRegisterWindow();
 
 signals:
-	void jidRegistered(const Jid &jid);
+    void jidRegistered(const Jid &jid);
 
 private:
-	QPointer<JabberRegisterAccount> m_jabberRegisterAccount;
+    QPointer<JabberRegisterAccount> m_jabberRegisterAccount;
 
 private slots:
-	void statusMessage(const QString &statusMessage);
+    void statusMessage(const QString &statusMessage);
     void success();
-	void error(const QString &errorMessage);
-
+    void error(const QString &errorMessage);
 };

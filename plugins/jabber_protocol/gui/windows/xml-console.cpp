@@ -22,58 +22,58 @@
 #include "QtWidgets/QTextEdit"
 #include "QtWidgets/QVBoxLayout"
 
-#include "services/jabber-stream-debug-service.h"
 #include "jabber-protocol.h"
+#include "services/jabber-stream-debug-service.h"
 
 #include "xml-console.h"
 
-XmlConsole::XmlConsole(Account account) :
-		// using C++ initializers breaks Qt's lupdate
-		WatchedAccount(account),
-		Viewer()
+XmlConsole::XmlConsole(Account account)
+        :   // using C++ initializers breaks Qt's lupdate
+          WatchedAccount(account),
+          Viewer()
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("XML Console - %1").arg(WatchedAccount.id()));
-	setWindowRole("kadu-xml-console");
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("XML Console - %1").arg(WatchedAccount.id()));
+    setWindowRole("kadu-xml-console");
 
-	JabberProtocol *protocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
-	if (protocol)
-	{
-		createGui();
+    JabberProtocol *protocol = qobject_cast<JabberProtocol *>(account.protocolHandler());
+    if (protocol)
+    {
+        createGui();
 
-		connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
-		connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
-	}
-	else
-		deleteLater();
+        connect(protocol->streamDebugService(), SIGNAL(incomingStream(QString)), this, SLOT(xmlIncomingSlot(QString)));
+        connect(protocol->streamDebugService(), SIGNAL(outgoingStream(QString)), this, SLOT(xmlOutgoingSlot(QString)));
+    }
+    else
+        deleteLater();
 }
 
 void XmlConsole::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	Viewer = new QTextEdit(this);
-	Viewer->setUndoRedoEnabled(false);
-	Viewer->setReadOnly(true);
-	Viewer->setAcceptRichText(false);
-	Viewer->viewport()->setObjectName("XmlViewport");
-	// context menu shouldn't inherit it
-	Viewer->viewport()->setStyleSheet("#XmlViewport { background-color: black; }");
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    Viewer = new QTextEdit(this);
+    Viewer->setUndoRedoEnabled(false);
+    Viewer->setReadOnly(true);
+    Viewer->setAcceptRichText(false);
+    Viewer->viewport()->setObjectName("XmlViewport");
+    // context menu shouldn't inherit it
+    Viewer->viewport()->setStyleSheet("#XmlViewport { background-color: black; }");
 
-	mainLayout->addWidget(Viewer);
+    mainLayout->addWidget(Viewer);
 
-	resize(560, 400);
+    resize(560, 400);
 }
 
 void XmlConsole::xmlIncomingSlot(const QString &str)
 {
-	Viewer->setTextColor(Qt::yellow);
-	Viewer->append(str + '\n');
+    Viewer->setTextColor(Qt::yellow);
+    Viewer->append(str + '\n');
 }
 
 void XmlConsole::xmlOutgoingSlot(const QString &str)
 {
-	Viewer->setTextColor(Qt::red);
-	Viewer->append(str + '\n');
+    Viewer->setTextColor(Qt::red);
+    Viewer->append(str + '\n');
 }
 
 #include "moc_xml-console.cpp"

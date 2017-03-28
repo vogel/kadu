@@ -19,8 +19,7 @@
 
 #include "plugin-metadata-provider.h"
 
-PluginMetadataProvider::PluginMetadataProvider(QObject *parent) :
-		QObject{parent}
+PluginMetadataProvider::PluginMetadataProvider(QObject *parent) : QObject{parent}
 {
 }
 

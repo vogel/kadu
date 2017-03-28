@@ -30,22 +30,21 @@ class Parser;
 
 class CopyPersonalInfoAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit CopyPersonalInfoAction(QObject *parent = nullptr);
-	virtual ~CopyPersonalInfoAction();
+    Q_INVOKABLE explicit CopyPersonalInfoAction(QObject *parent = nullptr);
+    virtual ~CopyPersonalInfoAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<Parser> m_parser;
+    QPointer<Configuration> m_configuration;
+    QPointer<Parser> m_parser;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setParser(Parser *parser);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setParser(Parser *parser);
 };

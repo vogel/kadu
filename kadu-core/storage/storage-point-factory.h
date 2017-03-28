@@ -29,12 +29,11 @@ class StoragePoint;
 
 class KADUAPI StoragePointFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StoragePointFactory(QObject *parent = nullptr);
-	virtual ~StoragePointFactory();
+    explicit StoragePointFactory(QObject *parent = nullptr);
+    virtual ~StoragePointFactory();
 
-	virtual std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0) = 0;
-
+    virtual std::unique_ptr<StoragePoint> createStoragePoint(const QString &nodeName, StoragePoint *parent = 0) = 0;
 };

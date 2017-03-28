@@ -37,44 +37,43 @@ class QPushButton;
 
 class GaduAddAccountWidget : public AccountAddWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = nullptr);
-	virtual ~GaduAddAccountWidget();
+    explicit GaduAddAccountWidget(bool showButtons, QWidget *parent = nullptr);
+    virtual ~GaduAddAccountWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<AccountStorage> m_accountStorage;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<UrlOpener> m_urlOpener;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<AccountStorage> m_accountStorage;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<UrlOpener> m_urlOpener;
 
-	bool m_showButtons;
-	QLineEdit *AccountId;
-	QLineEdit *AccountPassword;
-	QCheckBox *RememberPassword;
-	IdentitiesComboBox *Identity;
-	QPushButton *AddAccountButton;
+    bool m_showButtons;
+    QLineEdit *AccountId;
+    QLineEdit *AccountPassword;
+    QCheckBox *RememberPassword;
+    IdentitiesComboBox *Identity;
+    QPushButton *AddAccountButton;
 
-	void createGui(bool showButtons);
-	void resetGui();
+    void createGui(bool showButtons);
+    void resetGui();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+    INJEQT_INIT void init();
 
-	void dataChanged();
-	void registerAccount();
-	void remindUin();
-	void remindPassword();
-
+    void dataChanged();
+    void registerAccount();
+    void remindUin();
+    void remindPassword();
 };

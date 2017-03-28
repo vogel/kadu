@@ -28,12 +28,12 @@
 
 #include "otr-account-configuration-widget.h"
 
-OtrAccountConfigurationWidget::OtrAccountConfigurationWidget(const Account &account, QWidget *parent) :
-		AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
+OtrAccountConfigurationWidget::OtrAccountConfigurationWidget(const Account &account, QWidget *parent)
+        : AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
 {
-	setWindowTitle(tr("OTR Encryption"));
+    setWindowTitle(tr("OTR Encryption"));
 
-	createGui();
+    createGui();
 }
 
 OtrAccountConfigurationWidget::~OtrAccountConfigurationWidget()
@@ -42,114 +42,114 @@ OtrAccountConfigurationWidget::~OtrAccountConfigurationWidget()
 
 void OtrAccountConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	EnableCheckBox = new QCheckBox(tr("Enable private messaging"));
-	AutomaticallyInitiateCheckBox = new QCheckBox(tr("Automatically initiate private messaging"));
-	RequireCheckBox = new QCheckBox(tr("Require private messaging"));
+    EnableCheckBox = new QCheckBox(tr("Enable private messaging"));
+    AutomaticallyInitiateCheckBox = new QCheckBox(tr("Automatically initiate private messaging"));
+    RequireCheckBox = new QCheckBox(tr("Require private messaging"));
 
-	connect(EnableCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
-	connect(AutomaticallyInitiateCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
-	connect(RequireCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(EnableCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(AutomaticallyInitiateCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
+    connect(RequireCheckBox, SIGNAL(stateChanged(int)), this, SLOT(updateState()));
 
-	layout->addWidget(EnableCheckBox);
-	layout->addWidget(AutomaticallyInitiateCheckBox);
-	layout->addWidget(RequireCheckBox);
-	layout->addStretch(100);
+    layout->addWidget(EnableCheckBox);
+    layout->addWidget(AutomaticallyInitiateCheckBox);
+    layout->addWidget(RequireCheckBox);
+    layout->addStretch(100);
 }
 
 void OtrAccountConfigurationWidget::setPolicyService(OtrPolicyService *policyService)
 {
-	PolicyService = policyService;
+    PolicyService = policyService;
 
-	loadValues();
-	updateState();
+    loadValues();
+    updateState();
 }
 
 OtrPolicy OtrAccountConfigurationWidget::policy()
 {
-	if (!EnableCheckBox->isChecked())
-		return OtrPolicy::PolicyNever;
-	if (!AutomaticallyInitiateCheckBox->isChecked())
-		return OtrPolicy::PolicyManual;
-	if (!RequireCheckBox->isChecked())
-		return OtrPolicy::PolicyOpportunistic;
-	return OtrPolicy::PolicyAlways;
+    if (!EnableCheckBox->isChecked())
+        return OtrPolicy::PolicyNever;
+    if (!AutomaticallyInitiateCheckBox->isChecked())
+        return OtrPolicy::PolicyManual;
+    if (!RequireCheckBox->isChecked())
+        return OtrPolicy::PolicyOpportunistic;
+    return OtrPolicy::PolicyAlways;
 }
 
 void OtrAccountConfigurationWidget::loadValues()
 {
-	if (!PolicyService)
-		return;
+    if (!PolicyService)
+        return;
 
-	OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
+    OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
 
-	if (accountPolicy == OtrPolicy::PolicyManual)
-	{
-		EnableCheckBox->setChecked(true);
-		AutomaticallyInitiateCheckBox->setChecked(false);
-		RequireCheckBox->setChecked(false);
-	}
-	else if (accountPolicy == OtrPolicy::PolicyOpportunistic)
-	{
-		EnableCheckBox->setChecked(true);
-		AutomaticallyInitiateCheckBox->setChecked(true);
-		RequireCheckBox->setChecked(false);
-	}
-	else if (accountPolicy == OtrPolicy::PolicyAlways)
-	{
-		EnableCheckBox->setChecked(true);
-		AutomaticallyInitiateCheckBox->setChecked(true);
-		RequireCheckBox->setChecked(true);
-	}
-	else
-	{
-		EnableCheckBox->setChecked(false);
-		AutomaticallyInitiateCheckBox->setChecked(false);
-		RequireCheckBox->setChecked(false);
-	}
+    if (accountPolicy == OtrPolicy::PolicyManual)
+    {
+        EnableCheckBox->setChecked(true);
+        AutomaticallyInitiateCheckBox->setChecked(false);
+        RequireCheckBox->setChecked(false);
+    }
+    else if (accountPolicy == OtrPolicy::PolicyOpportunistic)
+    {
+        EnableCheckBox->setChecked(true);
+        AutomaticallyInitiateCheckBox->setChecked(true);
+        RequireCheckBox->setChecked(false);
+    }
+    else if (accountPolicy == OtrPolicy::PolicyAlways)
+    {
+        EnableCheckBox->setChecked(true);
+        AutomaticallyInitiateCheckBox->setChecked(true);
+        RequireCheckBox->setChecked(true);
+    }
+    else
+    {
+        EnableCheckBox->setChecked(false);
+        AutomaticallyInitiateCheckBox->setChecked(false);
+        RequireCheckBox->setChecked(false);
+    }
 }
 
 void OtrAccountConfigurationWidget::updateState()
 {
-	if (!PolicyService)
-	{
-		StateNotifier->setState(StateNotChanged);
-		return;
-	}
+    if (!PolicyService)
+    {
+        StateNotifier->setState(StateNotChanged);
+        return;
+    }
 
-	AutomaticallyInitiateCheckBox->setEnabled(false);
-	RequireCheckBox->setEnabled(false);
+    AutomaticallyInitiateCheckBox->setEnabled(false);
+    RequireCheckBox->setEnabled(false);
 
-	if (EnableCheckBox->isChecked())
-	{
-		AutomaticallyInitiateCheckBox->setEnabled(true);
-		if (AutomaticallyInitiateCheckBox->isChecked())
-			RequireCheckBox->setEnabled(true);
-	}
+    if (EnableCheckBox->isChecked())
+    {
+        AutomaticallyInitiateCheckBox->setEnabled(true);
+        if (AutomaticallyInitiateCheckBox->isChecked())
+            RequireCheckBox->setEnabled(true);
+    }
 
-	OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
-	if (accountPolicy == policy())
-		StateNotifier->setState(StateNotChanged);
-	else
-		StateNotifier->setState(StateChangedDataValid);
+    OtrPolicy accountPolicy = PolicyService.data()->accountPolicy(account());
+    if (accountPolicy == policy())
+        StateNotifier->setState(StateNotChanged);
+    else
+        StateNotifier->setState(StateChangedDataValid);
 }
 
-const ConfigurationValueStateNotifier * OtrAccountConfigurationWidget::stateNotifier() const
+const ConfigurationValueStateNotifier *OtrAccountConfigurationWidget::stateNotifier() const
 {
-	return StateNotifier;
+    return StateNotifier;
 }
 
 void OtrAccountConfigurationWidget::apply()
 {
-	if (PolicyService)
-		PolicyService.data()->setAccountPolicy(account(), policy());
-	updateState();
+    if (PolicyService)
+        PolicyService.data()->setAccountPolicy(account(), policy());
+    updateState();
 }
 
 void OtrAccountConfigurationWidget::cancel()
 {
-	loadValues();
+    loadValues();
 }
 
 #include "moc_otr-account-configuration-widget.cpp"

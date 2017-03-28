@@ -19,13 +19,12 @@
 
 #include "your-accounts-window-service.h"
 
+#include "activate.h"
 #include "configuration/configuration.h"
 #include "core/injected-factory.h"
 #include "windows/your-accounts.h"
-#include "activate.h"
 
-YourAccountsWindowService::YourAccountsWindowService(QObject *parent) :
-		QObject{parent}
+YourAccountsWindowService::YourAccountsWindowService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,19 +34,19 @@ YourAccountsWindowService::~YourAccountsWindowService()
 
 void YourAccountsWindowService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void YourAccountsWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void YourAccountsWindowService::show()
 {
-	if (!m_yourAccounts)
-		m_yourAccounts = m_injectedFactory->makeInjected<YourAccounts>();
-	
-	m_yourAccounts->show();
-	_activateWindow(m_configuration, m_yourAccounts);
+    if (!m_yourAccounts)
+        m_yourAccounts = m_injectedFactory->makeInjected<YourAccounts>();
+
+    m_yourAccounts->show();
+    _activateWindow(m_configuration, m_yourAccounts);
 }

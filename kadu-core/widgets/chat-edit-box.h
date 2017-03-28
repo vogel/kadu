@@ -45,65 +45,64 @@ class UnderlineAction;
 
 class KADUAPI ChatEditBox : public MainWindow, public ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BoldAction> m_boldAction;
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<ItalicAction> m_italicAction;
-	QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<UnderlineAction> m_underlineAction;
+    QPointer<BoldAction> m_boldAction;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<ItalicAction> m_italicAction;
+    QPointer<StatusConfigurationHolder> m_statusConfigurationHolder;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<UnderlineAction> m_underlineAction;
 
-	Chat CurrentChat;
-	CustomInput *InputBox;
-	QColor CurrentColor;
+    Chat CurrentChat;
+    CustomInput *InputBox;
+    QColor CurrentColor;
 
-	BaseActionContext *Context;
+    BaseActionContext *Context;
 
-	void setColorFromCurrentText(bool force);
+    void setColorFromCurrentText(bool force);
 
 private slots:
-	INJEQT_SET void setBoldAction(BoldAction *boldAction);
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setItalicAction(ItalicAction *italicAction);
-	INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBoldAction(BoldAction *boldAction);
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setItalicAction(ItalicAction *italicAction);
+    INJEQT_SET void setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
+    INJEQT_INIT void init();
 
-	void configurationUpdated();
+    void configurationUpdated();
 
-	void updateContext();
+    void updateContext();
 
-	void fontChanged(QFont font);
-	void colorSelectorActionCreated(Action *action);
-	void cursorPositionChanged();
+    void fontChanged(QFont font);
+    void colorSelectorActionCreated(Action *action);
+    void cursorPositionChanged();
 
 public:
-	static void createDefaultToolbars(Configuration *configuration, QDomElement parentConfig);
+    static void createDefaultToolbars(Configuration *configuration, QDomElement parentConfig);
 
-	ChatEditBox(const Chat &chat, QWidget *parent = nullptr);
-	virtual ~ChatEditBox();
+    ChatEditBox(const Chat &chat, QWidget *parent = nullptr);
+    virtual ~ChatEditBox();
 
-	// TODO: remove?
-	CustomInput * inputBox();
+    // TODO: remove?
+    CustomInput *inputBox();
 
-	virtual bool supportsActionType(ActionDescription::ActionType type);
-	virtual TalkableProxyModel * talkableProxyModel();
+    virtual bool supportsActionType(ActionDescription::ActionType type);
+    virtual TalkableProxyModel *talkableProxyModel();
 
-	ChatWidget * chatWidget();
+    ChatWidget *chatWidget();
 
-	void openInsertImageDialog();
+    void openInsertImageDialog();
 
-	void setAutoSend(bool autoSend);
+    void setAutoSend(bool autoSend);
 
 public slots:
-	void changeColor(const QColor &newColor);
-	void insertPlainText(const QString &plainText);
+    void changeColor(const QColor &newColor);
+    void insertPlainText(const QString &plainText);
 
 signals:
-	void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
-
+    void keyPressed(QKeyEvent *e, CustomInput *sender, bool &handled);
 };

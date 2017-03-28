@@ -29,20 +29,19 @@ class OpenChatWithService;
 
 class OpenChatWithAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenChatWithAction(QObject *parent = nullptr);
-	virtual ~OpenChatWithAction();
+    Q_INVOKABLE explicit OpenChatWithAction(QObject *parent = nullptr);
+    virtual ~OpenChatWithAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<OpenChatWithService> m_openChatWithService;
+    QPointer<OpenChatWithService> m_openChatWithService;
 
 private slots:
-	INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
-
+    INJEQT_SET void setOpenChatWithService(OpenChatWithService *openChatWithService);
 };

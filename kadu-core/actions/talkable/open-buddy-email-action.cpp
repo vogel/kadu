@@ -25,14 +25,14 @@
 #include "os/generic/url-opener.h"
 #include "url-handlers/url-handler-manager.h"
 
-OpenBuddyEmailAction::OpenBuddyEmailAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenBuddyEmailAction::OpenBuddyEmailAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"mail-message-new"});
-	setName(QStringLiteral("writeEmailAction"));
-	setText(tr("Send E-Mail"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"mail-message-new"});
+    setName(QStringLiteral("writeEmailAction"));
+    setText(tr("Send E-Mail"));
+    setType(ActionDescription::TypeUser);
 }
 
 OpenBuddyEmailAction::~OpenBuddyEmailAction()
@@ -41,41 +41,41 @@ OpenBuddyEmailAction::~OpenBuddyEmailAction()
 
 void OpenBuddyEmailAction::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 {
-	m_urlHandlerManager = urlHandlerManager;
+    m_urlHandlerManager = urlHandlerManager;
 }
 
 void OpenBuddyEmailAction::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
-void OpenBuddyEmailAction::actionInstanceCreated(Action* action)
+void OpenBuddyEmailAction::actionInstanceCreated(Action *action)
 {
-	auto const &buddy = action->context()->buddies().toBuddy();
-	if (buddy)
-		connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
+    auto const &buddy = action->context()->buddies().toBuddy();
+    if (buddy)
+        connect(buddy, SIGNAL(updated()), action, SLOT(checkState()));
 }
 
 void OpenBuddyEmailAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	const Buddy &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-		return;
+    const Buddy &buddy = action->context()->buddies().toBuddy();
+    if (!buddy)
+        return;
 
-	if (!buddy.email().isEmpty())
-		m_urlOpener->openEmail(buddy.email().toUtf8());
+    if (!buddy.email().isEmpty())
+        m_urlOpener->openEmail(buddy.email().toUtf8());
 }
 
-void OpenBuddyEmailAction::updateActionState(Action* action)
+void OpenBuddyEmailAction::updateActionState(Action *action)
 {
-	auto const &buddy = action->context()->buddies().toBuddy();
-	auto hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(m_urlHandlerManager->mailRegExp()) == 0;
+    auto const &buddy = action->context()->buddies().toBuddy();
+    auto hasMail = !buddy.email().isEmpty() && buddy.email().indexOf(m_urlHandlerManager->mailRegExp()) == 0;
 
-	action->setEnabled(hasMail);
+    action->setEnabled(hasMail);
 }
 
 #include "moc_open-buddy-email-action.cpp"

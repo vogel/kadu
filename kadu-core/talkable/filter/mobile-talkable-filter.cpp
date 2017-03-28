@@ -24,8 +24,7 @@
 
 #include "mobile-talkable-filter.h"
 
-MobileTalkableFilter::MobileTalkableFilter(QObject *parent) :
-		TalkableFilter(parent)
+MobileTalkableFilter::MobileTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
 }
 
@@ -35,24 +34,24 @@ MobileTalkableFilter::~MobileTalkableFilter()
 
 TalkableFilter::FilterResult MobileTalkableFilter::filterChat(const Chat &chat)
 {
-	Q_UNUSED(chat);
+    Q_UNUSED(chat);
 
-	return Rejected;
+    return Rejected;
 }
 
 TalkableFilter::FilterResult MobileTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (!buddy.mobile().isEmpty())
-		return Undecided;
-	else
-		return Rejected;
+    if (!buddy.mobile().isEmpty())
+        return Undecided;
+    else
+        return Rejected;
 }
 
 TalkableFilter::FilterResult MobileTalkableFilter::filterContact(const Contact &contact)
 {
-	Q_UNUSED(contact);
+    Q_UNUSED(contact);
 
-	return Rejected;
+    return Rejected;
 }
 
 #include "moc_mobile-talkable-filter.cpp"

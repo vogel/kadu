@@ -18,7 +18,7 @@
  */
 
 extern "C" {
-#	include <libotr/privkey.h>
+#include <libotr/privkey.h>
 }
 
 #include "accounts/account.h"
@@ -35,9 +35,9 @@ extern "C" {
 
 void OtrFingerprintService::wrapperOtrWriteFingerprints(void *data)
 {
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->fingerprintService())
-		opData->fingerprintService()->writeFingerprints();
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->fingerprintService())
+        opData->fingerprintService()->writeFingerprints();
 }
 
 OtrFingerprintService::OtrFingerprintService()
@@ -50,96 +50,97 @@ OtrFingerprintService::~OtrFingerprintService()
 
 void OtrFingerprintService::setContextConverter(OtrContextConverter *contextConverter)
 {
-	ContextConverter = contextConverter;
+    ContextConverter = contextConverter;
 }
 
 void OtrFingerprintService::setPathService(OtrPathService *pathService)
 {
-	PathService = pathService;
+    PathService = pathService;
 }
 
 void OtrFingerprintService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 }
 
 void OtrFingerprintService::readFingerprints() const
 {
-	if (!UserStateService)
-		return;
+    if (!UserStateService)
+        return;
 
-	OtrlUserState userState = UserStateService->userState();
-	otrl_privkey_read_fingerprints(userState, PathService->fingerprintsStoreFilePath().toUtf8().data(), 0, 0);
+    OtrlUserState userState = UserStateService->userState();
+    otrl_privkey_read_fingerprints(userState, PathService->fingerprintsStoreFilePath().toUtf8().data(), 0, 0);
 
-	emit fingerprintsUpdated();
+    emit fingerprintsUpdated();
 }
 
 void OtrFingerprintService::writeFingerprints() const
 {
-	if (!UserStateService)
-		return;
+    if (!UserStateService)
+        return;
 
-	OtrlUserState userState = UserStateService->userState();
-	otrl_privkey_write_fingerprints(userState, PathService->fingerprintsStoreFilePath().toUtf8().data());
+    OtrlUserState userState = UserStateService->userState();
+    otrl_privkey_write_fingerprints(userState, PathService->fingerprintsStoreFilePath().toUtf8().data());
 
-	emit fingerprintsUpdated();
+    emit fingerprintsUpdated();
 }
 
 void OtrFingerprintService::setContactFingerprintTrust(const Contact &contact, OtrFingerprintService::Trust trust) const
 {
-	if (!ContextConverter)
-		return;
+    if (!ContextConverter)
+        return;
 
-	ConnContext *context = ContextConverter->contactToContextConverter(contact);
-	if (!context->active_fingerprint)
-		return;
+    ConnContext *context = ContextConverter->contactToContextConverter(contact);
+    if (!context->active_fingerprint)
+        return;
 
-	otrl_context_set_trust(context->active_fingerprint, TrustVerified == trust ? "verified" : "");
-	writeFingerprints();
+    otrl_context_set_trust(context->active_fingerprint, TrustVerified == trust ? "verified" : "");
+    writeFingerprints();
 }
 
 OtrFingerprintService::Trust OtrFingerprintService::contactFingerprintTrust(const Contact &contact) const
 {
-	if (!ContextConverter)
-		return TrustNotVerified;
+    if (!ContextConverter)
+        return TrustNotVerified;
 
-	ConnContext *context = ContextConverter->contactToContextConverter(contact);
-	if (!context->active_fingerprint)
-		return TrustNotVerified;
+    ConnContext *context = ContextConverter->contactToContextConverter(contact);
+    if (!context->active_fingerprint)
+        return TrustNotVerified;
 
-	return (context->active_fingerprint->trust && context->active_fingerprint->trust[0] != 0) ? TrustVerified : TrustNotVerified;
+    return (context->active_fingerprint->trust && context->active_fingerprint->trust[0] != 0) ? TrustVerified
+                                                                                              : TrustNotVerified;
 }
 
 QString OtrFingerprintService::extractAccountFingerprint(const Account &account) const
 {
-	if (!UserStateService)
-		return QString();
+    if (!UserStateService)
+        return QString();
 
-	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
-	char *result = otrl_privkey_fingerprint(UserStateService->userState(), fingerprint,
-											qPrintable(account.id()), qPrintable(account.protocolName()));
+    char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
+    char *result = otrl_privkey_fingerprint(
+        UserStateService->userState(), fingerprint, qPrintable(account.id()), qPrintable(account.protocolName()));
 
-	if (!result)
-		return QString();
+    if (!result)
+        return QString();
 
-	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
-	return QString::fromLatin1(fingerprint);
+    fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
+    return QString::fromLatin1(fingerprint);
 }
 
 QString OtrFingerprintService::extractContactFingerprint(const Contact &contact) const
 {
-	if (!ContextConverter)
-		return QString();
+    if (!ContextConverter)
+        return QString();
 
-	ConnContext *context = ContextConverter->contactToContextConverter(contact);
-	if (!context->active_fingerprint)
-		return QString();
+    ConnContext *context = ContextConverter->contactToContextConverter(contact);
+    if (!context->active_fingerprint)
+        return QString();
 
-	char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
-	otrl_privkey_hash_to_human(fingerprint, context->active_fingerprint->fingerprint);
+    char fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN];
+    otrl_privkey_hash_to_human(fingerprint, context->active_fingerprint->fingerprint);
 
-	fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
-	return QString::fromLatin1(fingerprint);
+    fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
+    return QString::fromLatin1(fingerprint);
 }
 
 #include "moc_otr-fingerprint-service.cpp"

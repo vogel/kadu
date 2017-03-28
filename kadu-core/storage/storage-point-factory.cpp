@@ -19,8 +19,7 @@
 
 #include "storage-point-factory.h"
 
-StoragePointFactory::StoragePointFactory(QObject *parent) :
-		QObject{parent}
+StoragePointFactory::StoragePointFactory(QObject *parent) : QObject{parent}
 {
 }
 

@@ -23,9 +23,7 @@
 
 class SqlHistoryModule : public injeqt::module
 {
-
 public:
-	explicit SqlHistoryModule();
-	virtual ~SqlHistoryModule();
-
+    explicit SqlHistoryModule();
+    virtual ~SqlHistoryModule();
 };

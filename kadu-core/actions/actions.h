@@ -51,99 +51,104 @@ class SessionService;
  */
 class KADUAPI Actions : public QObject, public QMap<QString, ActionDescription *>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Actions(QObject *parent = nullptr);
-	virtual ~Actions();
+    Q_INVOKABLE explicit Actions(QObject *parent = nullptr);
+    virtual ~Actions();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new QAction instance for kadu main window.
-	 * @param name name of action to create
-	 * @param context context of action
-	 * @param parent parent object of action
-	 *
-	 * This method creates new instance of given action for given context. Signal actionCreated is emited after
-	 * creation, no matter what blocking signals state is.
-	 */
-	QAction * createAction(const QString &name, ActionContext *context, QObject *parent);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new QAction instance for kadu main window.
+     * @param name name of action to create
+     * @param context context of action
+     * @param parent parent object of action
+     *
+     * This method creates new instance of given action for given context. Signal actionCreated is emited after
+     * creation, no matter what blocking signals state is.
+     */
+    QAction *createAction(const QString &name, ActionContext *context, QObject *parent);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Blocks actionLoaded and actionUnloaded signals.
-	 *
-	 * No more actionLoaded and actionUnloaded signals will be emited, until unblockSignals is called.
-	 */
-	void blockSignals() { BlockSignals = true; }
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Blocks actionLoaded and actionUnloaded signals.
+     *
+     * No more actionLoaded and actionUnloaded signals will be emited, until unblockSignals is called.
+     */
+    void blockSignals()
+    {
+        BlockSignals = true;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Unblocks actionLoaded and actionUnloaded signals.
-	 *
-	 * Signals actionLoaded and actionUnloaded can now be emited again.
-	 */
-	void unblockSignals() { BlockSignals = false; }
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Unblocks actionLoaded and actionUnloaded signals.
+     *
+     * Signals actionLoaded and actionUnloaded can now be emited again.
+     */
+    void unblockSignals()
+    {
+        BlockSignals = false;
+    }
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited after an action for main kadu window was created.
-	 * @param action newly created action
-	 *
-	 * Signal emited after an action for main kadu window was created.
-	 */
-	void actionCreated(Action *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited after an action for main kadu window was created.
+     * @param action newly created action
+     *
+     * Signal emited after an action for main kadu window was created.
+     */
+    void actionCreated(Action *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited after an action type was registerd.
-	 * @param action registered action.
-	 *
-	 * Signal emited after an action type was registered. When Actions object is in block signals state, this
-	 * signal is not emited.
-	 */
-	void actionLoaded(ActionDescription *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited after an action type was registerd.
+     * @param action registered action.
+     *
+     * Signal emited after an action type was registered. When Actions object is in block signals state, this
+     * signal is not emited.
+     */
+    void actionLoaded(ActionDescription *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited after an action type was unregisterd.
-	 * @param action unregistered action.
-	 *
-	 * Signal emited after an action type was unregistered. When Actions object is in block signals state, this
-	 * signal is not emited.
-	 */
-	void actionUnloaded(ActionDescription *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited after an action type was unregisterd.
+     * @param action unregistered action.
+     *
+     * Signal emited after an action type was unregistered. When Actions object is in block signals state, this
+     * signal is not emited.
+     */
+    void actionUnloaded(ActionDescription *action);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Registers ActionDescription class.
-	 * @param action registered action
-	 *
-	 * This method can only by called from ActionDescription instances when they are ready to be registered.
-	 * Signal actionLoaded is emited if signals are non blocked.
-	 */
-	bool insert(ActionDescription *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Registers ActionDescription class.
+     * @param action registered action
+     *
+     * This method can only by called from ActionDescription instances when they are ready to be registered.
+     * Signal actionLoaded is emited if signals are non blocked.
+     */
+    bool insert(ActionDescription *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Unregisters an ActionDescription class.
-	 * @param action unregistered action
-	 *
-	 * This method can only by called from ActionDescription instances when they are ready to be unregistered.
-	 * Signal actionUnloaded is emited if signals are non blocked.
-	 */
-	void remove(ActionDescription *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Unregisters an ActionDescription class.
+     * @param action unregistered action
+     *
+     * This method can only by called from ActionDescription instances when they are ready to be unregistered.
+     * Signal actionUnloaded is emited if signals are non blocked.
+     */
+    void remove(ActionDescription *action);
 
 private:
-	QPointer<SessionService> m_sessionService;
+    QPointer<SessionService> m_sessionService;
 
-	bool BlockSignals;
+    bool BlockSignals;
 
 private slots:
-	INJEQT_SET void setSessionService(SessionService *sessionService);
-
+    INJEQT_SET void setSessionService(SessionService *sessionService);
 };
 
 /**

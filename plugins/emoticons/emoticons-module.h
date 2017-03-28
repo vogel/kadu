@@ -23,9 +23,9 @@
 
 class EmoticonsModule : public injeqt::module
 {
-
 public:
-	EmoticonsModule();
-	virtual ~EmoticonsModule() {}
-
+    EmoticonsModule();
+    virtual ~EmoticonsModule()
+    {
+    }
 };

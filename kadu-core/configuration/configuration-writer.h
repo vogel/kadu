@@ -29,23 +29,22 @@ class ConfigurationPathProvider;
 
 class KADUAPI ConfigurationWriter final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfigurationWriter();
-	virtual ~ConfigurationWriter();
+    Q_INVOKABLE explicit ConfigurationWriter();
+    virtual ~ConfigurationWriter();
 
-	void write() const;
-	void backup() const;
+    void write() const;
+    void backup() const;
 
 private:
-	Configuration *m_configuration;
-	ConfigurationPathProvider *m_configurationPathProvider;
+    Configuration *m_configuration;
+    ConfigurationPathProvider *m_configurationPathProvider;
 
-	void write(const QString &fileName) const;
+    void write(const QString &fileName) const;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
 };

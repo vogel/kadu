@@ -49,41 +49,40 @@ class GaduConnection;
  */
 class GaduNotifyService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @return GG notify mode for given contact
-	 *
-	 * Return value of this method is based on blocked and offline to contact properties.
-	 */
-	static int notifyTypeFromContact(const Contact &contact);
+    /**
+     * @return GG notify mode for given contact
+     *
+     * Return value of this method is based on blocked and offline to contact properties.
+     */
+    static int notifyTypeFromContact(const Contact &contact);
 
-	/**
-	 * @short Create new service that uses @p connection to send notify messages.
-	 */
-	explicit GaduNotifyService(GaduConnection *connection, QObject *parent = nullptr);
-	virtual ~GaduNotifyService();
+    /**
+     * @short Create new service that uses @p connection to send notify messages.
+     */
+    explicit GaduNotifyService(GaduConnection *connection, QObject *parent = nullptr);
+    virtual ~GaduNotifyService();
 
-	/**
-	 * @short Send gg_notify_ex with initial data for all provided contacts.
-	 * @pre all contacts account must be the same as connection from constructor
-	 *
-	 * This method must be called immediately after GG connection has been made.
-	 */
-	void sendInitialData(const QVector<Contact> &contacts);
+    /**
+     * @short Send gg_notify_ex with initial data for all provided contacts.
+     * @pre all contacts account must be the same as connection from constructor
+     *
+     * This method must be called immediately after GG connection has been made.
+     */
+    void sendInitialData(const QVector<Contact> &contacts);
 
 public slots:
-	void contactAdded(Contact contact);
-	void contactRemoved(Contact contact);
-	void contactUpdatedLocally(Contact contact);
+    void contactAdded(Contact contact);
+    void contactRemoved(Contact contact);
+    void contactUpdatedLocally(Contact contact);
 
 private:
-	QPointer<GaduConnection> m_connection;
+    QPointer<GaduConnection> m_connection;
 
-	bool updateFlag(gg_session *session, int uin, int newFlags, int oldFlags, int flag) const;
-	void sendNewFlags(const Contact &contact, int newFlags) const;
-
+    bool updateFlag(gg_session *session, int uin, int newFlags, int oldFlags, int flag) const;
+    void sendNewFlags(const Contact &contact, int newFlags) const;
 };
 
 /**

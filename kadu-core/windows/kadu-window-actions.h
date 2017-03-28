@@ -42,38 +42,36 @@ class OpenDescriptionLinkAction;
 
 class KaduWindowActions : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
-	QPointer<BlockUserAction> m_blockUserAction;
-	QPointer<CollapseAction> m_collapseAction;
-	QPointer<CopyDescriptionAction> m_copyDescriptionAction;
-	QPointer<CopyPersonalInfoAction> m_copyPersonalInfoAction;
-	QPointer<DeleteTalkableAction> m_deleteTalkableAction;
-	QPointer<EditTalkableAction> m_editTalkableAction;
-	QPointer<ExpandAction> m_expandAction;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<MergeBuddiesAction> m_mergeBuddiesAction;
-	QPointer<OpenBuddyEmailAction> m_openBuddyEmailAction;
-	QPointer<OpenDescriptionLinkAction> m_openDescriptionLinkAction;
+    QPointer<BlockUserAction> m_blockUserAction;
+    QPointer<CollapseAction> m_collapseAction;
+    QPointer<CopyDescriptionAction> m_copyDescriptionAction;
+    QPointer<CopyPersonalInfoAction> m_copyPersonalInfoAction;
+    QPointer<DeleteTalkableAction> m_deleteTalkableAction;
+    QPointer<EditTalkableAction> m_editTalkableAction;
+    QPointer<ExpandAction> m_expandAction;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<MergeBuddiesAction> m_mergeBuddiesAction;
+    QPointer<OpenBuddyEmailAction> m_openBuddyEmailAction;
+    QPointer<OpenDescriptionLinkAction> m_openDescriptionLinkAction;
 
 private slots:
-	INJEQT_SET void setBlockUserAction(BlockUserAction *blockUserAction);
-	INJEQT_SET void setCollapseAction(CollapseAction *collapseAction);
-	INJEQT_SET void setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction);
-	INJEQT_SET void setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction);
-	INJEQT_SET void setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction);
-	INJEQT_SET void setEditTalkableAction(EditTalkableAction *editTalkableAction);
-	INJEQT_SET void setExpandAction(ExpandAction *expandAction);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setMergeBuddiesAction(MergeBuddiesAction *mergeBuddiesAction);
-	INJEQT_SET void setOpenBuddyEmailAction(OpenBuddyEmailAction *openBuddyEmailAction);
-	INJEQT_SET void setOpenDescriptionLinkAction(OpenDescriptionLinkAction *openDescriptionLinkAction);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBlockUserAction(BlockUserAction *blockUserAction);
+    INJEQT_SET void setCollapseAction(CollapseAction *collapseAction);
+    INJEQT_SET void setCopyDescriptionAction(CopyDescriptionAction *copyDescriptionAction);
+    INJEQT_SET void setCopyPersonalInfoAction(CopyPersonalInfoAction *copyPersonalInfoAction);
+    INJEQT_SET void setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction);
+    INJEQT_SET void setEditTalkableAction(EditTalkableAction *editTalkableAction);
+    INJEQT_SET void setExpandAction(ExpandAction *expandAction);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setMergeBuddiesAction(MergeBuddiesAction *mergeBuddiesAction);
+    INJEQT_SET void setOpenBuddyEmailAction(OpenBuddyEmailAction *openBuddyEmailAction);
+    INJEQT_SET void setOpenDescriptionLinkAction(OpenDescriptionLinkAction *openDescriptionLinkAction);
+    INJEQT_INIT void init();
 
 public:
-	Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);
-	virtual ~KaduWindowActions();
-
+    Q_INVOKABLE KaduWindowActions(QObject *parent = nullptr);
+    virtual ~KaduWindowActions();
 };
-

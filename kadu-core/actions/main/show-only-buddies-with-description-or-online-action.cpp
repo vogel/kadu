@@ -28,15 +28,15 @@
 #include "windows/kadu-window-service.h"
 #include "windows/kadu-window.h"
 
-ShowOnlyBuddiesWithDescriptionOrOnlineAction::ShowOnlyBuddiesWithDescriptionOrOnlineAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowOnlyBuddiesWithDescriptionOrOnlineAction::ShowOnlyBuddiesWithDescriptionOrOnlineAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/only-show-online-and-with-description"});
-	setName(QStringLiteral("onlineAndDescriptionUsersAction"));
-	setText(tr("Only Show Online Buddies and Buddies with Description"));
-	setType(ActionDescription::TypeUserList);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/only-show-online-and-with-description"});
+    setName(QStringLiteral("onlineAndDescriptionUsersAction"));
+    setText(tr("Only Show Online Buddies and Buddies with Description"));
+    setType(ActionDescription::TypeUserList);
 }
 
 ShowOnlyBuddiesWithDescriptionOrOnlineAction::~ShowOnlyBuddiesWithDescriptionOrOnlineAction()
@@ -45,53 +45,55 @@ ShowOnlyBuddiesWithDescriptionOrOnlineAction::~ShowOnlyBuddiesWithDescriptionOrO
 
 void ShowOnlyBuddiesWithDescriptionOrOnlineAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ShowOnlyBuddiesWithDescriptionOrOnlineAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void ShowOnlyBuddiesWithDescriptionOrOnlineAction::actionInstanceCreated(Action *action)
 {
-	auto window = qobject_cast<MainWindow *>(action->parentWidget());
-	if (!window)
-		return;
-	if (!window->talkableProxyModel())
-		return;
+    auto window = qobject_cast<MainWindow *>(action->parentWidget());
+    if (!window)
+        return;
+    if (!window->talkableProxyModel())
+        return;
 
-	auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription");
-	auto filter = injectedFactory()->makeInjected<HideOfflineWithoutDescriptionTalkableFilter>(action);
-	filter->setEnabled(enabled);
+    auto enabled = m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription");
+    auto filter = injectedFactory()->makeInjected<HideOfflineWithoutDescriptionTalkableFilter>(action);
+    filter->setEnabled(enabled);
 
-	action->setData(QVariant::fromValue(filter));
-	action->setChecked(enabled);
+    action->setData(QVariant::fromValue(filter));
+    action->setChecked(enabled);
 
-	window->talkableProxyModel()->addFilter(filter);
+    window->talkableProxyModel()->addFilter(filter);
 }
 
 void ShowOnlyBuddiesWithDescriptionOrOnlineAction::actionTriggered(QAction *action, bool toggled)
 {
-	auto v = action->data();
-	if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
-	{
-		auto filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
-		filter->setEnabled(toggled);
-		m_configuration->deprecatedApi()->writeEntry("General", "ShowOnlineAndDescription", toggled);
-	}
+    auto v = action->data();
+    if (v.canConvert<HideOfflineWithoutDescriptionTalkableFilter *>())
+    {
+        auto filter = v.value<HideOfflineWithoutDescriptionTalkableFilter *>();
+        filter->setEnabled(toggled);
+        m_configuration->deprecatedApi()->writeEntry("General", "ShowOnlineAndDescription", toggled);
+    }
 }
 
 void ShowOnlyBuddiesWithDescriptionOrOnlineAction::configurationUpdated()
 {
-	if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
-		return;
+    if (!m_kaduWindowService || !m_kaduWindowService->kaduWindow())
+        return;
 
-	ActionDescription::configurationUpdated();
+    ActionDescription::configurationUpdated();
 
-	auto context = m_kaduWindowService->kaduWindow()->actionContext();
-	if (action(context) && action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription"))
-		action(context)->trigger();
+    auto context = m_kaduWindowService->kaduWindow()->actionContext();
+    if (action(context) &&
+        action(context)->isChecked() !=
+            m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription"))
+        action(context)->trigger();
 }
 
 #include "moc_show-only-buddies-with-description-or-online-action.cpp"

@@ -21,8 +21,7 @@
 
 #include "indicator-docking.h"
 
-IndicatorDockingPluginObject::IndicatorDockingPluginObject(QObject *parent) :
-		QObject{parent}
+IndicatorDockingPluginObject::IndicatorDockingPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,7 +31,7 @@ IndicatorDockingPluginObject::~IndicatorDockingPluginObject()
 
 void IndicatorDockingPluginObject::setIndicatorDocking(IndicatorDocking *indicatorDocking)
 {
-	m_indicatorDocking = indicatorDocking;
+    m_indicatorDocking = indicatorDocking;
 }
 
 void IndicatorDockingPluginObject::init()

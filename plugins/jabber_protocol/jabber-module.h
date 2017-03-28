@@ -23,9 +23,9 @@
 
 class JabberModule : public injeqt::module
 {
-
 public:
-	JabberModule();
-	virtual ~JabberModule() {}
-
+    JabberModule();
+    virtual ~JabberModule()
+    {
+    }
 };

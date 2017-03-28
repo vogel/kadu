@@ -36,114 +36,113 @@
 
 #include "suggester.h"
 
-Suggester::Suggester(QObject *parent) :
-		QObject{parent}
+Suggester::Suggester(QObject *parent) : QObject{parent}
 {
 }
 
 Suggester::~Suggester()
 {
-	clearWordMenu();
+    clearWordMenu();
 }
 
 void Suggester::setActions(Actions *actions)
 {
-	m_actions = actions;
+    m_actions = actions;
 }
 
 void Suggester::setCustomInputMenuManager(CustomInputMenuManager *customInputMenuManager)
 {
-	m_customInputMenuManager = customInputMenuManager;
+    m_customInputMenuManager = customInputMenuManager;
 }
 
 void Suggester::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Suggester::setSpellcheckerConfiguration(SpellcheckerConfiguration *spellcheckerConfiguration)
 {
-	m_spellcheckerConfiguration = spellcheckerConfiguration;
+    m_spellcheckerConfiguration = spellcheckerConfiguration;
 }
 
 void Suggester::setSpellChecker(SpellChecker *spellChecker)
 {
-	m_spellChecker = spellChecker;
+    m_spellChecker = spellChecker;
 }
 
 void Suggester::buildSuggestList(const QString &word)
 {
-	SuggestionWordList = m_spellChecker->buildSuggestList(word);
+    SuggestionWordList = m_spellChecker->buildSuggestList(word);
 }
 
 void Suggester::addWordListToMenu(const QTextCursor &textCursor)
 {
-	CurrentTextSelection = textCursor;
+    CurrentTextSelection = textCursor;
 
-	// Add new actions
-	for (auto const &listWord : SuggestionWordList)
-		SuggestActions.append(m_pluginInjectedFactory->makeInjected<SuggestAction>(listWord, this));
+    // Add new actions
+    for (auto const &listWord : SuggestionWordList)
+        SuggestActions.append(m_pluginInjectedFactory->makeInjected<SuggestAction>(listWord, this));
 
-	unsigned int actionPriority = 0;
-	for (auto action : SuggestActions)
-		m_customInputMenuManager->addActionDescription(action, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
+    unsigned int actionPriority = 0;
+    for (auto action : SuggestActions)
+        m_customInputMenuManager->addActionDescription(
+            action, CustomInputMenuItem::MenuCategorySuggestion, actionPriority++);
 }
 
 void Suggester::clearWordMenu()
 {
-	// Remove old actions
-	for (auto action : SuggestActions)
-		m_customInputMenuManager->removeActionDescription(action);
+    // Remove old actions
+    for (auto action : SuggestActions)
+        m_customInputMenuManager->removeActionDescription(action);
 
-	qDeleteAll(SuggestActions);
-	SuggestActions.clear();
+    qDeleteAll(SuggestActions);
+    SuggestActions.clear();
 }
 
 bool Suggester::eventFilter(QObject *object, QEvent *event)
 {
-	CustomInput *inputBox = qobject_cast<CustomInput *>(object);
+    CustomInput *inputBox = qobject_cast<CustomInput *>(object);
 
-	if ((inputBox) && (event->type() == QEvent::MouseButtonPress))
-	{
-		QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    if ((inputBox) && (event->type() == QEvent::MouseButtonPress))
+    {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
 
-		if (mouseEvent->button() == Qt::RightButton)
-		{
-			QTextCursor textCursor = inputBox->cursorForPosition(mouseEvent->pos());
-			textCursor.select(QTextCursor::WordUnderCursor);
+        if (mouseEvent->button() == Qt::RightButton)
+        {
+            QTextCursor textCursor = inputBox->cursorForPosition(mouseEvent->pos());
+            textCursor.select(QTextCursor::WordUnderCursor);
 
-			if ((!textCursor.selectedText().isEmpty()) &&
-					(!m_spellChecker->checkWord(textCursor.selectedText())) &&
-					 (m_spellcheckerConfiguration->suggester()))
-			{
-				buildSuggestList(textCursor.selectedText());
-				clearWordMenu();
-				addWordListToMenu(textCursor);
-			}
-			else
-			{
-				clearWordMenu();
-			}
-		}
-	}
-	else if((inputBox) && (event->type() == QEvent::ContextMenu))
-	{
-		QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
+            if ((!textCursor.selectedText().isEmpty()) && (!m_spellChecker->checkWord(textCursor.selectedText())) &&
+                (m_spellcheckerConfiguration->suggester()))
+            {
+                buildSuggestList(textCursor.selectedText());
+                clearWordMenu();
+                addWordListToMenu(textCursor);
+            }
+            else
+            {
+                clearWordMenu();
+            }
+        }
+    }
+    else if ((inputBox) && (event->type() == QEvent::ContextMenu))
+    {
+        QContextMenuEvent *contextMenuEvent = static_cast<QContextMenuEvent *>(event);
 
-		/* Don't react on context menu triggered by keyboard key */
-		if (contextMenuEvent->reason() == QContextMenuEvent::Keyboard)
-			clearWordMenu();
-	}
+        /* Don't react on context menu triggered by keyboard key */
+        if (contextMenuEvent->reason() == QContextMenuEvent::Keyboard)
+            clearWordMenu();
+    }
 
-	return QObject::eventFilter(object, event);
+    return QObject::eventFilter(object, event);
 }
 
 void Suggester::replaceWith(QString word)
 {
-	if (word.indexOf(" (") != -1)
-		word.truncate(word.indexOf(" ("));
+    if (word.indexOf(" (") != -1)
+        word.truncate(word.indexOf(" ("));
 
-	CurrentTextSelection.insertText(word);
+    CurrentTextSelection.insertText(word);
 }
 
 #include "moc_suggester.cpp"

@@ -24,20 +24,21 @@
 
 #include "otr-is-logged-in-service.h"
 
-int OtrIsLoggedInService::wrapperOtrIsLoggedIn(void *data, const char *accountName, const char *protocol, const char *recipient)
+int OtrIsLoggedInService::wrapperOtrIsLoggedIn(
+    void *data, const char *accountName, const char *protocol, const char *recipient)
 {
-	Q_UNUSED(accountName);
-	Q_UNUSED(protocol);
+    Q_UNUSED(accountName);
+    Q_UNUSED(protocol);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->isLoggedInService())
-		return static_cast<int>(opData->isLoggedInService()->isLoggedIn(opData->contact().contactAccount(), QString::fromUtf8(recipient)));
-	else
-		return static_cast<int>(OtrIsLoggedInService::NotSure);
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->isLoggedInService())
+        return static_cast<int>(
+            opData->isLoggedInService()->isLoggedIn(opData->contact().contactAccount(), QString::fromUtf8(recipient)));
+    else
+        return static_cast<int>(OtrIsLoggedInService::NotSure);
 }
 
-OtrIsLoggedInService::OtrIsLoggedInService(QObject *parent) :
-		QObject{parent}
+OtrIsLoggedInService::OtrIsLoggedInService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -47,20 +48,21 @@ OtrIsLoggedInService::~OtrIsLoggedInService()
 
 void OtrIsLoggedInService::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
-OtrIsLoggedInService::IsLoggedInStatus OtrIsLoggedInService::isLoggedIn(const Account &account, const QString &contactId)
+OtrIsLoggedInService::IsLoggedInStatus
+OtrIsLoggedInService::isLoggedIn(const Account &account, const QString &contactId)
 {
-	auto contact = m_contactManager->byId(account, contactId, ActionReturnNull);
+    auto contact = m_contactManager->byId(account, contactId, ActionReturnNull);
 
-	if (!contact)
-		return NotSure;
+    if (!contact)
+        return NotSure;
 
-	if (contact.currentStatus().isDisconnected())
-		return NotLoggedIn;
-	else
-		return LoggedIn;
+    if (contact.currentStatus().isDisconnected())
+        return NotLoggedIn;
+    else
+        return LoggedIn;
 }
 
 #include "moc_otr-is-logged-in-service.cpp"

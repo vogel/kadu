@@ -24,6 +24,11 @@
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
+#include "gtalk-protocol-factory.h"
+#include "jabber-id-validator.h"
+#include "jabber-protocol-factory.h"
+#include "jabber-url-handler.h"
+#include "jid.h"
 #include "open-chat-with/jabber-open-chat-with-runner.h"
 #include "qxmpp/jabber-register-extension.h"
 #include "qxmpp/jabber-roster-extension.h"
@@ -41,11 +46,6 @@
 #include "services/jabber-stream-debug-service.h"
 #include "services/jabber-subscription-service.h"
 #include "services/jabber-vcard-service.h"
-#include "gtalk-protocol-factory.h"
-#include "jabber-id-validator.h"
-#include "jabber-protocol-factory.h"
-#include "jabber-url-handler.h"
-#include "jid.h"
 
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
@@ -61,8 +61,8 @@
 #include "protocols/protocols-manager.h"
 #include "status/status-type-manager.h"
 #include "url-handlers/url-handler-manager.h"
-#include "windows/open-chat-with/open-chat-with-runner-manager.h"
 #include "windows/message-dialog.h"
+#include "windows/open-chat-with/open-chat-with-runner-manager.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtNetwork/QAbstractSocket>
@@ -75,149 +75,147 @@
 #include <qxmpp/QXmppVCardManager.h>
 #include <qxmpp/QXmppVersionManager.h>
 
-JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) :
-		Protocol{account, factory},
-		m_contactsListReadOnly(false)
+JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory)
+        : Protocol{account, factory}, m_contactsListReadOnly(false)
 {
 }
 
 JabberProtocol::~JabberProtocol()
 {
-	logout();
+    logout();
 
-	OpenChatWithRunnerManager::instance()->unregisterRunner(m_jabberOpenChatWithRunner);
-	delete m_jabberOpenChatWithRunner;
-	m_jabberOpenChatWithRunner = 0;
+    OpenChatWithRunnerManager::instance()->unregisterRunner(m_jabberOpenChatWithRunner);
+    delete m_jabberOpenChatWithRunner;
+    m_jabberOpenChatWithRunner = 0;
 }
 
 void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
-	m_chatServiceRepository = chatServiceRepository;
+    m_chatServiceRepository = chatServiceRepository;
 }
 
 void JabberProtocol::setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository)
 {
-	m_chatStateServiceRepository = chatStateServiceRepository;
+    m_chatStateServiceRepository = chatStateServiceRepository;
 }
 
 void JabberProtocol::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberProtocol::setSystemInfo(SystemInfo *systemInfo)
 {
-	m_systemInfo = systemInfo;
+    m_systemInfo = systemInfo;
 }
 
 void JabberProtocol::setVersionService(VersionService *versionService)
 {
-	m_versionService = versionService;
+    m_versionService = versionService;
 }
 
 void JabberProtocol::init()
 {
-	connect(account(), SIGNAL(updated()), this, SLOT(updatePresence()), Qt::UniqueConnection);
+    connect(account(), SIGNAL(updated()), this, SLOT(updatePresence()), Qt::UniqueConnection);
 
-	// TODO: remove after 01.05.2015
-	if (account().id().endsWith(QStringLiteral("@chat.facebook.com")))
-		setContactsListReadOnly(true);
+    // TODO: remove after 01.05.2015
+    if (account().id().endsWith(QStringLiteral("@chat.facebook.com")))
+        setContactsListReadOnly(true);
 
-	m_presenceService = pluginInjectedFactory()->makeInjected<JabberPresenceService>(this);
-	m_errorService = new JabberErrorService{this};
+    m_presenceService = pluginInjectedFactory()->makeInjected<JabberPresenceService>(this);
+    m_errorService = new JabberErrorService{this};
 
-	m_client = new QXmppClient{this};
-	connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
-	connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
-	connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
-	connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
+    m_client = new QXmppClient{this};
+    connect(m_client, SIGNAL(connected()), this, SLOT(connectedToServer()));
+    connect(m_client, SIGNAL(disconnected()), this, SLOT(disconenctedFromServer()));
+    connect(m_client, SIGNAL(error(QXmppClient::Error)), this, SLOT(error(QXmppClient::Error)));
+    connect(m_client, SIGNAL(presenceReceived(QXmppPresence)), this, SLOT(presenceReceived(QXmppPresence)));
 
-	pluginInjectedFactory()->makeInjected<JabberSslHandler>(m_client,
-		[&](){
-			emit stateMachineSslErrorResolved();
-		},
-		[&](){
-			emit stateMachineSslErrorNotResolved();
-		}
-	);
+    pluginInjectedFactory()->makeInjected<JabberSslHandler>(
+        m_client, [&]() { emit stateMachineSslErrorResolved(); }, [&]() { emit stateMachineSslErrorNotResolved(); });
 
-	m_registerExtension = std::make_unique<JabberRegisterExtension>();
-	m_rosterExtension = std::make_unique<JabberRosterExtension>();
-	m_mucManager = std::make_unique<QXmppMucManager>();
-	m_transferManager = std::make_unique<QXmppTransferManager>();
+    m_registerExtension = std::make_unique<JabberRegisterExtension>();
+    m_rosterExtension = std::make_unique<JabberRosterExtension>();
+    m_mucManager = std::make_unique<QXmppMucManager>();
+    m_transferManager = std::make_unique<QXmppTransferManager>();
 
-	m_rosterExtension->setJabberErrorService(m_errorService);
+    m_rosterExtension->setJabberErrorService(m_errorService);
 
-	m_client->addExtension(m_registerExtension.get());
-	m_client->insertExtension(0, m_rosterExtension.get());
-	m_client->addExtension(m_mucManager.get());
-	m_client->addExtension(m_transferManager.get());
+    m_client->addExtension(m_registerExtension.get());
+    m_client->insertExtension(0, m_rosterExtension.get());
+    m_client->addExtension(m_mucManager.get());
+    m_client->addExtension(m_transferManager.get());
 
-	m_changePasswordService = new JabberChangePasswordService{m_registerExtension.get(), this};
-	m_changePasswordService->setErrorService(m_errorService);
+    m_changePasswordService = new JabberChangePasswordService{m_registerExtension.get(), this};
+    m_changePasswordService->setErrorService(m_errorService);
 
-	m_resourceService = pluginInjectedFactory()->makeInjected<JabberResourceService>(this);
+    m_resourceService = pluginInjectedFactory()->makeInjected<JabberResourceService>(this);
 
-	m_roomChatService = pluginInjectedFactory()->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
+    m_roomChatService =
+        pluginInjectedFactory()->makeInjected<JabberRoomChatService>(m_client, m_mucManager.get(), account(), this);
 
-	m_chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
-	m_chatStateService->setResourceService(m_resourceService);
+    m_chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
+    m_chatStateService->setResourceService(m_resourceService);
 
-	m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
+    m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
 
-	m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
-	m_chatService->setChatStateService(m_chatStateService);
-	m_chatService->setResourceService(m_resourceService);
-	m_chatService->setRoomChatService(m_roomChatService);
+    m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
+    m_chatService->setChatStateService(m_chatStateService);
+    m_chatService->setResourceService(m_resourceService);
+    m_chatService->setRoomChatService(m_roomChatService);
 
-	m_contactPersonalInfoService = pluginInjectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
-	m_personalInfoService = pluginInjectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
-	m_streamDebugService = new JabberStreamDebugService{m_client, this};
+    m_contactPersonalInfoService =
+        pluginInjectedFactory()->makeInjected<JabberContactPersonalInfoService>(account(), this);
+    m_personalInfoService = pluginInjectedFactory()->makeInjected<JabberPersonalInfoService>(account(), this);
+    m_streamDebugService = new JabberStreamDebugService{m_client, this};
 
-	m_fileTransferService = pluginInjectedFactory()->makeInjected<JabberFileTransferService>(m_transferManager.get(), account(), this);
-	m_fileTransferService->setResourceService(m_resourceService);
+    m_fileTransferService =
+        pluginInjectedFactory()->makeInjected<JabberFileTransferService>(m_transferManager.get(), account(), this);
+    m_fileTransferService->setResourceService(m_resourceService);
 
-	m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
+    m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
 
-	m_avatarService->setVCardService(m_vcardService);
-	m_contactPersonalInfoService->setVCardService(m_vcardService);
-	m_personalInfoService->setVCardService(m_vcardService);
+    m_avatarService->setVCardService(m_vcardService);
+    m_contactPersonalInfoService->setVCardService(m_vcardService);
+    m_personalInfoService->setVCardService(m_vcardService);
 
-	auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
-	auto rosterService = pluginInjectedFactory()->makeInjected<JabberRosterService>(&m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
+    auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
+    auto rosterService = pluginInjectedFactory()->makeInjected<JabberRosterService>(
+        &m_client->rosterManager(), m_rosterExtension.get(), contacts, this);
 
-	connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
+    connect(rosterService, SIGNAL(rosterReady()), this, SLOT(rosterReady()));
 
-	setRosterService(rosterService);
+    setRosterService(rosterService);
 
-	m_subscriptionService = pluginInjectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
+    m_subscriptionService =
+        pluginInjectedFactory()->makeInjected<JabberSubscriptionService>(&m_client->rosterManager(), this);
 
-	m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
-	OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
+    m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
+    OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
 
-	m_chatServiceRepository->addChatService(m_chatService);
-	m_chatStateServiceRepository->addChatStateService(m_chatStateService);
+    m_chatServiceRepository->addChatService(m_chatService);
+    m_chatStateServiceRepository->addChatStateService(m_chatStateService);
 }
 
 void JabberProtocol::done()
 {
-	m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
-	m_chatServiceRepository->removeChatService(m_chatService);
+    m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
+    m_chatServiceRepository->removeChatService(m_chatService);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
 {
-	m_contactsListReadOnly = contactsListReadOnly;
+    m_contactsListReadOnly = contactsListReadOnly;
 }
 
 void JabberProtocol::rosterReady()
 {
-	/* Since we are online now, set initial presence. Don't do this
-	* before the roster request or we will receive presence
-	* information before we have updated our roster with actual
-	* contacts from the server! (Iris won't forward presence
-	* information in that case either). */
-	sendStatusToServer();
+    /* Since we are online now, set initial presence. Don't do this
+    * before the roster request or we will receive presence
+    * information before we have updated our roster with actual
+    * contacts from the server! (Iris won't forward presence
+    * information in that case either). */
+    sendStatusToServer();
 }
 
 /*
@@ -228,208 +226,207 @@ void JabberProtocol::rosterReady()
  */
 void JabberProtocol::login()
 {
-	auto accountData = JabberAccountData{account()};
-	if (accountData.publishSystemInfo())
-	{
-		m_client->versionManager().setClientName("Kadu");
-		m_client->versionManager().setClientVersion(m_versionService->version());
-		m_client->versionManager().setClientOs(m_systemInfo->osFullName());
-	}
-	else
-	{
-		m_client->versionManager().setClientName(QString{});
-		m_client->versionManager().setClientVersion(QString{});
-		m_client->versionManager().setClientOs(QString{});
-	}
+    auto accountData = JabberAccountData{account()};
+    if (accountData.publishSystemInfo())
+    {
+        m_client->versionManager().setClientName("Kadu");
+        m_client->versionManager().setClientVersion(m_versionService->version());
+        m_client->versionManager().setClientOs(m_systemInfo->osFullName());
+    }
+    else
+    {
+        m_client->versionManager().setClientName(QString{});
+        m_client->versionManager().setClientVersion(QString{});
+        m_client->versionManager().setClientOs(QString{});
+    }
 
-	auto streamSecurityMode = QXmppConfiguration::StreamSecurityMode{};
-	switch (accountData.encryptionMode())
-	{
-		case JabberAccountData::Encryption_Auto:
-			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSEnabled;
-			break;
-		case JabberAccountData::Encryption_Yes:
-			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSRequired;
-			break;
-		case JabberAccountData::Encryption_No:
-			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSDisabled;
-			break;
-		case JabberAccountData::Encryption_Legacy:
-			streamSecurityMode = QXmppConfiguration::StreamSecurityMode::LegacySSL;
-			break;
-	}
+    auto streamSecurityMode = QXmppConfiguration::StreamSecurityMode{};
+    switch (accountData.encryptionMode())
+    {
+    case JabberAccountData::Encryption_Auto:
+        streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSEnabled;
+        break;
+    case JabberAccountData::Encryption_Yes:
+        streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSRequired;
+        break;
+    case JabberAccountData::Encryption_No:
+        streamSecurityMode = QXmppConfiguration::StreamSecurityMode::TLSDisabled;
+        break;
+    case JabberAccountData::Encryption_Legacy:
+        streamSecurityMode = QXmppConfiguration::StreamSecurityMode::LegacySSL;
+        break;
+    }
 
-	auto useNonSASLAuthentication = accountData.plainAuthMode() == JabberAccountData::AllowPlain
-			? true
-			: accountData.plainAuthMode() == JabberAccountData::JabberAccountData::AllowPlainOverTLS
-			? QXmppConfiguration::StreamSecurityMode::TLSDisabled != streamSecurityMode
-			: false;
+    auto useNonSASLAuthentication =
+        accountData.plainAuthMode() == JabberAccountData::AllowPlain
+            ? true
+            : accountData.plainAuthMode() == JabberAccountData::JabberAccountData::AllowPlainOverTLS
+                  ? QXmppConfiguration::StreamSecurityMode::TLSDisabled != streamSecurityMode
+                  : false;
 
-	auto jid = Jid::parse(account().id()).withResource(accountData.resource(*m_systemInfo));
+    auto jid = Jid::parse(account().id()).withResource(accountData.resource(*m_systemInfo));
 
-	auto configuration = QXmppConfiguration{};
-	configuration.setAutoAcceptSubscriptions(false);
-	configuration.setAutoReconnectionEnabled(false);
-	configuration.setIgnoreSslErrors(false);
-	configuration.setJid(jid.full());
-	configuration.setPassword(account().password());
-	configuration.setStreamSecurityMode(streamSecurityMode);
-	configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
+    auto configuration = QXmppConfiguration{};
+    configuration.setAutoAcceptSubscriptions(false);
+    configuration.setAutoReconnectionEnabled(false);
+    configuration.setIgnoreSslErrors(false);
+    configuration.setJid(jid.full());
+    configuration.setPassword(account().password());
+    configuration.setStreamSecurityMode(streamSecurityMode);
+    configuration.setUseNonSASLAuthentication(useNonSASLAuthentication);
 
-	auto proxy = toQNetworkProxy(account().proxy());
-	if (proxy.type() != QNetworkProxy::NoProxy)
-		configuration.setNetworkProxy(proxy);
+    auto proxy = toQNetworkProxy(account().proxy());
+    if (proxy.type() != QNetworkProxy::NoProxy)
+        configuration.setNetworkProxy(proxy);
 
-	if (accountData.useCustomHostPort())
-	{
-		configuration.setHost(accountData.customHost());
-		configuration.setPort(accountData.customPort());
-	}
+    if (accountData.useCustomHostPort())
+    {
+        configuration.setHost(accountData.customHost());
+        configuration.setPort(accountData.customPort());
+    }
 
-	auto presence = m_presenceService->statusToPresence(status());
-	presence.setPriority(accountData.priority());
+    auto presence = m_presenceService->statusToPresence(status());
+    presence.setPriority(accountData.priority());
 
-	static_cast<JabberRosterService *>(rosterService())->prepareRoster();
-	m_client->connectToServer(configuration, presence);
+    static_cast<JabberRosterService *>(rosterService())->prepareRoster();
+    m_client->connectToServer(configuration, presence);
 }
 
 void JabberProtocol::connectedToServer()
 {
-	loggedIn();
+    loggedIn();
 }
 
 void JabberProtocol::logout()
 {
-	auto logoutStatus = status();
-	logoutStatus.setType(StatusType::Offline);
-	m_client->setClientPresence(m_presenceService->statusToPresence(logoutStatus));
-	m_client->disconnectFromServer();
+    auto logoutStatus = status();
+    logoutStatus.setType(StatusType::Offline);
+    m_client->setClientPresence(m_presenceService->statusToPresence(logoutStatus));
+    m_client->disconnectFromServer();
 
-	loggedOut();
+    loggedOut();
 }
 
 void JabberProtocol::disconenctedFromServer()
 {
-	m_resourceService->clear();
+    m_resourceService->clear();
 }
 
 void JabberProtocol::error(QXmppClient::Error error)
 {
-	auto errorMessage = QString{};
-	switch (error)
-	{
-		case QXmppClient::Error::SocketError:
-		{
-			switch (m_client->socketError())
-			{
-				case QAbstractSocket::SslHandshakeFailedError:
-					sslError();
-					return;
-				default:
-					break;
-			}
-			break;
-		}
+    auto errorMessage = QString{};
+    switch (error)
+    {
+    case QXmppClient::Error::SocketError:
+    {
+        switch (m_client->socketError())
+        {
+        case QAbstractSocket::SslHandshakeFailedError:
+            sslError();
+            return;
+        default:
+            break;
+        }
+        break;
+    }
 
-		case QXmppClient::Error::XmppStreamError:
-		{
-			switch (m_client->xmppStreamError())
-			{
-				case QXmppStanza::Error::NotAuthorized:
-					passwordRequired();
-					return;
-				case QXmppStanza::Error::Conflict:
-					errorMessage = tr("Another client connected on the same resource.");
-					setStatus(Status{}, SourceUser);
-					break;
-				default:
-					break;
-			}
-			break;
-		}
+    case QXmppClient::Error::XmppStreamError:
+    {
+        switch (m_client->xmppStreamError())
+        {
+        case QXmppStanza::Error::NotAuthorized:
+            passwordRequired();
+            return;
+        case QXmppStanza::Error::Conflict:
+            errorMessage = tr("Another client connected on the same resource.");
+            setStatus(Status{}, SourceUser);
+            break;
+        default:
+            break;
+        }
+        break;
+    }
 
-		default:
-			break;
-	}
+    default:
+        break;
+    }
 
-	if (errorMessage.isEmpty())
-		errorMessage = m_errorService->errorMessage(m_client, error);
-	emit connectionError(account(), m_client->configuration().host(), errorMessage);
-	connectionError();
+    if (errorMessage.isEmpty())
+        errorMessage = m_errorService->errorMessage(m_client, error);
+    emit connectionError(account(), m_client->configuration().host(), errorMessage);
+    connectionError();
 
-	m_client->disconnectFromServer();
+    m_client->disconnectFromServer();
 }
 
 void JabberProtocol::updatePresence()
 {
-	sendStatusToServer();
+    sendStatusToServer();
 }
 
 void JabberProtocol::sendStatusToServer()
 {
-	if (!isConnected() && !isDisconnecting())
-		return;
+    if (!isConnected() && !isDisconnecting())
+        return;
 
-	auto presence = m_presenceService->statusToPresence(status());
-	auto accountData = JabberAccountData{account()};
-	presence.setPriority(accountData.priority());
+    auto presence = m_presenceService->statusToPresence(status());
+    auto accountData = JabberAccountData{account()};
+    presence.setPriority(accountData.priority());
 
-	m_client->setClientPresence(presence);
-	account().accountContact().setCurrentStatus(status());
+    m_client->setClientPresence(presence);
+    account().accountContact().setCurrentStatus(status());
 }
 
 void JabberProtocol::changePrivateMode()
 {
-	sendStatusToServer();
+    sendStatusToServer();
 }
 
 void JabberProtocol::presenceReceived(const QXmppPresence &presence)
 {
-	if (presence.isMucSupported())
-		return;
+    if (presence.isMucSupported())
+        return;
 
-	auto jid = Jid::parse(presence.from());
-	auto id = jid.bare();
-	auto contact = contactManager()->byId(account(), id, ActionReturnNull);
-	if (!contact)
-		return;
+    auto jid = Jid::parse(presence.from());
+    auto id = jid.bare();
+    auto contact = contactManager()->byId(account(), id, ActionReturnNull);
+    if (!contact)
+        return;
 
-	auto status = m_presenceService->presenceToStatus(presence);
-	if (status.type() != StatusType::Offline)
-	{
-		auto jabberResource = JabberResource{jid, presence.priority(), status};
-		m_resourceService->updateResource(jabberResource);
-	}
-	else
-	{
-		if (contact.property("jabber:chat-resource", QString{}).toString() == jid.resource())
-			contact.removeProperty("jabber:chat-resource");
-		m_resourceService->removeResource(jid);
-	}
+    auto status = m_presenceService->presenceToStatus(presence);
+    if (status.type() != StatusType::Offline)
+    {
+        auto jabberResource = JabberResource{jid, presence.priority(), status};
+        m_resourceService->updateResource(jabberResource);
+    }
+    else
+    {
+        if (contact.property("jabber:chat-resource", QString{}).toString() == jid.resource())
+            contact.removeProperty("jabber:chat-resource");
+        m_resourceService->removeResource(jid);
+    }
 
-	auto bestResource = m_resourceService->bestResource(id);
-	auto statusToSet = bestResource.isEmpty()
-			? status
-			: bestResource.status();
+    auto bestResource = m_resourceService->bestResource(id);
+    auto statusToSet = bestResource.isEmpty() ? status : bestResource.status();
 
-	auto oldStatus = contact.currentStatus();
-	contact.setCurrentStatus(statusToSet);
+    auto oldStatus = contact.currentStatus();
+    contact.setCurrentStatus(statusToSet);
 
-	// see issue #2159 - we need a way to ignore first status of given contact
-	if (contact.ignoreNextStatusChange())
-		contact.setIgnoreNextStatusChange(false);
-	else
-		emit contactStatusChanged(contact, oldStatus);
+    // see issue #2159 - we need a way to ignore first status of given contact
+    if (contact.ignoreNextStatusChange())
+        contact.setIgnoreNextStatusChange(false);
+    else
+        emit contactStatusChanged(contact, oldStatus);
 }
 
 QString JabberProtocol::statusPixmapPath()
 {
-	return QStringLiteral("xmpp");
+    return QStringLiteral("xmpp");
 }
 
-JabberChangePasswordService * JabberProtocol::changePasswordService() const
+JabberChangePasswordService *JabberProtocol::changePasswordService() const
 {
-	return m_changePasswordService;
+    return m_changePasswordService;
 }
 
 #include "moc_jabber-protocol.cpp"

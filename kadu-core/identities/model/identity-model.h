@@ -33,30 +33,29 @@ class Identity;
 
 class IdentityModel : public QAbstractListModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit IdentityModel(QObject *parent = nullptr);
-	virtual ~IdentityModel();
+    explicit IdentityModel(QObject *parent = nullptr);
+    virtual ~IdentityModel();
 
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	Identity identity(const QModelIndex &index) const;
-	int identityIndex(Identity identity) const;
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+    Identity identity(const QModelIndex &index) const;
+    int identityIndex(Identity identity) const;
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 private:
-	QPointer<IdentityManager> m_identityManager;
+    QPointer<IdentityManager> m_identityManager;
 
 private slots:
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_INIT void init();
 
-	void identityAboutToBeAdded(Identity identity);
-	void identityAdded(Identity identity);
-	void identityAboutToBeRemoved(Identity identity);
-	void identityRemoved(Identity identity);
-
+    void identityAboutToBeAdded(Identity identity);
+    void identityAdded(Identity identity);
+    void identityAboutToBeRemoved(Identity identity);
+    void identityRemoved(Identity identity);
 };

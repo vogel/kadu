@@ -30,45 +30,46 @@
 
 #include "otr-message-service.h"
 
-void OtrMessageService::wrapperOtrInjectMessage(void *data, const char *accountName, const char *protocol, const char *recipient, const char *message)
+void OtrMessageService::wrapperOtrInjectMessage(
+    void *data, const char *accountName, const char *protocol, const char *recipient, const char *message)
 {
-	Q_UNUSED(accountName);
-	Q_UNUSED(protocol);
-	Q_UNUSED(recipient);
+    Q_UNUSED(accountName);
+    Q_UNUSED(protocol);
+    Q_UNUSED(recipient);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->messageService())
-		return opData->messageService()->injectMessage(opData->contact(), QByteArray(message));
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->messageService())
+        return opData->messageService()->injectMessage(opData->contact(), QByteArray(message));
 }
 
 int OtrMessageService::wrapperOtrMaxMessageSize(void *data, ConnContext *context)
 {
-	Q_UNUSED(context);
+    Q_UNUSED(context);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->messageService())
-		return opData->messageService()->maxMessageSize(opData->contact().contactAccount());
-	else
-		return 0;
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->messageService())
+        return opData->messageService()->maxMessageSize(opData->contact().contactAccount());
+    else
+        return 0;
 }
 
-const char * OtrMessageService::wrapperOtrResentMessagePrefix(void *data, ConnContext *context)
+const char *OtrMessageService::wrapperOtrResentMessagePrefix(void *data, ConnContext *context)
 {
-	Q_UNUSED(data);
-	Q_UNUSED(context);
+    Q_UNUSED(data);
+    Q_UNUSED(context);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->messageService())
-		return strdup(qPrintable(opData->messageService()->resentMessagePrefix()));
-	else
-		return 0;
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->messageService())
+        return strdup(qPrintable(opData->messageService()->resentMessagePrefix()));
+    else
+        return 0;
 }
 
 void OtrMessageService::wrapperOtrResentMessagePrefixFree(void *data, const char *prefix)
 {
-	Q_UNUSED(data);
+    Q_UNUSED(data);
 
-	free(const_cast<char *>(prefix));
+    free(const_cast<char *>(prefix));
 }
 
 OtrMessageService::OtrMessageService()
@@ -81,44 +82,44 @@ OtrMessageService::~OtrMessageService()
 
 void OtrMessageService::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void OtrMessageService::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
-	m_chatServiceRepository = chatServiceRepository;
+    m_chatServiceRepository = chatServiceRepository;
 }
 
 void OtrMessageService::setChatStorage(ChatStorage *chatStorage)
 {
-	m_chatStorage = chatStorage;
+    m_chatStorage = chatStorage;
 }
 
 void OtrMessageService::setMessageManager(MessageManager *messageManager)
 {
-	CurrentMessageManager = messageManager;
+    CurrentMessageManager = messageManager;
 }
 
 void OtrMessageService::injectMessage(const Contact &contact, const QByteArray &message) const
 {
-	if (!CurrentMessageManager)
-		return;
+    if (!CurrentMessageManager)
+        return;
 
-	Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
-	CurrentMessageManager.data()->sendRawMessage(chat, message);
+    Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
+    CurrentMessageManager.data()->sendRawMessage(chat, message);
 }
 
 int OtrMessageService::maxMessageSize(const Account &account) const
 {
-	auto chatService = m_chatServiceRepository->chatService(account);
-	if (!chatService)
-		return 0;
-	return chatService->maxMessageLength();
+    auto chatService = m_chatServiceRepository->chatService(account);
+    if (!chatService)
+        return 0;
+    return chatService->maxMessageLength();
 }
 
 QString OtrMessageService::resentMessagePrefix() const
 {
-	return tr("[resent]");
+    return tr("[resent]");
 }
 
 #include "moc_otr-message-service.cpp"

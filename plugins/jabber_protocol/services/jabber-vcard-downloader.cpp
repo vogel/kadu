@@ -26,9 +26,8 @@
 #include <qxmpp/QXmppVCardIq.h>
 #include <qxmpp/QXmppVCardManager.h>
 
-JabberVCardDownloader::JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent) :
-		QObject(parent),
-		m_vcardManager{vcardManager}
+JabberVCardDownloader::JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent)
+        : QObject(parent), m_vcardManager{vcardManager}
 {
 }
 
@@ -38,31 +37,31 @@ JabberVCardDownloader::~JabberVCardDownloader()
 
 void JabberVCardDownloader::done(const QXmppVCardIq &vcard)
 {
-	emit vCardDownloaded(true, vcard);
-	deleteLater();
+    emit vCardDownloaded(true, vcard);
+    deleteLater();
 }
 
 void JabberVCardDownloader::failed()
 {
-	emit vCardDownloaded(false, QXmppVCardIq{});
-	deleteLater();
+    emit vCardDownloaded(false, QXmppVCardIq{});
+    deleteLater();
 }
 
 void JabberVCardDownloader::downloadVCard(const QString &id)
 {
-	m_requestId = m_vcardManager->requestVCard(id);
-	if (m_requestId.isEmpty())
-		failed();
+    m_requestId = m_vcardManager->requestVCard(id);
+    if (m_requestId.isEmpty())
+        failed();
 
-	connect(m_vcardManager, SIGNAL(vCardReceived(QXmppVCardIq)), this, SLOT(vCardReceived(QXmppVCardIq)));
+    connect(m_vcardManager, SIGNAL(vCardReceived(QXmppVCardIq)), this, SLOT(vCardReceived(QXmppVCardIq)));
 }
 
 void JabberVCardDownloader::vCardReceived(const QXmppVCardIq &vcard)
 {
-	if (vcard.id() != m_requestId)
-		return;
+    if (vcard.id() != m_requestId)
+        return;
 
-	done(vcard);
+    done(vcard);
 }
 
 #include "moc_jabber-vcard-downloader.cpp"

@@ -54,11 +54,9 @@
 #include <QtWidgets/QTreeView>
 #include <QtWidgets/QVBoxLayout>
 
-BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent) :
-		QWidget(parent),
-		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
-		SimpleValueStateNotifier(new SimpleConfigurationValueStateNotifier(this)),
-		MyBuddy(buddy)
+BuddyGeneralConfigurationWidget::BuddyGeneralConfigurationWidget(const Buddy &buddy, QWidget *parent)
+        : QWidget(parent), ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
+          SimpleValueStateNotifier(new SimpleConfigurationValueStateNotifier(this)), MyBuddy(buddy)
 {
 }
 
@@ -68,150 +66,151 @@ BuddyGeneralConfigurationWidget::~BuddyGeneralConfigurationWidget()
 
 void BuddyGeneralConfigurationWidget::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void BuddyGeneralConfigurationWidget::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void BuddyGeneralConfigurationWidget::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void BuddyGeneralConfigurationWidget::init()
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	createGui();
-	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleValueStateNotifier);
-	updateStateNotifier();
+    setAttribute(Qt::WA_DeleteOnClose);
+    createGui();
+    ValueStateNotifier->addConfigurationValueStateNotifier(SimpleValueStateNotifier);
+    updateStateNotifier();
 }
 
 void BuddyGeneralConfigurationWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QWidget *nameWidget = new QWidget(this);
-	layout->addWidget(nameWidget);
+    QWidget *nameWidget = new QWidget(this);
+    layout->addWidget(nameWidget);
 
-	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
+    QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
 
-	QLabel *numberLabel = new QLabel(tr("Visible Name") + ':', nameWidget);
-	nameLayout->addWidget(numberLabel);
+    QLabel *numberLabel = new QLabel(tr("Visible Name") + ':', nameWidget);
+    nameLayout->addWidget(numberLabel);
 
-	DisplayEdit = new QLineEdit(nameWidget);
-	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(updateStateNotifier()));
-	DisplayEdit->setText(MyBuddy.display());
-	nameLayout->addWidget(DisplayEdit);
-	if (1 == MyBuddy.contacts().count())
-	{
-		Protocol *protocolHandler = MyBuddy.contacts().at(0).contactAccount().protocolHandler();
-		if (protocolHandler && protocolHandler->contactsListReadOnly())
-		{
-			DisplayEdit->setReadOnly(true);
-			DisplayEdit->setToolTip(tr("Protocol used by this buddy's contact does not allow changing buddy's name client-side"));
-		}
-	}
+    DisplayEdit = new QLineEdit(nameWidget);
+    connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(updateStateNotifier()));
+    DisplayEdit->setText(MyBuddy.display());
+    nameLayout->addWidget(DisplayEdit);
+    if (1 == MyBuddy.contacts().count())
+    {
+        Protocol *protocolHandler = MyBuddy.contacts().at(0).contactAccount().protocolHandler();
+        if (protocolHandler && protocolHandler->contactsListReadOnly())
+        {
+            DisplayEdit->setReadOnly(true);
+            DisplayEdit->setToolTip(
+                tr("Protocol used by this buddy's contact does not allow changing buddy's name client-side"));
+        }
+    }
 
-	AvatarWidget = m_injectedFactory->makeInjected<BuddyAvatarWidget>(MyBuddy, nameWidget);
-	nameLayout->addWidget(AvatarWidget);
+    AvatarWidget = m_injectedFactory->makeInjected<BuddyAvatarWidget>(MyBuddy, nameWidget);
+    nameLayout->addWidget(AvatarWidget);
 
-	QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"), this);
-	QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
-	ContactsTable = m_injectedFactory->makeInjected<BuddyContactsTable>(MyBuddy, contactsBox);
-	ValueStateNotifier->addConfigurationValueStateNotifier(ContactsTable->valueStateNotifier());
-	contactsLayout->addWidget(ContactsTable);
+    QGroupBox *contactsBox = new QGroupBox(tr("Buddy contacts"), this);
+    QVBoxLayout *contactsLayout = new QVBoxLayout(contactsBox);
+    ContactsTable = m_injectedFactory->makeInjected<BuddyContactsTable>(MyBuddy, contactsBox);
+    ValueStateNotifier->addConfigurationValueStateNotifier(ContactsTable->valueStateNotifier());
+    contactsLayout->addWidget(ContactsTable);
 
-	PreferHigherStatusCheck = new QCheckBox(tr("Prefer the most available contact"), contactsBox);
-	PreferHigherStatusCheck->setToolTip(tr(
-			"<p>When enabled and one of this buddy's contacts has higher status (i.e., more available) "
-			"than the others, that contact will be considered preferred regardless of its priority</p>"));
-	PreferHigherStatusCheck->setChecked(MyBuddy.preferHigherStatuses());
-	contactsLayout->addWidget(PreferHigherStatusCheck);
+    PreferHigherStatusCheck = new QCheckBox(tr("Prefer the most available contact"), contactsBox);
+    PreferHigherStatusCheck->setToolTip(
+        tr("<p>When enabled and one of this buddy's contacts has higher status (i.e., more available) "
+           "than the others, that contact will be considered preferred regardless of its priority</p>"));
+    PreferHigherStatusCheck->setChecked(MyBuddy.preferHigherStatuses());
+    contactsLayout->addWidget(PreferHigherStatusCheck);
 
-	layout->addWidget(contactsBox);
+    layout->addWidget(contactsBox);
 
-	QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
-	QFormLayout *communicationLayout = new QFormLayout(communicationBox);
+    QGroupBox *communicationBox = new QGroupBox(tr("Communication Information"));
+    QFormLayout *communicationLayout = new QFormLayout(communicationBox);
 
-	PhoneEdit = new QLineEdit(this);
-	PhoneEdit->setText(MyBuddy.homePhone());
-	communicationLayout->addRow(new QLabel(tr("Phone") + ':'), PhoneEdit);
+    PhoneEdit = new QLineEdit(this);
+    PhoneEdit->setText(MyBuddy.homePhone());
+    communicationLayout->addRow(new QLabel(tr("Phone") + ':'), PhoneEdit);
 
-	MobileEdit = new QLineEdit(this);
-	MobileEdit->setText(MyBuddy.mobile());
-	communicationLayout->addRow(new QLabel(tr("Mobile") + ':'), MobileEdit);
+    MobileEdit = new QLineEdit(this);
+    MobileEdit->setText(MyBuddy.mobile());
+    communicationLayout->addRow(new QLabel(tr("Mobile") + ':'), MobileEdit);
 
-	EmailEdit = new QLineEdit(this);
-	EmailEdit->setText(MyBuddy.email());
-	communicationLayout->addRow(new QLabel(tr("E-Mail") + ':'), EmailEdit);
+    EmailEdit = new QLineEdit(this);
+    EmailEdit->setText(MyBuddy.email());
+    communicationLayout->addRow(new QLabel(tr("E-Mail") + ':'), EmailEdit);
 
-	WebsiteEdit = new QLineEdit(this);
-	WebsiteEdit->setText(MyBuddy.website());
-	communicationLayout->addRow(new QLabel(tr("Website") + ':'), WebsiteEdit);
+    WebsiteEdit = new QLineEdit(this);
+    WebsiteEdit->setText(MyBuddy.website());
+    communicationLayout->addRow(new QLabel(tr("Website") + ':'), WebsiteEdit);
 
-	layout->addWidget(communicationBox);
-	layout->addStretch(100);
+    layout->addWidget(communicationBox);
+    layout->addStretch(100);
 }
 
-const ConfigurationValueStateNotifier * BuddyGeneralConfigurationWidget::valueStateNotifier() const
+const ConfigurationValueStateNotifier *BuddyGeneralConfigurationWidget::valueStateNotifier() const
 {
-	return ValueStateNotifier;
+    return ValueStateNotifier;
 }
 
 bool BuddyGeneralConfigurationWidget::isValid() const
 {
-	QString display = DisplayEdit->text();
-	if (display.isEmpty())
-		return false;
+    QString display = DisplayEdit->text();
+    if (display.isEmpty())
+        return false;
 
-	Buddy buddy = m_buddyManager->byDisplay(display, ActionReturnNull);
-	if (buddy && buddy != MyBuddy)
-		return false;
+    Buddy buddy = m_buddyManager->byDisplay(display, ActionReturnNull);
+    if (buddy && buddy != MyBuddy)
+        return false;
 
-	return true;
+    return true;
 }
 
 void BuddyGeneralConfigurationWidget::updateStateNotifier()
 {
-	SimpleValueStateNotifier->setState(isValid() ? StateChangedDataValid : StateChangedDataInvalid);
+    SimpleValueStateNotifier->setState(isValid() ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void BuddyGeneralConfigurationWidget::save()
 {
-	ContactsTable->save(); // first update contacts
+    ContactsTable->save();   // first update contacts
 
-	MyBuddy.setDisplay(DisplayEdit->text());
-	MyBuddy.setHomePhone(PhoneEdit->text());
-	MyBuddy.setMobile(MobileEdit->text());
-	MyBuddy.setEmail(EmailEdit->text());
-	MyBuddy.setWebsite(WebsiteEdit->text());
-	MyBuddy.setPreferHigherStatuses(PreferHigherStatusCheck->isChecked());
+    MyBuddy.setDisplay(DisplayEdit->text());
+    MyBuddy.setHomePhone(PhoneEdit->text());
+    MyBuddy.setMobile(MobileEdit->text());
+    MyBuddy.setEmail(EmailEdit->text());
+    MyBuddy.setWebsite(WebsiteEdit->text());
+    MyBuddy.setPreferHigherStatuses(PreferHigherStatusCheck->isChecked());
 
-	QPixmap avatar = AvatarWidget->avatarPixmap();
-	if (!AvatarWidget->buddyAvatar() || avatar.isNull())
-		removeBuddyAvatar();
-	else
-		setBuddyAvatar(avatar);
+    QPixmap avatar = AvatarWidget->avatarPixmap();
+    if (!AvatarWidget->buddyAvatar() || avatar.isNull())
+        removeBuddyAvatar();
+    else
+        setBuddyAvatar(avatar);
 }
 
 void BuddyGeneralConfigurationWidget::removeBuddyAvatar()
 {
-	auto buddyAvatar = MyBuddy.buddyAvatar();
-	if (buddyAvatar.isNull())
-		return;
+    auto buddyAvatar = MyBuddy.buddyAvatar();
+    if (buddyAvatar.isNull())
+        return;
 
-	buddyAvatar.setPixmap(QPixmap());
-	m_avatarManager->removeItem(buddyAvatar);
-	MyBuddy.setBuddyAvatar(Avatar::null);
+    buddyAvatar.setPixmap(QPixmap());
+    m_avatarManager->removeItem(buddyAvatar);
+    MyBuddy.setBuddyAvatar(Avatar::null);
 }
 
-void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap& avatar)
+void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap &avatar)
 {
-	auto buddyAvatar = m_avatarManager->byBuddy(MyBuddy, ActionCreateAndAdd);
-	buddyAvatar.setPixmap(avatar);
+    auto buddyAvatar = m_avatarManager->byBuddy(MyBuddy, ActionCreateAndAdd);
+    buddyAvatar.setPixmap(avatar);
 }
 
 #include "moc_buddy-general-configuration-widget.cpp"

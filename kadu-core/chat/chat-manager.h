@@ -89,95 +89,94 @@ class UnreadMessageRepository;
  */
 class KADUAPI ChatManager : public Manager<Chat>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatManager(QObject *parent = nullptr);
-	virtual ~ChatManager();
+    explicit ChatManager(QObject *parent = nullptr);
+    virtual ~ChatManager();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return list of chats assigned to given account.
-	 * @param account account of returned chats
-	 *
-	 * If account is null then this method returns empty vector.
-	 */
-	virtual QVector<Chat> chats(const Account &account) = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Return list of chats assigned to given account.
+     * @param account account of returned chats
+     *
+     * If account is null then this method returns empty vector.
+     */
+    virtual QVector<Chat> chats(const Account &account) = 0;
 
-	virtual Chat byDisplay(const QString &display) = 0;
+    virtual Chat byDisplay(const QString &display) = 0;
 
 protected:
-	virtual void itemAboutToBeAdded(Chat item) override;
-	virtual void itemAdded(Chat item) override;
-	virtual void itemAboutToBeRemoved(Chat item) override;
-	virtual void itemRemoved(Chat item) override;
+    virtual void itemAboutToBeAdded(Chat item) override;
+    virtual void itemAdded(Chat item) override;
+    virtual void itemAboutToBeRemoved(Chat item) override;
+    virtual void itemRemoved(Chat item) override;
 
 signals:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just before chat with full data is added to manager.
-	 * @param chat added chat
-	 *
-	 * Signal is emitted just before chat with full data is added to manager.
-	 * It is also emitted after full data is loaded for given chat but before it
-	 * is added.
-	 */
-	void chatAboutToBeAdded(Chat chat);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Emitted just before chat with full data is added to manager.
+     * @param chat added chat
+     *
+     * Signal is emitted just before chat with full data is added to manager.
+     * It is also emitted after full data is loaded for given chat but before it
+     * is added.
+     */
+    void chatAboutToBeAdded(Chat chat);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just after chat with full data is added to manager.
-	 * @param chat added chat
-	 *
-	 * Signal is emitted just after chat with full data is added to manager.
-	 * It is also emitted after full data is loaded for given chat and after it
-	 * is added.
-	 */
-	void chatAdded(Chat chat);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Emitted just after chat with full data is added to manager.
+     * @param chat added chat
+     *
+     * Signal is emitted just after chat with full data is added to manager.
+     * It is also emitted after full data is loaded for given chat and after it
+     * is added.
+     */
+    void chatAdded(Chat chat);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just before chat with full data is removed from manager.
-	 * @param chat removed chat
-	 *
-	 * Signal is emitted just before chat removed from manager. Removed chat
-	 * does not have to have full data. This signal is also removed after
-	 * chat loses its full data.
-	 */
-	void chatAboutToBeRemoved(Chat chat);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Emitted just before chat with full data is removed from manager.
+     * @param chat removed chat
+     *
+     * Signal is emitted just before chat removed from manager. Removed chat
+     * does not have to have full data. This signal is also removed after
+     * chat loses its full data.
+     */
+    void chatAboutToBeRemoved(Chat chat);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted just after chat with full data is removed from manager.
-	 * @param chat removed chat
-	 *
-	 * Signal is emitted just after chat removed from manager. Removed chat
-	 * does not have to have full data. This signal is also removed after
-	 * chat loses its full data.
-	 */
-	void chatRemoved(Chat chat);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Emitted just after chat with full data is removed from manager.
+     * @param chat removed chat
+     *
+     * Signal is emitted just after chat removed from manager. Removed chat
+     * does not have to have full data. This signal is also removed after
+     * chat loses its full data.
+     */
+    void chatRemoved(Chat chat);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Emitted when data of given chat has changed.
-	 * @param chat updated chat
-	 */
-	void chatUpdated(const Chat &chat);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Emitted when data of given chat has changed.
+     * @param chat updated chat
+     */
+    void chatUpdated(const Chat &chat);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Signal emited when given chat has been opened.
-	 * @param chat opened chat
-	 */
-	void chatOpened(const Chat &chat);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Signal emited when given chat has been opened.
+     * @param chat opened chat
+     */
+    void chatOpened(const Chat &chat);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Signal emited when given chat has been closed.
-	 * @param chat closed chat
-	 */
-	void chatClosed(const Chat &chat);
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Signal emited when given chat has been closed.
+     * @param chat closed chat
+     */
+    void chatClosed(const Chat &chat);
 };
 
 /**

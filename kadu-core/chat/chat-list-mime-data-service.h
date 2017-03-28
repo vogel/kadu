@@ -31,22 +31,21 @@ class QMimeData;
 
 class ChatListMimeDataService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatListMimeDataService(QObject *parent = nullptr);
-	virtual ~ChatListMimeDataService();
+    Q_INVOKABLE explicit ChatListMimeDataService(QObject *parent = nullptr);
+    virtual ~ChatListMimeDataService();
 
-	QStringList mimeTypes();
-	std::unique_ptr<QMimeData> toMimeData(const QList<Chat> &chatList);
-	QList<Chat> fromMimeData(const QMimeData *mimeData);
+    QStringList mimeTypes();
+    std::unique_ptr<QMimeData> toMimeData(const QList<Chat> &chatList);
+    QList<Chat> fromMimeData(const QMimeData *mimeData);
 
 private:
-	QPointer<ChatManager> m_chatManager;
+    QPointer<ChatManager> m_chatManager;
 
-	QLatin1String m_mimeType;
+    QLatin1String m_mimeType;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
 };

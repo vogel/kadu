@@ -36,43 +36,42 @@ class PersonalInfoService;
 
 class GaduPersonalInfoWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<BuddyStorage> m_buddyStorage;
 
-	Account m_account;
-	PersonalInfoService *Service;
-	QString Id;
-	Buddy MyBuddy;
+    Account m_account;
+    PersonalInfoService *Service;
+    QString Id;
+    Buddy MyBuddy;
 
-	QLineEdit *NickName;
-	QLineEdit *FirstName;
-	QLineEdit *LastName;
-	QComboBox *Sex;
-	QLineEdit *FamilyName;
-	QLineEdit *BirthYear;
-	QLineEdit *City;
-	QLineEdit *FamilyCity;
+    QLineEdit *NickName;
+    QLineEdit *FirstName;
+    QLineEdit *LastName;
+    QComboBox *Sex;
+    QLineEdit *FamilyName;
+    QLineEdit *BirthYear;
+    QLineEdit *City;
+    QLineEdit *FamilyCity;
 
-	void createGui();
-	void fillForm();
+    void createGui();
+    void fillForm();
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_INIT void init();
 
-	void personalInfoAvailable(Buddy buddy);
+    void personalInfoAvailable(Buddy buddy);
 
 public:
-	explicit GaduPersonalInfoWidget(Account account, QWidget *parent = nullptr);
-	virtual ~GaduPersonalInfoWidget();
+    explicit GaduPersonalInfoWidget(Account account, QWidget *parent = nullptr);
+    virtual ~GaduPersonalInfoWidget();
 
-	bool isModified();
+    bool isModified();
 
-	void apply();
-	void cancel();
+    void apply();
+    void cancel();
 
 signals:
-	void dataChanged();
-
+    void dataChanged();
 };

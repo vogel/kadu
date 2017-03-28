@@ -32,13 +32,13 @@
 
 KaduSharedBaseClassImpl(Chat)
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Null Chat object.
- *
- * Null Chat object (without @link ChatShared @endlink attached).
- */
-Chat Chat::null;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Null Chat object.
+     *
+     * Null Chat object (without @link ChatShared @endlink attached).
+     */
+    Chat Chat::null;
 
 Chat::Chat()
 {
@@ -51,8 +51,7 @@ Chat::Chat()
  *
  * Returns new access object for given ChatShared instance.
  */
-Chat::Chat(ChatShared *data) :
-		SharedBase<ChatShared>(data)
+Chat::Chat(ChatShared *data) : SharedBase<ChatShared>(data)
 {
 }
 
@@ -67,9 +66,9 @@ Chat::Chat(ChatShared *data) :
  */
 Chat::Chat(QObject *data)
 {
-	ChatShared *shared = qobject_cast<ChatShared *>(data);
-	if (shared)
-		setData(shared);
+    ChatShared *shared = qobject_cast<ChatShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
 /**
@@ -80,8 +79,7 @@ Chat::Chat(QObject *data)
  *
  * Creates new Chat object that will be access object fot he same data as copy object.
  */
-Chat::Chat(const Chat &copy) :
-		SharedBase<ChatShared>(copy)
+Chat::Chat(const Chat &copy) : SharedBase<ChatShared>(copy)
 {
 }
 
@@ -91,62 +89,61 @@ Chat::~Chat()
 
 bool Chat::isInGroup(Group group) const
 {
-	return isNull() ? false : data()->isInGroup(group);
+    return isNull() ? false : data()->isInGroup(group);
 }
 
 bool Chat::showInAllGroup() const
 {
-	return isNull() ? false : data()->showInAllGroup();
+    return isNull() ? false : data()->showInAllGroup();
 }
 
 void Chat::addToGroup(Group group) const
 {
-	if (!isNull() && !data()->isInGroup(group))
-		data()->addToGroup(group);
-
+    if (!isNull() && !data()->isInGroup(group))
+        data()->addToGroup(group);
 }
 void Chat::removeFromGroup(Group group) const
 {
-	if (!isNull() && data()->isInGroup(group))
-		data()->removeFromGroup(group);
+    if (!isNull() && data()->isInGroup(group))
+        data()->removeFromGroup(group);
 }
 
 KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
-KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString())
-KaduSharedBase_PropertyReadDef(Chat, ChatDetails *, details, Details, 0)
-KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::null)
-KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString())
-KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())
-KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)
-KaduSharedBase_PropertyDefCRW(Chat, QSet<Group>, groups, Groups, QSet<Group>())
-KaduSharedBase_PropertyDef(Chat, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
+    KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString())
+        KaduSharedBase_PropertyReadDef(Chat, ChatDetails *, details, Details, 0)
+            KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::null)
+                KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString())
+                    KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())
+                        KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)
+                            KaduSharedBase_PropertyDefCRW(Chat, QSet<Group>, groups, Groups, QSet<Group>())
+                                KaduSharedBase_PropertyDef(Chat, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
 
-bool Chat::isConnected() const
+                                    bool Chat::isConnected() const
 {
-	if (!isNull())
-		return data()->isConnected();
-	else
-		return false;
+    if (!isNull())
+        return data()->isConnected();
+    else
+        return false;
 }
 
 bool Chat::isOpen() const
 {
-	if (!isNull())
-		return data()->isOpen();
-	else
-		return false;
+    if (!isNull())
+        return data()->isOpen();
+    else
+        return false;
 }
 
 void Chat::setOpen(bool open)
 {
-	if (!isNull())
-		data()->setOpen(open);
+    if (!isNull())
+        data()->setOpen(open);
 }
 
-QString title(const Chat& chat)
+QString title(const Chat &chat)
 {
-	if (!chat.display().isEmpty())
-		return chat.display();
-	else
-		return chat.name();
+    if (!chat.display().isEmpty())
+        return chat.display();
+    else
+        return chat.name();
 }

@@ -28,46 +28,35 @@
 
 QMqttMessage QFacebookConnect::encode() const
 {
-	auto connectStruct = QThrift::Struct{
-		{1, {cid}},
-		{4, QThrift::Struct{
-			{1, uid},
-			{2, information},
-			{3, unknownCp},
-			{4, unknownEcp},
-			{5, unknown},
-			{6, noAutoFg},
-			{7, visible},
-			{8, did},
-			{9, unknownFg},
-			{10, unknownNwt},
-			{11, unknownNwst},
-			{12, mid},
-			{14, QThrift::List<int32_t>{}},
-			{15, token}
-		}}
-	};
+    auto connectStruct = QThrift::Struct{{1, {cid}},
+                                         {4, QThrift::Struct{{1, uid},
+                                                             {2, information},
+                                                             {3, unknownCp},
+                                                             {4, unknownEcp},
+                                                             {5, unknown},
+                                                             {6, noAutoFg},
+                                                             {7, visible},
+                                                             {8, did},
+                                                             {9, unknownFg},
+                                                             {10, unknownNwt},
+                                                             {11, unknownNwst},
+                                                             {12, mid},
+                                                             {14, QThrift::List<int32_t>{}},
+                                                             {15, token}}}};
 
-	uint8_t flags =
-			static_cast<uint8_t>(QMqttConnectFlag::User) |
-			static_cast<uint8_t>(QMqttConnectFlag::Pass) |
-			static_cast<uint8_t>(QMqttConnectFlag::Clr) |
-			static_cast<uint8_t>(QMqttConnectFlag::QoS1);
+    uint8_t flags = static_cast<uint8_t>(QMqttConnectFlag::User) | static_cast<uint8_t>(QMqttConnectFlag::Pass) |
+                    static_cast<uint8_t>(QMqttConnectFlag::Clr) | static_cast<uint8_t>(QMqttConnectFlag::QoS1);
 
-	auto connectData = QByteArray{};
-	auto writer = QThrift::Writer{connectData};
-	writer.write(connectStruct);
+    auto connectData = QByteArray{};
+    auto writer = QThrift::Writer{connectData};
+    writer.write(connectStruct);
 
-	auto mqttWriter = QMqttWriter{};
-	mqttWriter.write("MQTToT");
-	mqttWriter.write(uint8_t{3});
-	mqttWriter.write(uint8_t{flags});
-	mqttWriter.write(keepAlive);
-	mqttWriter.writeRaw(qfacebookDeflate(connectData));
+    auto mqttWriter = QMqttWriter{};
+    mqttWriter.write("MQTToT");
+    mqttWriter.write(uint8_t{3});
+    mqttWriter.write(uint8_t{flags});
+    mqttWriter.write(keepAlive);
+    mqttWriter.writeRaw(qfacebookDeflate(connectData));
 
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		uint8_t{0},
-		mqttWriter.result()
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), uint8_t{0}, mqttWriter.result()};
 }

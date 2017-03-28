@@ -35,16 +35,15 @@
  *
  * Creates empty ChatDetailsContact object assigned to chatData object.
  */
-ChatDetailsContact::ChatDetailsContact(ChatShared *chatData) :
-		ChatDetails(chatData)
+ChatDetailsContact::ChatDetailsContact(ChatShared *chatData) : ChatDetails(chatData)
 {
-	Protocol *protocol = mainData()->chatAccount().protocolHandler();
+    Protocol *protocol = mainData()->chatAccount().protocolHandler();
 
-	if (protocol)
-	{
-		connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
-		connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
-	}
+    if (protocol)
+    {
+        connect(protocol, SIGNAL(connected(Account)), this, SIGNAL(connected()));
+        connect(protocol, SIGNAL(disconnected(Account)), this, SIGNAL(disconnected()));
+    }
 }
 
 ChatDetailsContact::~ChatDetailsContact()
@@ -53,17 +52,17 @@ ChatDetailsContact::~ChatDetailsContact()
 
 void ChatDetailsContact::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void ChatDetailsContact::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void ChatDetailsContact::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 /**
@@ -75,25 +74,25 @@ void ChatDetailsContact::setContactManager(ContactManager *contactManager)
  */
 void ChatDetailsContact::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ChatDetails::load();
+    ChatDetails::load();
 
-	QString cadUuid = loadValue<QString>("Contact");
+    QString cadUuid = loadValue<QString>("Contact");
 
-	CurrentContact = m_contactManager->byUuid(cadUuid);
-	if (!CurrentContact)
-	{
-		// import from old 0.6.6 releases
-		Buddy buddy = m_buddyManager->byUuid(cadUuid);
-		if (buddy)
-		{
-			QVector<Contact> contactList = buddy.contacts(mainData()->chatAccount());
-			if (!contactList.isEmpty())
-				CurrentContact = contactList.at(0);
-		}
-	}
+    CurrentContact = m_contactManager->byUuid(cadUuid);
+    if (!CurrentContact)
+    {
+        // import from old 0.6.6 releases
+        Buddy buddy = m_buddyManager->byUuid(cadUuid);
+        if (buddy)
+        {
+            QVector<Contact> contactList = buddy.contacts(mainData()->chatAccount());
+            if (!contactList.isEmpty())
+                CurrentContact = contactList.at(0);
+        }
+    }
 }
 
 /**
@@ -105,13 +104,13 @@ void ChatDetailsContact::load()
  */
 void ChatDetailsContact::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!CurrentContact.isNull())
-		storeValue("Contact", CurrentContact.uuid().toString());
+    if (!CurrentContact.isNull())
+        storeValue("Contact", CurrentContact.uuid().toString());
 }
 
 /**
@@ -124,10 +123,9 @@ void ChatDetailsContact::store()
  */
 bool ChatDetailsContact::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return StorableObject::shouldStore()
-			&& !CurrentContact.uuid().isNull();
+    return StorableObject::shouldStore() && !CurrentContact.uuid().isNull();
 }
 
 /**
@@ -137,9 +135,9 @@ bool ChatDetailsContact::shouldStore()
  *
  * Returns type of this chat - 'Contact'.
  */
-ChatType * ChatDetailsContact::type() const
+ChatType *ChatDetailsContact::type() const
 {
-	return m_chatTypeManager->chatType("Contact");
+    return m_chatTypeManager->chatType("Contact");
 }
 
 /**
@@ -152,9 +150,9 @@ ChatType * ChatDetailsContact::type() const
  */
 ContactSet ChatDetailsContact::contacts() const
 {
-	if (CurrentContact.isNull())
-		return ContactSet();
-	return ContactSet(CurrentContact);
+    if (CurrentContact.isNull())
+        return ContactSet();
+    return ContactSet(CurrentContact);
 }
 
 /**
@@ -166,12 +164,12 @@ ContactSet ChatDetailsContact::contacts() const
  */
 QString ChatDetailsContact::name() const
 {
-	return CurrentContact.display(true);
+    return CurrentContact.display(true);
 }
 
 bool ChatDetailsContact::isConnected() const
 {
-	return mainData()->chatAccount().protocolHandler() && mainData()->chatAccount().protocolHandler()->isConnected();
+    return mainData()->chatAccount().protocolHandler() && mainData()->chatAccount().protocolHandler()->isConnected();
 }
 
 /**
@@ -183,12 +181,12 @@ bool ChatDetailsContact::isConnected() const
  */
 void ChatDetailsContact::setContact(const Contact &contact)
 {
-	CurrentContact = contact;
+    CurrentContact = contact;
 }
 
 Contact ChatDetailsContact::contact()
 {
-	return CurrentContact;
+    return CurrentContact;
 }
 
 #include "moc_chat-details-contact.cpp"

@@ -29,21 +29,20 @@ class ProtocolsManager;
 
 class FacebookPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit FacebookPluginObject(QObject *parent = nullptr);
-	virtual ~FacebookPluginObject();
+    Q_INVOKABLE explicit FacebookPluginObject(QObject *parent = nullptr);
+    virtual ~FacebookPluginObject();
 
 private:
-	QPointer<FacebookProtocolFactory> m_facebookProtocolFactory;
-	QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<FacebookProtocolFactory> m_facebookProtocolFactory;
+    QPointer<ProtocolsManager> m_protocolsManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setFacebookProtocolFactory(FacebookProtocolFactory *facebookProtocolFactory);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setFacebookProtocolFactory(FacebookProtocolFactory *facebookProtocolFactory);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
 };

@@ -29,9 +29,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 
-ConfigurationFactory::ConfigurationFactory(QObject *parent) :
-		QObject{parent},
-		m_configurationPathProvider{nullptr}
+ConfigurationFactory::ConfigurationFactory(QObject *parent) : QObject{parent}, m_configurationPathProvider{nullptr}
 {
 }
 
@@ -41,72 +39,72 @@ ConfigurationFactory::~ConfigurationFactory()
 
 void ConfigurationFactory::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
 {
-	m_configurationPathProvider = configurationPathProvider;
+    m_configurationPathProvider = configurationPathProvider;
 }
 
 void ConfigurationFactory::setVersionService(VersionService *versionService)
 {
-	m_versionService = versionService;
+    m_versionService = versionService;
 }
 
-Configuration * ConfigurationFactory::createConfiguration() const
+Configuration *ConfigurationFactory::createConfiguration() const
 {
-	auto result = readConfiguration();
-	if (result)
-		return result.release();
+    auto result = readConfiguration();
+    if (result)
+        return result.release();
 
-	return createEmptyConfiguration().release();
+    return createEmptyConfiguration().release();
 }
 
 not_owned_qptr<Configuration> ConfigurationFactory::readConfiguration() const
 {
-	auto dir = m_configurationPathProvider->configurationDirectoryPath();
-	for (auto const &fileName : m_configurationPathProvider->possibleConfigurationFilePaths())
-	{
-		QFile file{dir + "/" + fileName};
-		if (!file.open(QIODevice::ReadOnly))
-			continue;
+    auto dir = m_configurationPathProvider->configurationDirectoryPath();
+    for (auto const &fileName : m_configurationPathProvider->possibleConfigurationFilePaths())
+    {
+        QFile file{dir + "/" + fileName};
+        if (!file.open(QIODevice::ReadOnly))
+            continue;
 
-		auto content = QString::fromUtf8(file.readAll());
-		if (content.length() == 0)
-			continue;
+        auto content = QString::fromUtf8(file.readAll());
+        if (content.length() == 0)
+            continue;
 
-		try
-		{
-			auto configurationApi = std::make_unique<ConfigurationApi>(content);
-			return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
-		}
-		catch (ConfigurationReadErrorException &)
-		{
-			continue; // try next file
-		}
-	}
+        try
+        {
+            auto configurationApi = std::make_unique<ConfigurationApi>(content);
+            return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
+        }
+        catch (ConfigurationReadErrorException &)
+        {
+            continue;   // try next file
+        }
+    }
 
-	return {};
+    return {};
 }
 
 not_owned_qptr<Configuration> ConfigurationFactory::createEmptyConfiguration() const
 {
-	if (!isConfigurationPathUsable())
-		throw ConfigurationUnusableException();
+    if (!isConfigurationPathUsable())
+        throw ConfigurationUnusableException();
 
-	auto configurationApi = std::make_unique<ConfigurationApi>();
-	return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
+    auto configurationApi = std::make_unique<ConfigurationApi>();
+    return make_not_owned<Configuration>(m_versionService->version(), std::move(configurationApi));
 }
 
 bool ConfigurationFactory::isConfigurationPathUsable() const
 {
-	auto directory = m_configurationPathProvider->configurationDirectoryPath();
-	if (directory.isEmpty())
-		return false;
+    auto directory = m_configurationPathProvider->configurationDirectoryPath();
+    if (directory.isEmpty())
+        return false;
 
-	if (!QDir(directory).isReadable())
-		return false;
+    if (!QDir(directory).isReadable())
+        return false;
 
-	if (!QFile(m_configurationPathProvider->configurationFilePath()).open(QIODevice::ReadWrite))
-		return false;
+    if (!QFile(m_configurationPathProvider->configurationFilePath()).open(QIODevice::ReadWrite))
+        return false;
 
-	return true;
+    return true;
 }
 
 #include "moc_configuration-factory.cpp"

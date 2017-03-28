@@ -28,14 +28,12 @@ class QUrl;
 
 class KADUAPI PasteAcceptor
 {
-
 public:
-	virtual ~PasteAcceptor() = default;
+    virtual ~PasteAcceptor() = default;
 
-	virtual void acceptPlainText(QString plainText) = 0;
-	virtual void acceptFileUrl(QUrl imageUrl) = 0;
-	virtual void acceptImageData(QByteArray imageData) = 0;
-
+    virtual void acceptPlainText(QString plainText) = 0;
+    virtual void acceptFileUrl(QUrl imageUrl) = 0;
+    virtual void acceptImageData(QByteArray imageData) = 0;
 };
 
 KADUAPI void acceptPasteData(const QMimeData *source, PasteAcceptor *acceptor);

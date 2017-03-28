@@ -32,20 +32,20 @@
 
 DesktopAwareObjectHelper::DesktopAwareObjectHelper()
 {
-	Timer.setInterval(DESKTOP_AWARE_OBJECT_HELPER_TIMER_INTERVAL);
-	Timer.setSingleShot(true);
-	connect(&Timer, SIGNAL(timeout()), this, SLOT(workAreaResized()));
-	connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), &Timer, SLOT(start()));
+    Timer.setInterval(DESKTOP_AWARE_OBJECT_HELPER_TIMER_INTERVAL);
+    Timer.setSingleShot(true);
+    connect(&Timer, SIGNAL(timeout()), this, SLOT(workAreaResized()));
+    connect(QApplication::desktop(), SIGNAL(workAreaResized(int)), &Timer, SLOT(start()));
 }
 
 DesktopAwareObjectHelper::~DesktopAwareObjectHelper()
 {
-	Timer.stop();
+    Timer.stop();
 }
 
 void DesktopAwareObjectHelper::workAreaResized()
 {
-	DesktopAwareObject::notifyDesktopModified();
+    DesktopAwareObject::notifyDesktopModified();
 }
 
 #include "moc_desktop-aware-object-helper.cpp"

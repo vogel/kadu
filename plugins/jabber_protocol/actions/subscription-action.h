@@ -31,25 +31,24 @@ class SubscriptionService;
 
 class SubscriptionAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	explicit SubscriptionAction(QObject *parent = nullptr);
-	virtual ~SubscriptionAction();
+    explicit SubscriptionAction(QObject *parent = nullptr);
+    virtual ~SubscriptionAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
-	virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) = 0;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
+    virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) = 0;
 
-	Contact contactFromAction(QAction *action);
-	SubscriptionService * subscriptionServiceFromContact(const Contact &contact);
+    Contact contactFromAction(QAction *action);
+    SubscriptionService *subscriptionServiceFromContact(const Contact &contact);
 
 private:
-	QPointer<Myself> m_myself;
+    QPointer<Myself> m_myself;
 
 private slots:
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setMyself(Myself *myself);
 };

@@ -19,13 +19,12 @@
 
 #include "proxy-edit-window-service.h"
 
+#include "activate.h"
 #include "configuration/configuration.h"
 #include "core/injected-factory.h"
 #include "windows/proxy-edit-window.h"
-#include "activate.h"
 
-ProxyEditWindowService::ProxyEditWindowService(QObject *parent) :
-		QObject{parent}
+ProxyEditWindowService::ProxyEditWindowService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,19 +34,19 @@ ProxyEditWindowService::~ProxyEditWindowService()
 
 void ProxyEditWindowService::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ProxyEditWindowService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ProxyEditWindowService::show()
 {
-	if (!m_proxyEditWindow)
-		m_proxyEditWindow = m_injectedFactory->makeInjected<ProxyEditWindow>();
-	
-	m_proxyEditWindow->show();
-	_activateWindow(m_configuration, m_proxyEditWindow);
+    if (!m_proxyEditWindow)
+        m_proxyEditWindow = m_injectedFactory->makeInjected<ProxyEditWindow>();
+
+    m_proxyEditWindow->show();
+    _activateWindow(m_configuration, m_proxyEditWindow);
 }

@@ -21,14 +21,14 @@
 
 #include "os/generic/url-opener.h"
 
-OpenRedmineAction::OpenRedmineAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenRedmineAction::OpenRedmineAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/report-a-bug"});
-	setName(QStringLiteral("bugsAction"));
-	setText(tr("Report a Bug"));
-	setType(ActionDescription::TypeMainMenu);
+    setIcon(KaduIcon{"kadu_icons/report-a-bug"});
+    setName(QStringLiteral("bugsAction"));
+    setText(tr("Report a Bug"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 OpenRedmineAction::~OpenRedmineAction()
@@ -37,12 +37,12 @@ OpenRedmineAction::~OpenRedmineAction()
 
 void OpenRedmineAction::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void OpenRedmineAction::actionTriggered(QAction *, bool)
 {
-	m_urlOpener->openUrl("http://www.kadu.im/redmine/projects/kadu");
+    m_urlOpener->openUrl("http://www.kadu.im/redmine/projects/kadu");
 }
 
 #include "moc_open-redmine-action.cpp"

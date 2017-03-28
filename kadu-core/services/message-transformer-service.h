@@ -45,17 +45,16 @@ class Chat;
  */
 class KADUAPI MessageTransformerService : public QObject, public TransformerService<MessageTransformer>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Create new instance of MessageTransformerService.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent
-	 */
-	Q_INVOKABLE explicit MessageTransformerService(QObject *parent = nullptr);
-	virtual ~MessageTransformerService();
-
+    /**
+     * @short Create new instance of MessageTransformerService.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent
+     */
+    Q_INVOKABLE explicit MessageTransformerService(QObject *parent = nullptr);
+    virtual ~MessageTransformerService();
 };
 
 /**

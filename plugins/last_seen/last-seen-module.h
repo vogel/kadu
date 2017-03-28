@@ -23,9 +23,7 @@
 
 class LastSeenModule : public injeqt::module
 {
-
 public:
-	explicit LastSeenModule();
-	virtual ~LastSeenModule();
-
+    explicit LastSeenModule();
+    virtual ~LastSeenModule();
 };

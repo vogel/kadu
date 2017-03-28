@@ -30,21 +30,20 @@ class Idle;
 
 class IDLEAPI IdlePluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit IdlePluginObject(QObject *parent = nullptr);
-	virtual ~IdlePluginObject();
+    Q_INVOKABLE explicit IdlePluginObject(QObject *parent = nullptr);
+    virtual ~IdlePluginObject();
 
-	Idle * idle() const;
+    Idle *idle() const;
 
 private:
-	QPointer<Idle> m_idle;
+    QPointer<Idle> m_idle;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setIdle(Idle *idle);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setIdle(Idle *idle);
 };

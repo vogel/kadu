@@ -32,18 +32,18 @@ RemoveScriptDomVisitor::~RemoveScriptDomVisitor()
 
 QDomNode RemoveScriptDomVisitor::beginVisit(QDomElement elementNode) const
 {
-	return elementNode;
+    return elementNode;
 }
 
 QDomNode RemoveScriptDomVisitor::endVisit(QDomElement elementNode) const
 {
-	auto nextsibling = elementNode.nextSibling();
-	if (elementNode.tagName().toLower() == "script")
-		elementNode.parentNode().removeChild(elementNode);
-	return nextsibling;
+    auto nextsibling = elementNode.nextSibling();
+    if (elementNode.tagName().toLower() == "script")
+        elementNode.parentNode().removeChild(elementNode);
+    return nextsibling;
 }
 
 QDomNode RemoveScriptDomVisitor::visit(QDomText textNode) const
 {
-	return textNode;
+    return textNode;
 }

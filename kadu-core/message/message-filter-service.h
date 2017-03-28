@@ -43,53 +43,52 @@ class MessageFilter;
  */
 class KADUAPI MessageFilterService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<MessageFilter *> MessageFilters;
+    QList<MessageFilter *> MessageFilters;
 
 public:
-	/**
-	 * @short Create new instance of MessageFilterService.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent
-	 */
-	Q_INVOKABLE explicit MessageFilterService(QObject *parent = nullptr);
-	virtual ~MessageFilterService();
+    /**
+     * @short Create new instance of MessageFilterService.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent
+     */
+    Q_INVOKABLE explicit MessageFilterService(QObject *parent = nullptr);
+    virtual ~MessageFilterService();
 
-	/**
-	 * @short Register new filter.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param filter filter to register
-	 *
-	 * This method adds given filter to list of filters that will be executed on acceptMessage() call.
-	 * If filter is already on list then this method will do nothing.
-	 */
-	void registerMessageFilter(MessageFilter *filter);
+    /**
+     * @short Register new filter.
+     * @author Rafał 'Vogel' Malinowski
+     * @param filter filter to register
+     *
+     * This method adds given filter to list of filters that will be executed on acceptMessage() call.
+     * If filter is already on list then this method will do nothing.
+     */
+    void registerMessageFilter(MessageFilter *filter);
 
-	/**
-	 * @short Unregister filter.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param filter filter to unregister
-	 *
-	 * This method removes given filter from list of filters that will be executed on acceptMessage() call.
-	 * If filter was not on list then this method will do nothing.
-	 */
-	void unregisterMessageFilter(MessageFilter *filter);
+    /**
+     * @short Unregister filter.
+     * @author Rafał 'Vogel' Malinowski
+     * @param filter filter to unregister
+     *
+     * This method removes given filter from list of filters that will be executed on acceptMessage() call.
+     * If filter was not on list then this method will do nothing.
+     */
+    void unregisterMessageFilter(MessageFilter *filter);
 
-	/**
-	 * @short Execute all registered filters on given message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message message to filter
-	 * @return true if all registered filters accepts given message
-	 *
-	 * This method executes all filters on given message and returns true if all of them accepts given message.
-	 */
-	bool acceptMessage(const Message &message);
-
+    /**
+     * @short Execute all registered filters on given message.
+     * @author Rafał 'Vogel' Malinowski
+     * @param message message to filter
+     * @return true if all registered filters accepts given message
+     *
+     * This method executes all filters on given message and returns true if all of them accepts given message.
+     */
+    bool acceptMessage(const Message &message);
 };
 
 /**
  * @}
  */
 
-#endif // MESSAGE_FILTER_SERVICE_H
+#endif   // MESSAGE_FILTER_SERVICE_H

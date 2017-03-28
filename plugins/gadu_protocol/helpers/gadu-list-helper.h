@@ -39,34 +39,33 @@ class QTextStream;
 
 class GaduListHelper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit GaduListHelper(QObject *parent = nullptr);
-	virtual ~GaduListHelper();
+    Q_INVOKABLE explicit GaduListHelper(QObject *parent = nullptr);
+    virtual ~GaduListHelper();
 
-	void setSupportedBuddyInformation(const Buddy &destination, const Buddy &source);
-	QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
-	QByteArray contactListToByteArray(const QVector<Contact> &contacts);
-	QString contactToLine70(Contact contact);
-	BuddyList byteArrayToBuddyList(Account account, QByteArray &content);
-	BuddyList streamToBuddyList(Account account, QTextStream &content);
-	Buddy linePre70ToBuddy(Account account, QStringList &sections);
-	Buddy line70ToBuddy(Account account, QStringList &sections);
-	BuddyList streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content);
-	BuddyList stream70ToBuddyList(Account account, QTextStream &content);
-	BuddyList streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content);
+    void setSupportedBuddyInformation(const Buddy &destination, const Buddy &source);
+    QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
+    QByteArray contactListToByteArray(const QVector<Contact> &contacts);
+    QString contactToLine70(Contact contact);
+    BuddyList byteArrayToBuddyList(Account account, QByteArray &content);
+    BuddyList streamToBuddyList(Account account, QTextStream &content);
+    Buddy linePre70ToBuddy(Account account, QStringList &sections);
+    Buddy line70ToBuddy(Account account, QStringList &sections);
+    BuddyList streamPost70ToBuddyList(const QString &line, Account account, QTextStream &content);
+    BuddyList stream70ToBuddyList(Account account, QTextStream &content);
+    BuddyList streamPre70ToBuddyList(const QString &firstLine, Account account, QTextStream &content);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ContactStorage> m_contactStorage;
-	QPointer<GroupManager> m_groupManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ContactStorage> m_contactStorage;
+    QPointer<GroupManager> m_groupManager;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
 };

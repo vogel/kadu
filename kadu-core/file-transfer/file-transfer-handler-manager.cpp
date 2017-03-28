@@ -28,8 +28,7 @@
 #include "protocols/protocol.h"
 #include "protocols/services/file-transfer-service.h"
 
-FileTransferHandlerManager::FileTransferHandlerManager(QObject *parent) :
-		QObject{parent}
+FileTransferHandlerManager::FileTransferHandlerManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,100 +38,104 @@ FileTransferHandlerManager::~FileTransferHandlerManager()
 
 void FileTransferHandlerManager::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void FileTransferHandlerManager::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
-	m_fileTransferManager = fileTransferManager;
+    m_fileTransferManager = fileTransferManager;
 }
 
 void FileTransferHandlerManager::init()
 {
-	connect(m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeAdded(FileTransfer)), this, SLOT(fileTransferAboutToBeAdded(FileTransfer)));
-	connect(m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeRemoved(FileTransfer)), this, SLOT(fileTransferRemoved(FileTransfer)));
+    connect(
+        m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeAdded(FileTransfer)), this,
+        SLOT(fileTransferAboutToBeAdded(FileTransfer)));
+    connect(
+        m_fileTransferManager.data(), SIGNAL(fileTransferAboutToBeRemoved(FileTransfer)), this,
+        SLOT(fileTransferRemoved(FileTransfer)));
 
-	triggerAllAccountsAdded(m_accountManager);
+    triggerAllAccountsAdded(m_accountManager);
 }
 
 void FileTransferHandlerManager::done()
 {
-	triggerAllAccountsRemoved(m_accountManager);
+    triggerAllAccountsRemoved(m_accountManager);
 }
 
 void FileTransferHandlerManager::createHandlers(Account account)
 {
-	for (auto &&transfer : m_fileTransferManager->items())
-		if (transfer.peer().contactAccount() == account)
-			createHandler(transfer);
+    for (auto &&transfer : m_fileTransferManager->items())
+        if (transfer.peer().contactAccount() == account)
+            createHandler(transfer);
 }
 
 void FileTransferHandlerManager::removeHandlers(Account account)
 {
-	for (auto &&transfer : m_fileTransferManager->items())
-		if (transfer.peer().contactAccount() == account)
-			removeHandler(transfer);
+    for (auto &&transfer : m_fileTransferManager->items())
+        if (transfer.peer().contactAccount() == account)
+            removeHandler(transfer);
 }
 
 void FileTransferHandlerManager::accountAdded(Account account)
 {
-	connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
+    connect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    protocolHandlerChanged(account);
 }
 
 void FileTransferHandlerManager::accountRemoved(Account account)
 {
-	disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
-	protocolHandlerChanged(account);
+    disconnect(account, SIGNAL(protocolHandlerChanged(Account)), this, SLOT(protocolHandlerChanged(Account)));
+    protocolHandlerChanged(account);
 }
 
 void FileTransferHandlerManager::protocolHandlerChanged(Account account)
 {
-	if (account.protocolHandler())
-		createHandlers(account);
-	else
-		removeHandlers(account);
+    if (account.protocolHandler())
+        createHandlers(account);
+    else
+        removeHandlers(account);
 }
 
 bool FileTransferHandlerManager::ensureHandler(FileTransfer transfer)
 {
-	createHandler(transfer);
-	return transfer.handler() != nullptr;
+    createHandler(transfer);
+    return transfer.handler() != nullptr;
 }
 
 void FileTransferHandlerManager::createHandler(FileTransfer transfer)
 {
-	if (!transfer || transfer.handler())
-		return;
+    if (!transfer || transfer.handler())
+        return;
 
-	auto protocol = transfer.peer().contactAccount().protocolHandler();
-	if (!protocol)
-		return;
+    auto protocol = transfer.peer().contactAccount().protocolHandler();
+    if (!protocol)
+        return;
 
-	auto service = protocol->fileTransferService();
-	if (!service)
-		return;
+    auto service = protocol->fileTransferService();
+    if (!service)
+        return;
 
-	transfer.setHandler(service->createFileTransferHandler(transfer));
+    transfer.setHandler(service->createFileTransferHandler(transfer));
 }
 
 void FileTransferHandlerManager::removeHandler(FileTransfer transfer)
 {
-	if (!transfer || !transfer.handler())
-		return;
+    if (!transfer || !transfer.handler())
+        return;
 
-	transfer.handler()->deleteLater();
-	transfer.setHandler(nullptr);
+    transfer.handler()->deleteLater();
+    transfer.setHandler(nullptr);
 }
 
 void FileTransferHandlerManager::fileTransferAboutToBeAdded(FileTransfer fileTransfer)
 {
-	createHandler(fileTransfer);
+    createHandler(fileTransfer);
 }
 
 void FileTransferHandlerManager::fileTransferRemoved(FileTransfer fileTransfer)
 {
-	removeHandler(fileTransfer);
+    removeHandler(fileTransfer);
 }
 
 #include "moc_file-transfer-handler-manager.cpp"

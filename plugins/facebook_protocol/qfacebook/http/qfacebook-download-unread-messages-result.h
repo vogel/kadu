@@ -28,12 +28,12 @@
 
 struct QFacebookDownloadUnreadMessageResult
 {
-	QFacebookUid senderUid;
-	QString text;
-	QDateTime timestamp;
+    QFacebookUid senderUid;
+    QString text;
+    QDateTime timestamp;
 };
 
 struct QFacebookDownloadUnreadMessagesResult
 {
-	std::vector<QFacebookDownloadUnreadMessageResult> unreadMessages;
+    std::vector<QFacebookDownloadUnreadMessageResult> unreadMessages;
 };

@@ -34,48 +34,51 @@ class FormattedStringTextBlock;
  * @short Visitor that allows extraction of data from FormattedString instances.
  * @author Rafał 'Vogel' Malinowski
  *
- * Use instances of subclasses of FormattedStringVisitor to convert FormattedString to other formats of extract data from it.
+ * Use instances of subclasses of FormattedStringVisitor to convert FormattedString to other formats of extract data
+ * from it.
  */
 class FormattedStringVisitor
 {
-
 protected:
-	FormattedStringVisitor() {}
-	virtual ~FormattedStringVisitor() {}
+    FormattedStringVisitor()
+    {
+    }
+    virtual ~FormattedStringVisitor()
+    {
+    }
 
 public:
-	/**
-	 * @short Visit CompositeFormattedString instance before visiting sub-FormattedString.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param compositeFormattedString CompositeFormattedString instance to visit
-	 */
-	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString) = 0;
+    /**
+     * @short Visit CompositeFormattedString instance before visiting sub-FormattedString.
+     * @author Rafał 'Vogel' Malinowski
+     * @param compositeFormattedString CompositeFormattedString instance to visit
+     */
+    virtual void beginVisit(const CompositeFormattedString *const compositeFormattedString) = 0;
 
-	/**
-	 * @short Visit CompositeFormattedString instance after visiting sub-FormattedString.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param compositeFormattedString CompositeFormattedString instance to visit
-	 */
-	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString) = 0;
+    /**
+     * @short Visit CompositeFormattedString instance after visiting sub-FormattedString.
+     * @author Rafał 'Vogel' Malinowski
+     * @param compositeFormattedString CompositeFormattedString instance to visit
+     */
+    virtual void endVisit(const CompositeFormattedString *const compositeFormattedString) = 0;
 
-	/**
-	 * @short Visit FormattedStringImageBlock instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param formattedStringImageBlock FormattedStringImageBlock instance to visit
-	 */
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) = 0;
+    /**
+     * @short Visit FormattedStringImageBlock instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param formattedStringImageBlock FormattedStringImageBlock instance to visit
+     */
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock) = 0;
 
-	/**
-	 * @short Visit FormattedStringTextBlock instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param formattedStringTextBlock FormattedStringTextBlock instance to visit
-	 */
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) = 0;
-
+    /**
+     * @short Visit FormattedStringTextBlock instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param formattedStringTextBlock FormattedStringTextBlock instance to visit
+     */
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_VISITOR_H
+#endif   // FORMATTED_STRING_VISITOR_H

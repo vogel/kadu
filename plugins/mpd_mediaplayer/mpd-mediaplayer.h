@@ -32,44 +32,43 @@ class Configuration;
 
 class MPDMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
-	Q_OBJECT
-	
-	QPointer<Configuration> m_configuration;
+    Q_OBJECT
 
-	MPDConfig Config;
+    QPointer<Configuration> m_configuration;
+
+    MPDConfig Config;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 
 public:
-	Q_INVOKABLE explicit MPDMediaPlayer(QObject *parent = nullptr);
-	virtual ~MPDMediaPlayer();
+    Q_INVOKABLE explicit MPDMediaPlayer(QObject *parent = nullptr);
+    virtual ~MPDMediaPlayer();
 
-	mpd_connection * mpdConnect();
+    mpd_connection *mpdConnect();
 
-	// PlayerInfo implementation
-	virtual QString getTitle();
-	virtual QString getAlbum();
-	virtual QString getArtist();
-	virtual QString getFile();
-	virtual int getLength();
-	virtual int getCurrentPos();
-	virtual bool isPlaying();
-	virtual bool isActive();
-	virtual QStringList getPlayListTitles();
-	virtual QStringList getPlayListFiles();
-	virtual QString getPlayerName();
-	virtual QString getPlayerVersion();
+    // PlayerInfo implementation
+    virtual QString getTitle();
+    virtual QString getAlbum();
+    virtual QString getArtist();
+    virtual QString getFile();
+    virtual int getLength();
+    virtual int getCurrentPos();
+    virtual bool isPlaying();
+    virtual bool isActive();
+    virtual QStringList getPlayListTitles();
+    virtual QStringList getPlayListFiles();
+    virtual QString getPlayerName();
+    virtual QString getPlayerVersion();
 
-	// PlayerCommands implementation
-	virtual void nextTrack();
-	virtual void prevTrack();
-	virtual void play();
-	virtual void stop();
-	virtual void pause();
-	virtual void setVolume(int vol);
-	virtual void incrVolume();
-	virtual void decrVolume();
-
+    // PlayerCommands implementation
+    virtual void nextTrack();
+    virtual void prevTrack();
+    virtual void play();
+    virtual void stop();
+    virtual void pause();
+    virtual void setVolume(int vol);
+    virtual void incrVolume();
+    virtual void decrVolume();
 };

@@ -26,14 +26,14 @@
 #include <QtGui/QClipboard>
 #include <QtWidgets/QApplication>
 
-CopyDescriptionAction::CopyDescriptionAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+CopyDescriptionAction::CopyDescriptionAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"edit-copy"});
-	setName(QStringLiteral("copyDescriptionAction"));
-	setText(tr("Copy Description"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"edit-copy"});
+    setName(QStringLiteral("copyDescriptionAction"));
+    setText(tr("Copy Description"));
+    setType(ActionDescription::TypeUser);
 }
 
 CopyDescriptionAction::~CopyDescriptionAction()
@@ -42,25 +42,25 @@ CopyDescriptionAction::~CopyDescriptionAction()
 
 void CopyDescriptionAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto const &contact = action->context()->contacts().toContact();
-	if (!contact)
-		return;
+    auto const &contact = action->context()->contacts().toContact();
+    if (!contact)
+        return;
 
-	auto const &description = contact.currentStatus().description();
-	if (description.isEmpty())
-		return;
+    auto const &description = contact.currentStatus().description();
+    if (description.isEmpty())
+        return;
 
-	QApplication::clipboard()->setText(description, QClipboard::Selection);
-	QApplication::clipboard()->setText(description, QClipboard::Clipboard);
+    QApplication::clipboard()->setText(description, QClipboard::Selection);
+    QApplication::clipboard()->setText(description, QClipboard::Clipboard);
 }
 
-void CopyDescriptionAction::updateActionState(Action* action)
+void CopyDescriptionAction::updateActionState(Action *action)
 {
-	action->setEnabled(!action->context()->contacts().toContact().currentStatus().description().isEmpty());
+    action->setEnabled(!action->context()->contacts().toContact().currentStatus().description().isEmpty());
 }
 
 #include "moc_copy-description-action.cpp"

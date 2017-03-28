@@ -29,29 +29,29 @@
 
 class GaduTokenSocketNotifiers : public GaduSocketNotifiers
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	struct gg_http *H;
+    struct gg_http *H;
 
-	void finished(const QString &tokenId, const QPixmap &tokenPixmap);
+    void finished(const QString &tokenId, const QPixmap &tokenPixmap);
 
 protected:
-	virtual bool checkRead();
-	virtual bool checkWrite();
-	virtual void socketEvent();
-	virtual int timeout();
-	virtual bool handleSoftTimeout();
-	virtual void connectionTimeout();
+    virtual bool checkRead();
+    virtual bool checkWrite();
+    virtual void socketEvent();
+    virtual int timeout();
+    virtual bool handleSoftTimeout();
+    virtual void connectionTimeout();
 
 public:
-	GaduTokenSocketNotifiers(QObject *parent = nullptr)
-		: GaduSocketNotifiers(parent), H(0) {}
+    GaduTokenSocketNotifiers(QObject *parent = nullptr) : GaduSocketNotifiers(parent), H(0)
+    {
+    }
 
-	void watchFor(struct gg_http *h);
+    void watchFor(struct gg_http *h);
 
 signals:
-	void done(const QString &, const QPixmap &);
-
+    void done(const QString &, const QPixmap &);
 };
 
-#endif // GADU_TOKEN_SOCKET_NOTIFIERS_H
+#endif   // GADU_TOKEN_SOCKET_NOTIFIERS_H

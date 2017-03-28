@@ -19,8 +19,7 @@
 
 #include "chat-widget.h"
 
-ChatWidget::ChatWidget(QWidget *parent) :
-		QWidget{parent}
+ChatWidget::ChatWidget(QWidget *parent) : QWidget{parent}
 {
 }
 

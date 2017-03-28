@@ -22,21 +22,19 @@
 #ifndef BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_H
 #define BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_H
 
-#include <QtCore/QString>
 #include "exports.h"
+#include <QtCore/QString>
 
 class Buddy;
 
 class KADUAPI BuddyAdditionalDataDeleteHandler
 {
-
 public:
-	virtual ~BuddyAdditionalDataDeleteHandler();
+    virtual ~BuddyAdditionalDataDeleteHandler();
 
-	virtual QString name() = 0;
-	virtual QString displayName() = 0;
-	virtual void deleteBuddyAdditionalData(Buddy buddy) = 0;
-
+    virtual QString name() = 0;
+    virtual QString displayName() = 0;
+    virtual void deleteBuddyAdditionalData(Buddy buddy) = 0;
 };
 
-#endif // BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_H
+#endif   // BUDDY_ADDITIONAL_DATA_DELETE_HANDLER_H

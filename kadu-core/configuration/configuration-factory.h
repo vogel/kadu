@@ -21,8 +21,8 @@
 
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration.h"
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -33,24 +33,23 @@ class VersionService;
 
 class KADUAPI ConfigurationFactory final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConfigurationFactory(QObject *parent = nullptr);
-	virtual ~ConfigurationFactory();
+    Q_INVOKABLE explicit ConfigurationFactory(QObject *parent = nullptr);
+    virtual ~ConfigurationFactory();
 
-	Q_INVOKABLE Configuration * createConfiguration() const;
+    Q_INVOKABLE Configuration *createConfiguration() const;
 
 private:
-	QPointer<ConfigurationPathProvider> m_configurationPathProvider;
-	QPointer<VersionService> m_versionService;
+    QPointer<ConfigurationPathProvider> m_configurationPathProvider;
+    QPointer<VersionService> m_versionService;
 
-	not_owned_qptr<Configuration> readConfiguration() const;
-	not_owned_qptr<Configuration> createEmptyConfiguration() const;
-	bool isConfigurationPathUsable() const;
+    not_owned_qptr<Configuration> readConfiguration() const;
+    not_owned_qptr<Configuration> createEmptyConfiguration() const;
+    bool isConfigurationPathUsable() const;
 
 private slots:
-	INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-
+    INJEQT_SET void setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider);
+    INJEQT_SET void setVersionService(VersionService *versionService);
 };

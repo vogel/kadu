@@ -32,27 +32,31 @@
 
 class KADUAPI MessageDialog : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QMessageBox *Box;
+    QMessageBox *Box;
 
-	MessageDialog(const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
-				      QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+    MessageDialog(
+        const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons,
+        QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 
 protected slots:
-	void messageBoxFinished(int result);
+    void messageBoxFinished(int result);
 
 public:
-	static MessageDialog * create(const QIcon &icon, const QString &title, const QString &text,
-				      QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-	static void show(const QIcon &icon, const QString &title, const QString &text, QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-			  QWidget *parent = nullptr, Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+    static MessageDialog *create(
+        const QIcon &icon, const QString &title, const QString &text, QWidget *parent = nullptr,
+        Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+    static void show(
+        const QIcon &icon, const QString &title, const QString &text,
+        QMessageBox::StandardButtons buttons = QMessageBox::Ok, QWidget *parent = nullptr,
+        Qt::WindowFlags f = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
 
-	MessageDialog * addButton(QMessageBox::StandardButton button, const QString &text = "");
-	void setDefaultButton(QMessageBox::StandardButton button);
+    MessageDialog *addButton(QMessageBox::StandardButton button, const QString &text = "");
+    void setDefaultButton(QMessageBox::StandardButton button);
 
-	int exec();
-	bool ask();
+    int exec();
+    bool ask();
 };
 
-#endif // MESSAGE_DIALOG_H
+#endif   // MESSAGE_DIALOG_H

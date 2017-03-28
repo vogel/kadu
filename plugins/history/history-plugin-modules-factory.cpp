@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-HistoryPluginModulesFactory::HistoryPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+HistoryPluginModulesFactory::HistoryPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ HistoryPluginModulesFactory::~HistoryPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> HistoryPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<HistoryModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<HistoryModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_history-plugin-modules-factory.cpp"

@@ -19,8 +19,7 @@
 
 #include "chat-widget-repository.h"
 
-ChatWidgetRepository::ChatWidgetRepository(QObject *parent) :
-		QObject{parent}
+ChatWidgetRepository::ChatWidgetRepository(QObject *parent) : QObject{parent}
 {
 }
 

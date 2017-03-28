@@ -19,8 +19,8 @@
 
 #include "jabber-roster-extension.h"
 
-#include "services/jabber-error-service.h"
 #include "jid.h"
+#include "services/jabber-error-service.h"
 
 #include <QtXml/QDomElement>
 #include <qxmpp/QXmppClient.h>
@@ -36,25 +36,25 @@ JabberRosterExtension::~JabberRosterExtension()
 
 void JabberRosterExtension::setJabberErrorService(JabberErrorService *errorService)
 {
-	m_errorService = errorService;
+    m_errorService = errorService;
 }
 
 bool JabberRosterExtension::handleStanza(const QDomElement &stanza)
 {
-	if (stanza.tagName() != "iq" || !QXmppRosterIq::isRosterIq(stanza))
-		return false;
+    if (stanza.tagName() != "iq" || !QXmppRosterIq::isRosterIq(stanza))
+        return false;
 
-	auto rosterIq = QXmppRosterIq{};
-	rosterIq.parse(stanza);
+    auto rosterIq = QXmppRosterIq{};
+    rosterIq.parse(stanza);
 
-	if (!m_errorService->isErrorIq(rosterIq))
-		return false;
+    if (!m_errorService->isErrorIq(rosterIq))
+        return false;
 
-	if (rosterIq.error().type() == QXmppStanza::Error::Cancel)
-		for (auto &&item : rosterIq.items())
-			emit rosterCancelationReceived(Jid::parse(item.bareJid()));
+    if (rosterIq.error().type() == QXmppStanza::Error::Cancel)
+        for (auto &&item : rosterIq.items())
+            emit rosterCancelationReceived(Jid::parse(item.bareJid()));
 
-	return false;
+    return false;
 }
 
 #include "moc_jabber-roster-extension.cpp"

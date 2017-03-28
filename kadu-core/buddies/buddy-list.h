@@ -29,15 +29,12 @@
 
 class KADUAPI BuddyList : public QList<Buddy>
 {
-
 public:
+    BuddyList();
+    BuddyList(const QList<Buddy> &list);
+    BuddyList(const Buddy &buddy);
 
-	BuddyList();
-	BuddyList(const QList<Buddy> &list);
-	BuddyList(const Buddy &buddy);
-
-	bool operator == (const BuddyList &compare) const;
-
+    bool operator==(const BuddyList &compare) const;
 };
 
-#endif // BUDDY_LIST_H
+#endif   // BUDDY_LIST_H

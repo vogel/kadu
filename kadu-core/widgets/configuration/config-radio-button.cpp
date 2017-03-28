@@ -27,41 +27,44 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-radio-button.h"
 
-ConfigRadioButton::ConfigRadioButton(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: QRadioButton(widgetCaption, parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigRadioButton::ConfigRadioButton(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QRadioButton(widgetCaption, parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
-	createWidgets();
+    createWidgets();
 }
 
-ConfigRadioButton::ConfigRadioButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager) :
-		QRadioButton(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
+ConfigRadioButton::ConfigRadioButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : QRadioButton(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager)
 {
 }
 
 void ConfigRadioButton::createWidgets()
 {
-	setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
-	parentConfigGroupBox->addWidget(this, true);
+    setText(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()));
+    parentConfigGroupBox->addWidget(this, true);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    if (!ConfigWidget::toolTip.isEmpty())
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
 
 void ConfigRadioButton::loadConfiguration()
 {
-	if (section.isEmpty())
-		return;
+    if (section.isEmpty())
+        return;
 
-	setChecked(dataManager->readEntry(section, item).toBool());
-	emit toggled(isChecked());
+    setChecked(dataManager->readEntry(section, item).toBool());
+    emit toggled(isChecked());
 }
 
 void ConfigRadioButton::saveConfiguration()
 {
-	if (section.isEmpty())
-		return;
+    if (section.isEmpty())
+        return;
 
-	dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
+    dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
 
 #include "moc_config-radio-button.cpp"

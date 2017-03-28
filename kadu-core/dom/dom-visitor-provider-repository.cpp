@@ -25,17 +25,15 @@
 
 #include <QtXml/QDomDocument>
 
-namespace {
-
-DomVisitorProvider * convert_iterator(DomVisitorProviderRepository::WrappedIterator iterator)
+namespace
 {
-	return iterator->second;
+DomVisitorProvider *convert_iterator(DomVisitorProviderRepository::WrappedIterator iterator)
+{
+    return iterator->second;
+}
 }
 
-}
-
-DomVisitorProviderRepository::DomVisitorProviderRepository(QObject *parent) :
-		QObject{parent}
+DomVisitorProviderRepository::DomVisitorProviderRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -45,37 +43,37 @@ DomVisitorProviderRepository::~DomVisitorProviderRepository()
 
 DomVisitorProviderRepository::Iterator DomVisitorProviderRepository::begin() const
 {
-	return Iterator{m_visitorProviders.begin(), convert_iterator};
+    return Iterator{m_visitorProviders.begin(), convert_iterator};
 }
 
 DomVisitorProviderRepository::Iterator DomVisitorProviderRepository::end() const
 {
-	return Iterator{m_visitorProviders.end(), convert_iterator};
+    return Iterator{m_visitorProviders.end(), convert_iterator};
 }
 
 size_t DomVisitorProviderRepository::size() const
 {
-	return m_visitorProviders.size();
+    return m_visitorProviders.size();
 }
 
 void DomVisitorProviderRepository::addVisitorProvider(DomVisitorProvider *visitorProvider, int priority)
 {
-	auto el = std::make_pair(priority, visitorProvider);
-	auto it = std::lower_bound(std::begin(m_visitorProviders), std::end(m_visitorProviders), el, [](const Item &x, const Item &y){
-		return x.first < y.first;
-	});
+    auto el = std::make_pair(priority, visitorProvider);
+    auto it = std::lower_bound(
+        std::begin(m_visitorProviders), std::end(m_visitorProviders), el,
+        [](const Item &x, const Item &y) { return x.first < y.first; });
 
-	m_visitorProviders.insert(it, el);
+    m_visitorProviders.insert(it, el);
 }
 
 void DomVisitorProviderRepository::removeVisitorProvider(DomVisitorProvider *visitorProvider)
 {
-	auto it = std::find_if(std::begin(m_visitorProviders), std::end(m_visitorProviders), [&](const Item &x){
-		return x.second == visitorProvider;
-	});
+    auto it = std::find_if(std::begin(m_visitorProviders), std::end(m_visitorProviders), [&](const Item &x) {
+        return x.second == visitorProvider;
+    });
 
-	if (it != std::end(m_visitorProviders))
-		m_visitorProviders.erase(it);
+    if (it != std::end(m_visitorProviders))
+        m_visitorProviders.erase(it);
 }
 
 #include "dom-visitor-provider-repository.moc"

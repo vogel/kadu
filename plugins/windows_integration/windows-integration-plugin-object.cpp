@@ -21,8 +21,7 @@
 
 #include "windows-integration.h"
 
-WindowsIntegrationPluginObject::WindowsIntegrationPluginObject(QObject *parent) :
-		QObject{parent}
+WindowsIntegrationPluginObject::WindowsIntegrationPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,7 +31,7 @@ WindowsIntegrationPluginObject::~WindowsIntegrationPluginObject()
 
 void WindowsIntegrationPluginObject::setWindowsIntegration(WindowsIntegration *windowsIntegration)
 {
-	m_windowsIntegration = windowsIntegration;
+    m_windowsIntegration = windowsIntegration;
 }
 
 #include "moc_windows-integration-plugin-object.cpp"

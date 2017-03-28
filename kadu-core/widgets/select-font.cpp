@@ -26,44 +26,43 @@
 
 #include "select-font.h"
 
-SelectFont::SelectFont(QWidget *parent)
-	: QWidget(parent)
+SelectFont::SelectFont(QWidget *parent) : QWidget(parent)
 {
-	QHBoxLayout *layout = new QHBoxLayout;
-	layout->setSpacing(5);
+    QHBoxLayout *layout = new QHBoxLayout;
+    layout->setSpacing(5);
 
-	fontEdit = new QLineEdit(this);
-	fontEdit->setReadOnly(true);
+    fontEdit = new QLineEdit(this);
+    fontEdit->setReadOnly(true);
 
-	QPushButton *button = new QPushButton(tr("Select"), this);
-	connect(button, SIGNAL(clicked()), this, SLOT(onClick()));
+    QPushButton *button = new QPushButton(tr("Select"), this);
+    connect(button, SIGNAL(clicked()), this, SLOT(onClick()));
 
-	layout->addWidget(fontEdit);
-	layout->addWidget(button);
+    layout->addWidget(fontEdit);
+    layout->addWidget(button);
 
-	setLayout(layout);
+    setLayout(layout);
 }
 
 void SelectFont::setFont(const QFont &font)
 {
-	currentFont = font;
-	fontEdit->setText(QString("%1 %2").arg(currentFont.family(), QString::number(currentFont.pointSize())));
+    currentFont = font;
+    fontEdit->setText(QString("%1 %2").arg(currentFont.family(), QString::number(currentFont.pointSize())));
 
-	emit fontChanged(currentFont);
+    emit fontChanged(currentFont);
 }
 
-const QFont & SelectFont::font() const
+const QFont &SelectFont::font() const
 {
-	return currentFont;
+    return currentFont;
 }
 
 void SelectFont::onClick()
 {
-	bool ok;
-	QFont f = QFontDialog::getFont(&ok, currentFont, parentWidget());
+    bool ok;
+    QFont f = QFontDialog::getFont(&ok, currentFont, parentWidget());
 
-	if (ok)
-		setFont(f);
+    if (ok)
+        setFont(f);
 }
 
 #include "moc_select-font.cpp"

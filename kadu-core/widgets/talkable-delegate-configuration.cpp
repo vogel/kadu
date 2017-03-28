@@ -26,15 +26,11 @@
 #include "icons/kadu-icon.h"
 #include "widgets/talkable-tree-view.h"
 
-TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent) :
-		QObject{parent},
-		ListView{listView},
-		AlwaysShowIdentityName{false},
-		ShowIdentityName{true},
-		ShowMessagePixmap{true},
-		UseConfigurationColors{false}
+TalkableDelegateConfiguration::TalkableDelegateConfiguration(TalkableTreeView *listView, QObject *parent)
+        : QObject{parent}, ListView{listView}, AlwaysShowIdentityName{false}, ShowIdentityName{true},
+          ShowMessagePixmap{true}, UseConfigurationColors{false}
 {
-	Q_ASSERT(ListView);
+    Q_ASSERT(ListView);
 }
 
 TalkableDelegateConfiguration::~TalkableDelegateConfiguration()
@@ -43,43 +39,44 @@ TalkableDelegateConfiguration::~TalkableDelegateConfiguration()
 
 void TalkableDelegateConfiguration::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void TalkableDelegateConfiguration::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void TalkableDelegateConfiguration::init()
 {
-	DefaultAvatarSize = QSize(32, 32);
-	MessagePixmap = m_iconsManager->iconByPath(KaduIcon("protocols/common/message")).pixmap(16, 16);
+    DefaultAvatarSize = QSize(32, 32);
+    MessagePixmap = m_iconsManager->iconByPath(KaduIcon("protocols/common/message")).pixmap(16, 16);
 
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void TalkableDelegateConfiguration::configurationUpdated()
 {
-	Font = QFont(m_configuration->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
-	BoldFont = Font;
-	BoldFont.setBold(true);
+    Font = QFont(m_configuration->deprecatedApi()->readFontEntry("Look", "UserboxFont"), ListView);
+    BoldFont = Font;
+    BoldFont.setBold(true);
 
-	DescriptionFont = Font;
-	DescriptionFont.setPointSize(Font.pointSize() - 2);
+    DescriptionFont = Font;
+    DescriptionFont.setPointSize(Font.pointSize() - 2);
 
-	AlwaysShowIdentityName = m_configuration->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
-	ShowAvatars = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
-	AvatarBorder = m_configuration->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
-	AvatarGreyOut = m_configuration->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");
-	AlignTop = m_configuration->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
-	ShowBold = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowBold");
-	ShowDescription = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
-	ShowMultiLineDescription = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc");
-	DescriptionColor = m_configuration->deprecatedApi()->readColorEntry("Look", "DescriptionColor");
-	FontColor = m_configuration->deprecatedApi()->readColorEntry("Look", "UserboxFgColor");
+    AlwaysShowIdentityName =
+        m_configuration->deprecatedApi()->readBoolEntry("Look", "TalkableListAlwaysShowIdentityName");
+    ShowAvatars = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars");
+    AvatarBorder = m_configuration->deprecatedApi()->readBoolEntry("Look", "AvatarBorder");
+    AvatarGreyOut = m_configuration->deprecatedApi()->readBoolEntry("Look", "AvatarGreyOut");
+    AlignTop = m_configuration->deprecatedApi()->readBoolEntry("Look", "AlignUserboxIconsTop");
+    ShowBold = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowBold");
+    ShowDescription = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowDesc");
+    ShowMultiLineDescription = m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc");
+    DescriptionColor = m_configuration->deprecatedApi()->readColorEntry("Look", "DescriptionColor");
+    FontColor = m_configuration->deprecatedApi()->readColorEntry("Look", "UserboxFgColor");
 
-	ListView->scheduleDelayedItemsLayout();
+    ListView->scheduleDelayedItemsLayout();
 }
 
 #include "moc_talkable-delegate-configuration.cpp"

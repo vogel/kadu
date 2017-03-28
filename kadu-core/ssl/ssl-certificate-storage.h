@@ -34,21 +34,20 @@ class SslCertificate;
 
 class SslCertificateStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SslCertificateStorage(QObject *parent = nullptr);
-	virtual ~SslCertificateStorage();
+    Q_INVOKABLE explicit SslCertificateStorage(QObject *parent = nullptr);
+    virtual ~SslCertificateStorage();
 
-	QSet<SslCertificate> loadCertificates() const;
-	void storeCertificates(const QSet<SslCertificate> &certificates) const;
+    QSet<SslCertificate> loadCertificates() const;
+    void storeCertificates(const QSet<SslCertificate> &certificates) const;
 
 private:
-	QPointer<StoragePointFactory> m_storagePointFactory;
+    QPointer<StoragePointFactory> m_storagePointFactory;
 
-	std::unique_ptr<StoragePoint> storagePoint() const;
+    std::unique_ptr<StoragePoint> storagePoint() const;
 
 private slots:
-	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
-
+    INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 };

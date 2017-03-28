@@ -36,26 +36,24 @@
 
 KaduSharedBaseClassImpl(Contact)
 
-Contact Contact::null;
+    Contact Contact::null;
 
 Contact::Contact()
 {
 }
 
-Contact::Contact(ContactShared *data) :
-		SharedBase<ContactShared>(data)
+Contact::Contact(ContactShared *data) : SharedBase<ContactShared>(data)
 {
 }
 
 Contact::Contact(QObject *data)
 {
-	ContactShared *shared = qobject_cast<ContactShared *>(data);
-	if (shared)
-		setData(shared);
+    ContactShared *shared = qobject_cast<ContactShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
-Contact::Contact(const Contact &copy) :
-		SharedBase<ContactShared>(copy)
+Contact::Contact(const Contact &copy) : SharedBase<ContactShared>(copy)
 {
 }
 
@@ -65,48 +63,48 @@ Contact::~Contact()
 
 QString Contact::display(bool useBuddyData) const
 {
-	if (data())
-		return data()->display(useBuddyData);
+    if (data())
+        return data()->display(useBuddyData);
 
-	return QString();
+    return QString();
 }
 
 Avatar Contact::avatar(bool useBuddyData) const
 {
-	if (data())
-		return data()->avatar(useBuddyData);
+    if (data())
+        return data()->avatar(useBuddyData);
 
-	return Avatar::null;
+    return Avatar::null;
 }
 
 Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {
-	if (!c1)
-		return c2;
-	if (!c2)
-		return c1;
-	return c2.currentStatus() < c1.currentStatus() ? c2 : c1;
+    if (!c1)
+        return c2;
+    if (!c2)
+        return c1;
+    return c2.currentStatus() < c1.currentStatus() ? c2 : c1;
 }
 
-KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid())
-KaduSharedBase_PropertyReadDef(Contact, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
-KaduSharedBase_PropertyDefCRW(Contact, Account, contactAccount, ContactAccount, Account::null)
-KaduSharedBase_PropertyDefCRW(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
-KaduSharedBase_PropertyDefCRW(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
-KaduSharedBase_PropertyDefCRW(Contact, QString, id, Id, QString())
-KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
-KaduSharedBase_PropertyDefCRW(Contact, Status, currentStatus, CurrentStatus, Status())
-KaduSharedBase_PropertyBoolDef(Contact, Blocking, false)
-KaduSharedBase_PropertyDef(Contact, bool, ignoreNextStatusChange, IgnoreNextStatusChange, false)
+KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid()) KaduSharedBase_PropertyReadDef(
+    Contact, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
+    KaduSharedBase_PropertyDefCRW(Contact, Account, contactAccount, ContactAccount, Account::null)
+        KaduSharedBase_PropertyDefCRW(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
+            KaduSharedBase_PropertyDefCRW(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
+                KaduSharedBase_PropertyDefCRW(Contact, QString, id, Id, QString())
+                    KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
+                        KaduSharedBase_PropertyDefCRW(Contact, Status, currentStatus, CurrentStatus, Status())
+                            KaduSharedBase_PropertyBoolDef(Contact, Blocking, false) KaduSharedBase_PropertyDef(
+                                Contact, bool, ignoreNextStatusChange, IgnoreNextStatusChange, false)
 
-RosterEntry * Contact::rosterEntry() const
+                                RosterEntry *Contact::rosterEntry() const
 {
-	if (isNull())
-		return 0;
-	else
-		return data()->rosterEntry();
+    if (isNull())
+        return 0;
+    else
+        return data()->rosterEntry();
 }
 
 KaduSharedBase_PropertyDef(Contact, short int, maximumImageSize, MaximumImageSize, 0)
-KaduSharedBase_PropertyDef(Contact, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
-KaduSharedBase_PropertyBoolReadDef(Contact, Anonymous, true)
+    KaduSharedBase_PropertyDef(Contact, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
+        KaduSharedBase_PropertyBoolReadDef(Contact, Anonymous, true)

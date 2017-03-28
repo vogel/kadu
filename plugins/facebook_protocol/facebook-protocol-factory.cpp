@@ -19,22 +19,21 @@
 
 #include "facebook-protocol-factory.h"
 
+#include "facebook-protocol.h"
 #include "widgets/facebook-add-account-widget.h"
 #include "widgets/facebook-edit-account-widget.h"
-#include "facebook-protocol.h"
 
 #include "accounts/account.h"
 #include "icons/kadu-icon.h"
 #include "plugin/plugin-injected-factory.h"
 
-FacebookProtocolFactory::FacebookProtocolFactory(QObject *parent) :
-		ProtocolFactory{}
+FacebookProtocolFactory::FacebookProtocolFactory(QObject *parent) : ProtocolFactory{}
 {
-	Q_UNUSED(parent);
+    Q_UNUSED(parent);
 
-	// already sorted
-	m_supportedStatusTypes.append(StatusType::Online);
-	m_supportedStatusTypes.append(StatusType::Offline);
+    // already sorted
+    m_supportedStatusTypes.append(StatusType::Online);
+    m_supportedStatusTypes.append(StatusType::Offline);
 }
 
 FacebookProtocolFactory::~FacebookProtocolFactory()
@@ -43,51 +42,51 @@ FacebookProtocolFactory::~FacebookProtocolFactory()
 
 void FacebookProtocolFactory::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 KaduIcon FacebookProtocolFactory::icon()
 {
-	return KaduIcon("protocols/facebook/facebook", "16x16");
+    return KaduIcon("protocols/facebook/facebook", "16x16");
 }
 
-Protocol * FacebookProtocolFactory::createProtocolHandler(Account account)
+Protocol *FacebookProtocolFactory::createProtocolHandler(Account account)
 {
-	return m_pluginInjectedFactory->makeInjected<FacebookProtocol>(account, this);
+    return m_pluginInjectedFactory->makeInjected<FacebookProtocol>(account, this);
 }
 
-AccountAddWidget * FacebookProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
+AccountAddWidget *FacebookProtocolFactory::newAddAccountWidget(bool showButtons, QWidget *parent)
 {
-	auto result = m_pluginInjectedFactory->makeInjected<FacebookAddAccountWidget>(showButtons, parent);
-	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
-	return result;
+    auto result = m_pluginInjectedFactory->makeInjected<FacebookAddAccountWidget>(showButtons, parent);
+    connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+    return result;
 }
 
-AccountEditWidget * FacebookProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
+AccountEditWidget *FacebookProtocolFactory::newEditAccountWidget(Account account, QWidget *parent)
 {
-	auto result = m_pluginInjectedFactory->makeInjected<FacebookEditAccountWidget>(account, parent);
-	connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
-	return result;
+    auto result = m_pluginInjectedFactory->makeInjected<FacebookEditAccountWidget>(account, parent);
+    connect(this, SIGNAL(destroyed()), result, SLOT(deleteLater()));
+    return result;
 }
 
 QList<StatusType> FacebookProtocolFactory::supportedStatusTypes()
 {
-	return m_supportedStatusTypes;
+    return m_supportedStatusTypes;
 }
 
 Status FacebookProtocolFactory::adaptStatus(Status status) const
 {
-	return status;
+    return status;
 }
 
 QString FacebookProtocolFactory::idLabel()
 {
-	return tr("User ID:");
+    return tr("User ID:");
 }
 
 bool FacebookProtocolFactory::canRegister()
 {
-	return false;
+    return false;
 }
 
 #include "facebook-protocol-factory.moc"

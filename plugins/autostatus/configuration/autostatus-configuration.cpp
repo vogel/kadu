@@ -24,8 +24,7 @@
 
 #include "autostatus-configuration.h"
 
-AutostatusConfiguration::AutostatusConfiguration(QObject *parent) :
-		QObject{parent}
+AutostatusConfiguration::AutostatusConfiguration(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,24 +34,25 @@ AutostatusConfiguration::~AutostatusConfiguration()
 
 void AutostatusConfiguration::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void AutostatusConfiguration::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AutostatusConfiguration::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void AutostatusConfiguration::configurationUpdated()
 {
-	AutoTime = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
-	AutoStatus = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
-	StatusFilePath = m_configuration->deprecatedApi()->readEntry("PowerKadu", "status_file_path", m_pathsProvider->profilePath() + QStringLiteral("autostatus.list"));
+    AutoTime = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "autostatus_time", 10);
+    AutoStatus = m_configuration->deprecatedApi()->readNumEntry("PowerKadu", "autoStatus");
+    StatusFilePath = m_configuration->deprecatedApi()->readEntry(
+        "PowerKadu", "status_file_path", m_pathsProvider->profilePath() + QStringLiteral("autostatus.list"));
 }
 
 #include "moc_autostatus-configuration.cpp"

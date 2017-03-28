@@ -35,30 +35,29 @@ class QXmppRosterManager;
 
 class JabberSubscriptionService : public SubscriptionService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol);
-	virtual ~JabberSubscriptionService();
+    explicit JabberSubscriptionService(QXmppRosterManager *roster, JabberProtocol *protocol);
+    virtual ~JabberSubscriptionService();
 
-	virtual void resendSubscription(const Contact &contact);
-	virtual void removeSubscription(const Contact &contact);
-	virtual void requestSubscription(const Contact &contact);
+    virtual void resendSubscription(const Contact &contact);
+    virtual void removeSubscription(const Contact &contact);
+    virtual void requestSubscription(const Contact &contact);
 
 public slots:
-	virtual void authorizeContact(Contact contact, bool authorized);
+    virtual void authorizeContact(Contact contact, bool authorized);
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<QXmppRosterManager> m_roster;
-	JabberProtocol *m_protocol;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<QXmppRosterManager> m_roster;
+    JabberProtocol *m_protocol;
 
-	QPointer<ContactManager> m_contactManager;
+    QPointer<ContactManager> m_contactManager;
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 
-	void subscriptionReceived(const QString &bareJid);
-
+    void subscriptionReceived(const QString &bareJid);
 };

@@ -44,26 +44,28 @@
  */
 class GaduAvatarService : public AvatarService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Create service instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param account account of service
-	 * @param parent QObject parent of service
-	 */
-	explicit GaduAvatarService(Account account, QObject *parent = nullptr);
-	virtual ~GaduAvatarService();
+    /**
+     * @short Create service instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param account account of service
+     * @param parent QObject parent of service
+     */
+    explicit GaduAvatarService(Account account, QObject *parent = nullptr);
+    virtual ~GaduAvatarService();
 
-	virtual AvatarDownloader * createAvatarDownloader() override;
-	virtual AvatarUploader * createAvatarUploader() override;
-	virtual bool eventBasedUpdates() override { return true; }
-
+    virtual AvatarDownloader *createAvatarDownloader() override;
+    virtual AvatarUploader *createAvatarUploader() override;
+    virtual bool eventBasedUpdates() override
+    {
+        return true;
+    }
 };
 
 /**
  * @}
  */
 
-#endif // GADU_AVATAR_SERVICE_H
+#endif   // GADU_AVATAR_SERVICE_H

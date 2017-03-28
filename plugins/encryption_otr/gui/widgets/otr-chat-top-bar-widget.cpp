@@ -28,10 +28,9 @@
 
 #include "otr-chat-top-bar-widget.h"
 
-OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) :
-		QWidget(parent), MyContact(contact)
+OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) : QWidget(parent), MyContact(contact)
 {
-	setFocusPolicy(Qt::NoFocus);
+    setFocusPolicy(Qt::NoFocus);
 }
 
 OtrChatTopBarWidget::~OtrChatTopBarWidget()
@@ -40,113 +39,113 @@ OtrChatTopBarWidget::~OtrChatTopBarWidget()
 
 void OtrChatTopBarWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void OtrChatTopBarWidget::init()
 {
-	createGui();
+    createGui();
 }
 
 void OtrChatTopBarWidget::createGui()
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(2);
-	layout->setSpacing(0);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(2);
+    layout->setSpacing(0);
 
-	OtrStatusButton = new QPushButton();
-	OtrStatusButton->setFlat(true);
-	layout->addWidget(OtrStatusButton);
-	layout->addStretch(1);
+    OtrStatusButton = new QPushButton();
+    OtrStatusButton->setFlat(true);
+    layout->addWidget(OtrStatusButton);
+    layout->addStretch(1);
 
-	QMenu *otrMenu = new QMenu(OtrStatusButton);
-	StartAction = otrMenu->addAction(tr("Start Private Conversation"));
-	connect(StartAction, SIGNAL(triggered(bool)), this, SLOT(startSession()));
-	EndAction = otrMenu->addAction(tr("End Private Conversation"));
-	connect(EndAction, SIGNAL(triggered(bool)), this, SLOT(endSession()));
-	otrMenu->addSeparator();
-	VerifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
-	connect(VerifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
+    QMenu *otrMenu = new QMenu(OtrStatusButton);
+    StartAction = otrMenu->addAction(tr("Start Private Conversation"));
+    connect(StartAction, SIGNAL(triggered(bool)), this, SLOT(startSession()));
+    EndAction = otrMenu->addAction(tr("End Private Conversation"));
+    connect(EndAction, SIGNAL(triggered(bool)), this, SLOT(endSession()));
+    otrMenu->addSeparator();
+    VerifyAction = otrMenu->addAction(tr("Verify Peer Identity"));
+    connect(VerifyAction, SIGNAL(triggered(bool)), this, SLOT(verifyPeerIdentity()));
 
-	OtrStatusButton->setMenu(otrMenu);
+    OtrStatusButton->setMenu(otrMenu);
 
-	trustLevelUpdated();
+    trustLevelUpdated();
 }
 
 void OtrChatTopBarWidget::setTrustLevelService(OtrTrustLevelService *trustLevelService)
 {
-	if (TrustLevelService)
-		disconnect(TrustLevelService.data(), 0, this, 0);
-	TrustLevelService = trustLevelService;
-	if (TrustLevelService)
-		connect(TrustLevelService.data(), SIGNAL(trustLevelsUpdated()), this, SLOT(trustLevelUpdated()));
+    if (TrustLevelService)
+        disconnect(TrustLevelService.data(), 0, this, 0);
+    TrustLevelService = trustLevelService;
+    if (TrustLevelService)
+        connect(TrustLevelService.data(), SIGNAL(trustLevelsUpdated()), this, SLOT(trustLevelUpdated()));
 
-	trustLevelUpdated();
+    trustLevelUpdated();
 }
 
 void OtrChatTopBarWidget::trustLevelUpdated()
 {
-	OtrTrustLevelService::TrustLevel level = trustLevel();
+    OtrTrustLevelService::TrustLevel level = trustLevel();
 
 #if defined(Q_OS_WIN)
-	OtrStatusButton->setText(trustStatusString(level) + "    "); // see #2835
+    OtrStatusButton->setText(trustStatusString(level) + "    ");   // see #2835
 #else
-	OtrStatusButton->setText(trustStatusString(level));
+    OtrStatusButton->setText(trustStatusString(level));
 #endif
 
-	bool isPrivate = level >= OtrTrustLevelService::TrustLevelUnverified;
+    bool isPrivate = level >= OtrTrustLevelService::TrustLevelUnverified;
 
-	if (isPrivate)
-	{
-		OtrStatusButton->setIcon(m_iconsManager->iconByPath(KaduIcon("security-high")));
-		StartAction->setText(tr("Refresh Private Conversation"));
-	}
-	else
-	{
-		OtrStatusButton->setIcon(m_iconsManager->iconByPath(KaduIcon("security-low")));
-		StartAction->setText(tr("Start Private Conversation"));
-	}
+    if (isPrivate)
+    {
+        OtrStatusButton->setIcon(m_iconsManager->iconByPath(KaduIcon("security-high")));
+        StartAction->setText(tr("Refresh Private Conversation"));
+    }
+    else
+    {
+        OtrStatusButton->setIcon(m_iconsManager->iconByPath(KaduIcon("security-low")));
+        StartAction->setText(tr("Start Private Conversation"));
+    }
 
-	EndAction->setEnabled(isPrivate);
-	VerifyAction->setEnabled(isPrivate);
+    EndAction->setEnabled(isPrivate);
+    VerifyAction->setEnabled(isPrivate);
 }
 
 OtrTrustLevelService::TrustLevel OtrChatTopBarWidget::trustLevel() const
 {
-	if (TrustLevelService)
-		return TrustLevelService.data()->loadTrustLevelFromContact(MyContact);
-	else
-		return OtrTrustLevelService::TrustLevelUnknown;
+    if (TrustLevelService)
+        return TrustLevelService.data()->loadTrustLevelFromContact(MyContact);
+    else
+        return OtrTrustLevelService::TrustLevelUnknown;
 }
 
 QString OtrChatTopBarWidget::trustStatusString(OtrTrustLevelService::TrustLevel level) const
 {
-	switch (level)
-	{
-		case OtrTrustLevelService::TrustLevelUnverified:
-			return tr("Unverified");
-		case OtrTrustLevelService::TrustLevelPrivate:
-			return tr("Private");
-		case OtrTrustLevelService::TrustLevelNotPrivate:
-		case OtrTrustLevelService::TrustLevelUnknown:
-		default:
-			return tr("Not Private");
-	}
+    switch (level)
+    {
+    case OtrTrustLevelService::TrustLevelUnverified:
+        return tr("Unverified");
+    case OtrTrustLevelService::TrustLevelPrivate:
+        return tr("Private");
+    case OtrTrustLevelService::TrustLevelNotPrivate:
+    case OtrTrustLevelService::TrustLevelUnknown:
+    default:
+        return tr("Not Private");
+    }
 }
 
 void OtrChatTopBarWidget::startSession()
 {
-	emit startSession(MyContact);
+    emit startSession(MyContact);
 }
 
 void OtrChatTopBarWidget::endSession()
 {
-	emit endSession(MyContact);
+    emit endSession(MyContact);
 }
 
 void OtrChatTopBarWidget::verifyPeerIdentity()
 {
-	emit verifyPeerIdentity(MyContact);
+    emit verifyPeerIdentity(MyContact);
 }
 
 #include "moc_otr-chat-top-bar-widget.cpp"

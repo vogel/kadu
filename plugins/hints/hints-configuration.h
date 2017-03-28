@@ -29,37 +29,42 @@ class Configuration;
 
 class HintsConfiguration : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum class Corner { TopLeft, TopRight, BottomLeft, BottomRight };
+    enum class Corner
+    {
+        TopLeft,
+        TopRight,
+        BottomLeft,
+        BottomRight
+    };
 
-	Q_INVOKABLE explicit HintsConfiguration(QObject *parent = nullptr);
-	virtual ~HintsConfiguration();
+    Q_INVOKABLE explicit HintsConfiguration(QObject *parent = nullptr);
+    virtual ~HintsConfiguration();
 
-	Corner corner() const;
-	int iconSize() const;
-	bool showAllNotificationActions() const;
-	bool showContentMessage() const;
+    Corner corner() const;
+    int iconSize() const;
+    bool showAllNotificationActions() const;
+    bool showContentMessage() const;
 
 signals:
-	void updated();
+    void updated();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	Corner m_corner {Corner::BottomRight};
-	int m_iconSize {32};
-	bool m_showAllNotificationActions {false};
-	bool m_showContentMessage {true};
+    Corner m_corner{Corner::BottomRight};
+    int m_iconSize{32};
+    bool m_showAllNotificationActions{false};
+    bool m_showContentMessage{true};
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };

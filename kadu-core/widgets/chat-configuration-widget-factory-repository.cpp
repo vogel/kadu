@@ -19,8 +19,7 @@
 
 #include "chat-configuration-widget-factory-repository.h"
 
-ChatConfigurationWidgetFactoryRepository::ChatConfigurationWidgetFactoryRepository(QObject* parent) :
-		QObject(parent)
+ChatConfigurationWidgetFactoryRepository::ChatConfigurationWidgetFactoryRepository(QObject *parent) : QObject(parent)
 {
 }
 
@@ -30,23 +29,23 @@ ChatConfigurationWidgetFactoryRepository::~ChatConfigurationWidgetFactoryReposit
 
 void ChatConfigurationWidgetFactoryRepository::registerFactory(ChatConfigurationWidgetFactory *factory)
 {
-	if (Factories.contains(factory))
-		return;
+    if (Factories.contains(factory))
+        return;
 
-	Factories.append(factory);
-	emit factoryRegistered(factory);
+    Factories.append(factory);
+    emit factoryRegistered(factory);
 }
 
 void ChatConfigurationWidgetFactoryRepository::unregisterFactory(ChatConfigurationWidgetFactory *factory)
 {
-	if (!Factories.contains(factory))
-		return;
+    if (!Factories.contains(factory))
+        return;
 
-	Factories.removeAll(factory);
-	emit factoryUnregistered(factory);
+    Factories.removeAll(factory);
+    emit factoryUnregistered(factory);
 }
 
 QList<ChatConfigurationWidgetFactory *> ChatConfigurationWidgetFactoryRepository::factories() const
 {
-	return Factories;
+    return Factories;
 }

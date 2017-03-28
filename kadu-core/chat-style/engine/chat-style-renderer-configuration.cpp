@@ -19,48 +19,47 @@
 
 #include "chat-style-renderer-configuration.h"
 
-ChatStyleRendererConfiguration::ChatStyleRendererConfiguration(Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency) :
-		m_chat{std::move(chat)},
-		m_webFrame(webFrame),
-		m_javaScript{std::move(javaScript)},
-		m_useTransparency{useTransparency}
+ChatStyleRendererConfiguration::ChatStyleRendererConfiguration(
+    Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency)
+        : m_chat{std::move(chat)}, m_webFrame(webFrame), m_javaScript{std::move(javaScript)},
+          m_useTransparency{useTransparency}
 {
 }
 
 Chat ChatStyleRendererConfiguration::chat() const
 {
-	return m_chat;
+    return m_chat;
 }
 
-QWebFrame & ChatStyleRendererConfiguration::webFrame() const
+QWebFrame &ChatStyleRendererConfiguration::webFrame() const
 {
-	return m_webFrame;
+    return m_webFrame;
 }
 
 QString ChatStyleRendererConfiguration::javaScript() const
 {
-	return m_javaScript;
+    return m_javaScript;
 }
 
 bool ChatStyleRendererConfiguration::useTransparency() const
 {
-	return m_useTransparency;
+    return m_useTransparency;
 }
 
-bool operator == (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right)
+bool operator==(const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right)
 {
-	if (left.useTransparency() != right.useTransparency())
-		return false;
-	if (std::addressof(left.webFrame()) != std::addressof(right.webFrame()))
-		return false;
-	if (left.chat() != right.chat())
-		return false;
-	if (left.javaScript() != right.javaScript())
-		return false;
-	return true;
+    if (left.useTransparency() != right.useTransparency())
+        return false;
+    if (std::addressof(left.webFrame()) != std::addressof(right.webFrame()))
+        return false;
+    if (left.chat() != right.chat())
+        return false;
+    if (left.javaScript() != right.javaScript())
+        return false;
+    return true;
 }
 
-bool operator != (const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right)
+bool operator!=(const ChatStyleRendererConfiguration &left, const ChatStyleRendererConfiguration &right)
 {
-	return !(left == right);
+    return !(left == right);
 }

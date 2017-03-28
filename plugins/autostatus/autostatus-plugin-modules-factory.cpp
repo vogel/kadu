@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-AutostatusPluginModulesFactory::AutostatusPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+AutostatusPluginModulesFactory::AutostatusPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ AutostatusPluginModulesFactory::~AutostatusPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> AutostatusPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<AutostatusModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<AutostatusModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_autostatus-plugin-modules-factory.cpp"

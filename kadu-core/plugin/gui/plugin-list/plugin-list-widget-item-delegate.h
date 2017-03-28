@@ -37,34 +37,35 @@ class QPushButton;
 
 class PluginListWidgetItemDelegate : public PluginListWidgetDelegate
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PluginListWidgetItemDelegate(PluginListWidget *pluginSelector, QObject *parent = nullptr);
-	virtual ~PluginListWidgetItemDelegate();
+    explicit PluginListWidgetItemDelegate(PluginListWidget *pluginSelector, QObject *parent = nullptr);
+    virtual ~PluginListWidgetItemDelegate();
 
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 protected:
-	virtual QList<QWidget *> createItemWidgets() const override;
-	virtual void updateItemWidgets(const QList<QWidget *> widgets, const QStyleOptionViewItem &option, const QPersistentModelIndex &index) const override;
+    virtual QList<QWidget *> createItemWidgets() const override;
+    virtual void updateItemWidgets(
+        const QList<QWidget *> widgets, const QStyleOptionViewItem &option,
+        const QPersistentModelIndex &index) const override;
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	std::unique_ptr<QCheckBox> m_checkBox;
-	std::unique_ptr<QPushButton> m_pushButton;
-	PluginListWidget *m_pluginSelector;
+    std::unique_ptr<QCheckBox> m_checkBox;
+    std::unique_ptr<QPushButton> m_pushButton;
+    PluginListWidget *m_pluginSelector;
 
-	QFont titleFont(const QFont &baseFont) const;
-	QFont subtitleFont(const QFont &baseFont) const;
+    QFont titleFont(const QFont &baseFont) const;
+    QFont subtitleFont(const QFont &baseFont) const;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void slotStateChanged(bool state);
-	void slotAboutClicked();
-
+    void slotStateChanged(bool state);
+    void slotAboutClicked();
 };

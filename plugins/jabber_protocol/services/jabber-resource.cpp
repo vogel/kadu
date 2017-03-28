@@ -19,34 +19,31 @@
 
 #include "jabber-resource.h"
 
-JabberResource::JabberResource() :
-		_priority{-1}
+JabberResource::JabberResource() : _priority{-1}
 {
 }
 
-JabberResource::JabberResource(Jid jid, int priority, Status status) :
-		_jid{std::move(jid)},
-		_priority{priority},
-		_status{std::move(status)}
+JabberResource::JabberResource(Jid jid, int priority, Status status)
+        : _jid{std::move(jid)}, _priority{priority}, _status{std::move(status)}
 {
 }
 
 bool JabberResource::isEmpty() const
 {
-	return _jid.isEmpty();
+    return _jid.isEmpty();
 }
 
 Jid JabberResource::jid() const
 {
-	return _jid;
+    return _jid;
 }
 
 int JabberResource::priority() const
 {
-	return _priority;
+    return _priority;
 }
 
 Status JabberResource::status() const
 {
-	return _status;
+    return _status;
 }

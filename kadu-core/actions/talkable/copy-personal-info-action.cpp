@@ -29,14 +29,14 @@
 #include <QtGui/QClipboard>
 #include <QtWidgets/QApplication>
 
-CopyPersonalInfoAction::CopyPersonalInfoAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+CopyPersonalInfoAction::CopyPersonalInfoAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/copy-personal-info"});
-	setName(QStringLiteral("copyPersonalInfoAction"));
-	setText(tr("Copy Personal Info"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"kadu_icons/copy-personal-info"});
+    setName(QStringLiteral("copyPersonalInfoAction"));
+    setText(tr("Copy Personal Info"));
+    setType(ActionDescription::TypeUser);
 }
 
 CopyPersonalInfoAction::~CopyPersonalInfoAction()
@@ -45,37 +45,37 @@ CopyPersonalInfoAction::~CopyPersonalInfoAction()
 
 void CopyPersonalInfoAction::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void CopyPersonalInfoAction::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void CopyPersonalInfoAction::actionTriggered(QAction *sender, bool)
 {
-	auto *action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto *action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto contacts = action->context()->contacts();
+    auto contacts = action->context()->contacts();
 
-	auto infoList = QStringList{};
-	auto defaultSyntax = m_parser->escape(tr("Contact:")) + " %a[ (%u)]\n["
-			+ m_parser->escape(tr("First name:")) + " %f\n]["
-			+ m_parser->escape(tr("Last name:")) + " %r\n]["
-			+ m_parser->escape(tr("Mobile:")) + " %m\n]";
-	auto copyPersonalDataSyntax = m_configuration->deprecatedApi()->readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
-	for (auto const &contact : contacts)
-		infoList.append(m_parser->parse(copyPersonalDataSyntax, Talkable{contact}, ParserEscape::NoEscape));
+    auto infoList = QStringList{};
+    auto defaultSyntax = m_parser->escape(tr("Contact:")) + " %a[ (%u)]\n[" + m_parser->escape(tr("First name:")) +
+                         " %f\n][" + m_parser->escape(tr("Last name:")) + " %r\n][" + m_parser->escape(tr("Mobile:")) +
+                         " %m\n]";
+    auto copyPersonalDataSyntax =
+        m_configuration->deprecatedApi()->readEntry("General", "CopyPersonalDataSyntax", defaultSyntax);
+    for (auto const &contact : contacts)
+        infoList.append(m_parser->parse(copyPersonalDataSyntax, Talkable{contact}, ParserEscape::NoEscape));
 
-	auto info = infoList.join("\n");
-	if (info.isEmpty())
-		return;
+    auto info = infoList.join("\n");
+    if (info.isEmpty())
+        return;
 
-	QApplication::clipboard()->setText(info, QClipboard::Selection);
-	QApplication::clipboard()->setText(info, QClipboard::Clipboard);
+    QApplication::clipboard()->setText(info, QClipboard::Selection);
+    QApplication::clipboard()->setText(info, QClipboard::Clipboard);
 }
 
 #include "moc_copy-personal-info-action.cpp"

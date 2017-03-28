@@ -38,30 +38,29 @@ struct PluginMetadata;
  */
 class PluginMetadataReader : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
-	virtual ~PluginMetadataReader() noexcept;
+    Q_INVOKABLE explicit PluginMetadataReader(QObject *parent = nullptr) noexcept;
+    virtual ~PluginMetadataReader() noexcept;
 
-	/**
-	 * @short Reads PluginMetadata instance from .desc file.
-	 * @param name name of plugin do read data
-	 * @param filePath path to .desc file to read data from
-	 * @throws PluginMetadataReaderException
-	 *
-	 * If file \p filePath can not be read, a PluginMetadataReaderException exception is thrown.
-	 */
-	PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false);
+    /**
+     * @short Reads PluginMetadata instance from .desc file.
+     * @param name name of plugin do read data
+     * @param filePath path to .desc file to read data from
+     * @throws PluginMetadataReaderException
+     *
+     * If file \p filePath can not be read, a PluginMetadataReaderException exception is thrown.
+     */
+    PluginMetadata readPluginMetadata(const QString &pluginName, const QString &filePath) noexcept(false);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<VersionService> m_versionService;
+    QPointer<Configuration> m_configuration;
+    QPointer<VersionService> m_versionService;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setVersionService(VersionService *versionService);
 };
 
 /**

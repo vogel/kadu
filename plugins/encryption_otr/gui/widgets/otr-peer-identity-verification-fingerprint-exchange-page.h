@@ -32,28 +32,27 @@ class OtrFingerprintService;
 
 class OtrPeerIdentityVerificationFingerprintExchangePage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Contact MyContact;
-	QPointer<OtrFingerprintService> FingerprintService;
+    Contact MyContact;
+    QPointer<OtrFingerprintService> FingerprintService;
 
-	QLineEdit *OwnFingerprint;
-	QLineEdit *PeerFingerprint;
-	QRadioButton *FingerprintExchangeNotConfirm;
-	QRadioButton *FingerprintExchangeConfirm;
+    QLineEdit *OwnFingerprint;
+    QLineEdit *PeerFingerprint;
+    QRadioButton *FingerprintExchangeNotConfirm;
+    QRadioButton *FingerprintExchangeConfirm;
 
-	void createGui();
+    void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
+    explicit OtrPeerIdentityVerificationFingerprintExchangePage(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationFingerprintExchangePage();
 
-	void setFingerprintService(OtrFingerprintService *fingerprintService);
+    void setFingerprintService(OtrFingerprintService *fingerprintService);
 
-	virtual int nextId() const;
-	virtual void initializePage();
-	virtual bool validatePage();
-
+    virtual int nextId() const;
+    virtual void initializePage();
+    virtual bool validatePage();
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_FINGERPRINT_EXCHANGE_PAGE_H

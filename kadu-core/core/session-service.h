@@ -25,16 +25,15 @@
 
 class KADUAPI SessionService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SessionService(QObject *parent = nullptr);
-	virtual ~SessionService();
+    Q_INVOKABLE explicit SessionService(QObject *parent = nullptr);
+    virtual ~SessionService();
 
-	void setIsClosing(bool isClosing);
-	bool isClosing() const;
+    void setIsClosing(bool isClosing);
+    bool isClosing() const;
 
 private:
-	bool m_isClosing;
-
+    bool m_isClosing;
 };

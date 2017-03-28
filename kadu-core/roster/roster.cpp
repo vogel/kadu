@@ -25,22 +25,21 @@
 #include "roster/roster-entry.h"
 #include "roster/roster-service.h"
 
-RosterService * Roster::rosterService(const Contact &contact)
+RosterService *Roster::rosterService(const Contact &contact)
 {
-	if (!contact)
-		return nullptr;
+    if (!contact)
+        return nullptr;
 
-	if (!contact.contactAccount())
-		return nullptr;
+    if (!contact.contactAccount())
+        return nullptr;
 
-	if (!contact.contactAccount().protocolHandler())
-		return nullptr;
+    if (!contact.contactAccount().protocolHandler())
+        return nullptr;
 
-	return contact.contactAccount().protocolHandler()->rosterService();
+    return contact.contactAccount().protocolHandler()->rosterService();
 }
 
-Roster::Roster(QObject *parent) :
-		QObject{parent}
+Roster::Roster(QObject *parent) : QObject{parent}
 {
 }
 
@@ -50,27 +49,27 @@ Roster::~Roster()
 
 void Roster::addContact(const Contact &contact) const
 {
-	if (!contact)
-		return;
+    if (!contact)
+        return;
 
-	auto service = rosterService(contact);
-	if (service)
-	{
-		contact.rosterEntry()->setHasLocalChanges();
-		service->addContact(contact);
-	}
+    auto service = rosterService(contact);
+    if (service)
+    {
+        contact.rosterEntry()->setHasLocalChanges();
+        service->addContact(contact);
+    }
 }
 
 void Roster::removeContact(const Contact &contact) const
 {
-	if (!contact)
-		return;
+    if (!contact)
+        return;
 
-	auto service = rosterService(contact);
-	if (service)
-	{
-		service->removeContact(contact);
-	}
+    auto service = rosterService(contact);
+    if (service)
+    {
+        service->removeContact(contact);
+    }
 }
 
 #include "moc_roster.cpp"

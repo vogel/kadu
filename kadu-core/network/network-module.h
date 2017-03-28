@@ -25,9 +25,7 @@
 
 class KADUAPI NetworkModule : public injeqt::module
 {
-
 public:
-	explicit NetworkModule();
-	virtual ~NetworkModule();
-
+    explicit NetworkModule();
+    virtual ~NetworkModule();
 };

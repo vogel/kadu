@@ -21,9 +21,9 @@
 #pragma once
 
 #include "accounts/account.h"
+#include "exports.h"
 #include "message/message-manager.h"
 #include "message/message.h"
-#include "exports.h"
 
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
@@ -36,66 +36,65 @@ class MessageTransformerService;
 
 class KADUAPI MessageManagerImpl : public MessageManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MessageManagerImpl(QObject *parent = nullptr);
-	virtual ~MessageManagerImpl();
+    Q_INVOKABLE explicit MessageManagerImpl(QObject *parent = nullptr);
+    virtual ~MessageManagerImpl();
 
-	virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) override;
-	virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
+    virtual bool sendMessage(const Chat &chat, NormalizedHtmlString content, bool silent = false) override;
+    virtual bool sendRawMessage(const Chat &chat, const QByteArray &content) override;
 
 private:
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<MessageFilterService> m_messageFilterService;
-	QPointer<MessageStorage> m_messageStorage;
-	QPointer<MessageTransformerService> m_messageTransformerService;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<MessageFilterService> m_messageFilterService;
+    QPointer<MessageStorage> m_messageStorage;
+    QPointer<MessageTransformerService> m_messageTransformerService;
 
-	/**
-	 * @short Create outoing message for given chat and given content.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param chat chat of outgoing message
-	 * @param content content of outgoing message
-	 */
-	Message createOutgoingMessage(const Chat &chat, NormalizedHtmlString content);
+    /**
+     * @short Create outoing message for given chat and given content.
+     * @author Rafał 'Vogel' Malinowski
+     * @param chat chat of outgoing message
+     * @param content content of outgoing message
+     */
+    Message createOutgoingMessage(const Chat &chat, NormalizedHtmlString content);
 
-	void addChatService(ChatService *chatService);
-	void removeChatService(ChatService *chatService);
+    void addChatService(ChatService *chatService);
+    void removeChatService(ChatService *chatService);
 
 private slots:
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
 
-	/**
-	 * @short Set message filter service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param messageFilterService message filter service for this service
-	 */
-	INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
+    /**
+     * @short Set message filter service for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param messageFilterService message filter service for this service
+     */
+    INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
+    INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
 
-	/**
-	 * @short Set message transformer service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param messageTransformerService message transformer service for this service
-	 */
-	INJEQT_SET void setMessageTransformerService(MessageTransformerService *messageTransformerService);
+    /**
+     * @short Set message transformer service for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param messageTransformerService message transformer service for this service
+     */
+    INJEQT_SET void setMessageTransformerService(MessageTransformerService *messageTransformerService);
 
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	/**
-	 * @short Slot called every time a new message was received from any of registered accounts.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message received message
-	 *
-	 * This slot is called every time a new message was received from any of registered accounts.
-	 * Each receied message is automatically recorded as unread message and can be set as pending message
-	 * if no applicable chat widget is available.
-	 *
-	 * This slot emits messageReceived and unreadMessageAdded signals.
-	 */
-	void messageReceivedSlot(const Message &message);
-
+    /**
+     * @short Slot called every time a new message was received from any of registered accounts.
+     * @author Rafał 'Vogel' Malinowski
+     * @param message received message
+     *
+     * This slot is called every time a new message was received from any of registered accounts.
+     * Each receied message is automatically recorded as unread message and can be set as pending message
+     * if no applicable chat widget is available.
+     *
+     * This slot emits messageReceived and unreadMessageAdded signals.
+     */
+    void messageReceivedSlot(const Message &message);
 };
 
 /**

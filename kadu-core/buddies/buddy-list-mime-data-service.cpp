@@ -27,9 +27,8 @@
 
 #include <QtCore/QMimeData>
 
-BuddyListMimeDataService::BuddyListMimeDataService(QObject *parent) :
-		QObject{parent},
-		m_mimeType{"application/x-kadu-buddy-list"}
+BuddyListMimeDataService::BuddyListMimeDataService(QObject *parent)
+        : QObject{parent}, m_mimeType{"application/x-kadu-buddy-list"}
 {
 }
 
@@ -39,44 +38,44 @@ BuddyListMimeDataService::~BuddyListMimeDataService()
 
 void BuddyListMimeDataService::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 QStringList BuddyListMimeDataService::mimeTypes()
 {
-	return QStringList{} << m_mimeType;
+    return QStringList{} << m_mimeType;
 }
 
 std::unique_ptr<QMimeData> BuddyListMimeDataService::toMimeData(const BuddyList &buddyList)
 {
-	if (buddyList.isEmpty())
-		return nullptr;
+    if (buddyList.isEmpty())
+        return nullptr;
 
-	auto mimeData = std::make_unique<QMimeData>();
-	auto buddyListStrings = QStringList{};
-	for (auto const &buddy : buddyList)
-		buddyListStrings << buddy.uuid().toString();
+    auto mimeData = std::make_unique<QMimeData>();
+    auto buddyListStrings = QStringList{};
+    for (auto const &buddy : buddyList)
+        buddyListStrings << buddy.uuid().toString();
 
-	mimeData->setData(m_mimeType, buddyListStrings.join(":").toUtf8());
-	return mimeData;
+    mimeData->setData(m_mimeType, buddyListStrings.join(":").toUtf8());
+    return mimeData;
 }
 
 BuddyList BuddyListMimeDataService::fromMimeData(const QMimeData *mimeData)
 {
-	auto result = BuddyList{};
-	auto buddyListString = QString{mimeData->data(m_mimeType)};
-	if (buddyListString.isEmpty())
-		return result;
+    auto result = BuddyList{};
+    auto buddyListString = QString{mimeData->data(m_mimeType)};
+    if (buddyListString.isEmpty())
+        return result;
 
-	auto buddyListStrings = buddyListString.split(':');
-	for (auto const &buddyListString : buddyListStrings)
-	{
-		auto buddy = m_buddyManager->byUuid(buddyListString);
-		if (!buddy.isNull())
-			result << buddy;
-	}
+    auto buddyListStrings = buddyListString.split(':');
+    for (auto const &buddyListString : buddyListStrings)
+    {
+        auto buddy = m_buddyManager->byUuid(buddyListString);
+        if (!buddy.isNull())
+            result << buddy;
+    }
 
-	return result;
+    return result;
 }
 
 #include "moc_buddy-list-mime-data-service.cpp"

@@ -28,21 +28,20 @@ class QTreeWidget;
 
 class KADUAPI SslCertificateWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SslCertificateWidget(QSslCertificate certificate, QWidget *parent = nullptr);
-	virtual ~SslCertificateWidget();
+    explicit SslCertificateWidget(QSslCertificate certificate, QWidget *parent = nullptr);
+    virtual ~SslCertificateWidget();
 
 private:
-	QTreeWidget *m_dataWidget;
+    QTreeWidget *m_dataWidget;
 
-	void createGui();
-	void fillGui(QSslCertificate certificate);
-	QString asHex(const QByteArray &byteArray);
-	void addItem(const QString &name, const QString &value, bool valid = true);
-	void addItem(const QString &name, const QByteArray &value);
-	void addItem(const QString &name, const QStringList &values);
-	void addItem(const QString &name, bool value, bool valid = true);
-
+    void createGui();
+    void fillGui(QSslCertificate certificate);
+    QString asHex(const QByteArray &byteArray);
+    void addItem(const QString &name, const QString &value, bool valid = true);
+    void addItem(const QString &name, const QByteArray &value);
+    void addItem(const QString &name, const QStringList &values);
+    void addItem(const QString &name, bool value, bool valid = true);
 };

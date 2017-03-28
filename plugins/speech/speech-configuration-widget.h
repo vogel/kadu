@@ -32,26 +32,27 @@ class QLineEdit;
 
 class SpeechConfigurationWidget : public NotifierConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	QMap<QString, QString> maleFormat;
-	QMap<QString, QString> femaleFormat;
-	QString currentNotificationEvent;
+    QMap<QString, QString> maleFormat;
+    QMap<QString, QString> femaleFormat;
+    QString currentNotificationEvent;
 
-	QLineEdit *maleLineEdit;
-	QLineEdit *femaleLineEdit;
+    QLineEdit *maleLineEdit;
+    QLineEdit *femaleLineEdit;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
 
 public:
-	explicit SpeechConfigurationWidget(QWidget *parent = nullptr);
-	virtual ~SpeechConfigurationWidget();
+    explicit SpeechConfigurationWidget(QWidget *parent = nullptr);
+    virtual ~SpeechConfigurationWidget();
 
-	virtual void loadNotifyConfigurations() {}
-	virtual void saveNotifyConfigurations();
-	virtual void switchToEvent(const QString &event);
-
+    virtual void loadNotifyConfigurations()
+    {
+    }
+    virtual void saveNotifyConfigurations();
+    virtual void switchToEvent(const QString &event);
 };

@@ -26,8 +26,8 @@
 #include <memory>
 #include <stack>
 
-#include "formatted-string/formatted-string-visitor.h"
 #include "exports.h"
+#include "formatted-string/formatted-string-visitor.h"
 
 class FormattedString;
 
@@ -41,39 +41,39 @@ class FormattedString;
  * @short This visitor creates new FormattedString identical to visited FormattedString.
  * @author Rafał 'Vogel' Malinowski
  *
- * After being accepted by a FormattedString this visitor returns new FormattedString view identical to visited FormattedString.
+ * After being accepted by a FormattedString this visitor returns new FormattedString view identical to visited
+ * FormattedString.
  */
 class KADUAPI FormattedStringCloneVisitor : public FormattedStringVisitor
 {
-	Q_DISABLE_COPY(FormattedStringCloneVisitor);
+    Q_DISABLE_COPY(FormattedStringCloneVisitor);
 
-	std::stack<std::unique_ptr<FormattedString>> ItemsStack;
+    std::stack<std::unique_ptr<FormattedString>> ItemsStack;
 
 protected:
-	void cloned(std::unique_ptr<FormattedString> &&clonedFormattedString);
+    void cloned(std::unique_ptr<FormattedString> &&clonedFormattedString);
 
 public:
-	FormattedStringCloneVisitor();
-	virtual ~FormattedStringCloneVisitor();
+    FormattedStringCloneVisitor();
+    virtual ~FormattedStringCloneVisitor();
 
-	virtual void beginVisit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void endVisit(const CompositeFormattedString * const compositeFormattedString);
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
+    virtual void beginVisit(const CompositeFormattedString *const compositeFormattedString);
+    virtual void endVisit(const CompositeFormattedString *const compositeFormattedString);
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock);
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock);
 
-	/**
-	* @short Returns new FormattedString instance identical to visited one.
-	* @author Rafał 'Vogel' Malinowski
-	* @return new FormattedString instance identical to visited one
-	*
-	* Caller gains ownership of the returned object. This method can only be called once.
-	*/
-	std::unique_ptr<FormattedString> result();
-
+    /**
+    * @short Returns new FormattedString instance identical to visited one.
+    * @author Rafał 'Vogel' Malinowski
+    * @return new FormattedString instance identical to visited one
+    *
+    * Caller gains ownership of the returned object. This method can only be called once.
+    */
+    std::unique_ptr<FormattedString> result();
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_CLONE_VISITOR_H
+#endif   // FORMATTED_STRING_CLONE_VISITOR_H

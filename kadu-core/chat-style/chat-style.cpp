@@ -23,56 +23,54 @@ ChatStyle::ChatStyle()
 {
 }
 
-ChatStyle::ChatStyle(QString name, QString variant) :
-		m_name{std::move(name)},
-		m_variant{std::move(variant)}
+ChatStyle::ChatStyle(QString name, QString variant) : m_name{std::move(name)}, m_variant{std::move(variant)}
 {
 }
 
 QString ChatStyle::name() const
 {
-	return m_name;
+    return m_name;
 }
 
 QString ChatStyle::variant() const
 {
-	return m_variant;
+    return m_variant;
 }
 
-bool operator == (const ChatStyle &left, const ChatStyle &right)
+bool operator==(const ChatStyle &left, const ChatStyle &right)
 {
-	if (left.name() != right.name())
-		return false;
-	if (left.variant() != right.variant())
-		return false;
-	return true;
+    if (left.name() != right.name())
+        return false;
+    if (left.variant() != right.variant())
+        return false;
+    return true;
 }
 
-bool operator != (const ChatStyle &left, const ChatStyle &right)
+bool operator!=(const ChatStyle &left, const ChatStyle &right)
 {
-	return !(left == right);
+    return !(left == right);
 }
 
-bool operator < (const ChatStyle &left, const ChatStyle &right)
+bool operator<(const ChatStyle &left, const ChatStyle &right)
 {
-	if (left.name() < right.name())
-		return true;
-	if (left.name() > right.name())
-		return false;
-	return left.variant() < right.variant();
+    if (left.name() < right.name())
+        return true;
+    if (left.name() > right.name())
+        return false;
+    return left.variant() < right.variant();
 }
 
-bool operator <= (const ChatStyle &left, const ChatStyle &right)
+bool operator<=(const ChatStyle &left, const ChatStyle &right)
 {
-	return !(right < left);
+    return !(right < left);
 }
 
-bool operator > (const ChatStyle &left, const ChatStyle &right)
+bool operator>(const ChatStyle &left, const ChatStyle &right)
 {
-	return right < left;
+    return right < left;
 }
 
-bool operator >= (const ChatStyle &left, const ChatStyle &right)
+bool operator>=(const ChatStyle &left, const ChatStyle &right)
 {
-	return !(left < right);
+    return !(left < right);
 }

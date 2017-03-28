@@ -25,8 +25,7 @@
 
 #include "gadu-avatar-service.h"
 
-GaduAvatarService::GaduAvatarService(Account account, QObject *parent) :
-		AvatarService(account, parent)
+GaduAvatarService::GaduAvatarService(Account account, QObject *parent) : AvatarService(account, parent)
 {
 }
 
@@ -34,14 +33,14 @@ GaduAvatarService::~GaduAvatarService()
 {
 }
 
-AvatarDownloader * GaduAvatarService::createAvatarDownloader()
+AvatarDownloader *GaduAvatarService::createAvatarDownloader()
 {
-	return new GaduAvatarDownloader(this);
+    return new GaduAvatarDownloader(this);
 }
 
-AvatarUploader * GaduAvatarService::createAvatarUploader()
+AvatarUploader *GaduAvatarService::createAvatarUploader()
 {
-	return new GaduAvatarUploader(this);
+    return new GaduAvatarUploader(this);
 }
 
 #include "moc_gadu-avatar-service.cpp"

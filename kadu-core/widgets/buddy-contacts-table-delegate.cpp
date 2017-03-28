@@ -30,8 +30,7 @@
 #include <QtCore/QEvent>
 #include <QtWidgets/QComboBox>
 
-BuddyContactsTableDelegate::BuddyContactsTableDelegate(QObject *parent) :
-		QStyledItemDelegate(parent)
+BuddyContactsTableDelegate::BuddyContactsTableDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 }
 
@@ -41,74 +40,77 @@ BuddyContactsTableDelegate::~BuddyContactsTableDelegate()
 
 void BuddyContactsTableDelegate::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
-QWidget * BuddyContactsTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *BuddyContactsTableDelegate::createEditor(
+    QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	if (1 != index.column()) // not account
-		return QStyledItemDelegate::createEditor(parent, option, index);
+    if (1 != index.column())   // not account
+        return QStyledItemDelegate::createEditor(parent, option, index);
 
-	AccountsComboBox *accountsComboBox = m_injectedFactory->makeInjected<AccountsComboBox>(
-		index.data(AccountRole).value<Account>().isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, parent);
-	// this connect does not work withour Account
-	connect(accountsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
+    AccountsComboBox *accountsComboBox = m_injectedFactory->makeInjected<AccountsComboBox>(
+        index.data(AccountRole).value<Account>().isNull(), AccountsComboBox::NotVisibleWithOneRowSourceModel, parent);
+    // this connect does not work withour Account
+    connect(accountsComboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
 
-	return accountsComboBox;
+    return accountsComboBox;
 }
 
-void BuddyContactsTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void BuddyContactsTableDelegate::updateEditorGeometry(
+    QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	Q_UNUSED(index)
+    Q_UNUSED(index)
 
-	editor->setGeometry(option.rect); // use full rect, does not allow to display image next to combo-box
+    editor->setGeometry(option.rect);   // use full rect, does not allow to display image next to combo-box
 }
 
 void BuddyContactsTableDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
-	AccountsComboBox *accountsComboBox = qobject_cast<AccountsComboBox *>(editor);
-	if (!accountsComboBox)
-	{
-		QStyledItemDelegate::setEditorData(editor, index);
-		return;
-	}
+    AccountsComboBox *accountsComboBox = qobject_cast<AccountsComboBox *>(editor);
+    if (!accountsComboBox)
+    {
+        QStyledItemDelegate::setEditorData(editor, index);
+        return;
+    }
 
-	accountsComboBox->setCurrentAccount(index.data(AccountRole).value<Account>());
+    accountsComboBox->setCurrentAccount(index.data(AccountRole).value<Account>());
 }
 
-void BuddyContactsTableDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void BuddyContactsTableDelegate::setModelData(
+    QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
-	AccountsComboBox *accountsComboBox = qobject_cast<AccountsComboBox *>(editor);
-	if (!accountsComboBox)
-	{
-		QStyledItemDelegate::setModelData(editor, model, index);
-		return;
-	}
+    AccountsComboBox *accountsComboBox = qobject_cast<AccountsComboBox *>(editor);
+    if (!accountsComboBox)
+    {
+        QStyledItemDelegate::setModelData(editor, model, index);
+        return;
+    }
 
-	model->setData(index, QVariant::fromValue<Account>(accountsComboBox->currentAccount()), AccountRole);
+    model->setData(index, QVariant::fromValue<Account>(accountsComboBox->currentAccount()), AccountRole);
 }
 
 void BuddyContactsTableDelegate::dataChanged()
 {
-	QWidget *editorWidget = qobject_cast<QWidget *>(sender());
-	if (editorWidget)
-		emit commitData(editorWidget);
+    QWidget *editorWidget = qobject_cast<QWidget *>(sender());
+    if (editorWidget)
+        emit commitData(editorWidget);
 }
 
 bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
 {
-	bool handled = QStyledItemDelegate::eventFilter(editor, event);
+    bool handled = QStyledItemDelegate::eventFilter(editor, event);
 
-	if (!handled && event->type() == QEvent::KeyPress)
-	{
-		QWidget *editorWidget = qobject_cast<QWidget *>(editor);
-		if (editorWidget)
-			// we need to delay it a bit, otherwise it is executed before the event goes to the widget
-			// it's exactly how Qt does it
-			QMetaObject::invokeMethod(this, "commitData", Qt::QueuedConnection, Q_ARG(QWidget *, editorWidget));
-	}
+    if (!handled && event->type() == QEvent::KeyPress)
+    {
+        QWidget *editorWidget = qobject_cast<QWidget *>(editor);
+        if (editorWidget)
+            // we need to delay it a bit, otherwise it is executed before the event goes to the widget
+            // it's exactly how Qt does it
+            QMetaObject::invokeMethod(this, "commitData", Qt::QueuedConnection, Q_ARG(QWidget *, editorWidget));
+    }
 
-	return handled;
+    return handled;
 }
 
 #include "moc_buddy-contacts-table-delegate.cpp"

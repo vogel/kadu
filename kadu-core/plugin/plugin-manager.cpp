@@ -28,10 +28,9 @@
 #include "plugin/state/plugin-state-storage.h"
 #include "plugin/state/plugin-state.h"
 
-PluginManager::PluginManager(QObject *parent) :
-		QObject{parent}
+PluginManager::PluginManager(QObject *parent) : QObject{parent}
 {
-	m_runningUnity = QString::compare(qgetenv("XDG_CURRENT_DESKTOP"), "unity", Qt::CaseInsensitive) == 0;
+    m_runningUnity = QString::compare(qgetenv("XDG_CURRENT_DESKTOP"), "unity", Qt::CaseInsensitive) == 0;
 }
 
 PluginManager::~PluginManager()
@@ -40,116 +39,118 @@ PluginManager::~PluginManager()
 
 void PluginManager::setPluginActivationService(PluginActivationService *pluginActivationService)
 {
-	m_pluginActivationService = pluginActivationService;
+    m_pluginActivationService = pluginActivationService;
 }
 
 void PluginManager::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
-	m_pluginDependencyHandler = pluginDependencyHandler;
+    m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
 void PluginManager::setPluginStateService(PluginStateService *pluginStateService)
 {
-	m_pluginStateService = pluginStateService;
+    m_pluginStateService = pluginStateService;
 }
 
 void PluginManager::activateProtocolPlugins()
 {
-	if (m_pluginActivationService)
-		for (const auto &pluginName : pluginsToActivate([](const PluginMetadata &pluginMetadata){ return pluginMetadata.type == "protocol"; }))
-			m_pluginActivationService->activatePluginWithDependencies(pluginName);
+    if (m_pluginActivationService)
+        for (const auto &pluginName :
+             pluginsToActivate([](const PluginMetadata &pluginMetadata) { return pluginMetadata.type == "protocol"; }))
+            m_pluginActivationService->activatePluginWithDependencies(pluginName);
 }
 
 void PluginManager::activatePlugins()
 {
-	if (m_pluginActivationService)
-		for (const auto &pluginName : pluginsToActivate())
-		{
-			m_pluginActivationService->activatePluginWithDependencies(pluginName);
-			m_pluginStateService->setPluginState(pluginName, PluginState::Enabled); // make plugin enabled if it was new
-		}
+    if (m_pluginActivationService)
+        for (const auto &pluginName : pluginsToActivate())
+        {
+            m_pluginActivationService->activatePluginWithDependencies(pluginName);
+            m_pluginStateService->setPluginState(
+                pluginName, PluginState::Enabled);   // make plugin enabled if it was new
+        }
 }
 
 QVector<QString> PluginManager::pluginsToActivate(std::function<bool(const PluginMetadata &)> filter) const
 {
-	auto result = QVector<QString>{};
-	if (!m_pluginDependencyHandler)
-		return result;
+    auto result = QVector<QString>{};
+    if (!m_pluginDependencyHandler)
+        return result;
 
-	for (auto const &plugin : m_pluginDependencyHandler)
-		if (filter(plugin) && shouldActivate(plugin))
-			result.append(plugin.name);
+    for (auto const &plugin : m_pluginDependencyHandler)
+        if (filter(plugin) && shouldActivate(plugin))
+            result.append(plugin.name);
 
-	return result;
+    return result;
 }
 
 bool PluginManager::shouldActivate(const PluginMetadata &pluginMetadata) const noexcept
 {
-	if (!m_pluginStateService)
-		return false;
+    if (!m_pluginStateService)
+        return false;
 
-	if (m_runningUnity)
-	{
-		if (pluginMetadata.name.contains("indicator_docking"))
-			return true;
-		if (pluginMetadata.name.contains("docking"))
-			return false;
-	}
+    if (m_runningUnity)
+    {
+        if (pluginMetadata.name.contains("indicator_docking"))
+            return true;
+        if (pluginMetadata.name.contains("docking"))
+            return false;
+    }
 
-	switch (m_pluginStateService->pluginState(pluginMetadata.name))
-	{
-		case PluginState::Enabled:
-			return true;
-		case PluginState::Disabled:
-			return false;
-		case PluginState::New:
-			return pluginMetadata.loadByDefault;
-	}
+    switch (m_pluginStateService->pluginState(pluginMetadata.name))
+    {
+    case PluginState::Enabled:
+        return true;
+    case PluginState::Disabled:
+        return false;
+    case PluginState::New:
+        return pluginMetadata.loadByDefault;
+    }
 
-	return false;
+    return false;
 }
 
 void PluginManager::activateReplacementPlugins()
 {
-	if (!m_pluginActivationService || !m_pluginStateService)
-		return;
+    if (!m_pluginActivationService || !m_pluginStateService)
+        return;
 
-	for (auto const &pluginToReplace : m_pluginStateService->enabledPlugins())
-	{
-		if (m_pluginActivationService->isActive(pluginToReplace))
-			continue;
+    for (auto const &pluginToReplace : m_pluginStateService->enabledPlugins())
+    {
+        if (m_pluginActivationService->isActive(pluginToReplace))
+            continue;
 
-		auto replacementPlugin = findReplacementPlugin(pluginToReplace);
-		if (replacementPlugin.isEmpty())
-			continue;
+        auto replacementPlugin = findReplacementPlugin(pluginToReplace);
+        if (replacementPlugin.isEmpty())
+            continue;
 
-		if (m_pluginActivationService->activatePluginWithDependencies(replacementPlugin).contains(replacementPlugin))
-		{
-			m_pluginStateService->setPluginState(pluginToReplace, PluginState::Disabled);
-			m_pluginStateService->setPluginState(replacementPlugin, PluginState::Enabled);
-		}
-	}
+        if (m_pluginActivationService->activatePluginWithDependencies(replacementPlugin).contains(replacementPlugin))
+        {
+            m_pluginStateService->setPluginState(pluginToReplace, PluginState::Disabled);
+            m_pluginStateService->setPluginState(replacementPlugin, PluginState::Enabled);
+        }
+    }
 }
 
 QString PluginManager::findReplacementPlugin(const QString &pluginToReplace) const noexcept
 {
-	if (!m_pluginDependencyHandler)
-		return {};
+    if (!m_pluginDependencyHandler)
+        return {};
 
-	for (auto const &possibleReplacementPlugin : m_pluginDependencyHandler)
-		if (contains(possibleReplacementPlugin.replaces, pluginToReplace))
-			return possibleReplacementPlugin.name;
+    for (auto const &possibleReplacementPlugin : m_pluginDependencyHandler)
+        if (contains(possibleReplacementPlugin.replaces, pluginToReplace))
+            return possibleReplacementPlugin.name;
 
-	return {};
+    return {};
 }
 
 void PluginManager::deactivatePlugins()
 {
-	if (!m_pluginActivationService)
-		return;
+    if (!m_pluginActivationService)
+        return;
 
-	for (auto const &pluginName : m_pluginActivationService->activePlugins())
-		m_pluginActivationService->deactivatePluginWithDependents(pluginName);
+    for (auto const &pluginName : m_pluginActivationService->activePlugins())
+        m_pluginActivationService->deactivatePluginWithDependents(pluginName);
 }
 
 #include "moc_plugin-manager.cpp"

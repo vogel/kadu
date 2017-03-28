@@ -26,8 +26,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
 
-HintsWidgetPositioner::HintsWidgetPositioner(QObject *parent) :
-		QObject{parent}
+HintsWidgetPositioner::HintsWidgetPositioner(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,40 +36,40 @@ HintsWidgetPositioner::~HintsWidgetPositioner()
 
 void HintsWidgetPositioner::setHintsConfiguration(HintsConfiguration *hintsConfiguration)
 {
-	m_hintsConfiguration = hintsConfiguration;
+    m_hintsConfiguration = hintsConfiguration;
 }
 
 void HintsWidgetPositioner::setHintsWidget(HintsWidget *hintsWidget)
 {
-	m_hintsWidget = hintsWidget;
+    m_hintsWidget = hintsWidget;
 }
 
 void HintsWidgetPositioner::init()
 {
-	connect(m_hintsConfiguration, &HintsConfiguration::updated, this, &HintsWidgetPositioner::update);
-	connect(m_hintsWidget, &HintsWidget::sizeChanged, this, &HintsWidgetPositioner::update);
-	connect(m_hintsWidget, &HintsWidget::shown, this, &HintsWidgetPositioner::update);
-	update();
+    connect(m_hintsConfiguration, &HintsConfiguration::updated, this, &HintsWidgetPositioner::update);
+    connect(m_hintsWidget, &HintsWidget::sizeChanged, this, &HintsWidgetPositioner::update);
+    connect(m_hintsWidget, &HintsWidget::shown, this, &HintsWidgetPositioner::update);
+    update();
 }
 
 void HintsWidgetPositioner::update()
 {
-	m_hintsWidget->move(positionForSize(m_hintsWidget->size()));
+    m_hintsWidget->move(positionForSize(m_hintsWidget->size()));
 }
 
 QPoint HintsWidgetPositioner::positionForSize(QSize size)
 {
-	auto availableGeometry = QApplication::desktop()->availableGeometry(m_hintsWidget);
-	switch (m_hintsConfiguration->corner())
-	{
-		case HintsConfiguration::Corner::TopLeft:
-			return availableGeometry.topLeft() + QPoint{8, 8};
-		case HintsConfiguration::Corner::TopRight:
-			return availableGeometry.topRight() + QPoint{-8 - size.width(), 8};
-		case HintsConfiguration::Corner::BottomLeft:
-			return availableGeometry.bottomLeft() + QPoint{8, -8 - size.height()};
-		case HintsConfiguration::Corner::BottomRight:
-		default:
-			return availableGeometry.bottomRight() + QPoint{-8 - size.width(), -8 - size.height()};
-	}
+    auto availableGeometry = QApplication::desktop()->availableGeometry(m_hintsWidget);
+    switch (m_hintsConfiguration->corner())
+    {
+    case HintsConfiguration::Corner::TopLeft:
+        return availableGeometry.topLeft() + QPoint{8, 8};
+    case HintsConfiguration::Corner::TopRight:
+        return availableGeometry.topRight() + QPoint{-8 - size.width(), 8};
+    case HintsConfiguration::Corner::BottomLeft:
+        return availableGeometry.bottomLeft() + QPoint{8, -8 - size.height()};
+    case HintsConfiguration::Corner::BottomRight:
+    default:
+        return availableGeometry.bottomRight() + QPoint{-8 - size.width(), -8 - size.height()};
+    }
 }

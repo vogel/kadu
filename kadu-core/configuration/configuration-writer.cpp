@@ -26,9 +26,7 @@
 
 #include <QtCore/QDir>
 
-ConfigurationWriter::ConfigurationWriter() :
-		m_configuration{nullptr},
-		m_configurationPathProvider{nullptr}
+ConfigurationWriter::ConfigurationWriter() : m_configuration{nullptr}, m_configurationPathProvider{nullptr}
 {
 }
 
@@ -38,36 +36,36 @@ ConfigurationWriter::~ConfigurationWriter()
 
 void ConfigurationWriter::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ConfigurationWriter::setConfigurationPathProvider(ConfigurationPathProvider *configurationPathProvider)
 {
-	m_configurationPathProvider = configurationPathProvider;
+    m_configurationPathProvider = configurationPathProvider;
 }
 
 void ConfigurationWriter::write() const
 {
-	write(m_configurationPathProvider->configurationFilePath());
+    write(m_configurationPathProvider->configurationFilePath());
 }
 
 void ConfigurationWriter::backup() const
 {
-	write(m_configurationPathProvider->backupFilePath());
+    write(m_configurationPathProvider->backupFilePath());
 }
 
 void ConfigurationWriter::write(const QString &fileName) const
 {
-	auto atomicFileWriter = AtomicFileWriter{};
+    auto atomicFileWriter = AtomicFileWriter{};
 
-	try
-	{
-		m_configuration->touch();
-		atomicFileWriter.write(fileName, m_configuration->content());
-	}
-	catch (AtomicFileWriteException &)
-	{
-	}
+    try
+    {
+        m_configuration->touch();
+        atomicFileWriter.write(fileName, m_configuration->content());
+    }
+    catch (AtomicFileWriteException &)
+    {
+    }
 }
 
 #include "moc_configuration-writer.cpp"

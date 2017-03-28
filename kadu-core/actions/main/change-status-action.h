@@ -28,20 +28,19 @@
 
 class ChangeStatusAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ChangeStatusAction(QObject *parent = nullptr);
-	virtual ~ChangeStatusAction();
+    Q_INVOKABLE explicit ChangeStatusAction(QObject *parent = nullptr);
+    virtual ~ChangeStatusAction();
 
-	virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
-	{
-		return QToolButton::InstantPopup;
-	}
+    virtual QToolButton::ToolButtonPopupMode buttonPopupMode() const
+    {
+        return QToolButton::InstantPopup;
+    }
 
 protected:
-	virtual QMenu * menuForAction(Action *action);
-	virtual void actionInstanceCreated(Action *action);
-
+    virtual QMenu *menuForAction(Action *action);
+    virtual void actionInstanceCreated(Action *action);
 };

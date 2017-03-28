@@ -26,8 +26,7 @@
 
 #include "theme-manager.h"
 
-ThemeManager::ThemeManager(QObject *parent) :
-		QObject(parent)
+ThemeManager::ThemeManager(QObject *parent) : QObject(parent)
 {
 }
 
@@ -37,58 +36,58 @@ ThemeManager::~ThemeManager()
 
 QStringList ThemeManager::getSubDirs(const QString &dirPath) const
 {
-	QDir dir(dirPath);
-	QStringList subDirs = dir.entryList(QDir::Dirs);
+    QDir dir(dirPath);
+    QStringList subDirs = dir.entryList(QDir::Dirs);
 
-	QStringList result;
-	foreach (const QString &subDir, subDirs)
-		if (!subDir.startsWith('.')) // ignore hidden, this, and parent
-			result.append(dirPath + '/' + subDir);
+    QStringList result;
+    foreach (const QString &subDir, subDirs)
+        if (!subDir.startsWith('.'))   // ignore hidden, this, and parent
+            result.append(dirPath + '/' + subDir);
 
-	return result;
+    return result;
 }
 
 void ThemeManager::loadThemes()
 {
-	Themes.clear();
+    Themes.clear();
 
-	QStringList themePaths = defaultThemePaths();
-	foreach (const QString &path, themePaths)
-	{
-		if (!isValidThemePath(path))
-			continue;
+    QStringList themePaths = defaultThemePaths();
+    foreach (const QString &path, themePaths)
+    {
+        if (!isValidThemePath(path))
+            continue;
 
-		QString name = QDir(path).dirName();
-		if (Themes.contains(name))
-			continue;
+        QString name = QDir(path).dirName();
+        if (Themes.contains(name))
+            continue;
 
-		Theme theme(path + '/', name);
-		Themes.insert(name, theme);
-	}
+        Theme theme(path + '/', name);
+        Themes.insert(name, theme);
+    }
 
-	setCurrentTheme(CurrentThemeName);
+    setCurrentTheme(CurrentThemeName);
 
-	emit themeListUpdated();
+    emit themeListUpdated();
 }
 
 void ThemeManager::setCurrentTheme(const QString &themeName)
 {
-	// compatibility with pre-0.12 versions
-	QString fixedName = themeName;
-	// custom themes had two trailing slashes and QDir::dirName() was returning empty string
-	fixedName.replace(QRegExp("/*$"), QString());
-	if (QFileInfo(fixedName).isAbsolute())
-		fixedName = QDir(fixedName).dirName();
+    // compatibility with pre-0.12 versions
+    QString fixedName = themeName;
+    // custom themes had two trailing slashes and QDir::dirName() was returning empty string
+    fixedName.replace(QRegExp("/*$"), QString());
+    if (QFileInfo(fixedName).isAbsolute())
+        fixedName = QDir(fixedName).dirName();
 
-	if (Themes.contains(fixedName))
-		CurrentThemeName = fixedName;
-	else
-		CurrentThemeName = defaultThemeName();
+    if (Themes.contains(fixedName))
+        CurrentThemeName = fixedName;
+    else
+        CurrentThemeName = defaultThemeName();
 }
 
 Theme ThemeManager::currentTheme() const
 {
-	return Themes.value(CurrentThemeName);
+    return Themes.value(CurrentThemeName);
 }
 
 #include "moc_theme-manager.cpp"

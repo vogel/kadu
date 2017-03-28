@@ -33,34 +33,32 @@ class GaduConnection;
 
 class GaduSearchService : public SearchService
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ContactStorage> m_contactStorage;
-	QPointer<GaduConnection> Connection;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ContactStorage> m_contactStorage;
+    QPointer<GaduConnection> Connection;
 
-	QPointer<BuddySearchCriteria> Query;
+    QPointer<BuddySearchCriteria> Query;
 
-	unsigned int SearchSeq;
-	unsigned int From;
-	bool Stopped;
+    unsigned int SearchSeq;
+    unsigned int From;
+    bool Stopped;
 
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventPubdir50SearchReply(struct gg_event *e);
+    friend class GaduProtocolSocketNotifiers;
+    void handleEventPubdir50SearchReply(struct gg_event *e);
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 
 public:
-	explicit GaduSearchService(Account account, QObject *parent = nullptr);
-	virtual ~GaduSearchService();
+    explicit GaduSearchService(Account account, QObject *parent = nullptr);
+    virtual ~GaduSearchService();
 
-	void setConnection(GaduConnection *connection);
+    void setConnection(GaduConnection *connection);
 
-	virtual void searchFirst(BuddySearchCriteria *criteria);
-	virtual void searchNext();
-	virtual void stop();
-
-
+    virtual void searchFirst(BuddySearchCriteria *criteria);
+    virtual void searchNext();
+    virtual void stop();
 };

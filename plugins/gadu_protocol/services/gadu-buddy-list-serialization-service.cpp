@@ -23,9 +23,9 @@
 
 #include "helpers/gadu-list-helper.h"
 
-GaduBuddyListSerializationService::GaduBuddyListSerializationService(GaduListHelper *gaduListHelper, Account account, QObject *parent) :
-		BuddyListSerializationService{account, parent},
-		m_gaduListHelper{gaduListHelper}
+GaduBuddyListSerializationService::GaduBuddyListSerializationService(
+    GaduListHelper *gaduListHelper, Account account, QObject *parent)
+        : BuddyListSerializationService{account, parent}, m_gaduListHelper{gaduListHelper}
 {
 }
 
@@ -35,12 +35,12 @@ GaduBuddyListSerializationService::~GaduBuddyListSerializationService()
 
 BuddyList GaduBuddyListSerializationService::deserialize(QTextStream &dataStream)
 {
-	return m_gaduListHelper->streamToBuddyList(account(), dataStream);
+    return m_gaduListHelper->streamToBuddyList(account(), dataStream);
 }
 
 QByteArray GaduBuddyListSerializationService::serialize(const BuddyList &buddies)
 {
-	return m_gaduListHelper->buddyListToByteArray(account(), buddies);
+    return m_gaduListHelper->buddyListToByteArray(account(), buddies);
 }
 
 #include "moc_gadu-buddy-list-serialization-service.cpp"

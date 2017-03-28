@@ -30,15 +30,14 @@
 #include "protocols-model-proxy.h"
 #include "protocols-model.h"
 
-ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent) :
-		QSortFilterProxyModel(parent)
+ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent) : QSortFilterProxyModel(parent)
 {
-	setDynamicSortFilter(true);
-	sort(0);
+    setDynamicSortFilter(true);
+    sort(0);
 
-	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
-	if (BrokenStringCompare)
-		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
+    BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
+    if (BrokenStringCompare)
+        fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
 }
 
 ProtocolsModelProxy::~ProtocolsModelProxy()
@@ -47,63 +46,61 @@ ProtocolsModelProxy::~ProtocolsModelProxy()
 
 int ProtocolsModelProxy::compareNames(QString n1, QString n2) const
 {
-	return BrokenStringCompare
-		? n1.toLower().localeAwareCompare(n2.toLower())
-		: n1.localeAwareCompare(n2);
+    return BrokenStringCompare ? n1.toLower().localeAwareCompare(n2.toLower()) : n1.localeAwareCompare(n2);
 }
 
 bool ProtocolsModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	if (!sourceModel())
-		return QSortFilterProxyModel::lessThan(left, right);
+    if (!sourceModel())
+        return QSortFilterProxyModel::lessThan(left, right);
 
-	QVariant lVariant = sourceModel()->data(left, ProtocolRole);
-	QVariant rVariant = sourceModel()->data(right, ProtocolRole);
+    QVariant lVariant = sourceModel()->data(left, ProtocolRole);
+    QVariant rVariant = sourceModel()->data(right, ProtocolRole);
 
-	if (!lVariant.canConvert<ProtocolFactory *>() || !rVariant.canConvert<ProtocolFactory *>())
-		return QSortFilterProxyModel::lessThan(left, right);
+    if (!lVariant.canConvert<ProtocolFactory *>() || !rVariant.canConvert<ProtocolFactory *>())
+        return QSortFilterProxyModel::lessThan(left, right);
 
-	ProtocolFactory *leftProtocol = lVariant.value<ProtocolFactory *>();
-	ProtocolFactory *rightProtocol = rVariant.value<ProtocolFactory *>();
+    ProtocolFactory *leftProtocol = lVariant.value<ProtocolFactory *>();
+    ProtocolFactory *rightProtocol = rVariant.value<ProtocolFactory *>();
 
-	int displayCompare = compareNames(leftProtocol->name(), rightProtocol->name());
-	return displayCompare < 0;
+    int displayCompare = compareNames(leftProtocol->name(), rightProtocol->name());
+    return displayCompare < 0;
 }
 
 bool ProtocolsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	QVariant pVariant = sourceModel()->index(sourceRow, 0, sourceParent).data(ProtocolRole);
-	if (!pVariant.canConvert<ProtocolFactory *>())
-		return true;
+    QVariant pVariant = sourceModel()->index(sourceRow, 0, sourceParent).data(ProtocolRole);
+    if (!pVariant.canConvert<ProtocolFactory *>())
+        return true;
 
-	ProtocolFactory *protocol = pVariant.value<ProtocolFactory *>();
-	if (!protocol)
-		return true;
+    ProtocolFactory *protocol = pVariant.value<ProtocolFactory *>();
+    if (!protocol)
+        return true;
 
-	foreach (AbstractProtocolFilter *filter, ProtocolFilters)
-		if (!filter->acceptProtocol(protocol))
-			return false;
+    foreach (AbstractProtocolFilter *filter, ProtocolFilters)
+        if (!filter->acceptProtocol(protocol))
+            return false;
 
-	return true;
+    return true;
 }
 
 void ProtocolsModelProxy::addFilter(AbstractProtocolFilter *filter)
 {
-	if (ProtocolFilters.contains(filter))
-		return;
+    if (ProtocolFilters.contains(filter))
+        return;
 
-	ProtocolFilters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
+    ProtocolFilters.append(filter);
+    invalidateFilter();
+    connect(filter, SIGNAL(filterChanged()), this, SLOT(invalidate()));
 }
 
 void ProtocolsModelProxy::removeFilter(AbstractProtocolFilter *filter)
 {
-	if (ProtocolFilters.removeAll(filter) <= 0)
-		return;
+    if (ProtocolFilters.removeAll(filter) <= 0)
+        return;
 
-	invalidateFilter();
-	disconnect(filter, 0, this, 0);
+    invalidateFilter();
+    disconnect(filter, 0, this, 0);
 }
 
 #include "moc_protocols-model-proxy.cpp"

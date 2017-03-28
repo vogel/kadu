@@ -23,8 +23,11 @@
 
 #include "image-expander.h"
 
-ImageExpander::ImageExpander() :
-		DomTextRegexpVisitor(QRegExp("https?://([^\\s]*)(\\.gif|\\.jpg|\\.png)\\??""([^\\s]*)#?([^\\s]*)")) // "" required to ignore trigraph
+ImageExpander::ImageExpander()
+        : DomTextRegexpVisitor(
+              QRegExp(
+                  "https?://([^\\s]*)(\\.gif|\\.jpg|\\.png)\\??"
+                  "([^\\s]*)#?([^\\s]*)"))   // "" required to ignore trigraph
 {
 }
 
@@ -34,11 +37,11 @@ ImageExpander::~ImageExpander()
 
 QList<QDomNode> ImageExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
-	QDomElement imageElement = document.createElement("img");
-	imageElement.setAttribute("src", regExp.cap());
-	imageElement.setAttribute("class", "scalable");
+    QDomElement imageElement = document.createElement("img");
+    imageElement.setAttribute("src", regExp.cap());
+    imageElement.setAttribute("class", "scalable");
 
-	QDomText textElement = document.createTextNode(regExp.cap());
+    QDomText textElement = document.createTextNode(regExp.cap());
 
-	return QList<QDomNode>() << imageElement << document.createElement("br") << textElement;
+    return QList<QDomNode>() << imageElement << document.createElement("br") << textElement;
 }

@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "message/sorted-messages.h"
 #include "exports.h"
+#include "message/sorted-messages.h"
 
 enum class MessageLimitPolicy;
 
@@ -39,43 +39,41 @@ enum class MessageLimitPolicy;
  */
 class KADUAPI MessageLimiter
 {
-
 public:
-	/**
-	 * @short Create new limiter with MessageLimitPolicy::None policy.
-	 */
-	MessageLimiter();
+    /**
+     * @short Create new limiter with MessageLimitPolicy::None policy.
+     */
+    MessageLimiter();
 
-	/**
-	 * @short Set new limit of number of messages.
-	 * @param limit New limit of number of messages.
-	 *
-	 * This value only matters if greater than zero and limit policy is
-	 * set to MessageLimitPolicy::Value.
-	 */
-	void setLimit(unsigned limit);
+    /**
+     * @short Set new limit of number of messages.
+     * @param limit New limit of number of messages.
+     *
+     * This value only matters if greater than zero and limit policy is
+     * set to MessageLimitPolicy::Value.
+     */
+    void setLimit(unsigned limit);
 
-	/**
-	 * @short Set new policy of limiter.
-	 * @param messageLimitPolicy New policy of limiter.
-	 */
-	void setLimitPolicy(MessageLimitPolicy messageLimitPolicy);
+    /**
+     * @short Set new policy of limiter.
+     * @param messageLimitPolicy New policy of limiter.
+     */
+    void setLimitPolicy(MessageLimitPolicy messageLimitPolicy);
 
-	/**
-	 * @short Return messages with limited number.
-	 * @param sortedMessages Messages to limit.
-	 * @return sortedMessages with few (or none) first messages removed.
-	 *
-	 * When policy is MessageLimitPolicy::Value and limit is set to number greater than
-	 * zero, this method will return sortedMessages with first few messages removed, so size
-	 * of returned value is at most at limit value.
-	 */
-	SortedMessages limitMessages(SortedMessages sortedMessages) const;
+    /**
+     * @short Return messages with limited number.
+     * @param sortedMessages Messages to limit.
+     * @return sortedMessages with few (or none) first messages removed.
+     *
+     * When policy is MessageLimitPolicy::Value and limit is set to number greater than
+     * zero, this method will return sortedMessages with first few messages removed, so size
+     * of returned value is at most at limit value.
+     */
+    SortedMessages limitMessages(SortedMessages sortedMessages) const;
 
 private:
-	unsigned m_limit;
-	MessageLimitPolicy m_messageLimitPolicy;
-
+    unsigned m_limit;
+    MessageLimitPolicy m_messageLimitPolicy;
 };
 
 /**

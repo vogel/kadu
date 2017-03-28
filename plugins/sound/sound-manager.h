@@ -34,37 +34,36 @@ class QSound;
 
 class SOUNDAPI SoundManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SoundManager(QObject *parent = nullptr);
-	virtual ~SoundManager();
+    Q_INVOKABLE explicit SoundManager(QObject *parent = nullptr);
+    virtual ~SoundManager();
 
-	void setPlayer(SoundPlayer *player);
-	bool isMuted() const;
+    void setPlayer(SoundPlayer *player);
+    bool isMuted() const;
 
 public slots:
-	QObject * playFile(const QString &soundFile, bool force = false, bool stopCurrentlyPlaying = false);
-	QObject * playSoundByName(const QString &soundName);
-	QObject * testSoundPlaying();
-	void stopSound();
+    QObject *playFile(const QString &soundFile, bool force = false, bool stopCurrentlyPlaying = false);
+    QObject *playSoundByName(const QString &soundName);
+    QObject *testSoundPlaying();
+    void stopSound();
 
-	void setMute(bool mute);
+    void setMute(bool mute);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<SoundThemeManager> m_soundThemeManager;
-	QPointer<SoundPlayer> m_player;
-	QPointer<QSound> m_playingSound;
-	QPointer<QObject> m_soundObject;
+    QPointer<Configuration> m_configuration;
+    QPointer<SoundThemeManager> m_soundThemeManager;
+    QPointer<SoundPlayer> m_player;
+    QPointer<QSound> m_playingSound;
+    QPointer<QObject> m_soundObject;
 
-	bool m_mute;
+    bool m_mute;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setSoundThemeManager(SoundThemeManager *soundThemeManager);
+    INJEQT_INIT void init();
 };

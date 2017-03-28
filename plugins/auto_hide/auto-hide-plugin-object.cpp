@@ -27,8 +27,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-AutoHidePluginObject::AutoHidePluginObject(QObject *parent) :
-		QObject{parent}
+AutoHidePluginObject::AutoHidePluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,39 +37,44 @@ AutoHidePluginObject::~AutoHidePluginObject()
 
 void AutoHidePluginObject::setAutoHide(AutoHide *autoHide)
 {
-	m_autoHide = autoHide;
+    m_autoHide = autoHide;
 }
 
-void AutoHidePluginObject::setAutoHideConfigurationUiHandler(AutoHideConfigurationUiHandler *autoHideConfigurationUiHandler)
+void AutoHidePluginObject::setAutoHideConfigurationUiHandler(
+    AutoHideConfigurationUiHandler *autoHideConfigurationUiHandler)
 {
-	m_autoHideConfigurationUiHandler = autoHideConfigurationUiHandler;
+    m_autoHideConfigurationUiHandler = autoHideConfigurationUiHandler;
 }
 
-void AutoHidePluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void AutoHidePluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void AutoHidePluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void AutoHidePluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void AutoHidePluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AutoHidePluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/auto_hide.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoHideConfigurationUiHandler);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/auto_hide.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoHideConfigurationUiHandler);
 }
 
 void AutoHidePluginObject::done()
 {
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoHideConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/auto_hide.ui"));
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoHideConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/auto_hide.ui"));
 }
 
 #include "moc_auto-hide-plugin-object.cpp"

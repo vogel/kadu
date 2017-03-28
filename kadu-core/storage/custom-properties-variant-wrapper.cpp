@@ -22,8 +22,9 @@
 
 #include "custom-properties-variant-wrapper.h"
 
-CustomPropertiesVariantWrapper::CustomPropertiesVariantWrapper(CustomProperties *customProperties, const QString &name, CustomProperties::Storability storability) :
-		MyCustomProperties(customProperties), Name(name), Storability(storability)
+CustomPropertiesVariantWrapper::CustomPropertiesVariantWrapper(
+    CustomProperties *customProperties, const QString &name, CustomProperties::Storability storability)
+        : MyCustomProperties(customProperties), Name(name), Storability(storability)
 {
 }
 
@@ -33,13 +34,11 @@ CustomPropertiesVariantWrapper::~CustomPropertiesVariantWrapper()
 
 QVariant CustomPropertiesVariantWrapper::get(const QVariant &defaultValue) const
 {
-	return MyCustomProperties.isNull()
-			? defaultValue
-			: MyCustomProperties->property(Name, defaultValue);
+    return MyCustomProperties.isNull() ? defaultValue : MyCustomProperties->property(Name, defaultValue);
 }
 
 void CustomPropertiesVariantWrapper::set(const QVariant &value)
 {
-	if (!MyCustomProperties.isNull())
-		MyCustomProperties->addProperty(Name, value, Storability);
+    if (!MyCustomProperties.isNull())
+        MyCustomProperties->addProperty(Name, value, Storability);
 }

@@ -21,7 +21,7 @@
 
 enum class GaduUserDataType
 {
-	Update = 0,
-	ConnectingChunk = 1,
-	ConnectingLastChunk = 3
+    Update = 0,
+    ConnectingChunk = 1,
+    ConnectingLastChunk = 3
 };

@@ -25,9 +25,7 @@
 
 class KADUAPI FileTransferModule : public injeqt::module
 {
-
 public:
-	explicit FileTransferModule();
-	virtual ~FileTransferModule();
-
+    explicit FileTransferModule();
+    virtual ~FileTransferModule();
 };

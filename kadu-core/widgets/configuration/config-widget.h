@@ -30,39 +30,52 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;widget id="id" tool-tip="toolTip" /&gt;
+        &lt;widget id="id" tool-tip="toolTip" /&gt;
 
-	@arg id - id dostępne dla aplikacji/modułów
-	@arg toolTip - podpowiedź dla użytkownika
+        @arg id - id dostępne dla aplikacji/modułów
+        @arg toolTip - podpowiedź dla użytkownika
  **/
 class KADUAPI ConfigWidget
 {
-	friend class ConfigurationWidget;
+    friend class ConfigurationWidget;
 
 protected:
-	ConfigGroupBox *parentConfigGroupBox;
-	QString widgetCaption;
-	QString CurrentWidgetId;
-	QString ParentWidgetId;
-	QString StateDependency;
-	QString toolTip;
-	ConfigurationWindowDataManager *dataManager;
+    ConfigGroupBox *parentConfigGroupBox;
+    QString widgetCaption;
+    QString CurrentWidgetId;
+    QString ParentWidgetId;
+    QString StateDependency;
+    QString toolTip;
+    ConfigurationWindowDataManager *dataManager;
 
-	virtual void createWidgets() = 0;
+    virtual void createWidgets() = 0;
 
 public:
-	ConfigWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigWidget(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigWidget() {}
+    ConfigWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigWidget(
+        const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+        ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigWidget()
+    {
+    }
 
-	virtual void loadConfiguration() = 0;
-	virtual void saveConfiguration() = 0;
+    virtual void loadConfiguration() = 0;
+    virtual void saveConfiguration() = 0;
 
-	virtual bool fromDomElement(QDomElement domElement);
+    virtual bool fromDomElement(QDomElement domElement);
 
-	QString parentWidgetId() { return ParentWidgetId; }
-	QString currentWidgetId() { return CurrentWidgetId; }
-	bool isStateDependentDirectly() { return StateDependency == "" || StateDependency == "direct"; }
+    QString parentWidgetId()
+    {
+        return ParentWidgetId;
+    }
+    QString currentWidgetId()
+    {
+        return CurrentWidgetId;
+    }
+    bool isStateDependentDirectly()
+    {
+        return StateDependency == "" || StateDependency == "direct";
+    }
 };
 
 #endif

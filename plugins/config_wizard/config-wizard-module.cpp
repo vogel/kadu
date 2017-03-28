@@ -25,7 +25,7 @@
 
 ConfigWizardModule::ConfigWizardModule()
 {
-	add_type<ConfigWizardActions>();
-	add_type<ConfigWizardPluginObject>();
-	add_type<ShowConfigWizardAction>();
+    add_type<ConfigWizardActions>();
+    add_type<ConfigWizardPluginObject>();
+    add_type<ShowConfigWizardAction>();
 }

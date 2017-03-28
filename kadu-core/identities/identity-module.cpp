@@ -24,8 +24,8 @@
 
 IdentityModule::IdentityModule()
 {
-	add_type<IdentityManager>();
-	add_type<IdentityStorage>();
+    add_type<IdentityManager>();
+    add_type<IdentityStorage>();
 }
 
 IdentityModule::~IdentityModule()

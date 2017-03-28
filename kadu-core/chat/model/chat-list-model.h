@@ -20,8 +20,8 @@
 #pragma once
 
 #include "chat/chat.h"
-#include "model/kadu-abstract-model.h"
 #include "exports.h"
+#include "model/kadu-abstract-model.h"
 
 #include <QtCore/QAbstractItemModel>
 #include <QtCore/QPointer>
@@ -35,57 +35,56 @@ class TalkableConverter;
 
 class KADUAPI ChatListModel : public QAbstractItemModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatListModel(QObject *parent = nullptr);
-	virtual ~ChatListModel();
+    explicit ChatListModel(QObject *parent = nullptr);
+    virtual ~ChatListModel();
 
-	void setChats(const QVector<Chat> &chats);
-	void addChat(const Chat &chat);
-	void removeChat(const Chat &chat);
+    void setChats(const QVector<Chat> &chats);
+    void addChat(const Chat &chat);
+    void removeChat(const Chat &chat);
 
-	virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const;
+    virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
-	virtual int columnCount(const QModelIndex& parent = QModelIndex()) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
+    virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
 
-	virtual QModelIndex parent(const QModelIndex &child) const;
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QModelIndex parent(const QModelIndex &child) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	virtual Chat chatAt(const QModelIndex &index) const;
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+    virtual Chat chatAt(const QModelIndex &index) const;
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
-	// D&D
-	virtual QStringList mimeTypes() const;
-	virtual QMimeData * mimeData(const QModelIndexList &indexes) const;
+    // D&D
+    virtual QStringList mimeTypes() const;
+    virtual QMimeData *mimeData(const QModelIndexList &indexes) const;
 
 private:
-	QPointer<ChatDataExtractor> m_chatDataExtractor;
-	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
-	QPointer<ContactDataExtractor> m_contactDataExtractor;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<ChatDataExtractor> m_chatDataExtractor;
+    QPointer<ChatListMimeDataService> m_chatListMimeDataService;
+    QPointer<ContactDataExtractor> m_contactDataExtractor;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	QVector<Chat> List;
+    QVector<Chat> List;
 
-	void connectChat(const Chat &chat);
-	void disconnectChat(const Chat &chat);
+    void connectChat(const Chat &chat);
+    void disconnectChat(const Chat &chat);
 
-	Chat chatFromVariant(const QVariant &variant) const;
+    Chat chatFromVariant(const QVariant &variant) const;
 
 private slots:
-	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
-	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
-	INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
+    INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
+    INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 
-	void contactAboutToBeAdded(const Contact &contact);
-	void contactAdded(const Contact &contact);
-	void contactAboutToBeRemoved(const Contact &contact);
-	void contactRemoved(const Contact &contact);
+    void contactAboutToBeAdded(const Contact &contact);
+    void contactAdded(const Contact &contact);
+    void contactAboutToBeRemoved(const Contact &contact);
+    void contactRemoved(const Contact &contact);
 
-	void chatUpdated();
-
+    void chatUpdated();
 };

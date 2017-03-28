@@ -24,8 +24,7 @@
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
 
-ChatWidgetManager::ChatWidgetManager(QObject *parent) :
-		QObject{parent}
+ChatWidgetManager::ChatWidgetManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,46 +34,47 @@ ChatWidgetManager::~ChatWidgetManager()
 
 void ChatWidgetManager::setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService)
 {
-	m_chatWidgetActivationService = chatWidgetActivationService;
+    m_chatWidgetActivationService = chatWidgetActivationService;
 }
 
-void ChatWidgetManager::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
+void ChatWidgetManager::setChatWidgetContainerHandlerMapper(
+    ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
 {
-	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
+    m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
 }
 
 void ChatWidgetManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
-ChatWidget * ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
+ChatWidget *ChatWidgetManager::openChat(const Chat &chat, OpenChatActivation activation)
 {
-	if (!chat)
-		return nullptr;
+    if (!chat)
+        return nullptr;
 
-	auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
-	if (!chatWidget)
-	{
-		chatWidget = m_chatWidgetContainerHandlerMapper->createHandledChatWidget(chat, activation);
-		if (!chatWidget)
-			return nullptr;
-	}
+    auto chatWidget = m_chatWidgetRepository.data()->widgetForChat(chat);
+    if (!chatWidget)
+    {
+        chatWidget = m_chatWidgetContainerHandlerMapper->createHandledChatWidget(chat, activation);
+        if (!chatWidget)
+            return nullptr;
+    }
 
-	if (m_chatWidgetActivationService)
-		switch (activation)
-		{
-			case OpenChatActivation::Activate:
-				m_chatWidgetActivationService.data()->tryActivateChatWidget(chatWidget);
-				break;
-			case OpenChatActivation::Minimize:
-				m_chatWidgetActivationService.data()->tryMinimizeChatWidget(chatWidget);
-				break;
-			default:
-				break;
-		}
+    if (m_chatWidgetActivationService)
+        switch (activation)
+        {
+        case OpenChatActivation::Activate:
+            m_chatWidgetActivationService.data()->tryActivateChatWidget(chatWidget);
+            break;
+        case OpenChatActivation::Minimize:
+            m_chatWidgetActivationService.data()->tryMinimizeChatWidget(chatWidget);
+            break;
+        default:
+            break;
+        }
 
-	return chatWidget;
+    return chatWidget;
 }
 
 #include "moc_chat-widget-manager.cpp"

@@ -28,22 +28,20 @@ struct Notification;
 
 class KADUAPI NotificationCallback
 {
-
 public:
-	NotificationCallback();
-	explicit NotificationCallback(QString name, QString title, std::function<void(const Notification &)> callback);
+    NotificationCallback();
+    explicit NotificationCallback(QString name, QString title, std::function<void(const Notification &)> callback);
 
-	QString name() const;
-	QString title() const;
-	std::function<void(const Notification &)> callback() const;
+    QString name() const;
+    QString title() const;
+    std::function<void(const Notification &)> callback() const;
 
-	void call(const Notification &notification) const;
+    void call(const Notification &notification) const;
 
 private:
-	QString m_name;
-	QString m_title;
-	std::function<void(const Notification &)> m_callback;
-
+    QString m_name;
+    QString m_title;
+    std::function<void(const Notification &)> m_callback;
 };
 
-bool operator == (const NotificationCallback &x, const NotificationCallback &y);
+bool operator==(const NotificationCallback &x, const NotificationCallback &y);

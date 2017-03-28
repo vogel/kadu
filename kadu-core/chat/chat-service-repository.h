@@ -20,8 +20,8 @@
 #pragma once
 
 #include "accounts/account.h"
-#include "misc/iterator.h"
 #include "exports.h"
+#include "misc/iterator.h"
 
 #include <QtCore/QObject>
 #include <map>
@@ -30,40 +30,41 @@ class ChatService;
 
 class KADUAPI ChatServiceRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	using Storage = std::map<Account, ChatService *>;
-	using WrappedIterator = Storage::iterator;
-	using Iterator = IteratorWrapper<WrappedIterator, ChatService *>;
+    using Storage = std::map<Account, ChatService *>;
+    using WrappedIterator = Storage::iterator;
+    using Iterator = IteratorWrapper<WrappedIterator, ChatService *>;
 
-	Q_INVOKABLE explicit ChatServiceRepository(QObject *parent = nullptr) : QObject{parent} {}
-	virtual ~ChatServiceRepository() = default;
+    Q_INVOKABLE explicit ChatServiceRepository(QObject *parent = nullptr) : QObject{parent}
+    {
+    }
+    virtual ~ChatServiceRepository() = default;
 
-	Iterator begin();
-	Iterator end();
+    Iterator begin();
+    Iterator end();
 
-	ChatService * chatService(const Account &account) const;
+    ChatService *chatService(const Account &account) const;
 
 public slots:
-	void addChatService(ChatService *chatService);
-	void removeChatService(ChatService *chatService);
+    void addChatService(ChatService *chatService);
+    void removeChatService(ChatService *chatService);
 
 signals:
-	void chatServiceAdded(ChatService *chatService);
-	void chatServiceRemoved(ChatService *chatService);
+    void chatServiceAdded(ChatService *chatService);
+    void chatServiceRemoved(ChatService *chatService);
 
 private:
-	Storage m_chatServices;
-
+    Storage m_chatServices;
 };
 
 inline ChatServiceRepository::Iterator begin(ChatServiceRepository *chatServiceRepository)
 {
-	return chatServiceRepository->begin();
+    return chatServiceRepository->begin();
 }
 
 inline ChatServiceRepository::Iterator end(ChatServiceRepository *chatServiceRepository)
 {
-	return chatServiceRepository->end();
+    return chatServiceRepository->end();
 }

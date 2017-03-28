@@ -33,14 +33,14 @@
  */
 enum StatusChangeSource
 {
-	/**
-	 * Status change was initiated by end user.
-	 */
-	SourceUser,
-	/**
-	 * Status change was initiated by instance of StatatusChanger class.
-	 */
-	SourceStatusChanger
+    /**
+     * Status change was initiated by end user.
+     */
+    SourceUser,
+    /**
+     * Status change was initiated by instance of StatatusChanger class.
+     */
+    SourceStatusChanger
 };
 
 /**
@@ -48,4 +48,4 @@ enum StatusChangeSource
  * @}
  */
 
-#endif // STATUS_CHANGE_SOURCE_H
+#endif   // STATUS_CHANGE_SOURCE_H

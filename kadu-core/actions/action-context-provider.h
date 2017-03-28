@@ -39,14 +39,15 @@ class ActionContext;
 class ActionContextProvider
 {
 public:
-	virtual ~ActionContextProvider() {}
+    virtual ~ActionContextProvider()
+    {
+    }
 
-	virtual ActionContext * actionContext() = 0;
-
+    virtual ActionContext *actionContext() = 0;
 };
 
 /**
  * @}
  */
 
-#endif // ACTION_CONTEXT_PROVIDER_H
+#endif   // ACTION_CONTEXT_PROVIDER_H

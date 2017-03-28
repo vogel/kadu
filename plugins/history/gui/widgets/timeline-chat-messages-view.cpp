@@ -21,9 +21,9 @@
 
 #include "timeline-chat-messages-view.h"
 
+#include "history-query-result.h"
 #include "model/history-query-results-model.h"
 #include "model/history-query-results-proxy-model.h"
-#include "history-query-result.h"
 
 #include "chat-style/engine/chat-style-renderer-factory-provider.h"
 #include "contacts/contact-set.h"
@@ -48,12 +48,10 @@
 
 #define DATE_TITLE_LENGTH 120
 
-TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent) :
-		QWidget(parent),
-		TimelineWaitOverlay(0), MessagesViewWaitOverlay(0),
-		ResultsFutureWatcher (0), MessagesFutureWatcher(0)
+TimelineChatMessagesView::TimelineChatMessagesView(QWidget *parent)
+        : QWidget(parent), TimelineWaitOverlay(0), MessagesViewWaitOverlay(0), ResultsFutureWatcher(0),
+          MessagesFutureWatcher(0)
 {
-
 }
 
 TimelineChatMessagesView::~TimelineChatMessagesView()
@@ -62,282 +60,284 @@ TimelineChatMessagesView::~TimelineChatMessagesView()
 
 void TimelineChatMessagesView::setFormattedStringFactory(FormattedStringFactory *formattedStringFactory)
 {
-	m_formattedStringFactory = formattedStringFactory;
+    m_formattedStringFactory = formattedStringFactory;
 }
 
 void TimelineChatMessagesView::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void TimelineChatMessagesView::setMessageManager(MessageManager *messageManager)
 {
-	connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
-	connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
+    connect(messageManager, SIGNAL(messageReceived(Message)), this, SLOT(newMessage(Message)));
+    connect(messageManager, SIGNAL(messageSent(Message)), this, SLOT(newMessage(Message)));
 }
 
 void TimelineChatMessagesView::setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory)
 {
-	m_webkitMessagesViewFactory = webkitMessagesViewFactory;
+    m_webkitMessagesViewFactory = webkitMessagesViewFactory;
 }
 
 void TimelineChatMessagesView::init()
 {
-	ResultsModel = m_pluginInjectedFactory->makeInjected<HistoryQueryResultsModel>(this);
-	ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
-	ResultsProxyModel->setSourceModel(ResultsModel);
+    ResultsModel = m_pluginInjectedFactory->makeInjected<HistoryQueryResultsModel>(this);
+    ResultsProxyModel = new HistoryQueryResultsProxyModel(ResultsModel);
+    ResultsProxyModel->setSourceModel(ResultsModel);
 
-	setLayout(new QVBoxLayout(this));
-	layout()->setMargin(0);
-	layout()->setSpacing(0);
+    setLayout(new QVBoxLayout(this));
+    layout()->setMargin(0);
+    layout()->setSpacing(0);
 
-	createGui();
+    createGui();
 }
 
 void TimelineChatMessagesView::createGui()
 {
-	Splitter = new QSplitter(Qt::Vertical, this);
+    Splitter = new QSplitter(Qt::Vertical, this);
 
-	Timeline = new QTreeView(Splitter);
+    Timeline = new QTreeView(Splitter);
 
-	Timeline->setAlternatingRowColors(true);
-	Timeline->setModel(ResultsProxyModel);
-	Timeline->setRootIsDecorated(false);
-	Timeline->setUniformRowHeights(true);
+    Timeline->setAlternatingRowColors(true);
+    Timeline->setModel(ResultsProxyModel);
+    Timeline->setRootIsDecorated(false);
+    Timeline->setUniformRowHeights(true);
 
-	connect(Timeline->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-	        this, SIGNAL(currentDateChanged()));
+    connect(
+        Timeline->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this,
+        SIGNAL(currentDateChanged()));
 
-	QFrame *frame = new QFrame(Splitter);
-	frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
+    QFrame *frame = new QFrame(Splitter);
+    frame->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
 
-	QVBoxLayout *frameLayout = new QVBoxLayout(frame);
-	frameLayout->setMargin(0);
-	frameLayout->setSpacing(0);
+    QVBoxLayout *frameLayout = new QVBoxLayout(frame);
+    frameLayout->setMargin(0);
+    frameLayout->setSpacing(0);
 
-	MessagesView = m_webkitMessagesViewFactory->createWebkitMessagesView(Chat::null, false, frame);
-	MessagesView->setFocusPolicy(Qt::StrongFocus);
-	MessagesView->setForcePruneDisabled(true);
+    MessagesView = m_webkitMessagesViewFactory->createWebkitMessagesView(Chat::null, false, frame);
+    MessagesView->setFocusPolicy(Qt::StrongFocus);
+    MessagesView->setForcePruneDisabled(true);
 
-	frameLayout->addWidget(MessagesView.get());
+    frameLayout->addWidget(MessagesView.get());
 
-	MessagesSearchBar = new SearchBar(this);
-	MessagesSearchBar->setSearchWidget(MessagesView.get());
+    MessagesSearchBar = new SearchBar(this);
+    MessagesSearchBar->setSearchWidget(MessagesView.get());
 
-	Highlighter = new WebViewHighlighter(MessagesView.get());
-	Highlighter->setAutoUpdate(true);
+    Highlighter = new WebViewHighlighter(MessagesView.get());
+    Highlighter->setAutoUpdate(true);
 
-	connect(MessagesSearchBar, SIGNAL(searchPrevious(QString)), Highlighter, SLOT(selectPrevious(QString)));
-	connect(MessagesSearchBar, SIGNAL(searchNext(QString)), Highlighter, SLOT(selectNext(QString)));
-	connect(MessagesSearchBar, SIGNAL(clearSearch()), Highlighter, SLOT(clearSelect()));
-	connect(Highlighter, SIGNAL(somethingFound(bool)), MessagesSearchBar, SLOT(somethingFound(bool)));
+    connect(MessagesSearchBar, SIGNAL(searchPrevious(QString)), Highlighter, SLOT(selectPrevious(QString)));
+    connect(MessagesSearchBar, SIGNAL(searchNext(QString)), Highlighter, SLOT(selectNext(QString)));
+    connect(MessagesSearchBar, SIGNAL(clearSearch()), Highlighter, SLOT(clearSelect()));
+    connect(Highlighter, SIGNAL(somethingFound(bool)), MessagesSearchBar, SLOT(somethingFound(bool)));
 
-	frameLayout->addWidget(MessagesSearchBar);
+    frameLayout->addWidget(MessagesSearchBar);
 
-	layout()->addWidget(Splitter);
+    layout()->addWidget(Splitter);
 }
 
 QDate TimelineChatMessagesView::currentDate() const
 {
-	return Timeline->currentIndex().data(DateRole).value<QDate>();
+    return Timeline->currentIndex().data(DateRole).value<QDate>();
 }
 
 void TimelineChatMessagesView::setResults(const QVector<HistoryQueryResult> &results)
 {
-	ResultsModel->setResults(results);
+    ResultsModel->setResults(results);
 
-	if (results.isEmpty())
-	{
-		emit currentDateChanged();
-		return;
-	}
+    if (results.isEmpty())
+    {
+        emit currentDateChanged();
+        return;
+    }
 
-	const QModelIndex &selected = Timeline->model()->index(Timeline->model()->rowCount() - 1, 0);
-	Timeline->setCurrentIndex(selected);
-	Timeline->scrollTo(selected, QAbstractItemView::PositionAtBottom);
+    const QModelIndex &selected = Timeline->model()->index(Timeline->model()->rowCount() - 1, 0);
+    Timeline->setCurrentIndex(selected);
+    Timeline->scrollTo(selected, QAbstractItemView::PositionAtBottom);
 }
 
 void TimelineChatMessagesView::futureResultsAvailable()
 {
-	hideTimelineWaitOverlay();
+    hideTimelineWaitOverlay();
 
-	if (!ResultsFutureWatcher)
-		return;
+    if (!ResultsFutureWatcher)
+        return;
 
-	setResults(ResultsFutureWatcher->result());
+    setResults(ResultsFutureWatcher->result());
 
-	ResultsFutureWatcher->deleteLater();
-	ResultsFutureWatcher = 0;
+    ResultsFutureWatcher->deleteLater();
+    ResultsFutureWatcher = 0;
 }
 
 void TimelineChatMessagesView::futureResultsCanceled()
 {
-	hideTimelineWaitOverlay();
+    hideTimelineWaitOverlay();
 
-	if (!ResultsFutureWatcher)
-		return;
+    if (!ResultsFutureWatcher)
+        return;
 
-	ResultsFutureWatcher->deleteLater();
-	ResultsFutureWatcher = 0;
+    ResultsFutureWatcher->deleteLater();
+    ResultsFutureWatcher = 0;
 }
 
 void TimelineChatMessagesView::setFutureResults(const QFuture<QVector<HistoryQueryResult>> &futureResults)
 {
-	if (ResultsFutureWatcher)
-	{
-		ResultsFutureWatcher->cancel();
-		ResultsFutureWatcher->deleteLater();
-	}
+    if (ResultsFutureWatcher)
+    {
+        ResultsFutureWatcher->cancel();
+        ResultsFutureWatcher->deleteLater();
+    }
 
-	ResultsFutureWatcher = new QFutureWatcher<QVector<HistoryQueryResult> >(this);
-	connect(ResultsFutureWatcher, SIGNAL(finished()), this, SLOT(futureResultsAvailable()));
-	connect(ResultsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureResultsCanceled()));
+    ResultsFutureWatcher = new QFutureWatcher<QVector<HistoryQueryResult>>(this);
+    connect(ResultsFutureWatcher, SIGNAL(finished()), this, SLOT(futureResultsAvailable()));
+    connect(ResultsFutureWatcher, SIGNAL(canceled()), this, SLOT(futureResultsCanceled()));
 
-	ResultsFutureWatcher->setFuture(futureResults);
+    ResultsFutureWatcher->setFuture(futureResults);
 
-	showTimelineWaitOverlay();
+    showTimelineWaitOverlay();
 }
 
 void TimelineChatMessagesView::setMessages(const SortedMessages &messages)
 {
-	ScopedUpdatesDisabler updatesDisabler{*MessagesView};
+    ScopedUpdatesDisabler updatesDisabler{*MessagesView};
 
-	MessagesView->clearMessages();
-	MessagesView->add(messages);
+    MessagesView->clearMessages();
+    MessagesView->add(messages);
 
-	emit messagesDisplayed();
+    emit messagesDisplayed();
 }
 
 void TimelineChatMessagesView::newMessage(const Message &message)
 {
-	auto chatMatch = message.messageChat() == MessagesView->chat();
-	if (!chatMatch)
-	{
-		if (message.messageChat().type() != "Contact" || MessagesView->chat().type() != "Buddy")
-			return;
-		if (!MessagesView->chat().contacts().toBuddySet().contains(message.messageChat().contacts().toContact().ownerBuddy()))
-			return;
-	}
+    auto chatMatch = message.messageChat() == MessagesView->chat();
+    if (!chatMatch)
+    {
+        if (message.messageChat().type() != "Contact" || MessagesView->chat().type() != "Buddy")
+            return;
+        if (!MessagesView->chat().contacts().toBuddySet().contains(
+                message.messageChat().contacts().toContact().ownerBuddy()))
+            return;
+    }
 
-	auto formattedContent = m_formattedStringFactory->fromHtml(message.content());
-	FormattedStringPlainTextVisitor plainTextVisitor;
-	formattedContent->accept(&plainTextVisitor);
+    auto formattedContent = m_formattedStringFactory->fromHtml(message.content());
+    FormattedStringPlainTextVisitor plainTextVisitor;
+    formattedContent->accept(&plainTextVisitor);
 
-	auto title = plainTextVisitor.result().replace('\n', ' ').replace('\r', ' ');
-	if (title.length() > DATE_TITLE_LENGTH)
-	{
-		title.truncate(DATE_TITLE_LENGTH);
-		title += " ...";
-	}
+    auto title = plainTextVisitor.result().replace('\n', ' ').replace('\r', ' ');
+    if (title.length() > DATE_TITLE_LENGTH)
+    {
+        title.truncate(DATE_TITLE_LENGTH);
+        title += " ...";
+    }
 
-	auto messageDate = message.receiveDate().date();
-	ResultsModel->addEntry(messageDate, message.messageChat(), title);
+    auto messageDate = message.receiveDate().date();
+    ResultsModel->addEntry(messageDate, message.messageChat(), title);
 
-	if (messageDate == currentDate())
-		MessagesView->add(message);
+    if (messageDate == currentDate())
+        MessagesView->add(message);
 }
 
 void TimelineChatMessagesView::futureMessagesAvailable()
 {
-	if (!MessagesFutureWatcher)
-	{
-		hideMessagesViewWaitOverlay();
-		return;
-	}
+    if (!MessagesFutureWatcher)
+    {
+        hideMessagesViewWaitOverlay();
+        return;
+    }
 
-	setMessages(MessagesFutureWatcher->result());
-	hideMessagesViewWaitOverlay(); // wait for messages to display before hiding
+    setMessages(MessagesFutureWatcher->result());
+    hideMessagesViewWaitOverlay();   // wait for messages to display before hiding
 
-	MessagesFutureWatcher->deleteLater();
-	MessagesFutureWatcher = 0;
+    MessagesFutureWatcher->deleteLater();
+    MessagesFutureWatcher = 0;
 }
 
 void TimelineChatMessagesView::futureMessagesCanceled()
 {
-	hideMessagesViewWaitOverlay();
+    hideMessagesViewWaitOverlay();
 
-	if (!MessagesFutureWatcher)
-		return;
+    if (!MessagesFutureWatcher)
+        return;
 
-	MessagesFutureWatcher->deleteLater();
-	MessagesFutureWatcher = 0;
+    MessagesFutureWatcher->deleteLater();
+    MessagesFutureWatcher = 0;
 }
 
 void TimelineChatMessagesView::setFutureMessages(const QFuture<SortedMessages> &futureMessages)
 {
-	if (MessagesFutureWatcher)
-	{
-		MessagesFutureWatcher->cancel();
-		MessagesFutureWatcher->deleteLater();
-	}
+    if (MessagesFutureWatcher)
+    {
+        MessagesFutureWatcher->cancel();
+        MessagesFutureWatcher->deleteLater();
+    }
 
-	MessagesFutureWatcher = new QFutureWatcher<SortedMessages>(this);
-	connect(MessagesFutureWatcher, SIGNAL(finished()), this, SLOT(futureMessagesAvailable()));
-	connect(MessagesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureMessagesCanceled()));
+    MessagesFutureWatcher = new QFutureWatcher<SortedMessages>(this);
+    connect(MessagesFutureWatcher, SIGNAL(finished()), this, SLOT(futureMessagesAvailable()));
+    connect(MessagesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureMessagesCanceled()));
 
-	MessagesFutureWatcher->setFuture(futureMessages);
+    MessagesFutureWatcher->setFuture(futureMessages);
 
-	showMessagesViewWaitOverlay();
+    showMessagesViewWaitOverlay();
 }
 
 void TimelineChatMessagesView::showTimelineWaitOverlay()
 {
-	if (!TimelineWaitOverlay)
-		TimelineWaitOverlay = new WaitOverlay(this);
-	else
-		TimelineWaitOverlay->show();
+    if (!TimelineWaitOverlay)
+        TimelineWaitOverlay = new WaitOverlay(this);
+    else
+        TimelineWaitOverlay->show();
 }
 
 void TimelineChatMessagesView::hideTimelineWaitOverlay()
 {
-	TimelineWaitOverlay->deleteLater();
-	TimelineWaitOverlay = 0;
+    TimelineWaitOverlay->deleteLater();
+    TimelineWaitOverlay = 0;
 }
 
 void TimelineChatMessagesView::showMessagesViewWaitOverlay()
 {
-	if (!MessagesViewWaitOverlay)
-		MessagesViewWaitOverlay = m_pluginInjectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
-	else
-		MessagesViewWaitOverlay->show();
+    if (!MessagesViewWaitOverlay)
+        MessagesViewWaitOverlay = m_pluginInjectedFactory->makeInjected<WaitOverlay>(MessagesView.get());
+    else
+        MessagesViewWaitOverlay->show();
 }
 
 void TimelineChatMessagesView::hideMessagesViewWaitOverlay()
 {
-	MessagesViewWaitOverlay->deleteLater();
-	MessagesViewWaitOverlay = 0;
+    MessagesViewWaitOverlay->deleteLater();
+    MessagesViewWaitOverlay = 0;
 }
 
 void TimelineChatMessagesView::setTalkableVisible(const bool talkableVisible)
 {
-	ResultsProxyModel->setTalkableVisible(talkableVisible);
+    ResultsProxyModel->setTalkableVisible(talkableVisible);
 }
 
 void TimelineChatMessagesView::setTitleVisible(const bool titleVisible)
 {
-	ResultsProxyModel->setTitleVisible(titleVisible);
+    ResultsProxyModel->setTitleVisible(titleVisible);
 }
 
 void TimelineChatMessagesView::setTalkableHeader(const QString &talkableHeader)
 {
-	ResultsModel->setTalkableHeader(talkableHeader);
+    ResultsModel->setTalkableHeader(talkableHeader);
 }
 
 void TimelineChatMessagesView::setLengthHeader(const QString &lengthHeader)
 {
-	ResultsModel->setLengthHeader(lengthHeader);
+    ResultsModel->setLengthHeader(lengthHeader);
 }
 
 QList<int> TimelineChatMessagesView::sizes() const
 {
-	return Splitter->sizes();
+    return Splitter->sizes();
 }
 
 void TimelineChatMessagesView::setSizes(const QList<int> &newSizes)
 {
-	Q_ASSERT(newSizes.size() == 2);
+    Q_ASSERT(newSizes.size() == 2);
 
-	Splitter->setSizes(newSizes);
+    Splitter->setSizes(newSizes);
 }
 
 #include "moc_timeline-chat-messages-view.cpp"

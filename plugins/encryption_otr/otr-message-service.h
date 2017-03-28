@@ -24,7 +24,7 @@
 #include <injeqt/injeqt.h>
 
 extern "C" {
-#	include <libotr/proto.h>
+#include <libotr/proto.h>
 }
 
 class Account;
@@ -36,31 +36,31 @@ class MessageManager;
 
 class OtrMessageService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperOtrInjectMessage(void *data, const char *accountName, const char *protocol, const char *recipient, const char *message);
-	static int wrapperOtrMaxMessageSize(void *data, ConnContext *context);
-	static const char * wrapperOtrResentMessagePrefix(void *data, ConnContext *context);
-	static void wrapperOtrResentMessagePrefixFree(void *data, const char *prefix);
+    static void wrapperOtrInjectMessage(
+        void *data, const char *accountName, const char *protocol, const char *recipient, const char *message);
+    static int wrapperOtrMaxMessageSize(void *data, ConnContext *context);
+    static const char *wrapperOtrResentMessagePrefix(void *data, ConnContext *context);
+    static void wrapperOtrResentMessagePrefixFree(void *data, const char *prefix);
 
-	Q_INVOKABLE OtrMessageService();
-	virtual ~OtrMessageService();
+    Q_INVOKABLE OtrMessageService();
+    virtual ~OtrMessageService();
 
-	void injectMessage(const Contact &contact, const QByteArray &message) const;
-	int maxMessageSize(const Account &account) const;
-	QString resentMessagePrefix() const;
+    void injectMessage(const Contact &contact, const QByteArray &message) const;
+    int maxMessageSize(const Account &account) const;
+    QString resentMessagePrefix() const;
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<MessageManager> CurrentMessageManager;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<MessageManager> CurrentMessageManager;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
 };

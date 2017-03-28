@@ -45,57 +45,57 @@
  */
 class GroupTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	GroupFilter CurrentGroupFilter;
+    GroupFilter CurrentGroupFilter;
 
-	bool acceptGroupList(const QSet<Group> &groups, bool showInEverybodyGroup);
+    bool acceptGroupList(const QSet<Group> &groups, bool showInEverybodyGroup);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of GroupTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit GroupTalkableFilter(QObject *parent = nullptr);
-	virtual ~GroupTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of GroupTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit GroupTalkableFilter(QObject *parent = nullptr);
+    virtual ~GroupTalkableFilter();
 
-	virtual FilterResult filterChat(const Chat &chat);
-	virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterChat(const Chat &chat);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Change AllGroupShown paremeter value.
-	 * @param shown new value of AllGroupShown parameter
-	 *
-	 * If AllGroupShown is true then for empty CurrentGroup all items (with showInAllGroup attribute set
-	 * to true) will be dispalyed. If AllGroupShown is false then for empty CurrentGroup all items without
-	 * any group will be displayed.
-	 *
-	 * If new value of parameter is different from old one then filterChanged() signal will be emited.
-	 */
-	void setAllGroupShown(bool shown);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Change AllGroupShown paremeter value.
+     * @param shown new value of AllGroupShown parameter
+     *
+     * If AllGroupShown is true then for empty CurrentGroup all items (with showInAllGroup attribute set
+     * to true) will be dispalyed. If AllGroupShown is false then for empty CurrentGroup all items without
+     * any group will be displayed.
+     *
+     * If new value of parameter is different from old one then filterChanged() signal will be emited.
+     */
+    void setAllGroupShown(bool shown);
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Change current group filter
-	 * @param group new group filter
-	 *
-	 * Fitlering depneds on set group filter:
-	 * - if type is @see GroupFilterInvalid - nothing is filtered out
-	 * - if type is @see GroupFilterRegular - chats and buddies not in given group will be filtered out
-	 * - if type is @see GroupFilterEverybody - chats and buddies that are set not to be displayed in everybody group will be filtered out
-	 * - if type is @see GroupFilterUngroupped - chats and buddies not in any group will be filtered out
-	 *
-	 * If new group is filter not equal to old one then filterChanged() signal will be emited.
-	 */
-	void setGroupFilter(const GroupFilter &groupFilter);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Change current group filter
+     * @param group new group filter
+     *
+     * Fitlering depneds on set group filter:
+     * - if type is @see GroupFilterInvalid - nothing is filtered out
+     * - if type is @see GroupFilterRegular - chats and buddies not in given group will be filtered out
+     * - if type is @see GroupFilterEverybody - chats and buddies that are set not to be displayed in everybody group
+     * will be filtered out
+     * - if type is @see GroupFilterUngroupped - chats and buddies not in any group will be filtered out
+     *
+     * If new group is filter not equal to old one then filterChanged() signal will be emited.
+     */
+    void setGroupFilter(const GroupFilter &groupFilter);
 };
 
 /**
  * @}
  */
 
-#endif // GROUP_TALKABLE_FILTER_H
+#endif   // GROUP_TALKABLE_FILTER_H

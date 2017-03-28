@@ -21,16 +21,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "widgets/status-button.h"
 #include "accounts/account-manager.h"
 #include "core/injected-factory.h"
 #include "status/status-configuration-holder.h"
 #include "status/status-container-manager.h"
-#include "widgets/status-button.h"
 
 #include "status-buttons.h"
 
-StatusButtons::StatusButtons(QWidget *parent) :
-		QToolBar(parent)//, Layout(0), HasStretch(0)
+StatusButtons::StatusButtons(QWidget *parent) : QToolBar(parent)   //, Layout(0), HasStretch(0)
 {
 }
 
@@ -40,62 +39,62 @@ StatusButtons::~StatusButtons()
 
 void StatusButtons::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void StatusButtons::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
+    m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
 void StatusButtons::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void StatusButtons::init()
 {
-	setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-	triggerAllStatusContainerRegistered(m_statusContainerManager);
+    triggerAllStatusContainerRegistered(m_statusContainerManager);
 }
 
 void StatusButtons::enableStatusName()
 {
-	if (m_statusConfigurationHolder->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
-		Buttons.begin().value()->setDisplayStatusName(true);
+    if (m_statusConfigurationHolder->setStatusMode() != SetStatusPerAccount && 1 == Buttons.count())
+        Buttons.begin().value()->setDisplayStatusName(true);
 }
 
 void StatusButtons::disableStatusName()
 {
-	if (!Buttons.isEmpty())
-		Buttons.begin().value()->setDisplayStatusName(false);
+    if (!Buttons.isEmpty())
+        Buttons.begin().value()->setDisplayStatusName(false);
 }
 
 void StatusButtons::statusContainerRegistered(StatusContainer *statusContainer)
 {
-	if (Buttons.contains(statusContainer))
-		return;
+    if (Buttons.contains(statusContainer))
+        return;
 
-	disableStatusName();
+    disableStatusName();
 
-	StatusButton *button = m_injectedFactory->makeInjected<StatusButton>(statusContainer);
-	addWidget(button);
-	Buttons[statusContainer] = button;
+    StatusButton *button = m_injectedFactory->makeInjected<StatusButton>(statusContainer);
+    addWidget(button);
+    Buttons[statusContainer] = button;
 
-	enableStatusName();
+    enableStatusName();
 }
 
 void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer)
 {
-	StatusButton *button = Buttons.take(statusContainer);
-	if (button)
-	{
-		// cannot delete now, because this will modify ConfigurationAwareObject::objects list
-		button->deleteLater();
+    StatusButton *button = Buttons.take(statusContainer);
+    if (button)
+    {
+        // cannot delete now, because this will modify ConfigurationAwareObject::objects list
+        button->deleteLater();
 
-		enableStatusName();
-	}
+        enableStatusName();
+    }
 }
 
 #include "moc_status-buttons.cpp"

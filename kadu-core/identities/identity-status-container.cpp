@@ -25,9 +25,8 @@
 #include "status/status-configuration-holder.h"
 #include "status/status-type-manager.h"
 
-IdentityStatusContainer::IdentityStatusContainer(IdentityShared *identityShared) :
-		StorableStatusContainer{identityShared},
-		m_identityShared{identityShared}
+IdentityStatusContainer::IdentityStatusContainer(IdentityShared *identityShared)
+        : StorableStatusContainer{identityShared}, m_identityShared{identityShared}
 {
 }
 
@@ -37,77 +36,79 @@ IdentityStatusContainer::~IdentityStatusContainer()
 
 void IdentityStatusContainer::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
+    m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
 QString IdentityStatusContainer::statusContainerName()
 {
-	return m_identityShared->name();
+    return m_identityShared->name();
 }
 
 void IdentityStatusContainer::setStatus(Status status, StatusChangeSource source)
 {
-	m_lastSetStatus = status;
-	for (auto const &account : m_identityShared->accounts())
-		if (account)
-			account.statusContainer()->setStatus(status, source);
+    m_lastSetStatus = status;
+    for (auto const &account : m_identityShared->accounts())
+        if (account)
+            account.statusContainer()->setStatus(status, source);
 }
 
 Status IdentityStatusContainer::status()
 {
-	auto account = AccountManager::bestAccount(m_identityShared->accounts());
-	return account ? account.statusContainer()->status() : Status();
+    auto account = AccountManager::bestAccount(m_identityShared->accounts());
+    return account ? account.statusContainer()->status() : Status();
 }
 
 bool IdentityStatusContainer::isStatusSettingInProgress()
 {
-	auto account = AccountManager::bestAccount(m_identityShared->accounts());
-	return account ? account.statusContainer()->isStatusSettingInProgress() : false;
+    auto account = AccountManager::bestAccount(m_identityShared->accounts());
+    return account ? account.statusContainer()->isStatusSettingInProgress() : false;
 }
 
 KaduIcon IdentityStatusContainer::statusIcon()
 {
-	return statusIcon(status());
+    return statusIcon(status());
 }
 
 KaduIcon IdentityStatusContainer::statusIcon(const Status &status)
 {
-	QSet<QString> protocols;
-	for (auto const &account : m_identityShared->accounts())
-		protocols.insert(account.protocolName());
+    QSet<QString> protocols;
+    for (auto const &account : m_identityShared->accounts())
+        protocols.insert(account.protocolName());
 
-	if (protocols.count() > 1)
-		return statusTypeManager()->statusIcon("common", status);
+    if (protocols.count() > 1)
+        return statusTypeManager()->statusIcon("common", status);
 
-	auto account = AccountManager::bestAccount(m_identityShared->accounts());
-	return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
+    auto account = AccountManager::bestAccount(m_identityShared->accounts());
+    return account ? account.statusContainer()->statusIcon(status) : KaduIcon();
 }
 
 QList<StatusType> IdentityStatusContainer::supportedStatusTypes()
 {
-	auto account = AccountManager::bestAccount(m_identityShared->accounts());
-	return account ? account.statusContainer()->supportedStatusTypes() : QList<StatusType>();
+    auto account = AccountManager::bestAccount(m_identityShared->accounts());
+    return account ? account.statusContainer()->supportedStatusTypes() : QList<StatusType>();
 }
 
 int IdentityStatusContainer::maxDescriptionLength()
 {
-	auto account = AccountManager::bestAccount(m_identityShared->accounts());
-	return account ? account.statusContainer()->maxDescriptionLength() : -1;
+    auto account = AccountManager::bestAccount(m_identityShared->accounts());
+    return account ? account.statusContainer()->maxDescriptionLength() : -1;
 }
 
 void IdentityStatusContainer::addAccount(const Account &account)
 {
-	connect(account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this, SIGNAL(statusUpdated(StatusContainer *)));
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		account.statusContainer()->setStatus(m_lastSetStatus, SourceStatusChanger);
+    connect(
+        account.statusContainer(), SIGNAL(statusUpdated(StatusContainer *)), this,
+        SIGNAL(statusUpdated(StatusContainer *)));
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+        account.statusContainer()->setStatus(m_lastSetStatus, SourceStatusChanger);
 
-	emit statusUpdated(this);
+    emit statusUpdated(this);
 }
 
 void IdentityStatusContainer::removeAccount(const Account &account)
 {
-	disconnect(account.statusContainer(), nullptr, this, nullptr);
-	emit statusUpdated(this);
+    disconnect(account.statusContainer(), nullptr, this, nullptr);
+    emit statusUpdated(this);
 }
 
 #include "moc_identity-status-container.cpp"

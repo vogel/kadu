@@ -36,27 +36,26 @@ class QTimer;
 
 class KADUAPI AvatarJobRunner : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AvatarJobRunner(const Contact &contact, QObject *parent);
-	virtual ~AvatarJobRunner();
+    explicit AvatarJobRunner(const Contact &contact, QObject *parent);
+    virtual ~AvatarJobRunner();
 
-	void runJob();
+    void runJob();
 
 signals:
-	void jobFinished(bool ok);
+    void jobFinished(bool ok);
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
+    QPointer<AvatarManager> m_avatarManager;
 
-	Contact MyContact;
-	QTimer *Timer;
+    Contact MyContact;
+    QTimer *Timer;
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 
-	void avatarDownloaded(bool ok , QImage avatar);
-	void timeout();
-
+    void avatarDownloaded(bool ok, QImage avatar);
+    void timeout();
 };

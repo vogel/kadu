@@ -31,85 +31,83 @@
 
 #include <QtCore/QSet>
 
-ChatsBuddiesSplitter::ChatsBuddiesSplitter(QVector<Talkable> talkables, QObject *parent) :
-		QObject{parent},
-		m_talkables{talkables}
+ChatsBuddiesSplitter::ChatsBuddiesSplitter(QVector<Talkable> talkables, QObject *parent)
+        : QObject{parent}, m_talkables{talkables}
 {
 }
 
 ChatsBuddiesSplitter::~ChatsBuddiesSplitter()
 {
-
 }
 
 void ChatsBuddiesSplitter::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
-	m_buddyChatManager = buddyChatManager;
+    m_buddyChatManager = buddyChatManager;
 }
 
 void ChatsBuddiesSplitter::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void ChatsBuddiesSplitter::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void ChatsBuddiesSplitter::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void ChatsBuddiesSplitter::init()
 {
-	// we ignore contacts
-	for (auto const &talkable : m_talkables)
-		if (talkable.isValidChat())
-			processChat(m_talkableConverter->toChat(talkable));
-		else if (talkable.isValidBuddy())
-			Buddies.insert(m_talkableConverter->toBuddy(talkable));
+    // we ignore contacts
+    for (auto const &talkable : m_talkables)
+        if (talkable.isValidChat())
+            processChat(m_talkableConverter->toChat(talkable));
+        else if (talkable.isValidBuddy())
+            Buddies.insert(m_talkableConverter->toBuddy(talkable));
 }
 
 void ChatsBuddiesSplitter::processChat(const Chat &chat)
 {
-	if (UsedChats.contains(chat))
-		return;
+    if (UsedChats.contains(chat))
+        return;
 
-	auto buddyChat = m_buddyChatManager->buddyChat(chat);
-	if (!buddyChat)
-	{
-		UsedChats.insert(chat);
-		assignChat(chat);
-		return;
-	}
+    auto buddyChat = m_buddyChatManager->buddyChat(chat);
+    if (!buddyChat)
+    {
+        UsedChats.insert(chat);
+        assignChat(chat);
+        return;
+    }
 
-	ChatDetailsBuddy *details = qobject_cast<ChatDetailsBuddy *>(buddyChat.details());
-	Q_ASSERT(details);
+    ChatDetailsBuddy *details = qobject_cast<ChatDetailsBuddy *>(buddyChat.details());
+    Q_ASSERT(details);
 
-	foreach (const Chat &usedChat, details->chats())
-		UsedChats.insert(usedChat);
-	assignChat(buddyChat);
+    foreach (const Chat &usedChat, details->chats())
+        UsedChats.insert(usedChat);
+    assignChat(buddyChat);
 }
 
 void ChatsBuddiesSplitter::assignChat(const Chat &chat)
 {
-	ChatType *chatType = m_chatTypeManager->chatType(chat.type());
-	if (chatType && (chatType->name() == "Contact" || chatType->name() == "Buddy"))
-		Buddies.insert(m_buddyManager->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
-	else
-		Chats.insert(chat);
+    ChatType *chatType = m_chatTypeManager->chatType(chat.type());
+    if (chatType && (chatType->name() == "Contact" || chatType->name() == "Buddy"))
+        Buddies.insert(m_buddyManager->byContact(*chat.contacts().begin(), ActionCreateAndAdd));
+    else
+        Chats.insert(chat);
 }
 
 QSet<Chat> ChatsBuddiesSplitter::chats() const
 {
-	return Chats;
+    return Chats;
 }
 
 QSet<Buddy> ChatsBuddiesSplitter::buddies() const
 {
-	return Buddies;
+    return Buddies;
 }
 
 #include "moc_chats-buddies-splitter.cpp"

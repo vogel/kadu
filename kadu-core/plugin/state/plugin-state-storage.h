@@ -39,23 +39,21 @@ enum class PluginState;
  */
 class KADUAPI PluginStateStorage
 {
-
 public:
-	/**
-	 * @return Configuration of plugin states loaded from storage.
-	 * @param storagePoint storage to load configuration from
-	 */
-	QMap<QString, PluginState> load(StoragePoint &storagePoint) const;
+    /**
+     * @return Configuration of plugin states loaded from storage.
+     * @param storagePoint storage to load configuration from
+     */
+    QMap<QString, PluginState> load(StoragePoint &storagePoint) const;
 
-	/**
-	 * @short Stores new configuration of plugin states in storage.
-	 * @param storagePoint storage to store configuration to
-	 * @param pluginStates new configuration of plugin states
-	 *
-	 * All previously data stored in provided \p storagePoint is removed.
-	 */
-	void store(StoragePoint &storagePoint, const QMap<QString, PluginState> &pluginStates) const;
-
+    /**
+     * @short Stores new configuration of plugin states in storage.
+     * @param storagePoint storage to store configuration to
+     * @param pluginStates new configuration of plugin states
+     *
+     * All previously data stored in provided \p storagePoint is removed.
+     */
+    void store(StoragePoint &storagePoint, const QMap<QString, PluginState> &pluginStates) const;
 };
 
 /**

@@ -31,16 +31,17 @@ class ContactStorage;
 
 namespace GaduProtocolHelper
 {
-	GADUAPI StatusType statusTypeFromGaduStatus(unsigned int index);
-	GADUAPI bool isBlockingStatus(unsigned int index);
-	GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
+GADUAPI StatusType statusTypeFromGaduStatus(unsigned int index);
+GADUAPI bool isBlockingStatus(unsigned int index);
+GADUAPI unsigned int gaduStatusFromStatus(const Status &status);
 
-	GADUAPI QString connectionErrorMessage(GaduProtocol::GaduError error);
-	GADUAPI bool isConnectionErrorFatal(GaduProtocol::GaduError error);
+GADUAPI QString connectionErrorMessage(GaduProtocol::GaduError error);
+GADUAPI bool isConnectionErrorFatal(GaduProtocol::GaduError error);
 
-	GADUAPI Buddy searchResultToBuddy(BuddyStorage *buddyStorage, ContactStorage *contactStorage, Account account, gg_pubdir50_t res, int number);
+GADUAPI Buddy searchResultToBuddy(
+    BuddyStorage *buddyStorage, ContactStorage *contactStorage, Account account, gg_pubdir50_t res, int number);
 
-	GADUAPI UinType uin(Contact contact);
+GADUAPI UinType uin(Contact contact);
 }
 
-#endif // GADU_PROTOCOL_HELPER_H
+#endif   // GADU_PROTOCOL_HELPER_H

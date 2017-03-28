@@ -31,15 +31,15 @@
 
 SoundModule::SoundModule()
 {
-	add_type<SoundActions>();
-	add_type<SoundBuddyConfigurationWidgetFactory>();
-	add_type<SoundChatConfigurationWidgetFactory>();
-	add_type<SoundConfigurationUiHandler>();
-	add_type<SoundManager>();
-	add_type<SoundMuteAction>();
-	add_type<SoundNotifier>();
-	add_type<SoundPluginObject>();
-	add_type<SoundThemeManager>();
+    add_type<SoundActions>();
+    add_type<SoundBuddyConfigurationWidgetFactory>();
+    add_type<SoundChatConfigurationWidgetFactory>();
+    add_type<SoundConfigurationUiHandler>();
+    add_type<SoundManager>();
+    add_type<SoundMuteAction>();
+    add_type<SoundNotifier>();
+    add_type<SoundPluginObject>();
+    add_type<SoundThemeManager>();
 }
 
 SoundModule::~SoundModule()

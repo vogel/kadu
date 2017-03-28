@@ -31,8 +31,7 @@
 #include "protocols/protocols-manager.h"
 #include "url-handlers/url-handler-manager.h"
 
-JabberPluginObject::JabberPluginObject(QObject *parent) :
-		QObject{parent}
+JabberPluginObject::JabberPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -42,73 +41,73 @@ JabberPluginObject::~JabberPluginObject()
 
 void JabberPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domVisitorProviderRepository = domVisitorProviderRepository;
+    m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
 void JabberPluginObject::setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory)
 {
-	m_gtalkProtocolFactory = gtalkProtocolFactory;
+    m_gtalkProtocolFactory = gtalkProtocolFactory;
 }
 
 void JabberPluginObject::setJabberActions(JabberActions *jabberActions)
 {
-	m_jabberActions = jabberActions;
+    m_jabberActions = jabberActions;
 }
 
 void JabberPluginObject::setJabberProtocolFactory(JabberProtocolFactory *jabberProtocolFactory)
 {
-	m_jabberProtocolFactory = jabberProtocolFactory;
+    m_jabberProtocolFactory = jabberProtocolFactory;
 }
 
 void JabberPluginObject::setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager)
 {
-	m_jabberProtocolMenuManager = jabberProtocolMenuManager;
+    m_jabberProtocolMenuManager = jabberProtocolMenuManager;
 }
 
 void JabberPluginObject::setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler)
 {
-	m_jabberUrlHandler = jabberUrlHandler;
+    m_jabberUrlHandler = jabberUrlHandler;
 }
 
 void JabberPluginObject::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void JabberPluginObject::setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider)
 {
-	m_jabberUrlDomVisitorProvider = jabberUrlDomVisitorProvider;
+    m_jabberUrlDomVisitorProvider = jabberUrlDomVisitorProvider;
 }
 
 void JabberPluginObject::setProtocolsManager(ProtocolsManager *protocolsManager)
 {
-	m_protocolsManager = protocolsManager;
+    m_protocolsManager = protocolsManager;
 }
 
 void JabberPluginObject::setUrlHandlerManager(UrlHandlerManager *urlHandlerManager)
 {
-	m_urlHandlerManager = urlHandlerManager;
+    m_urlHandlerManager = urlHandlerManager;
 }
 
 void JabberPluginObject::init()
 {
-	m_protocolsManager->registerProtocolFactory(m_jabberProtocolFactory);
-	m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
-	m_urlHandlerManager->registerUrlHandler(m_jabberUrlHandler);
-	// install before mail handler
-	m_domVisitorProviderRepository->addVisitorProvider(m_jabberUrlDomVisitorProvider, 2000);
+    m_protocolsManager->registerProtocolFactory(m_jabberProtocolFactory);
+    m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
+    m_urlHandlerManager->registerUrlHandler(m_jabberUrlHandler);
+    // install before mail handler
+    m_domVisitorProviderRepository->addVisitorProvider(m_jabberUrlDomVisitorProvider, 2000);
 
-	m_menuInventory->registerProtocolMenuManager(m_jabberProtocolMenuManager);
+    m_menuInventory->registerProtocolMenuManager(m_jabberProtocolMenuManager);
 }
 
 void JabberPluginObject::done()
 {
-	m_menuInventory->unregisterProtocolMenuManager(m_jabberProtocolMenuManager);
+    m_menuInventory->unregisterProtocolMenuManager(m_jabberProtocolMenuManager);
 
-	m_domVisitorProviderRepository->removeVisitorProvider(m_jabberUrlDomVisitorProvider);
-	m_urlHandlerManager->unregisterUrlHandler(m_jabberUrlHandler);
-	m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
-	m_protocolsManager->unregisterProtocolFactory(m_jabberProtocolFactory);
+    m_domVisitorProviderRepository->removeVisitorProvider(m_jabberUrlDomVisitorProvider);
+    m_urlHandlerManager->unregisterUrlHandler(m_jabberUrlHandler);
+    m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
+    m_protocolsManager->unregisterProtocolFactory(m_jabberProtocolFactory);
 }
 
 #include "moc_jabber-plugin-object.cpp"

@@ -61,52 +61,52 @@ class UnreadMessageRepository;
  */
 class ChatWidgetMessageHandler : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
-	virtual ~ChatWidgetMessageHandler();
+    Q_INVOKABLE explicit ChatWidgetMessageHandler(QObject *parent = nullptr);
+    virtual ~ChatWidgetMessageHandler();
 
-	void setChatWidgetMessageHandlerConfiguration(ChatWidgetMessageHandlerConfiguration chatWidgetMessageHandlerConfiguration);
+    void setChatWidgetMessageHandlerConfiguration(
+        ChatWidgetMessageHandlerConfiguration chatWidgetMessageHandlerConfiguration);
 
 private:
-	QPointer<BuddyChatManager> m_buddyChatManager;
-	QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<Configuration> m_configuration;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<MessageManager> m_messageManager;
-	QPointer<SilentModeService> m_silentModeService;
-	QPointer<StatusTypeManager> m_statusTypeManager;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<BuddyChatManager> m_buddyChatManager;
+    QPointer<ChatWidgetActivationService> m_chatWidgetActivationService;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<MessageManager> m_messageManager;
+    QPointer<SilentModeService> m_silentModeService;
+    QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	ChatWidgetMessageHandlerConfiguration m_chatWidgetMessageHandlerConfiguration;
+    ChatWidgetMessageHandlerConfiguration m_chatWidgetMessageHandlerConfiguration;
 
-	void appendAllUnreadMessages(ChatWidget *chatWidget);
-	SortedMessages loadAllUnreadMessages(const Chat &chat) const;
-	bool shouldOpenChatWidget(const Chat &chat) const;
+    void appendAllUnreadMessages(ChatWidget *chatWidget);
+    SortedMessages loadAllUnreadMessages(const Chat &chat) const;
+    bool shouldOpenChatWidget(const Chat &chat) const;
 
 private slots:
-	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
-	INJEQT_SET void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+    INJEQT_SET void setChatWidgetActivationService(ChatWidgetActivationService *chatWidgetActivationService);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setSilentModeService(SilentModeService *silentModeService);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_INIT void init();
 
-	void chatWidgetAdded(ChatWidget *chatWidget);
-	void chatWidgetRemoved(ChatWidget *chatWidget);
-	void chatWidgetActivated(ChatWidget *chatWidget);
+    void chatWidgetAdded(ChatWidget *chatWidget);
+    void chatWidgetRemoved(ChatWidget *chatWidget);
+    void chatWidgetActivated(ChatWidget *chatWidget);
 
-	void messageReceived(const Message &message);
-	void messageSent(const Message &message);
-
+    void messageReceived(const Message &message);
+    void messageSent(const Message &message);
 };
 
 /**

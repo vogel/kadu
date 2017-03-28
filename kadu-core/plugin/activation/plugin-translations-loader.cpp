@@ -28,17 +28,17 @@
 #include <QtCore/QLatin1String>
 #include <QtCore/QTranslator>
 
-PluginTranslationsLoader::PluginTranslationsLoader(const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept :
-		m_translator{std::make_unique<QTranslator>()}
+PluginTranslationsLoader::PluginTranslationsLoader(
+    const QString &pluginTranslationDir, const QString &language, const QString &pluginName) noexcept
+    : m_translator{std::make_unique<QTranslator>()}
 {
-	
-	if (m_translator->load(pluginName + '_' + language, pluginTranslationDir))
-		QCoreApplication::installTranslator(m_translator.get());
-	else
-		m_translator.reset();
+    if (m_translator->load(pluginName + '_' + language, pluginTranslationDir))
+        QCoreApplication::installTranslator(m_translator.get());
+    else
+        m_translator.reset();
 }
 
 PluginTranslationsLoader::~PluginTranslationsLoader() noexcept
 {
-	QCoreApplication::removeTranslator(m_translator.get());
+    QCoreApplication::removeTranslator(m_translator.get());
 }

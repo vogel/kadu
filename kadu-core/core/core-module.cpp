@@ -19,6 +19,7 @@
 
 #include "core-module.h"
 
+#include "attention-service.h"
 #include "core/application.h"
 #include "core/core.h"
 #include "core/injected-factory.h"
@@ -28,6 +29,7 @@
 #include "core/session-service.h"
 #include "core/version-service.h"
 #include "gui/services/clipboard-html-transformer-service.h"
+#include "languages-manager.h"
 #include "misc/paths-provider.h"
 #include "os/generic/url-opener.h"
 #include "protocols/protocols-manager.h"
@@ -37,42 +39,40 @@
 #include "status/status-changer-manager.h"
 #include "status/status-container-manager.h"
 #include "storage/storage-point-factory-impl.h"
+#include "translation-loader.h"
 #include "url-handlers/url-handler-manager.h"
 #include "widgets/account-configuration-widget-factory-repository.h"
 #include "widgets/chat-configuration-widget-factory-repository.h"
 #include "widgets/chat-top-bar-widget-factory-repository.h"
-#include "attention-service.h"
-#include "languages-manager.h"
-#include "translation-loader.h"
 
 CoreModule::CoreModule(QString profileDirectory)
 {
-	m_pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
+    m_pathsProvider = make_not_owned<PathsProvider>(std::move(profileDirectory));
 
-	add_type<AccountConfigurationWidgetFactoryRepository>();
-	add_type<Application>();
-	add_type<AttentionService>();
-	add_type<ChatConfigurationWidgetFactoryRepository>();
-	add_type<ChatImageRequestService>();
-	add_type<ChatTopBarWidgetFactoryRepository>();
-	add_type<ClipboardHtmlTransformerService>();
-	add_type<ImageStorageServiceImpl>();
-	add_type<InjectedFactory>();
-	add_type<InjectorProvider>();
-	add_type<LanguagesManager>();
-	add_type<Myself>();
-	add_ready_object<PathsProvider>(m_pathsProvider.get());
-	add_type<ProtocolsManager>();
-	add_type<RawMessageTransformerService>();
-	add_type<Scheduler>();
-	add_type<SessionService>();
-	add_type<StatusChangerManager>();
-	add_type<StatusContainerManager>();
-	add_type<StoragePointFactoryImpl>();
-	add_type<TranslationLoader>();
-	add_type<UrlHandlerManager>();
-	add_type<UrlOpener>();
-	add_type<VersionService>();
+    add_type<AccountConfigurationWidgetFactoryRepository>();
+    add_type<Application>();
+    add_type<AttentionService>();
+    add_type<ChatConfigurationWidgetFactoryRepository>();
+    add_type<ChatImageRequestService>();
+    add_type<ChatTopBarWidgetFactoryRepository>();
+    add_type<ClipboardHtmlTransformerService>();
+    add_type<ImageStorageServiceImpl>();
+    add_type<InjectedFactory>();
+    add_type<InjectorProvider>();
+    add_type<LanguagesManager>();
+    add_type<Myself>();
+    add_ready_object<PathsProvider>(m_pathsProvider.get());
+    add_type<ProtocolsManager>();
+    add_type<RawMessageTransformerService>();
+    add_type<Scheduler>();
+    add_type<SessionService>();
+    add_type<StatusChangerManager>();
+    add_type<StatusContainerManager>();
+    add_type<StoragePointFactoryImpl>();
+    add_type<TranslationLoader>();
+    add_type<UrlHandlerManager>();
+    add_type<UrlOpener>();
+    add_type<VersionService>();
 }
 
 CoreModule::~CoreModule()

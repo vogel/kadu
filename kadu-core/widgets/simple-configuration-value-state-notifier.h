@@ -24,17 +24,16 @@
 
 class KADUAPI SimpleConfigurationValueStateNotifier : public ConfigurationValueStateNotifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	ConfigurationValueState CurrentState;
+    ConfigurationValueState CurrentState;
 
 public:
-	explicit SimpleConfigurationValueStateNotifier(QObject *parent = nullptr);
-	virtual ~SimpleConfigurationValueStateNotifier();
+    explicit SimpleConfigurationValueStateNotifier(QObject *parent = nullptr);
+    virtual ~SimpleConfigurationValueStateNotifier();
 
-	virtual ConfigurationValueState state() const;
-	void setState(ConfigurationValueState state);
-
+    virtual ConfigurationValueState state() const;
+    void setState(ConfigurationValueState state);
 };
 
-#endif // SIMPLE_CONFIGURATION_VALUE_STATE_NOTIFIER_H
+#endif   // SIMPLE_CONFIGURATION_VALUE_STATE_NOTIFIER_H

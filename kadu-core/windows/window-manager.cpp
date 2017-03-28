@@ -24,8 +24,7 @@
 #include <QtWidgets/QDesktopWidget>
 #include <QtWidgets/QWidget>
 
-WindowManager::WindowManager(QObject *parent) :
-		QObject{parent}
+WindowManager::WindowManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,37 +34,37 @@ WindowManager::~WindowManager()
 
 void WindowManager::moveToWorkspaceCenter(QWidget *window)
 {
-	const QSize windowSizeHint = window->sizeHint();
-	const QRect workspaceGeometry = qApp->desktop()->availableGeometry(window);
+    const QSize windowSizeHint = window->sizeHint();
+    const QRect workspaceGeometry = qApp->desktop()->availableGeometry(window);
 
-	int xPosition = (workspaceGeometry.width() - windowSizeHint.width()) / 2;
-	int yPosition = (workspaceGeometry.height() - windowSizeHint.height()) / 2;
+    int xPosition = (workspaceGeometry.width() - windowSizeHint.width()) / 2;
+    int yPosition = (workspaceGeometry.height() - windowSizeHint.height()) / 2;
 
-	moveToPosition(window, QPoint(xPosition, yPosition));
+    moveToPosition(window, QPoint(xPosition, yPosition));
 }
 
 void WindowManager::moveToPosition(QWidget *window, const QPoint &position)
 {
-	window->move(position);
-	ensureWholeVisible(window);
+    window->move(position);
+    ensureWholeVisible(window);
 }
 
 void WindowManager::ensureWholeVisible(QWidget *window)
 {
-	const QSize windowSizeHint = window->sizeHint();
-	const QRect workspaceGeometry = qApp->desktop()->availableGeometry(window);
+    const QSize windowSizeHint = window->sizeHint();
+    const QRect workspaceGeometry = qApp->desktop()->availableGeometry(window);
 
-	QPoint windowPosition = window->geometry().topLeft();
-	if (windowPosition.x() < workspaceGeometry.left())
-		windowPosition.setX(workspaceGeometry.left());
-	if (windowPosition.y() < workspaceGeometry.top())
-		windowPosition.setY(workspaceGeometry.top());
-	if (windowPosition.x() + windowSizeHint.width() > workspaceGeometry.right())
-		windowPosition.setX(workspaceGeometry.right() - windowSizeHint.width());
-	if (windowPosition.y() + windowSizeHint.height() > workspaceGeometry.bottom())
-		windowPosition.setY(workspaceGeometry.bottom() - windowSizeHint.height());
+    QPoint windowPosition = window->geometry().topLeft();
+    if (windowPosition.x() < workspaceGeometry.left())
+        windowPosition.setX(workspaceGeometry.left());
+    if (windowPosition.y() < workspaceGeometry.top())
+        windowPosition.setY(workspaceGeometry.top());
+    if (windowPosition.x() + windowSizeHint.width() > workspaceGeometry.right())
+        windowPosition.setX(workspaceGeometry.right() - windowSizeHint.width());
+    if (windowPosition.y() + windowSizeHint.height() > workspaceGeometry.bottom())
+        windowPosition.setY(workspaceGeometry.bottom() - windowSizeHint.height());
 
-	window->move(windowPosition);
+    window->move(windowPosition);
 }
 
 #include "moc_window-manager.cpp"

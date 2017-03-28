@@ -32,26 +32,27 @@ class TalkableDelegateConfiguration;
 
 class AvatarPainter
 {
-	TalkableDelegateConfiguration *Configuration;
-	const QStyleOptionViewItemV4 &Option;
-	const QRect &AvatarRect;
-	const QModelIndex &Index;
+    TalkableDelegateConfiguration *Configuration;
+    const QStyleOptionViewItemV4 &Option;
+    const QRect &AvatarRect;
+    const QModelIndex &Index;
 
-	QPixmap Avatar;
+    QPixmap Avatar;
 
-	bool greyOut();
-	QPixmap cropped();
-	QString cacheKey();
-	QPixmap getOrCreateCacheItem();
-	void paintFromCache(QPainter *painter);
+    bool greyOut();
+    QPixmap cropped();
+    QString cacheKey();
+    QPixmap getOrCreateCacheItem();
+    void paintFromCache(QPainter *painter);
 
-	void doPaint(QPainter *painter, const QSize &size);
+    void doPaint(QPainter *painter, const QSize &size);
 
 public:
-	AvatarPainter(TalkableDelegateConfiguration *configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index);
+    AvatarPainter(
+        TalkableDelegateConfiguration *configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect,
+        const QModelIndex &index);
 
-	void paint(QPainter *painter);
-
+    void paint(QPainter *painter);
 };
 
-#endif // AVATAR_PAINTER_H
+#endif   // AVATAR_PAINTER_H

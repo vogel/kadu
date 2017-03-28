@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SpellcheckerPluginModulesFactory::SpellcheckerPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SpellcheckerPluginModulesFactory::SpellcheckerPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ SpellcheckerPluginModulesFactory::~SpellcheckerPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SpellcheckerPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SpellcheckerModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SpellcheckerModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_spellchecker-plugin-modules-factory.cpp"

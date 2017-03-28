@@ -22,8 +22,7 @@
 
 #include "sms-translator.h"
 
-SmsTranslator::SmsTranslator(QObject *parent) :
-		QObject(parent)
+SmsTranslator::SmsTranslator(QObject *parent) : QObject(parent)
 {
 }
 
@@ -33,7 +32,7 @@ SmsTranslator::~SmsTranslator()
 
 QScriptValue SmsTranslator::tr(const QString &text)
 {
-	return QCoreApplication::translate("@default", text.toUtf8().constData());
+    return QCoreApplication::translate("@default", text.toUtf8().constData());
 }
 
 #include "moc_sms-translator.cpp"

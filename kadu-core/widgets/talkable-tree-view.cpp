@@ -64,313 +64,310 @@
 
 #include "talkable-tree-view.h"
 
-TalkableTreeView::TalkableTreeView(QWidget *parent) :
-		KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
+TalkableTreeView::TalkableTreeView(QWidget *parent)
+        : KaduTreeView(parent), Delegate(0), Chain(0), ContextMenuEnabled(false)
 {
 }
 
 TalkableTreeView::~TalkableTreeView()
 {
-	disconnect(m_statusConfigurationHolder, 0, this, 0);
+    disconnect(m_statusConfigurationHolder, 0, this, 0);
 
-	delete Context;
-	Context = 0;
+    delete Context;
+    Context = 0;
 }
 
 void TalkableTreeView::setDeleteTalkableAction(DeleteTalkableAction *deleteTalkableAction)
 {
-	m_deleteTalkableAction = deleteTalkableAction;
+    m_deleteTalkableAction = deleteTalkableAction;
 }
 
 void TalkableTreeView::setEditTalkableAction(EditTalkableAction *editTalkableAction)
 {
-	m_editTalkableAction = editTalkableAction;
+    m_editTalkableAction = editTalkableAction;
 }
 
 void TalkableTreeView::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void TalkableTreeView::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void TalkableTreeView::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void TalkableTreeView::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
+    m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
 void TalkableTreeView::setToolTipManager(ToolTipManager *toolTipManager)
 {
-	m_toolTipManager = toolTipManager;
+    m_toolTipManager = toolTipManager;
 }
 
 void TalkableTreeView::init()
 {
-	Context = new BaseActionContext{this};
-	connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
+    Context = new BaseActionContext{this};
+    connect(m_statusConfigurationHolder, SIGNAL(setStatusModeChanged()), this, SLOT(updateContext()));
 
-	Delegate = m_injectedFactory->makeInjected<TalkableDelegate>(this);
-	setItemDelegate(Delegate);
+    Delegate = m_injectedFactory->makeInjected<TalkableDelegate>(this);
+    setItemDelegate(Delegate);
 
-	ToolTipTimeoutTimer.setSingleShot(true);
+    ToolTipTimeoutTimer.setSingleShot(true);
 
-	connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
-	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
+    connect(&ToolTipTimeoutTimer, SIGNAL(timeout()), this, SLOT(toolTipTimeout()));
+    connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClickedSlot(const QModelIndex &)));
 
-	updateContext();
+    updateContext();
 }
 
 void TalkableTreeView::setChain(ModelChain *chain)
 {
-	Chain = chain;
-	Delegate->setChain(Chain);
+    Chain = chain;
+    Delegate->setChain(Chain);
 
-	QTreeView::setModel(Chain->lastModel());
+    QTreeView::setModel(Chain->lastModel());
 
-	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection,QItemSelection)),
-	        this, SLOT(updateContext()));
+    connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(updateContext()));
 
-	// for TalkableProxyModel
-	connect(model(), SIGNAL(invalidated()), this, SLOT(updateContext()));
+    // for TalkableProxyModel
+    connect(model(), SIGNAL(invalidated()), this, SLOT(updateContext()));
 
-	// maybe contact priorities changed?
-	// fix for #2392
-	connect(model(), SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(updateContext()));
+    // maybe contact priorities changed?
+    // fix for #2392
+    connect(model(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(updateContext()));
 }
 
-ModelChain * TalkableTreeView::chain() const
+ModelChain *TalkableTreeView::chain() const
 {
-	return Chain;
+    return Chain;
 }
 
 void TalkableTreeView::setShowIdentityNameIfMany(bool show)
 {
-	Delegate->setShowIdentityNameIfMany(show);
+    Delegate->setShowIdentityNameIfMany(show);
 }
 
 void TalkableTreeView::setUseConfigurationColors(bool use)
 {
-	Delegate->setUseConfigurationColors(use);
+    Delegate->setUseConfigurationColors(use);
 }
 
-TalkableDelegateConfiguration * TalkableTreeView::delegateConfiguration()
+TalkableDelegateConfiguration *TalkableTreeView::delegateConfiguration()
 {
-	return Delegate->configuration();
+    return Delegate->configuration();
 }
 
 Talkable TalkableTreeView::talkableAt(const QModelIndex &index) const
 {
-	switch (index.data(ItemTypeRole).toInt())
-	{
-		case BuddyRole:
-			return Talkable(index.data(BuddyRole).value<Buddy>());
-		case ContactRole:
-			return Talkable(index.data(ContactRole).value<Contact>());
-		case ChatRole:
-			return Talkable(index.data(ChatRole).value<Chat>());
-	}
+    switch (index.data(ItemTypeRole).toInt())
+    {
+    case BuddyRole:
+        return Talkable(index.data(BuddyRole).value<Buddy>());
+    case ContactRole:
+        return Talkable(index.data(ContactRole).value<Contact>());
+    case ChatRole:
+        return Talkable(index.data(ChatRole).value<Chat>());
+    }
 
-	return Talkable();
+    return Talkable();
 }
 
-void TalkableTreeView::triggerActivate(const QModelIndex& index)
+void TalkableTreeView::triggerActivate(const QModelIndex &index)
 {
-	// Context->chat() can be different that Chat talkable on this index
-	// if more than one non-chat items are selected at the same time
-	const Talkable &talkable = Context->chat().isNull()
-			? talkableAt(index)
-			: Talkable(Context->chat());
+    // Context->chat() can be different that Chat talkable on this index
+    // if more than one non-chat items are selected at the same time
+    const Talkable &talkable = Context->chat().isNull() ? talkableAt(index) : Talkable(Context->chat());
 
-	if (!talkable.isEmpty())
-		emit talkableActivated(talkable);
+    if (!talkable.isEmpty())
+        emit talkableActivated(talkable);
 }
 
 void TalkableTreeView::setContextMenuEnabled(bool enabled)
 {
-	ContextMenuEnabled = enabled;
+    ContextMenuEnabled = enabled;
 }
 
 void TalkableTreeView::contextMenuEvent(QContextMenuEvent *event)
 {
-	if (!ContextMenuEnabled)
-		return;
+    if (!ContextMenuEnabled)
+        return;
 
-	QScopedPointer<QMenu> menu(new QMenu());
-	m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
-	m_menuInventory->menu("buddy-list")->applyTo(menu.data(), Context);
-	menu->exec(event->globalPos());
+    QScopedPointer<QMenu> menu(new QMenu());
+    m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
+    m_menuInventory->menu("buddy-list")->applyTo(menu.data(), Context);
+    menu->exec(event->globalPos());
 }
 
 void TalkableTreeView::keyPressEvent(QKeyEvent *event)
 {
-	// TODO 0.10.0: add proper shortcuts handling
-	if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_deleteuser"))
-		m_deleteTalkableAction->trigger(Context);
-	else if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_persinfo"))
-		m_editTalkableAction->trigger(Context);
-	else
-	{
-		switch (event->key())
-		{
-			case Qt::Key_Return:
-			case Qt::Key_Enter:
-				triggerActivate(currentIndex());
-				break;
-			default:
-				KaduTreeView::keyPressEvent(event);
-		}
-	}
+    // TODO 0.10.0: add proper shortcuts handling
+    if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_deleteuser"))
+        m_deleteTalkableAction->trigger(Context);
+    else if (HotKey::shortCut(configuration(), event, "ShortCuts", "kadu_persinfo"))
+        m_editTalkableAction->trigger(Context);
+    else
+    {
+        switch (event->key())
+        {
+        case Qt::Key_Return:
+        case Qt::Key_Enter:
+            triggerActivate(currentIndex());
+            break;
+        default:
+            KaduTreeView::keyPressEvent(event);
+        }
+    }
 
-	toolTipHide(false);
+    toolTipHide(false);
 }
 
 void TalkableTreeView::wheelEvent(QWheelEvent *event)
 {
-	QTreeView::wheelEvent(event);
+    QTreeView::wheelEvent(event);
 
-	// if event source (e->globalPos()) is inside this widget (QRect(...))
-	if (QRect(QPoint(0, 0), size()).contains(event->pos()))
-		toolTipRestart(event->pos());
-	else
-		toolTipHide(false);
+    // if event source (e->globalPos()) is inside this widget (QRect(...))
+    if (QRect(QPoint(0, 0), size()).contains(event->pos()))
+        toolTipRestart(event->pos());
+    else
+        toolTipHide(false);
 }
 
 void TalkableTreeView::leaveEvent(QEvent *event)
 {
-	QTreeView::leaveEvent(event);
-	toolTipHide(false);
+    QTreeView::leaveEvent(event);
+    toolTipHide(false);
 }
 
 void TalkableTreeView::mousePressEvent(QMouseEvent *event)
 {
-	QTreeView::mousePressEvent(event);
+    QTreeView::mousePressEvent(event);
 
-	// TODO 0.10.0: remove once #1802 is fixed
-	if (!indexAt(event->pos()).isValid())
-		setCurrentIndex(QModelIndex());
+    // TODO 0.10.0: remove once #1802 is fixed
+    if (!indexAt(event->pos()).isValid())
+        setCurrentIndex(QModelIndex());
 
-	toolTipHide();
+    toolTipHide();
 }
 
 void TalkableTreeView::mouseReleaseEvent(QMouseEvent *event)
 {
-	QTreeView::mouseReleaseEvent(event);
-	toolTipRestart(event->pos());
+    QTreeView::mouseReleaseEvent(event);
+    toolTipRestart(event->pos());
 }
 
 void TalkableTreeView::mouseMoveEvent(QMouseEvent *event)
 {
-	QTreeView::mouseMoveEvent(event);
-	toolTipRestart(event->pos());
+    QTreeView::mouseMoveEvent(event);
+    toolTipRestart(event->pos());
 }
 
-StatusContainer * TalkableTreeView::statusContainerForChat(const Chat &chat) const
+StatusContainer *TalkableTreeView::statusContainerForChat(const Chat &chat) const
 {
-	if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		return chat.chatAccount().accountIdentity().statusContainer();
-	else if (m_statusConfigurationHolder->isSetStatusPerAccount())
-		return chat.chatAccount().statusContainer();
-	else
-		return m_statusContainerManager;
+    if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+        return chat.chatAccount().accountIdentity().statusContainer();
+    else if (m_statusConfigurationHolder->isSetStatusPerAccount())
+        return chat.chatAccount().statusContainer();
+    else
+        return m_statusContainerManager;
 }
 
 void TalkableTreeView::setCurrentTalkable(const Talkable &talkable)
 {
-	if (CurrentTalkable == talkable)
-		return;
+    if (CurrentTalkable == talkable)
+        return;
 
-	CurrentTalkable = talkable;
-	emit currentChanged(CurrentTalkable);
+    CurrentTalkable = talkable;
+    emit currentChanged(CurrentTalkable);
 }
 
 void TalkableTreeView::updateContext()
 {
-	// cuurent index is part of context
-	setCurrentTalkable(talkableAt(currentIndex()));
+    // cuurent index is part of context
+    setCurrentTalkable(talkableAt(currentIndex()));
 
-	auto converter = m_injectedFactory->makeNotOwned<ModelIndexListConverter>(selectedIndexes());
+    auto converter = m_injectedFactory->makeNotOwned<ModelIndexListConverter>(selectedIndexes());
 
-	ChangeNotifierLock lock(Context->changeNotifier());
+    ChangeNotifierLock lock(Context->changeNotifier());
 
-	Context->setRoles(converter->roles());
-	Context->setBuddies(converter->buddies());
-	Context->setContacts(converter->contacts());
-	Context->setChat(converter->chat());
-	Context->setStatusContainer(statusContainerForChat(converter->chat()));
+    Context->setRoles(converter->roles());
+    Context->setBuddies(converter->buddies());
+    Context->setContacts(converter->contacts());
+    Context->setChat(converter->chat());
+    Context->setStatusContainer(statusContainerForChat(converter->chat()));
 }
 
-ActionContext * TalkableTreeView::actionContext()
+ActionContext *TalkableTreeView::actionContext()
 {
-	return Context;
+    return Context;
 }
 
 void TalkableTreeView::doubleClickedSlot(const QModelIndex &index)
 {
-	if (index.isValid())
-		triggerActivate(index);
+    if (index.isValid())
+        triggerActivate(index);
 }
 
 // Tool Tips
 
 void TalkableTreeView::toolTipTimeout()
 {
-	if (Talkable::ItemNone != ToolTipItem.type())
-	{
-		m_toolTipManager->showToolTip(QCursor::pos(), ToolTipItem);
-		ToolTipTimeoutTimer.stop();
-	}
+    if (Talkable::ItemNone != ToolTipItem.type())
+    {
+        m_toolTipManager->showToolTip(QCursor::pos(), ToolTipItem);
+        ToolTipTimeoutTimer.stop();
+    }
 }
 
 #define TOOL_TIP_TIMEOUT 1000
 
 void TalkableTreeView::toolTipRestart(QPoint pos)
 {
-	Talkable item = talkableAt(indexAt(pos));
+    Talkable item = talkableAt(indexAt(pos));
 
-	if (Talkable::ItemNone != item.type())
-	{
-		if (item != ToolTipItem)
-			toolTipHide();
-		ToolTipItem = item;
-	}
-	else
-	{
-		toolTipHide();
-		ToolTipItem = Talkable();
-	}
+    if (Talkable::ItemNone != item.type())
+    {
+        if (item != ToolTipItem)
+            toolTipHide();
+        ToolTipItem = item;
+    }
+    else
+    {
+        toolTipHide();
+        ToolTipItem = Talkable();
+    }
 
-	ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
+    ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
 }
 
 void TalkableTreeView::toolTipHide(bool waitForAnother)
 {
-	m_toolTipManager->hideToolTip();
+    m_toolTipManager->hideToolTip();
 
-	if (waitForAnother)
-		ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
-	else
-		ToolTipTimeoutTimer.stop();
+    if (waitForAnother)
+        ToolTipTimeoutTimer.start(TOOL_TIP_TIMEOUT);
+    else
+        ToolTipTimeoutTimer.stop();
 }
 
 void TalkableTreeView::hideEvent(QHideEvent *event)
 {
-	toolTipHide(false);
-	QTreeView::hideEvent(event);
+    toolTipHide(false);
+    QTreeView::hideEvent(event);
 }
 
 void TalkableTreeView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-	QTreeView::currentChanged(current, previous);
+    QTreeView::currentChanged(current, previous);
 
-	setCurrentTalkable(talkableAt(current));
+    setCurrentTalkable(talkableAt(current));
 }
 
 #include "moc_talkable-tree-view.cpp"

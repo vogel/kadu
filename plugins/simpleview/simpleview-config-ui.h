@@ -26,8 +26,7 @@ class Configuration;
 class SimpleViewConfigUi
 {
 public:
-	static void createDefaultConfiguration(Configuration *configuration);
-
+    static void createDefaultConfiguration(Configuration *configuration);
 };
 
 #endif

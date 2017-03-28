@@ -27,45 +27,45 @@
 #include <QtCore/QRegularExpression>
 #include <QtGui/QTextDocument>
 
-namespace {
-
+namespace
+{
 QString htmlToPlain(const QString &html)
 {
-	QTextDocument textDocument;
-	textDocument.setHtml(html);
-	return textDocument.toPlainText();
+    QTextDocument textDocument;
+    textDocument.setHtml(html);
+    return textDocument.toPlainText();
 }
-
 }
 
 QString htmlToPlain(const HtmlString &html)
 {
-	return htmlToPlain(html.string());
+    return htmlToPlain(html.string());
 }
 
 QString htmlToPlain(const NormalizedHtmlString &html)
 {
-	return htmlToPlain(html.string());
+    return htmlToPlain(html.string());
 }
 
 HtmlString plainToHtml(const QString &plain)
 {
-	return HtmlString{plain.toHtmlEscaped().replace('\n', "<br />")};
+    return HtmlString{plain.toHtmlEscaped().replace('\n', "<br />")};
 }
 
 NormalizedHtmlString normalizeHtml(const HtmlString &html)
 {
-	static auto imageRegExp = QRegularExpression{R"rx(<img name="([a-z0-9]*)">)rx", QRegularExpression::CaseInsensitiveOption};
-	auto fixedHtml = QString{html.string()}.replace(imageRegExp, R"(<img src="\1"/>)").replace("<br>", "<br/>");
+    static auto imageRegExp =
+        QRegularExpression{R"rx(<img name="([a-z0-9]*)">)rx", QRegularExpression::CaseInsensitiveOption};
+    auto fixedHtml = QString{html.string()}.replace(imageRegExp, R"(<img src="\1"/>)").replace("<br>", "<br/>");
 
-	try
-	{
-		return NormalizedHtmlString{processDom(fixedHtml, RemoveScriptDomVisitor{})};
-	}
-	catch (invalid_xml &)
-	{
-		// secure it by applying another html escape
-		// at least it won't break anything in webview
-		return NormalizedHtmlString{plainToHtml(fixedHtml).string()};
-	}
+    try
+    {
+        return NormalizedHtmlString{processDom(fixedHtml, RemoveScriptDomVisitor{})};
+    }
+    catch (invalid_xml &)
+    {
+        // secure it by applying another html escape
+        // at least it won't break anything in webview
+        return NormalizedHtmlString{plainToHtml(fixedHtml).string()};
+    }
 }

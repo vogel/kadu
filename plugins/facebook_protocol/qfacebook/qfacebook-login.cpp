@@ -32,48 +32,48 @@
 #include <QtCore/QString>
 #include <cassert>
 
-QFacebookLogin::QFacebookLogin(QString userName, QString password, QFacebookDeviceId deviceId, Callback callback, QObject *parent) :
-		QObject{parent},
-		m_httpApi{std::make_unique<QFacebookHttpApi>(deviceId.deviceId)},
-		m_deviceId{std::move(deviceId)},
-		m_callback{std::move(callback)}
+QFacebookLogin::QFacebookLogin(
+    QString userName, QString password, QFacebookDeviceId deviceId, Callback callback, QObject *parent)
+        : QObject{parent}, m_httpApi{std::make_unique<QFacebookHttpApi>(deviceId.deviceId)},
+          m_deviceId{std::move(deviceId)}, m_callback{std::move(callback)}
 {
-	assert(m_callback);
+    assert(m_callback);
 
-	auto loginJob = make_owned<QFacebookLoginJob>(*m_httpApi, std::move(userName), std::move(password), this);
-	connect(loginJob, &QFacebookLoginJob::finished, this, &QFacebookLogin::loginJobFinished);
+    auto loginJob = make_owned<QFacebookLoginJob>(*m_httpApi, std::move(userName), std::move(password), this);
+    connect(loginJob, &QFacebookLoginJob::finished, this, &QFacebookLogin::loginJobFinished);
 }
 
 QFacebookLogin::~QFacebookLogin() = default;
 
 void QFacebookLogin::loginJobFinished(const QFacebookLoginResult &result)
 {
-	auto error = boost::get<QFacebookLoginError>(&result);
-	if (error)
-	{
-		m_callback(*error);
-		return;
-	}
+    auto error = boost::get<QFacebookLoginError>(&result);
+    if (error)
+    {
+        m_callback(*error);
+        return;
+    }
 
-	m_sessionToken = boost::get<QFacebookSessionToken>(result);
-	m_mqttApi = std::make_unique<QFacebookMqttApi>(m_sessionToken, std::move(m_deviceId));
-	connect(m_mqttApi.get(), &QFacebookMqttApi::connected, this, &QFacebookLogin::mqttConnected);
-	connect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookLogin::mqttDisconnected);
+    m_sessionToken = boost::get<QFacebookSessionToken>(result);
+    m_mqttApi = std::make_unique<QFacebookMqttApi>(m_sessionToken, std::move(m_deviceId));
+    connect(m_mqttApi.get(), &QFacebookMqttApi::connected, this, &QFacebookLogin::mqttConnected);
+    connect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookLogin::mqttDisconnected);
 }
 
 void QFacebookLogin::mqttConnected()
 {
-	disconnect(m_mqttApi.get(), &QFacebookMqttApi::connected, this, &QFacebookLogin::mqttConnected);
-	disconnect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookLogin::mqttDisconnected);
+    disconnect(m_mqttApi.get(), &QFacebookMqttApi::connected, this, &QFacebookLogin::mqttConnected);
+    disconnect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookLogin::mqttDisconnected);
 
-	auto session = std::make_unique<QFacebookSession>(std::move(m_sessionToken), std::move(m_httpApi), std::move(m_mqttApi));
-	m_callback(std::move(session));
+    auto session =
+        std::make_unique<QFacebookSession>(std::move(m_sessionToken), std::move(m_httpApi), std::move(m_mqttApi));
+    m_callback(std::move(session));
 }
 
 void QFacebookLogin::mqttDisconnected()
 {
-	disconnect(m_mqttApi.get(), &QFacebookMqttApi::connected, this, &QFacebookLogin::mqttConnected);
-	disconnect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookLogin::mqttDisconnected);
+    disconnect(m_mqttApi.get(), &QFacebookMqttApi::connected, this, &QFacebookLogin::mqttConnected);
+    disconnect(m_mqttApi.get(), &QFacebookMqttApi::disconnected, this, &QFacebookLogin::mqttDisconnected);
 
-	m_callback(QFacebookLoginError{QFacebookLoginErrorType::Unknown, {}});
+    m_callback(QFacebookLoginError{QFacebookLoginErrorType::Unknown, {}});
 }

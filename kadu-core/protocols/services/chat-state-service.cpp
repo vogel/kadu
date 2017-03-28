@@ -20,8 +20,7 @@
 
 #include "chat-state-service.h"
 
-ChatStateService::ChatStateService(Account account, QObject *parent) :
-		AccountService(account, parent)
+ChatStateService::ChatStateService(Account account, QObject *parent) : AccountService(account, parent)
 {
 }
 

@@ -26,9 +26,9 @@
 #pragma once
 
 #include "contacts/contact.h"
+#include "exports.h"
 #include "message/message.h"
 #include "storage/manager.h"
-#include "exports.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QObject>
@@ -46,66 +46,71 @@ class UnreadMessageRepository;
 
 class KADUAPI ContactManager : public Manager<Contact>
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum AnonymousInclusion
-	{
-		IncludeAnonymous,
-		ExcludeAnonymous
-	};
+    enum AnonymousInclusion
+    {
+        IncludeAnonymous,
+        ExcludeAnonymous
+    };
 
-	Q_INVOKABLE explicit ContactManager(QObject *parent = nullptr);
-	virtual ~ContactManager();
+    Q_INVOKABLE explicit ContactManager(QObject *parent = nullptr);
+    virtual ~ContactManager();
 
-	virtual QString storageNodeName() override { return QStringLiteral("Contacts"); }
-	virtual QString storageNodeItemName() override { return QStringLiteral("Contact"); }
+    virtual QString storageNodeName() override
+    {
+        return QStringLiteral("Contacts");
+    }
+    virtual QString storageNodeItemName() override
+    {
+        return QStringLiteral("Contact");
+    }
 
-	Contact byId(Account account, const QString &id, NotFoundAction action);
-	QVector<Contact> contacts(Account account, AnonymousInclusion inclusion = IncludeAnonymous);
+    Contact byId(Account account, const QString &id, NotFoundAction action);
+    QVector<Contact> contacts(Account account, AnonymousInclusion inclusion = IncludeAnonymous);
 
 signals:
-	void contactAboutToBeAdded(Contact contact);
-	void contactAdded(Contact contact);
-	void contactAboutToBeRemoved(Contact contact);
-	void contactRemoved(Contact contact);
+    void contactAboutToBeAdded(Contact contact);
+    void contactAdded(Contact contact);
+    void contactAboutToBeRemoved(Contact contact);
+    void contactRemoved(Contact contact);
 
-	void contactUpdated(const Contact &contact);
+    void contactUpdated(const Contact &contact);
 
 protected:
-	virtual void loaded() override;
-	virtual Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
+    virtual void loaded() override;
+    virtual Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
-	virtual void itemAboutToBeAdded(Contact item) override;
-	virtual void itemAdded(Contact item) override;
-	virtual void itemAboutToBeRemoved(Contact item) override;
-	virtual void itemRemoved(Contact item) override;
+    virtual void itemAboutToBeAdded(Contact item) override;
+    virtual void itemAdded(Contact item) override;
+    virtual void itemAboutToBeRemoved(Contact item) override;
+    virtual void itemRemoved(Contact item) override;
 
 private:
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<ContactStorage> m_contactStorage;
-	QPointer<Myself> m_myself;
-	QPointer<Parser> m_parser;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<ContactStorage> m_contactStorage;
+    QPointer<Myself> m_myself;
+    QPointer<Parser> m_parser;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void removeDuplicateContacts();
+    void removeDuplicateContacts();
 
-	void contactDataUpdated();
+    void contactDataUpdated();
 
-	void unreadMessageAdded(const Message &message);
-	void unreadMessageRemoved(const Message &message);
-
+    void unreadMessageAdded(const Message &message);
+    void unreadMessageRemoved(const Message &message);
 };

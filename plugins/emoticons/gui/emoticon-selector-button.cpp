@@ -36,14 +36,15 @@
 
 #include "emoticon-selector-button.h"
 
-EmoticonSelectorButton::EmoticonSelectorButton(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent) :
-		QLabel(parent), DisplayEmoticon(emoticon), PathProvider(pathProvider)
+EmoticonSelectorButton::EmoticonSelectorButton(
+    const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent)
+        : QLabel(parent), DisplayEmoticon(emoticon), PathProvider(pathProvider)
 {
-	QPixmap p(DisplayEmoticon.staticFilePath());
-	setPixmap(p.scaledToHeight(18, Qt::SmoothTransformation));
-	setMouseTracking(true);
-	setMargin(4);
-	setFixedSize(sizeHint());
+    QPixmap p(DisplayEmoticon.staticFilePath());
+    setPixmap(p.scaledToHeight(18, Qt::SmoothTransformation));
+    setMouseTracking(true);
+    setMargin(4);
+    setFixedSize(sizeHint());
 }
 
 EmoticonSelectorButton::~EmoticonSelectorButton()
@@ -52,11 +53,11 @@ EmoticonSelectorButton::~EmoticonSelectorButton()
 
 void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
 {
-	QLabel::mouseMoveEvent(e);
+    QLabel::mouseMoveEvent(e);
 
-	EmoticonSelectorButtonPopup *popup = new EmoticonSelectorButtonPopup(DisplayEmoticon, PathProvider, this);
-	connect(popup, SIGNAL(clicked(Emoticon)), this, SIGNAL(clicked(Emoticon)));
-	popup->show();
+    EmoticonSelectorButtonPopup *popup = new EmoticonSelectorButtonPopup(DisplayEmoticon, PathProvider, this);
+    connect(popup, SIGNAL(clicked(Emoticon)), this, SIGNAL(clicked(Emoticon)));
+    popup->show();
 }
 
 #include "moc_emoticon-selector-button.cpp"

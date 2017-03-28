@@ -23,8 +23,8 @@
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "storage/storage-point.h"
 #include "exports.h"
+#include "storage/storage-point.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -32,11 +32,18 @@
 #include <injeqt/injeqt.h>
 #include <memory>
 
-#define PROPERTY_DEC(type, fieldName) \
-	type fieldName;
+#define PROPERTY_DEC(type, fieldName) type fieldName;
 #define PROPERTY_DEF(type, getMethodName, setMethodName, fieldName) \
-	type getMethodName() { ensureLoaded(); return fieldName; } \
-	void setMethodName(type value) { ensureLoaded(); fieldName = value; }
+    type getMethodName()                                            \
+    {                                                               \
+        ensureLoaded();                                             \
+        return fieldName;                                           \
+    }                                                               \
+    void setMethodName(type value)                                  \
+    {                                                               \
+        ensureLoaded();                                             \
+        fieldName = value;                                          \
+    }
 
 class CustomProperties;
 class StoragePointFactory;
@@ -103,337 +110,342 @@ class StoragePointFactory;
  */
 class KADUAPI StorableObject : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @enum StorableObjectState
-	 * @author Rafal 'Vogel' Malinowski
-	 *
-	 * This enum controls how the object behaves when loading/storing data.
-	 */
-	enum StorableObjectState
-	{
-		/**
-		 * Object is treated as 'new' - one, that has never been stored before.
-		 * Such object can not be loaded, @link<ensureLoaded> ensureLoaded @endlink
-		 * will do nothing on such object.
-		 */
-		StateNew,
-		/**
-		 * Object is treated as 'not loaded' - one, that has not been loaded but is
-		 * stored. Such object will be loaded when @link<ensureLoaded> ensureLoaded @endlink
-		 * is called.
-		 */
-		StateNotLoaded,
-		/**
-		 * Object is treated as 'loaded'. Method @link<ensureLoaded> ensureLoaded @endlink
-		 * will have no effect on that object.
-		 */
-		StateLoaded
-	};
+    /**
+     * @enum StorableObjectState
+     * @author Rafal 'Vogel' Malinowski
+     *
+     * This enum controls how the object behaves when loading/storing data.
+     */
+    enum StorableObjectState
+    {
+        /**
+         * Object is treated as 'new' - one, that has never been stored before.
+         * Such object can not be loaded, @link<ensureLoaded> ensureLoaded @endlink
+         * will do nothing on such object.
+         */
+        StateNew,
+        /**
+         * Object is treated as 'not loaded' - one, that has not been loaded but is
+         * stored. Such object will be loaded when @link<ensureLoaded> ensureLoaded @endlink
+         * is called.
+         */
+        StateNotLoaded,
+        /**
+         * Object is treated as 'loaded'. Method @link<ensureLoaded> ensureLoaded @endlink
+         * will have no effect on that object.
+         */
+        StateLoaded
+    };
 
 private:
-	QPointer<StoragePointFactory> m_storagePointFactory;
+    QPointer<StoragePointFactory> m_storagePointFactory;
 
-	std::shared_ptr<StoragePoint> Storage;
-	StorableObjectState State;
-	CustomProperties *Properties;
+    std::shared_ptr<StoragePoint> Storage;
+    StorableObjectState State;
+    CustomProperties *Properties;
 
 private slots:
-	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
+    INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 
 protected:
-	StoragePointFactory * storagePointFactory() const;
+    StoragePointFactory *storagePointFactory() const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Creates default storage point for object.
-	 *
-	 * Constructs storage point: XML node that is child of storage point of object
-	 * returned by @link<StorableObject::storageParent storageParent @endlink method.
-	 * Node name is given by @link<StorableObject::storageNodeName @endlink method.
-	 *
-	 * If @link<StorableObject::storageNodeName @endlink returns invalid node name
-	 * (empty string) or @link<StorableObject::storageParent storageParent @endlink
-	 * returns object that has invalid storage point, this method returns invalid
-	 * storage point.
-	 *
-	 * If parent is NULL this method will return storage point that is child of
-	 * root node of XML configuration file.
-	 */
-	virtual std::shared_ptr<StoragePoint> createStoragePoint();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Creates default storage point for object.
+     *
+     * Constructs storage point: XML node that is child of storage point of object
+     * returned by @link<StorableObject::storageParent storageParent @endlink method.
+     * Node name is given by @link<StorableObject::storageNodeName @endlink method.
+     *
+     * If @link<StorableObject::storageNodeName @endlink returns invalid node name
+     * (empty string) or @link<StorableObject::storageParent storageParent @endlink
+     * returns object that has invalid storage point, this method returns invalid
+     * storage point.
+     *
+     * If parent is NULL this method will return storage point that is child of
+     * root node of XML configuration file.
+     */
+    virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads data from storage point. Sets state to StateLoaded.
-	 *
-	 * This is base implementation of load method, that is called by ensureLoaded method.
-	 * This version only sets state to StateLoaded and loads all custom properties. This
-	 * method must be overridden in every derivered class that has real data to read. This
-	 * method must be called by every reimplementation, if possible at beginning.
-	 */
-	virtual void load();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads data from storage point. Sets state to StateLoaded.
+     *
+     * This is base implementation of load method, that is called by ensureLoaded method.
+     * This version only sets state to StateLoaded and loads all custom properties. This
+     * method must be overridden in every derivered class that has real data to read. This
+     * method must be called by every reimplementation, if possible at beginning.
+     */
+    virtual void load();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores object data in XML node.
-	 *
-	 * Stores object data in XML node. Also all storable custom properties are stored.
-	 */
-	virtual void store();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores object data in XML node.
+     *
+     * Stores object data in XML node. Also all storable custom properties are stored.
+     */
+    virtual void store();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Determines if object is worth to be stored.
-	 * @return true if object should be stored, defaults to true
-	 *
-	 * If object is incomplete, invalid or unneeded in storage, this method should return false
-	 * so it will not be stored in persistent storage. It is a good practice to reimplement this
-	 * method. Value returned by super class should be always considered.
-	 *
-	 * Default implementation returns true.
-	 */
-	virtual bool shouldStore();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Determines if object is worth to be stored.
+     * @return true if object should be stored, defaults to true
+     *
+     * If object is incomplete, invalid or unneeded in storage, this method should return false
+     * so it will not be stored in persistent storage. It is a good practice to reimplement this
+     * method. Value returned by super class should be always considered.
+     *
+     * Default implementation returns true.
+     */
+    virtual bool shouldStore();
 
-	virtual void loaded() { };
+    virtual void loaded(){};
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Contructs object with StateNew state and null storage point.
-	 *
-	 * Constructs object with @link<StorableObject::StateNew state @endlink and null
-	 * (invalid) @link<StorableObject::storage storage point @endlink.
-	 */
-	explicit StorableObject(QObject *parent = nullptr);
-	virtual ~StorableObject();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Contructs object with StateNew state and null storage point.
+     *
+     * Constructs object with @link<StorableObject::StateNew state @endlink and null
+     * (invalid) @link<StorableObject::storage storage point @endlink.
+     */
+    explicit StorableObject(QObject *parent = nullptr);
+    virtual ~StorableObject();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns object that holds parent storage point for this object.
-	 *
-	 * Reimplementations of this method in derivered classes should return object
-	 * that holds parent storage point for this object. If NULL is returned, this
-	 * object will be stored directly below root XML node of storage file. If value
-	 * is not NULL, this object will be stored below XML node of parent object.
-	 */
-	virtual StorableObject * storageParent() = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns object that holds parent storage point for this object.
+     *
+     * Reimplementations of this method in derivered classes should return object
+     * that holds parent storage point for this object. If NULL is returned, this
+     * object will be stored directly below root XML node of storage file. If value
+     * is not NULL, this object will be stored below XML node of parent object.
+     */
+    virtual StorableObject *storageParent() = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns node name of XML storage of this object.
-	 * @return node name of XML storage of this object
-	 *
-	 * Reimplementations of this method in derivered classes should return name
-	 * of XML node that holds this object data.
-	 */
-	virtual QString storageNodeName() = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns node name of XML storage of this object.
+     * @return node name of XML storage of this object
+     *
+     * Reimplementations of this method in derivered classes should return name
+     * of XML node that holds this object data.
+     */
+    virtual QString storageNodeName() = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns storage point for this object.
-	 * @return storage point for this object
-	 *
-	 * Returns storage point for this object. If the storage point has not been specified
-	 * yet, it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
-	 */
-	const std::shared_ptr<StoragePoint> & storage();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns storage point for this object.
+     * @return storage point for this object
+     *
+     * Returns storage point for this object. If the storage point has not been specified
+     * yet, it calls @link<createStoragePoint> createStoragePoint @endlink to create one.
+     */
+    const std::shared_ptr<StoragePoint> &storage();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns current object state.
-	 * @return current object state
-	 *
-	 * Return current object state.
-	 */
-	StorableObjectState state() { return State; }
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns current object state.
+     * @return current object state
+     *
+     * Return current object state.
+     */
+    StorableObjectState state()
+    {
+        return State;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sets new state of object.
-	 * @param state object's new state
-	 *
-	 * Sets new state of object.
-	 */
-	void setState(StorableObjectState state) { State = state; }
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Sets new state of object.
+     * @param state object's new state
+     *
+     * Sets new state of object.
+     */
+    void setState(StorableObjectState state)
+    {
+        State = state;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Ensures that this object data has been loaded.
-	 *
-	 * This method loads data (by calling load method) only when current state of object
-	 * is StateNotLoaded. New object and already loaded object are not loaded twice.
-	 * Load method is responsible for changing the state to StateLoaded.
-	 */
-	void ensureLoaded();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Ensures that this object data has been loaded.
+     *
+     * This method loads data (by calling load method) only when current state of object
+     * is StateNotLoaded. New object and already loaded object are not loaded twice.
+     * Load method is responsible for changing the state to StateLoaded.
+     */
+    void ensureLoaded();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores or removes data from storage, depends on shouldStore result.
-	 *
-	 * If shouldStore method returns true this method stores object in storage file.
-	 * Else, object is removed from storage.
-	 */
-	void ensureStored();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores or removes data from storage, depends on shouldStore result.
+     *
+     * If shouldStore method returns true this method stores object in storage file.
+     * Else, object is removed from storage.
+     */
+    void ensureStored();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removed object from storage.
-	 *
-	 * Removes current object from storage (it will not be possible to load it anymore).
-	 * It is still possible to store this object in other place by using setStorage
-	 * method.
-	 */
-	void removeFromStorage();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removed object from storage.
+     *
+     * Removes current object from storage (it will not be possible to load it anymore).
+     * It is still possible to store this object in other place by using setStorage
+     * method.
+     */
+    void removeFromStorage();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Sets arbitrary storage for this object. Sets state to StateNotLoaded.
-	 * @param storage new storage point
-	 *
-	 * This method allows you to set arbitrary storage point. Use that method when place
-	 * of data storage is known and the data needs to be loaded. This method changes
-	 * state of object to StateNotLoaded, so it will be loaded after executing ensureLoaded
-	 * method.
-	 */
-	void setStorage(const std::shared_ptr<StoragePoint> &storage);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Sets arbitrary storage for this object. Sets state to StateNotLoaded.
+     * @param storage new storage point
+     *
+     * This method allows you to set arbitrary storage point. Use that method when place
+     * of data storage is known and the data needs to be loaded. This method changes
+     * state of object to StateNotLoaded, so it will be loaded after executing ensureLoaded
+     * method.
+     */
+    void setStorage(const std::shared_ptr<StoragePoint> &storage);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns true if storage point is valid.
-	 * @return true if storage point is valid
-	 *
-	 * Storage is valid when it is not NULL and points to a real XML storage file.
-	 */
-	bool isValidStorage();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns true if storage point is valid.
+     * @return true if storage point is valid
+     *
+     * Storage is valid when it is not NULL and points to a real XML storage file.
+     */
+    bool isValidStorage();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as an attribute).
-	 * @param T type of returned value
-	 * @param name name of attribute that will be loaded
-	 * @return value of XML attribute
-	 *
-	 * Loads value from XML node as an attribute 'name' with type T.
-	 */
-template<class T>
-	T loadAttribute(const QString &name) const
-	{
-		return Storage->loadAttribute<T>(name);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as an attribute).
+     * @param T type of returned value
+     * @param name name of attribute that will be loaded
+     * @return value of XML attribute
+     *
+     * Loads value from XML node as an attribute 'name' with type T.
+     */
+    template <class T>
+    T loadAttribute(const QString &name) const
+    {
+        return Storage->loadAttribute<T>(name);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as subnode).
-	 * @param T type of returned value
-	 * @param name name of subnode that will be loaded
-	 * @return value of XML subnode
-	 *
-	 * Loads value from XML node as subnode 'name' with type T.
-	 */
-template<class T>
-	T loadValue(const QString &name) const
-	{
-		return Storage->loadValue<T>(name);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as subnode).
+     * @param T type of returned value
+     * @param name name of subnode that will be loaded
+     * @return value of XML subnode
+     *
+     * Loads value from XML node as subnode 'name' with type T.
+     */
+    template <class T>
+    T loadValue(const QString &name) const
+    {
+        return Storage->loadValue<T>(name);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Check if value is available in XML node (as subnode).
-	 * @param name name of subnode that will be checked
-	 * @return true, if subnode is available
-	 *
-	 * Check if value is available in XML node (as subnode).
-	 */
-	bool hasValue(const QString &name) const
-	{
-		return Storage->hasValue(name);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Check if value is available in XML node (as subnode).
+     * @param name name of subnode that will be checked
+     * @return true, if subnode is available
+     *
+     * Check if value is available in XML node (as subnode).
+     */
+    bool hasValue(const QString &name) const
+    {
+        return Storage->hasValue(name);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as an attribute).
-	 * @param T type of returned value
-	 * @param name name of attribute that will be loaded
-	 * @param def default value, returned when attribute non present
-	 * @return value of XML attribute
-	 *
-	 * Loads value from XML node as an attribute 'name' with type T.
-	 * If attribute is non present this method will return value of def.
-	 */
-template<class T>
-	T loadAttribute(const QString &name, T def) const
-	{
-		return Storage->loadAttribute(name, def);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as an attribute).
+     * @param T type of returned value
+     * @param name name of attribute that will be loaded
+     * @param def default value, returned when attribute non present
+     * @return value of XML attribute
+     *
+     * Loads value from XML node as an attribute 'name' with type T.
+     * If attribute is non present this method will return value of def.
+     */
+    template <class T>
+    T loadAttribute(const QString &name, T def) const
+    {
+        return Storage->loadAttribute(name, def);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Loads value from XML node (as subnode).
-	 * @param T type of returned value
-	 * @param name name of subnode that will be loaded
-	 * @param def default value, returned when subnode non present
-	 * @return value of XML subnode
-	 *
-	 * Loads value from XML node as subnode 'name' with type T.
-	 * If subnode is non present this method will return value of def.
-	 */
-template<class T>
-	T loadValue(const QString &name, T def) const
-	{
-		return Storage->loadValue(name, def);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Loads value from XML node (as subnode).
+     * @param T type of returned value
+     * @param name name of subnode that will be loaded
+     * @param def default value, returned when subnode non present
+     * @return value of XML subnode
+     *
+     * Loads value from XML node as subnode 'name' with type T.
+     * If subnode is non present this method will return value of def.
+     */
+    template <class T>
+    T loadValue(const QString &name, T def) const
+    {
+        return Storage->loadValue(name, def);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores value into XML node (as a subnode).
-	 * @param name name of subnode that will store this value
-	 * @param value value to be stored
-	 *
-	 * Stores value into XML node as a subnode 'name' with value 'value'
-	 * (value is converted to QString before storing).
-	 */
-	void storeValue(const QString &name, const QVariant value);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores value into XML node (as a subnode).
+     * @param name name of subnode that will store this value
+     * @param value value to be stored
+     *
+     * Stores value into XML node as a subnode 'name' with value 'value'
+     * (value is converted to QString before storing).
+     */
+    void storeValue(const QString &name, const QVariant value);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores value into XML node (as an attribute).
-	 * @param name name of attribute that will store this value
-	 * @param value value to be stored
-	 *
-	 * Stores value into XML node as a attribute 'name' with value 'value'
-	 * (value is converted to QString before storing).
-	 */
-	void storeAttribute(const QString &name, const QVariant value);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores value into XML node (as an attribute).
+     * @param name name of attribute that will store this value
+     * @param value value to be stored
+     *
+     * Stores value into XML node as a attribute 'name' with value 'value'
+     * (value is converted to QString before storing).
+     */
+    void storeAttribute(const QString &name, const QVariant value);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes value (a subnode) from XML node.
-	 * @param name name of subnode that will be removed
-	 *
-	 * Removes subnode 'name' from XML storage file.
-	 */
-	void removeValue(const QString &name);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removes value (a subnode) from XML node.
+     * @param name name of subnode that will be removed
+     *
+     * Removes subnode 'name' from XML storage file.
+     */
+    void removeValue(const QString &name);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes value (an attribute) from XML node.
-	 * @param name name of attribute that will be removed
-	 *
-	 * Removes attribute 'name' from XML storage file.
-	 */
-	void removeAttribute(const QString &name);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removes value (an attribute) from XML node.
+     * @param name name of attribute that will be removed
+     *
+     * Removes attribute 'name' from XML storage file.
+     */
+    void removeAttribute(const QString &name);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return CustomProperties instance for this object.
-	 * @return CustomProperties instance for this objects
-	 *
-	 * Returned object must not be deleted. This object has full ownership over it.
-	 */
-	CustomProperties * customProperties() const;
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Return CustomProperties instance for this object.
+     * @return CustomProperties instance for this objects
+     *
+     * Returned object must not be deleted. This object has full ownership over it.
+     */
+    CustomProperties *customProperties() const;
 };
 
 /**

@@ -19,8 +19,7 @@
 
 #include "gadu-imtoken-service.h"
 
-GaduIMTokenService::GaduIMTokenService(QObject *parent) :
-		QObject{parent}
+GaduIMTokenService::GaduIMTokenService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -30,13 +29,13 @@ GaduIMTokenService::~GaduIMTokenService()
 
 void GaduIMTokenService::setIMToken(QByteArray imToken)
 {
-	m_imToken = std::move(imToken);
-	emit imTokenChanged(m_imToken);
+    m_imToken = std::move(imToken);
+    emit imTokenChanged(m_imToken);
 }
 
 QByteArray GaduIMTokenService::imToken() const
 {
-	return m_imToken;
+    return m_imToken;
 }
 
 #include "moc_gadu-imtoken-service.cpp"

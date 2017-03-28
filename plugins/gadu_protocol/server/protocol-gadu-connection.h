@@ -42,38 +42,37 @@ class GaduProtocol;
  */
 class ProtocolGaduConnection : public GaduConnection
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<GaduProtocol> ConnectionProtocol;
+    QPointer<GaduProtocol> ConnectionProtocol;
 
 protected:
-	virtual gg_session * rawSession();
-	virtual bool beginWrite();
-	virtual bool endWrite();
+    virtual gg_session *rawSession();
+    virtual bool beginWrite();
+    virtual bool endWrite();
 
 public:
-	/**
-	 * @short Create new instance of ProtocolGaduConnection class.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param parent QObject parent
-	 */
-	explicit ProtocolGaduConnection(QObject *parent = nullptr);
-	virtual ~ProtocolGaduConnection();
+    /**
+     * @short Create new instance of ProtocolGaduConnection class.
+     * @author Rafał 'Vogel' Malinowski
+     * @param parent QObject parent
+     */
+    explicit ProtocolGaduConnection(QObject *parent = nullptr);
+    virtual ~ProtocolGaduConnection();
 
-	/**
-	 * @short Set GaduProtocol to use by this object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param protocol GaduProtocol to use by this object
-	 */
-	void setConnectionProtocol(GaduProtocol *protocol);
+    /**
+     * @short Set GaduProtocol to use by this object.
+     * @author Rafał 'Vogel' Malinowski
+     * @param protocol GaduProtocol to use by this object
+     */
+    void setConnectionProtocol(GaduProtocol *protocol);
 
-	virtual bool hasSession();
-	virtual GaduWritableSessionToken writableSessionToken();
-
+    virtual bool hasSession();
+    virtual GaduWritableSessionToken writableSessionToken();
 };
 
 /**
  * @}
  */
 
-#endif // PROTOCOL_GADU_CONNECTION_H
+#endif   // PROTOCOL_GADU_CONNECTION_H

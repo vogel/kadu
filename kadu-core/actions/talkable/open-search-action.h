@@ -30,24 +30,23 @@ class InjectedFactory;
 
 class OpenSearchAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenSearchAction(QObject *parent = nullptr);
-	virtual ~OpenSearchAction();
+    Q_INVOKABLE explicit OpenSearchAction(QObject *parent = nullptr);
+    virtual ~OpenSearchAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

@@ -29,12 +29,14 @@ struct QMqttMessage;
 class QFacebookPublish : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::Publish; }
-	virtual QMqttMessage encode() const;
-	static QFacebookPublish decode(const QMqttMessage &message);
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::Publish;
+    }
+    virtual QMqttMessage encode() const;
+    static QFacebookPublish decode(const QMqttMessage &message);
 
-	QByteArray topic;
-	uint16_t mid;
-	QByteArray content;
-
+    QByteArray topic;
+    uint16_t mid;
+    QByteArray content;
 };

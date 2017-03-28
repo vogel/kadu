@@ -25,9 +25,7 @@
 
 class KADUAPI TalkableModule : public injeqt::module
 {
-
 public:
-	explicit TalkableModule();
-	virtual ~TalkableModule();
-
+    explicit TalkableModule();
+    virtual ~TalkableModule();
 };

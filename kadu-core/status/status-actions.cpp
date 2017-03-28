@@ -39,8 +39,9 @@
 
 #include <QtWidgets/QAction>
 
-StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, bool onlyStatuses, QObject *parent) :
-		QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), OnlyStatuses{onlyStatuses}, ChangeDescription(0)
+StatusActions::StatusActions(StatusContainer *statusContainer, bool includePrefix, bool onlyStatuses, QObject *parent)
+        : QObject(parent), MyStatusContainer(statusContainer), IncludePrefix(includePrefix), OnlyStatuses{onlyStatuses},
+          ChangeDescription(0)
 {
 }
 
@@ -50,166 +51,165 @@ StatusActions::~StatusActions()
 
 void StatusActions::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void StatusActions::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void StatusActions::setStatusSetter(StatusSetter *statusSetter)
 {
-	m_statusSetter = statusSetter;
+    m_statusSetter = statusSetter;
 }
 
 void StatusActions::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void StatusActions::init()
 {
-	ChangeStatusActionGroup = new QActionGroup(this);
-	ChangeStatusActionGroup->setExclusive(true); // HACK
-	connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction*)), this, SIGNAL(statusActionTriggered(QAction*)));
+    ChangeStatusActionGroup = new QActionGroup(this);
+    ChangeStatusActionGroup->setExclusive(true);   // HACK
+    connect(ChangeStatusActionGroup, SIGNAL(triggered(QAction *)), this, SIGNAL(statusActionTriggered(QAction *)));
 
-	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
+    statusUpdated();
+    connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
 
-	connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
+    connect(m_iconsManager, SIGNAL(themeChanged()), this, SLOT(iconThemeChanged()));
 }
 
 void StatusActions::createActions()
 {
-	createBasicActions();
+    createBasicActions();
 
-	MyStatusTypes = MyStatusContainer->supportedStatusTypes();
-	StatusTypeGroup currentGroup = StatusTypeGroup::None;
-	bool setDescriptionAdded = false;
+    MyStatusTypes = MyStatusContainer->supportedStatusTypes();
+    StatusTypeGroup currentGroup = StatusTypeGroup::None;
+    bool setDescriptionAdded = false;
 
-	foreach (StatusType statusType, MyStatusTypes)
-	{
-		if (StatusType::None == statusType)
-			continue;
+    foreach (StatusType statusType, MyStatusTypes)
+    {
+        if (StatusType::None == statusType)
+            continue;
 
-		const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(statusType);
+        const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(statusType);
 
-		if (StatusTypeGroup::None == currentGroup)
-			currentGroup = typeData.typeGroup();
+        if (StatusTypeGroup::None == currentGroup)
+            currentGroup = typeData.typeGroup();
 
-		if (!setDescriptionAdded && typeData.typeGroup() == StatusTypeGroup::Offline)
-		{
-			if (!OnlyStatuses && !Actions.isEmpty())
-			{
-				Actions.append(createSeparator());
-				Actions.append(ChangeDescription);
-				setDescriptionAdded = true;
-			}
-		}
+        if (!setDescriptionAdded && typeData.typeGroup() == StatusTypeGroup::Offline)
+        {
+            if (!OnlyStatuses && !Actions.isEmpty())
+            {
+                Actions.append(createSeparator());
+                Actions.append(ChangeDescription);
+                setDescriptionAdded = true;
+            }
+        }
 
-		if (typeData.typeGroup() != currentGroup)
-		{
-			if (!OnlyStatuses)
-				Actions.append(createSeparator());
-			currentGroup = typeData.typeGroup();
-		}
+        if (typeData.typeGroup() != currentGroup)
+        {
+            if (!OnlyStatuses)
+                Actions.append(createSeparator());
+            currentGroup = typeData.typeGroup();
+        }
 
-		QAction *action = createStatusAction(typeData);
-		Actions.append(action);
-	}
+        QAction *action = createStatusAction(typeData);
+        Actions.append(action);
+    }
 
-	emit statusActionsRecreated();
+    emit statusActionsRecreated();
 }
 
 void StatusActions::createBasicActions()
 {
-	ChangeDescription = new QAction(tr("Change Status Message..."), this);
-	connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
+    ChangeDescription = new QAction(tr("Change Status Message..."), this);
+    connect(ChangeDescription, SIGNAL(triggered(bool)), this, SIGNAL(changeDescriptionActionTriggered(bool)));
 }
 
-QAction * StatusActions::createSeparator()
+QAction *StatusActions::createSeparator()
 {
-	QAction *separator = new QAction(this);
-	separator->setSeparator(true);
+    QAction *separator = new QAction(this);
+    separator->setSeparator(true);
 
-	return separator;
+    return separator;
 }
 
-QAction * StatusActions::createStatusAction(const StatusTypeData &typeData)
+QAction *StatusActions::createStatusAction(const StatusTypeData &typeData)
 {
-	KaduIcon icon = MyStatusContainer->statusIcon(Status{typeData.type()});
-	QAction *statusAction = ChangeStatusActionGroup->addAction(m_iconsManager->iconByPath(icon), IncludePrefix
-			? MyStatusContainer->statusNamePrefix() + typeData.displayName()
-			: typeData.displayName());
-	statusAction->setCheckable(true);
-	statusAction->setData(QVariant::fromValue(typeData.type()));
+    KaduIcon icon = MyStatusContainer->statusIcon(Status{typeData.type()});
+    QAction *statusAction = ChangeStatusActionGroup->addAction(
+        m_iconsManager->iconByPath(icon),
+        IncludePrefix ? MyStatusContainer->statusNamePrefix() + typeData.displayName() : typeData.displayName());
+    statusAction->setCheckable(true);
+    statusAction->setData(QVariant::fromValue(typeData.type()));
 
-	return statusAction;
+    return statusAction;
 }
 
 void StatusActions::cleanUpActions()
 {
-	foreach (QAction *action, Actions)
-		if (action != ChangeDescription)
-		{
-			if (!action->isSeparator())
-				ChangeStatusActionGroup->removeAction(action);
+    foreach (QAction *action, Actions)
+        if (action != ChangeDescription)
+        {
+            if (!action->isSeparator())
+                ChangeStatusActionGroup->removeAction(action);
 
-			delete action;
-		}
+            delete action;
+        }
 
-	Actions.clear();
+    Actions.clear();
 
-	delete ChangeDescription;
-	ChangeDescription = 0;
+    delete ChangeDescription;
+    ChangeDescription = 0;
 }
 
 void StatusActions::statusUpdated(StatusContainer *container)
 {
-	if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
-	{
-		cleanUpActions();
-		createActions();
-	}
+    if (MyStatusContainer->supportedStatusTypes() != MyStatusTypes)
+    {
+        cleanUpActions();
+        createActions();
+    }
 
-	StatusType currentStatusType = container
-		? container->status().type()
-		: m_statusSetter->manuallySetStatus(MyStatusContainer).type();
+    StatusType currentStatusType =
+        container ? container->status().type() : m_statusSetter->manuallySetStatus(MyStatusContainer).type();
 
-	if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
-		currentStatusType = MyStatusContainer->status().type();
+    if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
+        currentStatusType = MyStatusContainer->status().type();
 
-	foreach (QAction *action, ChangeStatusActionGroup->actions())
-	{
-		StatusType statusType = action->data().value<StatusType>();
-		if (StatusType::None == statusType)
-			continue;
-		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
+    foreach (QAction *action, ChangeStatusActionGroup->actions())
+    {
+        StatusType statusType = action->data().value<StatusType>();
+        if (StatusType::None == statusType)
+            continue;
+        action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
 
-		if (!MyStatusContainer->isStatusSettingInProgress())
-		{
-			// For 'All xxx' status menu items - check only if all accounts have the same status
-			if (m_statusContainerManager == MyStatusContainer)
-				action->setChecked(m_statusContainerManager->allStatusOfType(statusType));
-			else
-				action->setChecked(currentStatusType == statusType);
-		}
-		else
-			action->setChecked(false);
-	}
+        if (!MyStatusContainer->isStatusSettingInProgress())
+        {
+            // For 'All xxx' status menu items - check only if all accounts have the same status
+            if (m_statusContainerManager == MyStatusContainer)
+                action->setChecked(m_statusContainerManager->allStatusOfType(statusType));
+            else
+                action->setChecked(currentStatusType == statusType);
+        }
+        else
+            action->setChecked(false);
+    }
 }
 
 void StatusActions::iconThemeChanged()
 {
-	foreach (QAction *action, ChangeStatusActionGroup->actions())
-	{
-		StatusType statusType = action->data().value<StatusType>();
-		if (StatusType::None == statusType)
-			continue;
+    foreach (QAction *action, ChangeStatusActionGroup->actions())
+    {
+        StatusType statusType = action->data().value<StatusType>();
+        if (StatusType::None == statusType)
+            continue;
 
-		action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
-	}
+        action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
+    }
 }
 
 #include "moc_status-actions.cpp"

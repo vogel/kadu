@@ -26,15 +26,14 @@
 
 class GaduUrlDomVisitorProvider : public QObject, public DomVisitorProvider
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit GaduUrlDomVisitorProvider(QObject *parent = nullptr);
-	virtual ~GaduUrlDomVisitorProvider();
+    Q_INVOKABLE explicit GaduUrlDomVisitorProvider(QObject *parent = nullptr);
+    virtual ~GaduUrlDomVisitorProvider();
 
-	virtual const DomVisitor * provide() const;
+    virtual const DomVisitor *provide() const;
 
 private:
-	IgnoreLinksDomVisitor m_ignoreLinks;
-
+    IgnoreLinksDomVisitor m_ignoreLinks;
 };

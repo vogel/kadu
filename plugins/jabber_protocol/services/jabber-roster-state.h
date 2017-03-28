@@ -23,17 +23,18 @@
  * @enum JabberRosterState
  * @short State of jabbber roster service.
  */
-enum class JabberRosterState {
-	/**
-	 * Roster service was not initialized and cannot perform any operation except prepareRoster().
-	 */
-	NonInitialized,
-	/**
-	 * Roster service is during prepareRoster() operation.
-	 */
-	Initializing,
-	/**
-	 * Roster is initialized and ready to accept local or remote changes.
-	 */
-	Initialized
+enum class JabberRosterState
+{
+    /**
+     * Roster service was not initialized and cannot perform any operation except prepareRoster().
+     */
+    NonInitialized,
+    /**
+     * Roster service is during prepareRoster() operation.
+     */
+    Initializing,
+    /**
+     * Roster is initialized and ready to accept local or remote changes.
+     */
+    Initialized
 };

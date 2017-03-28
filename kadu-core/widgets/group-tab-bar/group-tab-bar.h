@@ -40,76 +40,75 @@ class KaduWindowService;
 
 class KADUAPI GroupTabBar : public QTabBar
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
-	QPointer<ChatListMimeDataService> m_chatListMimeDataService;
-	QPointer<GroupManager> m_groupManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<BuddyListMimeDataService> m_buddyListMimeDataService;
+    QPointer<ChatListMimeDataService> m_chatListMimeDataService;
+    QPointer<GroupManager> m_groupManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<KaduWindowService> m_kaduWindowService;
 
-	GroupTabBarConfiguration m_groupTabBarConfiguration;
-	GroupFilter m_groupFilter;
+    GroupTabBarConfiguration m_groupTabBarConfiguration;
+    GroupFilter m_groupFilter;
 
-	// for dnd support
-	BuddyList DNDBuddies;
-	QList<Chat> DNDChats;
+    // for dnd support
+    BuddyList DNDBuddies;
+    QList<Chat> DNDChats;
 
-	int indexOf(GroupFilter groupFilter);
-	void insertGroupFilter(int index, GroupFilter groupFilter);
-	void removeGroupFilter(GroupFilter groupFilter);
-	void updateTabData(int tabIndex, GroupFilter groupFilter);
+    int indexOf(GroupFilter groupFilter);
+    void insertGroupFilter(int index, GroupFilter groupFilter);
+    void removeGroupFilter(GroupFilter groupFilter);
+    void updateTabData(int tabIndex, GroupFilter groupFilter);
 
-	void updateUngrouppedTab();
-	bool shouldShowUngrouppedTab() const;
+    void updateUngrouppedTab();
+    bool shouldShowUngrouppedTab() const;
 
 private slots:
-	INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
-	INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
+    INJEQT_SET void setChatListMimeDataService(ChatListMimeDataService *chatListMimeDataService);
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_INIT void init();
 
-	void addGroup(Group group);
-	void removeGroup(Group group);
-	void updateGroup(Group group);
+    void addGroup(Group group);
+    void removeGroup(Group group);
+    void updateGroup(Group group);
 
-	void currentChangedSlot(int index);
+    void currentChangedSlot(int index);
 
-	void addBuddy();
-	void deleteGroup();
-	void createNewGroup();
-	void groupProperties();
+    void addBuddy();
+    void deleteGroup();
+    void createNewGroup();
+    void groupProperties();
 
- 	void addToGroup();
- 	void moveToGroup();
+    void addToGroup();
+    void moveToGroup();
 
 protected:
-	virtual void contextMenuEvent(QContextMenuEvent *event);
+    virtual void contextMenuEvent(QContextMenuEvent *event);
 
-	virtual void dragEnterEvent(QDragEnterEvent *event);
-	virtual void dragMoveEvent(QDragMoveEvent *event);
-	virtual void dropEvent(QDropEvent *event);
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dragMoveEvent(QDragMoveEvent *event);
+    virtual void dropEvent(QDropEvent *event);
 
 public:
-	explicit GroupTabBar(QWidget *parent = nullptr);
-	virtual ~GroupTabBar();
+    explicit GroupTabBar(QWidget *parent = nullptr);
+    virtual ~GroupTabBar();
 
-	void setInitialConfiguration(GroupTabBarConfiguration configuration);
-	void setConfiguration(GroupTabBarConfiguration configuration);
-	GroupTabBarConfiguration configuration();
+    void setInitialConfiguration(GroupTabBarConfiguration configuration);
+    void setConfiguration(GroupTabBarConfiguration configuration);
+    GroupTabBarConfiguration configuration();
 
-	Group groupAt(int index) const;
-	GroupFilter groupFilter() const;
-	GroupFilter groupFilterAt(int index) const;
-	QVector<GroupFilter> groupFilters() const;
+    Group groupAt(int index) const;
+    GroupFilter groupFilter() const;
+    GroupFilter groupFilterAt(int index) const;
+    QVector<GroupFilter> groupFilters() const;
 
 signals:
-	void currentGroupFilterChanged(const GroupFilter &groupFilter);
-
+    void currentGroupFilterChanged(const GroupFilter &groupFilter);
 };
 
-#endif // GROUP_TAB_BAR_H
+#endif   // GROUP_TAB_BAR_H

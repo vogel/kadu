@@ -21,8 +21,8 @@
 #ifndef NAME_TALKABLE_FILTER_H
 #define NAME_TALKABLE_FILTER_H
 
-#include "talkable/filter/talkable-filter.h"
 #include "exports.h"
+#include "talkable/filter/talkable-filter.h"
 
 /**
  * @addtogroup Talkable
@@ -50,91 +50,90 @@
  */
 class KADUAPI NameTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @enum NameFilterMatchingMode
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short This enum controls value returned when given item matches name.
-	 */
-	enum NameFilterMatchingMode
-	{
-		/**
-		 * @short In this mode item is accepted if matched and rejected if not.
-		 */
-		AcceptMatching,
-		/**
-		 * @short In this mode item is passed to next filters if matched and rejected if not.
-		 */
-		UndecidedMatching
-	};
+    /**
+     * @enum NameFilterMatchingMode
+     * @author Rafał 'Vogel' Malinowski
+     * @short This enum controls value returned when given item matches name.
+     */
+    enum NameFilterMatchingMode
+    {
+        /**
+         * @short In this mode item is accepted if matched and rejected if not.
+         */
+        AcceptMatching,
+        /**
+         * @short In this mode item is passed to next filters if matched and rejected if not.
+         */
+        UndecidedMatching
+    };
 
 private:
-	NameFilterMatchingMode Mode;
-	QString Name;
+    NameFilterMatchingMode Mode;
+    QString Name;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if given chat matches name.
-	 * @param chat chat to match
-	 * @return true if given chat matches name
-	 */
-	bool matches(const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns true if given chat matches name.
+     * @param chat chat to match
+     * @return true if given chat matches name
+     */
+    bool matches(const Chat &chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if given buddy matches name.
-	 * @param buddy buddy to match
-	 * @return true if given buddy matches name
-	 */
-	bool matches(const Buddy &buddy);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns true if given buddy matches name.
+     * @param buddy buddy to match
+     * @return true if given buddy matches name
+     */
+    bool matches(const Buddy &buddy);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if given contact matches name.
-	 * @param contact contact to match
-	 * @return true if given contact matches name
-	 */
-	bool matches(const Contact &contact);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns true if given contact matches name.
+     * @param contact contact to match
+     * @return true if given contact matches name
+     */
+    bool matches(const Contact &contact);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Compute FilterResult for given matched value.
-	 * @param matched true, if given item matched name, false otherwise
-	 * @return FilterResult for given matched value
-	 */
-	FilterResult computeResult(bool matched);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Compute FilterResult for given matched value.
+     * @param matched true, if given item matched name, false otherwise
+     * @return FilterResult for given matched value
+     */
+    FilterResult computeResult(bool matched);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of NameTalkableFilter with given parent.
-	 * @param mode mode controlling return value when given item matches name
-	 * @param parent QObject parent of new object
-	 */
-	explicit NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent = nullptr);
-	virtual ~NameTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of NameTalkableFilter with given parent.
+     * @param mode mode controlling return value when given item matches name
+     * @param parent QObject parent of new object
+     */
+    explicit NameTalkableFilter(NameFilterMatchingMode mode, QObject *parent = nullptr);
+    virtual ~NameTalkableFilter();
 
-	virtual FilterResult filterChat(const Chat &chat);
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
+    virtual FilterResult filterChat(const Chat &chat);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set new name to match items against.
-	 * @param name new name to match items against
-	 *
-	 * Set new name to match items against. If new name is different than old one then
-	 * filterChanged() signal is emited.
-	 */
-	void setName(const QString &name);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set new name to match items against.
+     * @param name new name to match items against
+     *
+     * Set new name to match items against. If new name is different than old one then
+     * filterChanged() signal is emited.
+     */
+    void setName(const QString &name);
 };
 
 /**
  * @}
  */
 
-#endif // NAME_TALKABLE_FILTER_H
+#endif   // NAME_TALKABLE_FILTER_H

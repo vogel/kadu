@@ -46,47 +46,47 @@ class BuddyManager;
  */
 class KADUAPI BuddyManagerAdapter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
-	 * @param model model to adapt @link BuddiesManager @endlink to
-	 *
-	 * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink singleton.
-	 * Non-managable buddies can be added or removed from this model.
-	 */
-	explicit BuddyManagerAdapter(BuddyListModel *model);
-	virtual ~BuddyManagerAdapter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
+     * @param model model to adapt @link BuddiesManager @endlink to
+     *
+     * Given @link BuddyListModel @endlink will now have exactly the same data as @link BuddiesManager @endlink
+     * singleton.
+     * Non-managable buddies can be added or removed from this model.
+     */
+    explicit BuddyManagerAdapter(BuddyListModel *model);
+    virtual ~BuddyManagerAdapter();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyManager> m_buddyManager;
 
-	BuddyListModel *Model;
+    BuddyListModel *Model;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_INIT void init();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a buddy is added to @link BuddiesManager @endlink singleton.
-	 * @param buddy added buddy
-	 *
-	 * Buddy is added to @link BuddyListModel @endlink instance.
-	 */
-	void buddyAdded(const Buddy &buddy);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called after a buddy is added to @link BuddiesManager @endlink singleton.
+     * @param buddy added buddy
+     *
+     * Buddy is added to @link BuddyListModel @endlink instance.
+     */
+    void buddyAdded(const Buddy &buddy);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Slot called after a buddy is removed from @link BuddiesManager @endlink singleton.
-	 * @param buddy removed buddy
-	 *
-	 * Buddy is removed from @link BuddyListModel @endlink instance.
-	 */
-	void buddyRemoved(const Buddy &buddy);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Slot called after a buddy is removed from @link BuddiesManager @endlink singleton.
+     * @param buddy removed buddy
+     *
+     * Buddy is removed from @link BuddyListModel @endlink instance.
+     */
+    void buddyRemoved(const Buddy &buddy);
 };
 
 /**

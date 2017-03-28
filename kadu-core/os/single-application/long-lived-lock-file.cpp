@@ -24,22 +24,22 @@
 
 LongLivedLockFile::LongLivedLockFile(const QString &fileName, int timeout)
 {
-	m_lockFile = std::unique_ptr<QLockFile>{new QLockFile{fileName}};
-	m_lockFile->setStaleLockTime(0);
+    m_lockFile = std::unique_ptr<QLockFile>{new QLockFile{fileName}};
+    m_lockFile->setStaleLockTime(0);
 
-	if (m_lockFile->tryLock(timeout))
-		return;
+    if (m_lockFile->tryLock(timeout))
+        return;
 
-	if (m_lockFile->removeStaleLockFile())
-		m_lockFile->tryLock(timeout);
+    if (m_lockFile->removeStaleLockFile())
+        m_lockFile->tryLock(timeout);
 }
 
 LongLivedLockFile::~LongLivedLockFile()
 {
-	m_lockFile->unlock();
+    m_lockFile->unlock();
 }
 
 bool LongLivedLockFile::isLocked() const
 {
-	return m_lockFile->isLocked();
+    return m_lockFile->isLocked();
 }

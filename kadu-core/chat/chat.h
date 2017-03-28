@@ -26,8 +26,8 @@
 #define CHAT_H
 
 #include "chat/chat-shared.h"
-#include "storage/shared-base.h"
 #include "exports.h"
+#include "storage/shared-base.h"
 
 class Account;
 class ContactSet;
@@ -51,94 +51,90 @@ class QString;
  */
 class KADUAPI Chat : public SharedBase<ChatShared>
 {
-	KaduSharedBaseClass(Chat)
+    KaduSharedBaseClass(Chat)
 
-public:
-	static Chat null;
+        public : static Chat null;
 
-	Chat();
-	Chat(ChatShared *data);
-	explicit Chat(QObject *data);
-	Chat(const Chat &copy);
+    Chat();
+    Chat(ChatShared *data);
+    explicit Chat(QObject *data);
+    Chat(const Chat &copy);
 
-	virtual ~Chat();
+    virtual ~Chat();
 
-	bool showInAllGroup() const;
-	bool isInGroup(Group group) const;
-	void addToGroup(Group group) const;
-	void removeFromGroup(Group group) const;
+    bool showInAllGroup() const;
+    bool isInGroup(Group group) const;
+    void addToGroup(Group group) const;
+    void removeFromGroup(Group group) const;
 
-	KaduSharedBase_PropertyRead(ContactSet, contacts, Contacts)
-	KaduSharedBase_PropertyRead(QString, name, Name)
+    KaduSharedBase_PropertyRead(ContactSet, contacts, Contacts) KaduSharedBase_PropertyRead(QString, name, Name)
 
-	/**
-	* @author Rafal 'Vogel' Malinowski
-	* @short Details object for this chat.
-	*
-	* When ChatType for this chat is loaded and registered in ChatTypeManager
-	* this field contains ChatDetails object that holds detailed information
-	* about this chat.
-	*/
-	KaduSharedBase_PropertyRead(ChatDetails *, details, Details)
+        /**
+        * @author Rafal 'Vogel' Malinowski
+        * @short Details object for this chat.
+        *
+        * When ChatType for this chat is loaded and registered in ChatTypeManager
+        * this field contains ChatDetails object that holds detailed information
+        * about this chat.
+        */
+        KaduSharedBase_PropertyRead(ChatDetails *, details, Details)
 
-	/**
-	* @author Rafal 'Vogel' Malinowski
-	* @short Account of this chat.
-	*
-	* Every chat is assigned to account. All contacts in every chat must
-	* belong to the same account as chat.
-	*/
-	KaduSharedBase_PropertyCRW(Account, chatAccount, ChatAccount)
+        /**
+        * @author Rafal 'Vogel' Malinowski
+        * @short Account of this chat.
+        *
+        * Every chat is assigned to account. All contacts in every chat must
+        * belong to the same account as chat.
+        */
+        KaduSharedBase_PropertyCRW(Account, chatAccount, ChatAccount)
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Name of chat type.
-	 *
-	 * Name of chat type. @link ChatType @endlink object with the same name must be loaded
-	 * and registered in @link ChatTypeManager @endlink to allow this chat object to
-	 * be fully functional and used. Example chat types are: 'contact' (for one-to-one chats)
-	 * and 'contact-set' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
-	 * chats).
-	 */
-	KaduSharedBase_PropertyCRW(QString, type, Type)
+        /**
+         * @author Rafal 'Vogel' Malinowski
+         * @short Name of chat type.
+         *
+         * Name of chat type. @link ChatType @endlink object with the same name must be loaded
+         * and registered in @link ChatTypeManager @endlink to allow this chat object to
+         * be fully functional and used. Example chat types are: 'contact' (for one-to-one chats)
+         * and 'contact-set' (for on-to-many chats). Other what types could be: 'irc-room' (for irc room
+         * chats).
+         */
+        KaduSharedBase_PropertyCRW(QString, type, Type)
 
-	KaduSharedBase_PropertyCRW(QString, display, Display)
-	KaduSharedBase_PropertyBool(IgnoreAllMessages)
-	KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
-	KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
+            KaduSharedBase_PropertyCRW(QString, display, Display) KaduSharedBase_PropertyBool(IgnoreAllMessages)
+                KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
+                    KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return true when chat is connected.
-	 * @return true when chat is connected
-	 *
-	 * Chat messages can only be send to/received from connected chat.
-	 * Chat connection depends on chat type and is implemented in @link ChatDetails @endlink subclasses.
-	 *
-	 * For example, simple Contact and ContactSet chats are connected when an account is connected.
-	 * MUC chats in XMPP are connected when account is connected and given group chat is joined.
-	 */
-	bool isConnected() const;
+        /**
+         * @author Rafal 'Vogel' Malinowski
+         * @short Return true when chat is connected.
+         * @return true when chat is connected
+         *
+         * Chat messages can only be send to/received from connected chat.
+         * Chat connection depends on chat type and is implemented in @link ChatDetails @endlink subclasses.
+         *
+         * For example, simple Contact and ContactSet chats are connected when an account is connected.
+         * MUC chats in XMPP are connected when account is connected and given group chat is joined.
+         */
+        bool isConnected() const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Get value of Open property.
-	 * @return true when chat is open
-	 *
-	 * Chat is open when an associated chat widget is open.
-	 */
-	bool isOpen() const;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Get value of Open property.
+     * @return true when chat is open
+     *
+     * Chat is open when an associated chat widget is open.
+     */
+    bool isOpen() const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Set value of open property.
-	 * @param open new value of Open property
-	 *
-	 * Changing value of Open property may result in emiting of @link opened() @endlink or @link closed() @endlink
-	 * singals.
-	 */
-	void setOpen(bool open);
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Set value of open property.
+     * @param open new value of Open property
+     *
+     * Changing value of Open property may result in emiting of @link opened() @endlink or @link closed() @endlink
+     * singals.
+     */
+    void setOpen(bool open);
 };
 
 KADUAPI QString title(const Chat &chat);
@@ -149,4 +145,4 @@ KADUAPI QString title(const Chat &chat);
 
 Q_DECLARE_METATYPE(Chat)
 
-#endif // CHAT_H
+#endif   // CHAT_H

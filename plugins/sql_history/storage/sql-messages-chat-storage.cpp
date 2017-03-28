@@ -23,10 +23,10 @@
 
 #include "sql-messages-chat-storage.h"
 
-SqlMessagesChatStorage::SqlMessagesChatStorage(HistorySqlStorage *sqlStorage) :
-		HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
+SqlMessagesChatStorage::SqlMessagesChatStorage(HistorySqlStorage *sqlStorage)
+        : HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
 {
-	Q_ASSERT(SqlStorage);
+    Q_ASSERT(SqlStorage);
 }
 
 SqlMessagesChatStorage::~SqlMessagesChatStorage()
@@ -35,22 +35,22 @@ SqlMessagesChatStorage::~SqlMessagesChatStorage()
 
 QFuture<QVector<Talkable>> SqlMessagesChatStorage::talkables()
 {
-	return SqlStorage->chats();
+    return SqlStorage->chats();
 }
 
 QFuture<QVector<HistoryQueryResult>> SqlMessagesChatStorage::dates(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->chatDates(historyQuery);
+    return SqlStorage->chatDates(historyQuery);
 }
 
 QFuture<SortedMessages> SqlMessagesChatStorage::messages(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->messages(historyQuery);
+    return SqlStorage->messages(historyQuery);
 }
 
 void SqlMessagesChatStorage::deleteMessages(const Talkable &talkable, const QDate &date)
 {
-	SqlStorage->clearChatHistory(talkable, date);
+    SqlStorage->clearChatHistory(talkable, date);
 }
 
 #include "moc_sql-messages-chat-storage.cpp"

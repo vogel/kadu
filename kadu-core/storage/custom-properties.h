@@ -59,117 +59,116 @@ class StoragePoint;
  */
 class KADUAPI CustomProperties : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QMap<QString, QVariant> Properties;
-	QSet<QString> StorableProperties;
+    QMap<QString, QVariant> Properties;
+    QSet<QString> StorableProperties;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Imports data from ModuleData object from given DomNode.
-	 * @param node XML node to improt ModuleData data from
-	 *
-	 * Data from this node is mapped to properties by naming them module-data-name:module-data-property-name.
-	 */
-	void loadFromModuleData(const QDomNode &node);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Imports data from ModuleData object from given DomNode.
+     * @param node XML node to improt ModuleData data from
+     *
+     * Data from this node is mapped to properties by naming them module-data-name:module-data-property-name.
+     */
+    void loadFromModuleData(const QDomNode &node);
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Define if given property should be stored or not.
-	 *
-	 * Stored properites are persistent between application runs.
-	 */
-	enum Storability
-	{
-		/**
-		 * Property will be stored and is persistent between application runs.
-		 */
-		Storable,
-		/**
-		 * Property will not be stored and is not persistent between application runs.
-		 */
-		NonStorable
-	};
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Define if given property should be stored or not.
+     *
+     * Stored properites are persistent between application runs.
+     */
+    enum Storability
+    {
+        /**
+         * Property will be stored and is persistent between application runs.
+         */
+        Storable,
+        /**
+         * Property will not be stored and is not persistent between application runs.
+         */
+        NonStorable
+    };
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Create new CustomProperties instance.
-	 * @param parent QObject parent of new instance
-	 */
-	explicit CustomProperties(QObject *parent = nullptr);
-	virtual ~CustomProperties();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Create new CustomProperties instance.
+     * @param parent QObject parent of new instance
+     */
+    explicit CustomProperties(QObject *parent = nullptr);
+    virtual ~CustomProperties();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Determine if object is worth to be stored.
-	 * @return true if object should be stored, defaults to true
-	 *
-	 * If object as any storable properites, then true is returned.
-	 */
-	bool shouldStore() const;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Determine if object is worth to be stored.
+     * @return true if object should be stored, defaults to true
+     *
+     * If object as any storable properites, then true is returned.
+     */
+    bool shouldStore() const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Load custom properties from given storagePoint.
-	 * @param storagePoint storage point to load properties from
-	 *
-	 * Firstly this method reads data from all stored ModuleData nodes, then it removes these nodes.
-	 * After that list of values stored in CustomProperty nodes is read. Each read property is marked
-	 * as @link CustomProperties::Storable @endlink by default.
-	 */
-	void loadFrom(const std::shared_ptr<StoragePoint> &storagePoint);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Load custom properties from given storagePoint.
+     * @param storagePoint storage point to load properties from
+     *
+     * Firstly this method reads data from all stored ModuleData nodes, then it removes these nodes.
+     * After that list of values stored in CustomProperty nodes is read. Each read property is marked
+     * as @link CustomProperties::Storable @endlink by default.
+     */
+    void loadFrom(const std::shared_ptr<StoragePoint> &storagePoint);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Store custom properties to given storagePoint.
-	 * @param storagePoint storage point to store properties to
-	 *
-	 * All properties marked as @link CustomProperties::Storable @endlink are stored to CustomProperty nodes.
-	 * All CustomProperty nodes that are not @link CustomProperties::Storable @endlink are removed from
-	 * given storagePoint.
-	 */
-	void storeTo(const std::shared_ptr<StoragePoint> &storagePoint) const;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Store custom properties to given storagePoint.
+     * @param storagePoint storage point to store properties to
+     *
+     * All properties marked as @link CustomProperties::Storable @endlink are stored to CustomProperty nodes.
+     * All CustomProperty nodes that are not @link CustomProperties::Storable @endlink are removed from
+     * given storagePoint.
+     */
+    void storeTo(const std::shared_ptr<StoragePoint> &storagePoint) const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return true if given property is available.
-	 * @param name name of property
-	 * @return true if given property is available
-	 */
-	bool hasProperty(const QString &name) const;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Return true if given property is available.
+     * @param name name of property
+     * @return true if given property is available
+     */
+    bool hasProperty(const QString &name) const;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Add/update property value.
-	 * @param name name of property
-	 * @param value value of property
-	 * @param storability storability parameter of property
-	 *
-	 * If storability is set to @link CustomProperties::Storable @endlink then added property will
-	 * be stored to persistent storage. If not, it will be removed from it.
-	 */
-	void addProperty(const QString &name, const QVariant &value, Storability storability);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Add/update property value.
+     * @param name name of property
+     * @param value value of property
+     * @param storability storability parameter of property
+     *
+     * If storability is set to @link CustomProperties::Storable @endlink then added property will
+     * be stored to persistent storage. If not, it will be removed from it.
+     */
+    void addProperty(const QString &name, const QVariant &value, Storability storability);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Remove given property from this object and from persistent storage.
-	 * @param name name of property
-	 */
-	void removeProperty(const QString &name);
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Remove given property from this object and from persistent storage.
+     * @param name name of property
+     */
+    void removeProperty(const QString &name);
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Read value of property.
-	 * @param name name of property
-	 * @param defaultValue value returned when property is not available
-	 */
-	QVariant property(const QString &name, const QVariant &defaultValue) const;
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Read value of property.
+     * @param name name of property
+     * @param defaultValue value returned when property is not available
+     */
+    QVariant property(const QString &name, const QVariant &defaultValue) const;
 };
 
 /**
  * @}
  */
 
-#endif // CUSTOM_PROPERITES_H
+#endif   // CUSTOM_PROPERITES_H

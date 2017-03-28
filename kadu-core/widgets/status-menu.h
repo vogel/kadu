@@ -43,38 +43,37 @@ class WindowManager;
 
 class KADUAPI StatusMenu : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<StatusSetter> m_statusSetter;
-	QPointer<StatusWindowService> m_statusWindowService;
-	QPointer<WindowManager> m_windowManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<StatusSetter> m_statusSetter;
+    QPointer<StatusWindowService> m_statusWindowService;
+    QPointer<WindowManager> m_windowManager;
 
-	QMenu *Menu;
-	StatusActions *Actions;
+    QMenu *Menu;
+    StatusActions *Actions;
 
-	QPoint MousePositionBeforeMenuHide;
+    QPoint MousePositionBeforeMenuHide;
 
-	StatusContainer *Container;
-	bool m_includePrefix;
+    StatusContainer *Container;
+    bool m_includePrefix;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_SET void setStatusWindowService(StatusWindowService *statusWindowService);
-	INJEQT_SET void setWindowManager(WindowManager *windowManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+    INJEQT_SET void setStatusWindowService(StatusWindowService *statusWindowService);
+    INJEQT_SET void setWindowManager(WindowManager *windowManager);
+    INJEQT_INIT void init();
 
-	void addStatusActions();
-	void aboutToHide();
-	void changeStatus(QAction *action);
-	void changeDescription();
+    void addStatusActions();
+    void aboutToHide();
+    void changeStatus(QAction *action);
+    void changeDescription();
 
 public:
-	explicit StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu);
-	virtual ~StatusMenu();
+    explicit StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu);
+    virtual ~StatusMenu();
 
 signals:
-	void menuRecreated();
-
+    void menuRecreated();
 };

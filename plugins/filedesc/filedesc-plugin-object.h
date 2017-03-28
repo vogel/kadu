@@ -31,25 +31,24 @@ class StatusChangerManager;
 
 class FiledescPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit FiledescPluginObject(QObject *parent = nullptr);
-	virtual ~FiledescPluginObject();
+    Q_INVOKABLE explicit FiledescPluginObject(QObject *parent = nullptr);
+    virtual ~FiledescPluginObject();
 
 private:
-	QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
-	QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<StatusChangerManager> m_statusChangerManager;
+    QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
+    QPointer<MainConfigurationWindowService> m_mainConfigurationWindowService;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<StatusChangerManager> m_statusChangerManager;
 
 private slots:
-	INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
-	INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
+    INJEQT_SET void setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setStatusChangerManager(StatusChangerManager *statusChangerManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

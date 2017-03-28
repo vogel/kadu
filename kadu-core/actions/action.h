@@ -23,8 +23,8 @@
 #pragma once
 
 #include "configuration/configuration-aware-object.h"
-#include "icons/kadu-icon.h"
 #include "exports.h"
+#include "icons/kadu-icon.h"
 
 #include <QtCore/QMultiMap>
 #include <QtCore/QPointer>
@@ -58,123 +58,122 @@ class StatusContainer;
  */
 class KADUAPI Action : public QAction
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new Action instance based on ActionDescription with given ActionContext.
-	 * @param description description of this action
-	 * @param context data source of this action
-	 * @param parent parent of this action
-	 *
-	 * This method creates new instance of Action class. Action is based on description provided as
-	 * ActionDescription class (it stored shortcuts, icons, titles and many more information). This
-	 * instance of Action will use provided ActionContext instance to get information about Kadu
-	 * object like contacts, buddies, chats and status containers that are required to properly
-	 * execute each action invocation.
-	 *
-	 * Provided ActionDescription and ActionContext must not be null.
-	 */
-	Action(ActionDescription *description, ActionContext *context, QObject *parent);
-	virtual ~Action();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new Action instance based on ActionDescription with given ActionContext.
+     * @param description description of this action
+     * @param context data source of this action
+     * @param parent parent of this action
+     *
+     * This method creates new instance of Action class. Action is based on description provided as
+     * ActionDescription class (it stored shortcuts, icons, titles and many more information). This
+     * instance of Action will use provided ActionContext instance to get information about Kadu
+     * object like contacts, buddies, chats and status containers that are required to properly
+     * execute each action invocation.
+     *
+     * Provided ActionDescription and ActionContext must not be null.
+     */
+    Action(ActionDescription *description, ActionContext *context, QObject *parent);
+    virtual ~Action();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns ActionContext instance for current invocation.
-	 *
-	 * Returns ActionContext instance for current invocation. Never returns null.
-	 */
-	ActionContext *context();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns ActionContext instance for current invocation.
+     *
+     * Returns ActionContext instance for current invocation. Never returns null.
+     */
+    ActionContext *context();
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
-	 *
-	 * Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
-	 */
-	void checkState();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
+     *
+     * Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
+     */
+    void checkState();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Resets icon from ActionDescription.
-	 *
-	 * Resets icon from ActionDescription. Call this slot when icon set was updated.
-	 */
-	void updateIcon();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Resets icon from ActionDescription.
+     *
+     * Resets icon from ActionDescription. Call this slot when icon set was updated.
+     */
+    void updateIcon();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets new icon for this instance of Action.
-	 * @param icon new icon
-	 *
-	 * Sets new icon for this instance of Action. Used for example by StatusChange actions.
-	 */
-	void setIcon(const KaduIcon &icon);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets new icon for this instance of Action.
+     * @param icon new icon
+     *
+     * Sets new icon for this instance of Action. Used for example by StatusChange actions.
+     */
+    void setIcon(const KaduIcon &icon);
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Emited from destructor.
-	 *
-	 * Emited from destructor. Use with great care.
-	 */
-	void aboutToBeDestroyed(Action *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Emited from destructor.
+     *
+     * Emited from destructor. Use with great care.
+     */
+    void aboutToBeDestroyed(Action *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Emited every time action has changed (status, title, icon).
-	 * @param QAction this instance
-	 *
-	 * Emited every time action has changed (status, title, icon).
-	 */
-	void changed(QAction *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Emited every time action has changed (status, title, icon).
+     * @param QAction this instance
+     *
+     * Emited every time action has changed (status, title, icon).
+     */
+    void changed(QAction *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Emited every time action is hovered.
-	 * @param QAction this instance
-	 *
-	 * Emited every time action is hovered.
-	 */
-	void hovered(QAction *action);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Emited every time action is hovered.
+     * @param QAction this instance
+     *
+     * Emited every time action is hovered.
+     */
+    void hovered(QAction *action);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Emited every time action is toggled.
-	 * @param QAction this instance
-	 * @param checked true if action is toggled
-	 *
-	 * Emited every time action is toggled.
-	 */
-	void toggled(QAction *action, bool checked);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Emited every time action is toggled.
+     * @param QAction this instance
+     * @param checked true if action is toggled
+     *
+     * Emited every time action is toggled.
+     */
+    void toggled(QAction *action, bool checked);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Emited every time action is triggered.
-	 * @param QAction this instance
-	 * @param checked true if action is toggled
-	 *
-	 * Emited every time action is triggered. ActionDescription class uses this to call its own virtual
-	 * protected method.
-	 */
-	void triggered(QAction *action, bool checked = false);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Emited every time action is triggered.
+     * @param QAction this instance
+     * @param checked true if action is toggled
+     *
+     * Emited every time action is triggered. ActionDescription class uses this to call its own virtual
+     * protected method.
+     */
+    void triggered(QAction *action, bool checked = false);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	ActionDescription *Description;
-	ActionContext *Context;
+    ActionDescription *Description;
+    ActionContext *Context;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void changedSlot();
-	void hoveredSlot();
-	void triggeredSlot(bool checked);
-
+    void changedSlot();
+    void hoveredSlot();
+    void triggeredSlot(bool checked);
 };
 
 void disableEmptyContacts(Action *action);

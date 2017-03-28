@@ -30,12 +30,12 @@
 
 MessageModule::MessageModule()
 {
-	add_type<MessageFilterService>();
-	add_type<MessageHtmlRendererService>();
-	add_type<MessageManagerImpl>();
-	add_type<MessageNotificationService>();
-	add_type<MessageRenderInfoFactory>();
-	add_type<MessageStorage>();
-	add_type<MessageTransformerService>();
-	add_type<UnreadMessageRepository>();
+    add_type<MessageFilterService>();
+    add_type<MessageHtmlRendererService>();
+    add_type<MessageManagerImpl>();
+    add_type<MessageNotificationService>();
+    add_type<MessageRenderInfoFactory>();
+    add_type<MessageStorage>();
+    add_type<MessageTransformerService>();
+    add_type<UnreadMessageRepository>();
 }

@@ -19,39 +19,37 @@
 
 #include "chat-widget-message-handler-configuration.h"
 
-ChatWidgetMessageHandlerConfiguration::ChatWidgetMessageHandlerConfiguration() :
-		m_openChatOnMessage{false},
-		m_openChatOnMessageOnlyWhenOnline{true},
-		m_openChatOnMessageMinimized{false}
+ChatWidgetMessageHandlerConfiguration::ChatWidgetMessageHandlerConfiguration()
+        : m_openChatOnMessage{false}, m_openChatOnMessageOnlyWhenOnline{true}, m_openChatOnMessageMinimized{false}
 {
 }
 
 void ChatWidgetMessageHandlerConfiguration::setOpenChatOnMessage(bool openChatOnMessage)
 {
-	m_openChatOnMessage = openChatOnMessage;
+    m_openChatOnMessage = openChatOnMessage;
 }
 
 bool ChatWidgetMessageHandlerConfiguration::openChatOnMessage() const
 {
-	return m_openChatOnMessage;
+    return m_openChatOnMessage;
 }
 
 void ChatWidgetMessageHandlerConfiguration::setOpenChatOnMessageOnlyWhenOnline(bool openChatOnMessageOnlyWhenOnline)
 {
-	m_openChatOnMessageOnlyWhenOnline = openChatOnMessageOnlyWhenOnline;
+    m_openChatOnMessageOnlyWhenOnline = openChatOnMessageOnlyWhenOnline;
 }
 
 bool ChatWidgetMessageHandlerConfiguration::openChatOnMessageOnlyWhenOnline() const
 {
-	return m_openChatOnMessageOnlyWhenOnline;
+    return m_openChatOnMessageOnlyWhenOnline;
 }
 
 void ChatWidgetMessageHandlerConfiguration::setOpenChatOnMessageMinimized(bool openChatOnMessageMinimized)
 {
-	m_openChatOnMessageMinimized = openChatOnMessageMinimized;
+    m_openChatOnMessageMinimized = openChatOnMessageMinimized;
 }
 
 bool ChatWidgetMessageHandlerConfiguration::openChatOnMessageMinimized() const
 {
-	return m_openChatOnMessageMinimized;
+    return m_openChatOnMessageMinimized;
 }

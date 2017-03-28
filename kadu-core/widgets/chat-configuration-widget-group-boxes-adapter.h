@@ -29,17 +29,16 @@ class ChatDataWindow;
 
 class KADUAPI ChatConfigurationWidgetGroupBoxesAdapter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatConfigurationWidgetGroupBoxesAdapter(ChatDataWindow *chatDataWindow, QWidget *widget);
-	virtual ~ChatConfigurationWidgetGroupBoxesAdapter();
+    explicit ChatConfigurationWidgetGroupBoxesAdapter(ChatDataWindow *chatDataWindow, QWidget *widget);
+    virtual ~ChatConfigurationWidgetGroupBoxesAdapter();
 
 private:
-	QPointer<ChatDataWindow> m_chatDataWindow;
-	QPointer<QWidget> m_widget;
+    QPointer<ChatDataWindow> m_chatDataWindow;
+    QPointer<QWidget> m_widget;
 
 private slots:
-	void widgetAdded(ChatConfigurationWidget *widget);
-
+    void widgetAdded(ChatConfigurationWidget *widget);
 };

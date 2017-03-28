@@ -26,68 +26,66 @@
 
 void GaduPubdirSocketNotifiers::watchFor(struct gg_http *h)
 {
-	H = h;
-	GaduSocketNotifiers::watchFor(H ? H->fd : -1);
+    H = h;
+    GaduSocketNotifiers::watchFor(H ? H->fd : -1);
 }
 
 bool GaduPubdirSocketNotifiers::checkRead()
 {
-	return H && (H->check & GG_CHECK_READ);
+    return H && (H->check & GG_CHECK_READ);
 }
 
 bool GaduPubdirSocketNotifiers::checkWrite()
 {
-	return H && (H->check & GG_CHECK_WRITE);
+    return H && (H->check & GG_CHECK_WRITE);
 }
 
 void GaduPubdirSocketNotifiers::finished(bool ok)
 {
-	emit done(ok, H);
-	watchFor(0);
-	deleteLater();
+    emit done(ok, H);
+    watchFor(0);
+    deleteLater();
 }
 
 void GaduPubdirSocketNotifiers::socketEvent()
 {
-	if (gg_pubdir_watch_fd(H) == -1)
-	{
-		finished(false);
-		return;
-	}
+    if (gg_pubdir_watch_fd(H) == -1)
+    {
+        finished(false);
+        return;
+    }
 
-	struct gg_pubdir *p = (struct gg_pubdir *)H->data;
+    struct gg_pubdir *p = (struct gg_pubdir *)H->data;
 
-	switch (H->state)
-	{
-		case GG_STATE_CONNECTING:
-			watchFor(H);
-			break;
+    switch (H->state)
+    {
+    case GG_STATE_CONNECTING:
+        watchFor(H);
+        break;
 
-		case GG_STATE_ERROR:
-			finished(false);
-			break;
+    case GG_STATE_ERROR:
+        finished(false);
+        break;
 
-		case GG_STATE_DONE:
-			finished(p->success);
-			break;
-	}
+    case GG_STATE_DONE:
+        finished(p->success);
+        break;
+    }
 }
 
 int GaduPubdirSocketNotifiers::timeout()
 {
-	return H
-		? H->timeout * 1000
-		: -1;
+    return H ? H->timeout * 1000 : -1;
 }
 
 bool GaduPubdirSocketNotifiers::handleSoftTimeout()
 {
-	return false;
+    return false;
 }
 
 void GaduPubdirSocketNotifiers::connectionTimeout()
 {
-	finished(false);
+    finished(false);
 }
 
 #include "moc_gadu-pubdir-socket-notifiers.cpp"

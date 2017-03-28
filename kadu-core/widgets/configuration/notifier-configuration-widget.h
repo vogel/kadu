@@ -26,41 +26,40 @@
 #include "exports.h"
 
 /**
-	@class NotifierConfigurationWidget
-	@author Vogel
-	@short Widget konfiguracyjny dla Notifiera.
+        @class NotifierConfigurationWidget
+        @author Vogel
+        @short Widget konfiguracyjny dla Notifiera.
 
-	Widget jest tworzony i dodawany w odpowiednim miejscu w oknie konfiguracyjnym.
-	Zawarto�� element�w zmienia si� po wyborze innej notyfikacji w oknie konfiguracyjnym.
-	Wiget zapamietuje wszystkie zmiany dla wszystkich typ�w notyfikacji i w odpowienim
-	momencie je zapisuje.
+        Widget jest tworzony i dodawany w odpowiednim miejscu w oknie konfiguracyjnym.
+        Zawarto�� element�w zmienia si� po wyborze innej notyfikacji w oknie konfiguracyjnym.
+        Wiget zapamietuje wszystkie zmiany dla wszystkich typ�w notyfikacji i w odpowienim
+        momencie je zapisuje.
 **/
 class KADUAPI NotifierConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit NotifierConfigurationWidget(QWidget *parent = nullptr);
+    explicit NotifierConfigurationWidget(QWidget *parent = nullptr);
 
-	/**
-		W tej metodzie widget mo�e wczyta� konfigruacje wszystkich zdarze�.
-	 **/
-	virtual void loadNotifyConfigurations() = 0;
-	/**
-		W tej metodzie widget musi zapisa� wszystkie zmienione konfiguracje
-		wszystkich zmienionych zdarze�.
-	 **/
-	virtual void saveNotifyConfigurations() = 0;
+    /**
+            W tej metodzie widget mo�e wczyta� konfigruacje wszystkich zdarze�.
+     **/
+    virtual void loadNotifyConfigurations() = 0;
+    /**
+            W tej metodzie widget musi zapisa� wszystkie zmienione konfiguracje
+            wszystkich zmienionych zdarze�.
+     **/
+    virtual void saveNotifyConfigurations() = 0;
 
 public slots:
-	/**
-		Slot wywo�ywany, gdy widget ma prze��czy� si� na konfigruacj� innego zdarzenia.
-		Zmiany w aktualnym zdarzeniu powinny zosta� zapisane.
+    /**
+            Slot wywo�ywany, gdy widget ma prze��czy� si� na konfigruacj� innego zdarzenia.
+            Zmiany w aktualnym zdarzeniu powinny zosta� zapisane.
 
-		@arg event - nazwa nowego zdarzenia
-	 **/
-	virtual void switchToEvent(const QString &event) = 0;
-
+            @arg event - nazwa nowego zdarzenia
+     **/
+    virtual void switchToEvent(const QString &event) = 0;
 };
 
-#endif // NOTIFIER_CONFIGURATION_WIDGET_H
+#endif   // NOTIFIER_CONFIGURATION_WIDGET_H

@@ -21,8 +21,7 @@
 
 #include "chat/recent-chat-service.h"
 
-Scheduler::Scheduler(QObject *parent) :
-		QObject{parent}
+Scheduler::Scheduler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,22 +31,22 @@ Scheduler::~Scheduler()
 
 void Scheduler::setRecentChatService(RecentChatService *recentChatService)
 {
-	m_recentChatService = recentChatService;
+    m_recentChatService = recentChatService;
 }
 
 void Scheduler::init()
 {
-	connect(&m_everyMinuteAction, &QTimer::timeout, this, &Scheduler::everyMinuteAction);
-	m_everyMinuteAction.setInterval(60 * 1000);
-	m_everyMinuteAction.start();
+    connect(&m_everyMinuteAction, &QTimer::timeout, this, &Scheduler::everyMinuteAction);
+    m_everyMinuteAction.setInterval(60 * 1000);
+    m_everyMinuteAction.start();
 }
 
 void Scheduler::done()
 {
-	m_everyMinuteAction.stop();
+    m_everyMinuteAction.stop();
 }
 
 void Scheduler::everyMinuteAction()
 {
-	m_recentChatService->cleanUp();
+    m_recentChatService->cleanUp();
 }

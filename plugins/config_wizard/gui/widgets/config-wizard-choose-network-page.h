@@ -33,29 +33,28 @@ class ProtocolsComboBox;
 
 class ConfigWizardChooseNetworkPage : public ConfigWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ConfigWizardChooseNetworkPage(QWidget *parent = nullptr);
-	virtual ~ConfigWizardChooseNetworkPage();
+    explicit ConfigWizardChooseNetworkPage(QWidget *parent = nullptr);
+    virtual ~ConfigWizardChooseNetworkPage();
 
 public slots:
-	void protocolChanged();
+    void protocolChanged();
 
 private:
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	ProtocolFactory *LastProtocol;
-	ProtocolsComboBox *SelectProtocol;
+    ProtocolFactory *LastProtocol;
+    ProtocolsComboBox *SelectProtocol;
 
-	QRadioButton *SetUpExisting;
-	QRadioButton *SetUpNew;
-	QRadioButton *Ignore;
+    QRadioButton *SetUpExisting;
+    QRadioButton *SetUpNew;
+    QRadioButton *Ignore;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 };

@@ -25,10 +25,9 @@
 
 #include "list-edit-widget.h"
 
-ListEditWidget::ListEditWidget(QWidget *parent) :
-		QWidget(parent)
+ListEditWidget::ListEditWidget(QWidget *parent) : QWidget(parent)
 {
-	createGui();
+    createGui();
 }
 
 ListEditWidget::~ListEditWidget()
@@ -37,80 +36,81 @@ ListEditWidget::~ListEditWidget()
 
 void ListEditWidget::createGui()
 {
-	QGridLayout *layout = new QGridLayout(this);
-	layout->setSpacing(5);
+    QGridLayout *layout = new QGridLayout(this);
+    layout->setSpacing(5);
 
-	ListWidget = new QListWidget(this);
-	layout->addWidget(ListWidget, 0, 0, 1, 4);
+    ListWidget = new QListWidget(this);
+    layout->addWidget(ListWidget, 0, 0, 1, 4);
 
-	LineEdit = new QLineEdit(this);
-	layout->addWidget(LineEdit, 1, 0);
+    LineEdit = new QLineEdit(this);
+    layout->addWidget(LineEdit, 1, 0);
 
-	QPushButton *addItemButton = new QPushButton(tr("Add"), this);
-	QPushButton *changeItemButton = new QPushButton(tr("Change"), this);
-	QPushButton *deleteItemButton = new QPushButton(tr("Delete"), this);
-	layout->addWidget(addItemButton, 1, 1);
-	layout->addWidget(changeItemButton, 1, 2);
-	layout->addWidget(deleteItemButton, 1, 3);
+    QPushButton *addItemButton = new QPushButton(tr("Add"), this);
+    QPushButton *changeItemButton = new QPushButton(tr("Change"), this);
+    QPushButton *deleteItemButton = new QPushButton(tr("Delete"), this);
+    layout->addWidget(addItemButton, 1, 1);
+    layout->addWidget(changeItemButton, 1, 2);
+    layout->addWidget(deleteItemButton, 1, 3);
 
-	connect(ListWidget->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)),
-			this, SLOT(selectedItemChanged(QModelIndex,QModelIndex)));
-	connect(addItemButton, SIGNAL(clicked()), this, SLOT(addItem()));
-	connect(changeItemButton, SIGNAL(clicked()), this, SLOT(changeItem()));
-	connect(deleteItemButton, SIGNAL(clicked()), this, SLOT(deleteItem()));
+    connect(
+        ListWidget->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this,
+        SLOT(selectedItemChanged(QModelIndex, QModelIndex)));
+    connect(addItemButton, SIGNAL(clicked()), this, SLOT(addItem()));
+    connect(changeItemButton, SIGNAL(clicked()), this, SLOT(changeItem()));
+    connect(deleteItemButton, SIGNAL(clicked()), this, SLOT(deleteItem()));
 }
 
 void ListEditWidget::setList(const QStringList &list)
 {
-	ListWidget->clear();
-	foreach (const QString &item, list)
-		ListWidget->addItem(item);
+    ListWidget->clear();
+    foreach (const QString &item, list)
+        ListWidget->addItem(item);
 }
 
 QStringList ListEditWidget::list()
 {
-	QStringList result;
+    QStringList result;
 
-	int count = ListWidget->count();
-	for (int i = 0; i < count; i++)
-		result.append(ListWidget->item(i)->text());
+    int count = ListWidget->count();
+    for (int i = 0; i < count; i++)
+        result.append(ListWidget->item(i)->text());
 
-	return result;
+    return result;
 }
 
 void ListEditWidget::selectedItemChanged(const QModelIndex &current, const QModelIndex &previous)
 {
-	if (previous != current)
-		LineEdit->setText(current.data().toString());
+    if (previous != current)
+        LineEdit->setText(current.data().toString());
 }
 
 void ListEditWidget::addItem()
 {
-	if (LineEdit->text().isEmpty())
-		return;
+    if (LineEdit->text().isEmpty())
+        return;
 
-	ListWidget->addItem(LineEdit->text());
-	LineEdit->clear();
+    ListWidget->addItem(LineEdit->text());
+    LineEdit->clear();
 }
 
 void ListEditWidget::changeItem()
 {
-	QListWidgetItem *item = ListWidget->currentItem();
-	if (!item)
-		return;
+    QListWidgetItem *item = ListWidget->currentItem();
+    if (!item)
+        return;
 
-	item->setText(LineEdit->text());
-	LineEdit->clear();
+    item->setText(LineEdit->text());
+    LineEdit->clear();
 }
 
 void ListEditWidget::deleteItem()
 {
-	QListWidgetItem *item = ListWidget->takeItem(ListWidget->currentRow());
-	if (!item)
-		return;
+    QListWidgetItem *item = ListWidget->takeItem(ListWidget->currentRow());
+    if (!item)
+        return;
 
-	delete item;
-	LineEdit->clear();
+    delete item;
+    LineEdit->clear();
 }
 
 #include "moc_list-edit-widget.cpp"

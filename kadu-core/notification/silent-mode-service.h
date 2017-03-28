@@ -39,47 +39,46 @@ class QAction;
 
 class KADUAPI SilentModeService : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE);
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE);
 
 public:
-	Q_INVOKABLE explicit SilentModeService(QObject *parent = nullptr);
-	virtual ~SilentModeService();
+    Q_INVOKABLE explicit SilentModeService(QObject *parent = nullptr);
+    virtual ~SilentModeService();
 
-	bool isSilentOrAutoSilent() const;
-	bool isSilent() const;
-	void setSilent(bool silent);
+    bool isSilentOrAutoSilent() const;
+    bool isSilent() const;
+    void setSilent(bool silent);
 
 signals:
-	void silentModeToggled(bool);
+    void silentModeToggled(bool);
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<FullScreenService> m_fullScreenService;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<ToggleSilentModeAction> m_toggleSilentModeAction;
+    QPointer<Configuration> m_configuration;
+    QPointer<FullScreenService> m_fullScreenService;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<ToggleSilentModeAction> m_toggleSilentModeAction;
 
-	std::unique_ptr<FullScreenServiceHandler> m_fullScreenServiceHandler;
+    std::unique_ptr<FullScreenServiceHandler> m_fullScreenServiceHandler;
 
-	bool m_silentModeWhenDnD;
-	bool m_silentModeWhenFullscreen;
-	bool m_silentMode;
+    bool m_silentModeWhenDnD;
+    bool m_silentModeWhenFullscreen;
+    bool m_silentMode;
 
-	void createActionDescriptions();
-	void destroyActionDescriptions();
-	void createDefaultConfiguration();
+    void createActionDescriptions();
+    void destroyActionDescriptions();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFullScreenService(FullScreenService *fullScreenService);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setToggleSilentModeAction(ToggleSilentModeAction *toggleSilentModeAction);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setFullScreenService(FullScreenService *fullScreenService);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setToggleSilentModeAction(ToggleSilentModeAction *toggleSilentModeAction);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

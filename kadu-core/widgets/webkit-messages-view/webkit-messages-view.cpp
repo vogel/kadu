@@ -41,315 +41,311 @@
 #include <QtGui/QKeyEvent>
 #include <QtWebKitWidgets/QWebFrame>
 
-WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent) :
-		KaduWebView{parent},
-		m_chat{chat},
-		m_forcePruneDisabled{},
-		m_supportTransparency{supportTransparency},
-		m_atBottom{true}
+WebkitMessagesView::WebkitMessagesView(const Chat &chat, bool supportTransparency, QWidget *parent)
+        : KaduWebView{parent}, m_chat{chat}, m_forcePruneDisabled{}, m_supportTransparency{supportTransparency},
+          m_atBottom{true}
 {
 }
 
 WebkitMessagesView::~WebkitMessagesView()
 {
-	disconnectChat();
+    disconnectChat();
 }
 
 void WebkitMessagesView::setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder)
 {
-	m_chatConfigurationHolder = chatConfigurationHolder;
+    m_chatConfigurationHolder = chatConfigurationHolder;
 }
 
 void WebkitMessagesView::setChatImageRequestService(ChatImageRequestService *chatImageRequestService)
 {
-	m_chatImageRequestService = chatImageRequestService;
+    m_chatImageRequestService = chatImageRequestService;
 }
 
 void WebkitMessagesView::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
-	m_chatServiceRepository = chatServiceRepository;
+    m_chatServiceRepository = chatServiceRepository;
 }
 
 void WebkitMessagesView::setChatStyleManager(ChatStyleManager *chatStyleManager)
 {
-	m_chatStyleManager = chatStyleManager;
+    m_chatStyleManager = chatStyleManager;
 }
 
 void WebkitMessagesView::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void WebkitMessagesView::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
-void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
+void WebkitMessagesView::setWebkitMessagesViewHandlerFactory(
+    WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory)
 {
-	m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
+    m_webkitMessagesViewHandlerFactory = webkitMessagesViewHandlerFactory;
 }
 
 void WebkitMessagesView::init()
 {
-	connect(m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage,QString)), this, SLOT(chatImageStored(ChatImage,QString)));
+    connect(
+        m_chatImageRequestService.data(), SIGNAL(chatImageStored(ChatImage, QString)), this,
+        SLOT(chatImageStored(ChatImage, QString)));
 
-	auto oldManager = page()->networkAccessManager();
-	auto newManager = m_injectedFactory->makeOwned<ChatViewNetworkAccessManager>(oldManager, this);
-	page()->setNetworkAccessManager(newManager.get());
+    auto oldManager = page()->networkAccessManager();
+    auto newManager = m_injectedFactory->makeOwned<ChatViewNetworkAccessManager>(oldManager, this);
+    page()->setNetworkAccessManager(newManager.get());
 
-	// TODO: for me with empty styleSheet if has artifacts on scrollbars...
-	// maybe Qt bug?
-	setStyleSheet("QWidget { }");
-	setFocusPolicy(Qt::NoFocus);
-	setMinimumSize(QSize(100,100));
-	settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
-	settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    // TODO: for me with empty styleSheet if has artifacts on scrollbars...
+    // maybe Qt bug?
+    setStyleSheet("QWidget { }");
+    setFocusPolicy(Qt::NoFocus);
+    setMinimumSize(QSize(100, 100));
+    settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+    settings()->setAttribute(QWebSettings::PluginsEnabled, true);
 
-	auto p = palette();
+    auto p = palette();
 
-	// This widget never has focus anyway, so there's no need for distinction
-	// between active and inactive, and active highlight colors have way better
-	// contrast, especially on Windows. See Kadu bug #2605.
-	p.setBrush(QPalette::Inactive, QPalette::Highlight, p.brush(QPalette::Active, QPalette::Highlight));
-	p.setBrush(QPalette::Inactive, QPalette::HighlightedText, p.brush(QPalette::Active, QPalette::HighlightedText));
+    // This widget never has focus anyway, so there's no need for distinction
+    // between active and inactive, and active highlight colors have way better
+    // contrast, especially on Windows. See Kadu bug #2605.
+    p.setBrush(QPalette::Inactive, QPalette::Highlight, p.brush(QPalette::Active, QPalette::Highlight));
+    p.setBrush(QPalette::Inactive, QPalette::HighlightedText, p.brush(QPalette::Active, QPalette::HighlightedText));
 
-	p.setBrush(QPalette::Base, Qt::transparent);
-	setPalette(p);
+    p.setBrush(QPalette::Base, Qt::transparent);
+    setPalette(p);
 
-	setAttribute(Qt::WA_OpaquePaintEvent, false);
+    setAttribute(Qt::WA_OpaquePaintEvent, false);
 
-	page()->currentFrame()->evaluateJavaScript(
-		"XMLHttpRequest.prototype.open = function() { return false; };"
-		"XMLHttpRequest.prototype.send = function() { return false; };"
-	);
+    page()->currentFrame()->evaluateJavaScript(
+        "XMLHttpRequest.prototype.open = function() { return false; };"
+        "XMLHttpRequest.prototype.send = function() { return false; };");
 
-	connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
-	connect(m_chatStyleManager, SIGNAL(chatStyleConfigurationUpdated()), this, SLOT(chatStyleConfigurationUpdated()));
+    connect(this->page()->mainFrame(), SIGNAL(contentsSizeChanged(const QSize &)), this, SLOT(scrollToBottom()));
+    connect(m_chatStyleManager, SIGNAL(chatStyleConfigurationUpdated()), this, SLOT(chatStyleConfigurationUpdated()));
 
-	configurationUpdated();
-	connectChat();
-	refreshView();
+    configurationUpdated();
+    connectChat();
+    refreshView();
 }
 
 void WebkitMessagesView::mouseReleaseEvent(QMouseEvent *e)
 {
-	updateAtBottom();
-	KaduWebView::mouseReleaseEvent(e);
+    updateAtBottom();
+    KaduWebView::mouseReleaseEvent(e);
 }
 
 void WebkitMessagesView::resizeEvent(QResizeEvent *e)
 {
-	QWebView::resizeEvent(e);
+    QWebView::resizeEvent(e);
 
-	scrollToBottom();
+    scrollToBottom();
 }
 
-void WebkitMessagesView::wheelEvent(QWheelEvent* e)
+void WebkitMessagesView::wheelEvent(QWheelEvent *e)
 {
-	updateAtBottom();
-	QWebView::wheelEvent(e);
+    updateAtBottom();
+    QWebView::wheelEvent(e);
 }
 
 void WebkitMessagesView::updateAtBottom()
 {
-	m_atBottom = page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
+    m_atBottom =
+        page()->mainFrame()->scrollBarValue(Qt::Vertical) >= page()->mainFrame()->scrollBarMaximum(Qt::Vertical);
 }
 
 void WebkitMessagesView::connectChat()
 {
-	for (auto const &contact : m_chat.contacts())
-		connect(contact, SIGNAL(buddyUpdated()), this, SLOT(refreshView()));
+    for (auto const &contact : m_chat.contacts())
+        connect(contact, SIGNAL(buddyUpdated()), this, SLOT(refreshView()));
 
-	auto chatService = m_chatServiceRepository->chatService(m_chat.chatAccount());
-	if (chatService)
-		connect(chatService, SIGNAL(sentMessageStatusChanged(const Message &)),
-		        this, SLOT(sentMessageStatusChanged(const Message &)));
+    auto chatService = m_chatServiceRepository->chatService(m_chat.chatAccount());
+    if (chatService)
+        connect(
+            chatService, SIGNAL(sentMessageStatusChanged(const Message &)), this,
+            SLOT(sentMessageStatusChanged(const Message &)));
 }
 
 void WebkitMessagesView::disconnectChat()
 {
-	if (m_chat.isNull())
-		return;
+    if (m_chat.isNull())
+        return;
 
-	for (auto const &contact : m_chat.contacts())
-		disconnect(contact, nullptr, this, nullptr);
+    for (auto const &contact : m_chat.contacts())
+        disconnect(contact, nullptr, this, nullptr);
 
-	if (m_chat.chatAccount().isNull() || !m_chat.chatAccount().protocolHandler())
-		return;
+    if (m_chat.chatAccount().isNull() || !m_chat.chatAccount().protocolHandler())
+        return;
 
-	auto chatImageService = m_chat.chatAccount().protocolHandler()->chatImageService();
-	if (chatImageService)
-		disconnect(chatImageService, nullptr, this, nullptr);
+    auto chatImageService = m_chat.chatAccount().protocolHandler()->chatImageService();
+    if (chatImageService)
+        disconnect(chatImageService, nullptr, this, nullptr);
 
-	auto chatService = m_chatServiceRepository->chatService(m_chat.chatAccount());
-	if (chatService)
-		disconnect(chatService, nullptr, this, nullptr);
+    auto chatService = m_chatServiceRepository->chatService(m_chat.chatAccount());
+    if (chatService)
+        disconnect(chatService, nullptr, this, nullptr);
 }
 
 void WebkitMessagesView::setChat(const Chat &chat)
 {
-	disconnectChat();
-	m_chat = chat;
-	connectChat();
+    disconnectChat();
+    m_chat = chat;
+    connectChat();
 
-	refreshView();
+    refreshView();
 }
 
 void WebkitMessagesView::setForcePruneDisabled(bool disable)
 {
-	m_forcePruneDisabled = disable;
-	if (disable)
-		m_handler->setMessageLimitPolicy(MessageLimitPolicy::None);
-	else
-	{
-		m_handler->setMessageLimitPolicy(MessageLimitPolicy::Value);
-		chatStyleConfigurationUpdated();
-	}
+    m_forcePruneDisabled = disable;
+    if (disable)
+        m_handler->setMessageLimitPolicy(MessageLimitPolicy::None);
+    else
+    {
+        m_handler->setMessageLimitPolicy(MessageLimitPolicy::Value);
+        chatStyleConfigurationUpdated();
+    }
 }
 
 void WebkitMessagesView::chatStyleConfigurationUpdated()
 {
-	m_handler->setMessageLimit(m_chatStyleManager->prune());
+    m_handler->setMessageLimit(m_chatStyleManager->prune());
 }
 
 void WebkitMessagesView::refreshView()
 {
-	if (!m_chatStyleRendererFactory || !m_webkitMessagesViewHandlerFactory)
-		return;
+    if (!m_chatStyleRendererFactory || !m_webkitMessagesViewHandlerFactory)
+        return;
 
-	auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(rendererConfiguration());
-	auto handler = m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(std::move(chatStyleRenderer), page()->mainFrame());
-	setWebkitMessagesViewHandler(std::move(handler));
+    auto chatStyleRenderer = m_chatStyleRendererFactory->createChatStyleRenderer(rendererConfiguration());
+    auto handler = m_webkitMessagesViewHandlerFactory.data()->createWebkitMessagesViewHandler(
+        std::move(chatStyleRenderer), page()->mainFrame());
+    setWebkitMessagesViewHandler(std::move(handler));
 }
 
 ChatStyleRendererConfiguration WebkitMessagesView::rendererConfiguration()
 {
-	QFile file{m_pathsProvider->dataPath() + QStringLiteral("scripts/chat-scripts.js")};
-	auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text)
-			? file.readAll()
-			: QString{};
-	auto transparency = m_chatConfigurationHolder->useTransparency() && supportTransparency() && isCompositingEnabled();
-	return ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
+    QFile file{m_pathsProvider->dataPath() + QStringLiteral("scripts/chat-scripts.js")};
+    auto javaScript = file.open(QIODevice::ReadOnly | QIODevice::Text) ? file.readAll() : QString{};
+    auto transparency = m_chatConfigurationHolder->useTransparency() && supportTransparency() && isCompositingEnabled();
+    return ChatStyleRendererConfiguration{chat(), *page()->mainFrame(), javaScript, transparency};
 }
 
 void WebkitMessagesView::setWebkitMessagesViewHandler(owned_qptr<WebkitMessagesViewHandler> handler)
 {
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	auto scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
+    ScopedUpdatesDisabler updatesDisabler{*this};
+    auto scrollBarPosition = page()->mainFrame()->scrollBarValue(Qt::Vertical);
 
-	auto messages = m_handler
-			? m_handler->messages()
-			: SortedMessages{};
-	m_handler = std::move(handler);
-	setForcePruneDisabled(m_forcePruneDisabled);
-	m_handler->add(messages);
+    auto messages = m_handler ? m_handler->messages() : SortedMessages{};
+    m_handler = std::move(handler);
+    setForcePruneDisabled(m_forcePruneDisabled);
+    m_handler->add(messages);
 
-	page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
+    page()->mainFrame()->setScrollBarValue(Qt::Vertical, scrollBarPosition);
 }
 
 void WebkitMessagesView::pageUp()
 {
-	auto event = QKeyEvent{QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier};
-	keyPressEvent(&event);
+    auto event = QKeyEvent{QEvent::KeyPress, Qt::Key_PageUp, Qt::NoModifier};
+    keyPressEvent(&event);
 }
 
 void WebkitMessagesView::pageDown()
 {
-	auto event = QKeyEvent{QEvent::KeyPress, Qt::Key_PageDown, Qt::NoModifier};
-	keyPressEvent(&event);
+    auto event = QKeyEvent{QEvent::KeyPress, Qt::Key_PageDown, Qt::NoModifier};
+    keyPressEvent(&event);
 }
 
 void WebkitMessagesView::chatImageStored(const ChatImage &chatImage, const QString &fullFilePath)
 {
-	m_handler->displayChatImage(chatImage, fullFilePath);
+    m_handler->displayChatImage(chatImage, fullFilePath);
 }
 
 void WebkitMessagesView::add(const Message &message)
 {
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	m_handler->add(message);
-	emit messagesUpdated();
+    ScopedUpdatesDisabler updatesDisabler{*this};
+    m_handler->add(message);
+    emit messagesUpdated();
 }
 
 void WebkitMessagesView::add(const SortedMessages &messages)
 {
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	m_handler->add(messages);
-	emit messagesUpdated();
+    ScopedUpdatesDisabler updatesDisabler{*this};
+    m_handler->add(messages);
+    emit messagesUpdated();
 }
 
 SortedMessages WebkitMessagesView::messages() const
 {
-	return m_handler->messages();
+    return m_handler->messages();
 }
 
 void WebkitMessagesView::setChatStyleRendererFactory(std::shared_ptr<ChatStyleRendererFactory> chatStyleRendererFactory)
 {
-	m_chatStyleRendererFactory = chatStyleRendererFactory;
+    m_chatStyleRendererFactory = chatStyleRendererFactory;
 
-	refreshView();
+    refreshView();
 }
 
 void WebkitMessagesView::clearMessages()
 {
-	ScopedUpdatesDisabler updatesDisabler{*this};
-	m_handler->clear();
-	emit messagesUpdated();
-	m_atBottom = true;
+    ScopedUpdatesDisabler updatesDisabler{*this};
+    m_handler->clear();
+    emit messagesUpdated();
+    m_atBottom = true;
 }
 
 int WebkitMessagesView::countMessages()
 {
-	return m_handler
-			? m_handler->messages().size()
-			: 0;
+    return m_handler ? m_handler->messages().size() : 0;
 }
 
 void WebkitMessagesView::sentMessageStatusChanged(const Message &message)
 {
-	if (m_chat != message.messageChat())
-		return;
-	m_handler->displayMessageStatus(message.id(), message.status());
+    if (m_chat != message.messageChat())
+        return;
+    m_handler->displayMessageStatus(message.id(), message.status());
 }
 
 void WebkitMessagesView::contactActivityChanged(const Contact &contact, ChatState state)
 {
-	m_handler->displayChatState(contact, state);
+    m_handler->displayChatState(contact, state);
 }
 
 void WebkitMessagesView::scrollToTop()
 {
-	page()->mainFrame()->setScrollBarValue(Qt::Vertical, 0);
-	updateAtBottom();
+    page()->mainFrame()->setScrollBarValue(Qt::Vertical, 0);
+    updateAtBottom();
 }
 
 void WebkitMessagesView::scrollToBottom()
 {
-	if (m_atBottom)
-		page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+    if (m_atBottom)
+        page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
 }
 
 void WebkitMessagesView::forceScrollToBottom()
 {
-	page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
-	updateAtBottom();
+    page()->mainFrame()->setScrollBarValue(Qt::Vertical, page()->mainFrame()->scrollBarMaximum(Qt::Vertical));
+    updateAtBottom();
 }
 
 void WebkitMessagesView::configurationUpdated()
 {
-	setUserFont(m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
-	refreshView();
+    setUserFont(m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
+    refreshView();
 }
 
 void WebkitMessagesView::compositingEnabled()
 {
-	refreshView();
+    refreshView();
 }
 
 void WebkitMessagesView::compositingDisabled()
 {
-	refreshView();
+    refreshView();
 }
 
 #include "moc_webkit-messages-view.cpp"

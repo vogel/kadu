@@ -24,10 +24,9 @@
 
 #include "config-wizard-page.h"
 
-ConfigWizardPage::ConfigWizardPage(QWidget *parent) :
-		QWizardPage(parent)
+ConfigWizardPage::ConfigWizardPage(QWidget *parent) : QWizardPage(parent)
 {
-	createGui();
+    createGui();
 }
 
 ConfigWizardPage::~ConfigWizardPage()
@@ -36,17 +35,17 @@ ConfigWizardPage::~ConfigWizardPage()
 
 void ConfigWizardPage::createGui()
 {
-	QHBoxLayout *mainLayout = new QHBoxLayout(this);
-	mainLayout->setSpacing(5);
+    QHBoxLayout *mainLayout = new QHBoxLayout(this);
+    mainLayout->setSpacing(5);
 
-	DescriptionPane = new QTextBrowser(this);
-	DescriptionPane->setFocusPolicy(Qt::ClickFocus);
-	mainLayout->addWidget(DescriptionPane, 2);
+    DescriptionPane = new QTextBrowser(this);
+    DescriptionPane->setFocusPolicy(Qt::ClickFocus);
+    mainLayout->addWidget(DescriptionPane, 2);
 
-	QWidget *formWidget = new QWidget(this);
-	FormLayout = new QFormLayout(formWidget);
+    QWidget *formWidget = new QWidget(this);
+    FormLayout = new QFormLayout(formWidget);
 
-	mainLayout->addWidget(formWidget, 5);
+    mainLayout->addWidget(formWidget, 5);
 }
 
 void ConfigWizardPage::acceptPage()
@@ -59,7 +58,7 @@ void ConfigWizardPage::rejectPage()
 
 void ConfigWizardPage::setDescription(const QString &description)
 {
-	DescriptionPane->setText(description);
+    DescriptionPane->setText(description);
 }
 
 #include "moc_config-wizard-page.cpp"

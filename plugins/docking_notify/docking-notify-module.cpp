@@ -24,6 +24,6 @@
 
 DockingNotifyModule::DockingNotifyModule()
 {
-	add_type<DockingNotifier>();
-	add_type<DockingNotifyPluginObject>();
+    add_type<DockingNotifier>();
+    add_type<DockingNotifyPluginObject>();
 }

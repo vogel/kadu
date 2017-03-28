@@ -35,38 +35,38 @@ class JabberChangePasswordService;
 
 class JabberChangePasswordWindow : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberChangePasswordWindow(JabberChangePasswordService *changePasswordService, Account account, QWidget *parent = nullptr);
-	virtual ~JabberChangePasswordWindow();
+    explicit JabberChangePasswordWindow(
+        JabberChangePasswordService *changePasswordService, Account account, QWidget *parent = nullptr);
+    virtual ~JabberChangePasswordWindow();
 
 signals:
-	void passwordChanged(const QString &);
+    void passwordChanged(const QString &);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e);
+    virtual void keyPressEvent(QKeyEvent *e);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<JabberChangePasswordService> m_changePasswordService;
-	Account m_account;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<JabberChangePasswordService> m_changePasswordService;
+    Account m_account;
 
-	QLineEdit *m_newPassword;
-	QLineEdit *m_reNewPassword;
-	QPushButton *m_changePasswordButton;
+    QLineEdit *m_newPassword;
+    QLineEdit *m_reNewPassword;
+    QPushButton *m_changePasswordButton;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void dataChanged();
-	void changePassword();
-	void passwordChanged();
-	void error(const QString &errorMessage);
-
+    void dataChanged();
+    void changePassword();
+    void passwordChanged();
+    void error(const QString &errorMessage);
 };

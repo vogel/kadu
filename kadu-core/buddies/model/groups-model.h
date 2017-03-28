@@ -32,27 +32,26 @@ class Group;
 
 class GroupsModel : public QAbstractListModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GroupsModel(GroupManager *groupManager, QObject *parent = nullptr);
-	virtual ~GroupsModel();
+    explicit GroupsModel(GroupManager *groupManager, QObject *parent = nullptr);
+    virtual ~GroupsModel();
 
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	Group group(const QModelIndex &index) const;
-	int groupIndex(Group group) const;
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
+    Group group(const QModelIndex &index) const;
+    int groupIndex(Group group) const;
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 
 private:
-	QPointer<GroupManager> m_groupManager;
+    QPointer<GroupManager> m_groupManager;
 
 private slots:
-	void groupAboutToBeAdded(Group group);
-	void groupAdded(Group group);
-	void groupAboutToBeRemoved(Group group);
-	void groupRemoved(Group group);
-
+    void groupAboutToBeAdded(Group group);
+    void groupAdded(Group group);
+    void groupAboutToBeRemoved(Group group);
+    void groupRemoved(Group group);
 };

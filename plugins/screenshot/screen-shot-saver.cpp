@@ -28,11 +28,9 @@
 
 #include "screen-shot-saver.h"
 
-ScreenShotSaver::ScreenShotSaver(IconsManager *iconsManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
-		QObject{parent},
-		m_iconsManager{iconsManager},
-		m_screenShotConfiguration{screenShotConfiguration},
-		Size{}
+ScreenShotSaver::ScreenShotSaver(
+    IconsManager *iconsManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent)
+        : QObject{parent}, m_iconsManager{iconsManager}, m_screenShotConfiguration{screenShotConfiguration}, Size{}
 {
 }
 
@@ -42,47 +40,54 @@ ScreenShotSaver::~ScreenShotSaver()
 
 QString ScreenShotSaver::createScreenshotPath()
 {
-	QString dirPath = m_screenShotConfiguration->imagePath();
+    QString dirPath = m_screenShotConfiguration->imagePath();
 
-	QDir dir(dirPath);
-	if (!dir.exists() && !dir.mkpath(dirPath))
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
-		return QString();
-	}
+    QDir dir(dirPath);
+    if (!dir.exists() && !dir.mkpath(dirPath))
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+            tr("Unable to create direcotry %1 for storing screenshots!").arg(dirPath));
+        return QString();
+    }
 
-	return QDir::cleanPath(QString("%1/%2%3.%4")
-			.arg(dir.absolutePath())
-			.arg(m_screenShotConfiguration->fileNamePrefix())
-			.arg(QString::number(QDateTime::currentDateTime().toTime_t()))
-			.arg(m_screenShotConfiguration->screenshotFileNameExtension().toLower()));
+    return QDir::cleanPath(
+        QString("%1/%2%3.%4")
+            .arg(dir.absolutePath())
+            .arg(m_screenShotConfiguration->fileNamePrefix())
+            .arg(QString::number(QDateTime::currentDateTime().toTime_t()))
+            .arg(m_screenShotConfiguration->screenshotFileNameExtension().toLower()));
 }
 
 QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 {
-	QString path = createScreenshotPath();
-	if (path.isEmpty())
-		return QString();
+    QString path = createScreenshotPath();
+    if (path.isEmpty())
+        return QString();
 
-	int quality = m_screenShotConfiguration->quality();
+    int quality = m_screenShotConfiguration->quality();
 
-	// do not extract qPrintable... to variable
-	if (!pixmap.save(path, qPrintable(m_screenShotConfiguration->fileFormat()), quality))
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
-		return QString();
-	}
+    // do not extract qPrintable... to variable
+    if (!pixmap.save(path, qPrintable(m_screenShotConfiguration->fileFormat()), quality))
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+            tr("Can't write file %1.\nAccess denied or other problem!").arg(path));
+        return QString();
+    }
 
-	QFileInfo f(path);
-	Size = f.size();
+    QFileInfo f(path);
+    Size = f.size();
 
-	if (Size == 0)
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
-		return QString();
-	}
+    if (Size == 0)
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+            tr("Screenshot %1 has 0 size!\nIt should be bigger.").arg(path));
+        return QString();
+    }
 
-	return path;
+    return path;
 }
 
 #include "moc_screen-shot-saver.cpp"

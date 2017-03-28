@@ -26,8 +26,8 @@ class NetworkProxy;
 
 namespace GaduProxyHelper
 {
-	GADUAPI void cleanUpProxySettings();
-	GADUAPI void setupProxy(NetworkProxy networkProxy);
+GADUAPI void cleanUpProxySettings();
+GADUAPI void setupProxy(NetworkProxy networkProxy);
 }
 
-#endif // GADU_PROXY_HELPER_H
+#endif   // GADU_PROXY_HELPER_H

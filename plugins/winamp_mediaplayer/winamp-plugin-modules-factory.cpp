@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-WinampPluginModulesFactory::WinampPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+WinampPluginModulesFactory::WinampPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ WinampPluginModulesFactory::~WinampPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> WinampPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<WinampModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<WinampModule>());
 
-	return modules;
+    return modules;
 }
 
 QString WinampPluginModulesFactory::parentInjectorName() const
 {
-	return "mediaplayer";
+    return "mediaplayer";
 }
 
 #include "moc_winamp-plugin-modules-factory.cpp"

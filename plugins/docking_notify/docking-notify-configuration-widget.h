@@ -32,27 +32,28 @@ class PathsProvider;
 
 class DockingNotifyConfigurationWidget : public NotifierConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QString currentNotificationEvent;
+    QString currentNotificationEvent;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
-	void showConfigurationWindow();
+    void showConfigurationWindow();
 
 public:
-	DockingNotifyConfigurationWidget(QWidget *parent = nullptr);
+    DockingNotifyConfigurationWidget(QWidget *parent = nullptr);
 
-	virtual void loadNotifyConfigurations() {}
-	virtual void saveNotifyConfigurations();
+    virtual void loadNotifyConfigurations()
+    {
+    }
+    virtual void saveNotifyConfigurations();
 
-	virtual void switchToEvent(const QString &event);
-
+    virtual void switchToEvent(const QString &event);
 };

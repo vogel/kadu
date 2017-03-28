@@ -20,11 +20,9 @@
 
 #include "account-service.h"
 
-AccountService::AccountService(Account account, QObject *parent) :
-		QObject{parent},
-		m_account{account}
+AccountService::AccountService(Account account, QObject *parent) : QObject{parent}, m_account{account}
 {
-	Q_ASSERT(m_account);
+    Q_ASSERT(m_account);
 }
 
 AccountService::~AccountService()
@@ -33,7 +31,7 @@ AccountService::~AccountService()
 
 Account AccountService::account() const
 {
-	return m_account;
+    return m_account;
 }
 
 #include "moc_account-service.cpp"

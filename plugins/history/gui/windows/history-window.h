@@ -44,45 +44,44 @@ class SessionService;
 */
 class HistoryWindow : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	friend class History;
+    friend class History;
 
-	QPointer<Configuration> m_configuration;
-	QPointer<History> m_history;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SessionService> m_sessionService;
+    QPointer<Configuration> m_configuration;
+    QPointer<History> m_history;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SessionService> m_sessionService;
 
-	QTabWidget *TabWidget;
-	int CurrentTab;
+    QTabWidget *TabWidget;
+    int CurrentTab;
 
-	ChatHistoryTab *ChatTab;
-	HistoryMessagesTab *StatusTab;
-	HistoryMessagesTab *SmsTab;
-	SearchTab *MySearchTab;
+    ChatHistoryTab *ChatTab;
+    HistoryMessagesTab *StatusTab;
+    HistoryMessagesTab *SmsTab;
+    SearchTab *MySearchTab;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setHistory(History *history);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSessionService(SessionService *sessionService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setHistory(History *history);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSessionService(SessionService *sessionService);
+    INJEQT_INIT void init();
 
-	void currentTabChanged(int newTabIndex);
-	void storageChanged(HistoryStorage *historyStorage);
+    void currentTabChanged(int newTabIndex);
+    void storageChanged(HistoryStorage *historyStorage);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit HistoryWindow(QWidget *parent = nullptr);
-	virtual ~HistoryWindow();
+    explicit HistoryWindow(QWidget *parent = nullptr);
+    virtual ~HistoryWindow();
 
-	void updateData();
-	void selectChat(const Chat &chat);
-
+    void updateData();
+    void selectChat(const Chat &chat);
 };

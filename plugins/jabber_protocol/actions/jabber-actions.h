@@ -29,16 +29,15 @@ class ShowXmlConsoleAction;
 // TODO: this class can be moved to core and just check for SubscriptionService
 class JabberActions : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit JabberActions(QObject *parent = nullptr);
-	virtual ~JabberActions();
+    Q_INVOKABLE explicit JabberActions(QObject *parent = nullptr);
+    virtual ~JabberActions();
 
 private:
-	QPointer<ShowXmlConsoleAction> m_showXmlConsoleAction;
+    QPointer<ShowXmlConsoleAction> m_showXmlConsoleAction;
 
 private slots:
-	INJEQT_SET void setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsoleAction);
-
+    INJEQT_SET void setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsoleAction);
 };

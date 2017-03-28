@@ -36,32 +36,35 @@ ChatWidgetStatePersistenceService::~ChatWidgetStatePersistenceService()
 
 void ChatWidgetStatePersistenceService::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 void ChatWidgetStatePersistenceService::init()
 {
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded,
-			this, &ChatWidgetStatePersistenceService::restoreChatWidgetState);
-	connect(m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved,
-			this, &ChatWidgetStatePersistenceService::storeChatWidgetState);
+    connect(
+        m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetAdded, this,
+        &ChatWidgetStatePersistenceService::restoreChatWidgetState);
+    connect(
+        m_chatWidgetRepository, &ChatWidgetRepository::chatWidgetRemoved, this,
+        &ChatWidgetStatePersistenceService::storeChatWidgetState);
 }
 
 void ChatWidgetStatePersistenceService::storeChatWidgetState(ChatWidget *chatWidget)
 {
-	auto content = chatWidget->edit()->htmlMessage();
-	if (!content.string().isEmpty())
-		chatWidget->chat().addProperty("chat-widget-state:message", content.string(), CustomProperties::Storable);
-	else
-		chatWidget->chat().removeProperty("chat-widget-state:message");
+    auto content = chatWidget->edit()->htmlMessage();
+    if (!content.string().isEmpty())
+        chatWidget->chat().addProperty("chat-widget-state:message", content.string(), CustomProperties::Storable);
+    else
+        chatWidget->chat().removeProperty("chat-widget-state:message");
 }
 
 void ChatWidgetStatePersistenceService::restoreChatWidgetState(ChatWidget *chatWidget)
 {
-	auto html = normalizeHtml(HtmlString{chatWidget->chat().property("chat-widget-state:message", QString{}).toString()});
-	chatWidget->edit()->setHtml(QString{R"(<div style="white-space: pre-wrap;">%1</div>)"}.arg(html.string()));
+    auto html =
+        normalizeHtml(HtmlString{chatWidget->chat().property("chat-widget-state:message", QString{}).toString()});
+    chatWidget->edit()->setHtml(QString{R"(<div style="white-space: pre-wrap;">%1</div>)"}.arg(html.string()));
 
-	auto textCursor = chatWidget->edit()->textCursor();
-	textCursor.movePosition(QTextCursor::End);
-	chatWidget->edit()->setTextCursor(textCursor);
+    auto textCursor = chatWidget->edit()->textCursor();
+    textCursor.movePosition(QTextCursor::End);
+    chatWidget->edit()->setTextCursor(textCursor);
 }

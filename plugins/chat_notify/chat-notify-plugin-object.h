@@ -30,25 +30,24 @@ class NotifierRepository;
 
 class ChatNotifyPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ChatNotifyPluginObject(QObject *parent = nullptr);
-	virtual ~ChatNotifyPluginObject();
+    Q_INVOKABLE explicit ChatNotifyPluginObject(QObject *parent = nullptr);
+    virtual ~ChatNotifyPluginObject();
 
 private:
-	QPointer<ChatNotifier> m_chatNotifier;
-	QPointer<Configuration> m_configuration;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<ChatNotifier> m_chatNotifier;
+    QPointer<Configuration> m_configuration;
+    QPointer<NotifierRepository> m_notifierRepository;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setChatNotifier(ChatNotifier *chatNotifier);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setChatNotifier(ChatNotifier *chatNotifier);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

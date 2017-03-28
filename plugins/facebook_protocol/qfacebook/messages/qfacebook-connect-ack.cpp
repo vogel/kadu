@@ -26,23 +26,19 @@
 
 QMqttMessage QFacebookConnectAck::encode() const
 {
-	auto mqttWriter = QMqttWriter{};
+    auto mqttWriter = QMqttWriter{};
 
-	mqttWriter.write(unknown);
-	mqttWriter.write(errorCode);
+    mqttWriter.write(unknown);
+    mqttWriter.write(errorCode);
 
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		uint8_t{0},
-		mqttWriter.result()
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), uint8_t{0}, mqttWriter.result()};
 }
 
 QFacebookConnectAck QFacebookConnectAck::decode(const QMqttMessage &message)
 {
-	auto reader = QMqttReader{message.content};
-	auto result = QFacebookConnectAck{};
-	result.unknown = reader.readUint8();
-	result.errorCode = reader.readUint8();
-	return result;
+    auto reader = QMqttReader{message.content};
+    auto result = QFacebookConnectAck{};
+    result.unknown = reader.readUint8();
+    result.errorCode = reader.readUint8();
+    return result;
 }

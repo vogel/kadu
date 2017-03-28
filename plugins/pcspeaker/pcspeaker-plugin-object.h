@@ -29,21 +29,20 @@ class PCSpeakerNotifier;
 
 class PCSpeakerPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit PCSpeakerPluginObject(QObject *parent = nullptr);
-	virtual ~PCSpeakerPluginObject();
+    Q_INVOKABLE explicit PCSpeakerPluginObject(QObject *parent = nullptr);
+    virtual ~PCSpeakerPluginObject();
 
 private:
-	QPointer<NotifierRepository> m_notifierRepository;
-	QPointer<PCSpeakerNotifier> m_pcSpeakerNotifier;
+    QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<PCSpeakerNotifier> m_pcSpeakerNotifier;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_SET void setPCSpeakerNotifier(PCSpeakerNotifier *pcSpeakerNotifier);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_SET void setPCSpeakerNotifier(PCSpeakerNotifier *pcSpeakerNotifier);
 };

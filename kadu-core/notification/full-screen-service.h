@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "injeqt-type-roles.h"
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <injeqt/injeqt.h>
@@ -29,27 +29,26 @@ class ScreenModeChecker;
 
 class FullScreenService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit FullScreenService(QObject *parent = nullptr);
-	virtual ~FullScreenService();
+    Q_INVOKABLE explicit FullScreenService(QObject *parent = nullptr);
+    virtual ~FullScreenService();
 
-	bool hasFullscreenApplication() const;
+    bool hasFullscreenApplication() const;
 
-	void start();
-	void stop();
+    void start();
+    void stop();
 
 signals:
-	void fullscreenToggled(bool fullscreen);
+    void fullscreenToggled(bool fullscreen);
 
 private:
-	not_owned_qptr<ScreenModeChecker> m_fullscreenChecker;
-	bool m_hasFullscreenApplication;
-	int m_started;
+    not_owned_qptr<ScreenModeChecker> m_fullscreenChecker;
+    bool m_hasFullscreenApplication;
+    int m_started;
 
 private slots:
-	void fullscreenToggledSlot(bool fullscreen);
-
+    void fullscreenToggledSlot(bool fullscreen);
 };

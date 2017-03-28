@@ -21,8 +21,7 @@
 
 #include "network-manager.h"
 
-NetworkManager::NetworkManager(QObject *parent) :
-		QObject{parent}
+NetworkManager::NetworkManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,10 +39,10 @@ NetworkManager::~NetworkManager()
  */
 void NetworkManager::onlineStateChanged(bool isOnline)
 {
-	if (isOnline)
-		emit online();
-	else
-		emit offline();
+    if (isOnline)
+        emit online();
+    else
+        emit offline();
 }
 
 #include "moc_network-manager.cpp"

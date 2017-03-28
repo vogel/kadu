@@ -24,34 +24,30 @@
 #define GROUP_H
 
 #include "buddies/group-shared.h"
-#include "storage/shared-base.h"
 #include "exports.h"
+#include "storage/shared-base.h"
 
 class KADUAPI Group : public SharedBase<GroupShared>
 {
-	KaduSharedBaseClass(Group)
+    KaduSharedBaseClass(Group)
 
-public:
-	static Group null;
+        public : static Group null;
 
-	Group();
-	Group(GroupShared *data);
-	explicit Group(QObject *data);
-	Group(const Group &copy);
+    Group();
+    Group(GroupShared *data);
+    explicit Group(QObject *data);
+    Group(const Group &copy);
 
-	virtual ~Group();
+    virtual ~Group();
 
-	KaduSharedBase_PropertyCRW(QString, name, Name)
-	KaduSharedBase_PropertyCRW(QString, icon, Icon)
-	KaduSharedBase_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
-	KaduSharedBase_Property(bool, showInAllGroup, ShowInAllGroup)
-	KaduSharedBase_Property(bool, offlineToGroup, OfflineToGroup)
-	KaduSharedBase_Property(bool, showIcon, ShowIcon)
-	KaduSharedBase_Property(bool, showName, ShowName)
-	KaduSharedBase_Property(int, tabPosition, TabPosition)
-
+    KaduSharedBase_PropertyCRW(QString, name, Name) KaduSharedBase_PropertyCRW(QString, icon, Icon)
+        KaduSharedBase_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
+            KaduSharedBase_Property(bool, showInAllGroup, ShowInAllGroup)
+                KaduSharedBase_Property(bool, offlineToGroup, OfflineToGroup)
+                    KaduSharedBase_Property(bool, showIcon, ShowIcon) KaduSharedBase_Property(bool, showName, ShowName)
+                        KaduSharedBase_Property(int, tabPosition, TabPosition)
 };
 
 Q_DECLARE_METATYPE(Group)
 
-#endif // GROUP_H
+#endif   // GROUP_H

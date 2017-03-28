@@ -29,11 +29,13 @@ struct QMqttMessage;
 class QFacebookConnectAck : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::ConnectAck; }
-	virtual QMqttMessage encode() const;
-	static QFacebookConnectAck decode(const QMqttMessage &message);
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::ConnectAck;
+    }
+    virtual QMqttMessage encode() const;
+    static QFacebookConnectAck decode(const QMqttMessage &message);
 
-	uint8_t unknown;
-	uint8_t errorCode;
-
+    uint8_t unknown;
+    uint8_t errorCode;
 };

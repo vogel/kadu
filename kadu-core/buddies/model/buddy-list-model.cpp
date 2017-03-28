@@ -38,536 +38,530 @@
 
 #include <QtCore/QMimeData>
 
-BuddyListModel::BuddyListModel(QObject *parent) :
-		QAbstractItemModel(parent), Checkable(false)
+BuddyListModel::BuddyListModel(QObject *parent) : QAbstractItemModel(parent), Checkable(false)
 {
 }
 
 BuddyListModel::~BuddyListModel()
 {
-	setBuddyList(BuddyList());
+    setBuddyList(BuddyList());
 
-	triggerAllAccountsRemoved(m_accountManager);
+    triggerAllAccountsRemoved(m_accountManager);
 }
 
 void BuddyListModel::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void BuddyListModel::setBuddyDataExtractor(BuddyDataExtractor *buddyDataExtractor)
 {
-	m_buddyDataExtractor = buddyDataExtractor;
+    m_buddyDataExtractor = buddyDataExtractor;
 }
 
 void BuddyListModel::setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService)
 {
-	m_buddyListMimeDataService = buddyListMimeDataService;
+    m_buddyListMimeDataService = buddyListMimeDataService;
 }
 
 void BuddyListModel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
 {
-	m_buddyPreferredManager = buddyPreferredManager;
+    m_buddyPreferredManager = buddyPreferredManager;
 }
 
 void BuddyListModel::setContactDataExtractor(ContactDataExtractor *contactDataExtractor)
 {
-	m_contactDataExtractor = contactDataExtractor;
+    m_contactDataExtractor = contactDataExtractor;
 }
 
 void BuddyListModel::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void BuddyListModel::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void BuddyListModel::init()
 {
-	QHash<int, QByteArray> roles;
-	roles[Qt::DisplayRole] = "display";
-	roles[AvatarPathRole] = "avatar";
-	roles[StatusIconPath] = "statusIcon";
-	setRoleNames(roles);
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "display";
+    roles[AvatarPathRole] = "avatar";
+    roles[StatusIconPath] = "statusIcon";
+    setRoleNames(roles);
 
-	triggerAllAccountsAdded(m_accountManager);
+    triggerAllAccountsAdded(m_accountManager);
 
-	connect(m_contactManager, SIGNAL(contactUpdated(Contact)),
-	        this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
+    connect(
+        m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
 }
 
 Buddy BuddyListModel::buddyFromVariant(const QVariant &variant) const
 {
-	Buddy buddy = variant.value<Buddy>();
-	if (buddy)
-		return buddy;
-	Talkable talkable = variant.value<Talkable>();
-	if (talkable.isValidBuddy())
-		return m_talkableConverter->toBuddy(talkable);
-	else
-		return Buddy::null;
+    Buddy buddy = variant.value<Buddy>();
+    if (buddy)
+        return buddy;
+    Talkable talkable = variant.value<Talkable>();
+    if (talkable.isValidBuddy())
+        return m_talkableConverter->toBuddy(talkable);
+    else
+        return Buddy::null;
 }
 
 Contact BuddyListModel::contactFromVariant(const QVariant &variant) const
 {
-	Contact contact = variant.value<Contact>();
-	if (contact)
-		return contact;
-	Talkable talkable = variant.value<Talkable>();
-	if (talkable.isValidContact())
-		return m_talkableConverter->toContact(talkable);
-	else
-		return Contact::null;
+    Contact contact = variant.value<Contact>();
+    if (contact)
+        return contact;
+    Talkable talkable = variant.value<Talkable>();
+    if (talkable.isValidContact())
+        return m_talkableConverter->toContact(talkable);
+    else
+        return Contact::null;
 }
 
 bool BuddyListModel::isCheckableIndex(const QModelIndex &index) const
 {
-	if (!Checkable)
-		return false;
+    if (!Checkable)
+        return false;
 
-	if (BuddyRole != index.data(ItemTypeRole))
-		return false;
+    if (BuddyRole != index.data(ItemTypeRole))
+        return false;
 
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
-	return !buddy.isNull();
+    const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+    return !buddy.isNull();
 }
 
 Contact BuddyListModel::buddyContact(const QModelIndex &index, int contactIndex) const
 {
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
-	if (!buddy)
-		return Contact::null;
+    const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+    if (!buddy)
+        return Contact::null;
 
-	QList<Contact> contacts = buddy.contacts();
-	if (contactIndex < 0 || contacts.size() <= contactIndex)
-		return Contact::null;
+    QList<Contact> contacts = buddy.contacts();
+    if (contactIndex < 0 || contacts.size() <= contactIndex)
+        return Contact::null;
 
-	return contacts.at(contactIndex);
+    return contacts.at(contactIndex);
 }
 
 void BuddyListModel::connectBuddy(const Buddy &buddy)
 {
-	connect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
-	connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-	        this, SLOT(contactAboutToBeRemoved(Contact)));
-	connect(buddy, SIGNAL(contactRemoved(Contact)),
-	        this, SLOT(contactRemoved(Contact)));
-	connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)),
-	        this, SLOT(contactAboutToBeAdded(Contact)));
-	connect(buddy, SIGNAL(contactAdded(Contact)),
-	        this, SLOT(contactAdded(Contact)));
+    connect(buddy, SIGNAL(updated()), this, SLOT(buddyUpdated()));
+    connect(buddy, SIGNAL(contactAboutToBeRemoved(Contact)), this, SLOT(contactAboutToBeRemoved(Contact)));
+    connect(buddy, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemoved(Contact)));
+    connect(buddy, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)));
+    connect(buddy, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
 }
 
 void BuddyListModel::disconnectBuddy(const Buddy &buddy)
 {
-	disconnect(buddy, 0, this, 0);
+    disconnect(buddy, 0, this, 0);
 }
 
 void BuddyListModel::buddyUpdated()
 {
-	Buddy buddy(sender());
-	if (!buddy)
-		return;
+    Buddy buddy(sender());
+    if (!buddy)
+        return;
 
-	const QModelIndexList &indexes = indexListForValue(buddy);
-	if (indexes.isEmpty())
-		return;
+    const QModelIndexList &indexes = indexListForValue(buddy);
+    if (indexes.isEmpty())
+        return;
 
-	Q_ASSERT(indexes.size() == 1);
+    Q_ASSERT(indexes.size() == 1);
 
-	const QModelIndex &index = indexes.at(0);
-	emit dataChanged(index, index);
+    const QModelIndex &index = indexes.at(0);
+    emit dataChanged(index, index);
 }
 
 void BuddyListModel::contactUpdated(const Contact &contact)
 {
-	const Buddy &buddy = contact.ownerBuddy();
-	if (!buddy)
-		return;
+    const Buddy &buddy = contact.ownerBuddy();
+    if (!buddy)
+        return;
 
-	const QModelIndexList &indexes = indexListForValue(buddy);
-	if (indexes.isEmpty())
-		return;
+    const QModelIndexList &indexes = indexListForValue(buddy);
+    if (indexes.isEmpty())
+        return;
 
-	Q_ASSERT(indexes.size() == 1);
+    Q_ASSERT(indexes.size() == 1);
 
-	const QModelIndex &buddyIndex = indexes.at(0);
-	if (!buddyIndex.isValid())
-		return;
+    const QModelIndex &buddyIndex = indexes.at(0);
+    if (!buddyIndex.isValid())
+        return;
 
-	const QModelIndex &contactIndex = index(buddy.contacts().indexOf(contact), 0, buddyIndex);
+    const QModelIndex &contactIndex = index(buddy.contacts().indexOf(contact), 0, buddyIndex);
 
-	emit dataChanged(buddyIndex, buddyIndex);
-	emit dataChanged(contactIndex, contactIndex);
+    emit dataChanged(buddyIndex, buddyIndex);
+    emit dataChanged(contactIndex, contactIndex);
 }
 
 void BuddyListModel::contactStatusChanged(const Contact &contact, const Status &oldStatus)
 {
-	Q_UNUSED(oldStatus)
+    Q_UNUSED(oldStatus)
 
-	const QModelIndexList& indexes = indexListForValue(contact.ownerBuddy());
-	foreach (const QModelIndex &index, indexes)
-		if (index.isValid())
-			emit dataChanged(index, index);
+    const QModelIndexList &indexes = indexListForValue(contact.ownerBuddy());
+    foreach (const QModelIndex &index, indexes)
+        if (index.isValid())
+            emit dataChanged(index, index);
 }
 
 void BuddyListModel::contactAboutToBeAdded(const Contact &contact)
 {
-	Q_UNUSED(contact)
+    Q_UNUSED(contact)
 
-	Buddy buddy(sender());
-	if (!buddy)
-		return;
+    Buddy buddy(sender());
+    if (!buddy)
+        return;
 
-	const QModelIndexList &indexes = indexListForValue(buddy);
-	if (indexes.isEmpty())
-		return;
+    const QModelIndexList &indexes = indexListForValue(buddy);
+    if (indexes.isEmpty())
+        return;
 
-	Q_ASSERT(indexes.size() == 1);
+    Q_ASSERT(indexes.size() == 1);
 
-	const QModelIndex &index = indexes.at(0);
-	if (!index.isValid())
-		return;
+    const QModelIndex &index = indexes.at(0);
+    if (!index.isValid())
+        return;
 
-	int count = buddy.contacts().size();
-	beginInsertRows(index, count, count);
+    int count = buddy.contacts().size();
+    beginInsertRows(index, count, count);
 }
 
 void BuddyListModel::contactAdded(const Contact &contact)
 {
-	Q_UNUSED(contact)
+    Q_UNUSED(contact)
 
-	Buddy buddy(sender());
-	if (!buddy)
-		return;
+    Buddy buddy(sender());
+    if (!buddy)
+        return;
 
-	const QModelIndexList &indexes = indexListForValue(buddy);
-	if (indexes.isEmpty())
-		return;
+    const QModelIndexList &indexes = indexListForValue(buddy);
+    if (indexes.isEmpty())
+        return;
 
-	Q_ASSERT(indexes.size() == 1);
+    Q_ASSERT(indexes.size() == 1);
 
-	const QModelIndex &index = indexes.at(0);
-	if (!index.isValid())
-		return;
+    const QModelIndex &index = indexes.at(0);
+    if (!index.isValid())
+        return;
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void BuddyListModel::contactAboutToBeRemoved(const Contact &contact)
 {
-	Buddy buddy(sender());
-	if (!buddy)
-		return;
+    Buddy buddy(sender());
+    if (!buddy)
+        return;
 
-	const QModelIndexList &indexes = indexListForValue(buddy);
-	if (indexes.isEmpty())
-		return;
+    const QModelIndexList &indexes = indexListForValue(buddy);
+    if (indexes.isEmpty())
+        return;
 
-	Q_ASSERT(indexes.size() == 1);
+    Q_ASSERT(indexes.size() == 1);
 
-	const QModelIndex &index = indexes.at(0);
-	if (!index.isValid())
-		return;
+    const QModelIndex &index = indexes.at(0);
+    if (!index.isValid())
+        return;
 
-	int contactIndex = buddy.contacts().indexOf(contact);
-	beginRemoveRows(index, contactIndex, contactIndex);
+    int contactIndex = buddy.contacts().indexOf(contact);
+    beginRemoveRows(index, contactIndex, contactIndex);
 }
 
 void BuddyListModel::contactRemoved(const Contact &contact)
 {
-	Q_UNUSED(contact)
+    Q_UNUSED(contact)
 
-	Buddy buddy(sender());
-	if (!buddy)
-		return;
+    Buddy buddy(sender());
+    if (!buddy)
+        return;
 
-	const QModelIndexList &indexes = indexListForValue(buddy);
-	if (indexes.isEmpty())
-		return;
+    const QModelIndexList &indexes = indexListForValue(buddy);
+    if (indexes.isEmpty())
+        return;
 
-	Q_ASSERT(indexes.size() == 1);
+    Q_ASSERT(indexes.size() == 1);
 
-	const QModelIndex &index = indexes.at(0);
-	if (!index.isValid())
-		return;
+    const QModelIndex &index = indexes.at(0);
+    if (!index.isValid())
+        return;
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
 void BuddyListModel::setBuddyList(const BuddyList &list)
 {
-	beginResetModel();
+    beginResetModel();
 
-	foreach (const Buddy &buddy, List)
-		disconnectBuddy(buddy);
+    foreach (const Buddy &buddy, List)
+        disconnectBuddy(buddy);
 
-	List = list;
+    List = list;
 
-	foreach (const Buddy &buddy, List)
-		connectBuddy(buddy);
+    foreach (const Buddy &buddy, List)
+        connectBuddy(buddy);
 
-	endResetModel();
+    endResetModel();
 }
 
 void BuddyListModel::addBuddy(const Buddy &buddy)
 {
-	if (List.contains(buddy))
-		return;
+    if (List.contains(buddy))
+        return;
 
-	connectBuddy(buddy);
+    connectBuddy(buddy);
 
-	beginInsertRows(QModelIndex(), List.count(), List.count());
-	List.append(buddy);
-	endInsertRows();
+    beginInsertRows(QModelIndex(), List.count(), List.count());
+    List.append(buddy);
+    endInsertRows();
 
-	dataChanged(index(List.count() - 1, 0), index(List.count() - 1, 0));
+    dataChanged(index(List.count() - 1, 0), index(List.count() - 1, 0));
 }
 
 void BuddyListModel::removeBuddy(const Buddy &buddy)
 {
-	int index = List.indexOf(buddy);
-	if (-1 == index)
-		return;
+    int index = List.indexOf(buddy);
+    if (-1 == index)
+        return;
 
-	disconnectBuddy(buddy);
+    disconnectBuddy(buddy);
 
-	beginRemoveRows(QModelIndex(), index, index);
-	List.removeAt(index);
-	endRemoveRows();
+    beginRemoveRows(QModelIndex(), index, index);
+    List.removeAt(index);
+    endRemoveRows();
 }
 
 void BuddyListModel::setCheckable(bool checkable)
 {
-	if (Checkable == checkable)
-		return;
+    if (Checkable == checkable)
+        return;
 
-	beginResetModel();
-	Checkable = checkable;
-	endResetModel();
+    beginResetModel();
+    Checkable = checkable;
+    endResetModel();
 
-	emit checkedBuddiesChanged(checkedBuddies());
+    emit checkedBuddiesChanged(checkedBuddies());
 }
 
 QModelIndex BuddyListModel::index(int row, int column, const QModelIndex &parent) const
 {
-	if (row < 0 || column < 0)
-		return QModelIndex();
+    if (row < 0 || column < 0)
+        return QModelIndex();
 
-	if (!parent.isValid()) // buddy
-	{
-		if (row >= List.count())
-			return QModelIndex(); // invalid
+    if (!parent.isValid())   // buddy
+    {
+        if (row >= List.count())
+            return QModelIndex();   // invalid
 
-		const Buddy &buddy = List.at(row);
-		Q_ASSERT(buddy.data());
+        const Buddy &buddy = List.at(row);
+        Q_ASSERT(buddy.data());
 
-		return createIndex(row, column, buddy.data());
-	}
+        return createIndex(row, column, buddy.data());
+    }
 
-	// contact
-	BuddyShared *parentBuddyShared = static_cast<BuddyShared *>(parent.internalPointer());
-	Q_ASSERT(parentBuddyShared);
+    // contact
+    BuddyShared *parentBuddyShared = static_cast<BuddyShared *>(parent.internalPointer());
+    Q_ASSERT(parentBuddyShared);
 
-	Buddy parentBuddy(parentBuddyShared);
-	const QList<Contact> &parentBuddyContacts = parentBuddy.contacts();
-	if (row >= parentBuddyContacts.count())
-		return QModelIndex();
+    Buddy parentBuddy(parentBuddyShared);
+    const QList<Contact> &parentBuddyContacts = parentBuddy.contacts();
+    if (row >= parentBuddyContacts.count())
+        return QModelIndex();
 
-	const Contact &contact = parentBuddyContacts.at(row);
-	Q_ASSERT(contact.data());
+    const Contact &contact = parentBuddyContacts.at(row);
+    Q_ASSERT(contact.data());
 
-	return createIndex(row, column, contact.data());
+    return createIndex(row, column, contact.data());
 }
 
 QModelIndex BuddyListModel::parent(const QModelIndex &child) const
 {
-	QObject *sharedData = static_cast<QObject *>(child.internalPointer());
-	Q_ASSERT(sharedData);
+    QObject *sharedData = static_cast<QObject *>(child.internalPointer());
+    Q_ASSERT(sharedData);
 
-	if (qobject_cast<BuddyShared *>(sharedData))
-		return QModelIndex(); // buddies does not have parent
+    if (qobject_cast<BuddyShared *>(sharedData))
+        return QModelIndex();   // buddies does not have parent
 
-	ContactShared *childContactShared = qobject_cast<ContactShared *>(sharedData);
-	Q_ASSERT(childContactShared);
+    ContactShared *childContactShared = qobject_cast<ContactShared *>(sharedData);
+    Q_ASSERT(childContactShared);
 
-	return index(List.indexOf(childContactShared->ownerBuddy()), 0);
+    return index(List.indexOf(childContactShared->ownerBuddy()), 0);
 }
 
 int BuddyListModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
+    Q_UNUSED(parent)
 
-	return 1;
+    return 1;
 }
 
 int BuddyListModel::rowCount(const QModelIndex &parentIndex) const
 {
-	if (!parentIndex.isValid())
-		return List.count();
-	if (parentIndex.parent().isValid())
-		return 0;
+    if (!parentIndex.isValid())
+        return List.count();
+    if (parentIndex.parent().isValid())
+        return 0;
 
-	const Buddy &buddy = parentIndex.data(BuddyRole).value<Buddy>();
-	return buddy.contacts().count();
+    const Buddy &buddy = parentIndex.data(BuddyRole).value<Buddy>();
+    return buddy.contacts().count();
 }
 
-QFlags<Qt::ItemFlag> BuddyListModel::flags(const QModelIndex& index) const
+QFlags<Qt::ItemFlag> BuddyListModel::flags(const QModelIndex &index) const
 {
-	if (index.isValid())
-	{
-		if (isCheckableIndex(index))
-			return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsUserCheckable;
-		else
-			return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
-	}
-	else
-		return QAbstractItemModel::flags(index);
+    if (index.isValid())
+    {
+        if (isCheckableIndex(index))
+            return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled | Qt::ItemIsUserCheckable;
+        else
+            return QAbstractItemModel::flags(index) | Qt::ItemIsDragEnabled;
+    }
+    else
+        return QAbstractItemModel::flags(index);
 }
 
 QVariant BuddyListModel::data(const QModelIndex &index, int role) const
 {
-	if (!index.isValid())
-		return QVariant();
+    if (!index.isValid())
+        return QVariant();
 
-	QObject *sharedData = static_cast<QObject *>(index.internalPointer());
-	Q_ASSERT(sharedData);
+    QObject *sharedData = static_cast<QObject *>(index.internalPointer());
+    Q_ASSERT(sharedData);
 
-	BuddyShared *buddyShared = qobject_cast<BuddyShared *>(sharedData);
-	if (buddyShared)
-	{
-		// use buddy role instead of what ContactDataExtractor would return
-		if (ItemTypeRole == role)
-			return BuddyRole;
+    BuddyShared *buddyShared = qobject_cast<BuddyShared *>(sharedData);
+    if (buddyShared)
+    {
+        // use buddy role instead of what ContactDataExtractor would return
+        if (ItemTypeRole == role)
+            return BuddyRole;
 
-		const Buddy &buddy = Buddy(buddyShared);
+        const Buddy &buddy = Buddy(buddyShared);
 
-		if (Qt::CheckStateRole == role)
-		{
-			if (Checkable)
-				return CheckedBuddies.contains(buddy) ? Qt::Checked : Qt::Unchecked;
-			else
-				return QVariant();
-		}
+        if (Qt::CheckStateRole == role)
+        {
+            if (Checkable)
+                return CheckedBuddies.contains(buddy) ? Qt::Checked : Qt::Unchecked;
+            else
+                return QVariant();
+        }
 
-		const Contact &contact = m_buddyPreferredManager->preferredContact(buddy);
+        const Contact &contact = m_buddyPreferredManager->preferredContact(buddy);
 
-		return TalkableRole != role && !contact.isNull()
-				? m_contactDataExtractor->data(contact, role, true)
-				: m_buddyDataExtractor->data(buddy, role);
-	}
+        return TalkableRole != role && !contact.isNull() ? m_contactDataExtractor->data(contact, role, true)
+                                                         : m_buddyDataExtractor->data(buddy, role);
+    }
 
-	auto contactShared = qobject_cast<ContactShared *>(sharedData);
-	Q_ASSERT(contactShared);
+    auto contactShared = qobject_cast<ContactShared *>(sharedData);
+    Q_ASSERT(contactShared);
 
-	return m_contactDataExtractor->data(Contact(contactShared), role, false);
+    return m_contactDataExtractor->data(Contact(contactShared), role, false);
 }
 
 bool BuddyListModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	if (Qt::CheckStateRole != role)
-		return false;
+    if (Qt::CheckStateRole != role)
+        return false;
 
-	if (!Checkable)
-		return false;
+    if (!Checkable)
+        return false;
 
-	if (index.parent().isValid())
-		return false;
+    if (index.parent().isValid())
+        return false;
 
-	if (BuddyRole != index.data(ItemTypeRole))
-		return false;
+    if (BuddyRole != index.data(ItemTypeRole))
+        return false;
 
-	const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
-	if (!buddy)
-		return false;
+    const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
+    if (!buddy)
+        return false;
 
-	Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
-	if (Qt::Checked == checkState)
-	{
-		CheckedBuddies.insert(buddy);
-		emit checkedBuddiesChanged(CheckedBuddies);
-		return true;
-	}
-	else if (Qt::Unchecked == checkState)
-	{
-		CheckedBuddies.remove(buddy);
-		emit checkedBuddiesChanged(CheckedBuddies);
-		return true;
-	}
+    Qt::CheckState checkState = static_cast<Qt::CheckState>(value.toInt());
+    if (Qt::Checked == checkState)
+    {
+        CheckedBuddies.insert(buddy);
+        emit checkedBuddiesChanged(CheckedBuddies);
+        return true;
+    }
+    else if (Qt::Unchecked == checkState)
+    {
+        CheckedBuddies.remove(buddy);
+        emit checkedBuddiesChanged(CheckedBuddies);
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 BuddySet BuddyListModel::checkedBuddies() const
 {
-	if (Checkable)
-		return CheckedBuddies;
-	else
-		return BuddySet();
+    if (Checkable)
+        return CheckedBuddies;
+    else
+        return BuddySet();
 }
 
 QModelIndexList BuddyListModel::indexListForValue(const QVariant &value) const
 {
-	QModelIndexList result;
+    QModelIndexList result;
 
-	const Buddy &buddy = buddyFromVariant(value);
-	if (buddy)
-	{
-		const int i = List.indexOf(buddy);
-		if (-1 != i)
-			result.append(index(i, 0));
-		return result;
-	}
+    const Buddy &buddy = buddyFromVariant(value);
+    if (buddy)
+    {
+        const int i = List.indexOf(buddy);
+        if (-1 != i)
+            result.append(index(i, 0));
+        return result;
+    }
 
-	const Contact &contact = contactFromVariant(value);
-	if (!contact)
-		return result;
+    const Contact &contact = contactFromVariant(value);
+    if (!contact)
+        return result;
 
-	const Buddy &ownerBuddy = contact.ownerBuddy();
-	const int contactIndexInBuddy = ownerBuddy.contacts().indexOf(contact);
+    const Buddy &ownerBuddy = contact.ownerBuddy();
+    const int contactIndexInBuddy = ownerBuddy.contacts().indexOf(contact);
 
-	if (-1 != contactIndexInBuddy)
-	{
-		const int i = List.indexOf(buddy);
-		if (-1 != i)
-			result.append(index(i, 0).child(contactIndexInBuddy, 0));
-	}
+    if (-1 != contactIndexInBuddy)
+    {
+        const int i = List.indexOf(buddy);
+        if (-1 != i)
+            result.append(index(i, 0).child(contactIndexInBuddy, 0));
+    }
 
-	return result;
+    return result;
 }
 
 // D&D
 
 QStringList BuddyListModel::mimeTypes() const
 {
-	return m_buddyListMimeDataService->mimeTypes();
+    return m_buddyListMimeDataService->mimeTypes();
 }
 
-QMimeData * BuddyListModel::mimeData(const QModelIndexList &indexes) const
+QMimeData *BuddyListModel::mimeData(const QModelIndexList &indexes) const
 {
-	BuddyList list;
-	foreach (const QModelIndex &index, indexes)
-	{
-		Buddy con = index.data(BuddyRole).value<Buddy>();
-		if (con.isNull())
-			continue;
-		list << con;
-	}
+    BuddyList list;
+    foreach (const QModelIndex &index, indexes)
+    {
+        Buddy con = index.data(BuddyRole).value<Buddy>();
+        if (con.isNull())
+            continue;
+        list << con;
+    }
 
-	return m_buddyListMimeDataService->toMimeData(list).release();
+    return m_buddyListMimeDataService->toMimeData(list).release();
 }
 
 void BuddyListModel::accountAdded(Account account)
 {
-	connect(account, SIGNAL(buddyStatusChanged(Contact,Status)), this, SLOT(contactStatusChanged(Contact,Status)));
+    connect(account, SIGNAL(buddyStatusChanged(Contact, Status)), this, SLOT(contactStatusChanged(Contact, Status)));
 }
 
 void BuddyListModel::accountRemoved(Account account)
 {
-	disconnect(account, 0, this, 0);
+    disconnect(account, 0, this, 0);
 }
 
 #include "moc_buddy-list-model.cpp"

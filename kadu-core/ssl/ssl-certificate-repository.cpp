@@ -21,8 +21,7 @@
 
 #include "ssl/ssl-certificate.h"
 
-SslCertificateRepository::SslCertificateRepository(QObject *parent) :
-		QObject{parent}
+SslCertificateRepository::SslCertificateRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,50 +31,50 @@ SslCertificateRepository::~SslCertificateRepository()
 
 SslCertificateRepository::Iterator SslCertificateRepository::begin()
 {
-	return m_certificates.begin();
+    return m_certificates.begin();
 }
 
 SslCertificateRepository::Iterator SslCertificateRepository::end()
 {
-	return m_certificates.end();
+    return m_certificates.end();
 }
 
 QSet<SslCertificate> SslCertificateRepository::certificates() const
 {
-	return m_certificates;
+    return m_certificates;
 }
 
 void SslCertificateRepository::setPersistentCertificates(const QSet<SslCertificate> &certificates)
 {
-	m_certificates = certificates;
-	m_persistentCertificates = certificates;
+    m_certificates = certificates;
+    m_persistentCertificates = certificates;
 }
 
 QSet<SslCertificate> SslCertificateRepository::persistentCertificates() const
 {
-	return m_persistentCertificates;
+    return m_persistentCertificates;
 }
 
 bool SslCertificateRepository::containsCertificate(const SslCertificate &certificate) const
 {
-	return m_certificates.contains(certificate);
+    return m_certificates.contains(certificate);
 }
 
 void SslCertificateRepository::addCertificate(SslCertificate certificate)
 {
-	m_certificates.insert(certificate);
+    m_certificates.insert(certificate);
 }
 
 void SslCertificateRepository::addPersistentCertificate(SslCertificate certificate)
 {
-	m_certificates.insert(certificate);
-	m_persistentCertificates.insert(certificate);
+    m_certificates.insert(certificate);
+    m_persistentCertificates.insert(certificate);
 }
 
 void SslCertificateRepository::removeCertificate(SslCertificate certificate)
 {
-	m_certificates.remove(certificate);
-	m_persistentCertificates.remove(certificate);
+    m_certificates.remove(certificate);
+    m_persistentCertificates.remove(certificate);
 }
 
 #include "moc_ssl-certificate-repository.cpp"

@@ -25,50 +25,48 @@
 
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
 
-ScreenModeChecker::ScreenModeChecker()
-		: FullScreenCheckTimer(0), InFullScreen(false)
+ScreenModeChecker::ScreenModeChecker() : FullScreenCheckTimer(0), InFullScreen(false)
 {
 }
 
 ScreenModeChecker::~ScreenModeChecker()
 {
-	disable();
+    disable();
 }
 
 void ScreenModeChecker::enable()
 {
-	if (isDummy())
-		return;
+    if (isDummy())
+        return;
 
-	if (!FullScreenCheckTimer)
-		FullScreenCheckTimer = new QTimer(this);
+    if (!FullScreenCheckTimer)
+        FullScreenCheckTimer = new QTimer(this);
 
-	FullScreenCheckTimer->setInterval(FULLSCREENCHECKTIMER_INTERVAL);
-	connect(FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
-	FullScreenCheckTimer->start();
+    FullScreenCheckTimer->setInterval(FULLSCREENCHECKTIMER_INTERVAL);
+    connect(FullScreenCheckTimer, SIGNAL(timeout()), this, SLOT(checkFullScreen()));
+    FullScreenCheckTimer->start();
 }
 
 void ScreenModeChecker::disable()
 {
-	if (!FullScreenCheckTimer)
-		return;
+    if (!FullScreenCheckTimer)
+        return;
 
-	FullScreenCheckTimer->stop();
-	disconnect(FullScreenCheckTimer, 0, this, 0);
-	FullScreenCheckTimer->deleteLater();
-	FullScreenCheckTimer = 0;
+    FullScreenCheckTimer->stop();
+    disconnect(FullScreenCheckTimer, 0, this, 0);
+    FullScreenCheckTimer->deleteLater();
+    FullScreenCheckTimer = 0;
 }
 
 void ScreenModeChecker::checkFullScreen()
 {
-	bool inFullScreenNow = isFullscreenAppActive() && !isScreensaverActive();
+    bool inFullScreenNow = isFullscreenAppActive() && !isScreensaverActive();
 
-	if (InFullScreen != inFullScreenNow)
-	{
-		InFullScreen = inFullScreenNow;
-		emit fullscreenToggled(InFullScreen);
-	}
+    if (InFullScreen != inFullScreenNow)
+    {
+        InFullScreen = inFullScreenNow;
+        emit fullscreenToggled(InFullScreen);
+    }
 }
-
 
 #include "moc_screen-mode-checker.cpp"

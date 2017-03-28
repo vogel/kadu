@@ -26,18 +26,17 @@
 
 class WordFixFormattedStringVisitor : public FormattedStringCloneVisitor
 {
-	QMap<QString, QString> Words;
+    QMap<QString, QString> Words;
 
-	QString fixWord(const QString &content, const QString &word, const QString &fix);
-	QString fixWords(const QString &content);
+    QString fixWord(const QString &content, const QString &word, const QString &fix);
+    QString fixWords(const QString &content);
 
 public:
-	explicit WordFixFormattedStringVisitor(QMap<QString, QString> words);
-	virtual ~WordFixFormattedStringVisitor();
+    explicit WordFixFormattedStringVisitor(QMap<QString, QString> words);
+    virtual ~WordFixFormattedStringVisitor();
 
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock);
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock);
-
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock);
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock);
 };
 
-#endif // WORD_FIX_FORMATTED_STRING_VISITOR_H
+#endif   // WORD_FIX_FORMATTED_STRING_VISITOR_H

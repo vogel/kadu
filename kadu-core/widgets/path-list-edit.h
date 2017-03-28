@@ -35,67 +35,70 @@ class QListWidget;
 
 class PathListEdit : public QPushButton
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	PathListEdit(QWidget *parent = nullptr);
-	virtual ~PathListEdit() {}
+    PathListEdit(QWidget *parent = nullptr);
+    virtual ~PathListEdit()
+    {
+    }
 
-	const QStringList & pathList() const { return PathList; }
-	void setPathList(const QStringList &pathList);
+    const QStringList &pathList() const
+    {
+        return PathList;
+    }
+    void setPathList(const QStringList &pathList);
 
 signals:
-	void changed();
+    void changed();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QPointer<PathListEditWindow> Dialog;
-	QStringList PathList;
+    QPointer<PathListEditWindow> Dialog;
+    QStringList PathList;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void showDialog();
-	void pathListChanged(const QStringList &pathList);
-
+    void showDialog();
+    void pathListChanged(const QStringList &pathList);
 };
 
 class PathListEditWindow : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PathListEditWindow(const QStringList &pathList, QWidget *parent = nullptr);
-	~PathListEditWindow();
+    explicit PathListEditWindow(const QStringList &pathList, QWidget *parent = nullptr);
+    ~PathListEditWindow();
 
 public slots:
-	void setPathList(const QStringList &list);
+    void setPathList(const QStringList &list);
 
 signals:
-	void changed(const QStringList &paths);
+    void changed(const QStringList &paths);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QStringList PathList;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QStringList PathList;
 
-	QListWidget *PathListWidget;
+    QListWidget *PathListWidget;
 
-	void createGui();
-	bool validatePath(QString &path);
+    void createGui();
+    bool validatePath(QString &path);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void addPathClicked();
-	void changePathClicked();
-	void deletePathClicked();
+    void addPathClicked();
+    void changePathClicked();
+    void deletePathClicked();
 
-	void okClicked();
+    void okClicked();
 
-	void keyPressEvent(QKeyEvent *e);
-
+    void keyPressEvent(QKeyEvent *e);
 };

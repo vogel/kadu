@@ -32,8 +32,7 @@
 
 #include "screenshot-configuration-ui-handler.h"
 
-ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) :
-		QObject{parent}
+ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -43,19 +42,20 @@ ScreenShotConfigurationUiHandler::~ScreenShotConfigurationUiHandler()
 
 void ScreenShotConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	QObject::connect(
-		mainConfigurationWindow->widget()->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
-		mainConfigurationWindow->widget()->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
+    QObject::connect(
+        mainConfigurationWindow->widget()->widgetById("screenshot/enableSizeLimit"), SIGNAL(toggled(bool)),
+        mainConfigurationWindow->widget()->widgetById("screenshot/sizeLimit"), SLOT(setEnabled(bool)));
 
-	QStringList opts;
-	QList<QByteArray> byteArrayOpts = QImageWriter::supportedImageFormats();
+    QStringList opts;
+    QList<QByteArray> byteArrayOpts = QImageWriter::supportedImageFormats();
 
-	foreach (const QByteArray &opt, byteArrayOpts)
-		opts.append(QString(opt));
+    foreach (const QByteArray &opt, byteArrayOpts)
+        opts.append(QString(opt));
 
-	ConfigComboBox *formats = static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
-	if (formats)
-		formats->setItems(opts, opts);
+    ConfigComboBox *formats =
+        static_cast<ConfigComboBox *>(mainConfigurationWindow->widget()->widgetById("screenshot/formats"));
+    if (formats)
+        formats->setItems(opts, opts);
 }
 
 void ScreenShotConfigurationUiHandler::mainConfigurationWindowDestroyed()

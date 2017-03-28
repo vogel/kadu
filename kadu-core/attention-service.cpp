@@ -21,9 +21,7 @@
 
 #include "message/unread-message-repository.h"
 
-AttentionService::AttentionService(QObject *parent) :
-		QObject{parent},
-		m_unreadMessageRepository{nullptr}
+AttentionService::AttentionService(QObject *parent) : QObject{parent}, m_unreadMessageRepository{nullptr}
 {
 }
 
@@ -33,21 +31,19 @@ AttentionService::~AttentionService()
 
 void AttentionService::setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository)
 {
-	m_unreadMessageRepository = unreadMessageRepository;
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)),
-	        this, SLOT(unreadMessageCountChanged()));
-	connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)),
-	        this, SLOT(unreadMessageCountChanged()));
+    m_unreadMessageRepository = unreadMessageRepository;
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageCountChanged()));
+    connect(m_unreadMessageRepository, SIGNAL(unreadMessageRemoved(Message)), this, SLOT(unreadMessageCountChanged()));
 }
 
 bool AttentionService::needAttention()
 {
-	return m_unreadMessageRepository->hasUnreadMessages();
+    return m_unreadMessageRepository->hasUnreadMessages();
 }
 
 void AttentionService::unreadMessageCountChanged()
 {
-	emit needAttentionChanged(needAttention());
+    emit needAttentionChanged(needAttention());
 }
 
 #include "moc_attention-service.cpp"

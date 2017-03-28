@@ -28,8 +28,7 @@
 #include <QtGui/QResizeEvent>
 #include <QtWidgets/QLabel>
 
-WaitOverlay::WaitOverlay(QWidget *parent) :
-		QLabel(parent)
+WaitOverlay::WaitOverlay(QWidget *parent) : QLabel(parent)
 {
 }
 
@@ -39,45 +38,45 @@ WaitOverlay::~WaitOverlay()
 
 void WaitOverlay::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void WaitOverlay::init()
 {
-	setAlignment(Qt::AlignCenter);
-	setMovie(new QMovie(m_iconsManager->iconPath(KaduIcon("kadu_icons/please-wait", "64x64")), QByteArray(), this));
-	setStyleSheet("background-color: rgba(127, 127, 127, 127)");
+    setAlignment(Qt::AlignCenter);
+    setMovie(new QMovie(m_iconsManager->iconPath(KaduIcon("kadu_icons/please-wait", "64x64")), QByteArray(), this));
+    setStyleSheet("background-color: rgba(127, 127, 127, 127)");
 
-	hide();
+    hide();
 
-	if (parent())
-		QTimer::singleShot(500, this, SLOT(timeoutPassed()));
+    if (parent())
+        QTimer::singleShot(500, this, SLOT(timeoutPassed()));
 }
 
 void WaitOverlay::timeoutPassed()
 {
-	if (!parentWidget()) // in case of reparenting
-		return;
+    if (!parentWidget())   // in case of reparenting
+        return;
 
-	movie()->start();
+    movie()->start();
 
-	move(0, 0);
-	resize(parentWidget()->size());
-	parentWidget()->installEventFilter(this);
+    move(0, 0);
+    resize(parentWidget()->size());
+    parentWidget()->installEventFilter(this);
 
-	show();
-	raise();
+    show();
+    raise();
 }
 
 bool WaitOverlay::eventFilter(QObject *object, QEvent *event)
 {
-	if (QEvent::Resize != event->type())
-		return QWidget::eventFilter(object, event);
+    if (QEvent::Resize != event->type())
+        return QWidget::eventFilter(object, event);
 
-	QResizeEvent *resizeEvent = static_cast<QResizeEvent *>(event);
-	resize(resizeEvent->size());
+    QResizeEvent *resizeEvent = static_cast<QResizeEvent *>(event);
+    resize(resizeEvent->size());
 
-	return QWidget::eventFilter(object, event);
+    return QWidget::eventFilter(object, event);
 }
 
 #include "moc_wait-overlay.cpp"

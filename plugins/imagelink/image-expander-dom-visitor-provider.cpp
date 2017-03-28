@@ -24,9 +24,8 @@
 
 #include "misc/memory.h"
 
-ImageExpanderDomVisitorProvider::ImageExpanderDomVisitorProvider(QObject *parent) :
-		QObject{parent},
-		m_ignoreLinksVisitor{std::make_unique<ImageExpander>()}
+ImageExpanderDomVisitorProvider::ImageExpanderDomVisitorProvider(QObject *parent)
+        : QObject{parent}, m_ignoreLinksVisitor{std::make_unique<ImageExpander>()}
 {
 }
 
@@ -34,14 +33,14 @@ ImageExpanderDomVisitorProvider::~ImageExpanderDomVisitorProvider()
 {
 }
 
-const DomVisitor * ImageExpanderDomVisitorProvider::provide() const
+const DomVisitor *ImageExpanderDomVisitorProvider::provide() const
 {
-	return m_configuration.showImages() ? &m_ignoreLinksVisitor : nullptr;
+    return m_configuration.showImages() ? &m_ignoreLinksVisitor : nullptr;
 }
 
 void ImageExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfiguration &configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 #include "moc_image-expander-dom-visitor-provider.cpp"

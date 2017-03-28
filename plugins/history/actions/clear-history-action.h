@@ -30,23 +30,22 @@ class Myself;
 
 class ClearHistoryAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ClearHistoryAction(QObject *parent = nullptr);
-	virtual ~ClearHistoryAction();
+    Q_INVOKABLE explicit ClearHistoryAction(QObject *parent = nullptr);
+    virtual ~ClearHistoryAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<History> m_history;
-	QPointer<Myself> m_myself;
+    QPointer<History> m_history;
+    QPointer<Myself> m_myself;
 
 private slots:
-	INJEQT_SET void setHistory(History *history);
-	INJEQT_SET void setMyself(Myself *myself);
-
+    INJEQT_SET void setHistory(History *history);
+    INJEQT_SET void setMyself(Myself *myself);
 };

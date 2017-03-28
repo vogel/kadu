@@ -24,124 +24,124 @@
 #include "gadu-socket-notifiers.h"
 
 GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
-	: QObject(parent), Socket(-1), Started(false), ReadNotifier(0), WriteNotifier(0), TimeoutTimer(0)
+        : QObject(parent), Socket(-1), Started(false), ReadNotifier(0), WriteNotifier(0), TimeoutTimer(0)
 {
 }
 
 GaduSocketNotifiers::~GaduSocketNotifiers()
 {
-	deleteSocketNotifiers();
+    deleteSocketNotifiers();
 }
 
 void GaduSocketNotifiers::createSocketNotifiers()
 {
-	deleteSocketNotifiers();
+    deleteSocketNotifiers();
 
-	if (-1 == Socket)
-		return;
+    if (-1 == Socket)
+        return;
 
-	// Old code was using 0 instead of -1 for invalid socket. Check whether we didn't forget to fix something.
-	Q_ASSERT(0 != Socket);
+    // Old code was using 0 instead of -1 for invalid socket. Check whether we didn't forget to fix something.
+    Q_ASSERT(0 != Socket);
 
-	ReadNotifier = new QSocketNotifier(Socket, QSocketNotifier::Read, this);
-	connect(ReadNotifier, SIGNAL(activated(int)), this, SLOT(dataReceived()));
+    ReadNotifier = new QSocketNotifier(Socket, QSocketNotifier::Read, this);
+    connect(ReadNotifier, SIGNAL(activated(int)), this, SLOT(dataReceived()));
 
-	WriteNotifier = new QSocketNotifier(Socket, QSocketNotifier::Write, this);
-	connect(WriteNotifier, SIGNAL(activated(int)), this, SLOT(dataSent()));
+    WriteNotifier = new QSocketNotifier(Socket, QSocketNotifier::Write, this);
+    connect(WriteNotifier, SIGNAL(activated(int)), this, SLOT(dataSent()));
 
-	Started = true;
+    Started = true;
 
-	enable();
+    enable();
 }
 
 void GaduSocketNotifiers::deleteSocketNotifiers()
 {
-	if (!Started)
-		return;
+    if (!Started)
+        return;
 
-	Started = false;
+    Started = false;
 
-	ReadNotifier->setEnabled(false);
-	ReadNotifier->deleteLater();
-	ReadNotifier = 0;
+    ReadNotifier->setEnabled(false);
+    ReadNotifier->deleteLater();
+    ReadNotifier = 0;
 
-	WriteNotifier->setEnabled(false);
-	WriteNotifier->deleteLater();
-	WriteNotifier = 0;
+    WriteNotifier->setEnabled(false);
+    WriteNotifier->deleteLater();
+    WriteNotifier = 0;
 
-	if (TimeoutTimer)
-	{
-		TimeoutTimer->stop();
-		TimeoutTimer->deleteLater();
-		TimeoutTimer = 0;
-	}
+    if (TimeoutTimer)
+    {
+        TimeoutTimer->stop();
+        TimeoutTimer->deleteLater();
+        TimeoutTimer = 0;
+    }
 }
 
 void GaduSocketNotifiers::disable()
 {
-	if (!Started)
-		return;
+    if (!Started)
+        return;
 
-	ReadNotifier->setEnabled(false);
-	WriteNotifier->setEnabled(false);
-	if (TimeoutTimer)
-		TimeoutTimer->stop();
+    ReadNotifier->setEnabled(false);
+    WriteNotifier->setEnabled(false);
+    if (TimeoutTimer)
+        TimeoutTimer->stop();
 }
 
 void GaduSocketNotifiers::enable()
 {
-	if (!Started)
-		return;
+    if (!Started)
+        return;
 
-	ReadNotifier->setEnabled(checkRead());
-	WriteNotifier->setEnabled(checkWrite());
+    ReadNotifier->setEnabled(checkRead());
+    WriteNotifier->setEnabled(checkWrite());
 
-	int tout = timeout();
-	if (tout > 0)
-	{
-		if (!TimeoutTimer)
-		{
-			TimeoutTimer = new QTimer(this);
-			TimeoutTimer->setSingleShot(true);
-			connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
-		}
-		TimeoutTimer->start(tout);
-	}
-	else if (TimeoutTimer)
-	{
-		TimeoutTimer->stop();
-		TimeoutTimer->deleteLater();
-		TimeoutTimer = 0;
-	}
+    int tout = timeout();
+    if (tout > 0)
+    {
+        if (!TimeoutTimer)
+        {
+            TimeoutTimer = new QTimer(this);
+            TimeoutTimer->setSingleShot(true);
+            connect(TimeoutTimer, SIGNAL(timeout()), this, SLOT(socketTimeout()));
+        }
+        TimeoutTimer->start(tout);
+    }
+    else if (TimeoutTimer)
+    {
+        TimeoutTimer->stop();
+        TimeoutTimer->deleteLater();
+        TimeoutTimer = 0;
+    }
 }
 
 void GaduSocketNotifiers::watchFor(int socket)
 {
-	if (Socket == socket)
-		return;
+    if (Socket == socket)
+        return;
 
-	Socket = socket;
-	createSocketNotifiers();
+    Socket = socket;
+    createSocketNotifiers();
 }
 
 void GaduSocketNotifiers::socketTimeout()
 {
-	if (!handleSoftTimeout())
-		connectionTimeout();
+    if (!handleSoftTimeout())
+        connectionTimeout();
 }
 
 void GaduSocketNotifiers::dataReceived()
 {
-	disable();
-	socketEvent();
-	enable();
+    disable();
+    socketEvent();
+    enable();
 }
 
 void GaduSocketNotifiers::dataSent()
 {
-	disable();
-	socketEvent();
-	enable();
+    disable();
+    socketEvent();
+    enable();
 }
 
 #include "moc_gadu-socket-notifiers.cpp"

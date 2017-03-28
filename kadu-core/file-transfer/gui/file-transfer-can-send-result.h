@@ -25,15 +25,13 @@
 
 class KADUAPI FileTransferCanSendResult
 {
-
 public:
-	FileTransferCanSendResult(bool canSend, QString reason);
+    FileTransferCanSendResult(bool canSend, QString reason);
 
-	bool canSend() const;
-	QString reason() const;
+    bool canSend() const;
+    QString reason() const;
 
 private:
-	bool m_canSend;
-	QString m_reason;
-
+    bool m_canSend;
+    QString m_reason;
 };

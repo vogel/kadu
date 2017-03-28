@@ -26,15 +26,14 @@
 
 class BoldAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit BoldAction(QObject *parent = nullptr);
-	virtual ~BoldAction();
+    Q_INVOKABLE explicit BoldAction(QObject *parent = nullptr);
+    virtual ~BoldAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action * action) override;
-
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 };

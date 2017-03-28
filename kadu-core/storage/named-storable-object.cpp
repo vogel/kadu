@@ -52,20 +52,21 @@ NamedStorableObject::NamedStorableObject()
  */
 std::shared_ptr<StoragePoint> NamedStorableObject::createStoragePoint()
 {
-	if (storageNodeName().isEmpty())
-		return {};
+    if (storageNodeName().isEmpty())
+        return {};
 
-	if (!storageParent())
-		return {};
+    if (!storageParent())
+        return {};
 
-	auto parentStoragePoint = storageParent()->storage();
-	if (!parentStoragePoint)
-		return {};
+    auto parentStoragePoint = storageParent()->storage();
+    if (!parentStoragePoint)
+        return {};
 
-	QString nodeName = name();
-	if (nodeName.isEmpty())
-		return {};
+    QString nodeName = name();
+    if (nodeName.isEmpty())
+        return {};
 
-	QDomElement node = parentStoragePoint->storage()->getNamedNode(parentStoragePoint->point(), storageNodeName(), nodeName);
-	return std::make_shared<StoragePoint>(parentStoragePoint->storage(), node);
+    QDomElement node =
+        parentStoragePoint->storage()->getNamedNode(parentStoragePoint->point(), storageNodeName(), nodeName);
+    return std::make_shared<StoragePoint>(parentStoragePoint->storage(), node);
 }

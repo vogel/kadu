@@ -26,28 +26,28 @@
  */
 enum class ChatState
 {
-	/**
-	 * Chat is active - window is opened and active.
-	 */
-	Active = 0,
-	/**
-	 * Chat is in compising state - new message is being entered, but not send yet.
-	 */
-	Composing = 1,
-	/**
-	 * Chat is gone - window was closed.
-	 */
-	Gone = 2,
-	/**
-	 * Chat is inactive - window is opened but not active.
-	 */
-	Inactive = 3,
-	/**
-	 * Unknown state.
-	 */
-	None = 4,
-	/**
-	 * Chat is in paused state - new message is written, but entering was paused.
-	 */
-	Paused = 5
+    /**
+     * Chat is active - window is opened and active.
+     */
+    Active = 0,
+    /**
+     * Chat is in compising state - new message is being entered, but not send yet.
+     */
+    Composing = 1,
+    /**
+     * Chat is gone - window was closed.
+     */
+    Gone = 2,
+    /**
+     * Chat is inactive - window is opened but not active.
+     */
+    Inactive = 3,
+    /**
+     * Unknown state.
+     */
+    None = 4,
+    /**
+     * Chat is in paused state - new message is written, but entering was paused.
+     */
+    Paused = 5
 };

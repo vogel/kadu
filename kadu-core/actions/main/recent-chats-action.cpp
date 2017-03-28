@@ -30,13 +30,12 @@
 
 #include <QtWidgets/QMenu>
 
-RecentChatsAction::RecentChatsAction(QObject *parent) :
-		ActionDescription(parent)
+RecentChatsAction::RecentChatsAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeMainMenu);
-	setName("openRecentChatsAction");
-	setIcon(KaduIcon("internet-group-chat"));
-	setText(tr("Recent Chats"));
+    setType(ActionDescription::TypeMainMenu);
+    setName("openRecentChatsAction");
+    setIcon(KaduIcon("internet-group-chat"));
+    setText(tr("Recent Chats"));
 }
 
 RecentChatsAction::~RecentChatsAction()
@@ -45,23 +44,23 @@ RecentChatsAction::~RecentChatsAction()
 
 void RecentChatsAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void RecentChatsAction::actionInstanceCreated(Action *action)
 {
-	auto recentChatsMenu = injectedFactory()->makeOwned<RecentChatsMenu>(action->parentWidget());
-	connect(recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
+    auto recentChatsMenu = injectedFactory()->makeOwned<RecentChatsMenu>(action->parentWidget());
+    connect(recentChatsMenu, SIGNAL(triggered(QAction *)), this, SLOT(openRecentChats(QAction *)));
 
-	action->setEnabled(false);
-	action->setMenu(recentChatsMenu);
-	connect(recentChatsMenu, SIGNAL(chatsListAvailable(bool)), action, SLOT(setEnabled(bool)));
-	recentChatsMenu->invalidate();
+    action->setEnabled(false);
+    action->setMenu(recentChatsMenu);
+    connect(recentChatsMenu, SIGNAL(chatsListAvailable(bool)), action, SLOT(setEnabled(bool)));
+    recentChatsMenu->invalidate();
 }
 
 void RecentChatsAction::openRecentChats(QAction *action)
 {
-	m_chatWidgetManager->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
+    m_chatWidgetManager->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
 }
 
 #include "moc_recent-chats-action.cpp"

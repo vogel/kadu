@@ -37,14 +37,13 @@
 
 #include "edit-talkable-action.h"
 
-EditTalkableAction::EditTalkableAction(QObject *parent) :
-		ActionDescription(parent)
+EditTalkableAction::EditTalkableAction(QObject *parent) : ActionDescription(parent)
 {
-	// TODO: TypeChat | TypeUser or TypeTalkables
-	setType(TypeGlobal);
-	setName("editUserAction");
-	setIcon(KaduIcon("x-office-address-book"));
-	setText(tr("View Buddy Properties"));
+    // TODO: TypeChat | TypeUser or TypeTalkables
+    setType(TypeGlobal);
+    setName("editUserAction");
+    setIcon(KaduIcon("x-office-address-book"));
+    setText(tr("View Buddy Properties"));
 }
 
 EditTalkableAction::~EditTalkableAction()
@@ -53,167 +52,167 @@ EditTalkableAction::~EditTalkableAction()
 
 void EditTalkableAction::setBuddyDataWindowRepository(BuddyDataWindowRepository *buddyDataWindowRepository)
 {
-	m_buddyDataWindowRepository = buddyDataWindowRepository;
+    m_buddyDataWindowRepository = buddyDataWindowRepository;
 }
 
 void EditTalkableAction::setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository)
 {
-	m_chatDataWindowRepository = chatDataWindowRepository;
+    m_chatDataWindowRepository = chatDataWindowRepository;
 }
 
 void EditTalkableAction::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void EditTalkableAction::setKaduWindowService(KaduWindowService *kaduWindowService)
 {
-	m_kaduWindowService = kaduWindowService;
+    m_kaduWindowService = kaduWindowService;
 }
 
 void EditTalkableAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 int EditTalkableAction::actionRole(ActionContext *context) const
 {
-	if (context->roles().contains(ChatRole))
-		return ChatRole;
-	if (context->roles().contains(BuddyRole) || context->roles().contains(ContactRole)) // we just use ownerBuddy
-		return 1 == context->buddies().size() ? BuddyRole : ChatRole;
-	return -1;
+    if (context->roles().contains(ChatRole))
+        return ChatRole;
+    if (context->roles().contains(BuddyRole) || context->roles().contains(ContactRole))   // we just use ownerBuddy
+        return 1 == context->buddies().size() ? BuddyRole : ChatRole;
+    return -1;
 }
 
 Chat EditTalkableAction::actionChat(ActionContext *context) const
 {
-	return context->chat();
+    return context->chat();
 }
 
 Buddy EditTalkableAction::actionBuddy(ActionContext *context) const
 {
-	if (context->buddies().size())
-		return context->buddies().toBuddy();
-	else
-		return context->contacts().toContact().ownerBuddy();
+    if (context->buddies().size())
+        return context->buddies().toBuddy();
+    else
+        return context->contacts().toContact().ownerBuddy();
 }
 
 void EditTalkableAction::setChatActionTitleAndIcon(Action *action)
 {
-	action->setIcon(KaduIcon("x-office-address-book"));
-	action->setText(QCoreApplication::translate("KaduWindowActions", "View Chat Properties"));
+    action->setIcon(KaduIcon("x-office-address-book"));
+    action->setText(QCoreApplication::translate("KaduWindowActions", "View Chat Properties"));
 }
 
 void EditTalkableAction::setBuddyActionTitleAndIcon(Action *action)
 {
-	const Buddy &buddy = actionBuddy(action->context());
-	if (buddy.isAnonymous() && 1 == action->context()->buddies().count())
-	{
-		action->setIcon(KaduIcon("contact-new"));
-		action->setText(QCoreApplication::translate("KaduWindowActions", "Add Buddy..."));
-	}
-	else
-	{
-		action->setIcon(KaduIcon("x-office-address-book"));
-		action->setText(QCoreApplication::translate("KaduWindowActions", "View Buddy Properties"));
-	}
+    const Buddy &buddy = actionBuddy(action->context());
+    if (buddy.isAnonymous() && 1 == action->context()->buddies().count())
+    {
+        action->setIcon(KaduIcon("contact-new"));
+        action->setText(QCoreApplication::translate("KaduWindowActions", "Add Buddy..."));
+    }
+    else
+    {
+        action->setIcon(KaduIcon("x-office-address-book"));
+        action->setText(QCoreApplication::translate("KaduWindowActions", "View Buddy Properties"));
+    }
 }
 
 void EditTalkableAction::updateChatActionState(Action *action)
 {
-	setChatActionTitleAndIcon(action);
+    setChatActionTitleAndIcon(action);
 
-	const Chat &chat = actionChat(action->context());
-	ChatType *chatType = m_chatTypeManager->chatType(chat.type());
-	action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
+    const Chat &chat = actionChat(action->context());
+    ChatType *chatType = m_chatTypeManager->chatType(chat.type());
+    action->setEnabled(chat && (!chatType || (chatType->name() != "Contact" && !chat.display().isEmpty())));
 }
 
 void EditTalkableAction::updateBuddyActionState(Action *action)
 {
-	setBuddyActionTitleAndIcon(action);
+    setBuddyActionTitleAndIcon(action);
 
-	const Buddy &buddy = actionBuddy(action->context());
-	if (!buddy)
-		return;
+    const Buddy &buddy = actionBuddy(action->context());
+    if (!buddy)
+        return;
 
-	if (buddy == m_myself->buddy())
-		return;
+    if (buddy == m_myself->buddy())
+        return;
 
-	action->setEnabled(true);
+    action->setEnabled(true);
 }
 
 void EditTalkableAction::actionInstanceCreated(Action *action)
 {
-	switch (actionRole(action->context()))
-	{
-		case ChatRole:
-			setChatActionTitleAndIcon(action);
-			break;
-		case BuddyRole:
-			setBuddyActionTitleAndIcon(action);
-			break;
-	}
+    switch (actionRole(action->context()))
+    {
+    case ChatRole:
+        setChatActionTitleAndIcon(action);
+        break;
+    case BuddyRole:
+        setBuddyActionTitleAndIcon(action);
+        break;
+    }
 
-	updateActionState(action);
+    updateActionState(action);
 }
 
 void EditTalkableAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	if (action->context()->buddies().isAnyTemporary())
-		return;
+    if (action->context()->buddies().isAnyTemporary())
+        return;
 
-	switch (actionRole(action->context()))
-	{
-		case ChatRole:
-			updateChatActionState(action);
-			break;
-		case BuddyRole:
-			updateBuddyActionState(action);
-			break;
-	}
+    switch (actionRole(action->context()))
+    {
+    case ChatRole:
+        updateChatActionState(action);
+        break;
+    case BuddyRole:
+        updateBuddyActionState(action);
+        break;
+    }
 }
 
 void EditTalkableAction::chatActionTriggered(ActionContext *context)
 {
-	const Chat &chat = actionChat(context);
-	if (!chat)
-		return;
+    const Chat &chat = actionChat(context);
+    if (!chat)
+        return;
 
-	m_chatDataWindowRepository->showChatWindow(chat);
+    m_chatDataWindowRepository->showChatWindow(chat);
 }
 
 void EditTalkableAction::buddyActionTriggered(ActionContext *context)
 {
-	Buddy buddy = actionBuddy(context);
-	if (!buddy)
-		return;
-	if (buddy.isAnonymous())
-		(injectedFactory()->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy, true))->show();
-	else
-		m_buddyDataWindowRepository->showBuddyWindow(buddy);
+    Buddy buddy = actionBuddy(context);
+    if (!buddy)
+        return;
+    if (buddy.isAnonymous())
+        (injectedFactory()->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy, true))->show();
+    else
+        m_buddyDataWindowRepository->showBuddyWindow(buddy);
 }
 
 void EditTalkableAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(widget)
-	Q_UNUSED(toggled)
+    Q_UNUSED(widget)
+    Q_UNUSED(toggled)
 
-	trigger(context);
+    trigger(context);
 }
 
 void EditTalkableAction::trigger(ActionContext *context)
 {
-	switch (actionRole(context))
-	{
-		case ChatRole:
-			chatActionTriggered(context);
-			break;
-		case BuddyRole:
-			buddyActionTriggered(context);
-			break;
-	}
+    switch (actionRole(context))
+    {
+    case ChatRole:
+        chatActionTriggered(context);
+        break;
+    case BuddyRole:
+        buddyActionTriggered(context);
+        break;
+    }
 }
 
 #include "moc_edit-talkable-action.cpp"

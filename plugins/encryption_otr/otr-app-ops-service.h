@@ -23,22 +23,21 @@
 #include <QtCore/QObject>
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
 }
 
 class OtrAppOpsService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	OtrlMessageAppOps AppOps;
+    OtrlMessageAppOps AppOps;
 
 public:
-	Q_INVOKABLE OtrAppOpsService();
-	virtual ~OtrAppOpsService();
+    Q_INVOKABLE OtrAppOpsService();
+    virtual ~OtrAppOpsService();
 
-	const OtrlMessageAppOps * appOps() const;
-
+    const OtrlMessageAppOps *appOps() const;
 };
 
-#endif // OTR_APP_OPS_SERVICE_H
+#endif   // OTR_APP_OPS_SERVICE_H

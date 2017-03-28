@@ -22,41 +22,40 @@
 
 Theme Theme::null("", "");
 
-Theme::Theme(const QString &path, const QString &name) :
-		Path(path), Name(name)
+Theme::Theme(const QString &path, const QString &name) : Path(path), Name(name)
 {
 }
 
 Theme::Theme(const Theme &copyMe)
 {
-	Path = copyMe.Path;
-	Name = copyMe.Name;
+    Path = copyMe.Path;
+    Name = copyMe.Name;
 }
 
-Theme & Theme::operator = (const Theme &copyMe)
+Theme &Theme::operator=(const Theme &copyMe)
 {
-	Path = copyMe.Path;
-	Name = copyMe.Name;
+    Path = copyMe.Path;
+    Name = copyMe.Name;
 
-	return *this;
+    return *this;
 }
 
-bool Theme::operator == (const Theme &compareTo)
+bool Theme::operator==(const Theme &compareTo)
 {
-	return Path == compareTo.Path && Name == compareTo.Name;
+    return Path == compareTo.Path && Name == compareTo.Name;
 }
 
-bool Theme::operator != (const Theme &compareTo)
+bool Theme::operator!=(const Theme &compareTo)
 {
-	return !(*this == compareTo);
+    return !(*this == compareTo);
 }
 
 bool Theme::isValid() const
 {
-	return !Path.isEmpty() && !Name.isEmpty();
+    return !Path.isEmpty() && !Name.isEmpty();
 }
 
-Theme::operator bool () const
+Theme::operator bool() const
 {
-	return isValid();
+    return isValid();
 }

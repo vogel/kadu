@@ -39,34 +39,32 @@ class FormattedStringVisitor;
  */
 class KADUAPI FormattedString
 {
-
 protected:
-	FormattedString();
+    FormattedString();
 
 public:
-	virtual ~FormattedString();
+    virtual ~FormattedString();
 
-	virtual bool operator == (const FormattedString &compareTo) = 0;
-	bool operator != (const FormattedString &compareTo);
+    virtual bool operator==(const FormattedString &compareTo) = 0;
+    bool operator!=(const FormattedString &compareTo);
 
-	/**
-	 * @short Accept given visitor on current item.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitor visitor to accept
-	 */
-	virtual void accept(FormattedStringVisitor *visitor) const = 0;
+    /**
+     * @short Accept given visitor on current item.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitor visitor to accept
+     */
+    virtual void accept(FormattedStringVisitor *visitor) const = 0;
 
-	/**
-	 * @short Return true if item is empty.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if item is empty
-	 */
-	virtual bool isEmpty() const = 0;
-
+    /**
+     * @short Return true if item is empty.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if item is empty
+     */
+    virtual bool isEmpty() const = 0;
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_H
+#endif   // FORMATTED_STRING_H

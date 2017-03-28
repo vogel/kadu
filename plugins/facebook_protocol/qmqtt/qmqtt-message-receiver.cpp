@@ -29,39 +29,36 @@
 
 namespace
 {
-	constexpr int MAX_BUFFER_SIZE = 1 << 20;
-	constexpr int MAX_MESSAGE_SIZE = 1 << 20;
+constexpr int MAX_BUFFER_SIZE = 1 << 20;
+constexpr int MAX_MESSAGE_SIZE = 1 << 20;
 };
 
-void QMqttMessageReceiver::writeBytes(const QByteArray& bytes)
+void QMqttMessageReceiver::writeBytes(const QByteArray &bytes)
 {
-	if (m_buffer.size() + bytes.size() > MAX_BUFFER_SIZE)
-		throw QMqttBufferSizeExceededException{};
-	m_buffer.append(bytes);
+    if (m_buffer.size() + bytes.size() > MAX_BUFFER_SIZE)
+        throw QMqttBufferSizeExceededException{};
+    m_buffer.append(bytes);
 }
 
 std::experimental::optional<QMqttMessage> QMqttMessageReceiver::readMessage()
 {
-	if (!m_header)
-		m_header = QMqttReader::readHeader(m_buffer);
+    if (!m_header)
+        m_header = QMqttReader::readHeader(m_buffer);
 
-	if (!m_header)
-		return {};
+    if (!m_header)
+        return {};
 
-	if (m_header->size > MAX_MESSAGE_SIZE)
-		throw QMqttMessageSizeExceededException{};
+    if (m_header->size > MAX_MESSAGE_SIZE)
+        throw QMqttMessageSizeExceededException{};
 
-	if (m_buffer.size() < m_header->size + m_header->offset)
-		return {};
+    if (m_buffer.size() < m_header->size + m_header->offset)
+        return {};
 
-	auto content = m_buffer.mid(m_header->offset, m_header->size);
-	auto result = QMqttMessage{
-		static_cast<uint8_t>(static_cast<uint8_t>(m_buffer[0]) >> 4),
-		static_cast<uint8_t>(static_cast<uint8_t>(m_buffer[0]) & 0x0F),
-		content
-	};
-	m_buffer = m_buffer.mid(m_header->offset + m_header->size);
-	m_header = std::experimental::nullopt;
+    auto content = m_buffer.mid(m_header->offset, m_header->size);
+    auto result = QMqttMessage{static_cast<uint8_t>(static_cast<uint8_t>(m_buffer[0]) >> 4),
+                               static_cast<uint8_t>(static_cast<uint8_t>(m_buffer[0]) & 0x0F), content};
+    m_buffer = m_buffer.mid(m_header->offset + m_header->size);
+    m_header = std::experimental::nullopt;
 
-	return result;
+    return result;
 }

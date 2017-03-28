@@ -26,8 +26,8 @@
 
 AutoresponderModule::AutoresponderModule()
 {
-	add_type<AutoresponderConfigurationUiHandler>();
-	add_type<AutoresponderConfigurator>();
-	add_type<AutoresponderMessageFilter>();
-	add_type<AutoresponderPluginObject>();
+    add_type<AutoresponderConfigurationUiHandler>();
+    add_type<AutoresponderConfigurator>();
+    add_type<AutoresponderMessageFilter>();
+    add_type<AutoresponderPluginObject>();
 }

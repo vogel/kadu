@@ -35,43 +35,45 @@ class QPushButton;
 
 class BuddyAvatarWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = nullptr);
+    explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = nullptr);
 
-	const QPixmap avatarPixmap();
-	bool buddyAvatar() const { return BuddyAvatar; }
+    const QPixmap avatarPixmap();
+    bool buddyAvatar() const
+    {
+        return BuddyAvatar;
+    }
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 
-	Buddy MyBuddy;
+    Buddy MyBuddy;
 
-	bool BuddyAvatar;
+    bool BuddyAvatar;
 
-	QPixmap BuddyAvatarPixmap;
+    QPixmap BuddyAvatarPixmap;
 
-	QLabel *AvatarLabel;
-	QPushButton *ChangePhotoButton;
+    QLabel *AvatarLabel;
+    QPushButton *ChangePhotoButton;
 
-	void createGui();
-	void setupChangeButton();
+    void createGui();
+    void setupChangeButton();
 
-	void showAvatar();
-	void showAvatar(QPixmap pixmap);
-	void showBuddyAvatar();
-	void showContactAvatar();
+    void showAvatar();
+    void showAvatar(QPixmap pixmap);
+    void showBuddyAvatar();
+    void showContactAvatar();
 
-	void changeAvatar();
-	void removeAvatar();
+    void changeAvatar();
+    void removeAvatar();
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_INIT void init();
 
-	void buttonClicked();
-
+    void buttonClicked();
 };

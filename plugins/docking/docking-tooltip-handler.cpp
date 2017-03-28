@@ -27,8 +27,7 @@
 #include "status/status-type-data.h"
 #include "status/status-type-manager.h"
 
-DockingTooltipHandler::DockingTooltipHandler(QObject *parent) :
-		QObject{parent}
+DockingTooltipHandler::DockingTooltipHandler(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,51 +37,51 @@ DockingTooltipHandler::~DockingTooltipHandler()
 
 void DockingTooltipHandler::setDockingConfigurationProvider(DockingConfigurationProvider *dockingConfigurationProvider)
 {
-	m_dockingConfigurationProvider = dockingConfigurationProvider;
+    m_dockingConfigurationProvider = dockingConfigurationProvider;
 }
 
 void DockingTooltipHandler::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void DockingTooltipHandler::setStatusNotifierItem(StatusNotifierItem *statusNotifierItem)
 {
-	m_statusNotifierItem = statusNotifierItem;
+    m_statusNotifierItem = statusNotifierItem;
 }
 
 void DockingTooltipHandler::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void DockingTooltipHandler::init()
 {
-	connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(updateTooltip()));
-	connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer*)), this, SLOT(updateTooltip()));
+    connect(m_dockingConfigurationProvider, SIGNAL(updated()), this, SLOT(updateTooltip()));
+    connect(m_statusContainerManager, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(updateTooltip()));
 
-	updateTooltip();
+    updateTooltip();
 }
 
 void DockingTooltipHandler::updateTooltip()
 {
-	m_statusNotifierItem->setTooltip(tooltip());
+    m_statusNotifierItem->setTooltip(tooltip());
 }
 
 QString DockingTooltipHandler::tooltip() const
 {
-	if (!m_dockingConfigurationProvider->configuration().ShowTooltipInTray)
-		return {};
+    if (!m_dockingConfigurationProvider->configuration().ShowTooltipInTray)
+        return {};
 
-	auto status = m_statusContainerManager->status();
-	auto result = m_statusTypeManager->statusTypeData(status.type()).displayName();
-	if (!status.description().isEmpty())
-	{
-		result += "\n";
-		result += status.description();
-	}
+    auto status = m_statusContainerManager->status();
+    auto result = m_statusTypeManager->statusTypeData(status.type()).displayName();
+    if (!status.description().isEmpty())
+    {
+        result += "\n";
+        result += status.description();
+    }
 
-	return result;
+    return result;
 }
 
 #include "moc_docking-tooltip-handler.cpp"

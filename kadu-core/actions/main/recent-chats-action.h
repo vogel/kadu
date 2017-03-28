@@ -21,8 +21,8 @@
 #pragma once
 
 #include "actions/action-description.h"
-#include "misc/memory.h"
 #include "injeqt-type-roles.h"
+#include "misc/memory.h"
 
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
@@ -31,22 +31,21 @@ class ChatWidgetManager;
 
 class RecentChatsAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit RecentChatsAction(QObject *parent = nullptr);
-	virtual ~RecentChatsAction();
+    Q_INVOKABLE explicit RecentChatsAction(QObject *parent = nullptr);
+    virtual ~RecentChatsAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
+    virtual void actionInstanceCreated(Action *action);
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 
-	void openRecentChats(QAction *action);
-
+    void openRecentChats(QAction *action);
 };

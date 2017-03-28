@@ -62,17 +62,16 @@
 
 #include "activate.h"
 
-ConfigurationWindow::ConfigurationWindow(const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager, QWidget *parent) :
-		QDialog(parent, Qt::Window),
-		DesktopAwareObject(this),
-		m_dataManager{dataManager},
-		Name(name),
-		Section(section)
+ConfigurationWindow::ConfigurationWindow(
+    const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager,
+    QWidget *parent)
+        : QDialog(parent, Qt::Window), DesktopAwareObject(this), m_dataManager{dataManager}, Name(name),
+          Section(section)
 {
-	setWindowRole("kadu-configuration");
+    setWindowRole("kadu-configuration");
 
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(caption);
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(caption);
 }
 
 ConfigurationWindow::~ConfigurationWindow()
@@ -81,93 +80,96 @@ ConfigurationWindow::~ConfigurationWindow()
 
 void ConfigurationWindow::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void ConfigurationWindow::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ConfigurationWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ConfigurationWindow::init()
 {
-	QVBoxLayout *main_layout = new QVBoxLayout(this);
+    QVBoxLayout *main_layout = new QVBoxLayout(this);
 
-	configurationWidget = m_injectedFactory->makeInjected<ConfigurationWidget>(dataManager(), this);
+    configurationWidget = m_injectedFactory->makeInjected<ConfigurationWidget>(dataManager(), this);
 
-	QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
+    QDialogButtonBox *buttons_layout = new QDialogButtonBox(Qt::Horizontal, this);
 
-	QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
-	buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
-	QPushButton *applyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
-	buttons_layout->addButton(applyButton, QDialogButtonBox::ApplyRole);
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-	buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
+    QPushButton *okButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
+    buttons_layout->addButton(okButton, QDialogButtonBox::AcceptRole);
+    QPushButton *applyButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
+    buttons_layout->addButton(applyButton, QDialogButtonBox::ApplyRole);
+    QPushButton *cancelButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+    buttons_layout->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateAndCloseConfig()));
-	connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateConfig()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+    connect(okButton, SIGNAL(clicked(bool)), this, SLOT(updateAndCloseConfig()));
+    connect(applyButton, SIGNAL(clicked(bool)), this, SLOT(updateConfig()));
+    connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	main_layout->addWidget(configurationWidget);
-	main_layout->addSpacing(16);
-	main_layout->addWidget(buttons_layout);
+    main_layout->addWidget(configurationWidget);
+    main_layout->addSpacing(16);
+    main_layout->addWidget(buttons_layout);
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, section(), name() + "_Geometry"), QRect(0, 50, 790, 580), this);
+    new WindowGeometryManager(
+        new ConfigFileVariantWrapper(m_configuration, section(), name() + "_Geometry"), QRect(0, 50, 790, 580), this);
 }
 
-InjectedFactory * ConfigurationWindow::injectedFactory() const
+InjectedFactory *ConfigurationWindow::injectedFactory() const
 {
-	return m_injectedFactory;
+    return m_injectedFactory;
 }
 
 void ConfigurationWindow::show()
 {
-	if (!isVisible())
-  	{
-		widget()->beforeShow();
-		widget()->loadConfiguration();
-		QWidget::show();
-	}
-	else
-	{
-		_activateWindow(m_configuration, this);
-	}
+    if (!isVisible())
+    {
+        widget()->beforeShow();
+        widget()->loadConfiguration();
+        QWidget::show();
+    }
+    else
+    {
+        _activateWindow(m_configuration, this);
+    }
 }
 
 void ConfigurationWindow::updateAndCloseConfig()
 {
-	updateConfig();
+    updateConfig();
 
-	accept();
-	close();
+    accept();
+    close();
 }
 
 void ConfigurationWindow::updateConfig()
 {
-	emit configurationWindowApplied();
-	configurationWidget->saveConfiguration();
+    emit configurationWindowApplied();
+    configurationWidget->saveConfiguration();
 
-	emit configurationSaved();
-	ConfigurationAwareObject::notifyAll();
+    emit configurationSaved();
+    ConfigurationAwareObject::notifyAll();
 
-	m_configurationManager->flush();
+    m_configurationManager->flush();
 }
 
 void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
 {
-	if (e->key() == Qt::Key_Escape)
-	{
-		e->accept();
-		close();
-	}
-	else
-		QDialog::keyPressEvent(e);
+    if (e->key() == Qt::Key_Escape)
+    {
+        e->accept();
+        close();
+    }
+    else
+        QDialog::keyPressEvent(e);
 }
 
 #include "moc_configuration-window.cpp"

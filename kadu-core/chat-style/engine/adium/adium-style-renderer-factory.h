@@ -30,19 +30,19 @@ class InjectedFactory;
 
 class AdiumStyleRendererFactory : public QObject, public ChatStyleRendererFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
-	virtual ~AdiumStyleRendererFactory();
-	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
+    explicit AdiumStyleRendererFactory(std::shared_ptr<AdiumStyle> style, QObject *parent = nullptr);
+    virtual ~AdiumStyleRendererFactory();
+    virtual not_owned_qptr<ChatStyleRenderer>
+    createChatStyleRenderer(ChatStyleRendererConfiguration configuration) override;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	std::shared_ptr<AdiumStyle> m_style;
+    std::shared_ptr<AdiumStyle> m_style;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

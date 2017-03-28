@@ -28,18 +28,17 @@ class JabberRegisterExtension;
 
 class JabberChangePasswordService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberChangePasswordService(JabberRegisterExtension *registerExtension, QObject *parent = nullptr);
-	virtual ~JabberChangePasswordService();
+    explicit JabberChangePasswordService(JabberRegisterExtension *registerExtension, QObject *parent = nullptr);
+    virtual ~JabberChangePasswordService();
 
-	void setErrorService(JabberErrorService *errorService);
+    void setErrorService(JabberErrorService *errorService);
 
-	JabberChangePassword * changePassword(const QString &jid, const QString &newPassword);
+    JabberChangePassword *changePassword(const QString &jid, const QString &newPassword);
 
 private:
-	QPointer<JabberRegisterExtension> m_registerExtension;
-	QPointer<JabberErrorService> m_errorService;
-
+    QPointer<JabberRegisterExtension> m_registerExtension;
+    QPointer<JabberErrorService> m_errorService;
 };

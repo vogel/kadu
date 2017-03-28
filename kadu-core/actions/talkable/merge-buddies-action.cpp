@@ -27,14 +27,14 @@
 #include "widgets/dialog/merge-buddies-dialog-widget.h"
 #include "windows/kadu-dialog.h"
 
-MergeBuddiesAction::MergeBuddiesAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+MergeBuddiesAction::MergeBuddiesAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/merge-buddies"});
-	setName(QStringLiteral("mergeContactAction"));
-	setText(tr("Merge Buddies..."));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"kadu_icons/merge-buddies"});
+    setName(QStringLiteral("mergeContactAction"));
+    setText(tr("Merge Buddies..."));
+    setType(ActionDescription::TypeUser);
 }
 
 MergeBuddiesAction::~MergeBuddiesAction()
@@ -43,42 +43,42 @@ MergeBuddiesAction::~MergeBuddiesAction()
 
 void MergeBuddiesAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void MergeBuddiesAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto const &buddy = action->context()->buddies().toBuddy();
-	if (!buddy)
-		return;
+    auto const &buddy = action->context()->buddies().toBuddy();
+    if (!buddy)
+        return;
 
-	auto *mergeWidget = injectedFactory()->makeInjected<MergeBuddiesDialogWidget>(buddy,
-			tr("Choose which buddy would you like to merge with <i>%1</i>")
-			.arg(buddy.display()), sender->parentWidget());
-	auto window = new KaduDialog(mergeWidget, sender->parentWidget());
-	window->setAcceptButtonText(tr("Merge"));
-	window->exec();
+    auto *mergeWidget = injectedFactory()->makeInjected<MergeBuddiesDialogWidget>(
+        buddy, tr("Choose which buddy would you like to merge with <i>%1</i>").arg(buddy.display()),
+        sender->parentWidget());
+    auto window = new KaduDialog(mergeWidget, sender->parentWidget());
+    window->setAcceptButtonText(tr("Merge"));
+    window->exec();
 }
 
 void MergeBuddiesAction::updateActionState(Action *action)
 {
-	if (action->context()->buddies().isAnyTemporary())
-	{
-		action->setEnabled(false);
-		return;
-	}
+    if (action->context()->buddies().isAnyTemporary())
+    {
+        action->setEnabled(false);
+        return;
+    }
 
-	if (action->context()->buddies().contains(m_myself->buddy()))
-		action->setEnabled(false);
-	else
-		action->setEnabled(true);
+    if (action->context()->buddies().contains(m_myself->buddy()))
+        action->setEnabled(false);
+    else
+        action->setEnabled(true);
 
-	if (1 != action->context()->buddies().size())
-		action->setEnabled(false);
+    if (1 != action->context()->buddies().size())
+        action->setEnabled(false);
 }
 
 #include "moc_merge-buddies-action.cpp"

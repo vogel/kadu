@@ -25,6 +25,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QTimer>
 
+#include "activate.h"
 #include "contacts/contact-set.h"
 #include "core/core.h"
 #include "icons/icons-manager.h"
@@ -32,7 +33,6 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/custom-input.h"
 #include "windows/message-dialog.h"
-#include "activate.h"
 
 #include "configuration/screen-shot-configuration.h"
 #include "gui/widgets/screenshot-widget.h"
@@ -43,145 +43,144 @@
 #include "screen-shot-saver.h"
 #include "screenshot.h"
 
-ScreenShot::ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget) :
-		m_screenShotConfiguration{screenShotConfiguration},
-		Mode{},
-		MyScreenshotTaker{},
-		MyChatWidget{chatWidget}
+ScreenShot::ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget)
+        : m_screenShotConfiguration{screenShotConfiguration}, Mode{}, MyScreenshotTaker{}, MyChatWidget{chatWidget}
 {
 }
 
 ScreenShot::~ScreenShot()
 {
-	if (MyChatWidget)
-		_activateWindow(m_configuration, MyChatWidget->window());
+    if (MyChatWidget)
+        _activateWindow(m_configuration, MyChatWidget->window());
 
-	delete MyScreenshotTaker;
-	MyScreenshotTaker = 0;
+    delete MyScreenshotTaker;
+    MyScreenshotTaker = 0;
 }
 
 void ScreenShot::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ScreenShot::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void ScreenShot::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ScreenShot::setScreenshotNotificationService(ScreenshotNotificationService *screenshotNotificationService)
 {
-	m_screenshotNotificationService = screenshotNotificationService;
+    m_screenshotNotificationService = screenshotNotificationService;
 }
 
 void ScreenShot::init()
 {
-	MyScreenshotTaker = m_pluginInjectedFactory->makeInjected<ScreenshotTaker>(MyChatWidget);
-	connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
-	connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
+    MyScreenshotTaker = m_pluginInjectedFactory->makeInjected<ScreenshotTaker>(MyChatWidget);
+    connect(MyScreenshotTaker, SIGNAL(screenshotTaken(QPixmap, bool)), this, SLOT(screenshotTaken(QPixmap, bool)));
+    connect(MyScreenshotTaker, SIGNAL(screenshotNotTaken()), this, SLOT(screenshotNotTaken()));
 
-	// Rest stuff
-	warnedAboutSize = false;
+    // Rest stuff
+    warnedAboutSize = false;
 }
 
 void ScreenShot::takeStandardShot()
 {
-	MyScreenshotTaker->takeStandardShot();
+    MyScreenshotTaker->takeStandardShot();
 }
 
 void ScreenShot::takeShotWithChatWindowHidden()
 {
-	MyScreenshotTaker->takeShotWithChatWindowHidden();
+    MyScreenshotTaker->takeShotWithChatWindowHidden();
 }
 
 void ScreenShot::takeWindowShot()
 {
-	MyScreenshotTaker->takeWindowShot();
+    MyScreenshotTaker->takeWindowShot();
 }
 
 void ScreenShot::screenshotTaken(QPixmap screenshot, bool needsCrop)
 {
-	if (!needsCrop)
-	{
-		screenshotReady(screenshot);
-		return;
-	}
+    if (!needsCrop)
+    {
+        screenshotReady(screenshot);
+        return;
+    }
 
-	ScreenshotWidget *screenshotWidget = new ScreenshotWidget();
-	connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(screenshotReady(QPixmap)));
-	connect(screenshotWidget, SIGNAL(canceled()), this, SLOT(screenshotNotTaken()));
+    ScreenshotWidget *screenshotWidget = new ScreenshotWidget();
+    connect(screenshotWidget, SIGNAL(pixmapCaptured(QPixmap)), this, SLOT(screenshotReady(QPixmap)));
+    connect(screenshotWidget, SIGNAL(canceled()), this, SLOT(screenshotNotTaken()));
 
-	screenshotWidget->setPixmap(screenshot);
-	screenshotWidget->setShotMode(Mode);
-	screenshotWidget->showFullScreen();
-	screenshotWidget->show();
-	QCoreApplication::processEvents(); // ensure window was shown, otherwise it won't be activated
-	_activateWindow(m_configuration, screenshotWidget);
+    screenshotWidget->setPixmap(screenshot);
+    screenshotWidget->setShotMode(Mode);
+    screenshotWidget->showFullScreen();
+    screenshotWidget->show();
+    QCoreApplication::processEvents();   // ensure window was shown, otherwise it won't be activated
+    _activateWindow(m_configuration, screenshotWidget);
 }
 
 void ScreenShot::screenshotNotTaken()
 {
-	deleteLater();
+    deleteLater();
 }
 
 void ScreenShot::screenshotReady(QPixmap p)
 {
-	auto saver = new ScreenShotSaver(m_iconsManager, m_screenShotConfiguration, this);
-	auto screenShotPath = saver->saveScreenShot(p);
+    auto saver = new ScreenShotSaver(m_iconsManager, m_screenShotConfiguration, this);
+    auto screenShotPath = saver->saveScreenShot(p);
 
-	if (m_screenShotConfiguration->pasteImageClauseIntoChatWidget())
-	{
-		pasteImageClause(screenShotPath);
-		if (!checkImageSize(saver->size()))
-			MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Image size is bigger than maximal image size for this chat."));
-	}
+    if (m_screenShotConfiguration->pasteImageClauseIntoChatWidget())
+    {
+        pasteImageClause(screenShotPath);
+        if (!checkImageSize(saver->size()))
+            MessageDialog::show(
+                m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+                tr("Image size is bigger than maximal image size for this chat."));
+    }
 
-	deleteLater();
+    deleteLater();
 }
 
 void ScreenShot::pasteImageClause(const QString &path)
 {
-	MyChatWidget->edit()->insertHtml(QString("<img src='%1' />").arg(path));
+    MyChatWidget->edit()->insertHtml(QString("<img src='%1' />").arg(path));
 }
 
 bool ScreenShot::checkImageSize(long int size)
 {
-	Q_UNUSED(size)
+    Q_UNUSED(size)
 
-	ContactSet contacts = MyChatWidget->chat().contacts();
-	foreach (const Contact &contact, contacts)
-		if (contact.maximumImageSize() * 1024 < size)
-			return false;
+    ContactSet contacts = MyChatWidget->chat().contacts();
+    foreach (const Contact &contact, contacts)
+        if (contact.maximumImageSize() * 1024 < size)
+            return false;
 
-	return true;
+    return true;
 }
 
 void ScreenShot::checkShotsSize()
 {
-	if (!m_screenShotConfiguration->warnAboutDirectorySize())
-		return;
+    if (!m_screenShotConfiguration->warnAboutDirectorySize())
+        return;
 
-	long size = 0;
+    long size = 0;
 
-	long limit = m_screenShotConfiguration->directorySizeLimit();
-	QDir dir(m_screenShotConfiguration->imagePath());
+    long limit = m_screenShotConfiguration->directorySizeLimit();
+    QDir dir(m_screenShotConfiguration->imagePath());
 
-	QString prefix = m_screenShotConfiguration->fileNamePrefix();
-	QStringList filters;
-	filters << prefix + '*';
-	QFileInfoList list = dir.entryInfoList(filters, QDir::Files);
+    QString prefix = m_screenShotConfiguration->fileNamePrefix();
+    QStringList filters;
+    filters << prefix + '*';
+    QFileInfoList list = dir.entryInfoList(filters, QDir::Files);
 
-	foreach (const QFileInfo &f, list)
-		size += f.size();
+    foreach (const QFileInfo &f, list)
+        size += f.size();
 
-	if (size/1024 >= limit)
-		m_screenshotNotificationService->notifySizeLimit(size);
+    if (size / 1024 >= limit)
+        m_screenshotNotificationService->notifySizeLimit(size);
 }
 
 #undef Bool

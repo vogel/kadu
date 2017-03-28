@@ -52,16 +52,15 @@
 #include "widgets/webkit-messages-view/webkit-messages-view.h"
 #include "windows/message-dialog.h"
 
-#include "storage/history-messages-storage.h"
 #include "chats-buddies-splitter.h"
 #include "history-query-result.h"
 #include "history-query.h"
+#include "storage/history-messages-storage.h"
 
 #include "history-messages-tab.h"
 
-HistoryMessagesTab::HistoryMessagesTab(QWidget *parent) :
-		HistoryTab(parent), Storage(0),
-		TabWaitOverlay(0), TalkablesFutureWatcher(0)
+HistoryMessagesTab::HistoryMessagesTab(QWidget *parent)
+        : HistoryTab(parent), Storage(0), TabWaitOverlay(0), TalkablesFutureWatcher(0)
 {
 }
 
@@ -71,360 +70,363 @@ HistoryMessagesTab::~HistoryMessagesTab()
 
 void HistoryMessagesTab::setBuddyChatManager(BuddyChatManager *buddyChatManager)
 {
-	m_buddyChatManager = buddyChatManager;
+    m_buddyChatManager = buddyChatManager;
 }
 
 void HistoryMessagesTab::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void HistoryMessagesTab::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void HistoryMessagesTab::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void HistoryMessagesTab::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void HistoryMessagesTab::init()
 {
-	createGui();
-	createModelChain();
+    createGui();
+    createModelChain();
 }
 
 void HistoryMessagesTab::createGui()
 {
-	TimelinePopupMenu = new QMenu(this);
-	TimelinePopupMenu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/clear-history")), tr("&Remove entries"),
-	                             this, SLOT(removeEntries()));
+    TimelinePopupMenu = new QMenu(this);
+    TimelinePopupMenu->addAction(
+        m_iconsManager->iconByPath(KaduIcon("kadu_icons/clear-history")), tr("&Remove entries"), this,
+        SLOT(removeEntries()));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
-	layout->setMargin(2);
+    QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setMargin(2);
 
-	Splitter = new QSplitter(Qt::Horizontal, this);
+    Splitter = new QSplitter(Qt::Horizontal, this);
 
-	FilteredView = m_pluginInjectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, Splitter);
-	FilteredView->filterWidget()->setAutoVisibility(false);
-	FilteredView->filterWidget()->setLabel(tr("Filter") + ":");
+    FilteredView = m_pluginInjectedFactory->makeInjected<FilteredTreeView>(FilteredTreeView::FilterAtTop, Splitter);
+    FilteredView->filterWidget()->setAutoVisibility(false);
+    FilteredView->filterWidget()->setLabel(tr("Filter") + ":");
 
-	TalkableTree = m_pluginInjectedFactory->makeInjected<TalkableTreeView>(FilteredView);
-	TalkableTree->setAlternatingRowColors(true);
-	TalkableTree->setContextMenuEnabled(true);
-	TalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
-	TalkableTree->setUseConfigurationColors(true);
-	TalkableTree->delegateConfiguration()->setShowMessagePixmap(false);
+    TalkableTree = m_pluginInjectedFactory->makeInjected<TalkableTreeView>(FilteredView);
+    TalkableTree->setAlternatingRowColors(true);
+    TalkableTree->setContextMenuEnabled(true);
+    TalkableTree->setContextMenuPolicy(Qt::CustomContextMenu);
+    TalkableTree->setUseConfigurationColors(true);
+    TalkableTree->delegateConfiguration()->setShowMessagePixmap(false);
 
-	QString style;
-	style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
-	style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
-	TalkableTree->setStyleSheet(style);
-	TalkableTree->viewport()->setStyleSheet(style);
+    QString style;
+    style.append("QTreeView::branch:has-siblings:!adjoins-item { border-image: none; image: none }");
+    style.append("QTreeView::branch:has-siblings:adjoins-item { border-image: none; image: none }");
+    style.append("QTreeView::branch:has-childres:!has-siblings:adjoins-item { border-image: none; image: none }");
+    TalkableTree->setStyleSheet(style);
+    TalkableTree->viewport()->setStyleSheet(style);
 
-	connect(TalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentTalkableChanged(Talkable)));
-	connect(TalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTalkablePopupMenu()));
+    connect(TalkableTree, SIGNAL(currentChanged(Talkable)), this, SLOT(currentTalkableChanged(Talkable)));
+    connect(TalkableTree, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTalkablePopupMenu()));
 
-	FilteredView->setView(TalkableTree);
+    FilteredView->setView(TalkableTree);
 
-	TimelineView = m_pluginInjectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
-	TimelineView->searchBar()->setAutoVisibility(false);
-	TimelineView->searchBar()->setSearchWidget(this);
-	TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
-	connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)),
-	        this, SLOT(showTimelinePopupMenu()));
-	connect(timelineView(), SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
+    TimelineView = m_pluginInjectedFactory->makeInjected<TimelineChatMessagesView>(Splitter);
+    TimelineView->searchBar()->setAutoVisibility(false);
+    TimelineView->searchBar()->setSearchWidget(this);
+    TimelineView->timeline()->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(TimelineView->timeline(), SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTimelinePopupMenu()));
+    connect(timelineView(), SIGNAL(currentDateChanged()), this, SLOT(currentDateChanged()));
 
-	QList<int> sizes;
-	sizes.append(150);
-	sizes.append(300);
-	Splitter->setSizes(sizes);
+    QList<int> sizes;
+    sizes.append(150);
+    sizes.append(300);
+    Splitter->setSizes(sizes);
 
-	layout->addWidget(Splitter);
+    layout->addWidget(Splitter);
 
-	setFocusProxy(FilteredView->filterWidget());
+    setFocusProxy(FilteredView->filterWidget());
 }
 
 void HistoryMessagesTab::createModelChain()
 {
-	ChatsModel = m_pluginInjectedFactory->makeInjected<ChatListModel>(TalkableTree);
-	BuddiesModel = m_pluginInjectedFactory->makeInjected<BuddyListModel>(TalkableTree);
+    ChatsModel = m_pluginInjectedFactory->makeInjected<ChatListModel>(TalkableTree);
+    BuddiesModel = m_pluginInjectedFactory->makeInjected<BuddyListModel>(TalkableTree);
 
-	QList<KaduAbstractModel *> models;
-	models.append(ChatsModel);
-	models.append(BuddiesModel);
+    QList<KaduAbstractModel *> models;
+    models.append(ChatsModel);
+    models.append(BuddiesModel);
 
-	Chain = new ModelChain(TalkableTree);
-	Chain->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, Chain));
+    Chain = new ModelChain(TalkableTree);
+    Chain->setBaseModel(MergedProxyModelFactory::createKaduModelInstance(models, Chain));
 
-	TalkableProxyModel *proxyModel = m_pluginInjectedFactory->makeInjected<TalkableProxyModel>(Chain);
-	proxyModel->setSortByStatusAndUnreadMessages(false);
+    TalkableProxyModel *proxyModel = m_pluginInjectedFactory->makeInjected<TalkableProxyModel>(Chain);
+    proxyModel->setSortByStatusAndUnreadMessages(false);
 
-	proxyModel->addFilter(new HideTemporaryTalkableFilter(proxyModel));
-	NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
-	connect(FilteredView, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
-	proxyModel->addFilter(nameTalkableFilter);
+    proxyModel->addFilter(new HideTemporaryTalkableFilter(proxyModel));
+    NameTalkableFilter *nameTalkableFilter = new NameTalkableFilter(NameTalkableFilter::AcceptMatching, proxyModel);
+    connect(FilteredView, SIGNAL(filterChanged(QString)), nameTalkableFilter, SLOT(setName(QString)));
+    proxyModel->addFilter(nameTalkableFilter);
 
-	Chain->addProxyModel(proxyModel);
+    Chain->addProxyModel(proxyModel);
 
-	TalkableTree->setChain(Chain);
+    TalkableTree->setChain(Chain);
 }
 
 void HistoryMessagesTab::displayTalkable(const Talkable &talkable, bool force)
 {
-	if (!force && CurrentTalkable == talkable)
-		return;
+    if (!force && CurrentTalkable == talkable)
+        return;
 
-	CurrentTalkable = talkable;
-	auto chat = m_talkableConverter->toChat(CurrentTalkable);
-	// if buddy do not have any contact we have to create chat manually
-	if (!chat)
-		chat = m_buddyChatManager->buddyChat(m_talkableConverter->toBuddy(CurrentTalkable));
+    CurrentTalkable = talkable;
+    auto chat = m_talkableConverter->toChat(CurrentTalkable);
+    // if buddy do not have any contact we have to create chat manually
+    if (!chat)
+        chat = m_buddyChatManager->buddyChat(m_talkableConverter->toBuddy(CurrentTalkable));
 
-	TimelineView->messagesView()->setChat(chat);
+    TimelineView->messagesView()->setChat(chat);
 
-	HistoryQuery query;
-	query.setTalkable(CurrentTalkable);
+    HistoryQuery query;
+    query.setTalkable(CurrentTalkable);
 
-	if (Storage && !CurrentTalkable.isEmpty())
-		TimelineView->setFutureResults(Storage->dates(query));
-	else
-		TimelineView->setResults(QVector<HistoryQueryResult>());
+    if (Storage && !CurrentTalkable.isEmpty())
+        TimelineView->setFutureResults(Storage->dates(query));
+    else
+        TimelineView->setResults(QVector<HistoryQueryResult>());
 }
 
-FilteredTreeView * HistoryMessagesTab::filteredView() const
+FilteredTreeView *HistoryMessagesTab::filteredView() const
 {
-	return FilteredView;
+    return FilteredView;
 }
 
-TalkableTreeView * HistoryMessagesTab::talkableTree() const
+TalkableTreeView *HistoryMessagesTab::talkableTree() const
 {
-	return TalkableTree;
+    return TalkableTree;
 }
 
-ModelChain * HistoryMessagesTab::modelChain() const
+ModelChain *HistoryMessagesTab::modelChain() const
 {
-	return Chain;
+    return Chain;
 }
 
 void HistoryMessagesTab::showTabWaitOverlay()
 {
-	if (!TabWaitOverlay)
-		TabWaitOverlay = m_pluginInjectedFactory->makeInjected<WaitOverlay>(this);
-	else
-		TabWaitOverlay->show();
+    if (!TabWaitOverlay)
+        TabWaitOverlay = m_pluginInjectedFactory->makeInjected<WaitOverlay>(this);
+    else
+        TabWaitOverlay->show();
 }
 
 void HistoryMessagesTab::hideTabWaitOverlay()
 {
-	TabWaitOverlay->deleteLater();
-	TabWaitOverlay = 0;
+    TabWaitOverlay->deleteLater();
+    TabWaitOverlay = 0;
 }
 
 void HistoryMessagesTab::talkablesAvailable()
 {
 }
 
-TimelineChatMessagesView * HistoryMessagesTab::timelineView() const
+TimelineChatMessagesView *HistoryMessagesTab::timelineView() const
 {
-	return TimelineView;
+    return TimelineView;
 }
 
 void HistoryMessagesTab::setTalkables(const QVector<Talkable> &talkables)
 {
-	auto chatsBuddies = m_pluginInjectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
+    auto chatsBuddies = m_pluginInjectedFactory->makeUnique<ChatsBuddiesSplitter>(talkables);
 
-	ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
-	BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());
+    ChatsModel->setChats(chatsBuddies->chats().toList().toVector());
+    BuddiesModel->setBuddyList(chatsBuddies->buddies().toList());
 }
 
 void HistoryMessagesTab::futureTalkablesAvailable()
 {
-	hideTabWaitOverlay();
+    hideTabWaitOverlay();
 
-	if (!TalkablesFutureWatcher)
-		return;
+    if (!TalkablesFutureWatcher)
+        return;
 
-	setTalkables(TalkablesFutureWatcher->result());
+    setTalkables(TalkablesFutureWatcher->result());
 
-	TalkablesFutureWatcher->deleteLater();
-	TalkablesFutureWatcher = 0;
+    TalkablesFutureWatcher->deleteLater();
+    TalkablesFutureWatcher = 0;
 
-	talkablesAvailable();
+    talkablesAvailable();
 }
 
 void HistoryMessagesTab::futureTalkablesCanceled()
 {
-	hideTabWaitOverlay();
+    hideTabWaitOverlay();
 
-	if (!TalkablesFutureWatcher)
-		return;
+    if (!TalkablesFutureWatcher)
+        return;
 
-	TalkablesFutureWatcher->deleteLater();
-	TalkablesFutureWatcher = 0;
+    TalkablesFutureWatcher->deleteLater();
+    TalkablesFutureWatcher = 0;
 }
 
 void HistoryMessagesTab::setFutureTalkables(const QFuture<QVector<Talkable>> &futureTalkables)
 {
-	if (TalkablesFutureWatcher)
-	{
-		TalkablesFutureWatcher->cancel();
-		TalkablesFutureWatcher->deleteLater();
-	}
+    if (TalkablesFutureWatcher)
+    {
+        TalkablesFutureWatcher->cancel();
+        TalkablesFutureWatcher->deleteLater();
+    }
 
-	TalkablesFutureWatcher = new QFutureWatcher<QVector<Talkable> >(this);
-	connect(TalkablesFutureWatcher, SIGNAL(finished()), this, SLOT(futureTalkablesAvailable()));
-	connect(TalkablesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureTalkablesCanceled()));
+    TalkablesFutureWatcher = new QFutureWatcher<QVector<Talkable>>(this);
+    connect(TalkablesFutureWatcher, SIGNAL(finished()), this, SLOT(futureTalkablesAvailable()));
+    connect(TalkablesFutureWatcher, SIGNAL(canceled()), this, SLOT(futureTalkablesCanceled()));
 
-	TalkablesFutureWatcher->setFuture(futureTalkables);
+    TalkablesFutureWatcher->setFuture(futureTalkables);
 
-	showTabWaitOverlay();
+    showTabWaitOverlay();
 }
 
 void HistoryMessagesTab::currentTalkableChanged(const Talkable &talkable)
 {
-	displayTalkable(talkable, false);
+    displayTalkable(talkable, false);
 }
 
 void HistoryMessagesTab::currentDateChanged()
 {
-	QDate date = timelineView()->currentDate();
+    QDate date = timelineView()->currentDate();
 
-	if (!Storage || !date.isValid())
-	{
-		TimelineView->setMessages(SortedMessages());
-		return;
-	}
+    if (!Storage || !date.isValid())
+    {
+        TimelineView->setMessages(SortedMessages());
+        return;
+    }
 
-	HistoryQuery query;
-	query.setTalkable(CurrentTalkable);
-	query.setFromDate(date);
-	query.setToDate(date);
+    HistoryQuery query;
+    query.setTalkable(CurrentTalkable);
+    query.setFromDate(date);
+    query.setToDate(date);
 
-	auto chat = m_talkableConverter->toChat(CurrentTalkable);
-	// if buddy do not have any contact we have to create chat manually
-	if (!chat)
-		chat = m_buddyChatManager->buddyChat(m_talkableConverter->toBuddy(CurrentTalkable));
+    auto chat = m_talkableConverter->toChat(CurrentTalkable);
+    // if buddy do not have any contact we have to create chat manually
+    if (!chat)
+        chat = m_buddyChatManager->buddyChat(m_talkableConverter->toBuddy(CurrentTalkable));
 
-	timelineView()->messagesView()->setChat(chat);
-	TimelineView->setFutureMessages(Storage->messages(query));
+    timelineView()->messagesView()->setChat(chat);
+    TimelineView->setFutureMessages(Storage->messages(query));
 }
 
 void HistoryMessagesTab::setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle)
 {
-	ClearHistoryMenuItemTitle = clearHistoryMenuItemTitle;
+    ClearHistoryMenuItemTitle = clearHistoryMenuItemTitle;
 }
 
 void HistoryMessagesTab::showTalkablePopupMenu()
 {
-	QScopedPointer<QMenu> menu(new QMenu());
-	m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
-	m_menuInventory->menu("buddy-list")->applyTo(menu.data(), TalkableTree->actionContext());
+    QScopedPointer<QMenu> menu(new QMenu());
+    m_menuInventory->menu("buddy-list")->attachToMenu(menu.data());
+    m_menuInventory->menu("buddy-list")->applyTo(menu.data(), TalkableTree->actionContext());
 
-	menu->addSeparator();
-	menu->addAction(m_iconsManager->iconByPath(KaduIcon("kadu_icons/clear-history")),
-	                ClearHistoryMenuItemTitle, this, SLOT(clearTalkableHistory()));
+    menu->addSeparator();
+    menu->addAction(
+        m_iconsManager->iconByPath(KaduIcon("kadu_icons/clear-history")), ClearHistoryMenuItemTitle, this,
+        SLOT(clearTalkableHistory()));
 
-	menu->exec(QCursor::pos());
+    menu->exec(QCursor::pos());
 }
 
 void HistoryMessagesTab::clearTalkableHistory()
 {
-	if (!Storage)
-		return;
+    if (!Storage)
+        return;
 
-	Q_ASSERT(TalkableTree->selectionModel());
+    Q_ASSERT(TalkableTree->selectionModel());
 
-	const QModelIndexList &selectedIndexes = TalkableTree->selectionModel()->selectedIndexes();
-	QList<Talkable> talkables;
+    const QModelIndexList &selectedIndexes = TalkableTree->selectionModel()->selectedIndexes();
+    QList<Talkable> talkables;
 
-	MessageDialog *dialog = MessageDialog::create(m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"), tr("Do you really want to delete history?"));
-	dialog->addButton(QMessageBox::Yes, tr("Delete history"));
-	dialog->addButton(QMessageBox::No, tr("Cancel"));
+    MessageDialog *dialog = MessageDialog::create(
+        m_iconsManager->iconByPath(KaduIcon("dialog-question")), tr("Kadu"),
+        tr("Do you really want to delete history?"));
+    dialog->addButton(QMessageBox::Yes, tr("Delete history"));
+    dialog->addButton(QMessageBox::No, tr("Cancel"));
 
-	if (!dialog->ask())
-		return;
+    if (!dialog->ask())
+        return;
 
-	foreach (const QModelIndex &selectedIndex, selectedIndexes)
-	{
-		Talkable talkable = selectedIndex.data(TalkableRole).value<Talkable>();
-		if (!talkable.isEmpty())
-			Storage->deleteMessages(talkable);
-	}
+    foreach (const QModelIndex &selectedIndex, selectedIndexes)
+    {
+        Talkable talkable = selectedIndex.data(TalkableRole).value<Talkable>();
+        if (!talkable.isEmpty())
+            Storage->deleteMessages(talkable);
+    }
 
-	updateData();
-	displayTalkable(Talkable(), true);
+    updateData();
+    displayTalkable(Talkable(), true);
 }
 
 void HistoryMessagesTab::showTimelinePopupMenu()
 {
-	if (TimelineView->currentDate().isValid())
-		TimelinePopupMenu->exec(QCursor::pos());
+    if (TimelineView->currentDate().isValid())
+        TimelinePopupMenu->exec(QCursor::pos());
 }
 
 void HistoryMessagesTab::removeEntries()
 {
-	QDate date = TimelineView->currentDate();
-	if (!Storage || !date.isValid())
-		return;
+    QDate date = TimelineView->currentDate();
+    if (!Storage || !date.isValid())
+        return;
 
-	Storage->deleteMessages(CurrentTalkable, date);
-	displayTalkable(CurrentTalkable, true);
+    Storage->deleteMessages(CurrentTalkable, date);
+    displayTalkable(CurrentTalkable, true);
 }
 
 void HistoryMessagesTab::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == QKeySequence::Copy && !TimelineView->messagesView()->selectedText().isEmpty())
-		// Do not use triggerPageAction(), see bug #2345.
-		TimelineView->messagesView()->pageAction(QWebPage::Copy)->trigger();
-	else
-		QWidget::keyPressEvent(event);
+    if (event->key() == QKeySequence::Copy && !TimelineView->messagesView()->selectedText().isEmpty())
+        // Do not use triggerPageAction(), see bug #2345.
+        TimelineView->messagesView()->pageAction(QWebPage::Copy)->trigger();
+    else
+        QWidget::keyPressEvent(event);
 }
 
 void HistoryMessagesTab::updateData()
 {
-	if (!Storage)
-	{
-		setTalkables(QVector<Talkable>());
-		displayTalkable(Talkable(), false);
-		return;
-	}
+    if (!Storage)
+    {
+        setTalkables(QVector<Talkable>());
+        displayTalkable(Talkable(), false);
+        return;
+    }
 
-	setFutureTalkables(Storage->talkables());
+    setFutureTalkables(Storage->talkables());
 }
 
 QList<int> HistoryMessagesTab::sizes() const
 {
-	QList<int> result = Splitter->sizes();
-	result.append(TimelineView->sizes());
+    QList<int> result = Splitter->sizes();
+    result.append(TimelineView->sizes());
 
-	return result;
+    return result;
 }
 
 void HistoryMessagesTab::setSizes(const QList<int> &newSizes)
 {
-	Q_ASSERT(newSizes.size() == 4);
+    Q_ASSERT(newSizes.size() == 4);
 
-	Splitter->setSizes(newSizes.mid(0, 2));
-	TimelineView->setSizes(newSizes.mid(2, 2));
+    Splitter->setSizes(newSizes.mid(0, 2));
+    TimelineView->setSizes(newSizes.mid(2, 2));
 }
 
 void HistoryMessagesTab::setHistoryMessagesStorage(HistoryMessagesStorage *storage)
 {
-	Storage = storage;
-	updateData();
+    Storage = storage;
+    updateData();
 }
 
-HistoryMessagesStorage * HistoryMessagesTab::historyMessagesStorage() const
+HistoryMessagesStorage *HistoryMessagesTab::historyMessagesStorage() const
 {
-	return Storage;
+    return Storage;
 }
 
 #include "moc_history-messages-tab.cpp"

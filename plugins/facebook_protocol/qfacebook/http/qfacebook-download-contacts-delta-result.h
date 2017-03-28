@@ -26,14 +26,14 @@ class QFacebookContact;
 
 enum class QFacebookDownloadContactsDeltaStatus
 {
-	OK,
-	ErrorManyPages
+    OK,
+    ErrorManyPages
 };
 
 struct QFacebookDownloadContactsDeltaResult
 {
-	QFacebookDownloadContactsDeltaStatus status;
-	QByteArray deltaCursor;
-	std::vector<QFacebookContact> added;
-	std::vector<QByteArray> removed;
+    QFacebookDownloadContactsDeltaStatus status;
+    QByteArray deltaCursor;
+    std::vector<QFacebookContact> added;
+    std::vector<QByteArray> removed;
 };

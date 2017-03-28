@@ -23,8 +23,8 @@
 #include <map>
 #include <set>
 
-#include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "exports.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
 
 struct PluginMetadata;
 
@@ -39,34 +39,37 @@ struct PluginMetadata;
  */
 class KADUAPI PluginDependencyGraphBuilder : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
-	virtual ~PluginDependencyGraphBuilder();
+    Q_INVOKABLE explicit PluginDependencyGraphBuilder(QObject *parent = nullptr);
+    virtual ~PluginDependencyGraphBuilder();
 
-	/**
-	 * @short Build plugin dependency graph from PluginMetadata objects.
-	 * @param plugins List of PluginMetadata objects.
-	 *
-	 * Plugin dependency graph is build from all all relations that could be read from \p plugins
-	 * parameter. In second phase all plugins that have to entry in \p plugins parameter are removed
-	 * from graph with all of their dependents. So resulting graph contains only valid entries with
-	 * associated metadata.
-	 */
-	PluginDependencyGraph buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const;
+    /**
+     * @short Build plugin dependency graph from PluginMetadata objects.
+     * @param plugins List of PluginMetadata objects.
+     *
+     * Plugin dependency graph is build from all all relations that could be read from \p plugins
+     * parameter. In second phase all plugins that have to entry in \p plugins parameter are removed
+     * from graph with all of their dependents. So resulting graph contains only valid entries with
+     * associated metadata.
+     */
+    PluginDependencyGraph buildValidGraph(const std::map<QString, PluginMetadata> &plugins) const;
 
 private:
-	using PluginFilter = std::function<QSet<QString>(PluginDependencyGraph &)>;
+    using PluginFilter = std::function<QSet<QString>(PluginDependencyGraph &)>;
 
-	QSet<QString> setWithDependents(QSet<QString> set, const PluginDependencyGraph &graph, const QString &pluginName) const;
+    QSet<QString>
+    setWithDependents(QSet<QString> set, const PluginDependencyGraph &graph, const QString &pluginName) const;
 
-	PluginDependencyGraph buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
-	std::set<QString> invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const;
+    PluginDependencyGraph buildGraph(const std::map<QString, PluginMetadata> &plugins) const;
+    std::set<QString>
+    invalidPlugins(const PluginDependencyGraph &graph, const std::map<QString, PluginMetadata> &plugins) const;
 
-	PluginDependencyGraph applyFilters(const std::map<QString, PluginMetadata> &plugins, std::vector<PluginFilter> filters) const;
-	std::map<QString, PluginMetadata> applyFilter(const std::map<QString, PluginMetadata> &plugins, const PluginFilter &filter) const;
-
+    PluginDependencyGraph
+    applyFilters(const std::map<QString, PluginMetadata> &plugins, std::vector<PluginFilter> filters) const;
+    std::map<QString, PluginMetadata>
+    applyFilter(const std::map<QString, PluginMetadata> &plugins, const PluginFilter &filter) const;
 };
 
 /**

@@ -32,30 +32,29 @@ class KaduWindowService;
 
 class AutoHide : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutoHide(QObject *parent = nullptr);
-	virtual ~AutoHide();
+    Q_INVOKABLE explicit AutoHide(QObject *parent = nullptr);
+    virtual ~AutoHide();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<Idle> m_idle;
-	QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<Configuration> m_configuration;
+    QPointer<Idle> m_idle;
+    QPointer<KaduWindowService> m_kaduWindowService;
 
-	QTimer m_timer;
-	int m_idleTime;
-	bool m_enabled;
+    QTimer m_timer;
+    int m_idleTime;
+    bool m_enabled;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIdle(Idle *idle);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIdle(Idle *idle);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_INIT void init();
 
-	void timerTimeoutSlot();
+    void timerTimeoutSlot();
 
 protected:
-	virtual void configurationUpdated();
-
+    virtual void configurationUpdated();
 };

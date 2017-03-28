@@ -21,8 +21,7 @@
 
 #include "notification/notification-event.h"
 
-NotificationEventRepository::NotificationEventRepository(QObject *parent) :
-		QObject{parent}
+NotificationEventRepository::NotificationEventRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,27 +31,27 @@ NotificationEventRepository::~NotificationEventRepository()
 
 void NotificationEventRepository::addNotificationEvent(NotificationEvent event)
 {
-	auto it = std::find(std::begin(m_events), std::end(m_events), event);
-	if (it == std::end(m_events))
-	{
-		m_events.push_back(event);
-		emit notificationEventAdded(event);
-	}
+    auto it = std::find(std::begin(m_events), std::end(m_events), event);
+    if (it == std::end(m_events))
+    {
+        m_events.push_back(event);
+        emit notificationEventAdded(event);
+    }
 }
 
 void NotificationEventRepository::removeNotificationEvent(NotificationEvent event)
 {
-	auto it = std::find(std::begin(m_events), std::end(m_events), event);
-	if (it != std::end(m_events))
-	{
-		m_events.erase(it);
-		emit notificationEventRemoved(event);
-	}
+    auto it = std::find(std::begin(m_events), std::end(m_events), event);
+    if (it != std::end(m_events))
+    {
+        m_events.erase(it);
+        emit notificationEventRemoved(event);
+    }
 }
 
-const std::vector<NotificationEvent> & NotificationEventRepository::notificationEvents() const
+const std::vector<NotificationEvent> &NotificationEventRepository::notificationEvents() const
 {
-	return m_events;
+    return m_events;
 }
 
 #include "moc_notification-event-repository.cpp"

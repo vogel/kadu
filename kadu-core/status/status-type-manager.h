@@ -52,49 +52,48 @@ class StatusTypeData;
  */
 class KADUAPI StatusTypeManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit StatusTypeManager(QObject *parent = nullptr);
-	virtual ~StatusTypeManager();
+    Q_INVOKABLE explicit StatusTypeManager(QObject *parent = nullptr);
+    virtual ~StatusTypeManager();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns StatusType enum value with given name.
-	 * @param name of StatusType enum to search for
-	 * @return StatusType enum value with given name
-	 *
-	 * Returns StatusType enum value with given name. If no valid enum value is found, StatusTypeOffline
-	 * is returned.
-	 */
-	StatusType fromName(const QString &name);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns StatusType enum value with given name.
+     * @param name of StatusType enum to search for
+     * @return StatusType enum value with given name
+     *
+     * Returns StatusType enum value with given name. If no valid enum value is found, StatusTypeOffline
+     * is returned.
+     */
+    StatusType fromName(const QString &name);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns StatusTypeData instance for given StatusType enum value.
-	 * @param statusType StatusType enum value
-	 * @return StatusTypeData instance for given StatusType enum value
-	 *
-	 * Returns StatusTypeData instance for given StatusType enum value. If no valid StatusTypeData instance
-	 * is found, valud for StatusTypeOffline is returned.
-	 */
-	const StatusTypeData statusTypeData(const StatusType statusType);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns StatusTypeData instance for given StatusType enum value.
+     * @param statusType StatusType enum value
+     * @return StatusTypeData instance for given StatusType enum value
+     *
+     * Returns StatusTypeData instance for given StatusType enum value. If no valid StatusTypeData instance
+     * is found, valud for StatusTypeOffline is returned.
+     */
+    const StatusTypeData statusTypeData(const StatusType statusType);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns icon for given status in given protocol.
-	 * @param protocol protocol name
-	 * @param status status
-	 * @return icon for given status in given protocol
-	 *
-	 * Returns icon for given status in given protocol. Icons can be differen per protocols, status type
-	 * and status description.
-	 */
-	KaduIcon statusIcon(const QString &protocol, const Status &status);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns icon for given status in given protocol.
+     * @param protocol protocol name
+     * @param status status
+     * @return icon for given status in given protocol
+     *
+     * Returns icon for given status in given protocol. Icons can be differen per protocols, status type
+     * and status description.
+     */
+    KaduIcon statusIcon(const QString &protocol, const Status &status);
 
 private:
-	QMap<StatusType, StatusTypeData> m_statusTypes;
-
+    QMap<StatusType, StatusTypeData> m_statusTypes;
 };
 
 /**

@@ -40,50 +40,49 @@ class QXmppVCardManager;
  */
 class JabberVCardDownloader : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given Client.
-	 * @param client instance of Client
-	 * @param parent QObject parent
-	 */
-	explicit JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
-	virtual ~JabberVCardDownloader();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create instance attached to given Client.
+     * @param client instance of Client
+     * @param parent QObject parent
+     */
+    explicit JabberVCardDownloader(QXmppVCardManager *vcardManager, QObject *parent = nullptr);
+    virtual ~JabberVCardDownloader();
 
-	/**
-	 * @short Downloads VCard for given id.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param id id of contact to download VCard for
-	 *
-	 * Before calling this method attach to vCardDownloaded() signal to get informed about result. Please
-	 * note that this method can be only called once. After that this object emits vCardDownloaded() and
-	 * deletes itself.
-	 */
-	virtual void downloadVCard(const QString &id);
+    /**
+     * @short Downloads VCard for given id.
+     * @author Rafał 'Vogel' Malinowski
+     * @param id id of contact to download VCard for
+     *
+     * Before calling this method attach to vCardDownloaded() signal to get informed about result. Please
+     * note that this method can be only called once. After that this object emits vCardDownloaded() and
+     * deletes itself.
+     */
+    virtual void downloadVCard(const QString &id);
 
 signals:
-	/**
-	 * @short Signal emitted when job of this class is done.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param ok success flag
-	 * @param vCard downloaded VCard
-	 *
-	 * If ok is true then VCard downloading was successfull. If ok is false then operation failed.
-	 */
-	void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
+    /**
+     * @short Signal emitted when job of this class is done.
+     * @author Rafał 'Vogel' Malinowski
+     * @param ok success flag
+     * @param vCard downloaded VCard
+     *
+     * If ok is true then VCard downloading was successfull. If ok is false then operation failed.
+     */
+    void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
 
 private:
-	QPointer<QXmppVCardManager> m_vcardManager;
-	QString m_requestId;
+    QPointer<QXmppVCardManager> m_vcardManager;
+    QString m_requestId;
 
-	void done(const QXmppVCardIq &vcard);
-	void failed();
+    void done(const QXmppVCardIq &vcard);
+    void failed();
 
 private slots:
-	void vCardReceived(const QXmppVCardIq &vcard);
-
+    void vCardReceived(const QXmppVCardIq &vcard);
 };
 
 /**

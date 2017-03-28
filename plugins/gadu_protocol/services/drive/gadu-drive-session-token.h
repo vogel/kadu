@@ -23,18 +23,16 @@
 
 class GaduDriveSessionToken
 {
-
 public:
-	GaduDriveSessionToken();
-	GaduDriveSessionToken(QString sessionId, QString securityToken);
+    GaduDriveSessionToken();
+    GaduDriveSessionToken(QString sessionId, QString securityToken);
 
-	QString sessionId() const;
-	QString securityToken() const;
+    QString sessionId() const;
+    QString securityToken() const;
 
-	bool isValid() const;
+    bool isValid() const;
 
 private:
-	QString m_sessionId;
-	QString m_securityToken;
-
+    QString m_sessionId;
+    QString m_securityToken;
 };

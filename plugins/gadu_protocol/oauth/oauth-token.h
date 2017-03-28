@@ -26,28 +26,27 @@
 
 class OAuthToken
 {
-	OAuthConsumer Consumer;
+    OAuthConsumer Consumer;
 
-	bool Valid;
-	QByteArray Token;
-	QByteArray TokenSecret;
-	int TokenExpiresIn;
+    bool Valid;
+    QByteArray Token;
+    QByteArray TokenSecret;
+    int TokenExpiresIn;
 
 public:
-	OAuthToken();
-	OAuthToken(const OAuthToken &copyMe);
-	OAuthToken(const QByteArray &token, const QByteArray &tokenSecret, int tokenExpiresIn);
+    OAuthToken();
+    OAuthToken(const OAuthToken &copyMe);
+    OAuthToken(const QByteArray &token, const QByteArray &tokenSecret, int tokenExpiresIn);
 
-	OAuthToken & operator = (const OAuthToken &copyMe);
+    OAuthToken &operator=(const OAuthToken &copyMe);
 
-	bool isValid() const;
-	const QByteArray & token() const;
-	const QByteArray & tokenSecret() const;
-	int tokenExpiresIn() const;
+    bool isValid() const;
+    const QByteArray &token() const;
+    const QByteArray &tokenSecret() const;
+    int tokenExpiresIn() const;
 
-	void setConsumer(const OAuthConsumer &consumer);
-	const OAuthConsumer & consumer() const;
-
+    void setConsumer(const OAuthConsumer &consumer);
+    const OAuthConsumer &consumer() const;
 };
 
-#endif // OAUTH_TOKEN_H
+#endif   // OAUTH_TOKEN_H

@@ -32,109 +32,107 @@
 
 #include "avatar-painter.h"
 
-AvatarPainter::AvatarPainter(TalkableDelegateConfiguration *configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect, const QModelIndex &index) :
-		Configuration(configuration), Option(option), AvatarRect(avatarRect), Index(index)
+AvatarPainter::AvatarPainter(
+    TalkableDelegateConfiguration *configuration, const QStyleOptionViewItemV4 &option, const QRect &avatarRect,
+    const QModelIndex &index)
+        : Configuration(configuration), Option(option), AvatarRect(avatarRect), Index(index)
 {
-	Avatar = Index.data(AvatarRole).value<QPixmap>();
+    Avatar = Index.data(AvatarRole).value<QPixmap>();
 }
 
 bool AvatarPainter::greyOut()
 {
-	if (!Configuration->avatarGreyOut())
-		return false;
+    if (!Configuration->avatarGreyOut())
+        return false;
 
-	Contact contact = Index.data(ContactRole).value<Contact>();
-	return contact.currentStatus().isDisconnected();
+    Contact contact = Index.data(ContactRole).value<Contact>();
+    return contact.currentStatus().isDisconnected();
 }
 
 QString AvatarPainter::cacheKey()
 {
-	return QString("msi-%1-%2,%3,%4")
-			.arg(Avatar.cacheKey())
-			.arg(greyOut())
-			.arg(Configuration->avatarBorder())
-			.arg(Option.state & QStyle::State_Selected ? 1 : 0);
+    return QString("msi-%1-%2,%3,%4")
+        .arg(Avatar.cacheKey())
+        .arg(greyOut())
+        .arg(Configuration->avatarBorder())
+        .arg(Option.state & QStyle::State_Selected ? 1 : 0);
 }
 
 QPixmap AvatarPainter::getOrCreateCacheItem()
 {
-	QString key = cacheKey();
+    QString key = cacheKey();
 
-	QPixmap cached;
-	if (QPixmapCache::find(key, &cached))
-		return cached;
+    QPixmap cached;
+    if (QPixmapCache::find(key, &cached))
+        return cached;
 
-	QPixmap item = QPixmap(AvatarRect.size());
-	item.fill(QColor(0, 0, 0, 0));
+    QPixmap item = QPixmap(AvatarRect.size());
+    item.fill(QColor(0, 0, 0, 0));
 
-	QPainter cachePainter;
-	cachePainter.begin(&item);
-	doPaint(&cachePainter, item.size());
-	cachePainter.end();
+    QPainter cachePainter;
+    cachePainter.begin(&item);
+    doPaint(&cachePainter, item.size());
+    cachePainter.end();
 
-	QPixmapCache::insert(key, item);
+    QPixmapCache::insert(key, item);
 
-	return item;
+    return item;
 }
 
 void AvatarPainter::paintFromCache(QPainter *painter)
 {
-	QPixmap cached = getOrCreateCacheItem();
+    QPixmap cached = getOrCreateCacheItem();
 
-	painter->drawPixmap(AvatarRect, cached);
+    painter->drawPixmap(AvatarRect, cached);
 }
 
 QPixmap AvatarPainter::cropped()
 {
-	int minDimension = Avatar.height() < Avatar.width()
-		? Avatar.height()
-		: Avatar.width();
+    int minDimension = Avatar.height() < Avatar.width() ? Avatar.height() : Avatar.width();
 
-	int x = (Avatar.width() - minDimension) / 2;
-	int y = (Avatar.height() - minDimension) / 2;
+    int x = (Avatar.width() - minDimension) / 2;
+    int y = (Avatar.height() - minDimension) / 2;
 
-	QImage cropped = Avatar.toImage().copy(x, y, minDimension, minDimension);
+    QImage cropped = Avatar.toImage().copy(x, y, minDimension, minDimension);
 
-	return QPixmap::fromImage(cropped);
+    return QPixmap::fromImage(cropped);
 }
 
 void AvatarPainter::doPaint(QPainter *painter, const QSize &size)
 {
-	QPixmap displayAvatar;
-	QPixmap croppedAvatar = cropped();
+    QPixmap displayAvatar;
+    QPixmap croppedAvatar = cropped();
 
-	if (croppedAvatar.height() > size.height() || croppedAvatar.width() > size.width())
-		displayAvatar = croppedAvatar.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
-	else
-		displayAvatar = croppedAvatar;
+    if (croppedAvatar.height() > size.height() || croppedAvatar.width() > size.width())
+        displayAvatar = croppedAvatar.scaled(size, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    else
+        displayAvatar = croppedAvatar;
 
-	QRect displayRect = displayAvatar.rect();
-	displayRect.moveTop((size.height() - displayRect.height()) / 2);
-	displayRect.moveLeft((size.width() - displayRect.width()) / 2);
+    QRect displayRect = displayAvatar.rect();
+    displayRect.moveTop((size.height() - displayRect.height()) / 2);
+    displayRect.moveLeft((size.width() - displayRect.width()) / 2);
 
-	// grey out offline contacts' avatar
-	displayAvatar = greyOut()
-		? QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled)
-		: displayAvatar;
+    // grey out offline contacts' avatar
+    displayAvatar = greyOut() ? QIcon(displayAvatar).pixmap(displayAvatar.size(), QIcon::Disabled) : displayAvatar;
 
-	int radius = 3;
-	QPainterPath displayRectPath;
-	displayRectPath.addRoundedRect(displayRect, radius, radius);
+    int radius = 3;
+    QPainterPath displayRectPath;
+    displayRectPath.addRoundedRect(displayRect, radius, radius);
 
-	painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
-	painter->setClipPath(displayRectPath);
-	painter->drawPixmap(displayRect, displayAvatar);
-	painter->setClipping(false);
+    painter->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    painter->setClipPath(displayRectPath);
+    painter->drawPixmap(displayRect, displayAvatar);
+    painter->setClipping(false);
 
-	// draw avatar border
-	if (Configuration->avatarBorder())
-		painter->drawRoundedRect(displayRect, radius, radius);
+    // draw avatar border
+    if (Configuration->avatarBorder())
+        painter->drawRoundedRect(displayRect, radius, radius);
 }
 
 void AvatarPainter::paint(QPainter *painter)
 {
-	if (!Configuration->showAvatars() || AvatarRect.isEmpty() || Avatar.isNull())
-		return;
+    if (!Configuration->showAvatars() || AvatarRect.isEmpty() || Avatar.isNull())
+        return;
 
-	paintFromCache(painter);
+    paintFromCache(painter);
 }

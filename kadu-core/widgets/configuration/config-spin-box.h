@@ -33,40 +33,43 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;spin-box caption="caption" id="id" min-value="minValue" max-value="maxValue" step="step" suffix="suffix" special-value="specialValue" /&gt;
+        &lt;spin-box caption="caption" id="id" min-value="minValue" max-value="maxValue" step="step" suffix="suffix"
+ special-value="specialValue" /&gt;
 
-	@arg minValue - minimalna wartość (obowiązkowo)
-	@arg maxValue - maksymalna wartość (obowiązkowo)
-	@arg step - krok wartości (nieobowiazkowo, domyślnie 1)
-	@arg suffix - przyrostek za wartością, np. jednostka
-	@arg specialValue - wyświetlana nazwa specjalnej wartości spinboxa, równej minValue (nieobowiazkowo)
+        @arg minValue - minimalna wartość (obowiązkowo)
+        @arg maxValue - maksymalna wartość (obowiązkowo)
+        @arg step - krok wartości (nieobowiazkowo, domyślnie 1)
+        @arg suffix - przyrostek za wartością, np. jednostka
+        @arg specialValue - wyświetlana nazwa specjalnej wartości spinboxa, równej minValue (nieobowiazkowo)
  **/
 class KADUAPI ConfigSpinBox : public QSpinBox, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
-	QString Suffix;
+    QString Suffix;
 
 private slots:
-	void onValueChanged(int i);
+    void onValueChanged(int i);
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigSpinBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QString &specialValue, int minValue, int maxValue, int step, QString suffix, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigSpinBox();
+    ConfigSpinBox(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        const QString &specialValue, int minValue, int maxValue, int step, QString suffix,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigSpinBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigSpinBox();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 
-	virtual bool fromDomElement(QDomElement domElement);
-
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

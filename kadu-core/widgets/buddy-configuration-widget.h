@@ -27,16 +27,15 @@
 
 class KADUAPI BuddyConfigurationWidget : public ModalConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Buddy MyBuddy;
+    Buddy MyBuddy;
 
 public:
-	explicit BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~BuddyConfigurationWidget();
+    explicit BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~BuddyConfigurationWidget();
 
-	Buddy buddy() const;
-
+    Buddy buddy() const;
 };
 
-#endif // BUDDY_CONFIGURATION_WIDGET_H
+#endif   // BUDDY_CONFIGURATION_WIDGET_H

@@ -25,7 +25,7 @@
 
 RosterModule::RosterModule()
 {
-	add_type<RosterNotifier>();
-	add_type<RosterReplacer>();
-	add_type<Roster>();
+    add_type<RosterNotifier>();
+    add_type<RosterReplacer>();
+    add_type<Roster>();
 }

@@ -24,13 +24,13 @@
 
 #include <QtWidgets/QTreeView>
 
-CollapseAction::CollapseAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+CollapseAction::CollapseAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setType(ActionDescription::TypeUserList);
-	setName("collapseAction");
-	setText(tr("Collapse"));
+    setType(ActionDescription::TypeUserList);
+    setName("collapseAction");
+    setText(tr("Collapse"));
 }
 
 CollapseAction::~CollapseAction()
@@ -39,33 +39,33 @@ CollapseAction::~CollapseAction()
 
 void CollapseAction::triggered(QWidget *widget, ActionContext *context, bool toggled)
 {
-	Q_UNUSED(widget)
-	Q_UNUSED(toggled)
+    Q_UNUSED(widget)
+    Q_UNUSED(toggled)
 
-	auto treeViewWidget = qobject_cast<QTreeView *>(context->widget());
-	if (!treeViewWidget)
-		return;
+    auto treeViewWidget = qobject_cast<QTreeView *>(context->widget());
+    if (!treeViewWidget)
+        return;
 
-	auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
-	for (auto &&selectedIndex : selectedIndexes)
-		treeViewWidget->collapse(selectedIndex);
+    auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
+    for (auto &&selectedIndex : selectedIndexes)
+        treeViewWidget->collapse(selectedIndex);
 }
 
 void CollapseAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	auto treeViewWidget = qobject_cast<QTreeView *>(action->context()->widget());
-	if (!treeViewWidget)
-		return;
+    auto treeViewWidget = qobject_cast<QTreeView *>(action->context()->widget());
+    if (!treeViewWidget)
+        return;
 
-	auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
-	for (auto &&selectedIndex : selectedIndexes)
-		if (treeViewWidget->model()->rowCount(selectedIndex) > 0)
-		{
-			action->setEnabled(true);
-			return;
-		}
+    auto selectedIndexes = treeViewWidget->selectionModel()->selectedIndexes();
+    for (auto &&selectedIndex : selectedIndexes)
+        if (treeViewWidget->model()->rowCount(selectedIndex) > 0)
+        {
+            action->setEnabled(true);
+            return;
+        }
 }
 
 #include "moc_collapse-action.cpp"

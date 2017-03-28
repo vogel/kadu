@@ -31,25 +31,28 @@
 class ConfigGroupBox;
 
 /**
-	&lt;label caption="caption" id="id" /&gt;
+        &lt;label caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigLabel : public QLabel, public ConfigWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigLabel(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigLabel(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigLabel() {}
+    ConfigLabel(
+        const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+        ConfigurationWindowDataManager *dataManager);
+    ConfigLabel(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigLabel()
+    {
+    }
 
-	virtual void loadConfiguration() {};
-	virtual void saveConfiguration() {};
+    virtual void loadConfiguration(){};
+    virtual void saveConfiguration(){};
 
-	void setText(const QString &text, bool defaultFormatting = true);
-
+    void setText(const QString &text, bool defaultFormatting = true);
 };
 
 #endif

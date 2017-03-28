@@ -46,37 +46,36 @@ class QXmppVCardIq;
  */
 class JabberAvatarUploader : public AvatarUploader
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return image data as PNG byte array.
-	 * @param avatar avatar image to convert
-	 * @return image data as PNG byte array
-	 */
-	static QByteArray avatarData(QImage avatar);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return image data as PNG byte array.
+     * @param avatar avatar image to convert
+     * @return image data as PNG byte array
+     */
+    static QByteArray avatarData(QImage avatar);
 
-	QPointer<JabberVCardService> VCardService;
+    QPointer<JabberVCardService> VCardService;
 
-	QImage UploadedAvatar;
+    QImage UploadedAvatar;
 
-	void done();
-	void failed();
+    void done();
+    void failed();
 
 private slots:
-	void vCardUploaded(bool ok);
-	void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
+    void vCardUploaded(bool ok);
+    void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance attached to given JabberVCardService.
-	 * @param vcardService instance of JabberVCardService
-	 * @param parent QObject parent
-	 */
-	explicit JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent = nullptr);
-	virtual ~JabberAvatarUploader();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create instance attached to given JabberVCardService.
+     * @param vcardService instance of JabberVCardService
+     * @param parent QObject parent
+     */
+    explicit JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent = nullptr);
+    virtual ~JabberAvatarUploader();
 
-	virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
-
+    virtual void uploadAvatar(const QString &id, const QString &password, QImage avatar);
 };

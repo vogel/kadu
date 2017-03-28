@@ -29,23 +29,26 @@
 class ConfigGroupBox;
 
 /**
-	&lt;check-box caption="caption" id="id" /&gt;
+        &lt;check-box caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigCheckBox : public QCheckBox, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigCheckBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,  ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigCheckBox() {}
+    ConfigCheckBox(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigCheckBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigCheckBox()
+    {
+    }
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
-
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 };
 
 #endif

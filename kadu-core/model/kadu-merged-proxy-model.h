@@ -40,46 +40,45 @@
  */
 class KaduMergedProxyModel : public MergedProxyModel, public KaduAbstractModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<KaduAbstractModel *> KaduModels;
+    QList<KaduAbstractModel *> KaduModels;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new instance of KaduMergedProxyModel.
-	 * @param parent QObject parent of new KaduMergedProxyModel.
-	 *
-	 * Creates new instance of KaduMergedProxyModel.
-	 */
-	explicit KaduMergedProxyModel(QObject *parent = nullptr);
-	virtual ~KaduMergedProxyModel();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new instance of KaduMergedProxyModel.
+     * @param parent QObject parent of new KaduMergedProxyModel.
+     *
+     * Creates new instance of KaduMergedProxyModel.
+     */
+    explicit KaduMergedProxyModel(QObject *parent = nullptr);
+    virtual ~KaduMergedProxyModel();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets list of models to merge.
-	 * @param models list of models to merge
-	 *
-	 * Sets list of models to merge. All models must implement QAbstractItemModel interface or be
-	 * ModelChain interface, otherwise an assertion is thrown.
-	 */
-	void setKaduModels(QList<KaduAbstractModel *> models);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets list of models to merge.
+     * @param models list of models to merge
+     *
+     * Sets list of models to merge. All models must implement QAbstractItemModel interface or be
+     * ModelChain interface, otherwise an assertion is thrown.
+     */
+    void setKaduModels(QList<KaduAbstractModel *> models);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return list of indexes that holds given object.
-	 * @return list of indexes that holds given object
-	 * @param value object to find
-	 *
-	 * This method returns all indexes that holds given object. It does that by searching all
-	 * submodels and mapping its' indexes to own indexes.
-	 */
-	virtual QModelIndexList indexListForValue(const QVariant &value) const;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return list of indexes that holds given object.
+     * @return list of indexes that holds given object
+     * @param value object to find
+     *
+     * This method returns all indexes that holds given object. It does that by searching all
+     * submodels and mapping its' indexes to own indexes.
+     */
+    virtual QModelIndexList indexListForValue(const QVariant &value) const;
 };
 
 /**
  * @}
  */
 
-#endif // KADU_MERGED_PROXY_MODEL_H
+#endif   // KADU_MERGED_PROXY_MODEL_H

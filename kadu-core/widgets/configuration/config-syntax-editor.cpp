@@ -27,67 +27,72 @@
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-syntax-editor.h"
 
-ConfigSyntaxEditor::ConfigSyntaxEditor(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: SyntaxEditor(parentConfigGroupBox->widget()), ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
+ConfigSyntaxEditor::ConfigSyntaxEditor(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : SyntaxEditor(parentConfigGroupBox->widget()),
+          ConfigWidgetValue(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager), label(0)
 {
-	createWidgets();
+    createWidgets();
 }
 
-ConfigSyntaxEditor::ConfigSyntaxEditor(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: SyntaxEditor(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
+ConfigSyntaxEditor::ConfigSyntaxEditor(
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : SyntaxEditor(parentConfigGroupBox->widget()), ConfigWidgetValue(parentConfigGroupBox, dataManager), label(0)
 {
 }
 
 ConfigSyntaxEditor::~ConfigSyntaxEditor()
 {
-	if (label)
-		delete label;
+    if (label)
+        delete label;
 }
 
 void ConfigSyntaxEditor::createWidgets()
 {
-	label = new QLabel(QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':', parentConfigGroupBox->widget());
-	parentConfigGroupBox->addWidgets(label, this);
+    label = new QLabel(
+        QCoreApplication::translate("@default", widgetCaption.toUtf8().constData()) + ':',
+        parentConfigGroupBox->widget());
+    parentConfigGroupBox->addWidgets(label, this);
 
-	if (!ConfigWidget::toolTip.isEmpty())
-	{
-		setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-		label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
-	}
+    if (!ConfigWidget::toolTip.isEmpty())
+    {
+        setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+        label->setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
+    }
 }
 
 void ConfigSyntaxEditor::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setCurrentSyntax(dataManager->readEntry(section, item).toString());
+    if (!dataManager)
+        return;
+    setCurrentSyntax(dataManager->readEntry(section, item).toString());
 }
 
 void ConfigSyntaxEditor::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, currentSyntax());
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, currentSyntax());
 }
 
 void ConfigSyntaxEditor::setVisible(bool visible)
 {
-	label->setVisible(visible);
-	SyntaxEditor::setVisible(visible);
+    label->setVisible(visible);
+    SyntaxEditor::setVisible(visible);
 }
 
 bool ConfigSyntaxEditor::fromDomElement(QDomElement domElement)
 {
-	QString category = domElement.attribute("category");
-	QString syntaxHint = domElement.attribute("syntax-hint");
-	if (category.isEmpty())
-		return false;
+    QString category = domElement.attribute("category");
+    QString syntaxHint = domElement.attribute("syntax-hint");
+    if (category.isEmpty())
+        return false;
 
-	setCategory(category);
-	setSyntaxHint(syntaxHint);
+    setCategory(category);
+    setSyntaxHint(syntaxHint);
 
-	return ConfigWidgetValue::fromDomElement(domElement);
+    return ConfigWidgetValue::fromDomElement(domElement);
 }
 
 #include "moc_config-syntax-editor.cpp"

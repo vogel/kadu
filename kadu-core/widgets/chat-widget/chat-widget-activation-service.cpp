@@ -24,8 +24,7 @@
 #include "widgets/chat-widget/chat-widget-container-handler.h"
 #include "widgets/chat-widget/chat-widget.h"
 
-ChatWidgetActivationService::ChatWidgetActivationService(QObject *parent) :
-		QObject{parent}
+ChatWidgetActivationService::ChatWidgetActivationService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -33,66 +32,79 @@ ChatWidgetActivationService::~ChatWidgetActivationService()
 {
 }
 
-void ChatWidgetActivationService::setChatWidgetContainerHandlerMapper(ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
+void ChatWidgetActivationService::setChatWidgetContainerHandlerMapper(
+    ChatWidgetContainerHandlerMapper *chatWidgetContainerHandlerMapper)
 {
-	m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
+    m_chatWidgetContainerHandlerMapper = chatWidgetContainerHandlerMapper;
 }
 
-void ChatWidgetActivationService::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+void ChatWidgetActivationService::setChatWidgetContainerHandlerRepository(
+    ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
 {
-	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+    m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
 
-	if (!m_chatWidgetContainerHandlerRepository)
-		return;
+    if (!m_chatWidgetContainerHandlerRepository)
+        return;
 
-	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)),
-			this, SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)));
-	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)),
-			this, SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)));
+    connect(
+        m_chatWidgetContainerHandlerRepository.data(),
+        SIGNAL(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *)), this,
+        SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *)));
+    connect(
+        m_chatWidgetContainerHandlerRepository.data(),
+        SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *)), this,
+        SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *)));
 
-	for (auto chatWidgetContainerHandler : m_chatWidgetContainerHandlerRepository.data())
-		chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
+    for (auto chatWidgetContainerHandler : m_chatWidgetContainerHandlerRepository.data())
+        chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
 }
 
-void ChatWidgetActivationService::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+void ChatWidgetActivationService::chatWidgetContainerHandlerRegistered(
+    ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	connect(chatWidgetContainerHandler, SIGNAL(chatWidgetActivated(ChatWidget*)),
-			this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+    connect(
+        chatWidgetContainerHandler, SIGNAL(chatWidgetActivated(ChatWidget *)), this,
+        SIGNAL(chatWidgetActivated(ChatWidget *)));
 }
 
-void ChatWidgetActivationService::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+void ChatWidgetActivationService::chatWidgetContainerHandlerUnregistered(
+    ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	disconnect(chatWidgetContainerHandler, SIGNAL(chatWidgetActivated(ChatWidget*)),
-			   this, SIGNAL(chatWidgetActivated(ChatWidget*)));
+    disconnect(
+        chatWidgetContainerHandler, SIGNAL(chatWidgetActivated(ChatWidget *)), this,
+        SIGNAL(chatWidgetActivated(ChatWidget *)));
 }
 
 bool ChatWidgetActivationService::isChatWidgetActive(ChatWidget *chatWidget) const
 {
-	if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
-		return false;
+    if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
+        return false;
 
-	auto chatWidgetContainerHandler = m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForChat(chatWidget->chat());
-	return chatWidgetContainerHandler ? chatWidgetContainerHandler->isChatWidgetActive(chatWidget) : false;
+    auto chatWidgetContainerHandler =
+        m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForChat(chatWidget->chat());
+    return chatWidgetContainerHandler ? chatWidgetContainerHandler->isChatWidgetActive(chatWidget) : false;
 }
 
 void ChatWidgetActivationService::tryActivateChatWidget(ChatWidget *chatWidget)
 {
-	if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
-		return;
+    if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
+        return;
 
-	auto chatWidgetContainerHandler = m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForChat(chatWidget->chat());
-	if (chatWidgetContainerHandler)
-		chatWidgetContainerHandler->tryActivateChatWidget(chatWidget);
+    auto chatWidgetContainerHandler =
+        m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForChat(chatWidget->chat());
+    if (chatWidgetContainerHandler)
+        chatWidgetContainerHandler->tryActivateChatWidget(chatWidget);
 }
 
-void ChatWidgetActivationService::tryMinimizeChatWidget(ChatWidget* chatWidget)
+void ChatWidgetActivationService::tryMinimizeChatWidget(ChatWidget *chatWidget)
 {
-	if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
-		return;
+    if (!m_chatWidgetContainerHandlerMapper || !chatWidget)
+        return;
 
-	auto chatWidgetContainerHandler = m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForChat(chatWidget->chat());
-	if (chatWidgetContainerHandler)
-		chatWidgetContainerHandler->tryMinimizeChatWidget(chatWidget);
+    auto chatWidgetContainerHandler =
+        m_chatWidgetContainerHandlerMapper.data()->chatWidgetContainerHandlerForChat(chatWidget->chat());
+    if (chatWidgetContainerHandler)
+        chatWidgetContainerHandler->tryMinimizeChatWidget(chatWidget);
 }
 
 #include "moc_chat-widget-activation-service.cpp"

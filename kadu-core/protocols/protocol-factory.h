@@ -51,29 +51,49 @@ enum class StatusType;
 
 class KADUAPI ProtocolFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	virtual Protocol * createProtocolHandler(Account account) = 0;
-	virtual AccountAddWidget * newAddAccountWidget(bool, QWidget * = nullptr) { return nullptr; }
-	virtual AccountCreateWidget * newCreateAccountWidget(bool, QWidget * = nullptr) { return nullptr; }
-	virtual AccountEditWidget * newEditAccountWidget(Account, QWidget * = nullptr) { return nullptr; }
-	virtual QWidget * newContactPersonalInfoWidget(Contact, QWidget * = nullptr) { return nullptr; }
-	virtual ProtocolMenuManager * protocolMenuManager() { return nullptr; }
-	virtual QList<StatusType> supportedStatusTypes() = 0;
-	virtual Status adaptStatus(Status) const = 0;
-	virtual QString idLabel() = 0;
-	virtual QValidator::State validateId(QString) { return QValidator::Acceptable; };
-	virtual bool canRegister() = 0;
-	virtual bool canRemoveAvatar() { return true; } // this is so lame for gadu-gadu, so so lame ...
+    virtual Protocol *createProtocolHandler(Account account) = 0;
+    virtual AccountAddWidget *newAddAccountWidget(bool, QWidget * = nullptr)
+    {
+        return nullptr;
+    }
+    virtual AccountCreateWidget *newCreateAccountWidget(bool, QWidget * = nullptr)
+    {
+        return nullptr;
+    }
+    virtual AccountEditWidget *newEditAccountWidget(Account, QWidget * = nullptr)
+    {
+        return nullptr;
+    }
+    virtual QWidget *newContactPersonalInfoWidget(Contact, QWidget * = nullptr)
+    {
+        return nullptr;
+    }
+    virtual ProtocolMenuManager *protocolMenuManager()
+    {
+        return nullptr;
+    }
+    virtual QList<StatusType> supportedStatusTypes() = 0;
+    virtual Status adaptStatus(Status) const = 0;
+    virtual QString idLabel() = 0;
+    virtual QValidator::State validateId(QString)
+    {
+        return QValidator::Acceptable;
+    };
+    virtual bool canRegister() = 0;
+    virtual bool canRemoveAvatar()
+    {
+        return true;
+    }   // this is so lame for gadu-gadu, so so lame ...
 
-	virtual QString name() = 0;
-	virtual QString displayName() = 0;
+    virtual QString name() = 0;
+    virtual QString displayName() = 0;
 
-	virtual KaduIcon icon() = 0;
-
+    virtual KaduIcon icon() = 0;
 };
 
 Q_DECLARE_METATYPE(ProtocolFactory *)
 
-#endif // PROTOCOL_FACTORY_H
+#endif   // PROTOCOL_FACTORY_H

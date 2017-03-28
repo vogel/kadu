@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-HintsPluginModulesFactory::HintsPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+HintsPluginModulesFactory::HintsPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ HintsPluginModulesFactory::~HintsPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> HintsPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<HintsModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<HintsModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_hints-plugin-modules-factory.cpp"

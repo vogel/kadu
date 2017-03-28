@@ -28,21 +28,21 @@ class QLabel;
 
 class TitleWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString text;
-	QString comment;
-	QString pixmap;
+    QString text;
+    QString comment;
+    QString pixmap;
 
-	QLabel *commentLabel;
-	QLabel *textLabel;
-	
+    QLabel *commentLabel;
+    QLabel *textLabel;
+
 public:
-	explicit TitleWidget(QWidget *parent);
-	virtual ~TitleWidget();
+    explicit TitleWidget(QWidget *parent);
+    virtual ~TitleWidget();
 
-	void setText(const QString &text, Qt::Alignment alignment = Qt::AlignLeft | Qt::AlignVCenter);
-	void setComment(const QString &comment);
+    void setText(const QString &text, Qt::Alignment alignment = Qt::AlignLeft | Qt::AlignVCenter);
+    void setComment(const QString &comment);
 };
 
-#endif // TITLE_WIDGET_H
+#endif   // TITLE_WIDGET_H

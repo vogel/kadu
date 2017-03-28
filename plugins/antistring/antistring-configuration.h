@@ -35,45 +35,62 @@ class PathsProvider;
 
 class AntistringConfiguration : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AntistringConfiguration(QObject *parent = nullptr);
-	virtual ~AntistringConfiguration();
+    Q_INVOKABLE explicit AntistringConfiguration(QObject *parent = nullptr);
+    virtual ~AntistringConfiguration();
 
-	void readConditions();
-	void storeConditions();
+    void readConditions();
+    void storeConditions();
 
-	QList<QPair<QString, int> > & conditions() { return Conditions; }
+    QList<QPair<QString, int>> &conditions()
+    {
+        return Conditions;
+    }
 
-	bool enabled() const { return Enabled; }
-	bool messageStop() const { return MessageStop; }
-	bool logMessage() const { return LogMessage; }
-	const NormalizedHtmlString & returnMessage() const { return ReturnMessage; }
-	const QString & logFile() const { return LogFile; }
+    bool enabled() const
+    {
+        return Enabled;
+    }
+    bool messageStop() const
+    {
+        return MessageStop;
+    }
+    bool logMessage() const
+    {
+        return LogMessage;
+    }
+    const NormalizedHtmlString &returnMessage() const
+    {
+        return ReturnMessage;
+    }
+    const QString &logFile() const
+    {
+        return LogFile;
+    }
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QList<ConditionPair> Conditions;
+    QList<ConditionPair> Conditions;
 
-	bool Enabled;
-	bool MessageStop;
-	bool LogMessage;
-	NormalizedHtmlString ReturnMessage;
-	QString LogFile;
+    bool Enabled;
+    bool MessageStop;
+    bool LogMessage;
+    NormalizedHtmlString ReturnMessage;
+    QString LogFile;
 
-	void createDefaultConfiguration();
-	void addCondition(const QString &conditionString);
-	void readDefaultConditions();
+    void createDefaultConfiguration();
+    void addCondition(const QString &conditionString);
+    void readDefaultConditions();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

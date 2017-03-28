@@ -26,9 +26,9 @@
 
 NetworkModule::NetworkModule()
 {
-	add_type<NetworkProxyManager>();
-	add_type<NetworkProxyStorage>();
-	add_type<NETWORK_IMPLEMENTATION_CLASS_NAME>();
+    add_type<NetworkProxyManager>();
+    add_type<NetworkProxyStorage>();
+    add_type<NETWORK_IMPLEMENTATION_CLASS_NAME>();
 }
 
 NetworkModule::~NetworkModule()

@@ -23,29 +23,28 @@
 #include <QtWidgets/QWidget>
 
 #include "chat/chat.h"
+#include "exports.h"
 #include "misc/memory.h"
 #include "widgets/modal-configuration-widget.h"
-#include "exports.h"
 
 class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI ChatEditWidget : public ModalConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatEditWidget(Chat chat, QWidget *parent = nullptr);
-	virtual ~ChatEditWidget();
+    explicit ChatEditWidget(Chat chat, QWidget *parent = nullptr);
+    virtual ~ChatEditWidget();
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const override;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const override;
 
 protected:
-	Chat chat() const;
+    Chat chat() const;
 
-	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
+    SimpleConfigurationValueStateNotifier *simpleStateNotifier() const;
 
 private:
-	owned_qptr<SimpleConfigurationValueStateNotifier> m_stateNotifier;
-	Chat m_chat;
-
+    owned_qptr<SimpleConfigurationValueStateNotifier> m_stateNotifier;
+    Chat m_chat;
 };

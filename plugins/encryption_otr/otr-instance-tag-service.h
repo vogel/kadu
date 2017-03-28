@@ -24,7 +24,7 @@
 #include <injeqt/injeqt.h>
 
 extern "C" {
-#	include <libotr/proto.h>
+#include <libotr/proto.h>
 }
 
 class Account;
@@ -34,26 +34,25 @@ class OtrUserStateService;
 
 class OtrInstanceTagService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperOtrCreateInstanceTag(void *data, const char *accountName, const char *protocol);
+    static void wrapperOtrCreateInstanceTag(void *data, const char *accountName, const char *protocol);
 
-	Q_INVOKABLE OtrInstanceTagService();
-	virtual ~OtrInstanceTagService();
+    Q_INVOKABLE OtrInstanceTagService();
+    virtual ~OtrInstanceTagService();
 
-	void readInstanceTags();
-	void writeInstanceTags();
-	void createInstanceTag(const Account &account);
+    void readInstanceTags();
+    void writeInstanceTags();
+    void createInstanceTag(const Account &account);
 
 private slots:
-	INJEQT_SET void setPathService(OtrPathService *pathService);
-	INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
+    INJEQT_SET void setPathService(OtrPathService *pathService);
+    INJEQT_SET void setUserStateService(OtrUserStateService *userStateService);
 
 private:
-	QPointer<OtrPathService> PathService;
-	QPointer<OtrUserStateService> UserStateService;
+    QPointer<OtrPathService> PathService;
+    QPointer<OtrUserStateService> UserStateService;
 
-	QString instanceTagsFileName() const;
-
+    QString instanceTagsFileName() const;
 };

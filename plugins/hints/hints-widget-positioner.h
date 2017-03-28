@@ -30,24 +30,23 @@ class HintsWidget;
 
 class HintsWidgetPositioner : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit HintsWidgetPositioner(QObject *parent = nullptr);
-	virtual ~HintsWidgetPositioner();
+    Q_INVOKABLE explicit HintsWidgetPositioner(QObject *parent = nullptr);
+    virtual ~HintsWidgetPositioner();
 
 private:
-	QPointer<HintsConfiguration> m_hintsConfiguration;
-	QPointer<HintsWidget> m_hintsWidget;
+    QPointer<HintsConfiguration> m_hintsConfiguration;
+    QPointer<HintsWidget> m_hintsWidget;
 
-	QPoint positionForSize(QSize size);
+    QPoint positionForSize(QSize size);
 
 private slots:
-	INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
-	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
-	INJEQT_INIT void init();
+    INJEQT_SET void setHintsConfiguration(HintsConfiguration *hintsConfiguration);
+    INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
+    INJEQT_INIT void init();
 
-	void update();
-
+    void update();
 };

@@ -31,8 +31,7 @@
 
 #include <QtWidgets/QWidget>
 
-WindowsIntegration::WindowsIntegration(QObject *parent) :
-	QObject{parent}
+WindowsIntegration::WindowsIntegration(QObject *parent) : QObject{parent}
 {
 }
 
@@ -42,37 +41,38 @@ WindowsIntegration::~WindowsIntegration()
 
 void WindowsIntegration::setFileTransferManager(FileTransferManager *fileTransferManager)
 {
-	m_fileTransferManager = fileTransferManager;
+    m_fileTransferManager = fileTransferManager;
 }
 
 void WindowsIntegration::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void WindowsIntegration::setMainWindowRepository(MainWindowRepository *mainWindowRepository)
 {
-	m_mainWindowRepository = mainWindowRepository;
-	connect(m_mainWindowRepository, &MainWindowRepository::mainWindowAdded, this, &WindowsIntegration::mainWindowAdded);
+    m_mainWindowRepository = mainWindowRepository;
+    connect(m_mainWindowRepository, &MainWindowRepository::mainWindowAdded, this, &WindowsIntegration::mainWindowAdded);
 }
 
 void WindowsIntegration::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void WindowsIntegration::init()
 {
-	for (auto mainWindow : *m_mainWindowRepository)
-		mainWindowAdded(mainWindow);
+    for (auto mainWindow : *m_mainWindowRepository)
+        mainWindowAdded(mainWindow);
 }
 
 void WindowsIntegration::mainWindowAdded(QWidget *mainWindow)
 {
-	make_owned<WindowsTaskbarProgress>(m_fileTransferManager, mainWindow->window());
+    make_owned<WindowsTaskbarProgress>(m_fileTransferManager, mainWindow->window());
 
-	auto statusActions = m_pluginInjectedFactory->makeNotOwned<StatusActions>(m_statusContainerManager, false, true, nullptr);
-	m_pluginInjectedFactory->makeOwned<WindowsThumbnailToolbar>(std::move(statusActions), mainWindow->window());
+    auto statusActions =
+        m_pluginInjectedFactory->makeNotOwned<StatusActions>(m_statusContainerManager, false, true, nullptr);
+    m_pluginInjectedFactory->makeOwned<WindowsThumbnailToolbar>(std::move(statusActions), mainWindow->window());
 }
 
 #include "moc_windows-integration.cpp"

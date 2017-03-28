@@ -29,21 +29,19 @@ class StoragePoint;
 
 class ChatListStorage
 {
-
 public:
-	ChatListStorage(StoragePoint *storagePoint, QString nodeName);
+    ChatListStorage(StoragePoint *storagePoint, QString nodeName);
 
-	void setChatManager(ChatManager *chatManager);
+    void setChatManager(ChatManager *chatManager);
 
-	QVector<Chat> load() const;
-	void store(const QVector<Chat> &chats) const;
+    QVector<Chat> load() const;
+    void store(const QVector<Chat> &chats) const;
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	StoragePoint *m_storagePoint;
-	QString m_nodeName;
+    QPointer<ChatManager> m_chatManager;
+    StoragePoint *m_storagePoint;
+    QString m_nodeName;
 
-	QVector<Chat> chatsFromUuids(const QStringList &uuids) const;
-	QStringList uuidsFromChats(const QVector<Chat> &chats) const;
-
+    QVector<Chat> chatsFromUuids(const QStringList &uuids) const;
+    QStringList uuidsFromChats(const QVector<Chat> &chats) const;
 };

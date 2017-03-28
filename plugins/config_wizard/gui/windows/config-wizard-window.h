@@ -34,40 +34,39 @@ class ProtocolsManager;
  */
 class ConfigWizardWindow : public QWizard
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<ProtocolsManager> m_protocolsManager;
 
-	QList<ConfigWizardPage *> ConfigWizardPages;
+    QList<ConfigWizardPage *> ConfigWizardPages;
 
-	void setPage(int id, ConfigWizardPage *page);
-	bool goToChooseNetwork() const;
-	bool goToAccountSetUp() const;
+    void setPage(int id, ConfigWizardPage *page);
+    bool goToChooseNetwork() const;
+    bool goToAccountSetUp() const;
 
 private slots:
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_INIT void init();
 
-	void acceptedSlot();
-	void rejectedSlot();
+    void acceptedSlot();
+    void rejectedSlot();
 
 protected:
-	virtual int nextId() const;
+    virtual int nextId() const;
 
 public:
-	enum Pages
-	{
-		ProfilePage,
-		ChooseNetworkPage,
-		SetUpAccountPage,
-		CompletedPage
-	};
+    enum Pages
+    {
+        ProfilePage,
+        ChooseNetworkPage,
+        SetUpAccountPage,
+        CompletedPage
+    };
 
-	explicit ConfigWizardWindow(QWidget *parent = nullptr);
-	virtual ~ConfigWizardWindow();
-
+    explicit ConfigWizardWindow(QWidget *parent = nullptr);
+    virtual ~ConfigWizardWindow();
 };
 
 /** @} */

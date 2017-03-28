@@ -31,10 +31,11 @@
 
 #include "otr-peer-identity-verification-respond-shared-secret-page.h"
 
-OtrPeerIdentityVerificationRespondSharedSecretPage::OtrPeerIdentityVerificationRespondSharedSecretPage(const Contact &contact, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationRespondSharedSecretPage::OtrPeerIdentityVerificationRespondSharedSecretPage(
+    const Contact &contact, QWidget *parent)
+        : QWizardPage(parent), MyContact(contact)
 {
-	createGui();
+    createGui();
 }
 
 OtrPeerIdentityVerificationRespondSharedSecretPage::~OtrPeerIdentityVerificationRespondSharedSecretPage()
@@ -43,56 +44,58 @@ OtrPeerIdentityVerificationRespondSharedSecretPage::~OtrPeerIdentityVerification
 
 void OtrPeerIdentityVerificationRespondSharedSecretPage::createGui()
 {
-	setButtonText(QWizard::CommitButton, tr("Send Shared Secret"));
-	setCommitPage(true);
-	setTitle(tr("Respond to Shared Secret"));
+    setButtonText(QWizard::CommitButton, tr("Send Shared Secret"));
+    setCommitPage(true);
+    setTitle(tr("Respond to Shared Secret"));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLineEdit *sharedSecretEdit = new QLineEdit();
+    QLineEdit *sharedSecretEdit = new QLineEdit();
 
-	layout->addWidget(new QLabel(tr("%1 wants to verify your identity using Shared Secret method.").arg(MyContact.display(true))));
-	layout->addWidget(new QLabel(tr("Shared Secret that is known only for you and %1:").arg(MyContact.display(true))));
-	layout->addWidget(sharedSecretEdit);
+    layout->addWidget(
+        new QLabel(tr("%1 wants to verify your identity using Shared Secret method.").arg(MyContact.display(true))));
+    layout->addWidget(new QLabel(tr("Shared Secret that is known only for you and %1:").arg(MyContact.display(true))));
+    layout->addWidget(sharedSecretEdit);
 
-	registerField("respondSharedSecret*", sharedSecretEdit);
+    registerField("respondSharedSecret*", sharedSecretEdit);
 }
 
-void OtrPeerIdentityVerificationRespondSharedSecretPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+void OtrPeerIdentityVerificationRespondSharedSecretPage::setPeerIdentityVerificationService(
+    OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+    PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 void OtrPeerIdentityVerificationRespondSharedSecretPage::rejected()
 {
-	if (!PeerIdentityVerificationService)
-		return;
+    if (!PeerIdentityVerificationService)
+        return;
 
-	if (wizard()->currentPage() == this)
-		PeerIdentityVerificationService.data()->cancelVerification(MyContact);
+    if (wizard()->currentPage() == this)
+        PeerIdentityVerificationService.data()->cancelVerification(MyContact);
 }
 
 int OtrPeerIdentityVerificationRespondSharedSecretPage::nextId() const
 {
-	return OtrPeerIdentityVerificationWindow::ProgressPage;
+    return OtrPeerIdentityVerificationWindow::ProgressPage;
 }
 
 void OtrPeerIdentityVerificationRespondSharedSecretPage::initializePage()
 {
-	setField("respondSharedSecret", QString());
+    setField("respondSharedSecret", QString());
 }
 
 bool OtrPeerIdentityVerificationRespondSharedSecretPage::validatePage()
 {
-	QString respondSharedSecret = field("respondSharedSecret").toString();
+    QString respondSharedSecret = field("respondSharedSecret").toString();
 
-	if (respondSharedSecret.isEmpty())
-		return false;
+    if (respondSharedSecret.isEmpty())
+        return false;
 
-	if (PeerIdentityVerificationService)
-		PeerIdentityVerificationService.data()->respondVerification(MyContact, field("respondSharedSecret").toString());
+    if (PeerIdentityVerificationService)
+        PeerIdentityVerificationService.data()->respondVerification(MyContact, field("respondSharedSecret").toString());
 
-	return true;
+    return true;
 }
 
 #include "moc_otr-peer-identity-verification-respond-shared-secret-page.cpp"

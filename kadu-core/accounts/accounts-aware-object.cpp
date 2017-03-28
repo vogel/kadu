@@ -26,44 +26,44 @@ QList<AccountsAwareObject *> AccountsAwareObject::Objects;
 
 void AccountsAwareObject::accountAdded(Account account)
 {
-	Q_UNUSED(account)
+    Q_UNUSED(account)
 }
 
 void AccountsAwareObject::accountRemoved(Account account)
 {
-	Q_UNUSED(account)
+    Q_UNUSED(account)
 }
 
 AccountsAwareObject::AccountsAwareObject()
 {
-	Objects.append(this);
+    Objects.append(this);
 }
 
 AccountsAwareObject::~AccountsAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }
 
 void AccountsAwareObject::notifyAccountAdded(Account account)
 {
-	for (AccountsAwareObject *object : Objects)
-		object->accountAdded(account);
+    for (AccountsAwareObject *object : Objects)
+        object->accountAdded(account);
 }
 
 void AccountsAwareObject::notifyAccountRemoved(Account account)
 {
-	for (AccountsAwareObject *object : Objects)
-		object->accountRemoved(account);
+    for (AccountsAwareObject *object : Objects)
+        object->accountRemoved(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsAdded(AccountManager *accountManager)
 {
-	for (auto const &account : accountManager->items())
-		accountAdded(account);
+    for (auto const &account : accountManager->items())
+        accountAdded(account);
 }
 
 void AccountsAwareObject::triggerAllAccountsRemoved(AccountManager *accountManager)
 {
-	for (auto const &account : accountManager->items())
-		accountRemoved(account);
+    for (auto const &account : accountManager->items())
+        accountRemoved(account);
 }

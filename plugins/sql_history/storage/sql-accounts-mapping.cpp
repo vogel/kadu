@@ -25,8 +25,8 @@
 
 #include "sql-accounts-mapping.h"
 
-SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *parent) :
-		QObject(parent), Database(database), Mutex(QMutex::Recursive)
+SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *parent)
+        : QObject(parent), Database(database), Mutex(QMutex::Recursive)
 {
 }
 
@@ -36,108 +36,108 @@ SqlAccountsMapping::~SqlAccountsMapping()
 
 void SqlAccountsMapping::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void SqlAccountsMapping::init()
 {
-	loadMappingsFromDatabase();
+    loadMappingsFromDatabase();
 
-	triggerAllAccountsAdded(m_accountManager);
+    triggerAllAccountsAdded(m_accountManager);
 
-	connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
+    connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(accountUpdated(Account)));
 }
 
 void SqlAccountsMapping::accountAdded(Account account)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	if (idByAccount(account) > 0)
-		return;
+    if (idByAccount(account) > 0)
+        return;
 
-	QSqlQuery query(Database);
-	query.prepare("INSERT INTO kadu_accounts (protocol, account) VALUES (:protocol, :account)");
-	query.bindValue(":protocol", account.protocolName());
-	query.bindValue(":account", account.id());
-	query.exec();
+    QSqlQuery query(Database);
+    query.prepare("INSERT INTO kadu_accounts (protocol, account) VALUES (:protocol, :account)");
+    query.bindValue(":protocol", account.protocolName());
+    query.bindValue(":account", account.id());
+    query.exec();
 
-	addMapping(query.lastInsertId().toInt(), account);
+    addMapping(query.lastInsertId().toInt(), account);
 }
 
 void SqlAccountsMapping::accountRemoved(Account account)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	if (idByAccount(account) <= 0)
-		return;
+    if (idByAccount(account) <= 0)
+        return;
 
-	QSqlQuery query(Database);
-	query.prepare("UPDATE kadu_accounts SET protocol = '', account = '' WHERE id = :id");
-	query.bindValue(":id", idByAccount(account));
-	query.exec();
+    QSqlQuery query(Database);
+    query.prepare("UPDATE kadu_accounts SET protocol = '', account = '' WHERE id = :id");
+    query.bindValue(":id", idByAccount(account));
+    query.exec();
 }
 
 void SqlAccountsMapping::accountUpdated(const Account &account)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	if (idByAccount(account) <= 0)
-		return;
+    if (idByAccount(account) <= 0)
+        return;
 
-	QSqlQuery query(Database);
-	query.prepare("UPDATE kadu_accounts SET protocol = :protocol, account = :account WHERE id = :id");
-	query.bindValue(":protocol", account.protocolName());
-	query.bindValue(":account", account.id());
-	query.bindValue(":id", idByAccount(account));
-	query.exec();
+    QSqlQuery query(Database);
+    query.prepare("UPDATE kadu_accounts SET protocol = :protocol, account = :account WHERE id = :id");
+    query.bindValue(":protocol", account.protocolName());
+    query.bindValue(":account", account.id());
+    query.bindValue(":id", idByAccount(account));
+    query.exec();
 }
 
 void SqlAccountsMapping::addMapping(int id, const Account &account)
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	account.addProperty("sql_history:id", id, CustomProperties::NonStorable);
-	AccountMapping.insert(id, account);
+    account.addProperty("sql_history:id", id, CustomProperties::NonStorable);
+    AccountMapping.insert(id, account);
 }
 
 void SqlAccountsMapping::loadMappingsFromDatabase()
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	QSqlQuery query(Database);
-	query.prepare("SELECT id, protocol, account FROM kadu_accounts");
+    QSqlQuery query(Database);
+    query.prepare("SELECT id, protocol, account FROM kadu_accounts");
 
-	query.setForwardOnly(true);
-	query.exec();
+    query.setForwardOnly(true);
+    query.exec();
 
-	while (query.next())
-	{
-		int id = query.value(0).toInt();
-		QString protocol = query.value(1).toString();
-		QString accountId = query.value(2).toString();
+    while (query.next())
+    {
+        int id = query.value(0).toInt();
+        QString protocol = query.value(1).toString();
+        QString accountId = query.value(2).toString();
 
-		if (id <= 0 || protocol.isEmpty() || accountId.isEmpty())
-			continue;
+        if (id <= 0 || protocol.isEmpty() || accountId.isEmpty())
+            continue;
 
-		Account account = m_accountManager->byId(protocol, accountId);
-		if (account)
-			addMapping(id, account);
-	}
+        Account account = m_accountManager->byId(protocol, accountId);
+        if (account)
+            addMapping(id, account);
+    }
 }
 
 Account SqlAccountsMapping::accountById(int sqlId) const
 {
-	QMutexLocker locker(&Mutex);
+    QMutexLocker locker(&Mutex);
 
-	if (AccountMapping.contains(sqlId))
-		return AccountMapping.value(sqlId);
-	else
-		return Account::null;
+    if (AccountMapping.contains(sqlId))
+        return AccountMapping.value(sqlId);
+    else
+        return Account::null;
 }
 
 int SqlAccountsMapping::idByAccount(const Account &account)
 {
-	return account.property("sql_history:id", 0).toInt();
+    return account.property("sql_history:id", 0).toInt();
 }
 
 #include "moc_sql-accounts-mapping.cpp"

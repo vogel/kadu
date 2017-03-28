@@ -36,6 +36,8 @@
 #include "gui/windows/jabber-wait-for-account-register-window.h"
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
+#include "jabber-account-data.h"
+#include "jabber-protocol-factory.h"
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocols-manager.h"
 #include "services/jabber-error-service.h"
@@ -44,14 +46,11 @@
 #include "services/jabber-servers-service.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
 #include "windows/message-dialog.h"
-#include "jabber-account-data.h"
-#include "jabber-protocol-factory.h"
 
 #include "jabber-create-account-widget.h"
 
-JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *parent) :
-		AccountCreateWidget{parent},
-		m_showButtons{showButtons}
+JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *parent)
+        : AccountCreateWidget{parent}, m_showButtons{showButtons}
 {
 }
 
@@ -61,212 +60,215 @@ JabberCreateAccountWidget::~JabberCreateAccountWidget()
 
 void JabberCreateAccountWidget::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void JabberCreateAccountWidget::setAccountStorage(AccountStorage *accountStorage)
 {
-	m_accountStorage = accountStorage;
+    m_accountStorage = accountStorage;
 }
 
 void JabberCreateAccountWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void JabberCreateAccountWidget::setIdentityManager(IdentityManager *identityManager)
 {
-	m_identityManager = identityManager;
+    m_identityManager = identityManager;
 }
 
 void JabberCreateAccountWidget::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void JabberCreateAccountWidget::init()
 {
-	setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-	connect(m_accountManager, SIGNAL(accountAdded(Account)), this, SLOT(dataChanged()));
+    connect(m_accountManager, SIGNAL(accountAdded(Account)), this, SLOT(dataChanged()));
 
-	createGui(m_showButtons);
-	resetGui();
+    createGui(m_showButtons);
+    resetGui();
 }
 
 void JabberCreateAccountWidget::createGui(bool showButtons)
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
 
-	QWidget *formWidget = new QWidget(this);
-	mainLayout->addWidget(formWidget);
+    QWidget *formWidget = new QWidget(this);
+    mainLayout->addWidget(formWidget);
 
-	QFormLayout *layout = new QFormLayout(formWidget);
+    QFormLayout *layout = new QFormLayout(formWidget);
 
-	QWidget *jidWidget = new QWidget(this);
-	QGridLayout *jidLayout = new QGridLayout(jidWidget);
-	jidLayout->setSpacing(0);
-	jidLayout->setMargin(0);
-	jidLayout->setColumnStretch(0, 2);
-	jidLayout->setColumnStretch(2, 2);
+    QWidget *jidWidget = new QWidget(this);
+    QGridLayout *jidLayout = new QGridLayout(jidWidget);
+    jidLayout->setSpacing(0);
+    jidLayout->setMargin(0);
+    jidLayout->setColumnStretch(0, 2);
+    jidLayout->setColumnStretch(2, 2);
 
-	Username = new QLineEdit(this);
-	connect(Username, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
-	jidLayout->addWidget(Username);
+    Username = new QLineEdit(this);
+    connect(Username, SIGNAL(textEdited(QString)), this, SLOT(dataChanged()));
+    jidLayout->addWidget(Username);
 
-	QLabel *atLabel = new QLabel("@", this);
-	jidLayout->addWidget(atLabel, 0, 1);
+    QLabel *atLabel = new QLabel("@", this);
+    jidLayout->addWidget(atLabel, 0, 1);
 
-	Domain = new QComboBox();
-	Domain->setEditable(true);
-	connect(Domain, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataChanged()));
-	connect(Domain, SIGNAL(editTextChanged(QString)), this, SLOT(dataChanged()));
-	jidLayout->addWidget(Domain, 0, 2);
+    Domain = new QComboBox();
+    Domain->setEditable(true);
+    connect(Domain, SIGNAL(currentIndexChanged(QString)), this, SLOT(dataChanged()));
+    connect(Domain, SIGNAL(editTextChanged(QString)), this, SLOT(dataChanged()));
+    jidLayout->addWidget(Domain, 0, 2);
 
-	layout->addRow(tr("Username") + ':', jidWidget);
+    layout->addRow(tr("Username") + ':', jidWidget);
 
-	NewPassword = new QLineEdit(this);
-	connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
-	NewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Password") + ':', NewPassword);
+    NewPassword = new QLineEdit(this);
+    connect(NewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
+    NewPassword->setEchoMode(QLineEdit::Password);
+    layout->addRow(tr("Password") + ':', NewPassword);
 
-	ReNewPassword = new QLineEdit(this);
-	connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
-	ReNewPassword->setEchoMode(QLineEdit::Password);
-	layout->addRow(tr("Retype Password") + ':', ReNewPassword);
+    ReNewPassword = new QLineEdit(this);
+    connect(ReNewPassword, SIGNAL(textEdited(const QString &)), this, SLOT(dataChanged()));
+    ReNewPassword->setEchoMode(QLineEdit::Password);
+    layout->addRow(tr("Retype Password") + ':', ReNewPassword);
 
-	RememberPassword = new QCheckBox(tr("Remember password"), this);
-	layout->addWidget(RememberPassword);
+    RememberPassword = new QCheckBox(tr("Remember password"), this);
+    layout->addWidget(RememberPassword);
 
-	EMail = new QLineEdit{this};
-	layout->addRow(tr("E-mail:"), EMail);
+    EMail = new QLineEdit{this};
+    layout->addRow(tr("E-mail:"), EMail);
 
-	QLabel *infoLabel = new QLabel(tr("<font size='-1'><i>Some servers require your e-mail address during registration.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	layout->addRow(0, infoLabel);
+    QLabel *infoLabel = new QLabel(
+        tr("<font size='-1'><i>Some servers require your e-mail address during registration.</i></font>"), this);
+    infoLabel->setWordWrap(true);
+    infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+    layout->addRow(0, infoLabel);
 
-	IdentityCombo = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
-	connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
-	layout->addRow(tr("Account Identity") + ':', IdentityCombo);
+    IdentityCombo = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
+    connect(IdentityCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(dataChanged()));
+    layout->addRow(tr("Account Identity") + ':', IdentityCombo);
 
-	infoLabel = new QLabel(tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"), this);
-	infoLabel->setWordWrap(true);
-	infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-	infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
-	layout->addRow(0, infoLabel);
+    infoLabel = new QLabel(
+        tr("<font size='-1'><i>Select or enter the identity that will be associated with this account.</i></font>"),
+        this);
+    infoLabel->setWordWrap(true);
+    infoLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+    infoLabel->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum));
+    layout->addRow(0, infoLabel);
 
-	mainLayout->addStretch(100);
+    mainLayout->addStretch(100);
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
-	mainLayout->addWidget(buttons);
+    QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+    mainLayout->addWidget(buttons);
 
-	RegisterAccountButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Register Account"), this);
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+    RegisterAccountButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Register Account"), this);
+    QPushButton *cancelButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
 
-	buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+    buttons->addButton(RegisterAccountButton, QDialogButtonBox::ApplyRole);
+    buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
+    connect(RegisterAccountButton, SIGNAL(clicked(bool)), this, SLOT(apply()));
+    connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(cancel()));
 
-	if (!showButtons)
-		buttons->hide();
+    if (!showButtons)
+        buttons->hide();
 }
 
-void JabberCreateAccountWidget::setJabberServersService(JabberServersService* serversService)
+void JabberCreateAccountWidget::setJabberServersService(JabberServersService *serversService)
 {
-	for (auto &&server : serversService->knownNoXDataServers())
-		Domain->addItem(server);
+    for (auto &&server : serversService->knownNoXDataServers())
+        Domain->addItem(server);
 
-	Domain->setCurrentText(QString{});
+    Domain->setCurrentText(QString{});
 }
 
 void JabberCreateAccountWidget::dataChanged()
 {
-	bool valid = !Domain->currentText().isEmpty()
-			&& !Username->text().isEmpty()
-			&& !NewPassword->text().isEmpty()
-			&& !ReNewPassword->text().isEmpty()
-			&& !m_accountManager->byId("jabber", Username->text() + '@' + Domain->currentText())
-			&& IdentityCombo->currentIdentity();
+    bool valid = !Domain->currentText().isEmpty() && !Username->text().isEmpty() && !NewPassword->text().isEmpty() &&
+                 !ReNewPassword->text().isEmpty() &&
+                 !m_accountManager->byId("jabber", Username->text() + '@' + Domain->currentText()) &&
+                 IdentityCombo->currentIdentity();
 
-	RegisterAccountButton->setEnabled(valid);
+    RegisterAccountButton->setEnabled(valid);
 
-	if (Domain->currentText().isEmpty()
-			&& Username->text().isEmpty()
-			&& NewPassword->text().isEmpty()
-			&& ReNewPassword->text().isEmpty()
-			&& RememberPassword->isChecked()
-			&& 0 == IdentityCombo->currentIndex())
-		simpleStateNotifier()->setState(StateNotChanged);
-	else
-		simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
+    if (Domain->currentText().isEmpty() && Username->text().isEmpty() && NewPassword->text().isEmpty() &&
+        ReNewPassword->text().isEmpty() && RememberPassword->isChecked() && 0 == IdentityCombo->currentIndex())
+        simpleStateNotifier()->setState(StateNotChanged);
+    else
+        simpleStateNotifier()->setState(valid ? StateChangedDataValid : StateChangedDataInvalid);
 }
 
 void JabberCreateAccountWidget::apply()
 {
-	if (NewPassword->text() != ReNewPassword->text())
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"), tr("Invalid data entered in required fields.\n\n"
-			"Password entered in both fields (\"New password\" and \"Retype password\") "
-			"must be the same!"), QMessageBox::Ok, this);
-		return;
-	}
+    if (NewPassword->text() != ReNewPassword->text())
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Kadu"),
+            tr("Invalid data entered in required fields.\n\n"
+               "Password entered in both fields (\"New password\" and \"Retype password\") "
+               "must be the same!"),
+            QMessageBox::Ok, this);
+        return;
+    }
 
-	auto errorService = new JabberErrorService{this};
-	auto registerAccountService = m_pluginInjectedFactory->makeInjected<JabberRegisterAccountService>(this);
-	registerAccountService->setErrorService(errorService);
+    auto errorService = new JabberErrorService{this};
+    auto registerAccountService = m_pluginInjectedFactory->makeInjected<JabberRegisterAccountService>(this);
+    registerAccountService->setErrorService(errorService);
 
-	auto jid = Jid{Username->text(), Domain->currentText(), QString{}};
-	auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text(), EMail->text());
+    auto jid = Jid{Username->text(), Domain->currentText(), QString{}};
+    auto registerAccount = registerAccountService->registerAccount(jid, NewPassword->text(), EMail->text());
 
-	auto window = m_pluginInjectedFactory->makeInjected<JabberWaitForAccountRegisterWindow>(registerAccount);
-	connect(window, SIGNAL(jidRegistered(Jid)), this, SLOT(jidRegistered(Jid)));
-	window->exec();
+    auto window = m_pluginInjectedFactory->makeInjected<JabberWaitForAccountRegisterWindow>(registerAccount);
+    connect(window, SIGNAL(jidRegistered(Jid)), this, SLOT(jidRegistered(Jid)));
+    window->exec();
 }
 
 void JabberCreateAccountWidget::cancel()
 {
-	resetGui();
+    resetGui();
 }
 
 void JabberCreateAccountWidget::resetGui()
 {
-	Username->clear();
-	Domain->setCurrentIndex(-1);
-	NewPassword->clear();
-	ReNewPassword->clear();
-	RememberPassword->setChecked(true);
-	m_identityManager->removeUnused();
-	IdentityCombo->setCurrentIndex(0);
-	RegisterAccountButton->setEnabled(false);
+    Username->clear();
+    Domain->setCurrentIndex(-1);
+    NewPassword->clear();
+    ReNewPassword->clear();
+    RememberPassword->setChecked(true);
+    m_identityManager->removeUnused();
+    IdentityCombo->setCurrentIndex(0);
+    RegisterAccountButton->setEnabled(false);
 
-	simpleStateNotifier()->setState(StateNotChanged);
+    simpleStateNotifier()->setState(StateNotChanged);
 }
 
 void JabberCreateAccountWidget::jidRegistered(const Jid &jid)
 {
-	if (jid.isEmpty())
-	{
-		emit accountCreated(Account());
-		return;
-	}
+    if (jid.isEmpty())
+    {
+        emit accountCreated(Account());
+        return;
+    }
 
-	Account jabberAccount = m_accountStorage->create("jabber");
-	jabberAccount.setId(jid.bare());
-	jabberAccount.setHasPassword(true);
-	jabberAccount.setPassword(NewPassword->text());
-	jabberAccount.setRememberPassword(RememberPassword->isChecked());
-	// bad code: order of calls is important here
-	// we have to set identity after password
-	// so in cache of identity status container it already knows password and can do status change without asking user for it
-	jabberAccount.setAccountIdentity(IdentityCombo->currentIdentity());
+    Account jabberAccount = m_accountStorage->create("jabber");
+    jabberAccount.setId(jid.bare());
+    jabberAccount.setHasPassword(true);
+    jabberAccount.setPassword(NewPassword->text());
+    jabberAccount.setRememberPassword(RememberPassword->isChecked());
+    // bad code: order of calls is important here
+    // we have to set identity after password
+    // so in cache of identity status container it already knows password and can do status change without asking user
+    // for it
+    jabberAccount.setAccountIdentity(IdentityCombo->currentIdentity());
 
-	resetGui();
+    resetGui();
 
-	emit accountCreated(jabberAccount);
+    emit accountCreated(jabberAccount);
 }
 
 #include "moc_jabber-create-account-widget.cpp"

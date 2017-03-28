@@ -23,8 +23,7 @@
 
 #include "writeable-contacts-list-filter.h"
 
-WriteableContactsListFilter::WriteableContactsListFilter(QObject *parent) :
-		AbstractAccountFilter(parent)
+WriteableContactsListFilter::WriteableContactsListFilter(QObject *parent) : AbstractAccountFilter(parent)
 {
 }
 
@@ -34,11 +33,11 @@ WriteableContactsListFilter::~WriteableContactsListFilter()
 
 bool WriteableContactsListFilter::acceptAccount(Account account)
 {
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return false;
+    Protocol *protocol = account.protocolHandler();
+    if (!protocol)
+        return false;
 
-	return !protocol->contactsListReadOnly();
+    return !protocol->contactsListReadOnly();
 }
 
 #include "moc_writeable-contacts-list-filter.cpp"

@@ -40,40 +40,39 @@ class Status;
 
 class AccountEventListener : public QObject, AccountsAwareObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(LISTENER)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(LISTENER)
 
 public:
-	Q_INVOKABLE explicit AccountEventListener(QObject *parent = nullptr);
-	virtual ~AccountEventListener();
+    Q_INVOKABLE explicit AccountEventListener(QObject *parent = nullptr);
+    virtual ~AccountEventListener();
 
 protected:
-	virtual void accountAdded(Account account) override;
-	virtual void accountRemoved(Account account) override;
+    virtual void accountAdded(Account account) override;
+    virtual void accountRemoved(Account account) override;
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<AccountNotificationService> m_accountNotificationService;
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<MultilogonNotificationService> m_multilogonNotificationService;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
-	QPointer<StatusNotificationService> m_statusNotificationService;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<AccountNotificationService> m_accountNotificationService;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<MultilogonNotificationService> m_multilogonNotificationService;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<StatusNotificationService> m_statusNotificationService;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setAccountNotificationService(AccountNotificationService *accountNotificationService);
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setMultilogonNotificationService(MultilogonNotificationService *multilogonNotificationService);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
-	INJEQT_SET void setStatusNotificationService(StatusNotificationService *statusNotificationService);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAccountNotificationService(AccountNotificationService *accountNotificationService);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setMultilogonNotificationService(MultilogonNotificationService *multilogonNotificationService);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setStatusNotificationService(StatusNotificationService *statusNotificationService);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void accountConnected();
-	void protocolHandlerChanged(Account account);
-
+    void accountConnected();
+    void protocolHandlerChanged(Account account);
 };

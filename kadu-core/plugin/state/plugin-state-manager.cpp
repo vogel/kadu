@@ -28,8 +28,7 @@
 #include "storage/storage-point-factory.h"
 #include "storage/storage-point.h"
 
-PluginStateManager::PluginStateManager(QObject *parent) :
-		QObject{parent}
+PluginStateManager::PluginStateManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,72 +38,73 @@ PluginStateManager::~PluginStateManager()
 
 void PluginStateManager::setConfigurationManager(ConfigurationManager *configurationManager)
 {
-	m_configurationManager = configurationManager;
+    m_configurationManager = configurationManager;
 }
 
 void PluginStateManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void PluginStateManager::setPluginDependencyHandler(PluginDependencyHandler *pluginDependencyHandler)
 {
-	m_pluginDependencyHandler = pluginDependencyHandler;
+    m_pluginDependencyHandler = pluginDependencyHandler;
 }
 
 void PluginStateManager::setPluginStateService(PluginStateService *pluginStateService)
 {
-	m_pluginStateService = pluginStateService;
+    m_pluginStateService = pluginStateService;
 
-	if (m_pluginStateService)
-		connect(&m_pluginStateService.data()->changeNotifier(), SIGNAL(changed()), this, SLOT(storePluginStatesAndFlush()));
+    if (m_pluginStateService)
+        connect(
+            &m_pluginStateService.data()->changeNotifier(), SIGNAL(changed()), this, SLOT(storePluginStatesAndFlush()));
 }
 
 void PluginStateManager::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
-	m_storagePointFactory = storagePointFactory;
+    m_storagePointFactory = storagePointFactory;
 }
 
 void PluginStateManager::loadPluginStates()
 {
-	if (!m_pluginDependencyHandler || !m_pluginStateService || !m_storagePointFactory)
-		return;
+    if (!m_pluginDependencyHandler || !m_pluginStateService || !m_storagePointFactory)
+        return;
 
-	auto storagePoint = m_storagePointFactory->createStoragePoint(QStringLiteral("Plugins"));
-	if (!storagePoint)
-		return;
+    auto storagePoint = m_storagePointFactory->createStoragePoint(QStringLiteral("Plugins"));
+    if (!storagePoint)
+        return;
 
-	bool importedFrom09 = storagePoint->loadAttribute("imported_from_09", false);
-	storagePoint->storeAttribute("imported_from_09", true);
+    bool importedFrom09 = storagePoint->loadAttribute("imported_from_09", false);
+    storagePoint->storeAttribute("imported_from_09", true);
 
-	auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
-	auto changeNotifierLock = ChangeNotifierLock{m_pluginStateService->changeNotifier(), ChangeNotifierLock::ModeForget};
-	m_pluginStateService->setPluginStates(pluginStates);
+    auto pluginStates = loadPluginStates(storagePoint.get(), importedFrom09);
+    auto changeNotifierLock =
+        ChangeNotifierLock{m_pluginStateService->changeNotifier(), ChangeNotifierLock::ModeForget};
+    m_pluginStateService->setPluginStates(pluginStates);
 }
 
 QMap<QString, PluginState> PluginStateManager::loadPluginStates(StoragePoint *storagePoint, bool importedFrom09) const
 {
-	return importedFrom09
-			? PluginStateStorage{}.load(*storagePoint)
-			: PluginStateStorage09{}.load(m_configuration, m_pluginDependencyHandler->pluginNames());
+    return importedFrom09 ? PluginStateStorage{}.load(*storagePoint)
+                          : PluginStateStorage09{}.load(m_configuration, m_pluginDependencyHandler->pluginNames());
 }
 
 void PluginStateManager::storePluginStatesAndFlush()
 {
-	storePluginStates();
-	m_configurationManager->flush();
+    storePluginStates();
+    m_configurationManager->flush();
 }
 
 void PluginStateManager::storePluginStates()
 {
-	if (!m_pluginStateService || !m_storagePointFactory)
-		return;
+    if (!m_pluginStateService || !m_storagePointFactory)
+        return;
 
-	auto storagePoint = m_storagePointFactory->createStoragePoint(QStringLiteral("Plugins"));
-	if (!storagePoint)
-		return;
+    auto storagePoint = m_storagePointFactory->createStoragePoint(QStringLiteral("Plugins"));
+    if (!storagePoint)
+        return;
 
-	auto pluginStateStorage = PluginStateStorage{};
-	auto pluginStates = m_pluginStateService->pluginStates();
-	pluginStateStorage.store(*storagePoint.get(), pluginStates);
+    auto pluginStateStorage = PluginStateStorage{};
+    auto pluginStates = m_pluginStateService->pluginStates();
+    pluginStateStorage.store(*storagePoint.get(), pluginStates);
 }

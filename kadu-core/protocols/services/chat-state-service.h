@@ -49,36 +49,34 @@ enum class ChatState;
  */
 class KADUAPI ChatStateService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
+    /**
+     * @short Create new instance of ChatStateService bound to given Account.
+     * @param account account to bound this service to
+     */
+    explicit ChatStateService(Account account, QObject *parent = nullptr);
+    virtual ~ChatStateService();
 
-	/**
-	 * @short Create new instance of ChatStateService bound to given Account.
-	 * @param account account to bound this service to
-	 */
-	explicit ChatStateService(Account account, QObject *parent = nullptr);
-	virtual ~ChatStateService();
-
-	/**
-	 * @short Send our state to given contact.
-	 * @param contact state of chat with this contact changed
-	 * @param state new state to send
-	 */
-	virtual void sendState(const Contact &contact, ChatState state) = 0;
+    /**
+     * @short Send our state to given contact.
+     * @param contact state of chat with this contact changed
+     * @param state new state to send
+     */
+    virtual void sendState(const Contact &contact, ChatState state) = 0;
 
 signals:
-	/**
-	 * @short Signal emited when peer changed its chat state.
-	 * @param contact peer contact
-	 * @param state new state received from peer
-	 */
-	void peerStateChanged(const Contact &contact, ChatState state);
-
+    /**
+     * @short Signal emited when peer changed its chat state.
+     * @param contact peer contact
+     * @param state new state received from peer
+     */
+    void peerStateChanged(const Contact &contact, ChatState state);
 };
 
 /**
  * @}
  */
 
-#endif // CHAT_STATE_SERVICE_H
+#endif   // CHAT_STATE_SERVICE_H

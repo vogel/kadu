@@ -30,14 +30,14 @@
 
 ChatWidgetModule::ChatWidgetModule()
 {
-	add_type<ChatWidgetActivationService>();
-	add_type<ChatWidgetContainerHandlerMapper>();
-	add_type<ChatWidgetContainerHandlerRepository>();
-	add_type<ChatWidgetManager>();
-	add_type<ChatWidgetMessageHandlerConfigurator>();
-	add_type<ChatWidgetMessageHandler>();
-	add_type<ChatWidgetRepositoryImpl>();
-	add_type<ChatWidgetStatePersistenceService>();
+    add_type<ChatWidgetActivationService>();
+    add_type<ChatWidgetContainerHandlerMapper>();
+    add_type<ChatWidgetContainerHandlerRepository>();
+    add_type<ChatWidgetManager>();
+    add_type<ChatWidgetMessageHandlerConfigurator>();
+    add_type<ChatWidgetMessageHandler>();
+    add_type<ChatWidgetRepositoryImpl>();
+    add_type<ChatWidgetStatePersistenceService>();
 }
 
 ChatWidgetModule::~ChatWidgetModule()

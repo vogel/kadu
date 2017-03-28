@@ -32,8 +32,7 @@
 
 #include "config-wizard-profile-page.h"
 
-ConfigWizardProfilePage::ConfigWizardProfilePage(QWidget *parent) :
-		ConfigWizardPage(parent)
+ConfigWizardProfilePage::ConfigWizardProfilePage(QWidget *parent) : ConfigWizardPage(parent)
 {
 }
 
@@ -43,71 +42,79 @@ ConfigWizardProfilePage::~ConfigWizardProfilePage()
 
 void ConfigWizardProfilePage::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ConfigWizardProfilePage::setLanguagesManager(LanguagesManager *languagesManager)
 {
-	m_languagesManager = languagesManager;
+    m_languagesManager = languagesManager;
 }
 
 void ConfigWizardProfilePage::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void ConfigWizardProfilePage::init()
 {
-	setDescription(tr("<h3>Welcome to Kadu Instant Messenger</h3>"
-		"<p>This wizard will help you to configure the basic settings of Kadu.</p>"
-		"<p>Please choose a preferred language and create a nickname</p>"));
+    setDescription(
+        tr("<h3>Welcome to Kadu Instant Messenger</h3>"
+           "<p>This wizard will help you to configure the basic settings of Kadu.</p>"
+           "<p>Please choose a preferred language and create a nickname</p>"));
 
-	createGui();
+    createGui();
 }
 
 void ConfigWizardProfilePage::createGui()
 {
-	formLayout()->addRow(new QLabel(tr("<h3>Profile setup</h3>"), this));
+    formLayout()->addRow(new QLabel(tr("<h3>Profile setup</h3>"), this));
 
-	LanguagesCombo = new QComboBox(this);
-	setLanguages();
-	formLayout()->addRow(tr("Language") + ':', LanguagesCombo);
+    LanguagesCombo = new QComboBox(this);
+    setLanguages();
+    formLayout()->addRow(tr("Language") + ':', LanguagesCombo);
 
-	QLabel *restartInfo = new QLabel("<font size='-1'><i>" + (QCoreApplication::translate("@default",
-			// NOTE: it's the same string as in varia/configuration/dialog.ui
-			"Kadu needs to be restarted before changes to the language settings will take effect.")) +
-			"</i></font>", this);
-	formLayout()->addRow(QString(), restartInfo);
+    QLabel *restartInfo = new QLabel(
+        "<font size='-1'><i>" +
+            (QCoreApplication::translate(
+                "@default",
+                // NOTE: it's the same string as in varia/configuration/dialog.ui
+                "Kadu needs to be restarted before changes to the language settings will take effect.")) +
+            "</i></font>",
+        this);
+    formLayout()->addRow(QString(), restartInfo);
 
-	NickNameEdit = new QLineEdit(this);
-	NickNameEdit->setMaximumWidth(300);
-	formLayout()->addRow(tr("Nickname") + ':', NickNameEdit);
+    NickNameEdit = new QLineEdit(this);
+    NickNameEdit->setMaximumWidth(300);
+    formLayout()->addRow(tr("Nickname") + ':', NickNameEdit);
 }
 
 void ConfigWizardProfilePage::setLanguages()
 {
-	for (QMap<QString, QString>::const_iterator it = m_languagesManager->languages().constBegin(), end = m_languagesManager->languages().constEnd(); it != end; ++it)
-		LanguagesCombo->addItem(it.value(), it.key());
+    for (QMap<QString, QString>::const_iterator it = m_languagesManager->languages().constBegin(),
+                                                end = m_languagesManager->languages().constEnd();
+         it != end; ++it)
+        LanguagesCombo->addItem(it.value(), it.key());
 }
 
 void ConfigWizardProfilePage::initializePage()
 {
-	int languageIndex = LanguagesCombo->findData(m_configuration->deprecatedApi()->readEntry("General", "Language"));
-	if (-1 == languageIndex)
-		languageIndex = LanguagesCombo->findData("en");
-	if (-1 != languageIndex)
-		LanguagesCombo->setCurrentIndex(languageIndex);
+    int languageIndex = LanguagesCombo->findData(m_configuration->deprecatedApi()->readEntry("General", "Language"));
+    if (-1 == languageIndex)
+        languageIndex = LanguagesCombo->findData("en");
+    if (-1 != languageIndex)
+        LanguagesCombo->setCurrentIndex(languageIndex);
 
-	NickNameEdit->setText(m_configuration->deprecatedApi()->readEntry("General", "Nick", "Me"));
+    NickNameEdit->setText(m_configuration->deprecatedApi()->readEntry("General", "Nick", "Me"));
 }
 
 void ConfigWizardProfilePage::acceptPage()
 {
-	m_configuration->deprecatedApi()->writeEntry("General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
-	m_configuration->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
+    m_configuration->deprecatedApi()->writeEntry(
+        "General", "Language", LanguagesCombo->itemData(LanguagesCombo->currentIndex()).toString());
+    m_configuration->deprecatedApi()->writeEntry("General", "Nick", NickNameEdit->text());
 
-	// TODO: check if needed
-	m_myself->buddy().setDisplay(NickNameEdit->text());
+    // TODO: check if needed
+    m_myself->buddy().setDisplay(NickNameEdit->text());
 }
 
 #include "moc_config-wizard-profile-page.cpp"

@@ -26,13 +26,17 @@
 
 #include "oauth-token-fetcher.h"
 
-OAuthTokenFetcher::OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject(parent), RequestTokenUrl(requestTokenUrl), Token(token), Consumer(token.consumer()), NetworkAccessManager(networkAccessManager), Reply(0)
+OAuthTokenFetcher::OAuthTokenFetcher(
+    QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent)
+        : QObject(parent), RequestTokenUrl(requestTokenUrl), Token(token), Consumer(token.consumer()),
+          NetworkAccessManager(networkAccessManager), Reply(0)
 {
 }
 
-OAuthTokenFetcher::OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject(parent), RequestTokenUrl(requestTokenUrl), Consumer(consumer), NetworkAccessManager(networkAccessManager), Reply(0)
+OAuthTokenFetcher::OAuthTokenFetcher(
+    QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent)
+        : QObject(parent), RequestTokenUrl(requestTokenUrl), Consumer(consumer),
+          NetworkAccessManager(networkAccessManager), Reply(0)
 {
 }
 
@@ -42,78 +46,81 @@ OAuthTokenFetcher::~OAuthTokenFetcher()
 
 void OAuthTokenFetcher::fetchToken()
 {
-	OAuthParameters parameters(Consumer, Token);
-	parameters.setUrl(RequestTokenUrl);
-	parameters.sign();
+    OAuthParameters parameters(Consumer, Token);
+    parameters.setUrl(RequestTokenUrl);
+    parameters.sign();
 
-	QNetworkRequest request;
-	request.setUrl(RequestTokenUrl);
-	request.setRawHeader("Connection", "close");
-	request.setRawHeader("Content-Length", 0);
-	request.setRawHeader("Accept", "text/xml");
-	request.setRawHeader("Authorization", parameters.toAuthorizationHeader());
+    QNetworkRequest request;
+    request.setUrl(RequestTokenUrl);
+    request.setRawHeader("Connection", "close");
+    request.setRawHeader("Content-Length", 0);
+    request.setRawHeader("Accept", "text/xml");
+    request.setRawHeader("Authorization", parameters.toAuthorizationHeader());
 
-	Reply = NetworkAccessManager->post(request, QByteArray());
-	connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    Reply = NetworkAccessManager->post(request, QByteArray());
+    connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void OAuthTokenFetcher::requestFinished()
 {
-	if (!Reply)
-	{
-		OAuthToken token;
-		token.setConsumer(Consumer);
-		emit tokenFetched(token);
-		return;
-	}
+    if (!Reply)
+    {
+        OAuthToken token;
+        token.setConsumer(Consumer);
+        emit tokenFetched(token);
+        return;
+    }
 
-	if (QNetworkReply::NoError != Reply->error())
-	{
-		OAuthToken token;
-		token.setConsumer(Consumer);
-		emit tokenFetched(token);
-		return;
-	}
+    if (QNetworkReply::NoError != Reply->error())
+    {
+        OAuthToken token;
+        token.setConsumer(Consumer);
+        emit tokenFetched(token);
+        return;
+    }
 
-	QByteArray xmlContent = Reply->readAll();
-	QDomDocument document;
-	document.setContent(xmlContent);
+    QByteArray xmlContent = Reply->readAll();
+    QDomDocument document;
+    document.setContent(xmlContent);
 
-	if (document.isNull())
-	{
-		OAuthToken token;
-		token.setConsumer(Consumer);
-		emit tokenFetched(token);
-		return;
-	}
+    if (document.isNull())
+    {
+        OAuthToken token;
+        token.setConsumer(Consumer);
+        emit tokenFetched(token);
+        return;
+    }
 
-	QDomElement resultElement = document.documentElement();
-	QDomElement oauthTokenElement = resultElement.firstChildElement("oauth_token");
-	QDomElement oauthTokenSecretElement = resultElement.firstChildElement("oauth_token_secret");
-	QDomElement oauthTokenExpiresInlement = resultElement.firstChildElement("oauth_token_expires_in");
-	QDomElement statusElement = resultElement.firstChildElement("status");
+    QDomElement resultElement = document.documentElement();
+    QDomElement oauthTokenElement = resultElement.firstChildElement("oauth_token");
+    QDomElement oauthTokenSecretElement = resultElement.firstChildElement("oauth_token_secret");
+    QDomElement oauthTokenExpiresInlement = resultElement.firstChildElement("oauth_token_expires_in");
+    QDomElement statusElement = resultElement.firstChildElement("status");
 
-	if (resultElement.isNull() || oauthTokenElement.isNull() || oauthTokenSecretElement.isNull() || oauthTokenExpiresInlement.isNull() || statusElement.isNull())
-	{
-		OAuthToken token;
-		token.setConsumer(Consumer);
-		emit tokenFetched(token);
-		return;
-	}
+    if (resultElement.isNull() || oauthTokenElement.isNull() || oauthTokenSecretElement.isNull() ||
+        oauthTokenExpiresInlement.isNull() || statusElement.isNull())
+    {
+        OAuthToken token;
+        token.setConsumer(Consumer);
+        emit tokenFetched(token);
+        return;
+    }
 
-	if ("0" != statusElement.text())
-	{
-		OAuthToken token;
-		token.setConsumer(Consumer);
-		emit tokenFetched(token);
-		return;
-	}
+    if ("0" != statusElement.text())
+    {
+        OAuthToken token;
+        token.setConsumer(Consumer);
+        emit tokenFetched(token);
+        return;
+    }
 
-	OAuthToken token(oauthTokenElement.text().toUtf8(), oauthTokenSecretElement.text().toUtf8(), oauthTokenExpiresInlement.text().toInt());
-	token.setConsumer(Consumer);
-	emit tokenFetched(token);
+    OAuthToken token(
+        oauthTokenElement.text().toUtf8(), oauthTokenSecretElement.text().toUtf8(),
+        oauthTokenExpiresInlement.text().toInt());
+    token.setConsumer(Consumer);
+    emit tokenFetched(token);
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_oauth-token-fetcher.cpp"

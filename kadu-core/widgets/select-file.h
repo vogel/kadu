@@ -33,34 +33,36 @@ class QLineEdit;
 
 class KADUAPI SelectFile : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SelectFile(const QString &type, QWidget *parent = nullptr);
-	explicit SelectFile(QWidget *parent = nullptr);
-	virtual ~SelectFile();
+    explicit SelectFile(const QString &type, QWidget *parent = nullptr);
+    explicit SelectFile(QWidget *parent = nullptr);
+    virtual ~SelectFile();
 
-	void setType(const QString &type) { Type = type; }
+    void setType(const QString &type)
+    {
+        Type = type;
+    }
 
-	QString file() const;
-	void setFile(const QString &file);
+    QString file() const;
+    void setFile(const QString &file);
 
 signals:
-	void fileChanged();
+    void fileChanged();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	QString Type;
-	QLineEdit *LineEdit;
+    QString Type;
+    QLineEdit *LineEdit;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	void selectFileClicked();
-	void fileEdited();
-
+    void selectFileClicked();
+    void fileEdited();
 };

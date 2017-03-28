@@ -27,24 +27,23 @@
 
 void ConfigFileDataManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ConfigFileDataManager::writeEntry(const QString &section, const QString &name, const QVariant &value)
 {
-	if (section.isEmpty() || name.isEmpty())
-		return;
+    if (section.isEmpty() || name.isEmpty())
+        return;
 
-	m_configuration->deprecatedApi()->writeEntry(section, name, value.toString());
+    m_configuration->deprecatedApi()->writeEntry(section, name, value.toString());
 }
 
 QVariant ConfigFileDataManager::readEntry(const QString &section, const QString &name)
 {
-	if (section.isEmpty() || name.isEmpty())
-		return QVariant(QString());
+    if (section.isEmpty() || name.isEmpty())
+        return QVariant(QString());
 
-	return QVariant(m_configuration->deprecatedApi()->readEntry(section, name));
+    return QVariant(m_configuration->deprecatedApi()->readEntry(section, name));
 }
-
 
 #include "moc_config-file-data-manager.cpp"

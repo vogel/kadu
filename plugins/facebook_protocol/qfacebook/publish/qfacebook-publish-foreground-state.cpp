@@ -24,12 +24,12 @@
 
 QByteArray QFacebookPublishForegroundState::encode()
 {
-	auto json = QJsonObject{};
-	json.insert("foreground", foreground);
-	json.insert("keepalive_timeout", keepAlive);
+    auto json = QJsonObject{};
+    json.insert("foreground", foreground);
+    json.insert("keepalive_timeout", keepAlive);
 
-	auto document = QJsonDocument{};
-	document.setObject(json);
+    auto document = QJsonDocument{};
+    document.setObject(json);
 
-	return document.toJson(QJsonDocument::Compact);
+    return document.toJson(QJsonDocument::Compact);
 }

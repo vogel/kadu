@@ -43,26 +43,25 @@ class Configuration;
  */
 class ChatImageRequestServiceConfigurator : private ConfigurationAwareObject
 {
-	QPointer<ChatImageRequestService> Service;
-	QPointer<Configuration> m_configuration;
+    QPointer<ChatImageRequestService> Service;
+    QPointer<Configuration> m_configuration;
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	ChatImageRequestServiceConfigurator(Configuration *configuration);
+    ChatImageRequestServiceConfigurator(Configuration *configuration);
 
-	/**
-	 * @short Sets ChatImageRequestService to configure.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param service service to configured
-	 */
-	void setChatImageRequestService(ChatImageRequestService *service);
-
+    /**
+     * @short Sets ChatImageRequestService to configure.
+     * @author Rafał 'Vogel' Malinowski
+     * @param service service to configured
+     */
+    void setChatImageRequestService(ChatImageRequestService *service);
 };
 
 /**
  * @}
  */
 
-#endif // CHAT_IMAGE_REQUEST_SERVICE_CONFIGURATOR_H
+#endif   // CHAT_IMAGE_REQUEST_SERVICE_CONFIGURATOR_H

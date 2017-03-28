@@ -22,10 +22,8 @@
 
 #include "autostatus-status-changer.h"
 
-AutostatusStatusChanger::AutostatusStatusChanger(QObject *parent) :
-		StatusChanger{200, parent},
-		Enabled{false},
-		StatusIndex{}
+AutostatusStatusChanger::AutostatusStatusChanger(QObject *parent)
+        : StatusChanger{200, parent}, Enabled{false}, StatusIndex{}
 {
 }
 
@@ -35,45 +33,45 @@ AutostatusStatusChanger::~AutostatusStatusChanger()
 
 void AutostatusStatusChanger::setEnabled(bool enabled)
 {
-	if (Enabled != enabled)
-	{
-		Enabled = enabled;
-		emit statusChanged(0);
-	}
+    if (Enabled != enabled)
+    {
+        Enabled = enabled;
+        emit statusChanged(0);
+    }
 }
 
 void AutostatusStatusChanger::setConfiguration(int statusIndex, const QString &description)
 {
-	if (StatusIndex != statusIndex || Description != description)
-	{
-		StatusIndex = statusIndex;
-		Description = description;
-		if (Enabled)
-			emit statusChanged(0);
-	}
+    if (StatusIndex != statusIndex || Description != description)
+    {
+        StatusIndex = statusIndex;
+        Description = description;
+        if (Enabled)
+            emit statusChanged(0);
+    }
 }
 
 void AutostatusStatusChanger::changeStatus(StatusContainer *container, Status &status)
 {
-	Q_UNUSED(container)
+    Q_UNUSED(container)
 
-	if (!Enabled)
-		return;
+    if (!Enabled)
+        return;
 
-	switch (StatusIndex)
-	{
-		case 0:
-			status.setType(StatusType::Online);
-			break;
-		case 1:
-			status.setType(StatusType::Away);
-			break;
-		case 2:
-			status.setType(StatusType::Invisible);
-			break;
-	}
+    switch (StatusIndex)
+    {
+    case 0:
+        status.setType(StatusType::Online);
+        break;
+    case 1:
+        status.setType(StatusType::Away);
+        break;
+    case 2:
+        status.setType(StatusType::Invisible);
+        break;
+    }
 
-	status.setDescription(Description);
+    status.setDescription(Description);
 }
 
 #include "moc_autostatus-status-changer.cpp"

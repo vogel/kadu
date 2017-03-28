@@ -46,81 +46,74 @@
  * any of these two objects' shouldStore() method would return false, both will be deleted.
  * All other data (like State) is not shared between these objects.
  */
-template<typename T>
+template <typename T>
 class Details : public StorableObject
 {
-	T *MainData;
+    T *MainData;
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Construct new object with cloned StoragePoint and state 'StateNotLoaded'.
-	 * @param mainData @link<StorableObject> StorableObject to clone storagePoint from
-	 *
-	 * Construct new object with StoragePoint cloned from mainData object and state set to 'StateNotLoaded'.
-	 */
-	explicit Details(T *mainData, QObject *parent = nullptr) :
-			StorableObject{parent},
-			MainData{mainData}
-	{
-		setStorage(mainData->storage());
-		setState(StateNotLoaded);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Construct new object with cloned StoragePoint and state 'StateNotLoaded'.
+     * @param mainData @link<StorableObject> StorableObject to clone storagePoint from
+     *
+     * Construct new object with StoragePoint cloned from mainData object and state set to 'StateNotLoaded'.
+     */
+    explicit Details(T *mainData, QObject *parent = nullptr) : StorableObject{parent}, MainData{mainData}
+    {
+        setStorage(mainData->storage());
+        setState(StateNotLoaded);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Empty destructor.
-	 *
-	 * Empty destructor.
-	 */
-	virtual ~Details()
-	{
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Empty destructor.
+     *
+     * Empty destructor.
+     */
+    virtual ~Details()
+    {
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns main data object for this Details.
-	 * @return main data object for this Details
-	 *
-	 * Returns main data object (object, with the same StoragePoint) for this Details.
-	 */
-	T * mainData() const
-	{
-		return MainData;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns main data object for this Details.
+     * @return main data object for this Details
+     *
+     * Returns main data object (object, with the same StoragePoint) for this Details.
+     */
+    T *mainData() const
+    {
+        return MainData;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns storage parent of main data object for this Details.
-	 * @return storage parent of main data object for this Details
-	 *
-	 * Returns storage parent of main data object for this Details.
-	 */
-	virtual StorableObject * storageParent()
-	{
-		return MainData
-				? MainData->storageParent()
-				: 0;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns storage parent of main data object for this Details.
+     * @return storage parent of main data object for this Details
+     *
+     * Returns storage parent of main data object for this Details.
+     */
+    virtual StorableObject *storageParent()
+    {
+        return MainData ? MainData->storageParent() : 0;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns storage node name of main data object for this Details.
-	 * @return storage node name of main data object for this Details
-	 *
-	 * Returns storage node name of main data object for this Details.
-	 */
-	virtual QString storageNodeName()
-	{
-		return MainData
-				? MainData->storageNodeName()
-				: QString();
-	}
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns storage node name of main data object for this Details.
+     * @return storage node name of main data object for this Details
+     *
+     * Returns storage node name of main data object for this Details.
+     */
+    virtual QString storageNodeName()
+    {
+        return MainData ? MainData->storageNodeName() : QString();
+    }
 };
 
 /**
 * @}
 */
 
-#endif // DETAILS_H
+#endif   // DETAILS_H

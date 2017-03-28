@@ -23,13 +23,12 @@
 
 namespace QThrift
 {
-
 class IntegerOutOfRangeException : public Exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Integer out of range in Thfift data"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Integer out of range in Thfift data";
+    };
 };
-
 }

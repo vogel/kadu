@@ -31,10 +31,11 @@
 
 #include "otr-peer-identity-verification-shared-secret-page.h"
 
-OtrPeerIdentityVerificationSharedSecretPage::OtrPeerIdentityVerificationSharedSecretPage(const Contact &contact, QWidget *parent) :
-		QWizardPage(parent), MyContact(contact)
+OtrPeerIdentityVerificationSharedSecretPage::OtrPeerIdentityVerificationSharedSecretPage(
+    const Contact &contact, QWidget *parent)
+        : QWizardPage(parent), MyContact(contact)
 {
-	createGui();
+    createGui();
 }
 
 OtrPeerIdentityVerificationSharedSecretPage::~OtrPeerIdentityVerificationSharedSecretPage()
@@ -43,46 +44,48 @@ OtrPeerIdentityVerificationSharedSecretPage::~OtrPeerIdentityVerificationSharedS
 
 void OtrPeerIdentityVerificationSharedSecretPage::createGui()
 {
-	setButtonText(QWizard::CommitButton, tr("Ask for Shared Secret"));
-	setCommitPage(true);
-	setTitle(tr("Shared Secret"));
+    setButtonText(QWizard::CommitButton, tr("Ask for Shared Secret"));
+    setCommitPage(true);
+    setTitle(tr("Shared Secret"));
 
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QLineEdit *sharedSecretEdit = new QLineEdit();
+    QLineEdit *sharedSecretEdit = new QLineEdit();
 
-	layout->addWidget(new QLabel(tr("Shared Secret that is known only for you and %1:").arg(MyContact.display(true))));
-	layout->addWidget(sharedSecretEdit);
+    layout->addWidget(new QLabel(tr("Shared Secret that is known only for you and %1:").arg(MyContact.display(true))));
+    layout->addWidget(sharedSecretEdit);
 
-	registerField("sharedSecret*", sharedSecretEdit);
+    registerField("sharedSecret*", sharedSecretEdit);
 }
 
-void OtrPeerIdentityVerificationSharedSecretPage::setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService)
+void OtrPeerIdentityVerificationSharedSecretPage::setPeerIdentityVerificationService(
+    OtrPeerIdentityVerificationService *peerIdentityVerificationService)
 {
-	PeerIdentityVerificationService = peerIdentityVerificationService;
+    PeerIdentityVerificationService = peerIdentityVerificationService;
 }
 
 int OtrPeerIdentityVerificationSharedSecretPage::nextId() const
 {
-	return OtrPeerIdentityVerificationWindow::ProgressPage;
+    return OtrPeerIdentityVerificationWindow::ProgressPage;
 }
 
 void OtrPeerIdentityVerificationSharedSecretPage::initializePage()
 {
-	setField("sharedSecret", QString());
+    setField("sharedSecret", QString());
 }
 
 bool OtrPeerIdentityVerificationSharedSecretPage::validatePage()
 {
-	QString sharedSecret = field("sharedSecret").toString();
+    QString sharedSecret = field("sharedSecret").toString();
 
-	if (sharedSecret.isEmpty())
-		return false;
+    if (sharedSecret.isEmpty())
+        return false;
 
-	if (PeerIdentityVerificationService)
-		PeerIdentityVerificationService.data()->startSharedSecretVerficiation(MyContact, field("sharedSecret").toString());
+    if (PeerIdentityVerificationService)
+        PeerIdentityVerificationService.data()->startSharedSecretVerficiation(
+            MyContact, field("sharedSecret").toString());
 
-	return true;
+    return true;
 }
 
 #include "moc_otr-peer-identity-verification-shared-secret-page.cpp"

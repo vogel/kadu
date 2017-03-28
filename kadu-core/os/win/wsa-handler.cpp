@@ -28,15 +28,15 @@
 WSAHandler::WSAHandler()
 {
 #ifdef Q_OS_WIN
-	WSADATA wsaData;
-	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
-		throw WSAException();
+    WSADATA wsaData;
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+        throw WSAException();
 #endif
 }
 
 WSAHandler::~WSAHandler()
 {
 #ifdef Q_OS_WIN
-	WSACleanup();
+    WSACleanup();
 #endif
 }

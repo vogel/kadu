@@ -37,38 +37,37 @@ class QPoint;
  */
 class WindowManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE WindowManager(QObject *parent = nullptr);
-	virtual ~WindowManager();
+    Q_INVOKABLE WindowManager(QObject *parent = nullptr);
+    virtual ~WindowManager();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Move window to workspace center.
-	 * @param window window to move
-	 */
-	void moveToWorkspaceCenter(QWidget *window);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Move window to workspace center.
+     * @param window window to move
+     */
+    void moveToWorkspaceCenter(QWidget *window);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Move window to specific position.
-	 * @param window window to move
-	 * @param position desctination position for given window's top-left corner
-	 *
-	 * This method uses ensureWholeVisible() to move window inside workspace area.
-	 */
-	void moveToPosition(QWidget *window, const QPoint &position);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Move window to specific position.
+     * @param window window to move
+     * @param position desctination position for given window's top-left corner
+     *
+     * This method uses ensureWholeVisible() to move window inside workspace area.
+     */
+    void moveToPosition(QWidget *window, const QPoint &position);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Ensure that whole window is visible on screen.
-	 * @param window window
-	 *
-	 * This method moves given window inside workspace area if it is not visible.
-	 */
-	void ensureWholeVisible(QWidget *window);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Ensure that whole window is visible on screen.
+     * @param window window
+     *
+     * This method moves given window inside workspace area if it is not visible.
+     */
+    void ensureWholeVisible(QWidget *window);
 };
 
 /**

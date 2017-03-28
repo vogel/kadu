@@ -26,8 +26,7 @@
 
 #include <QtNetwork/QSslCertificate>
 
-SslCertificateManager::SslCertificateManager(QObject *parent) :
-		QObject(parent)
+SslCertificateManager::SslCertificateManager(QObject *parent) : QObject(parent)
 {
 }
 
@@ -37,50 +36,47 @@ SslCertificateManager::~SslCertificateManager()
 
 void SslCertificateManager::setSslCertificateRepository(SslCertificateRepository *sslCertificateRepository)
 {
-	m_sslCertificateRepository = sslCertificateRepository;
+    m_sslCertificateRepository = sslCertificateRepository;
 }
 
 void SslCertificateManager::setSslCertificateStorage(SslCertificateStorage *sslCertificateStorage)
 {
-	m_sslCertificateStorage = sslCertificateStorage;
+    m_sslCertificateStorage = sslCertificateStorage;
 }
 
 void SslCertificateManager::loadPersistentSslCertificates()
 {
-	if (!m_sslCertificateStorage || !m_sslCertificateRepository)
-		return;
+    if (!m_sslCertificateStorage || !m_sslCertificateRepository)
+        return;
 
-	m_sslCertificateRepository->setPersistentCertificates(m_sslCertificateStorage->loadCertificates());
+    m_sslCertificateRepository->setPersistentCertificates(m_sslCertificateStorage->loadCertificates());
 }
 
 void SslCertificateManager::storePersistentSslCertificates()
 {
-	if (!m_sslCertificateStorage || !m_sslCertificateRepository)
-		return;
+    if (!m_sslCertificateStorage || !m_sslCertificateRepository)
+        return;
 
-	m_sslCertificateStorage->storeCertificates(m_sslCertificateRepository->persistentCertificates());
+    m_sslCertificateStorage->storeCertificates(m_sslCertificateRepository->persistentCertificates());
 }
 
 bool SslCertificateManager::acceptCertificate(const QString &hostName, const QSslCertificate &certificate) const
 {
-	auto hostCertificate = SslCertificate{hostName, certificate.toPem().toHex()};
-	return m_sslCertificateRepository->containsCertificate(hostCertificate);
+    auto hostCertificate = SslCertificate{hostName, certificate.toPem().toHex()};
+    return m_sslCertificateRepository->containsCertificate(hostCertificate);
 }
 
 void SslCertificateManager::askForCertificateAcceptance(
-	const QString &hostName,
-	const QSslCertificate &certificate,
-	const QList<QSslError> &errors,
-	const std::function<void()> &onAccepted,
-	const std::function<void()> &onRejected)
+    const QString &hostName, const QSslCertificate &certificate, const QList<QSslError> &errors,
+    const std::function<void()> &onAccepted, const std::function<void()> &onRejected)
 {
-	auto hostCertificate = SslCertificate{hostName, certificate.toPem().toHex()};
-	auto sslCertificateErrorDialog = new SslCertificateErrorDialog{hostCertificate, errors};
-	sslCertificateErrorDialog->setSslCertificateRepository(m_sslCertificateRepository);
-	connect(sslCertificateErrorDialog, &SslCertificateErrorDialog::accepted, onAccepted);
-	connect(sslCertificateErrorDialog, &SslCertificateErrorDialog::rejected, onRejected);
+    auto hostCertificate = SslCertificate{hostName, certificate.toPem().toHex()};
+    auto sslCertificateErrorDialog = new SslCertificateErrorDialog{hostCertificate, errors};
+    sslCertificateErrorDialog->setSslCertificateRepository(m_sslCertificateRepository);
+    connect(sslCertificateErrorDialog, &SslCertificateErrorDialog::accepted, onAccepted);
+    connect(sslCertificateErrorDialog, &SslCertificateErrorDialog::rejected, onRejected);
 
-	sslCertificateErrorDialog->show();
+    sslCertificateErrorDialog->show();
 }
 
 #include "moc_ssl-certificate-manager.cpp"

@@ -44,50 +44,49 @@ class ModelChain;
 
 class AddConferenceWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AddConferenceWindow(QWidget *parent = nullptr);
-	virtual ~AddConferenceWindow();
+    explicit AddConferenceWindow(QWidget *parent = nullptr);
+    virtual ~AddConferenceWindow();
 
 public slots:
-	void accept();
-	void start();
+    void accept();
+    void start();
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	AccountsComboBox *AccountCombo;
-	QLineEdit *DisplayNameEdit;
-	QLabel *ErrorLabel;
-	QPushButton *AddButton;
-	QPushButton *StartButton;
+    AccountsComboBox *AccountCombo;
+    QLineEdit *DisplayNameEdit;
+    QLabel *ErrorLabel;
+    QPushButton *AddButton;
+    QPushButton *StartButton;
 
-	AccountTalkableFilter *AccountFilter;
-	BuddyListModel *Model;
-	// CheckableBuddiesProxyModel *CheckableProxy;
+    AccountTalkableFilter *AccountFilter;
+    BuddyListModel *Model;
+    // CheckableBuddiesProxyModel *CheckableProxy;
 
-	void createGui();
-	void displayErrorMessage(const QString &message);
+    void createGui();
+    void displayErrorMessage(const QString &message);
 
-	Chat computeChat() const;
-	BuddySet filterByAccount(const Account &account, const BuddySet &buddies) const;
+    Chat computeChat() const;
+    BuddySet filterByAccount(const Account &account, const BuddySet &buddies) const;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void accountChanged();
-	void validateData();
-
+    void accountChanged();
+    void validateData();
 };

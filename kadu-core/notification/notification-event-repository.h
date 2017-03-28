@@ -27,22 +27,21 @@ class NotificationEvent;
 
 class KADUAPI NotificationEventRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NotificationEventRepository(QObject *parent = nullptr);
-	virtual ~NotificationEventRepository();
+    Q_INVOKABLE explicit NotificationEventRepository(QObject *parent = nullptr);
+    virtual ~NotificationEventRepository();
 
-	void addNotificationEvent(NotificationEvent callback);
-	void removeNotificationEvent(NotificationEvent callback);
+    void addNotificationEvent(NotificationEvent callback);
+    void removeNotificationEvent(NotificationEvent callback);
 
-	const std::vector<NotificationEvent> & notificationEvents() const;
+    const std::vector<NotificationEvent> &notificationEvents() const;
 
 signals:
-	void notificationEventAdded(NotificationEvent notificationEvent);
-	void notificationEventRemoved(NotificationEvent notificationEvent);
+    void notificationEventAdded(NotificationEvent notificationEvent);
+    void notificationEventRemoved(NotificationEvent notificationEvent);
 
 private:
-	std::vector<NotificationEvent> m_events;
-
+    std::vector<NotificationEvent> m_events;
 };

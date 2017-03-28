@@ -30,27 +30,28 @@ class ConfigGroupBox;
 class ConfigurationWindowDataManager;
 
 /**
-	&lt;path-list-edit caption="caption" id="id" /&gt;
+        &lt;path-list-edit caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigPathListEdit : public PathListEdit, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigPathListEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigPathListEdit();
+    ConfigPathListEdit(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigPathListEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigPathListEdit();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
-
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 };
 
 #endif

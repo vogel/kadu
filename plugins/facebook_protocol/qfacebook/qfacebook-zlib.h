@@ -27,8 +27,7 @@ class QByteArray;
 class QFacebookZLibException : public std::runtime_error
 {
 public:
-	using runtime_error::runtime_error;
-
+    using runtime_error::runtime_error;
 };
 
 QByteArray qfacebookDeflate(const QByteArray &data);

@@ -27,20 +27,19 @@ class HistorySqlStorage;
 
 class SqlMessagesSmsStorage : public HistoryMessagesStorage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	HistorySqlStorage *SqlStorage;
+    HistorySqlStorage *SqlStorage;
 
 public:
-	explicit SqlMessagesSmsStorage(HistorySqlStorage *sqlStorage);
-	virtual ~SqlMessagesSmsStorage();
+    explicit SqlMessagesSmsStorage(HistorySqlStorage *sqlStorage);
+    virtual ~SqlMessagesSmsStorage();
 
-	virtual QFuture<QVector<Talkable>> talkables();
-	virtual QFuture<QVector<HistoryQueryResult>> dates(const HistoryQuery &historyQuery);
-	virtual QFuture<SortedMessages> messages(const HistoryQuery &historyQuery);
+    virtual QFuture<QVector<Talkable>> talkables();
+    virtual QFuture<QVector<HistoryQueryResult>> dates(const HistoryQuery &historyQuery);
+    virtual QFuture<SortedMessages> messages(const HistoryQuery &historyQuery);
 
-	virtual void deleteMessages(const Talkable &talkable, const QDate &date = QDate());
-
+    virtual void deleteMessages(const Talkable &talkable, const QDate &date = QDate());
 };
 
-#endif // SQL_MESSAGES_SMS_STORAGE_H
+#endif   // SQL_MESSAGES_SMS_STORAGE_H

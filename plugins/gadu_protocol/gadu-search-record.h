@@ -22,32 +22,32 @@
 
 struct SearchRecord
 {
-	int Seq;
-	int FromUin;
-	QString Uin;
-	QString FirstName;
-	QString LastName;
-	QString NickName;
-	QString City;
-	QString BirthYearFrom;
-	QString BirthYearTo;
-	int Gender;
-	bool Active;
-	bool IgnoreResults;
+    int Seq;
+    int FromUin;
+    QString Uin;
+    QString FirstName;
+    QString LastName;
+    QString NickName;
+    QString City;
+    QString BirthYearFrom;
+    QString BirthYearTo;
+    int Gender;
+    bool Active;
+    bool IgnoreResults;
 
-	SearchRecord();
-	virtual ~SearchRecord();
+    SearchRecord();
+    virtual ~SearchRecord();
 
-	void reqUin(const QString& uin);
-	void reqFirstName(const QString& firstName);
-	void reqLastName(const QString& lastName);
-	void reqNickName(const QString& nickName);
-	void reqCity(const QString& city);
-	void reqBirthYear(const QString& birthYearFrom, const QString& birthYearTo);
-	void reqGender(bool female);
-	void reqActive();
+    void reqUin(const QString &uin);
+    void reqFirstName(const QString &firstName);
+    void reqLastName(const QString &lastName);
+    void reqNickName(const QString &nickName);
+    void reqCity(const QString &city);
+    void reqBirthYear(const QString &birthYearFrom, const QString &birthYearTo);
+    void reqGender(bool female);
+    void reqActive();
 
-	void clearData();
+    void clearData();
 };
 
-#endif // GADU_SEARCH_RECORD_H
+#endif   // GADU_SEARCH_RECORD_H

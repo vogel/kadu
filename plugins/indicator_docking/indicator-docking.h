@@ -34,31 +34,30 @@ enum class QMessagingMenuStatus;
 
 class IndicatorDocking : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit IndicatorDocking(QObject *parent = nullptr);
-	virtual ~IndicatorDocking();
+    Q_INVOKABLE explicit IndicatorDocking(QObject *parent = nullptr);
+    virtual ~IndicatorDocking();
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	QMessagingMenuApp *m_messagingMenuApp;
+    QMessagingMenuApp *m_messagingMenuApp;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
 
-	void unreadMessageAdded(const Message &message);
-	void unreadMessageRemoved(const Message &message);
+    void unreadMessageAdded(const Message &message);
+    void unreadMessageRemoved(const Message &message);
 
-	void sourceActivated(const QString &id);
-	void statusChanged(QMessagingMenuStatus status);
-	void statusContainerUpdated(StatusContainer *statusContainer);
-
+    void sourceActivated(const QString &id);
+    void statusChanged(QMessagingMenuStatus status);
+    void statusContainerUpdated(StatusContainer *statusContainer);
 };

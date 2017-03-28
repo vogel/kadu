@@ -29,31 +29,28 @@
 
 QMqttMessage QFacebookPublish::encode() const
 {
-	auto mqttWriter = QMqttWriter{};
-	mqttWriter.write(topic);
-	mqttWriter.write(mid);
-	mqttWriter.writeRaw(qfacebookDeflate(content));
+    auto mqttWriter = QMqttWriter{};
+    mqttWriter.write(topic);
+    mqttWriter.write(mid);
+    mqttWriter.writeRaw(qfacebookDeflate(content));
 
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		static_cast<uint8_t>(QMqttMessageFlag::QoS1),
-		mqttWriter.result()
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), static_cast<uint8_t>(QMqttMessageFlag::QoS1),
+                        mqttWriter.result()};
 }
 
 QFacebookPublish QFacebookPublish::decode(const QMqttMessage &message)
 {
-	auto reader = QMqttReader{message.content};
-	auto result = QFacebookPublish{};
-	result.topic = reader.readData();
+    auto reader = QMqttReader{message.content};
+    auto result = QFacebookPublish{};
+    result.topic = reader.readData();
 
-	if (message.flags & static_cast<uint8_t>(QMqttMessageFlag::QoS1) ||
-		message.flags & static_cast<uint8_t>(QMqttMessageFlag::QoS2))
-		result.mid = reader.readUint16();
-	else
-		result.mid = 0;
+    if (message.flags & static_cast<uint8_t>(QMqttMessageFlag::QoS1) ||
+        message.flags & static_cast<uint8_t>(QMqttMessageFlag::QoS2))
+        result.mid = reader.readUint16();
+    else
+        result.mid = 0;
 
-	result.content = qfacebookInflate(reader.readRaw());
+    result.content = qfacebookInflate(reader.readRaw());
 
-	return result;
+    return result;
 }

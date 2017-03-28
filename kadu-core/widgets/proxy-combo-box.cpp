@@ -31,8 +31,7 @@
 
 #define DEFAULT_PROXY_INDEX 1
 
-ProxyComboBox::ProxyComboBox(QWidget *parent) :
-		ActionsComboBox{parent}
+ProxyComboBox::ProxyComboBox(QWidget *parent) : ActionsComboBox{parent}
 {
 }
 
@@ -42,68 +41,68 @@ ProxyComboBox::~ProxyComboBox()
 
 void ProxyComboBox::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ProxyComboBox::setProxyEditWindowService(ProxyEditWindowService *proxyEditWindowService)
 {
-	m_proxyEditWindowService = proxyEditWindowService;
+    m_proxyEditWindowService = proxyEditWindowService;
 }
 
 void ProxyComboBox::init()
 {
-	addBeforeAction(make_owned<QAction>(tr(" - No proxy - "), this));
+    addBeforeAction(make_owned<QAction>(tr(" - No proxy - "), this));
 
-	auto chain = make_owned<ModelChain>(this);
-	m_model = m_injectedFactory->makeOwned<NetworkProxyModel>(chain);
-	chain->setBaseModel(m_model);
-	chain->addProxyModel(make_owned<NetworkProxyProxyModel>(this));
-	setUpModel(NetworkProxyRole, chain);
+    auto chain = make_owned<ModelChain>(this);
+    m_model = m_injectedFactory->makeOwned<NetworkProxyModel>(chain);
+    chain->setBaseModel(m_model);
+    chain->addProxyModel(make_owned<NetworkProxyProxyModel>(this));
+    setUpModel(NetworkProxyRole, chain);
 
-	m_editProxyAction = make_owned<QAction>(tr("Edit proxy configuration..."), this);
-	auto editProxyActionFont = m_editProxyAction->font();
-	editProxyActionFont.setItalic(true);
-	m_editProxyAction->setFont(editProxyActionFont);
-	m_editProxyAction->setData(true);
-	connect(m_editProxyAction, SIGNAL(triggered()), this, SLOT(editProxy()));
+    m_editProxyAction = make_owned<QAction>(tr("Edit proxy configuration..."), this);
+    auto editProxyActionFont = m_editProxyAction->font();
+    editProxyActionFont.setItalic(true);
+    m_editProxyAction->setFont(editProxyActionFont);
+    m_editProxyAction->setData(true);
+    connect(m_editProxyAction, SIGNAL(triggered()), this, SLOT(editProxy()));
 
-	addAfterAction(m_editProxyAction);
+    addAfterAction(m_editProxyAction);
 }
 
 void ProxyComboBox::enableDefaultProxyAction()
 {
-	m_defaultProxyAction = make_owned<QAction>(tr(" - Use Default Proxy - "), this);
-	m_defaultProxyAction->setFont(QFont());
-	addBeforeAction(m_defaultProxyAction);
+    m_defaultProxyAction = make_owned<QAction>(tr(" - Use Default Proxy - "), this);
+    m_defaultProxyAction->setFont(QFont());
+    addBeforeAction(m_defaultProxyAction);
 }
 
 void ProxyComboBox::selectDefaultProxy()
 {
-	if (m_defaultProxyAction)
-		setCurrentIndex(DEFAULT_PROXY_INDEX);
+    if (m_defaultProxyAction)
+        setCurrentIndex(DEFAULT_PROXY_INDEX);
 }
 
 bool ProxyComboBox::isDefaultProxySelected()
 {
-	if (m_defaultProxyAction)
-		return DEFAULT_PROXY_INDEX == currentIndex();
-	else
-		return false;
+    if (m_defaultProxyAction)
+        return DEFAULT_PROXY_INDEX == currentIndex();
+    else
+        return false;
 }
 
 void ProxyComboBox::setCurrentProxy(const NetworkProxy &networkProxy)
 {
-	setCurrentValue(networkProxy);
+    setCurrentValue(networkProxy);
 }
 
 NetworkProxy ProxyComboBox::currentProxy()
 {
-	return currentValue().value<NetworkProxy>();
+    return currentValue().value<NetworkProxy>();
 }
 
 void ProxyComboBox::editProxy()
 {
-	m_proxyEditWindowService->show();
+    m_proxyEditWindowService->show();
 }
 
 #include "moc_proxy-combo-box.cpp"

@@ -66,44 +66,43 @@ class VariantWrapper;
  */
 class KADUAPI WindowGeometryManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	VariantWrapper *MyVariantWrapper;
-	QRect DefaultGeometry;
-	QRect NormalGeometry;
-	QTimer Timer;
+    VariantWrapper *MyVariantWrapper;
+    QRect DefaultGeometry;
+    QRect NormalGeometry;
+    QTimer Timer;
 
-	void restoreGeometry();
+    void restoreGeometry();
 
-	virtual bool eventFilter(QObject *watched, QEvent *event);
+    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 private slots:
-	void saveGeometry();
+    void saveGeometry();
 
 public:
-	/**
-	 * @short Constructs object book-keeping the window's geometry and sets its initial geometry.
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @param variantWrapper an object implementing VariantWrapper interface
-	 * @param defaultGeometry default initial geometry of the window, if no is provided by variantWrapper
-	 * @param window the window whose geometry will be managed
-	 *
-	 * Constructs object book-keeping the window's geometry through @p variantWrapper
-	 * and sets the window's initial geometry @p defaultGeometry or one provided by
-	 * @p variantWrapper if it can provide any.
-	 *
-	 * Ownership of @p variantWrapper object is passed to this object.
-	 *
-	 * QWidget @p window must be actually a window when calling this constructor,
-	 * i.e., QWidget::isWindow() must return true.
-	 */
-	explicit WindowGeometryManager(VariantWrapper *variantWrapper, const QRect &defaultGeometry, QWidget *window = 0);
-	virtual ~WindowGeometryManager();
-
+    /**
+     * @short Constructs object book-keeping the window's geometry and sets its initial geometry.
+     * @author Bartosz 'beevvy' Brachaczek
+     * @param variantWrapper an object implementing VariantWrapper interface
+     * @param defaultGeometry default initial geometry of the window, if no is provided by variantWrapper
+     * @param window the window whose geometry will be managed
+     *
+     * Constructs object book-keeping the window's geometry through @p variantWrapper
+     * and sets the window's initial geometry @p defaultGeometry or one provided by
+     * @p variantWrapper if it can provide any.
+     *
+     * Ownership of @p variantWrapper object is passed to this object.
+     *
+     * QWidget @p window must be actually a window when calling this constructor,
+     * i.e., QWidget::isWindow() must return true.
+     */
+    explicit WindowGeometryManager(VariantWrapper *variantWrapper, const QRect &defaultGeometry, QWidget *window = 0);
+    virtual ~WindowGeometryManager();
 };
 
 /**
  * @}
  */
 
-#endif // WINDOW_GEOMETRY_MANAGER_H
+#endif   // WINDOW_GEOMETRY_MANAGER_H

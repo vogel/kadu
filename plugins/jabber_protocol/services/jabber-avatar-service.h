@@ -51,43 +51,45 @@ class QXmppPresence;
  */
 class JabberAvatarService : public AvatarService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Create service instance.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param account account of service
-	 * @param parent QObject parent of service
-	 */
-	explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = nullptr);
-	virtual ~JabberAvatarService();
+    /**
+     * @short Create service instance.
+     * @author Rafał 'Vogel' Malinowski
+     * @param account account of service
+     * @param parent QObject parent of service
+     */
+    explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = nullptr);
+    virtual ~JabberAvatarService();
 
-	/**
-	 * @short Set VCard service object to use in this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param vCardService VCard service object to use
-	 */
-	void setVCardService(JabberVCardService *vCardService);
+    /**
+     * @short Set VCard service object to use in this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param vCardService VCard service object to use
+     */
+    void setVCardService(JabberVCardService *vCardService);
 
-	virtual AvatarDownloader * createAvatarDownloader() override;
-	virtual AvatarUploader * createAvatarUploader() override;
-	virtual bool eventBasedUpdates() override { return true; }
+    virtual AvatarDownloader *createAvatarDownloader() override;
+    virtual AvatarUploader *createAvatarUploader() override;
+    virtual bool eventBasedUpdates() override
+    {
+        return true;
+    }
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<ContactManager> m_contactManager;
 
-	QPointer<QXmppClient> m_client;
-	QPointer<JabberVCardService> VCardService;
+    QPointer<QXmppClient> m_client;
+    QPointer<JabberVCardService> VCardService;
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 
     void rosterReceived();
-	void presenceReceived(const QXmppPresence &presence);
-
+    void presenceReceived(const QXmppPresence &presence);
 };
 
 /**

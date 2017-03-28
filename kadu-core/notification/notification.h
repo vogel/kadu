@@ -21,10 +21,10 @@
 
 #pragma once
 
+#include "exports.h"
 #include "html/normalized-html-string.h"
 #include "icons/kadu-icon.h"
 #include "parser/parser-data.h"
-#include "exports.h"
 
 #include <QtCore/QVariantMap>
 
@@ -32,22 +32,21 @@ class Parser;
 
 struct KADUAPI Notification final : public ParserData
 {
-
 public:
-	static void registerParserTags(Parser *parser);
-	static void unregisterParserTags(Parser *parser);
+    static void registerParserTags(Parser *parser);
+    static void unregisterParserTags(Parser *parser);
 
-	QString type;
-	QString title;
-	NormalizedHtmlString text;
-	NormalizedHtmlString details;
-	KaduIcon icon;
+    QString type;
+    QString title;
+    NormalizedHtmlString text;
+    NormalizedHtmlString details;
+    KaduIcon icon;
 
-	QList<QString> callbacks;
-	QString acceptCallback;
-	QString discardCallback;
+    QList<QString> callbacks;
+    QString acceptCallback;
+    QString discardCallback;
 
-	QVariantMap data;
+    QVariantMap data;
 };
 
-KADUAPI bool operator == (const Notification &x, const Notification &y);
+KADUAPI bool operator==(const Notification &x, const Notification &y);

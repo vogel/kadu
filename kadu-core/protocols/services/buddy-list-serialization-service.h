@@ -27,13 +27,12 @@ class QTextStream;
 
 class KADUAPI BuddyListSerializationService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyListSerializationService(Account account, QObject *parent = nullptr);
-	virtual ~BuddyListSerializationService();
+    explicit BuddyListSerializationService(Account account, QObject *parent = nullptr);
+    virtual ~BuddyListSerializationService();
 
-	virtual BuddyList deserialize(QTextStream &dataStream) = 0;
-	virtual QByteArray serialize(const BuddyList &buddies) = 0;
-
+    virtual BuddyList deserialize(QTextStream &dataStream) = 0;
+    virtual QByteArray serialize(const BuddyList &buddies) = 0;
 };

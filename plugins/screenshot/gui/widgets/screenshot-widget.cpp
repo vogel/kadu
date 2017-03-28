@@ -40,35 +40,36 @@
 
 #include "screenshot-widget.h"
 
-ScreenshotWidget::ScreenshotWidget(QWidget *parent) :
-		QWidget(parent, Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint),
-		ShotMode(ShotModeStandard)
+ScreenshotWidget::ScreenshotWidget(QWidget *parent)
+        : QWidget(
+              parent, Qt::CustomizeWindowHint | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint |
+                          Qt::X11BypassWindowManagerHint),
+          ShotMode(ShotModeStandard)
 {
-	setWindowRole("kadu-screenshot");
+    setWindowRole("kadu-screenshot");
 
-	setFocusPolicy(Qt::StrongFocus);
+    setFocusPolicy(Qt::StrongFocus);
 #if defined(Q_OS_UNIX)
-	// set always-on-top and force taskbar and pager skipping
-	Atom win_state = XInternAtom( QX11Info::display(), "_NET_WM_STATE", False );
-	Atom win_state_setting[] =
-	{
-		XInternAtom( QX11Info::display(), "_NET_WM_STATE_ABOVE"       , False ),
-		XInternAtom( QX11Info::display(), "_NET_WM_STATE_SKIP_TASKBAR", False ),
-		XInternAtom( QX11Info::display(), "_NET_WM_STATE_SKIP_PAGER"  , False )
-	};
-	XChangeProperty( QX11Info::display(), window()->winId(), win_state, XA_ATOM, 32, PropModeReplace, (unsigned char*)&win_state_setting, 3 );
-	// prevent compositing suspension on KDE4
-	setAttribute( Qt::WA_TranslucentBackground, true );
+    // set always-on-top and force taskbar and pager skipping
+    Atom win_state = XInternAtom(QX11Info::display(), "_NET_WM_STATE", False);
+    Atom win_state_setting[] = {XInternAtom(QX11Info::display(), "_NET_WM_STATE_ABOVE", False),
+                                XInternAtom(QX11Info::display(), "_NET_WM_STATE_SKIP_TASKBAR", False),
+                                XInternAtom(QX11Info::display(), "_NET_WM_STATE_SKIP_PAGER", False)};
+    XChangeProperty(
+        QX11Info::display(), window()->winId(), win_state, XA_ATOM, 32, PropModeReplace,
+        (unsigned char *)&win_state_setting, 3);
+    // prevent compositing suspension on KDE4
+    setAttribute(Qt::WA_TranslucentBackground, true);
 #endif
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(0);
-	layout->setContentsMargins(0, 0, 0, 0);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
-	CropWidget = new CropImageWidget(this);
-	connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SLOT(pixmapCapturedSlot(QPixmap)));
-	connect(CropWidget, SIGNAL(canceled()), this, SLOT(canceledSlot()));
-	layout->addWidget(CropWidget);
+    CropWidget = new CropImageWidget(this);
+    connect(CropWidget, SIGNAL(pixmapCropped(QPixmap)), this, SLOT(pixmapCapturedSlot(QPixmap)));
+    connect(CropWidget, SIGNAL(canceled()), this, SLOT(canceledSlot()));
+    layout->addWidget(CropWidget);
 }
 
 ScreenshotWidget::~ScreenshotWidget()
@@ -77,36 +78,36 @@ ScreenshotWidget::~ScreenshotWidget()
 
 void ScreenshotWidget::setShotMode(ScreenShotMode shotMode)
 {
-	ShotMode = shotMode;
+    ShotMode = shotMode;
 }
 
 void ScreenshotWidget::setPixmap(QPixmap pixmap)
 {
-	CropWidget->setPixmap(pixmap);
+    CropWidget->setPixmap(pixmap);
 
-	resize(pixmap.size());
+    resize(pixmap.size());
 }
 
 void ScreenshotWidget::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
-		CropWidget->crop();
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter)
+        CropWidget->crop();
 }
 
 void ScreenshotWidget::pixmapCapturedSlot(QPixmap pixmap)
 {
-	hide();
+    hide();
 
-	emit pixmapCaptured(pixmap);
-	deleteLater();
+    emit pixmapCaptured(pixmap);
+    deleteLater();
 }
 
 void ScreenshotWidget::canceledSlot()
 {
-	hide();
+    hide();
 
-	emit canceled();
-	deleteLater();
+    emit canceled();
+    deleteLater();
 }
 
 #include "moc_screenshot-widget.cpp"

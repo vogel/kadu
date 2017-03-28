@@ -24,12 +24,13 @@
 
 #include <qxmpp/QXmppClient.h>
 
-JabberStreamDebugService::JabberStreamDebugService(QXmppClient *m_client, QObject *parent) :
-		QObject{parent}
+JabberStreamDebugService::JabberStreamDebugService(QXmppClient *m_client, QObject *parent) : QObject{parent}
 {
-	m_client->setLogger(new QXmppLogger{m_client});
-	m_client->logger()->setLoggingType(QXmppLogger::SignalLogging);
-	connect(m_client->logger(), SIGNAL(message(QXmppLogger::MessageType,QString)), this, SLOT(message(QXmppLogger::MessageType,QString)));
+    m_client->setLogger(new QXmppLogger{m_client});
+    m_client->logger()->setLoggingType(QXmppLogger::SignalLogging);
+    connect(
+        m_client->logger(), SIGNAL(message(QXmppLogger::MessageType, QString)), this,
+        SLOT(message(QXmppLogger::MessageType, QString)));
 }
 
 JabberStreamDebugService::~JabberStreamDebugService()
@@ -38,18 +39,17 @@ JabberStreamDebugService::~JabberStreamDebugService()
 
 QString JabberStreamDebugService::filterPrivateData(const QString &streamData)
 {
-	QString result = streamData;
-	return result
-			.replace(QRegExp("<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n")
-			.replace(QRegExp("<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
+    QString result = streamData;
+    return result.replace(QRegExp("<password>[^<]*</password>\n"), "<password>[Filtered]</password>\n")
+        .replace(QRegExp("<digest>[^<]*</digest>\n"), "<digest>[Filtered]</digest>\n");
 }
 
 void JabberStreamDebugService::message(QXmppLogger::MessageType type, const QString &message)
 {
-	if (type & QXmppLogger::MessageType::ReceivedMessage)
-		emit incomingStream(filterPrivateData(message));
-	else
-		emit outgoingStream(filterPrivateData(message));
+    if (type & QXmppLogger::MessageType::ReceivedMessage)
+        emit incomingStream(filterPrivateData(message));
+    else
+        emit outgoingStream(filterPrivateData(message));
 }
 
 #include "moc_jabber-stream-debug-service.cpp"

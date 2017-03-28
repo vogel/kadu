@@ -28,24 +28,32 @@ class Configuration;
 
 class MPDConfig : public ConfigurationAwareObject
 {
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	QString Host;
-	QString Port;
-	QString Timeout;
+    QString Host;
+    QString Port;
+    QString Timeout;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	MPDConfig();
-	MPDConfig(Configuration *configuration);
-	virtual ~MPDConfig();
-	
-	const QString & host() const { return Host; }
-	const QString & port() const { return Port; }
-	const QString & timeout() const { return Timeout; }
+    MPDConfig();
+    MPDConfig(Configuration *configuration);
+    virtual ~MPDConfig();
 
+    const QString &host() const
+    {
+        return Host;
+    }
+    const QString &port() const
+    {
+        return Port;
+    }
+    const QString &timeout() const
+    {
+        return Timeout;
+    }
 };

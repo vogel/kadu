@@ -21,28 +21,26 @@
 
 #include "widgets/webkit-messages-view/message-limit-policy.h"
 
-MessageLimiter::MessageLimiter() :
-		m_limit{0},
-		m_messageLimitPolicy{MessageLimitPolicy::None}
+MessageLimiter::MessageLimiter() : m_limit{0}, m_messageLimitPolicy{MessageLimitPolicy::None}
 {
 }
 
 void MessageLimiter::setLimit(unsigned int limit)
 {
-	m_limit = limit;
+    m_limit = limit;
 }
 
 void MessageLimiter::setLimitPolicy(MessageLimitPolicy messageLimitPolicy)
 {
-	m_messageLimitPolicy = messageLimitPolicy;
+    m_messageLimitPolicy = messageLimitPolicy;
 }
 
 SortedMessages MessageLimiter::limitMessages(SortedMessages sortedMessages) const
 {
-	if (m_limit == 0 || MessageLimitPolicy::None == m_messageLimitPolicy || sortedMessages.size() <= m_limit)
-		return sortedMessages;
+    if (m_limit == 0 || MessageLimitPolicy::None == m_messageLimitPolicy || sortedMessages.size() <= m_limit)
+        return sortedMessages;
 
-	auto messages = decltype(sortedMessages.messages()){};
-	std::copy(end(sortedMessages) - m_limit, end(sortedMessages), std::back_inserter(messages));
-	return SortedMessages{messages};
+    auto messages = decltype(sortedMessages.messages()){};
+    std::copy(end(sortedMessages) - m_limit, end(sortedMessages), std::back_inserter(messages));
+    return SortedMessages{messages};
 }

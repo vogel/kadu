@@ -26,17 +26,15 @@ class QByteArray;
 
 class FacebookAccountData final
 {
-
 public:
-	explicit FacebookAccountData(AccountShared *data);
-	~FacebookAccountData();
+    explicit FacebookAccountData(AccountShared *data);
+    ~FacebookAccountData();
 
-	QByteArray deltaCursor() const;
-	void setDeltaCursor(const QByteArray &deltaCursor) const;
+    QByteArray deltaCursor() const;
+    void setDeltaCursor(const QByteArray &deltaCursor) const;
 
-	QFacebookDeviceId deviceId() const;
+    QFacebookDeviceId deviceId() const;
 
 private:
-	AccountShared *m_data;
-
+    AccountShared *m_data;
 };

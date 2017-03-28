@@ -28,9 +28,10 @@
 #include "notification/notification-service.h"
 #include "notification/notification.h"
 
-AntistringNotificationService::AntistringNotificationService(QObject *parent) :
-		QObject{parent},
-		m_stringReceivedEvent{QStringLiteral("Antistring"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Antistring notifications"))}
+AntistringNotificationService::AntistringNotificationService(QObject *parent)
+        : QObject{parent},
+          m_stringReceivedEvent{QStringLiteral("Antistring"),
+                                QStringLiteral(QT_TRANSLATE_NOOP("@default", "Antistring notifications"))}
 {
 }
 
@@ -38,40 +39,41 @@ AntistringNotificationService::~AntistringNotificationService()
 {
 }
 
-void AntistringNotificationService::setNotificationEventRepository(NotificationEventRepository *notificationEventRepository)
+void AntistringNotificationService::setNotificationEventRepository(
+    NotificationEventRepository *notificationEventRepository)
 {
-	m_notificationEventRepository = notificationEventRepository;
+    m_notificationEventRepository = notificationEventRepository;
 }
 
 void AntistringNotificationService::setNotificationService(NotificationService *notificationService)
 {
-	m_notificationService = notificationService;
+    m_notificationService = notificationService;
 }
 
 void AntistringNotificationService::init()
 {
-	m_notificationEventRepository->addNotificationEvent(m_stringReceivedEvent);
+    m_notificationEventRepository->addNotificationEvent(m_stringReceivedEvent);
 }
 
 void AntistringNotificationService::done()
 {
-	m_notificationEventRepository->removeNotificationEvent(m_stringReceivedEvent);
+    m_notificationEventRepository->removeNotificationEvent(m_stringReceivedEvent);
 }
 
 void AntistringNotificationService::notifyStringReceived(const Chat &chat)
 {
-	auto data = QVariantMap{};
-	data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
-	data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
+    auto data = QVariantMap{};
+    data.insert(QStringLiteral("account"), qVariantFromValue(chat.chatAccount()));
+    data.insert(QStringLiteral("chat"), qVariantFromValue(chat));
 
-	auto notification = Notification{};
-	notification.type = m_stringReceivedEvent.name();
-	notification.title = (tr("Antistring"));
-	notification.text = normalizeHtml(HtmlString{tr("Your interlocutor send you love letter")});
-	notification.callbacks.append("chat-open");
-	notification.callbacks.append("ignore");
+    auto notification = Notification{};
+    notification.type = m_stringReceivedEvent.name();
+    notification.title = (tr("Antistring"));
+    notification.text = normalizeHtml(HtmlString{tr("Your interlocutor send you love letter")});
+    notification.callbacks.append("chat-open");
+    notification.callbacks.append("ignore");
 
-	m_notificationService->notify(notification);
+    m_notificationService->notify(notification);
 }
 
 #include "moc_antistring-notification-service.cpp"

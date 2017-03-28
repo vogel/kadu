@@ -29,8 +29,7 @@
 
 #include "kadu-tree-view-delegate.h"
 
-KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) :
-		QItemDelegate(parent)
+KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) : QItemDelegate(parent)
 {
 }
 
@@ -40,99 +39,99 @@ KaduTreeViewDelegate::~KaduTreeViewDelegate()
 
 void KaduTreeViewDelegate::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void KaduTreeViewDelegate::setIdentityManager(IdentityManager *identityManager)
 {
-	m_identityManager = identityManager;
+    m_identityManager = identityManager;
 }
 
 void KaduTreeViewDelegate::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void KaduTreeViewDelegate::init()
 {
-	Configuration = m_injectedFactory->makeOwned<TalkableDelegateConfiguration>(static_cast<TalkableTreeView*>(parent()), this);
-	// force initial signal/slot connection to happen
-	ShowIdentityNameIfMany = false;
-	setShowIdentityNameIfMany(true);
+    Configuration =
+        m_injectedFactory->makeOwned<TalkableDelegateConfiguration>(static_cast<TalkableTreeView *>(parent()), this);
+    // force initial signal/slot connection to happen
+    ShowIdentityNameIfMany = false;
+    setShowIdentityNameIfMany(true);
 }
 
 void KaduTreeViewDelegate::updateShowIdentityName()
 {
-	if (!ShowIdentityNameIfMany)
-		return;
+    if (!ShowIdentityNameIfMany)
+        return;
 
-	int activeIdentitiesCount = 0;
-	foreach (const Identity &identity, m_identityManager->items())
-		if (identity.hasAnyLoadedAccount())
-			if (++activeIdentitiesCount > 1)
-				break;
+    int activeIdentitiesCount = 0;
+    foreach (const Identity &identity, m_identityManager->items())
+        if (identity.hasAnyLoadedAccount())
+            if (++activeIdentitiesCount > 1)
+                break;
 
-	Configuration->setShowIdentityName(activeIdentitiesCount > 1);
+    Configuration->setShowIdentityName(activeIdentitiesCount > 1);
 }
 
 void KaduTreeViewDelegate::setShowIdentityNameIfMany(bool showIdentityNameIfMany)
 {
-	if (showIdentityNameIfMany == ShowIdentityNameIfMany)
-		return;
+    if (showIdentityNameIfMany == ShowIdentityNameIfMany)
+        return;
 
-	ShowIdentityNameIfMany = showIdentityNameIfMany;
-	if (ShowIdentityNameIfMany)
-	{
-		connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(updateShowIdentityName()));
-		connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
-		updateShowIdentityName();
-	}
-	else
-	{
-		disconnect(m_accountManager, 0, this, 0);
-		Configuration->setShowIdentityName(false);
-	}
+    ShowIdentityNameIfMany = showIdentityNameIfMany;
+    if (ShowIdentityNameIfMany)
+    {
+        connect(m_accountManager, SIGNAL(accountLoadedStateChanged(Account)), this, SLOT(updateShowIdentityName()));
+        connect(m_accountManager, SIGNAL(accountUpdated(Account)), this, SLOT(updateShowIdentityName()));
+        updateShowIdentityName();
+    }
+    else
+    {
+        disconnect(m_accountManager, 0, this, 0);
+        Configuration->setShowIdentityName(false);
+    }
 }
 
 void KaduTreeViewDelegate::setUseConfigurationColors(bool use)
 {
-	Configuration->setUseConfigurationColors(use);
+    Configuration->setUseConfigurationColors(use);
 }
 
-QStyleOptionViewItemV4 KaduTreeViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const
+QStyleOptionViewItemV4
+KaduTreeViewDelegate::getOptions(const QModelIndex &index, const QStyleOptionViewItem &option) const
 {
-	QStyleOptionViewItemV4 opt = setOptions(index, option);
+    QStyleOptionViewItemV4 opt = setOptions(index, option);
 
-	const QStyleOptionViewItemV2 *v2 = qstyleoption_cast<const QStyleOptionViewItemV2 *>(&option);
-	opt.features = v2
-		? v2->features
-		: QStyleOptionViewItemV2::ViewItemFeatures(QStyleOptionViewItemV2::None);
-	const QStyleOptionViewItemV3 *v3 = qstyleoption_cast<const QStyleOptionViewItemV3 *>(&option);
-	opt.locale = v3 ? v3->locale : QLocale();
-	opt.widget = v3 ? v3->widget : 0;
+    const QStyleOptionViewItemV2 *v2 = qstyleoption_cast<const QStyleOptionViewItemV2 *>(&option);
+    opt.features = v2 ? v2->features : QStyleOptionViewItemV2::ViewItemFeatures(QStyleOptionViewItemV2::None);
+    const QStyleOptionViewItemV3 *v3 = qstyleoption_cast<const QStyleOptionViewItemV3 *>(&option);
+    opt.locale = v3 ? v3->locale : QLocale();
+    opt.widget = v3 ? v3->widget : 0;
 
-	return opt;
+    return opt;
 }
 
 QSize KaduTreeViewDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	TalkablePainter talkablePainter(Configuration, getOptions(index, option), index);
-	return QSize(0, talkablePainter.height());
+    TalkablePainter talkablePainter(Configuration, getOptions(index, option), index);
+    return QSize(0, talkablePainter.height());
 }
 
 void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-	QStyleOptionViewItemV4 options = getOptions(index, option);
+    QStyleOptionViewItemV4 options = getOptions(index, option);
 
-	const QAbstractItemView *widget = qobject_cast<const QAbstractItemView *>(options.widget);
-	if (!widget)
-		return;
+    const QAbstractItemView *widget = qobject_cast<const QAbstractItemView *>(options.widget);
+    if (!widget)
+        return;
 
-	QStyle *style = widget->style();
-	style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
+    QStyle *style = widget->style();
+    style->drawControl(QStyle::CE_ItemViewItem, &options, painter, widget);
 
-	TalkablePainter talkablePainter(Configuration, options, index);
-	talkablePainter.paint(painter);
+    TalkablePainter talkablePainter(Configuration, options, index);
+    talkablePainter.paint(painter);
 }
 
 #include "moc_kadu-tree-view-delegate.cpp"

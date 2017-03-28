@@ -33,9 +33,8 @@
 
 #include "pcspeaker-configuration-widget.h"
 
-PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent) :
-		NotifierConfigurationWidget{parent},
-		m_notifier{notifier}
+PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent)
+        : NotifierConfigurationWidget{parent}, m_notifier{notifier}
 {
 }
 
@@ -45,56 +44,56 @@ PCSpeakerConfigurationWidget::~PCSpeakerConfigurationWidget()
 
 void PCSpeakerConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void PCSpeakerConfigurationWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void PCSpeakerConfigurationWidget::init()
 {
-	soundEdit = new QLineEdit(this);
-	soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
-	testButton = new QPushButton(m_iconsManager->iconByPath(KaduIcon("external_modules/mediaplayer-media-playback-play")), QString(), this);
-	testButton->setIconSize(QSize{14, 14});
-	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
+    soundEdit = new QLineEdit(this);
+    soundEdit->setToolTip(tr("Put the played sounds separate by space, _ for pause, eg. D2 C1# G0"));
+    testButton = new QPushButton(
+        m_iconsManager->iconByPath(KaduIcon("external_modules/mediaplayer-media-playback-play")), QString(), this);
+    testButton->setIconSize(QSize{14, 14});
+    connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	QHBoxLayout *layout = new QHBoxLayout(this);
-	layout->setMargin(0);
-	layout->addWidget(testButton);
-	layout->addWidget(soundEdit);
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setMargin(0);
+    layout->addWidget(testButton);
+    layout->addWidget(soundEdit);
 
-	static_cast<NotifyGroupBox *>(parent())->addWidget(this);
-
+    static_cast<NotifyGroupBox *>(parent())->addWidget(this);
 }
 
 void PCSpeakerConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!CurrentNotificationEvent.isEmpty())
-		Sounds[CurrentNotificationEvent] = soundEdit->text();
+    if (!CurrentNotificationEvent.isEmpty())
+        Sounds[CurrentNotificationEvent] = soundEdit->text();
 
-	for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
-		m_configuration->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
+    for (QMap<QString, QString>::const_iterator it = Sounds.constBegin(), end = Sounds.constEnd(); it != end; ++it)
+        m_configuration->deprecatedApi()->writeEntry("PC Speaker", it.key() + "_Sound", it.value());
 }
 
 void PCSpeakerConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!CurrentNotificationEvent.isEmpty())
-		Sounds[CurrentNotificationEvent] = soundEdit->text();
+    if (!CurrentNotificationEvent.isEmpty())
+        Sounds[CurrentNotificationEvent] = soundEdit->text();
 
-	CurrentNotificationEvent = event;
+    CurrentNotificationEvent = event;
 
-	if (Sounds.contains(event))
-		soundEdit->setText(Sounds[event]);
-	else
-		soundEdit->setText(m_configuration->deprecatedApi()->readEntry("PC Speaker", event + "_Sound"));
+    if (Sounds.contains(event))
+        soundEdit->setText(Sounds[event]);
+    else
+        soundEdit->setText(m_configuration->deprecatedApi()->readEntry("PC Speaker", event + "_Sound"));
 }
 
 void PCSpeakerConfigurationWidget::test()
 {
-	m_notifier->parseAndPlay(soundEdit->text());
+    m_notifier->parseAndPlay(soundEdit->text());
 }
 
 #include "moc_pcspeaker-configuration-widget.cpp"

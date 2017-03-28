@@ -29,7 +29,6 @@ class ChatWidgetMessageHandler;
 class ChatWidgetMessageHandlerConfiguration;
 class Configuration;
 
-
 /**
  * @addtogroup Gui
  * @{
@@ -44,28 +43,27 @@ class Configuration;
  */
 class ChatWidgetMessageHandlerConfigurator : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWidgetMessageHandlerConfigurator(QObject *parent = nullptr);
-	virtual ~ChatWidgetMessageHandlerConfigurator();
+    Q_INVOKABLE explicit ChatWidgetMessageHandlerConfigurator(QObject *parent = nullptr);
+    virtual ~ChatWidgetMessageHandlerConfigurator();
 
-	ChatWidgetMessageHandlerConfiguration loadConfiguration() const;
+    ChatWidgetMessageHandlerConfiguration loadConfiguration() const;
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<ChatWidgetMessageHandler> m_chatWidgetMessageHandler;
-	QPointer<Configuration> m_configuration;
+    QPointer<ChatWidgetMessageHandler> m_chatWidgetMessageHandler;
+    QPointer<Configuration> m_configuration;
 
-	void createDefaultConfiguration() const;
+    void createDefaultConfiguration() const;
 
 private slots:
-	INJEQT_SET void setChatWidgetMessageHandler(ChatWidgetMessageHandler *chatWidgetMessageHandler);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setChatWidgetMessageHandler(ChatWidgetMessageHandler *chatWidgetMessageHandler);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };
 
 /**

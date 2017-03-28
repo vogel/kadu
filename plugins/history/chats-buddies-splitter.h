@@ -35,35 +35,34 @@ class Talkable;
 
 class ChatsBuddiesSplitter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatsBuddiesSplitter(QVector<Talkable> talkables, QObject *parent = nullptr);
-	virtual ~ChatsBuddiesSplitter();
+    explicit ChatsBuddiesSplitter(QVector<Talkable> talkables, QObject *parent = nullptr);
+    virtual ~ChatsBuddiesSplitter();
 
-	QSet<Chat> chats() const;
-	QSet<Buddy> buddies() const;
+    QSet<Chat> chats() const;
+    QSet<Buddy> buddies() const;
 
 private:
-	QPointer<BuddyChatManager> m_buddyChatManager;
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<BuddyChatManager> m_buddyChatManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	QVector<Talkable> m_talkables;
-	QSet<Chat> UsedChats;
+    QVector<Talkable> m_talkables;
+    QSet<Chat> UsedChats;
 
-	QSet<Chat> Chats;
-	QSet<Buddy> Buddies;
+    QSet<Chat> Chats;
+    QSet<Buddy> Buddies;
 
-	void processChat(const Chat &chat);
-	void assignChat(const Chat &chat);
+    void processChat(const Chat &chat);
+    void assignChat(const Chat &chat);
 
 private slots:
-	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
 };

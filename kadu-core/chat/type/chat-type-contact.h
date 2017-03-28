@@ -20,8 +20,8 @@
 #pragma once
 
 #include "chat/type/chat-type.h"
-#include "storage/manager-common.h"
 #include "exports.h"
+#include "storage/manager-common.h"
 
 #include <QtCore/QPointer>
 #include <QtCore/QString>
@@ -50,30 +50,30 @@ class InjectedFactory;
  */
 class KADUAPI ChatTypeContact : public ChatType
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static Chat findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction);
+    static Chat
+    findChat(ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction);
 
-	Q_INVOKABLE explicit ChatTypeContact(QObject *parent = nullptr);
-	virtual ~ChatTypeContact();
+    Q_INVOKABLE explicit ChatTypeContact(QObject *parent = nullptr);
+    virtual ~ChatTypeContact();
 
-	virtual QString name() const;
-	virtual QStringList aliases() const;
-	virtual KaduIcon icon() const;
-	virtual QString windowRole() const;
+    virtual QString name() const;
+    virtual QStringList aliases() const;
+    virtual KaduIcon icon() const;
+    virtual QString windowRole() const;
 
-	virtual ChatDetails * createChatDetails(ChatShared *chatData) const;
-	virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
+    virtual ChatDetails *createChatDetails(ChatShared *chatData) const;
+    virtual ChatEditWidget *createEditWidget(const Chat &chat, QWidget *parent) const;
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QStringList Aliases;
+    QStringList Aliases;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };
 
 Q_DECLARE_METATYPE(ChatTypeContact *)

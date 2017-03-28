@@ -24,10 +24,9 @@
 
 #include "merged-proxy-model.h"
 
-MergedProxyModel::MergedProxyModel(QObject *parent) :
-		QAbstractItemModel(parent)
+MergedProxyModel::MergedProxyModel(QObject *parent) : QAbstractItemModel(parent)
 {
-	setSupportedDragActions(Qt::LinkAction);
+    setSupportedDragActions(Qt::LinkAction);
 }
 
 MergedProxyModel::~MergedProxyModel()
@@ -36,407 +35,413 @@ MergedProxyModel::~MergedProxyModel()
 
 void MergedProxyModel::connectModels()
 {
-	foreach (const QAbstractItemModel *model, Models)
-	{
-		Q_ASSERT(model);
+    foreach (const QAbstractItemModel *model, Models)
+    {
+        Q_ASSERT(model);
 
-		connect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()), Qt::DirectConnection);
-		connect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()), Qt::DirectConnection);
+        connect(model, SIGNAL(layoutAboutToBeChanged()), this, SIGNAL(layoutAboutToBeChanged()), Qt::DirectConnection);
+        connect(model, SIGNAL(layoutChanged()), this, SIGNAL(layoutChanged()), Qt::DirectConnection);
 
-		connect(model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex,QModelIndex)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(dataChangedSlot(QModelIndex, QModelIndex)),
+            Qt::DirectConnection);
 
-		connect(model, SIGNAL(rowsAboutToBeInserted(QModelIndex,int,int)),
-		        this, SLOT(rowsAboutToBeInsertedSlot(QModelIndex,int,int)), Qt::DirectConnection);
-		connect(model, SIGNAL(rowsInserted(QModelIndex,int,int)),
-		        this, SLOT(rowsInsertedSlot(QModelIndex,int,int)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(rowsAboutToBeInserted(QModelIndex, int, int)), this,
+            SLOT(rowsAboutToBeInsertedSlot(QModelIndex, int, int)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(rowsInserted(QModelIndex, int, int)), this, SLOT(rowsInsertedSlot(QModelIndex, int, int)),
+            Qt::DirectConnection);
 
-		connect(model, SIGNAL(rowsAboutToBeRemoved(QModelIndex,int,int)),
-		        this, SLOT(rowsAboutToBeRemovedSlot(QModelIndex,int,int)), Qt::DirectConnection);
-		connect(model, SIGNAL(rowsRemoved(QModelIndex,int,int)),
-		        this, SLOT(rowsRemovedSlot(QModelIndex,int,int)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(rowsAboutToBeRemoved(QModelIndex, int, int)), this,
+            SLOT(rowsAboutToBeRemovedSlot(QModelIndex, int, int)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(rowsRemoved(QModelIndex, int, int)), this, SLOT(rowsRemovedSlot(QModelIndex, int, int)),
+            Qt::DirectConnection);
 
-		connect(model, SIGNAL(rowsAboutToBeMoved(QModelIndex,int,int,QModelIndex,int)),
-		        this, SLOT(rowsAboutToBeMovedSlot(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
-		connect(model, SIGNAL(rowsMoved(QModelIndex,int,int,QModelIndex,int)),
-		        this, SLOT(rowsMovedSlot(QModelIndex,int,int,QModelIndex,int)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(rowsAboutToBeMoved(QModelIndex, int, int, QModelIndex, int)), this,
+            SLOT(rowsAboutToBeMovedSlot(QModelIndex, int, int, QModelIndex, int)), Qt::DirectConnection);
+        connect(
+            model, SIGNAL(rowsMoved(QModelIndex, int, int, QModelIndex, int)), this,
+            SLOT(rowsMovedSlot(QModelIndex, int, int, QModelIndex, int)), Qt::DirectConnection);
 
-		connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()), Qt::DirectConnection);
-		connect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()), Qt::DirectConnection);
+        connect(model, SIGNAL(modelAboutToBeReset()), this, SLOT(modelAboutToBeResetSlot()), Qt::DirectConnection);
+        connect(model, SIGNAL(modelReset()), this, SLOT(modelResetSlot()), Qt::DirectConnection);
 
-		connect(model, SIGNAL(destroyed(QObject*)), this, SLOT(modelDestroyedSlot(QObject*)), Qt::DirectConnection);
-	}
+        connect(model, SIGNAL(destroyed(QObject *)), this, SLOT(modelDestroyedSlot(QObject *)), Qt::DirectConnection);
+    }
 }
 
 void MergedProxyModel::disconnectModels()
 {
-	foreach (const QAbstractItemModel *model, Models)
-	{
-		Q_ASSERT(model);
+    foreach (const QAbstractItemModel *model, Models)
+    {
+        Q_ASSERT(model);
 
-		disconnect(model,0, this, 0);
-	}
+        disconnect(model, 0, this, 0);
+    }
 }
 
 void MergedProxyModel::setModels(QList<QAbstractItemModel *> models)
 {
-	beginResetModel();
+    beginResetModel();
 
-	disconnectModels();
-	Models = models;
-	connectModels();
-	updateBoundaries();
+    disconnectModels();
+    Models = models;
+    connectModels();
+    updateBoundaries();
 
-	endResetModel();
+    endResetModel();
 }
 
 void MergedProxyModel::updateBoundaries() const
 {
-	Boundaries.clear();
+    Boundaries.clear();
 
-	int index = 0;
-	foreach (const QAbstractItemModel *model, Models)
-	{
-		Q_ASSERT(model);
+    int index = 0;
+    foreach (const QAbstractItemModel *model, Models)
+    {
+        Q_ASSERT(model);
 
-		const int count = model->rowCount();
-		Boundaries.insert(model, qMakePair(index, index + count - 1));
-		index += model->rowCount();
-	}
+        const int count = model->rowCount();
+        Boundaries.insert(model, qMakePair(index, index + count - 1));
+        index += model->rowCount();
+    }
 }
 
 int MergedProxyModel::modelRowOffset(QAbstractItemModel *model) const
 {
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
+    Q_ASSERT(model);
+    Q_ASSERT(Boundaries.contains(model));
 
-	return Boundaries.value(model).first;
+    return Boundaries.value(model).first;
 }
 
 void MergedProxyModel::dataChangedSlot(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
-	const QModelIndex &proxyTopLeft = mapFromSource(topLeft);
-	const QModelIndex &proxyBottomRight = mapFromSource(bottomRight);
+    const QModelIndex &proxyTopLeft = mapFromSource(topLeft);
+    const QModelIndex &proxyBottomRight = mapFromSource(bottomRight);
 
-	emit dataChanged(proxyTopLeft, proxyBottomRight);
+    emit dataChanged(proxyTopLeft, proxyBottomRight);
 }
 
 void MergedProxyModel::rowsAboutToBeInsertedSlot(const QModelIndex &parent, int first, int last)
 {
-	QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
-	Q_UNUSED(model);
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
+    QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
+    Q_UNUSED(model);
+    Q_ASSERT(model);
+    Q_ASSERT(Boundaries.contains(model));
 
-	const QModelIndex &proxyParent = mapFromSource(parent);
-	const int offset = proxyParent.isValid()
-	        ? 0
-	        : modelRowOffset(model);
+    const QModelIndex &proxyParent = mapFromSource(parent);
+    const int offset = proxyParent.isValid() ? 0 : modelRowOffset(model);
 
-	beginInsertRows(proxyParent, first + offset, last + offset);
+    beginInsertRows(proxyParent, first + offset, last + offset);
 }
 
 void MergedProxyModel::rowsInsertedSlot(const QModelIndex &parent, int first, int last)
 {
-	Q_UNUSED(parent);
-	Q_UNUSED(first);
-	Q_UNUSED(last);
+    Q_UNUSED(parent);
+    Q_UNUSED(first);
+    Q_UNUSED(last);
 
-	QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
-	Q_UNUSED(model);
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
+    QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
+    Q_UNUSED(model);
+    Q_ASSERT(model);
+    Q_ASSERT(Boundaries.contains(model));
 
-	updateBoundaries();
+    updateBoundaries();
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void MergedProxyModel::rowsAboutToBeRemovedSlot(const QModelIndex &parent, int first, int last)
 {
-	QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
+    QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
+    Q_ASSERT(model);
+    Q_ASSERT(Boundaries.contains(model));
 
-	const QModelIndex &proxyParent = mapFromSource(parent);
-	const int offset = proxyParent.isValid()
-	        ? 0
-	        : modelRowOffset(model);
+    const QModelIndex &proxyParent = mapFromSource(parent);
+    const int offset = proxyParent.isValid() ? 0 : modelRowOffset(model);
 
-	beginRemoveRows(proxyParent, first + offset, last + offset);
+    beginRemoveRows(proxyParent, first + offset, last + offset);
 
-	for (int i = first; i <= last; i++)
-		IndexesToRemove.append(model->index(i, 0, parent));
+    for (int i = first; i <= last; i++)
+        IndexesToRemove.append(model->index(i, 0, parent));
 }
 
 void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int last)
 {
-	Q_UNUSED(parent);
-	Q_UNUSED(first);
-	Q_UNUSED(last);
+    Q_UNUSED(parent);
+    Q_UNUSED(first);
+    Q_UNUSED(last);
 
-	QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
-	Q_UNUSED(model);
-	Q_ASSERT(model);
-	Q_ASSERT(Boundaries.contains(model));
+    QAbstractItemModel *model = qobject_cast<QAbstractItemModel *>(sender());
+    Q_UNUSED(model);
+    Q_ASSERT(model);
+    Q_ASSERT(Boundaries.contains(model));
 
-	foreach (const QModelIndex &sourceIndex, IndexesToRemove)
-		removeMapping(sourceIndex);
-	IndexesToRemove.clear();
+    foreach (const QModelIndex &sourceIndex, IndexesToRemove)
+        removeMapping(sourceIndex);
+    IndexesToRemove.clear();
 
-	updateBoundaries();
+    updateBoundaries();
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
-void MergedProxyModel::rowsAboutToBeMovedSlot(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
+void MergedProxyModel::rowsAboutToBeMovedSlot(
+    const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
 {
-	Q_UNUSED(parent);
-	Q_UNUSED(start);
-	Q_UNUSED(end);
-	Q_UNUSED(destination);
-	Q_UNUSED(row);
+    Q_UNUSED(parent);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+    Q_UNUSED(destination);
+    Q_UNUSED(row);
 
-	// we do not support moving yet
-	Q_ASSERT(false);
+    // we do not support moving yet
+    Q_ASSERT(false);
 }
 
-void MergedProxyModel::rowsMovedSlot(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
+void MergedProxyModel::rowsMovedSlot(
+    const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row)
 {
-	Q_UNUSED(parent);
-	Q_UNUSED(start);
-	Q_UNUSED(end);
-	Q_UNUSED(destination);
-	Q_UNUSED(row);
+    Q_UNUSED(parent);
+    Q_UNUSED(start);
+    Q_UNUSED(end);
+    Q_UNUSED(destination);
+    Q_UNUSED(row);
 
-	// we do not support moving yet
-	Q_ASSERT(false);
+    // we do not support moving yet
+    Q_ASSERT(false);
 }
 
 void MergedProxyModel::modelAboutToBeResetSlot()
 {
-	beginResetModel();
+    beginResetModel();
 }
 
 void MergedProxyModel::modelResetSlot()
 {
-	updateBoundaries();
+    updateBoundaries();
 
-	endResetModel();
+    endResetModel();
 }
 
 void MergedProxyModel::modelDestroyedSlot(QObject *model)
 {
-	Models.removeAll(static_cast<QAbstractItemModel *>(model));
+    Models.removeAll(static_cast<QAbstractItemModel *>(model));
 }
 
 QModelIndex MergedProxyModel::mapFirstLevelToSource(const QModelIndex &proxyIndex) const
 {
-	if (!proxyIndex.isValid()) // invalid maps to invalid
-		return QModelIndex();
+    if (!proxyIndex.isValid())   // invalid maps to invalid
+        return QModelIndex();
 
-	Q_ASSERT(this == proxyIndex.model());
+    Q_ASSERT(this == proxyIndex.model());
 
-	ModelMap::const_iterator i = Boundaries.constBegin();
-	ModelMap::const_iterator end = Boundaries.constEnd();
+    ModelMap::const_iterator i = Boundaries.constBegin();
+    ModelMap::const_iterator end = Boundaries.constEnd();
 
-	int row = proxyIndex.row();
-	while (i != end)
-	{
-		if (row >= i.value().first && row <= i.value().second)
-			return i.key()->index(row - i.value().first, proxyIndex.column());
-		i++;
-	}
+    int row = proxyIndex.row();
+    while (i != end)
+    {
+        if (row >= i.value().first && row <= i.value().second)
+            return i.key()->index(row - i.value().first, proxyIndex.column());
+        i++;
+    }
 
-	Q_ASSERT(false); // we should never be here
-	return QModelIndex();
+    Q_ASSERT(false);   // we should never be here
+    return QModelIndex();
 }
 
 QModelIndex MergedProxyModel::mapFirstLevelFromSource(const QModelIndex &sourceIndex) const
 {
-	Q_ASSERT(Boundaries.contains(sourceIndex.model()));
+    Q_ASSERT(Boundaries.contains(sourceIndex.model()));
 
-	return index(Boundaries.value(sourceIndex.model()).first + sourceIndex.row(), sourceIndex.column());
+    return index(Boundaries.value(sourceIndex.model()).first + sourceIndex.row(), sourceIndex.column());
 }
 
 QModelIndex MergedProxyModel::mapToSource(const QModelIndex &proxyIndex) const
 {
-	if (!proxyIndex.isValid()) // invalid maps to invalid
-		return QModelIndex();
+    if (!proxyIndex.isValid())   // invalid maps to invalid
+        return QModelIndex();
 
-	Q_ASSERT(this == proxyIndex.model());
+    Q_ASSERT(this == proxyIndex.model());
 
-	const QModelIndex &proxyParentIndex = parent(proxyIndex);
-	if (!proxyParentIndex.isValid())
-		return mapFirstLevelToSource(proxyIndex);
+    const QModelIndex &proxyParentIndex = parent(proxyIndex);
+    if (!proxyParentIndex.isValid())
+        return mapFirstLevelToSource(proxyIndex);
 
-	const QModelIndex &sourceParentIndex = mapToSource(proxyParentIndex);
-	return sourceParentIndex.model()->index(proxyIndex.row(), proxyIndex.column(), sourceParentIndex);
+    const QModelIndex &sourceParentIndex = mapToSource(proxyParentIndex);
+    return sourceParentIndex.model()->index(proxyIndex.row(), proxyIndex.column(), sourceParentIndex);
 }
 
 QModelIndex MergedProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
 {
-	if (!sourceIndex.isValid()) // invalid maps to invalid
-		return QModelIndex();
+    if (!sourceIndex.isValid())   // invalid maps to invalid
+        return QModelIndex();
 
-	Q_ASSERT(Boundaries.contains(sourceIndex.model()));
+    Q_ASSERT(Boundaries.contains(sourceIndex.model()));
 
-	const QModelIndex &sourceParentIndex = sourceIndex.parent();
-	if (!sourceParentIndex.isValid())
-		return mapFirstLevelFromSource(sourceIndex);
+    const QModelIndex &sourceParentIndex = sourceIndex.parent();
+    if (!sourceParentIndex.isValid())
+        return mapFirstLevelFromSource(sourceIndex);
 
-	const QModelIndex &proxyParentIndex = mapFromSource(sourceParentIndex);
-	return index(sourceIndex.row(), sourceIndex.column(), proxyParentIndex);
+    const QModelIndex &proxyParentIndex = mapFromSource(sourceParentIndex);
+    return index(sourceIndex.row(), sourceIndex.column(), proxyParentIndex);
 }
 
-QModelIndex * MergedProxyModel::createMapping(const QModelIndex &sourceParent) const
+QModelIndex *MergedProxyModel::createMapping(const QModelIndex &sourceParent) const
 {
-	IndexMapping::const_iterator it = Mappings.constFind(sourceParent);
-	if (it != Mappings.constEnd())
-		return it.value();
+    IndexMapping::const_iterator it = Mappings.constFind(sourceParent);
+    if (it != Mappings.constEnd())
+        return it.value();
 
-	QModelIndex *mapping = new QModelIndex(sourceParent);
-	Mappings.insert(sourceParent, mapping);
+    QModelIndex *mapping = new QModelIndex(sourceParent);
+    Mappings.insert(sourceParent, mapping);
 
-	return mapping;
+    return mapping;
 }
 
 void MergedProxyModel::removeMapping(const QModelIndex &sourceParent) const
 {
-	QModelIndex *mapping = Mappings.take(sourceParent);
-	if (mapping)
-		delete mapping;
+    QModelIndex *mapping = Mappings.take(sourceParent);
+    if (mapping)
+        delete mapping;
 
-	IndexMapping::const_iterator i = Mappings.constBegin();
-	IndexMapping::const_iterator end = Mappings.constEnd();
+    IndexMapping::const_iterator i = Mappings.constBegin();
+    IndexMapping::const_iterator end = Mappings.constEnd();
 
-	QModelIndexList indexesToRemove;
-	while (i != end)
-	{
-		if (*i.value() == sourceParent)
-			indexesToRemove.append(i.key());
-		i++;
-	}
+    QModelIndexList indexesToRemove;
+    while (i != end)
+    {
+        if (*i.value() == sourceParent)
+            indexesToRemove.append(i.key());
+        i++;
+    }
 
-	foreach (const QModelIndex &index, indexesToRemove)
-		removeMapping(index);
+    foreach (const QModelIndex &index, indexesToRemove)
+        removeMapping(index);
 }
 
 QModelIndex MergedProxyModel::mappedSourceParent(const QModelIndex &proxyIndex) const
 {
-	Q_ASSERT(proxyIndex.isValid());
-	Q_ASSERT(proxyIndex.model() == this);
+    Q_ASSERT(proxyIndex.isValid());
+    Q_ASSERT(proxyIndex.model() == this);
 
-	const void *p = proxyIndex.internalPointer();
-	if (!p)
-		return QModelIndex();
+    const void *p = proxyIndex.internalPointer();
+    if (!p)
+        return QModelIndex();
 
-	const QModelIndex *mapping = static_cast<const QModelIndex *>(p);
-	return *mapping;
+    const QModelIndex *mapping = static_cast<const QModelIndex *>(p);
+    return *mapping;
 }
 
 QModelIndex MergedProxyModel::index(int row, int column, const QModelIndex &parent) const
 {
-	if (row < 0 || column < 0)
-		return QModelIndex();
+    if (row < 0 || column < 0)
+        return QModelIndex();
 
-	if (!parent.isValid())
-		return createIndex(row, column);
+    if (!parent.isValid())
+        return createIndex(row, column);
 
-	const QModelIndex &sourceParent = mapToSource(parent); // parent is already mapped
-	QModelIndex *mapping = createMapping(sourceParent); // map children for this parent
+    const QModelIndex &sourceParent = mapToSource(parent);   // parent is already mapped
+    QModelIndex *mapping = createMapping(sourceParent);      // map children for this parent
 
-	if (!mapping) // something went wrong
-		return QModelIndex();
+    if (!mapping)   // something went wrong
+        return QModelIndex();
 
-	return createIndex(row, column, mapping);
+    return createIndex(row, column, mapping);
 }
 
 QModelIndex MergedProxyModel::parent(const QModelIndex &proxyChild) const
 {
-	if (!proxyChild.isValid())
-		return QModelIndex();
+    if (!proxyChild.isValid())
+        return QModelIndex();
 
-	return mapFromSource(mappedSourceParent(proxyChild));
+    return mapFromSource(mappedSourceParent(proxyChild));
 }
 
 int MergedProxyModel::rowCount(const QModelIndex &parent) const
 {
-	if (parent.isValid())
-	{
-		Q_ASSERT(parent.model() == this);
+    if (parent.isValid())
+    {
+        Q_ASSERT(parent.model() == this);
 
-		const QModelIndex &sourceParent = mapToSource(parent);
-		Q_ASSERT(sourceParent.model());
+        const QModelIndex &sourceParent = mapToSource(parent);
+        Q_ASSERT(sourceParent.model());
 
-		return sourceParent.model()->rowCount(sourceParent);
-	}
+        return sourceParent.model()->rowCount(sourceParent);
+    }
 
-	int count = 0;
-	foreach (const QAbstractItemModel *model, Models)
-	{
-		Q_ASSERT(model);
-		count += model->rowCount();
-	}
+    int count = 0;
+    foreach (const QAbstractItemModel *model, Models)
+    {
+        Q_ASSERT(model);
+        count += model->rowCount();
+    }
 
-	return count;
+    return count;
 }
 
 int MergedProxyModel::columnCount(const QModelIndex &parent) const
 {
-	Q_UNUSED(parent)
+    Q_UNUSED(parent)
 
-	return 1;
+    return 1;
 }
 
 QFlags<Qt::ItemFlag> MergedProxyModel::flags(const QModelIndex &index) const
 {
-	return mapToSource(index).flags();
+    return mapToSource(index).flags();
 }
 
 QVariant MergedProxyModel::data(const QModelIndex &index, int role) const
 {
-	return mapToSource(index).data(role);
+    return mapToSource(index).data(role);
 }
 
 QStringList MergedProxyModel::mimeTypes() const
 {
-	QStringList result;
-	foreach (const QAbstractItemModel *model, Models)
-		result += model->mimeTypes();
-	return result;
+    QStringList result;
+    foreach (const QAbstractItemModel *model, Models)
+        result += model->mimeTypes();
+    return result;
 }
 
-QMimeData * MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) const
+QMimeData *MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) const
 {
-	if (proxyIndexes.isEmpty())
-		return 0;
+    if (proxyIndexes.isEmpty())
+        return 0;
 
-	QMap<const QAbstractItemModel *, QModelIndexList> sourceIndexes;
-	foreach (const QModelIndex &proxyIndex, proxyIndexes)
-	{
-		const QModelIndex &sourceIndex = mapToSource(proxyIndex);
-		const QAbstractItemModel *sourceModel = sourceIndex.model();
-		if (!sourceIndexes.contains(sourceModel))
-			sourceIndexes.insert(sourceModel, QModelIndexList());
-		sourceIndexes.find(sourceModel)->append(sourceIndex);
-	}
+    QMap<const QAbstractItemModel *, QModelIndexList> sourceIndexes;
+    foreach (const QModelIndex &proxyIndex, proxyIndexes)
+    {
+        const QModelIndex &sourceIndex = mapToSource(proxyIndex);
+        const QAbstractItemModel *sourceModel = sourceIndex.model();
+        if (!sourceIndexes.contains(sourceModel))
+            sourceIndexes.insert(sourceModel, QModelIndexList());
+        sourceIndexes.find(sourceModel)->append(sourceIndex);
+    }
 
-	QMimeData *mergedMimeData = new QMimeData();
+    QMimeData *mergedMimeData = new QMimeData();
 
-	QList<const QAbstractItemModel *> sourceModels = sourceIndexes.keys();
-	foreach (const QAbstractItemModel *sourceModel, sourceModels)
-	{
-		QMimeData *sourceMimeData = sourceModel->mimeData(sourceIndexes.value(sourceModel));
-		if (!sourceMimeData)
-			continue;
+    QList<const QAbstractItemModel *> sourceModels = sourceIndexes.keys();
+    foreach (const QAbstractItemModel *sourceModel, sourceModels)
+    {
+        QMimeData *sourceMimeData = sourceModel->mimeData(sourceIndexes.value(sourceModel));
+        if (!sourceMimeData)
+            continue;
 
-		foreach (const QString &sourceMimeDataFormat, sourceMimeData->formats())
-			mergedMimeData->setData(sourceMimeDataFormat, sourceMimeData->data(sourceMimeDataFormat));
+        foreach (const QString &sourceMimeDataFormat, sourceMimeData->formats())
+            mergedMimeData->setData(sourceMimeDataFormat, sourceMimeData->data(sourceMimeDataFormat));
 
-		delete sourceMimeData;
-	}
+        delete sourceMimeData;
+    }
 
-	return mergedMimeData;
+    return mergedMimeData;
 }
 
 #include "moc_merged-proxy-model.cpp"

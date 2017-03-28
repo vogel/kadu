@@ -28,14 +28,15 @@
 
 #include "otr-peer-identity-verification-service.h"
 
-void OtrPeerIdentityVerificationService::wrapperHandleSmpEvent(void *data, OtrlSMPEvent smpEvent, ConnContext *context,
-															   unsigned short progressPercent, char *question)
+void OtrPeerIdentityVerificationService::wrapperHandleSmpEvent(
+    void *data, OtrlSMPEvent smpEvent, ConnContext *context, unsigned short progressPercent, char *question)
 {
-	Q_UNUSED(context);
+    Q_UNUSED(context);
 
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->peerIdentityVerificationService())
-		opData->peerIdentityVerificationService()->handleSmpEvent(opData->contact(), smpEvent, progressPercent, QString::fromUtf8(question));
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->peerIdentityVerificationService())
+        opData->peerIdentityVerificationService()->handleSmpEvent(
+            opData->contact(), smpEvent, progressPercent, QString::fromUtf8(question));
 }
 
 OtrPeerIdentityVerificationService::OtrPeerIdentityVerificationService()
@@ -48,119 +49,126 @@ OtrPeerIdentityVerificationService::~OtrPeerIdentityVerificationService()
 
 void OtrPeerIdentityVerificationService::setAppOpsService(OtrAppOpsService *appOpsService)
 {
-	AppOpsService = appOpsService;
+    AppOpsService = appOpsService;
 }
 
 void OtrPeerIdentityVerificationService::setContextConverter(OtrContextConverter *contextConverter)
 {
-	ContextConverter = contextConverter;
+    ContextConverter = contextConverter;
 }
 
 void OtrPeerIdentityVerificationService::setOpDataFactory(OtrOpDataFactory *opDataFactory)
 {
-	OpDataFactory = opDataFactory;
+    OpDataFactory = opDataFactory;
 }
 
 void OtrPeerIdentityVerificationService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 }
 
-void OtrPeerIdentityVerificationService::updateContactState(const Contact &contact, const OtrPeerIdentityVerificationState &state)
+void OtrPeerIdentityVerificationService::updateContactState(
+    const Contact &contact, const OtrPeerIdentityVerificationState &state)
 {
-	emit contactStateUpdated(contact, state);
+    emit contactStateUpdated(contact, state);
 }
 
-void OtrPeerIdentityVerificationService::startQuestionAndAnswerVerification(const Contact &contact, const QString &question, const QString &answer)
+void OtrPeerIdentityVerificationService::startQuestionAndAnswerVerification(
+    const Contact &contact, const QString &question, const QString &answer)
 {
-	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || question.isEmpty() || answer.isEmpty())
-		return;
+    if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || question.isEmpty() || answer.isEmpty())
+        return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
-	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+    OtrlUserState userState = UserStateService.data()->userState();
+    const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
+    OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
+    ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_initiate_smp_q(userState, appOps, &opData, context, qPrintable(question), (const unsigned char *) qPrintable(answer),
-								static_cast<size_t>(answer.length()));
+    otrl_message_initiate_smp_q(
+        userState, appOps, &opData, context, qPrintable(question), (const unsigned char *)qPrintable(answer),
+        static_cast<size_t>(answer.length()));
 }
 
-void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(const Contact &contact, const QString &sharedSecret)
+void OtrPeerIdentityVerificationService::startSharedSecretVerficiation(
+    const Contact &contact, const QString &sharedSecret)
 {
-	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || sharedSecret.isEmpty())
-		return;
+    if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || sharedSecret.isEmpty())
+        return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
-	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+    OtrlUserState userState = UserStateService.data()->userState();
+    const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
+    OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
+    ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_initiate_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(sharedSecret),
-							  static_cast<size_t>(sharedSecret.length()));
+    otrl_message_initiate_smp(
+        userState, appOps, &opData, context, (const unsigned char *)qPrintable(sharedSecret),
+        static_cast<size_t>(sharedSecret.length()));
 }
 
 void OtrPeerIdentityVerificationService::respondVerification(const Contact &contact, const QString &answer)
 {
-	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || answer.isEmpty())
-		return;
+    if (!ContextConverter || !OpDataFactory || !UserStateService || !contact || answer.isEmpty())
+        return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
-	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+    OtrlUserState userState = UserStateService.data()->userState();
+    const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
+    OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
+    ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_respond_smp(userState, appOps, &opData, context, (const unsigned char *) qPrintable(answer),
-							 static_cast<size_t>(answer.length()));
+    otrl_message_respond_smp(
+        userState, appOps, &opData, context, (const unsigned char *)qPrintable(answer),
+        static_cast<size_t>(answer.length()));
 }
 
 void OtrPeerIdentityVerificationService::cancelVerification(const Contact &contact)
 {
-	if (!ContextConverter || !OpDataFactory || !UserStateService || !contact)
-		return;
+    if (!ContextConverter || !OpDataFactory || !UserStateService || !contact)
+        return;
 
-	OtrlUserState userState = UserStateService.data()->userState();
-	const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
-	OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
-	ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
+    OtrlUserState userState = UserStateService.data()->userState();
+    const OtrlMessageAppOps *appOps = AppOpsService.data()->appOps();
+    OtrOpData opData = OpDataFactory.data()->opDataForContact(contact);
+    ConnContext *context = ContextConverter.data()->contactToContextConverter(contact);
 
-	otrl_message_abort_smp(userState, appOps, &opData, context);
+    otrl_message_abort_smp(userState, appOps, &opData, context);
 }
 
-void OtrPeerIdentityVerificationService::handleSmpEvent(const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question)
+void OtrPeerIdentityVerificationService::handleSmpEvent(
+    const Contact &contact, OtrlSMPEvent smpEvent, int progressPercent, const QString &question)
 {
-	Q_UNUSED(question);
+    Q_UNUSED(question);
 
-	if (!contact)
-		return;
+    if (!contact)
+        return;
 
-	OtrPeerIdentityVerificationState::State state = OtrPeerIdentityVerificationState::StateNotStarted;
-	switch (smpEvent)
-	{
-		case OTRL_SMPEVENT_IN_PROGRESS:
-			state = OtrPeerIdentityVerificationState::StateInProgress;
-			break;
-		case OTRL_SMPEVENT_ASK_FOR_ANSWER:
-			state = OtrPeerIdentityVerificationState::StateInProgress;
-			emit questionAnswerRequested(contact, question);
-			break;
-		case OTRL_SMPEVENT_ASK_FOR_SECRET:
-			state = OtrPeerIdentityVerificationState::StateInProgress;
-			emit sharedSecretRequested(contact);
-			break;
-		case OTRL_SMPEVENT_CHEATED:
-		case OTRL_SMPEVENT_ERROR:
-		case OTRL_SMPEVENT_FAILURE:
-			state = OtrPeerIdentityVerificationState::StateFailed;
-			break;
-		case OTRL_SMPEVENT_SUCCESS:
-			state = OtrPeerIdentityVerificationState::StateSucceeded;
-			break;
-		default:
-			state = OtrPeerIdentityVerificationState::StateNotStarted;
-			break;
-	}
+    OtrPeerIdentityVerificationState::State state = OtrPeerIdentityVerificationState::StateNotStarted;
+    switch (smpEvent)
+    {
+    case OTRL_SMPEVENT_IN_PROGRESS:
+        state = OtrPeerIdentityVerificationState::StateInProgress;
+        break;
+    case OTRL_SMPEVENT_ASK_FOR_ANSWER:
+        state = OtrPeerIdentityVerificationState::StateInProgress;
+        emit questionAnswerRequested(contact, question);
+        break;
+    case OTRL_SMPEVENT_ASK_FOR_SECRET:
+        state = OtrPeerIdentityVerificationState::StateInProgress;
+        emit sharedSecretRequested(contact);
+        break;
+    case OTRL_SMPEVENT_CHEATED:
+    case OTRL_SMPEVENT_ERROR:
+    case OTRL_SMPEVENT_FAILURE:
+        state = OtrPeerIdentityVerificationState::StateFailed;
+        break;
+    case OTRL_SMPEVENT_SUCCESS:
+        state = OtrPeerIdentityVerificationState::StateSucceeded;
+        break;
+    default:
+        state = OtrPeerIdentityVerificationState::StateNotStarted;
+        break;
+    }
 
-	updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
+    updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }
 
 #include "moc_otr-peer-identity-verification-service.cpp"

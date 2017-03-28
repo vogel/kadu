@@ -30,27 +30,29 @@ class PathsProvider;
 
 class AdiumStyleEngine : public QObject, public ChatStyleEngine
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AdiumStyleEngine(QObject *parent = nullptr);
-	virtual ~AdiumStyleEngine();
+    Q_INVOKABLE explicit AdiumStyleEngine(QObject *parent = nullptr);
+    virtual ~AdiumStyleEngine();
 
-	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
+    virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
 
-	virtual bool supportVariants() { return true; }
-	virtual QString isStyleValid(QString styleName);
-	virtual QString defaultVariant(const QString &styleName);
+    virtual bool supportVariants()
+    {
+        return true;
+    }
+    virtual QString isStyleValid(QString styleName);
+    virtual QString defaultVariant(const QString &styleName);
 
-	virtual QStringList styleVariants(QString styleName);
-	virtual bool styleUsesTransparencyByDefault(QString styleName);
+    virtual QStringList styleVariants(QString styleName);
+    virtual bool styleUsesTransparencyByDefault(QString styleName);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 };

@@ -43,88 +43,87 @@
  */
 class HISTORYAPI HistoryQueryResult
 {
-	Talkable ResultTalkable;
-	QDate Date;
-	QString Title;
-	quint32 Count;
+    Talkable ResultTalkable;
+    QDate Date;
+    QString Title;
+    quint32 Count;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create empty query result.
-	 */
-	HistoryQueryResult();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create empty query result.
+     */
+    HistoryQueryResult();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create copy of existing query result.
-	 * @param copyMe existing query result to copy
-	 */
-	HistoryQueryResult(const HistoryQueryResult &copyMe);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create copy of existing query result.
+     * @param copyMe existing query result to copy
+     */
+    HistoryQueryResult(const HistoryQueryResult &copyMe);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Copy existing query resylt into this query result.
-	 * @param copyMe existing query result to copy
-	 */
-	HistoryQueryResult & operator = (const HistoryQueryResult &copyMe);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Copy existing query resylt into this query result.
+     * @param copyMe existing query result to copy
+     */
+    HistoryQueryResult &operator=(const HistoryQueryResult &copyMe);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets originating talkable.
-	 * @param talkable originating talkable
-	 */
-	void setTalkable(const Talkable &talkable);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets originating talkable.
+     * @param talkable originating talkable
+     */
+    void setTalkable(const Talkable &talkable);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns originating talkable.
-	 * @return originating talkable
-	 */
-	Talkable talkable() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns originating talkable.
+     * @return originating talkable
+     */
+    Talkable talkable() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets date of query result.
-	 * @param date of query result
-	 */
-	void setDate(const QDate &date);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets date of query result.
+     * @param date of query result
+     */
+    void setDate(const QDate &date);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns date of query result.
-	 * @return date of query result
-	 */
-	QDate date() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns date of query result.
+     * @return date of query result
+     */
+    QDate date() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets title of query result.
-	 * @param title title of query result
-	 */
-	void setTitle(const QString &title);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets title of query result.
+     * @param title title of query result
+     */
+    void setTitle(const QString &title);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns title of query result.
-	 * @return title of query result
-	 */
-	QString title() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns title of query result.
+     * @return title of query result
+     */
+    QString title() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets count of found items.
-	 * @param count count of found items
-	 */
-	void setCount(const quint32 count);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets count of found items.
+     * @param count count of found items
+     */
+    void setCount(const quint32 count);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns count of found items.
-	 * @return count of found items
-	 */
-	quint32 count() const;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns count of found items.
+     * @return count of found items
+     */
+    quint32 count() const;
 };
 
 /**
@@ -133,4 +132,4 @@ public:
 
 Q_DECLARE_METATYPE(HistoryQueryResult);
 
-#endif // HISTORY_QUERY_RESULT_H
+#endif   // HISTORY_QUERY_RESULT_H

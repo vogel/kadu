@@ -21,14 +21,14 @@
 
 #include "mediaplayer.h"
 
-NextAction::NextAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+NextAction::NextAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"external_modules/mediaplayer-media-skip-forward"});
-	setName(QStringLiteral("mediaplayer_next"));
-	setText(tr("Next Track"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"external_modules/mediaplayer-media-skip-forward"});
+    setName(QStringLiteral("mediaplayer_next"));
+    setText(tr("Next Track"));
+    setType(ActionDescription::TypeChat);
 }
 
 NextAction::~NextAction()
@@ -37,12 +37,12 @@ NextAction::~NextAction()
 
 void NextAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void NextAction::actionTriggered(QAction *, bool)
 {
-	m_mediaPlayer->nextTrack();
+    m_mediaPlayer->nextTrack();
 }
 
 #include "moc_next-action.cpp"

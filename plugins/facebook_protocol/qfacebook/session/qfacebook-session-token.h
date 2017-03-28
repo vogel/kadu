@@ -26,33 +26,48 @@ class QFacebookJsonReader;
 class QFacebookSessionToken
 {
 public:
-	static QFacebookSessionToken fromJson(const QFacebookJsonReader &json);
+    static QFacebookSessionToken fromJson(const QFacebookJsonReader &json);
 
-	QFacebookSessionToken() = default;
-	QFacebookSessionToken(QByteArray sessionKey, long uid, QByteArray secret, QByteArray accessToken,
-		QByteArray machineId, QByteArray userStorageKey) :
-			m_sessionKey{std::move(sessionKey)},
-			m_uid{uid},
-			m_secret{std::move(secret)},
-			m_accessToken{std::move(accessToken)},
-			m_machineId{std::move(machineId)},
-			m_userStorageKey{std::move(userStorageKey)}
-	{
-	}
+    QFacebookSessionToken() = default;
+    QFacebookSessionToken(
+        QByteArray sessionKey, long uid, QByteArray secret, QByteArray accessToken, QByteArray machineId,
+        QByteArray userStorageKey)
+            : m_sessionKey{std::move(sessionKey)}, m_uid{uid}, m_secret{std::move(secret)},
+              m_accessToken{std::move(accessToken)}, m_machineId{std::move(machineId)},
+              m_userStorageKey{std::move(userStorageKey)}
+    {
+    }
 
-	QByteArray sessionKey() const { return m_sessionKey; }
-	long uid() const { return m_uid; }
-	QByteArray secret() const { return m_secret; }
-	QByteArray accessToken() const { return m_accessToken; }
-	QByteArray machineId() const { return m_machineId; }
-	QByteArray userStorageKey() const { return m_userStorageKey; }
+    QByteArray sessionKey() const
+    {
+        return m_sessionKey;
+    }
+    long uid() const
+    {
+        return m_uid;
+    }
+    QByteArray secret() const
+    {
+        return m_secret;
+    }
+    QByteArray accessToken() const
+    {
+        return m_accessToken;
+    }
+    QByteArray machineId() const
+    {
+        return m_machineId;
+    }
+    QByteArray userStorageKey() const
+    {
+        return m_userStorageKey;
+    }
 
 private:
-	QByteArray m_sessionKey;
-	long m_uid;
-	QByteArray m_secret;
-	QByteArray m_accessToken;
-	QByteArray m_machineId;
-	QByteArray m_userStorageKey;
-
+    QByteArray m_sessionKey;
+    long m_uid;
+    QByteArray m_secret;
+    QByteArray m_accessToken;
+    QByteArray m_machineId;
+    QByteArray m_userStorageKey;
 };

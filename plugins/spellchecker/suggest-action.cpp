@@ -21,14 +21,14 @@
 
 #include "suggester.h"
 
-SuggestAction::SuggestAction(QString word, QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent),
-		m_word(std::move(word))
+SuggestAction::SuggestAction(QString word, QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent),
+          m_word(std::move(word))
 {
-	setName(QString{"spellcheckerSuggest#%1"}.arg(m_word));
-	setText(m_word);
-	setType(ActionDescription::TypeGlobal);
+    setName(QString{"spellcheckerSuggest#%1"}.arg(m_word));
+    setText(m_word);
+    setType(ActionDescription::TypeGlobal);
 }
 
 SuggestAction::~SuggestAction()
@@ -37,12 +37,12 @@ SuggestAction::~SuggestAction()
 
 void SuggestAction::setSuggester(Suggester *suggester)
 {
-	m_suggester = suggester;
+    m_suggester = suggester;
 }
 
 void SuggestAction::actionTriggered(QAction *, bool)
 {
-	m_suggester->replaceWith(m_word);
+    m_suggester->replaceWith(m_word);
 }
 
 #include "moc_suggest-action.cpp"

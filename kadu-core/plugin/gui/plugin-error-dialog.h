@@ -31,28 +31,27 @@ class QCheckBox;
 
 class PluginErrorDialog : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent = nullptr);
-	virtual ~PluginErrorDialog();
+    PluginErrorDialog(QString pluginName, const QString &text, bool offerLoadInFutureChoice, QWidget *parent = nullptr);
+    virtual ~PluginErrorDialog();
 
 public slots:
-	void accept();
+    void accept();
 
 signals:
-	void accepted(const QString &pluginName, bool loadInFuture);
+    void accepted(const QString &pluginName, bool loadInFuture);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	QString m_pluginName;
-	QString m_text;
-	bool m_offerLoadInFutureChoice;
-	QCheckBox *LoadInFutureCheck;
+    QString m_pluginName;
+    QString m_text;
+    bool m_offerLoadInFutureChoice;
+    QCheckBox *LoadInFutureCheck;
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 };

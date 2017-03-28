@@ -26,20 +26,19 @@ class SmsScriptsManager;
 
 class SmsGatewayQuery : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent = nullptr);
-	virtual ~SmsGatewayQuery();
+    explicit SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent = nullptr);
+    virtual ~SmsGatewayQuery();
 
 public slots:
-	void process(const QString& number);
-	void queryFinished(const QString &provider);
+    void process(const QString &number);
+    void queryFinished(const QString &provider);
 
 signals:
-	void finished(const QString &provider);
+    void finished(const QString &provider);
 
 private:
-	QPointer<SmsScriptsManager> m_smsScriptsManager;
-
+    QPointer<SmsScriptsManager> m_smsScriptsManager;
 };

@@ -27,8 +27,10 @@ struct QMqttMessage;
 class QFacebookPong : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::Pong; }
-	virtual QMqttMessage encode() const;
-	static QFacebookPong decode(const QMqttMessage &message);
-
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::Pong;
+    }
+    virtual QMqttMessage encode() const;
+    static QFacebookPong decode(const QMqttMessage &message);
 };

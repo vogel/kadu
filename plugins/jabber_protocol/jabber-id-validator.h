@@ -23,12 +23,11 @@
 
 class JabberIdValidator : public QValidator
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberIdValidator(QObject *parent = nullptr);
-	virtual ~JabberIdValidator();
+    explicit JabberIdValidator(QObject *parent = nullptr);
+    virtual ~JabberIdValidator();
 
-	virtual QValidator::State validate(QString &input, int &pos) const;
-
+    virtual QValidator::State validate(QString &input, int &pos) const;
 };

@@ -39,8 +39,7 @@
 
 #include "emoticons-configuration-ui-handler.h"
 
-EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) :
-		QObject(parent)
+EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) : QObject(parent)
 {
 }
 
@@ -50,74 +49,74 @@ EmoticonsConfigurationUiHandler::~EmoticonsConfigurationUiHandler()
 
 void EmoticonsConfigurationUiHandler::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void EmoticonsConfigurationUiHandler::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void EmoticonsConfigurationUiHandler::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void EmoticonsConfigurationUiHandler::init()
 {
-	ThemeManager.reset(m_pluginInjectedFactory->makeInjected<EmoticonThemeManager>());
+    ThemeManager.reset(m_pluginInjectedFactory->makeInjected<EmoticonThemeManager>());
 }
 
 void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
 {
-	if (!ThemesList)
-		return;
+    if (!ThemesList)
+        return;
 
-	ThemeManager->loadThemes();
+    ThemeManager->loadThemes();
 
-	(void)QT_TRANSLATE_NOOP("@default", "default");
+    (void)QT_TRANSLATE_NOOP("@default", "default");
 
-	QStringList values;
-	QStringList captions;
-	int iconsNumber = 4;
+    QStringList values;
+    QStringList captions;
+    int iconsNumber = 4;
 
-	QList<QIcon> icons;
-	foreach (const Theme &theme, ThemeManager->themes())
-	{
-		values.append(theme.name());
-		captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
+    QList<QIcon> icons;
+    foreach (const Theme &theme, ThemeManager->themes())
+    {
+        values.append(theme.name());
+        captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
 
-		QPixmap combinedIcon(iconsNumber * 36, 36);
-		combinedIcon.fill(Qt::transparent);
+        QPixmap combinedIcon(iconsNumber * 36, 36);
+        combinedIcon.fill(Qt::transparent);
 
-		QPainter iconPainter(&combinedIcon);
+        QPainter iconPainter(&combinedIcon);
 
-		for (int i = 0; i < iconsNumber; i++)
-		{
-			GaduEmoticonThemeLoader loader;
-			EmoticonTheme emoticonsTheme = loader.loadEmoticonTheme(theme.path());
-			Emoticon result = emoticonsTheme.emoticons().at(i);
-			QIcon icon(QPixmap(result.staticFilePath()));
-			icon.paint(&iconPainter, 2 + 36 * i, 2, 32, 32);
-		}
+        for (int i = 0; i < iconsNumber; i++)
+        {
+            GaduEmoticonThemeLoader loader;
+            EmoticonTheme emoticonsTheme = loader.loadEmoticonTheme(theme.path());
+            Emoticon result = emoticonsTheme.emoticons().at(i);
+            QIcon icon(QPixmap(result.staticFilePath()));
+            icon.paint(&iconPainter, 2 + 36 * i, 2, 32, 32);
+        }
 
-		icons.append(QIcon(combinedIcon));
-	}
+        icons.append(QIcon(combinedIcon));
+    }
 
-	ThemesList->setItems(values, captions);
-	ThemesList->setCurrentItem(ThemeManager->currentTheme().name());
-	ThemesList->setIconSize(QSize(iconsNumber * 36, 36));
-	ThemesList->setIcons(icons);
+    ThemesList->setItems(values, captions);
+    ThemesList->setCurrentItem(ThemeManager->currentTheme().name());
+    ThemesList->setIconSize(QSize(iconsNumber * 36, 36));
+    ThemesList->setIcons(icons);
 }
 
 void EmoticonsConfigurationUiHandler::mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow)
 {
-	Widget = mainConfigurationWindow->widget();
+    Widget = mainConfigurationWindow->widget();
 
-	ThemesList = static_cast<ConfigListWidget *>(Widget->widgetById("emoticonsTheme"));
-	connect(Widget->widgetById("installEmoticonTheme"), SIGNAL(clicked()), this, SLOT(installEmoticonTheme()));
+    ThemesList = static_cast<ConfigListWidget *>(Widget->widgetById("emoticonsTheme"));
+    connect(Widget->widgetById("installEmoticonTheme"), SIGNAL(clicked()), this, SLOT(installEmoticonTheme()));
 
-	updateEmoticonThemes();
+    updateEmoticonThemes();
 }
 
 void EmoticonsConfigurationUiHandler::mainConfigurationWindowDestroyed()
@@ -130,23 +129,27 @@ void EmoticonsConfigurationUiHandler::mainConfigurationWindowApplied()
 
 void EmoticonsConfigurationUiHandler::installEmoticonTheme()
 {
-	QString fileName = QFileDialog::getOpenFileName(Widget.data(), tr("Open icon theme archive"), QDir::home().path(), tr("Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)"));
+    QString fileName = QFileDialog::getOpenFileName(
+        Widget.data(), tr("Open icon theme archive"), QDir::home().path(),
+        tr("Archive (*.tar.xz *.tar.gz *.tar.bz2 *.tar *.zip)"));
 
-	if (fileName.isEmpty())
-		return;
+    if (fileName.isEmpty())
+        return;
 
-	const QString &profilePath = m_pathsProvider->profilePath();
-	ArchiveExtractor extractor;
-	bool success = extractor.extract(fileName, profilePath + "emoticons");
+    const QString &profilePath = m_pathsProvider->profilePath();
+    ArchiveExtractor extractor;
+    bool success = extractor.extract(fileName, profilePath + "emoticons");
 
-	if (success)
-	{
-		updateEmoticonThemes();
-	}
-	else
-	{
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Installation failed"), tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
-	}
+    if (success)
+    {
+        updateEmoticonThemes();
+    }
+    else
+    {
+        MessageDialog::show(
+            m_iconsManager->iconByPath(KaduIcon("dialog-warning")), tr("Installation failed"),
+            tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
+    }
 }
 
 #include "moc_emoticons-configuration-ui-handler.cpp"

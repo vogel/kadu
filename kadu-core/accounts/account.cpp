@@ -42,26 +42,24 @@
 
 KaduSharedBaseClassImpl(Account)
 
-Account Account::null;
+    Account Account::null;
 
 Account::Account()
 {
 }
 
-Account::Account(AccountShared *data) :
-		SharedBase<AccountShared>(data)
+Account::Account(AccountShared *data) : SharedBase<AccountShared>(data)
 {
 }
 
 Account::Account(QObject *data)
 {
-	AccountShared *shared = qobject_cast<AccountShared *>(data);
-	if (shared)
-		setData(shared);
+    AccountShared *shared = qobject_cast<AccountShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
-Account::Account(const Account &copy) :
-		SharedBase<AccountShared>(copy)
+Account::Account(const Account &copy) : SharedBase<AccountShared>(copy)
 {
 }
 
@@ -69,28 +67,29 @@ Account::~Account()
 {
 }
 
-StatusContainer * Account::statusContainer() const
+StatusContainer *Account::statusContainer() const
 {
-	if (!data())
-		return 0;
-	else
-		return data()->statusContainer();
+    if (!data())
+        return 0;
+    else
+        return data()->statusContainer();
 }
 
 KaduSharedBase_PropertyDefCRW(Account, Identity, accountIdentity, AccountIdentity, Identity::null)
-KaduSharedBase_PropertyReadDef(Account, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
-KaduSharedBase_PropertyReadDef(Account, QString, protocolName, ProtocolName, QString())
-KaduSharedBase_PropertyReadDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
-KaduSharedBase_PropertyReadDef(Account, Contact, accountContact, AccountContact, Contact::null)
-KaduSharedBase_PropertyDefCRW(Account, QString, id, Id, QString())
-KaduSharedBase_PropertyDef(Account, bool, rememberPassword, RememberPassword, true)
-KaduSharedBase_PropertyDef(Account, bool, hasPassword, HasPassword, false)
-KaduSharedBase_PropertyDefCRW(Account, QString, password, Password, QString())
-KaduSharedBase_PropertyDef(Account, bool, useDefaultProxy, UseDefaultProxy, true)
-KaduSharedBase_PropertyDefCRW(Account, NetworkProxy, proxy, Proxy, NetworkProxy::null)
-KaduSharedBase_PropertyDef(Account, bool, privateStatus, PrivateStatus, true)
+    KaduSharedBase_PropertyReadDef(
+        Account, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
+        KaduSharedBase_PropertyReadDef(Account, QString, protocolName, ProtocolName, QString())
+            KaduSharedBase_PropertyReadDef(Account, Protocol *, protocolHandler, ProtocolHandler, 0)
+                KaduSharedBase_PropertyReadDef(Account, Contact, accountContact, AccountContact, Contact::null)
+                    KaduSharedBase_PropertyDefCRW(Account, QString, id, Id, QString()) KaduSharedBase_PropertyDef(
+                        Account, bool, rememberPassword, RememberPassword,
+                        true) KaduSharedBase_PropertyDef(Account, bool, hasPassword, HasPassword, false)
+                        KaduSharedBase_PropertyDefCRW(Account, QString, password, Password, QString())
+                            KaduSharedBase_PropertyDef(Account, bool, useDefaultProxy, UseDefaultProxy, true)
+                                KaduSharedBase_PropertyDefCRW(Account, NetworkProxy, proxy, Proxy, NetworkProxy::null)
+                                    KaduSharedBase_PropertyDef(Account, bool, privateStatus, PrivateStatus, true)
 
-Protocol * protocol(Account account)
+                                        Protocol *protocol(Account account)
 {
-	return protocol(account.data());
+    return protocol(account.data());
 }

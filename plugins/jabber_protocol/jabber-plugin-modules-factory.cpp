@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-JabberPluginModulesFactory::JabberPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+JabberPluginModulesFactory::JabberPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ JabberPluginModulesFactory::~JabberPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> JabberPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<JabberModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<JabberModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_jabber-plugin-modules-factory.cpp"

@@ -33,8 +33,7 @@
 #include "status/status-type-manager.h"
 #include "talkable/talkable-converter.h"
 
-ContactParserTags::ContactParserTags(QObject *parent) :
-		QObject{parent}
+ContactParserTags::ContactParserTags(QObject *parent) : QObject{parent}
 {
 }
 
@@ -44,58 +43,60 @@ ContactParserTags::~ContactParserTags()
 
 void ContactParserTags::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void ContactParserTags::setParser(Parser *parser)
 {
-	m_parser = parser;
+    m_parser = parser;
 }
 
 void ContactParserTags::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void ContactParserTags::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void ContactParserTags::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 void ContactParserTags::init()
 {
-	m_parser->registerTag("avatarPath", [this](Talkable talkable) {
-		auto avatar = m_talkableConverter->toAvatar(talkable);
-		if (avatar.pixmap().isNull())
-			return QString{};
-		else
-			return PathsProvider::webKitPath(avatar.filePath());
-	});
-	m_parser->registerTag("statusIconPath", [this](Talkable talkable) {
-		if (m_talkableConverter->toBuddy(talkable).isBlocked())
-			return PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon{"kadu_icons/blocked", "16x16"}));
+    m_parser->registerTag("avatarPath", [this](Talkable talkable) {
+        auto avatar = m_talkableConverter->toAvatar(talkable);
+        if (avatar.pixmap().isNull())
+            return QString{};
+        else
+            return PathsProvider::webKitPath(avatar.filePath());
+    });
+    m_parser->registerTag("statusIconPath", [this](Talkable talkable) {
+        if (m_talkableConverter->toBuddy(talkable).isBlocked())
+            return PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon{"kadu_icons/blocked", "16x16"}));
 
-		if (m_talkableConverter->toContact(talkable).isBlocking())
-			return PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon{"kadu_icons/blocking", "16x16"}));
+        if (m_talkableConverter->toContact(talkable).isBlocking())
+            return PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon{"kadu_icons/blocking", "16x16"}));
 
-		auto status = m_talkableConverter->toStatus(talkable);
-		auto account = m_talkableConverter->toAccount(talkable);
-		if (auto protocol = account.protocolHandler())
-			return PathsProvider::webKitPath(m_iconsManager->iconPath(m_statusTypeManager->statusIcon(protocol->statusPixmapPath(), status)));
-		else
-			return PathsProvider::webKitPath(m_iconsManager->iconPath(m_statusContainerManager->statusIcon(Status{status.type()})));
-	});
+        auto status = m_talkableConverter->toStatus(talkable);
+        auto account = m_talkableConverter->toAccount(talkable);
+        if (auto protocol = account.protocolHandler())
+            return PathsProvider::webKitPath(
+                m_iconsManager->iconPath(m_statusTypeManager->statusIcon(protocol->statusPixmapPath(), status)));
+        else
+            return PathsProvider::webKitPath(
+                m_iconsManager->iconPath(m_statusContainerManager->statusIcon(Status{status.type()})));
+    });
 }
 
 void ContactParserTags::done()
 {
-	m_parser->unregisterTag("avatarPath");
-	m_parser->unregisterTag("statusIconPath");
+    m_parser->unregisterTag("avatarPath");
+    m_parser->unregisterTag("statusIconPath");
 }
 
 #include "moc_contact-parser-tags.cpp"

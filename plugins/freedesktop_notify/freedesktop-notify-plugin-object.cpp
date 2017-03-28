@@ -26,8 +26,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-FreedesktopNotifyPluginObject::FreedesktopNotifyPluginObject(QObject *parent) :
-		QObject{parent}
+FreedesktopNotifyPluginObject::FreedesktopNotifyPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -37,34 +36,37 @@ FreedesktopNotifyPluginObject::~FreedesktopNotifyPluginObject()
 
 void FreedesktopNotifyPluginObject::setFreedesktopNotifier(FreedesktopNotifier *freedesktopNotifier)
 {
-	m_freedesktopNotifier = freedesktopNotifier;
+    m_freedesktopNotifier = freedesktopNotifier;
 }
 
-void FreedesktopNotifyPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void FreedesktopNotifyPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void FreedesktopNotifyPluginObject::setNotifierRepository(NotifierRepository *notifierRepository)
 {
-	m_notifierRepository = notifierRepository;
+    m_notifierRepository = notifierRepository;
 }
 
 void FreedesktopNotifyPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void FreedesktopNotifyPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
-	m_notifierRepository->registerNotifier(m_freedesktopNotifier);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
+    m_notifierRepository->registerNotifier(m_freedesktopNotifier);
 }
 
 void FreedesktopNotifyPluginObject::done()
 {
-	m_notifierRepository->unregisterNotifier(m_freedesktopNotifier);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
+    m_notifierRepository->unregisterNotifier(m_freedesktopNotifier);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
 }
 
 #include "moc_freedesktop-notify-plugin-object.cpp"

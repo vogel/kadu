@@ -23,34 +23,33 @@
 
 #include <QtCore/QDebug>
 
-ConsoleJumpList::ConsoleJumpList(QObject *parent) :
-		JumpList{parent}
+ConsoleJumpList::ConsoleJumpList(QObject *parent) : JumpList{parent}
 {
 }
 
 ConsoleJumpList::~ConsoleJumpList()
 {
-	clear();
+    clear();
 }
 
 void ConsoleJumpList::clear()
 {
-	qDebug() << "ConsoleJumpList::clear()";
+    qDebug() << "ConsoleJumpList::clear()";
 }
 
 void ConsoleJumpList::addChat(Chat chat)
 {
-	qDebug() << "ConsoleJumpList::addChat(" << chat.uuid().toString() << ")";
+    qDebug() << "ConsoleJumpList::addChat(" << chat.uuid().toString() << ")";
 }
 
 void ConsoleJumpList::addSeparator()
 {
-	qDebug() << "ConsoleJumpList::addSeparator()";
+    qDebug() << "ConsoleJumpList::addSeparator()";
 }
 
 void ConsoleJumpList::setVisible(bool visible)
 {
-	qDebug() << "ConsoleJumpList::setVisible(" << visible << ")";
+    qDebug() << "ConsoleJumpList::setVisible(" << visible << ")";
 }
 
 #include "console-jump-list.moc"

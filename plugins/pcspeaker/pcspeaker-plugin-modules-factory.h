@@ -23,14 +23,13 @@
 
 class PCSpeakerPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit PCSpeakerPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~PCSpeakerPluginModulesFactory();
+    explicit PCSpeakerPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~PCSpeakerPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

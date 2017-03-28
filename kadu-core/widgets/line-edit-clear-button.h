@@ -29,33 +29,38 @@ class QTimeLine;
 
 class LineEditClearButton : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QTimeLine *Timeline;
-	QPixmap ButtonPixmap;
-	QIcon ButtonIcon;
+    QTimeLine *Timeline;
+    QPixmap ButtonPixmap;
+    QIcon ButtonIcon;
 
-	void setUpTimeLine();
+    void setUpTimeLine();
 
 protected:
-	void paintEvent(QPaintEvent *event);
-	virtual bool event(QEvent *event);
+    void paintEvent(QPaintEvent *event);
+    virtual bool event(QEvent *event);
 
 protected slots:
-	void animationFinished();
+    void animationFinished();
 
 public:
-	explicit LineEditClearButton(QWidget *parent);
-	virtual ~LineEditClearButton();
+    explicit LineEditClearButton(QWidget *parent);
+    virtual ~LineEditClearButton();
 
-	void setPixmap(const QPixmap &buttonPixmap);
-	const QPixmap & pixmap() const { return ButtonPixmap; }
+    void setPixmap(const QPixmap &buttonPixmap);
+    const QPixmap &pixmap() const
+    {
+        return ButtonPixmap;
+    }
 
-	virtual QSize sizeHint() const { return ButtonPixmap.size(); }
+    virtual QSize sizeHint() const
+    {
+        return ButtonPixmap.size();
+    }
 
-	void setAnimationsEnabled(bool animationsEnabled);
-	void animateVisible(bool visible);
-
+    void setAnimationsEnabled(bool animationsEnabled);
+    void animateVisible(bool visible);
 };
 
-#endif // LINE_EDIT_CLEAR_BUTTON_H
+#endif   // LINE_EDIT_CLEAR_BUTTON_H

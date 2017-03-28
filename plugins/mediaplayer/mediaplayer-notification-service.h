@@ -35,26 +35,25 @@ struct Notification;
 
 class MediaplayerNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit MediaplayerNotificationService(QObject *parent = nullptr);
-	virtual ~MediaplayerNotificationService();
+    Q_INVOKABLE explicit MediaplayerNotificationService(QObject *parent = nullptr);
+    virtual ~MediaplayerNotificationService();
 
 public slots:
-	void notifyPlayingTitle(const QString &title);
+    void notifyPlayingTitle(const QString &title);
 
 private:
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_playingTitleEvent;
+    NotificationEvent m_playingTitleEvent;
 
 private slots:
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

@@ -23,16 +23,15 @@
 
 class ConsoleJumpList : public JumpList
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ConsoleJumpList(QObject *parent = nullptr);
-	virtual ~ConsoleJumpList();
+    Q_INVOKABLE explicit ConsoleJumpList(QObject *parent = nullptr);
+    virtual ~ConsoleJumpList();
 
 private:
-	virtual void clear();
-	virtual void addChat(Chat chat);
-	virtual void addSeparator();
+    virtual void clear();
+    virtual void addChat(Chat chat);
+    virtual void addSeparator();
     virtual void setVisible(bool visible);
-
 };

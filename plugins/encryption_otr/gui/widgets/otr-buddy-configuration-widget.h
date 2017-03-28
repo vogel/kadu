@@ -33,35 +33,34 @@ class OtrPolicyService;
 
 class OtrBuddyConfigurationWidget : public BuddyConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrPolicyService> PolicyService;
+    QPointer<OtrPolicyService> PolicyService;
 
-	QCheckBox *UseAccountPolicyCheckBox;
-	QCheckBox *EnableCheckBox;
-	QCheckBox *AutomaticallyInitiateCheckBox;
-	QCheckBox *RequireCheckBox;
+    QCheckBox *UseAccountPolicyCheckBox;
+    QCheckBox *EnableCheckBox;
+    QCheckBox *AutomaticallyInitiateCheckBox;
+    QCheckBox *RequireCheckBox;
 
-	SimpleConfigurationValueStateNotifier *StateNotifier;
+    SimpleConfigurationValueStateNotifier *StateNotifier;
 
-	void createGui();
-	OtrPolicy policy();
-	void loadValues();
+    void createGui();
+    OtrPolicy policy();
+    void loadValues();
 
 private slots:
-	void updateState();
+    void updateState();
 
 public:
-	explicit OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~OtrBuddyConfigurationWidget();
+    explicit OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~OtrBuddyConfigurationWidget();
 
-	void setPolicyService(OtrPolicyService *policyService);
+    void setPolicyService(OtrPolicyService *policyService);
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const;
 
-	virtual void apply();
-	virtual void cancel();
-
+    virtual void apply();
+    virtual void cancel();
 };
 
-#endif // OTR_BUDDY_CONFIGURATION_WIDGET_H
+#endif   // OTR_BUDDY_CONFIGURATION_WIDGET_H

@@ -21,8 +21,7 @@
 
 #include "core/injector-provider.h"
 
-InjectedFactory::InjectedFactory(QObject *parent) :
-		QObject{parent}
+InjectedFactory::InjectedFactory(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,10 +31,10 @@ InjectedFactory::~InjectedFactory()
 
 void InjectedFactory::setInjectorProvider(InjectorProvider *injectorProvider)
 {
-	m_injectorProvider = injectorProvider;
+    m_injectorProvider = injectorProvider;
 }
 
 void InjectedFactory::injectInto(QObject *object)
 {
-	m_injectorProvider->injector().inject_into(object);
+    m_injectorProvider->injector().inject_into(object);
 }

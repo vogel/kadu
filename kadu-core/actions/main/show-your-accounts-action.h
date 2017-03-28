@@ -29,20 +29,19 @@ class YourAccountsWindowService;
 
 class ShowYourAccountsAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ShowYourAccountsAction(QObject *parent = nullptr);
-	virtual ~ShowYourAccountsAction();
+    Q_INVOKABLE explicit ShowYourAccountsAction(QObject *parent = nullptr);
+    virtual ~ShowYourAccountsAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 
 private:
-	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
+    QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
 private slots:
-	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
-
+    INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 };

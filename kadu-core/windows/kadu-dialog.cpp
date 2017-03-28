@@ -37,18 +37,18 @@
 
 #include "kadu-dialog.h"
 
-KaduDialog::KaduDialog(DialogWidget *dialogWidget, QWidget *parent) :
-		QDialog(parent), DesktopAwareObject(this), CentralWidget(dialogWidget)
+KaduDialog::KaduDialog(DialogWidget *dialogWidget, QWidget *parent)
+        : QDialog(parent), DesktopAwareObject(this), CentralWidget(dialogWidget)
 {
-	setWindowRole("kadu-dialog");
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(CentralWidget->windowTitle());
+    setWindowRole("kadu-dialog");
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(CentralWidget->windowTitle());
 
-	createGui();
-	
-	connect(this, SIGNAL(accepted()), CentralWidget, SLOT(dialogAccepted()));
-	connect(this, SIGNAL(rejected()), CentralWidget, SLOT(dialogRejected()));
-	connect(CentralWidget, SIGNAL(valid(bool)), this, SLOT(widgetValidated(bool)));
+    createGui();
+
+    connect(this, SIGNAL(accepted()), CentralWidget, SLOT(dialogAccepted()));
+    connect(this, SIGNAL(rejected()), CentralWidget, SLOT(dialogRejected()));
+    connect(CentralWidget, SIGNAL(valid(bool)), this, SLOT(widgetValidated(bool)));
 }
 
 KaduDialog::~KaduDialog()
@@ -57,62 +57,62 @@ KaduDialog::~KaduDialog()
 
 void KaduDialog::createGui()
 {
-	horizontalLayout = new QHBoxLayout(this);
+    horizontalLayout = new QHBoxLayout(this);
 
-	iconLabel = new QLabel(this);
-	iconLabel->setPixmap(CentralWidget->pixmap());
-	horizontalLayout->addWidget(iconLabel);
+    iconLabel = new QLabel(this);
+    iconLabel->setPixmap(CentralWidget->pixmap());
+    horizontalLayout->addWidget(iconLabel);
 
-	QSpacerItem *horizontalSpacer = new QSpacerItem(20, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
-	horizontalLayout->addItem(horizontalSpacer);
+    QSpacerItem *horizontalSpacer = new QSpacerItem(20, 20, QSizePolicy::Fixed, QSizePolicy::Minimum);
+    horizontalLayout->addItem(horizontalSpacer);
 
-	verticalLayout = new QVBoxLayout();
+    verticalLayout = new QVBoxLayout();
 
-	QWidget *widget = new QWidget(this);
-	verticalLayout->addWidget(widget);
+    QWidget *widget = new QWidget(this);
+    verticalLayout->addWidget(widget);
 
-	Title = new TitleWidget(this);
-	Title->setText(CentralWidget->title());
+    Title = new TitleWidget(this);
+    Title->setText(CentralWidget->title());
 
-	verticalLayout->addWidget(Title);
+    verticalLayout->addWidget(Title);
 
-	verticalLayout->addWidget(CentralWidget);
+    verticalLayout->addWidget(CentralWidget);
 
-	horizontalLayout->addLayout(verticalLayout);
+    horizontalLayout->addLayout(verticalLayout);
 
-	createButtonBox();
+    createButtonBox();
 }
 
 void KaduDialog::createButtonBox()
 {
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+    QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
-	OkButton->setDefault(true);
-	OkButton->setEnabled(false);
-	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
-	CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-	buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
+    OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Ok"), this);
+    OkButton->setDefault(true);
+    OkButton->setEnabled(false);
+    buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
+    CancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+    buttons->addButton(CancelButton, QDialogButtonBox::RejectRole);
 
-	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
-	connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(CancelButton, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
-	verticalLayout->addWidget(buttons);
+    verticalLayout->addWidget(buttons);
 }
 
 void KaduDialog::setAcceptButtonText(const QString &text)
 {
-	OkButton->setText(text);
+    OkButton->setText(text);
 }
 
 void KaduDialog::setCancelButtonText(const QString &text)
 {
-	CancelButton->setText(text);
+    CancelButton->setText(text);
 }
 
 void KaduDialog::widgetValidated(bool valid)
 {
-	OkButton->setEnabled(valid);
+    OkButton->setEnabled(valid);
 }
 
 #include "moc_kadu-dialog.cpp"

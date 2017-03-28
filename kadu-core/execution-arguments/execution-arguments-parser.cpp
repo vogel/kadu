@@ -26,41 +26,41 @@
 
 ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments) const
 {
-	auto queryVersion = false;
-	auto queryUsage = false;
-	auto debugMask = QString{};
-	auto profileDirectory = QString{};
-	auto openIds = QStringList{};
-	auto openUuid = QString{};
+    auto queryVersion = false;
+    auto queryUsage = false;
+    auto debugMask = QString{};
+    auto profileDirectory = QString{};
+    auto openIds = QStringList{};
+    auto openUuid = QString{};
 
-	for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
-	{
-		if (*it == QStringLiteral("--version"))
-			queryVersion = true;
-		else if (*it == QStringLiteral("--help"))
-			queryUsage = true;
-		else if (*it == QStringLiteral("--debug") && (it + 1) != arguments.constEnd())
-		{
-			bool ok;
-			(++it)->toInt(&ok);
-			if (ok)
-				debugMask = *it;
-		}
-		else if (*it == QStringLiteral("--config-dir") && (it + 1) != arguments.constEnd())
-			profileDirectory = *(++it);
-		else if (QRegExp("^[a-zA-Z]+:(/){0,3}.+").exactMatch(*it))
-			openIds.append(*it);
-		else if (*it == QStringLiteral("--open-uuid") && (it + 1) != arguments.constEnd())
-			openUuid = *(++it);
-		else
-			fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
-	}
+    for (auto it = arguments.constBegin(); it != arguments.constEnd(); ++it)
+    {
+        if (*it == QStringLiteral("--version"))
+            queryVersion = true;
+        else if (*it == QStringLiteral("--help"))
+            queryUsage = true;
+        else if (*it == QStringLiteral("--debug") && (it + 1) != arguments.constEnd())
+        {
+            bool ok;
+            (++it)->toInt(&ok);
+            if (ok)
+                debugMask = *it;
+        }
+        else if (*it == QStringLiteral("--config-dir") && (it + 1) != arguments.constEnd())
+            profileDirectory = *(++it);
+        else if (QRegExp("^[a-zA-Z]+:(/){0,3}.+").exactMatch(*it))
+            openIds.append(*it);
+        else if (*it == QStringLiteral("--open-uuid") && (it + 1) != arguments.constEnd())
+            openUuid = *(++it);
+        else
+            fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
+    }
 
-	return ExecutionArgumentsBuilder{}
-		.setQueryVersion(queryVersion)
-		.setQueryUsage(queryUsage)
-		.setProfileDirectory(std::move(profileDirectory))
-		.setOpenIds(std::move(openIds))
-		.setOpenUuid(std::move(openUuid))
-		.build();
+    return ExecutionArgumentsBuilder{}
+        .setQueryVersion(queryVersion)
+        .setQueryUsage(queryUsage)
+        .setProfileDirectory(std::move(profileDirectory))
+        .setOpenIds(std::move(openIds))
+        .setOpenUuid(std::move(openUuid))
+        .build();
 }

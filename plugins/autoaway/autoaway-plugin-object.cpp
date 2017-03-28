@@ -28,8 +28,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-AutoawayPluginObject::AutoawayPluginObject(QObject *parent) :
-		QObject{parent}
+AutoawayPluginObject::AutoawayPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -39,51 +38,56 @@ AutoawayPluginObject::~AutoawayPluginObject()
 
 void AutoawayPluginObject::setAutoaway(Autoaway *autoaway)
 {
-	m_autoaway = autoaway;
+    m_autoaway = autoaway;
 }
 
-void AutoawayPluginObject::setAutoawayConfigurationUiHandler(AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler)
+void AutoawayPluginObject::setAutoawayConfigurationUiHandler(
+    AutoawayConfigurationUiHandler *autoawayConfigurationUiHandler)
 {
-	m_autoawayConfigurationUiHandler = autoawayConfigurationUiHandler;
+    m_autoawayConfigurationUiHandler = autoawayConfigurationUiHandler;
 }
 
 void AutoawayPluginObject::setAutoawayStatusChanger(AutoawayStatusChanger *autoawayStatusChanger)
 {
-	m_autoawayStatusChanger = autoawayStatusChanger;
+    m_autoawayStatusChanger = autoawayStatusChanger;
 }
 
-void AutoawayPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void AutoawayPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void AutoawayPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void AutoawayPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void AutoawayPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void AutoawayPluginObject::setStatusChangerManager(StatusChangerManager *statusChangerManager)
 {
-	m_statusChangerManager = statusChangerManager;
+    m_statusChangerManager = statusChangerManager;
 }
 
 void AutoawayPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoaway.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoawayConfigurationUiHandler);
-	m_statusChangerManager->registerStatusChanger(m_autoawayStatusChanger);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoaway.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_autoawayConfigurationUiHandler);
+    m_statusChangerManager->registerStatusChanger(m_autoawayStatusChanger);
 }
 
 void AutoawayPluginObject::done()
 {
-	m_statusChangerManager->unregisterStatusChanger(m_autoawayStatusChanger);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoawayConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoaway.ui"));
+    m_statusChangerManager->unregisterStatusChanger(m_autoawayStatusChanger);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_autoawayConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoaway.ui"));
 }
 
 #include "moc_autoaway-plugin-object.cpp"

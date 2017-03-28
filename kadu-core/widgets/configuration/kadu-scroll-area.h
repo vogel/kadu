@@ -27,27 +27,26 @@
 
 class KaduScrollArea : public QScrollArea
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	KaduScrollArea(QWidget *parent)
-		: QScrollArea(parent)
-	{
-	}
+    KaduScrollArea(QWidget *parent) : QScrollArea(parent)
+    {
+    }
 
-	QSize sizeHint() const
-	{
-	    int f = 2 * frameWidth();
-		QSize sz(f, f);
-		sz += widget()->sizeHint();
+    QSize sizeHint() const
+    {
+        int f = 2 * frameWidth();
+        QSize sz(f, f);
+        sz += widget()->sizeHint();
 
-		if (verticalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
-			sz.setWidth(sz.width() + verticalScrollBar()->sizeHint().width());
-		if (horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
-			sz.setHeight(sz.height() + horizontalScrollBar()->sizeHint().height());
+        if (verticalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
+            sz.setWidth(sz.width() + verticalScrollBar()->sizeHint().width());
+        if (horizontalScrollBarPolicy() == Qt::ScrollBarAlwaysOn)
+            sz.setHeight(sz.height() + horizontalScrollBar()->sizeHint().height());
 
-		return sz;
-	}
+        return sz;
+    }
 };
 
 #endif

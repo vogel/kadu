@@ -33,122 +33,122 @@
 
 #include "buddy-contact-model.h"
 
-BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent) :
-		QAbstractListModel(parent), SourceBuddy(buddy), IncludeIdentityInDisplay(false)
+BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent)
+        : QAbstractListModel(parent), SourceBuddy(buddy), IncludeIdentityInDisplay(false)
 {
-	connect(SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)),
-			this, SLOT(contactAboutToBeAdded(Contact)), Qt::DirectConnection);
-	connect(SourceBuddy, SIGNAL(contactAdded(Contact)),
-			this, SLOT(contactAdded(Contact)), Qt::DirectConnection);
-	connect(SourceBuddy, SIGNAL(contactAboutToBeRemoved(Contact)),
-			this, SLOT(contactAboutToBeRemoved(Contact)), Qt::DirectConnection);
-	connect(SourceBuddy, SIGNAL(contactRemoved(Contact)),
-			this, SLOT(contactRemoved(Contact)), Qt::DirectConnection);
+    connect(
+        SourceBuddy, SIGNAL(contactAboutToBeAdded(Contact)), this, SLOT(contactAboutToBeAdded(Contact)),
+        Qt::DirectConnection);
+    connect(SourceBuddy, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)), Qt::DirectConnection);
+    connect(
+        SourceBuddy, SIGNAL(contactAboutToBeRemoved(Contact)), this, SLOT(contactAboutToBeRemoved(Contact)),
+        Qt::DirectConnection);
+    connect(SourceBuddy, SIGNAL(contactRemoved(Contact)), this, SLOT(contactRemoved(Contact)), Qt::DirectConnection);
 }
 
 BuddyContactModel::~BuddyContactModel()
 {
-	disconnect(SourceBuddy, 0, this, 0);
+    disconnect(SourceBuddy, 0, this, 0);
 }
 
 void BuddyContactModel::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 int BuddyContactModel::columnCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : 1;
+    return parent.isValid() ? 0 : 1;
 }
 
 int BuddyContactModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : SourceBuddy.contacts().count();
+    return parent.isValid() ? 0 : SourceBuddy.contacts().count();
 }
 
 QVariant BuddyContactModel::data(const QModelIndex &index, int role) const
 {
-	Contact data = contact(index);
-	if (data.isNull())
-		return QVariant();
+    Contact data = contact(index);
+    if (data.isNull())
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			if (IncludeIdentityInDisplay)
-				return QString("%1 (%2)").arg(data.id()).arg(data.contactAccount().accountIdentity().name());
-			else
-				return data.id();
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        if (IncludeIdentityInDisplay)
+            return QString("%1 (%2)").arg(data.id()).arg(data.contactAccount().accountIdentity().name());
+        else
+            return data.id();
 
-		case Qt::DecorationRole:
-			return data.contactAccount().protocolHandler()
-					? m_iconsManager->iconByPath(data.contactAccount().protocolHandler()->icon())
-					: QIcon();
+    case Qt::DecorationRole:
+        return data.contactAccount().protocolHandler()
+                   ? m_iconsManager->iconByPath(data.contactAccount().protocolHandler()->icon())
+                   : QIcon();
 
-		case ContactRole:
-			return QVariant::fromValue<Contact>(data);
+    case ContactRole:
+        return QVariant::fromValue<Contact>(data);
 
-		default:
-			return QVariant();
-	}
+    default:
+        return QVariant();
+    }
 }
 
 Contact BuddyContactModel::contact(const QModelIndex &index) const
 {
-	if (!index.isValid())
-		return Contact::null;
+    if (!index.isValid())
+        return Contact::null;
 
-	if (index.row() < 0 || index.row() >= rowCount())
-		return Contact::null;
+    if (index.row() < 0 || index.row() >= rowCount())
+        return Contact::null;
 
-	return SourceBuddy.contacts().at(index.row());
+    return SourceBuddy.contacts().at(index.row());
 }
 
 int BuddyContactModel::contactIndex(Contact data)
 {
-	return SourceBuddy.contacts().indexOf(data);
+    return SourceBuddy.contacts().indexOf(data);
 }
 
 QModelIndex BuddyContactModel::contactModelIndex(Contact data)
 {
-	return createIndex(contactIndex(data), 0);
+    return createIndex(contactIndex(data), 0);
 }
 
 void BuddyContactModel::contactAboutToBeAdded(Contact data)
 {
-	Q_UNUSED(data)
+    Q_UNUSED(data)
 
-	int count = rowCount();
-	beginInsertRows(QModelIndex(), count, count);
+    int count = rowCount();
+    beginInsertRows(QModelIndex(), count, count);
 }
 
 void BuddyContactModel::contactAdded(Contact data)
 {
-	Q_UNUSED(data)
+    Q_UNUSED(data)
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void BuddyContactModel::contactAboutToBeRemoved(Contact data)
 {
-	int index = contactIndex(data);
-	beginRemoveRows(QModelIndex(), index, index);
+    int index = contactIndex(data);
+    beginRemoveRows(QModelIndex(), index, index);
 }
 
 void BuddyContactModel::contactRemoved(Contact data)
 {
-	Q_UNUSED(data)
+    Q_UNUSED(data)
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
 void BuddyContactModel::setIncludeIdentityInDisplay(bool includeIdentityInDisplay)
 {
-	if (IncludeIdentityInDisplay == includeIdentityInDisplay)
-		return;
+    if (IncludeIdentityInDisplay == includeIdentityInDisplay)
+        return;
 
-	IncludeIdentityInDisplay = includeIdentityInDisplay;
-	emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
+    IncludeIdentityInDisplay = includeIdentityInDisplay;
+    emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
 
 #include "moc_buddy-contact-model.cpp"

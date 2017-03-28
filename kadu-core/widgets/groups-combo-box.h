@@ -32,24 +32,23 @@ class GroupManager;
 
 class GroupsComboBox : public ActionsComboBox
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GroupsComboBox(QWidget *parent = nullptr);
-	virtual ~GroupsComboBox();
+    explicit GroupsComboBox(QWidget *parent = nullptr);
+    virtual ~GroupsComboBox();
 
-	void setCurrentGroup(Group group);
-	Group currentGroup();
+    void setCurrentGroup(Group group);
+    Group currentGroup();
 
 private:
-	QPointer<GroupManager> m_groupManager;
+    QPointer<GroupManager> m_groupManager;
 
-	QAction *m_createNewGroupAction;
+    QAction *m_createNewGroupAction;
 
 private slots:
-	INJEQT_SET void setGroupManager(GroupManager *groupManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setGroupManager(GroupManager *groupManager);
+    INJEQT_INIT void init();
 
-	void createNewGroup();
-
+    void createNewGroup();
 };

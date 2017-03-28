@@ -37,64 +37,63 @@ enum class ChatWidgetTitleComposingStatePosition;
 
 class KADUAPI ChatWidgetTitle : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatWidgetTitle(ChatWidget *parent = nullptr);
-	virtual ~ChatWidgetTitle();
+    explicit ChatWidgetTitle(ChatWidget *parent = nullptr);
+    virtual ~ChatWidgetTitle();
 
-	ChatWidget * chatWidget() const;
-	QString title() const;
-	QString shortTitle() const;
-	QString fullTitle() const;
-	QString blinkingFullTitle() const;
-	QString tooltip() const;
+    ChatWidget *chatWidget() const;
+    QString title() const;
+    QString shortTitle() const;
+    QString fullTitle() const;
+    QString blinkingFullTitle() const;
+    QString tooltip() const;
 
-	QIcon icon() const;
-	QIcon blinkingIcon() const;
+    QIcon icon() const;
+    QIcon blinkingIcon() const;
 
-	void setComposingStatePosition(ChatWidgetTitleComposingStatePosition composingStatePosition);
-	void setShowUnreadMessagesCount(bool showUnreadMessagesCount);
-	void setBlinkTitleWhenUnreadMessages(bool blinkTitleWhenUnreadMessages);
-	void setBlinkIconWhenUnreadMessages(bool blinkIconWhenUnreadMessages);
+    void setComposingStatePosition(ChatWidgetTitleComposingStatePosition composingStatePosition);
+    void setShowUnreadMessagesCount(bool showUnreadMessagesCount);
+    void setBlinkTitleWhenUnreadMessages(bool blinkTitleWhenUnreadMessages);
+    void setBlinkIconWhenUnreadMessages(bool blinkIconWhenUnreadMessages);
 
 signals:
-	void titleChanged(ChatWidget *chatWidget);
+    void titleChanged(ChatWidget *chatWidget);
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<ContactDataExtractor> m_contactDataExtractor;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<ContactDataExtractor> m_contactDataExtractor;
+    QPointer<IconsManager> m_iconsManager;
 
-	QString m_title;
-	QString m_fullTitle;
-	QString m_tooltip;
-	QIcon m_icon;
+    QString m_title;
+    QString m_fullTitle;
+    QString m_tooltip;
+    QIcon m_icon;
 
-	ChatWidgetTitleComposingStatePosition m_composingStatePosition;
-	bool m_showUnreadMessagesCount;
-	bool m_blinkTitleWhenUnreadMessages;
-	bool m_blinkIconWhenUnreadMessages;
+    ChatWidgetTitleComposingStatePosition m_composingStatePosition;
+    bool m_showUnreadMessagesCount;
+    bool m_blinkTitleWhenUnreadMessages;
+    bool m_blinkIconWhenUnreadMessages;
 
-	bool m_blink;
-	QPointer<QTimer> m_blinkTimer;
+    bool m_blink;
+    QPointer<QTimer> m_blinkTimer;
 
-	QString chatTitle(const Chat &chat) const;
-	QString withDescription(const Chat &chat, const QString &title) const;
-	QString withCompositionInfo(const QString &title) const;
-	QString withUnreadMessagesCount(QString title) const;
-	QString cleanUp(QString title) const;
+    QString chatTitle(const Chat &chat) const;
+    QString withDescription(const Chat &chat, const QString &title) const;
+    QString withCompositionInfo(const QString &title) const;
+    QString withUnreadMessagesCount(QString title) const;
+    QString cleanUp(QString title) const;
 
-	QIcon chatIcon(const Chat &chat) const;
+    QIcon chatIcon(const Chat &chat) const;
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void startBlinking();
-	void stopBlinking();
-	void blink();
-	void update();
-
+    void startBlinking();
+    void stopBlinking();
+    void blink();
+    void update();
 };

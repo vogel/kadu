@@ -23,8 +23,8 @@
 
 #include <QtCore/QObject>
 
-#include "widgets/custom-input-menu-item.h"
 #include "exports.h"
+#include "widgets/custom-input-menu-item.h"
 
 class QMenu;
 class QWidget;
@@ -34,21 +34,21 @@ class ActionDescription;
 
 class KADUAPI CustomInputMenuManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit CustomInputMenuManager(QObject *parent = nullptr);
-	virtual ~CustomInputMenuManager();
+    Q_INVOKABLE explicit CustomInputMenuManager(QObject *parent = nullptr);
+    virtual ~CustomInputMenuManager();
 
-	void addActionDescription(ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority);
-	void removeActionDescription(ActionDescription *actionDescription);
+    void addActionDescription(
+        ActionDescription *actionDescription, CustomInputMenuItem::CustomInputMenuCategory category, int priority);
+    void removeActionDescription(ActionDescription *actionDescription);
 
-	QMenu * menu(QWidget *parent);
+    QMenu *menu(QWidget *parent);
 
 private:
-	QList<CustomInputMenuItem> InputContextMenu;
-	bool InputContextMenuSorted;
+    QList<CustomInputMenuItem> InputContextMenu;
+    bool InputContextMenuSorted;
 
-	void sortInputContextMenu();
-
+    void sortInputContextMenu();
 };

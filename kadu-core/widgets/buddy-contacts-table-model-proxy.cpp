@@ -19,17 +19,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "widgets/buddy-contacts-table-model.h"
 #include "model/roles.h"
 #include "widgets/buddy-contacts-table-item.h"
-#include "widgets/buddy-contacts-table-model.h"
 
 #include "buddy-contacts-table-model-proxy.h"
 
-BuddyContactsTableModelProxy::BuddyContactsTableModelProxy(QObject *parent) :
-		QSortFilterProxyModel(parent)
+BuddyContactsTableModelProxy::BuddyContactsTableModelProxy(QObject *parent) : QSortFilterProxyModel(parent)
 {
-	setDynamicSortFilter(true);
-	sort(0);
+    setDynamicSortFilter(true);
+    sort(0);
 }
 
 BuddyContactsTableModelProxy::~BuddyContactsTableModelProxy()
@@ -38,31 +37,31 @@ BuddyContactsTableModelProxy::~BuddyContactsTableModelProxy()
 
 bool BuddyContactsTableModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	Q_UNUSED(sourceParent)
+    Q_UNUSED(sourceParent)
 
-	BuddyContactsTableModel *model = qobject_cast<BuddyContactsTableModel *>(sourceModel());
-	if (!model)
-		return false;
+    BuddyContactsTableModel *model = qobject_cast<BuddyContactsTableModel *>(sourceModel());
+    if (!model)
+        return false;
 
-	BuddyContactsTableItem *item = model->item(sourceRow);
-	return item->action() == BuddyContactsTableItem::ItemAdd || item->action() == BuddyContactsTableItem::ItemEdit;
+    BuddyContactsTableItem *item = model->item(sourceRow);
+    return item->action() == BuddyContactsTableItem::ItemAdd || item->action() == BuddyContactsTableItem::ItemEdit;
 }
 
 bool BuddyContactsTableModelProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	BuddyContactsTableItem *leftItem = left.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
-	BuddyContactsTableItem *rightItem = right.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    BuddyContactsTableItem *leftItem = left.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
+    BuddyContactsTableItem *rightItem = right.data(BuddyContactsTableItemRole).value<BuddyContactsTableItem *>();
 
-	if (!leftItem && !rightItem)
-		return false;
+    if (!leftItem && !rightItem)
+        return false;
 
-	if (!rightItem)
-		return true;
+    if (!rightItem)
+        return true;
 
-	if (!leftItem)
-		return false;
+    if (!leftItem)
+        return false;
 
-	return leftItem->itemContactPriority() < rightItem->itemContactPriority();
+    return leftItem->itemContactPriority() < rightItem->itemContactPriority();
 }
 
 #include "moc_buddy-contacts-table-model-proxy.cpp"

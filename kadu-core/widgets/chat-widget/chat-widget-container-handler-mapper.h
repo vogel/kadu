@@ -57,49 +57,49 @@ enum class OpenChatActivation;
  */
 class ChatWidgetContainerHandlerMapper : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWidgetContainerHandlerMapper(QObject *parent = nullptr);
-	virtual ~ChatWidgetContainerHandlerMapper();
+    Q_INVOKABLE explicit ChatWidgetContainerHandlerMapper(QObject *parent = nullptr);
+    virtual ~ChatWidgetContainerHandlerMapper();
 
-	/**
-	 * @short Return ChatWidgetContainerHandler for given @p chat.
-	 *
-	 * If chat is currently not mapped, returns nullptr.
-	 */
-	ChatWidgetContainerHandler * chatWidgetContainerHandlerForChat(Chat chat) const;
+    /**
+     * @short Return ChatWidgetContainerHandler for given @p chat.
+     *
+     * If chat is currently not mapped, returns nullptr.
+     */
+    ChatWidgetContainerHandler *chatWidgetContainerHandlerForChat(Chat chat) const;
 
-	/**
-	 * @short Create ChatWidget instance that is stored in ChatWidgetContainerHandler.
-	 * @param chat chat for ChatWidget
-	 * @param activation activation mode for new chat
-	 *
-	 * If @p chat is not mapped then first ChatWidgetContainerHandler that accepts it is
-	 * mapped to it. Then ChatWidget is created using its mapped ChatWidgetContainerHandler
-	 * addChat method. Newly created ChatWidget is added to ChatWidgetRepository.
-	 */
-	ChatWidget * createHandledChatWidget(Chat chat, OpenChatActivation activation);
+    /**
+     * @short Create ChatWidget instance that is stored in ChatWidgetContainerHandler.
+     * @param chat chat for ChatWidget
+     * @param activation activation mode for new chat
+     *
+     * If @p chat is not mapped then first ChatWidgetContainerHandler that accepts it is
+     * mapped to it. Then ChatWidget is created using its mapped ChatWidgetContainerHandler
+     * addChat method. Newly created ChatWidget is added to ChatWidgetRepository.
+     */
+    ChatWidget *createHandledChatWidget(Chat chat, OpenChatActivation activation);
 
 private:
-	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
-	QMap<Chat, ChatWidgetContainerHandler *> m_mapping;
+    QMap<Chat, ChatWidgetContainerHandler *> m_mapping;
 
-	void map(ChatWidgetContainerHandler *chatWidgetContainerHandler, Chat chat);
-	void unmap(Chat chat);
-	ChatWidgetContainerHandler * bestContainerHandler(Chat chat) const;
+    void map(ChatWidgetContainerHandler *chatWidgetContainerHandler, Chat chat);
+    void unmap(Chat chat);
+    ChatWidgetContainerHandler *bestContainerHandler(Chat chat) const;
 
 private slots:
-	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void
+    setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 
-	void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
-	void chatAcceptanceChanged(Chat chat);
-	void chatWidgetRemoved(ChatWidget *chatWidget);
-
+    void chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler);
+    void chatAcceptanceChanged(Chat chat);
+    void chatWidgetRemoved(ChatWidget *chatWidget);
 };
 
 /**

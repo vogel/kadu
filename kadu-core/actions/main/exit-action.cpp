@@ -21,15 +21,15 @@
 
 #include "core/application.h"
 
-ExitAction::ExitAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ExitAction::ExitAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"application-exit"});
-	setName(QStringLiteral("exitKaduAction"));
-	setShortcut("kadu_exit", Qt::ApplicationShortcut);
-	setText(tr("&Quit"));
-	setType(ActionDescription::TypeMainMenu);
+    setIcon(KaduIcon{"application-exit"});
+    setName(QStringLiteral("exitKaduAction"));
+    setShortcut("kadu_exit", Qt::ApplicationShortcut);
+    setText(tr("&Quit"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 ExitAction::~ExitAction()
@@ -38,12 +38,12 @@ ExitAction::~ExitAction()
 
 void ExitAction::setApplication(Application *application)
 {
-	m_application = application;
+    m_application = application;
 }
 
 void ExitAction::actionTriggered(QAction *, bool)
 {
-	m_application->quit();
+    m_application->quit();
 }
 
 #include "moc_exit-action.cpp"

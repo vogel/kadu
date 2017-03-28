@@ -19,13 +19,13 @@
 
 #include "sql-history-module.h"
 
-#include "storage/history-sql-storage.h"
 #include "sql-history-plugin-object.h"
+#include "storage/history-sql-storage.h"
 
 SqlHistoryModule::SqlHistoryModule()
 {
-	add_type<HistorySqlStorage>();
-	add_type<SqlHistoryPluginObject>();
+    add_type<HistorySqlStorage>();
+    add_type<SqlHistoryPluginObject>();
 }
 
 SqlHistoryModule::~SqlHistoryModule()

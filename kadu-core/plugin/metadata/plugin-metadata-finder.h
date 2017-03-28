@@ -41,39 +41,38 @@ class PluginMetadataReader;
  */
 class PluginMetadataFinder : public PluginMetadataProvider
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
-	virtual ~PluginMetadataFinder() noexcept;
+    Q_INVOKABLE explicit PluginMetadataFinder(QObject *parent = nullptr) noexcept;
+    virtual ~PluginMetadataFinder() noexcept;
 
-	/**
-	 * @short Set directory to search for metadata files.
-	 * @param directory directory to search for metadata files.
-	 */
-	void setDirectory(QString directory);
+    /**
+     * @short Set directory to search for metadata files.
+     * @param directory directory to search for metadata files.
+     */
+    void setDirectory(QString directory);
 
-	/**
-	 * @short Read metadata files from configured directory.
-	 *
-	 * Scans configured directory for metadata files and reads. Result is a map of file name (that is also
-	 * a plugin name) to PluginMetadata objects read from these files.
-	 * If directory is not valid, empty map is returned.
-	 */
-	std::map<QString, PluginMetadata> provide() noexcept override;
+    /**
+     * @short Read metadata files from configured directory.
+     *
+     * Scans configured directory for metadata files and reads. Result is a map of file name (that is also
+     * a plugin name) to PluginMetadata objects read from these files.
+     * If directory is not valid, empty map is returned.
+     */
+    std::map<QString, PluginMetadata> provide() noexcept override;
 
 private:
-	QString m_directory;
-	QPointer<PluginMetadataReader> m_pluginMetadataReader;
+    QString m_directory;
+    QPointer<PluginMetadataReader> m_pluginMetadataReader;
 
 private slots:
-	/**
-	 * @short Set PluginMetadataReader service instance.
-	 *
-	 * PluginMetadataReader is used to read metadata from .desc files.
-	 */
-	INJEQT_SET void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
-
+    /**
+     * @short Set PluginMetadataReader service instance.
+     *
+     * PluginMetadataReader is used to read metadata from .desc files.
+     */
+    INJEQT_SET void setPluginMetadataReader(PluginMetadataReader *pluginMetadataReader) noexcept;
 };
 
 /**

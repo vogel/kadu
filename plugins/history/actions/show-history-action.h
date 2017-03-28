@@ -35,37 +35,36 @@ class History;
 
 class HISTORYAPI ShowHistoryAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
-	QPointer<BuddyChatManager> m_buddyChatManager;
-	QPointer<HistoryWindowService> m_historyWindowService;
-	QPointer<History> m_history;
+    QPointer<BuddyChatManager> m_buddyChatManager;
+    QPointer<HistoryWindowService> m_historyWindowService;
+    QPointer<History> m_history;
 
-	int ChatHistoryQuotationTime;
+    int ChatHistoryQuotationTime;
 
-	void showDaysMessages(QAction *action, int days);
+    void showDaysMessages(QAction *action, int days);
 
 private slots:
-	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
-	INJEQT_SET void setHistoryWindowService(HistoryWindowService *historyWindowService);
-	INJEQT_SET void setHistory(History *history);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+    INJEQT_SET void setHistoryWindowService(HistoryWindowService *historyWindowService);
+    INJEQT_SET void setHistory(History *history);
+    INJEQT_INIT void init();
 
-	void showPruneMessages();
-	void showOneDayMessages();
-	void show7DaysMessages();
-	void show30DaysMessages();
-	void showAllMessages();
+    void showPruneMessages();
+    void showOneDayMessages();
+    void show7DaysMessages();
+    void show30DaysMessages();
+    void showAllMessages();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
-	virtual void actionInstanceCreated(Action *action);
-	virtual void actionTriggered(QAction *sender, bool toggled);
+    virtual void actionInstanceCreated(Action *action);
+    virtual void actionTriggered(QAction *sender, bool toggled);
 
 public:
-	Q_INVOKABLE explicit ShowHistoryAction(QObject *parent = nullptr);
-	virtual ~ShowHistoryAction();
-
+    Q_INVOKABLE explicit ShowHistoryAction(QObject *parent = nullptr);
+    virtual ~ShowHistoryAction();
 };

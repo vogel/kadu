@@ -35,31 +35,30 @@ class QFormLayout;
 
 class PasswordDialogWidget : public DialogWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit PasswordDialogWidget(const QString &title, QVariant data, QWidget* parent);
-	virtual ~PasswordDialogWidget();
+    explicit PasswordDialogWidget(const QString &title, QVariant data, QWidget *parent);
+    virtual ~PasswordDialogWidget();
 
 signals:
-	void passwordEntered(const QVariant &data, const QString &password, bool permanent);
+    void passwordEntered(const QVariant &data, const QString &password, bool permanent);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
-	QVariant Data;
+    QPointer<IconsManager> m_iconsManager;
+    QVariant Data;
 
-	QFormLayout *formLayout;
-	QLineEdit *Password;
-	QCheckBox *Store;
+    QFormLayout *formLayout;
+    QLineEdit *Password;
+    QCheckBox *Store;
 
-	virtual void createGui();
+    virtual void createGui();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 
-	virtual void dialogAccepted();
-	virtual void dialogRejected();
-	void passwordTextChanged(const QString &text);
-
+    virtual void dialogAccepted();
+    virtual void dialogRejected();
+    void passwordTextChanged(const QString &text);
 };

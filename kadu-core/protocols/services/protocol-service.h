@@ -37,23 +37,22 @@
  */
 class KADUAPI ProtocolService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @short Returns protocol bounded with this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return protocol bounded with this service
-	 */
-	Protocol * protocol() const;
+    /**
+     * @short Returns protocol bounded with this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return protocol bounded with this service
+     */
+    Protocol *protocol() const;
 
 protected:
-	explicit ProtocolService(Protocol *protocol, QObject *parent = nullptr);
-	virtual ~ProtocolService();
+    explicit ProtocolService(Protocol *protocol, QObject *parent = nullptr);
+    virtual ~ProtocolService();
 
 private:
-	QPointer<Protocol> m_protocol;
-
+    QPointer<Protocol> m_protocol;
 };
 
 /**

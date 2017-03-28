@@ -33,37 +33,36 @@
  * @short Template for services that registers list of Transformer instances.
  * @author Rafał 'Vogel' Malinowski
  */
-template<typename T>
+template <typename T>
 class TransformerService
 {
-	QList<T *> Transformers;
+    QList<T *> Transformers;
 
 public:
-	void registerTransformer(T *transformer)
-	{
-		if (!transformer || Transformers.contains(transformer))
-			return;
+    void registerTransformer(T *transformer)
+    {
+        if (!transformer || Transformers.contains(transformer))
+            return;
 
-		Transformers.append(transformer);
-	}
+        Transformers.append(transformer);
+    }
 
-	void unregisterTransformer(T *transformer)
-	{
-		Transformers.removeAll(transformer);
-	}
+    void unregisterTransformer(T *transformer)
+    {
+        Transformers.removeAll(transformer);
+    }
 
-	typename T::object_type transform(const typename T::object_type &object)
-	{
-		typename T::object_type result = object;
-		foreach (T *transformer, Transformers)
-			result = transformer->transform(result);
-		return result;
-	}
-
+    typename T::object_type transform(const typename T::object_type &object)
+    {
+        typename T::object_type result = object;
+        foreach (T *transformer, Transformers)
+            result = transformer->transform(result);
+        return result;
+    }
 };
 
 /**
  * @}
  */
 
-#endif // TRANSFORMER_SERVICE_H
+#endif   // TRANSFORMER_SERVICE_H

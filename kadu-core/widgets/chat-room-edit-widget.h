@@ -35,37 +35,36 @@ class QLineEdit;
 
 class ChatRoomEditWidget : public ChatEditWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = nullptr);
-	virtual ~ChatRoomEditWidget();
+    explicit ChatRoomEditWidget(const Chat &chat, QWidget *parent = nullptr);
+    virtual ~ChatRoomEditWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	AccountsComboBox *AccountCombo;
-	QLineEdit *RoomEdit;
-	QLineEdit *NickEdit;
-	QLineEdit *PasswordEdit;
-	QCheckBox *StayInRoomAfterClosingWindowCheckBox;
-	ChatDetailsRoom *RoomDetails;
+    AccountsComboBox *AccountCombo;
+    QLineEdit *RoomEdit;
+    QLineEdit *NickEdit;
+    QLineEdit *PasswordEdit;
+    QCheckBox *StayInRoomAfterClosingWindowCheckBox;
+    ChatDetailsRoom *RoomDetails;
 
-	void createGui();
-	void loadChatData();
+    void createGui();
+    void loadChatData();
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void dataChanged();
-
+    void dataChanged();
 };

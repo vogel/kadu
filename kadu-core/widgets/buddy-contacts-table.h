@@ -40,45 +40,44 @@ class QTableView;
 
 class BuddyContactsTable : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	Buddy MyBuddy;
+    Buddy MyBuddy;
 
-	QTableView *View;
-	BuddyContactsTableDelegate *Delegate;
-	BuddyContactsTableModel *Model;
-	BuddyContactsTableModelProxy *Proxy;
+    QTableView *View;
+    BuddyContactsTableDelegate *Delegate;
+    BuddyContactsTableModel *Model;
+    BuddyContactsTableModelProxy *Proxy;
 
-	QPushButton *MoveUpButton;
-	QPushButton *MoveDownButton;
-	QPushButton *AddContactButton;
-	QPushButton *DetachContactButton;
-	QPushButton *RemoveContactButton;
+    QPushButton *MoveUpButton;
+    QPushButton *MoveDownButton;
+    QPushButton *AddContactButton;
+    QPushButton *DetachContactButton;
+    QPushButton *RemoveContactButton;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
-	void viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
+    void viewSelectionChanged(const QModelIndex &current, const QModelIndex &previous);
 
-	void moveUpClicked();
-	void moveDownClicked();
-	void addClicked();
-	void detachClicked();
-	void removeClicked();
+    void moveUpClicked();
+    void moveDownClicked();
+    void addClicked();
+    void detachClicked();
+    void removeClicked();
 
 public:
-	explicit BuddyContactsTable(Buddy buddy, QWidget *parent = nullptr);
-	virtual ~BuddyContactsTable();
+    explicit BuddyContactsTable(Buddy buddy, QWidget *parent = nullptr);
+    virtual ~BuddyContactsTable();
 
-	const ConfigurationValueStateNotifier * valueStateNotifier() const;
+    const ConfigurationValueStateNotifier *valueStateNotifier() const;
 
-	void save();
-
+    void save();
 };

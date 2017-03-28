@@ -37,28 +37,27 @@ struct Notification;
 
 class FirewallNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit FirewallNotificationService(QObject *parent = nullptr);
-	virtual ~FirewallNotificationService();
+    Q_INVOKABLE explicit FirewallNotificationService(QObject *parent = nullptr);
+    virtual ~FirewallNotificationService();
 
 public slots:
-	void notifyBlockedMessage(const Chat &chat, const Contact &sender, const QString &message);
+    void notifyBlockedMessage(const Chat &chat, const Contact &sender, const QString &message);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<Configuration> m_configuration;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationEvent m_blockedMessageEvent;
+    NotificationEvent m_blockedMessageEvent;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

@@ -28,6 +28,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
+#include "activate.h"
 #include "buddies/group.h"
 #include "chat/chat-manager.h"
 #include "chat/type/chat-type-manager.h"
@@ -46,266 +47,271 @@
 #include "widgets/composite-configuration-value-state-notifier.h"
 #include "widgets/group-list.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
-#include "activate.h"
 
 #include "chat-data-window.h"
 
-ChatDataWindow::ChatDataWindow(const Chat &chat) :
-		QWidget(0, Qt::Dialog),
-		ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
-		SimpleStateNotifier(new SimpleConfigurationValueStateNotifier(this)),
-		MyChat(chat), EditWidget(0)
+ChatDataWindow::ChatDataWindow(const Chat &chat)
+        : QWidget(0, Qt::Dialog), ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
+          SimpleStateNotifier(new SimpleConfigurationValueStateNotifier(this)), MyChat(chat), EditWidget(0)
 {
 }
 
 ChatDataWindow::~ChatDataWindow()
 {
-	emit destroyed(MyChat);
+    emit destroyed(MyChat);
 }
 
-void ChatDataWindow::setChatConfigurationWidgetFactoryRepository(ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
+void ChatDataWindow::setChatConfigurationWidgetFactoryRepository(
+    ChatConfigurationWidgetFactoryRepository *chatConfigurationWidgetFactoryRepository)
 {
-	m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
+    m_chatConfigurationWidgetFactoryRepository = chatConfigurationWidgetFactoryRepository;
 }
 
 void ChatDataWindow::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void ChatDataWindow::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void ChatDataWindow::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ChatDataWindow::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void ChatDataWindow::init()
 {
-	setWindowRole("kadu-chat-data");
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowTitle(tr("Chat Properties - %1").arg(MyChat.display()));
+    setWindowRole("kadu-chat-data");
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle(tr("Chat Properties - %1").arg(MyChat.display()));
 
-	createGui();
+    createGui();
 
-	new WindowGeometryManager(new ConfigFileVariantWrapper(m_configuration, "General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500), this);
+    new WindowGeometryManager(
+        new ConfigFileVariantWrapper(m_configuration, "General", "ChatDataWindowGeometry"), QRect(0, 50, 425, 500),
+        this);
 
-	connect(m_chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
+    connect(m_chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
-	SimpleStateNotifier->setState(StateNotChanged);
-	ValueStateNotifier->addConfigurationValueStateNotifier(SimpleStateNotifier);
+    SimpleStateNotifier->setState(StateNotChanged);
+    ValueStateNotifier->addConfigurationValueStateNotifier(SimpleStateNotifier);
 
-	connect(ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this, SLOT(stateChangedSlot(ConfigurationValueState)));
-	stateChangedSlot(ValueStateNotifier->state());
+    connect(
+        ValueStateNotifier, SIGNAL(stateChanged(ConfigurationValueState)), this,
+        SLOT(stateChangedSlot(ConfigurationValueState)));
+    stateChangedSlot(ValueStateNotifier->state());
 
-	connect(m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatConfigurationWidgetFactory*)),
-			this, SLOT(factoryRegistered(ChatConfigurationWidgetFactory*)));
-	connect(m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatConfigurationWidgetFactory*)),
-			this, SLOT(factoryUnregistered(ChatConfigurationWidgetFactory*)));
+    connect(
+        m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryRegistered(ChatConfigurationWidgetFactory *)), this,
+        SLOT(factoryRegistered(ChatConfigurationWidgetFactory *)));
+    connect(
+        m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatConfigurationWidgetFactory *)), this,
+        SLOT(factoryUnregistered(ChatConfigurationWidgetFactory *)));
 
-	foreach (ChatConfigurationWidgetFactory *factory, m_chatConfigurationWidgetFactoryRepository->factories())
-		factoryRegistered(factory);
+    foreach (ChatConfigurationWidgetFactory *factory, m_chatConfigurationWidgetFactoryRepository->factories())
+        factoryRegistered(factory);
 }
 
 void ChatDataWindow::factoryRegistered(ChatConfigurationWidgetFactory *factory)
 {
-	ChatConfigurationWidget *widget = factory->createWidget(chat(), this);
-	if (widget)
-	{
-		if (widget->stateNotifier())
-			ValueStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
-		ChatConfigurationWidgets.insert(factory, widget);
-		emit widgetAdded(widget);
-	}
+    ChatConfigurationWidget *widget = factory->createWidget(chat(), this);
+    if (widget)
+    {
+        if (widget->stateNotifier())
+            ValueStateNotifier->addConfigurationValueStateNotifier(widget->stateNotifier());
+        ChatConfigurationWidgets.insert(factory, widget);
+        emit widgetAdded(widget);
+    }
 }
 
 void ChatDataWindow::factoryUnregistered(ChatConfigurationWidgetFactory *factory)
 {
-	if (ChatConfigurationWidgets.contains(factory))
-	{
-		ChatConfigurationWidget *widget = ChatConfigurationWidgets.value(factory);
-		ChatConfigurationWidgets.remove(factory);
-		if (widget)
-		{
-			if (widget->stateNotifier())
-				ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
-			emit widgetRemoved(widget);
-			widget->deleteLater();
-		}
-	}
+    if (ChatConfigurationWidgets.contains(factory))
+    {
+        ChatConfigurationWidget *widget = ChatConfigurationWidgets.value(factory);
+        ChatConfigurationWidgets.remove(factory);
+        if (widget)
+        {
+            if (widget->stateNotifier())
+                ValueStateNotifier->removeConfigurationValueStateNotifier(widget->stateNotifier());
+            emit widgetRemoved(widget);
+            widget->deleteLater();
+        }
+    }
 }
 
 QList<ChatConfigurationWidget *> ChatDataWindow::chatConfigurationWidgets() const
 {
-	return ChatConfigurationWidgets.values();
+    return ChatConfigurationWidgets.values();
 }
 
 void ChatDataWindow::applyChatConfigurationWidgets()
 {
-	foreach (ChatConfigurationWidget *widget, ChatConfigurationWidgets)
-		widget->apply();
+    foreach (ChatConfigurationWidget *widget, ChatConfigurationWidgets)
+        widget->apply();
 }
 
 void ChatDataWindow::show()
 {
-	QWidget::show();
+    QWidget::show();
 
-	_activateWindow(m_configuration, this);
+    _activateWindow(m_configuration, this);
 }
 
 void ChatDataWindow::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	TabWidget = new QTabWidget(this);
+    TabWidget = new QTabWidget(this);
 
-	GeneralTab = new QWidget(TabWidget);
-	QVBoxLayout *generalLayout = new QVBoxLayout(GeneralTab);
+    GeneralTab = new QWidget(TabWidget);
+    QVBoxLayout *generalLayout = new QVBoxLayout(GeneralTab);
 
-	QWidget *nameWidget = new QWidget(this);
+    QWidget *nameWidget = new QWidget(this);
 
-	QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
+    QHBoxLayout *nameLayout = new QHBoxLayout(nameWidget);
 
-	QLabel *numberLabel = new QLabel(tr("Visible Name") + ':', nameWidget);
+    QLabel *numberLabel = new QLabel(tr("Visible Name") + ':', nameWidget);
 
-	DisplayEdit = new QLineEdit(nameWidget);
-	DisplayEdit->setText(MyChat.display());
+    DisplayEdit = new QLineEdit(nameWidget);
+    DisplayEdit->setText(MyChat.display());
 
-	nameLayout->addWidget(numberLabel);
-	nameLayout->addWidget(DisplayEdit);
+    nameLayout->addWidget(numberLabel);
+    nameLayout->addWidget(DisplayEdit);
 
-	generalLayout->addWidget(nameWidget);
+    generalLayout->addWidget(nameWidget);
 
-	TabWidget->addTab(GeneralTab, tr("General"));
+    TabWidget->addTab(GeneralTab, tr("General"));
 
-	auto chatType = m_chatTypeManager->chatType(MyChat.type());
-	if (chatType)
-	{
-		EditWidget = chatType->createEditWidget(MyChat, TabWidget);
-		if (EditWidget)
-		{
-			auto groupBox = new QGroupBox{GeneralTab};
-			groupBox->setFlat(true);
-			groupBox->setTitle(tr("Chat"));
+    auto chatType = m_chatTypeManager->chatType(MyChat.type());
+    if (chatType)
+    {
+        EditWidget = chatType->createEditWidget(MyChat, TabWidget);
+        if (EditWidget)
+        {
+            auto groupBox = new QGroupBox{GeneralTab};
+            groupBox->setFlat(true);
+            groupBox->setTitle(tr("Chat"));
 
-			auto groupBoxLayout = new QVBoxLayout{groupBox};
-			groupBoxLayout->setMargin(0);
-			groupBoxLayout->setSpacing(4);
-			groupBoxLayout->addWidget(EditWidget);
+            auto groupBoxLayout = new QVBoxLayout{groupBox};
+            groupBoxLayout->setMargin(0);
+            groupBoxLayout->setSpacing(4);
+            groupBoxLayout->addWidget(EditWidget);
 
-			generalLayout->addWidget(groupBox);
-			if (EditWidget->stateNotifier())
-				ValueStateNotifier->addConfigurationValueStateNotifier(EditWidget->stateNotifier());
-		}
-	}
+            generalLayout->addWidget(groupBox);
+            if (EditWidget->stateNotifier())
+                ValueStateNotifier->addConfigurationValueStateNotifier(EditWidget->stateNotifier());
+        }
+    }
 
-	generalLayout->addStretch(100);
+    generalLayout->addStretch(100);
 
-	GroupsTab = m_injectedFactory->makeInjected<ChatGroupsConfigurationWidget>(MyChat, this);
-	TabWidget->addTab(GroupsTab, tr("Groups"));
+    GroupsTab = m_injectedFactory->makeInjected<ChatGroupsConfigurationWidget>(MyChat, this);
+    TabWidget->addTab(GroupsTab, tr("Groups"));
 
-	auto optionsTab = new QWidget{this};
-	(new QVBoxLayout{optionsTab})->addStretch(100);
-	new ChatConfigurationWidgetGroupBoxesAdapter(this, optionsTab);
-	TabWidget->addTab(optionsTab, tr("Options"));
+    auto optionsTab = new QWidget{this};
+    (new QVBoxLayout{optionsTab})->addStretch(100);
+    new ChatConfigurationWidgetGroupBoxesAdapter(this, optionsTab);
+    TabWidget->addTab(optionsTab, tr("Options"));
 
-	layout->addWidget(TabWidget);
+    layout->addWidget(TabWidget);
 
-	createButtons(layout);
+    createButtons(layout);
 
-	connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(displayEditChanged()));
+    connect(DisplayEdit, SIGNAL(textChanged(QString)), this, SLOT(displayEditChanged()));
 }
 
 void ChatDataWindow::createButtons(QVBoxLayout *layout)
 {
-	QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
+    QDialogButtonBox *buttons = new QDialogButtonBox(Qt::Horizontal, this);
 
-	OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
-	OkButton->setDefault(true);
-	buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
-	ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
-	buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
+    OkButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("OK"), this);
+    OkButton->setDefault(true);
+    buttons->addButton(OkButton, QDialogButtonBox::AcceptRole);
+    ApplyButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Apply"), this);
+    buttons->addButton(ApplyButton, QDialogButtonBox::ApplyRole);
 
-	QPushButton *cancelButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
-	buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
+    QPushButton *cancelButton =
+        new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCancelButton), tr("Cancel"), this);
+    buttons->addButton(cancelButton, QDialogButtonBox::RejectRole);
 
-	connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(updateChatAndClose()));
-	connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(updateChat()));
-	connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+    connect(OkButton, SIGNAL(clicked(bool)), this, SLOT(updateChatAndClose()));
+    connect(ApplyButton, SIGNAL(clicked(bool)), this, SLOT(updateChat()));
+    connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	layout->addSpacing(16);
-	layout->addWidget(buttons);
+    layout->addSpacing(16);
+    layout->addWidget(buttons);
 }
 
 void ChatDataWindow::updateChat()
 {
-	if (!MyChat)
-		return;
+    if (!MyChat)
+        return;
 
-	ChangeNotifierLock lock(MyChat.changeNotifier());
+    ChangeNotifierLock lock(MyChat.changeNotifier());
 
-	if (EditWidget)
-		EditWidget->apply();
+    if (EditWidget)
+        EditWidget->apply();
 
-	GroupsTab->save();
+    GroupsTab->save();
 
-	applyChatConfigurationWidgets();
+    applyChatConfigurationWidgets();
 
-	MyChat.setDisplay(DisplayEdit->text());
+    MyChat.setDisplay(DisplayEdit->text());
 
-	emit save();
+    emit save();
 }
 
 void ChatDataWindow::updateChatAndClose()
 {
-	updateChat();
-	close();
+    updateChat();
+    close();
 }
 
 void ChatDataWindow::chatRemoved(const Chat &chat)
 {
-	if (chat == MyChat)
-		close();
+    if (chat == MyChat)
+        close();
 }
 
 void ChatDataWindow::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Escape)
-	{
-		event->accept();
-		close();
-	}
-	else
-		QWidget::keyPressEvent(event);
+    if (event->key() == Qt::Key_Escape)
+    {
+        event->accept();
+        close();
+    }
+    else
+        QWidget::keyPressEvent(event);
 }
 
 void ChatDataWindow::displayEditChanged()
 {
-	if (MyChat.display() == DisplayEdit->text())
-	{
-		SimpleStateNotifier->setState(StateNotChanged);
-		return;
-	}
+    if (MyChat.display() == DisplayEdit->text())
+    {
+        SimpleStateNotifier->setState(StateNotChanged);
+        return;
+    }
 
-	const Chat &chat = m_chatManager->byDisplay(DisplayEdit->text());
-	if (chat)
-		SimpleStateNotifier->setState(StateChangedDataInvalid);
-	else
-		SimpleStateNotifier->setState(StateChangedDataValid);
+    const Chat &chat = m_chatManager->byDisplay(DisplayEdit->text());
+    if (chat)
+        SimpleStateNotifier->setState(StateChangedDataInvalid);
+    else
+        SimpleStateNotifier->setState(StateChangedDataValid);
 }
 
 void ChatDataWindow::stateChangedSlot(ConfigurationValueState state)
 {
-	OkButton->setEnabled(state != StateChangedDataInvalid);
-	ApplyButton->setEnabled(state != StateChangedDataInvalid);
+    OkButton->setEnabled(state != StateChangedDataInvalid);
+    ApplyButton->setEnabled(state != StateChangedDataInvalid);
 }
 
 #include "moc_chat-data-window.cpp"

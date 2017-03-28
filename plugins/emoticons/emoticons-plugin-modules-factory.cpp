@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-EmoticonsPluginModulesFactory::EmoticonsPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+EmoticonsPluginModulesFactory::EmoticonsPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ EmoticonsPluginModulesFactory::~EmoticonsPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> EmoticonsPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<EmoticonsModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<EmoticonsModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_emoticons-plugin-modules-factory.cpp"

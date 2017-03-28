@@ -28,36 +28,35 @@ class QWidget;
 
 class KADUAPI MainWindowRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	using Storage = std::vector<QWidget *>;
-	using Iterator = Storage::iterator;
+    using Storage = std::vector<QWidget *>;
+    using Iterator = Storage::iterator;
 
-	Q_INVOKABLE explicit MainWindowRepository(QObject *parent = nullptr);
-	virtual ~MainWindowRepository();
+    Q_INVOKABLE explicit MainWindowRepository(QObject *parent = nullptr);
+    virtual ~MainWindowRepository();
 
-	void addMainWindow(QWidget *mainWindow);
-	void removeMainWindow(QWidget *mainWindow);
+    void addMainWindow(QWidget *mainWindow);
+    void removeMainWindow(QWidget *mainWindow);
 
-	Iterator begin();
-	Iterator end();
+    Iterator begin();
+    Iterator end();
 
 signals:
-	void mainWindowAdded(QWidget *mainWindow);
-	void mainWindowRemoved(QWidget *mainWindow);
+    void mainWindowAdded(QWidget *mainWindow);
+    void mainWindowRemoved(QWidget *mainWindow);
 
 private:
-	Storage m_data;
-
+    Storage m_data;
 };
 
 inline MainWindowRepository::Iterator begin(MainWindowRepository &x)
 {
-	return x.begin();
+    return x.begin();
 }
 
 inline MainWindowRepository::Iterator end(MainWindowRepository &x)
 {
-	return x.end();
+    return x.end();
 }

@@ -25,8 +25,7 @@
 #include "gui/actions/screenshot-action.h"
 #include "plugin/plugin-injected-factory.h"
 
-ScreenshotActions::ScreenshotActions(QObject *parent) :
-		QObject{parent}
+ScreenshotActions::ScreenshotActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,28 +35,29 @@ ScreenshotActions::~ScreenshotActions()
 
 void ScreenshotActions::setActions(Actions *actions)
 {
-	m_actions = actions;
+    m_actions = actions;
 }
 
 void ScreenshotActions::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ScreenshotActions::setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration)
 {
-	m_screenShotConfiguration = screenShotConfiguration;
+    m_screenShotConfiguration = screenShotConfiguration;
 }
 
 void ScreenshotActions::init()
 {
-	m_screenShotActionDescription = m_pluginInjectedFactory->makeOwned<ScreenshotAction>(m_screenShotConfiguration, this);
-	m_actions->insert(m_screenShotActionDescription);
+    m_screenShotActionDescription =
+        m_pluginInjectedFactory->makeOwned<ScreenshotAction>(m_screenShotConfiguration, this);
+    m_actions->insert(m_screenShotActionDescription);
 }
 
 void ScreenshotActions::done()
 {
-	m_actions->remove(m_screenShotActionDescription);
+    m_actions->remove(m_screenShotActionDescription);
 }
 
 #include "moc_screenshot-actions.cpp"

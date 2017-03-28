@@ -25,9 +25,9 @@
 
 class KADUAPI ConfigurationModule : public injeqt::module
 {
-
 public:
-	ConfigurationModule();
-	virtual ~ConfigurationModule() {}
-
+    ConfigurationModule();
+    virtual ~ConfigurationModule()
+    {
+    }
 };

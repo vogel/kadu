@@ -37,42 +37,41 @@
  */
 class KADUAPI ExecutionArguments final
 {
-
 public:
-	ExecutionArguments(bool queryVersion, bool queryUsage, QString profileDirectory, QStringList openIds, QString openUuid);
+    ExecutionArguments(
+        bool queryVersion, bool queryUsage, QString profileDirectory, QStringList openIds, QString openUuid);
 
-	/**
-	 * @return True if version information is requested.
-	 */
-	bool queryVersion() const;
+    /**
+     * @return True if version information is requested.
+     */
+    bool queryVersion() const;
 
-	/**
-	 * @return True if usage information is requested.
-	 */
-	bool queryUsage() const;
+    /**
+     * @return True if usage information is requested.
+     */
+    bool queryUsage() const;
 
-	/**
-	 * @return Requested value of profile directory.
-	 */
-	QString profileDirectory() const;
+    /**
+     * @return Requested value of profile directory.
+     */
+    QString profileDirectory() const;
 
-	/**
-	 * @return Requested list of ids to open chat with.
-	 */
-	QStringList openIds() const;
+    /**
+     * @return Requested list of ids to open chat with.
+     */
+    QStringList openIds() const;
 
-	/**
-	 * @return Requested uuid of chat to open.
-	 */
-	QString openUuid() const;
+    /**
+     * @return Requested uuid of chat to open.
+     */
+    QString openUuid() const;
 
 private:
-	bool m_queryVersion;
-	bool m_queryUsage;
-	QString m_profileDirectory;
-	QStringList m_openIds;
-	QString m_openUuid;
-
+    bool m_queryVersion;
+    bool m_queryUsage;
+    QString m_profileDirectory;
+    QStringList m_openIds;
+    QString m_openUuid;
 };
 
 /**

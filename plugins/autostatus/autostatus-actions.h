@@ -29,23 +29,22 @@ class MenuInventory;
 
 class AutostatusActions : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AutostatusActions(QObject *parent = nullptr);
-	virtual ~AutostatusActions();
+    Q_INVOKABLE explicit AutostatusActions(QObject *parent = nullptr);
+    virtual ~AutostatusActions();
 
-	void registerActions();
-	void unregisterActions();
+    void registerActions();
+    void unregisterActions();
 
 private:
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<ToggleAutostatusAction> m_toggleAutostatusAction;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<ToggleAutostatusAction> m_toggleAutostatusAction;
 
 private slots:
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setToggleAutostatusAction(ToggleAutostatusAction *toggleAutostatusAction);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setToggleAutostatusAction(ToggleAutostatusAction *toggleAutostatusAction);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

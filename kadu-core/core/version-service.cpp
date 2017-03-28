@@ -21,8 +21,7 @@
 
 #include "kadu-config.h"
 
-VersionService::VersionService(QObject *parent) :
-		QObject{parent}
+VersionService::VersionService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,15 +31,15 @@ VersionService::~VersionService()
 
 QString VersionService::name() const
 {
-	return QStringLiteral("Kadu");
+    return QStringLiteral("Kadu");
 }
 
 QString VersionService::version() const
 {
-	return QStringLiteral(KADU_VERSION);
+    return QStringLiteral(KADU_VERSION);
 }
 
 QString VersionService::nameWithVersion() const
 {
-	return name() + QStringLiteral(" ")  + version();
+    return name() + QStringLiteral(" ") + version();
 }

@@ -19,17 +19,16 @@
 
 #include "chat-window-storage-configuration.h"
 
-ChatWindowStorageConfiguration::ChatWindowStorageConfiguration() :
-		m_storeOpenedChatWindows(true)
+ChatWindowStorageConfiguration::ChatWindowStorageConfiguration() : m_storeOpenedChatWindows(true)
 {
 }
 
 void ChatWindowStorageConfiguration::setStoreOpenedChatWindows(bool storeOpenedChatWindows)
 {
-	m_storeOpenedChatWindows = storeOpenedChatWindows;
+    m_storeOpenedChatWindows = storeOpenedChatWindows;
 }
 
 bool ChatWindowStorageConfiguration::storeOpenedChatWindows() const
 {
-	return m_storeOpenedChatWindows;
+    return m_storeOpenedChatWindows;
 }

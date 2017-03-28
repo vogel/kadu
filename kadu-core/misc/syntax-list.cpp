@@ -28,9 +28,7 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QTextStream>
 
-SyntaxList::SyntaxList(const QString &category, QObject *parent) :
-		QObject{parent},
-		m_category(category)
+SyntaxList::SyntaxList(const QString &category, QObject *parent) : QObject{parent}, m_category(category)
 {
 }
 
@@ -40,175 +38,180 @@ SyntaxList::~SyntaxList()
 
 void SyntaxList::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SyntaxList::init()
 {
-	reload();
+    reload();
 }
 
-QString SyntaxList::readSyntax(PathsProvider *pathsProvider, const QString &category, const QString &name, const QString &defaultSyntax)
+QString SyntaxList::readSyntax(
+    PathsProvider *pathsProvider, const QString &category, const QString &name, const QString &defaultSyntax)
 {
-	QString path;
-	QFile syntaxFile;
-	path = pathsProvider->dataPath() + QStringLiteral("syntax/") + category + '/' + name + QStringLiteral(".syntax");
+    QString path;
+    QFile syntaxFile;
+    path = pathsProvider->dataPath() + QStringLiteral("syntax/") + category + '/' + name + QStringLiteral(".syntax");
 
-	syntaxFile.setFileName(path);
-	if (!syntaxFile.open(QIODevice::ReadOnly))
-	{
-		path = pathsProvider->profilePath() + QStringLiteral("syntax/") + category + '/' + name + QStringLiteral(".syntax");
+    syntaxFile.setFileName(path);
+    if (!syntaxFile.open(QIODevice::ReadOnly))
+    {
+        path = pathsProvider->profilePath() + QStringLiteral("syntax/") + category + '/' + name +
+               QStringLiteral(".syntax");
 
-		syntaxFile.setFileName(path);
-		if (!syntaxFile.open(QIODevice::ReadOnly))
-			return defaultSyntax;
-	}
+        syntaxFile.setFileName(path);
+        if (!syntaxFile.open(QIODevice::ReadOnly))
+            return defaultSyntax;
+    }
 
-	QString result;
-	QTextStream stream(&syntaxFile);
-	stream.setCodec("UTF-8");
-	result = stream.readAll();
-	syntaxFile.close();
+    QString result;
+    QTextStream stream(&syntaxFile);
+    stream.setCodec("UTF-8");
+    result = stream.readAll();
+    syntaxFile.close();
 
-	if (result.isEmpty())
-		return defaultSyntax;
+    if (result.isEmpty())
+        return defaultSyntax;
 
-	return result;
+    return result;
 }
 
 void SyntaxList::reload()
 {
-	QDir dir;
-	QString path;
-	QFileInfo fi;
-	QStringList files;
+    QDir dir;
+    QString path;
+    QFileInfo fi;
+    QStringList files;
 
-	SyntaxInfo info;
+    SyntaxInfo info;
 
-	info.global = false;
-	path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/';
-	dir.setPath(path);
+    info.global = false;
+    path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/';
+    dir.setPath(path);
 
-	dir.setNameFilters(QStringList("*.syntax"));
-	files = dir.entryList();
+    dir.setNameFilters(QStringList("*.syntax"));
+    files = dir.entryList();
 
-	foreach(const QString &file, files)
-	{
-		fi.setFile(path + file);
-		if (fi.isReadable())
-			insert(fi.baseName(), info);
-	}
+    foreach (const QString &file, files)
+    {
+        fi.setFile(path + file);
+        if (fi.isReadable())
+            insert(fi.baseName(), info);
+    }
 
-	info.global = true;
-	path = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + m_category + '/';
-	dir.setPath(path);
+    info.global = true;
+    path = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + m_category + '/';
+    dir.setPath(path);
 
-	files = dir.entryList();
+    files = dir.entryList();
 
-	foreach(const QString &file, files)
-	{
-		fi.setFile(path + file);
-		if (fi.isReadable() && !contains(file))
-			insert(fi.baseName(), info);
-	}
+    foreach (const QString &file, files)
+    {
+        fi.setFile(path + file);
+        if (fi.isReadable() && !contains(file))
+            insert(fi.baseName(), info);
+    }
 
-	if (isEmpty())
-	{
-		info.global = false;
-		insert("custom", info);
+    if (isEmpty())
+    {
+        info.global = false;
+        insert("custom", info);
 
-		updateSyntax("custom", QString());
-	}
+        updateSyntax("custom", QString());
+    }
 }
 
 bool SyntaxList::updateSyntax(const QString &name, const QString &syntax)
 {
-	QString path = m_pathsProvider->profilePath() + QStringLiteral("syntax/");
-	QDir dir(path);
-	if (!dir.exists())
-		if (!dir.mkdir(path))
-			return false;
+    QString path = m_pathsProvider->profilePath() + QStringLiteral("syntax/");
+    QDir dir(path);
+    if (!dir.exists())
+        if (!dir.mkdir(path))
+            return false;
 
-	path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/';
-	dir.setPath(path);
-	if (!dir.exists())
-		if (!dir.mkdir(path))
-			return false;
+    path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/';
+    dir.setPath(path);
+    if (!dir.exists())
+        if (!dir.mkdir(path))
+            return false;
 
-	QFile syntaxFile;
-	syntaxFile.setFileName(path + name + ".syntax");
-	if (!syntaxFile.open(QIODevice::WriteOnly))
-		return false;
+    QFile syntaxFile;
+    syntaxFile.setFileName(path + name + ".syntax");
+    if (!syntaxFile.open(QIODevice::WriteOnly))
+        return false;
 
-	QTextStream stream(&syntaxFile);
-	stream.setCodec("UTF-8");
-	stream << syntax;
-	syntaxFile.close();
+    QTextStream stream(&syntaxFile);
+    stream.setCodec("UTF-8");
+    stream << syntax;
+    syntaxFile.close();
 
-	SyntaxInfo info;
-	info.global = false;
-	insert(name, info);
+    SyntaxInfo info;
+    info.global = false;
+    insert(name, info);
 
-	emit updated();
+    emit updated();
 
-	return true;
+    return true;
 }
 
 QString SyntaxList::readSyntax(const QString &name)
 {
-	if (!contains(name))
-		return QString();
+    if (!contains(name))
+        return QString();
 
-	SyntaxInfo info = *(find(name));
-	QString path;
-	if (info.global)
-		path = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + m_category + '/' + name + QStringLiteral(".syntax");
-	else
-		path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/' + name + QStringLiteral(".syntax");
+    SyntaxInfo info = *(find(name));
+    QString path;
+    if (info.global)
+        path = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + m_category + '/' + name +
+               QStringLiteral(".syntax");
+    else
+        path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/' + name +
+               QStringLiteral(".syntax");
 
-	QFile syntaxFile;
-	syntaxFile.setFileName(path);
-	if (!syntaxFile.open(QIODevice::ReadOnly))
-		return QString();
+    QFile syntaxFile;
+    syntaxFile.setFileName(path);
+    if (!syntaxFile.open(QIODevice::ReadOnly))
+        return QString();
 
-	QString result;
-	QTextStream stream(&syntaxFile);
-	stream.setCodec("UTF-8");
-	result = stream.readAll();
-	syntaxFile.close();
+    QString result;
+    QTextStream stream(&syntaxFile);
+    stream.setCodec("UTF-8");
+    result = stream.readAll();
+    syntaxFile.close();
 
-	return result;
+    return result;
 }
 
 bool SyntaxList::deleteSyntax(const QString &name)
 {
-	if (!contains(name))
-		return false;
+    if (!contains(name))
+        return false;
 
-	SyntaxInfo info = *(find(name));
-	if (info.global)
-		return false;
+    SyntaxInfo info = *(find(name));
+    if (info.global)
+        return false;
 
-	QString path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/' + name + QStringLiteral(".syntax");
-	QFile file;
-	file.setFileName(path);
+    QString path = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + m_category + '/' + name +
+                   QStringLiteral(".syntax");
+    QFile file;
+    file.setFileName(path);
 
-	if (!file.remove())
-		return false;
+    if (!file.remove())
+        return false;
 
-	remove(name);
-	emit updated();
+    remove(name);
+    emit updated();
 
-	return true;
+    return true;
 }
 
 bool SyntaxList::isGlobal(const QString &name)
 {
-	if (!contains(name))
-		return false;
+    if (!contains(name))
+        return false;
 
-	SyntaxInfo info = *(find(name));
-	return info.global;
+    SyntaxInfo info = *(find(name));
+    return info.global;
 }
 
 #include "moc_syntax-list.cpp"

@@ -20,8 +20,7 @@
 
 #include "history-tab.h"
 
-HistoryTab::HistoryTab(QWidget *parent) :
-		QWidget(parent)
+HistoryTab::HistoryTab(QWidget *parent) : QWidget(parent)
 {
 }
 

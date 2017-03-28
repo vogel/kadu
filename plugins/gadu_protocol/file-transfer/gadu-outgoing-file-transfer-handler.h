@@ -32,28 +32,27 @@ class QNetworkReply;
 
 class GaduOutgoingFileTransferHandler : public OutgoingFileTransferHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduOutgoingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
-	virtual ~GaduOutgoingFileTransferHandler();
+    explicit GaduOutgoingFileTransferHandler(GaduProtocol *protocol, FileTransfer fileTransfer);
+    virtual ~GaduOutgoingFileTransferHandler();
 
-	virtual void send(QIODevice *source) override;
-	virtual void stop() override;
+    virtual void send(QIODevice *source) override;
+    virtual void stop() override;
 
 private:
-	QPointer<GaduProtocol> m_protocol;
-	GaduDriveSendTicket m_ticket;
-	QPointer<GaduDrivePutTransfer> m_putTransfer;
-	QPointer<QIODevice> m_source;
+    QPointer<GaduProtocol> m_protocol;
+    GaduDriveSendTicket m_ticket;
+    QPointer<GaduDrivePutTransfer> m_putTransfer;
+    QPointer<QIODevice> m_source;
 
-	void clenaup();
-	void startOutgoingTransferIfNotStarted();
-	void updateStatus();
+    void clenaup();
+    void startOutgoingTransferIfNotStarted();
+    void updateStatus();
 
 private slots:
-	void initialStatusUpdateReceived(GaduDriveSendTicket);
-	void statusUpdateReceived(GaduDriveSendTicket);
-	void requestSendStatusUpdate();
-
+    void initialStatusUpdateReceived(GaduDriveSendTicket);
+    void statusUpdateReceived(GaduDriveSendTicket);
+    void requestSendStatusUpdate();
 };

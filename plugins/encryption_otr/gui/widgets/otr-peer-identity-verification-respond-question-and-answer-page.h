@@ -30,28 +30,27 @@ class OtrPeerIdentityVerificationService;
 
 class OtrPeerIdentityVerificationRespondQuestionAndAnswerPage : public QWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+    QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
 
-	Contact MyContact;
-	QLabel *QuestionLabel;
+    Contact MyContact;
+    QLabel *QuestionLabel;
 
-	void createGui();
+    void createGui();
 
 public:
-	explicit OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(const Contact &contact, QWidget *parent = nullptr);
-	virtual ~OtrPeerIdentityVerificationRespondQuestionAndAnswerPage();
+    explicit OtrPeerIdentityVerificationRespondQuestionAndAnswerPage(const Contact &contact, QWidget *parent = nullptr);
+    virtual ~OtrPeerIdentityVerificationRespondQuestionAndAnswerPage();
 
-	void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+    void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
 
-	virtual int nextId() const;
-	virtual void initializePage();
-	virtual bool validatePage();
+    virtual int nextId() const;
+    virtual void initializePage();
+    virtual bool validatePage();
 
 public slots:
-	void rejected();
-
+    void rejected();
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_RESPOND_QUESTION_AND_ANSWER_PAGE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_RESPOND_QUESTION_AND_ANSWER_PAGE_H

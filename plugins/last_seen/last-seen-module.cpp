@@ -25,9 +25,9 @@
 
 LastSeenModule::LastSeenModule()
 {
-	add_type<Infos>();
-	add_type<LastSeenPluginObject>();
-	add_type<ShowInfosWindowAction>();
+    add_type<Infos>();
+    add_type<LastSeenPluginObject>();
+    add_type<ShowInfosWindowAction>();
 }
 
 LastSeenModule::~LastSeenModule()

@@ -34,21 +34,23 @@ class ExecutionArguments;
  * @class ExecutionArgumentsParser
  * @short Parser of arguments used to run Kadu.
  *
- * Parse arguments used to run Kadu into nice and readable ExecutionArguments class.
+ * Parse arguments used to run Kadu into nice and readable ExecutionArguments
+ * class.
  */
 class KADUAPI ExecutionArgumentsParser final
 {
-
 public:
-	/**
-	 * @short Parse arguments used to run Kadu into nice and readable ExecutionArguments class.
-	 * @param arguments arguments used to run Kadu
-	 *
-	 * Please not that arguments variable should not contain executable name as its first value.
-	 * It should be QCoreApplication::arguments().mid(1) instead of QCoreApplication::arguments().
-	 */
-	ExecutionArguments parse(const QStringList &arguments) const;
-
+    /**
+     * @short Parse arguments used to run Kadu into nice and readable
+     * ExecutionArguments class.
+     * @param arguments arguments used to run Kadu
+     *
+     * Please not that arguments variable should not contain executable name as
+     * its first value.
+     * It should be QCoreApplication::arguments().mid(1) instead of
+     * QCoreApplication::arguments().
+     */
+    ExecutionArguments parse(const QStringList &arguments) const;
 };
 
 /**

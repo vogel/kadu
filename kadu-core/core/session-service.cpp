@@ -21,9 +21,7 @@
 
 #include "kadu-config.h"
 
-SessionService::SessionService(QObject *parent) :
-		QObject{parent},
-		m_isClosing{false}
+SessionService::SessionService(QObject *parent) : QObject{parent}, m_isClosing{false}
 {
 }
 
@@ -33,10 +31,10 @@ SessionService::~SessionService()
 
 void SessionService::setIsClosing(bool isClosing)
 {
-	m_isClosing = isClosing;
+    m_isClosing = isClosing;
 }
 
 bool SessionService::isClosing() const
 {
-	return m_isClosing;
+    return m_isClosing;
 }

@@ -29,20 +29,19 @@ class QXmppClient;
 
 class JabberStreamDebugService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberStreamDebugService(QXmppClient *m_client, QObject *parent = nullptr);
-	virtual ~JabberStreamDebugService();
+    explicit JabberStreamDebugService(QXmppClient *m_client, QObject *parent = nullptr);
+    virtual ~JabberStreamDebugService();
 
 signals:
-	void incomingStream(const QString &streamData);
-	void outgoingStream(const QString &streamData);
+    void incomingStream(const QString &streamData);
+    void outgoingStream(const QString &streamData);
 
 private:
-	QString filterPrivateData(const QString &streamData);
+    QString filterPrivateData(const QString &streamData);
 
 private slots:
-	void message(QXmppLogger::MessageType type, const QString &message);
-
+    void message(QXmppLogger::MessageType type, const QString &message);
 };

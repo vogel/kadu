@@ -26,8 +26,7 @@
 
 #include <QtCore/QUuid>
 
-JabberAccountData::JabberAccountData(AccountShared *data) :
-		m_data{data}
+JabberAccountData::JabberAccountData(AccountShared *data) : m_data{data}
 {
 }
 
@@ -37,222 +36,200 @@ JabberAccountData::~JabberAccountData()
 
 int JabberAccountData::priority() const
 {
-	m_data->ensureLoaded();
-	if (!m_data->isValidStorage())
-		return 5;
+    m_data->ensureLoaded();
+    if (!m_data->isValidStorage())
+        return 5;
 
-	auto priorityString = m_data->loadValue<QString>("Priority", "5");
-	auto ok = false;
-	auto priority = priorityString.toInt(&ok);
-	return ok
-		? priority
-		: 5;
+    auto priorityString = m_data->loadValue<QString>("Priority", "5");
+    auto ok = false;
+    auto priority = priorityString.toInt(&ok);
+    return ok ? priority : 5;
 }
 
 void JabberAccountData::setPriority(int priority) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-	{
-		m_data->storeValue("Priority", priority);
-		emit m_data->updated();
-	}
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+    {
+        m_data->storeValue("Priority", priority);
+        emit m_data->updated();
+    }
 }
 
 QString JabberAccountData::resource(SystemInfo &systemInfo) const
 {
-	m_data->ensureLoaded();
-	if (!m_data->isValidStorage())
-		return {};
+    m_data->ensureLoaded();
+    if (!m_data->isValidStorage())
+        return {};
 
-	auto res = m_data->loadValue<QString>("Resource");
-	if (res.isEmpty() || res == "Kadu")
-	{
-		auto guid = QUuid::createUuid().toString();
-		res = "Kadu-" + guid.mid(1, guid.length() - 2);
-	}
-	if (autoResource())
-		res = systemInfo.localHostName();
-	return res;
+    auto res = m_data->loadValue<QString>("Resource");
+    if (res.isEmpty() || res == "Kadu")
+    {
+        auto guid = QUuid::createUuid().toString();
+        res = "Kadu-" + guid.mid(1, guid.length() - 2);
+    }
+    if (autoResource())
+        res = systemInfo.localHostName();
+    return res;
 }
 
 void JabberAccountData::setResource(const QString &resource) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("Resource", resource);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("Resource", resource);
 }
 
 bool JabberAccountData::autoResource() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("AutoResource", false)
-		: false;
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("AutoResource", false) : false;
 }
 
 void JabberAccountData::setAutoResource(bool autoResource) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("AutoResource", autoResource);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("AutoResource", autoResource);
 }
 
 bool JabberAccountData::useCustomHostPort() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("UseCustomHostPort", false)
-		: false;
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("UseCustomHostPort", false) : false;
 }
 
 void JabberAccountData::setUseCustomHostPort(bool useCustomHostPort) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("UseCustomHostPort", useCustomHostPort);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("UseCustomHostPort", useCustomHostPort);
 }
 
 QString JabberAccountData::customHost() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<QString>("CustomHost")
-		: QString{};
+    return m_data->isValidStorage() ? m_data->loadValue<QString>("CustomHost") : QString{};
 }
 
 void JabberAccountData::setCustomHost(const QString &customHost) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("CustomHost", customHost);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("CustomHost", customHost);
 }
 
 int JabberAccountData::customPort() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<int>("CustomPort", 5222)
-		: 5222;
+    return m_data->isValidStorage() ? m_data->loadValue<int>("CustomPort", 5222) : 5222;
 }
 
 void JabberAccountData::setCustomPort(int customPort) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("CustomPort", customPort);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("CustomPort", customPort);
 }
 
 JabberAccountData::EncryptionFlag JabberAccountData::encryptionMode() const
 {
-	return m_data->isValidStorage()
-		? static_cast<EncryptionFlag>(m_data->loadValue<int>("EncryptionMode", static_cast<int>(Encryption_Auto)))
-		: Encryption_Auto;
+    return m_data->isValidStorage() ? static_cast<EncryptionFlag>(
+                                          m_data->loadValue<int>("EncryptionMode", static_cast<int>(Encryption_Auto)))
+                                    : Encryption_Auto;
 }
 
 void JabberAccountData::setEncryptionMode(EncryptionFlag encryptionMode) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("EncryptionMode", static_cast<int>(encryptionMode));
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("EncryptionMode", static_cast<int>(encryptionMode));
 }
 
 JabberAccountData::AllowPlainType JabberAccountData::plainAuthMode() const
 {
-	return m_data->isValidStorage()
-		? static_cast<AllowPlainType>(m_data->loadValue<int>("PlainAuthMode", static_cast<int>(AllowPlainOverTLS)))
-		: AllowPlainOverTLS;
+    return m_data->isValidStorage() ? static_cast<AllowPlainType>(
+                                          m_data->loadValue<int>("PlainAuthMode", static_cast<int>(AllowPlainOverTLS)))
+                                    : AllowPlainOverTLS;
 }
 
 void JabberAccountData::setPlainAuthMode(AllowPlainType plainAuthMode) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("PlainAuthMode", static_cast<int>(plainAuthMode));
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("PlainAuthMode", static_cast<int>(plainAuthMode));
 }
 
 QString JabberAccountData::tlsOverrideDomain() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<QString>("TlsOverrideDomain")
-		: QString{};
+    return m_data->isValidStorage() ? m_data->loadValue<QString>("TlsOverrideDomain") : QString{};
 }
 
 void JabberAccountData::setTlsOverrideDomain(const QString &tlsOverrideDomain) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("TlsOverrideDomain", tlsOverrideDomain);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("TlsOverrideDomain", tlsOverrideDomain);
 }
 
 bool JabberAccountData::sendTypingNotification() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("SendTypingNotification", true)
-		: true;
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("SendTypingNotification", true) : true;
 }
 
 void JabberAccountData::setSendTypingNotification(bool sendTypingNotification) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("SendTypingNotification", sendTypingNotification);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("SendTypingNotification", sendTypingNotification);
 }
 
 bool JabberAccountData::sendGoneNotification() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("SendGoneNotification", true)
-		: true;
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("SendGoneNotification", true) : true;
 }
 
 void JabberAccountData::setSendGoneNotification(bool sendGoneNotification) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("SendGoneNotification", sendGoneNotification);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("SendGoneNotification", sendGoneNotification);
 }
 
 bool JabberAccountData::publishSystemInfo() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("PublishSystemInfo", true)
-		: true;
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("PublishSystemInfo", true) : true;
 }
 
 void JabberAccountData::setPublishSystemInfo(bool publishSystemInfo) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("PublishSystemInfo", publishSystemInfo);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("PublishSystemInfo", publishSystemInfo);
 }
 
 QString JabberAccountData::dataTransferProxy() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<QString>("DataTransferProxy")
-		: QString{};
+    return m_data->isValidStorage() ? m_data->loadValue<QString>("DataTransferProxy") : QString{};
 }
 
 void JabberAccountData::setDataTransferProxy(const QString &dataTransferProxy)
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-	{
-		m_data->storeValue("DataTransferProxy", dataTransferProxy);
-		emit m_data->updated();
-	}
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+    {
+        m_data->storeValue("DataTransferProxy", dataTransferProxy);
+        emit m_data->updated();
+    }
 }
 
 bool JabberAccountData::requireDataTransferProxy() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<bool>("RequireDataTransferProxy", false)
-		: false;
+    return m_data->isValidStorage() ? m_data->loadValue<bool>("RequireDataTransferProxy", false) : false;
 }
 
 void JabberAccountData::setRequireDataTransferProxy(bool requireDataTransferProxy)
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-	{
-		m_data->storeValue("RequireDataTransferProxy", requireDataTransferProxy);
-		emit m_data->updated();
-	}
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+    {
+        m_data->storeValue("RequireDataTransferProxy", requireDataTransferProxy);
+        emit m_data->updated();
+    }
 }

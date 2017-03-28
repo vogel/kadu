@@ -23,9 +23,7 @@
 
 class TabsModule : public injeqt::module
 {
-
 public:
-	explicit TabsModule();
-	virtual ~TabsModule();
-
+    explicit TabsModule();
+    virtual ~TabsModule();
 };

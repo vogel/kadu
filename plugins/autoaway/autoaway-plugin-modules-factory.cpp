@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-AutoawayPluginModulesFactory::AutoawayPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+AutoawayPluginModulesFactory::AutoawayPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ AutoawayPluginModulesFactory::~AutoawayPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> AutoawayPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<AutoawayModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<AutoawayModule>());
 
-	return modules;
+    return modules;
 }
 
 QString AutoawayPluginModulesFactory::parentInjectorName() const
 {
-	return "idle";
+    return "idle";
 }
 
 #include "moc_autoaway-plugin-modules-factory.cpp"

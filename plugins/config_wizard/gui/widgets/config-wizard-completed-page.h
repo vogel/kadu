@@ -31,25 +31,24 @@ class QCheckBox;
 
 class ConfigWizardCompletedPage : public ConfigWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ConfigWizardCompletedPage(QWidget *parent = nullptr);
-	virtual ~ConfigWizardCompletedPage();
+    explicit ConfigWizardCompletedPage(QWidget *parent = nullptr);
+    virtual ~ConfigWizardCompletedPage();
 
     virtual void initializePage();
-	virtual void acceptPage();
+    virtual void acceptPage();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<YourAccountsWindowService> m_yourAccountsWindowService;
 
-	QCheckBox *ConfigureAccouuntsCheckBox;
+    QCheckBox *ConfigureAccouuntsCheckBox;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
-
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setYourAccountsWindowService(YourAccountsWindowService *yourAccountsWindowService);
 };

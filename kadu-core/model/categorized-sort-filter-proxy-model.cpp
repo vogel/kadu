@@ -30,8 +30,7 @@
 // #include <kstringhandler.h>
 
 CategorizedSortFilterProxyModel::CategorizedSortFilterProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent)
-    , d(new Private())
+        : QSortFilterProxyModel(parent), d(new Private())
 
 {
 }
@@ -93,18 +92,17 @@ bool CategorizedSortFilterProxyModel::sortCategoriesByNaturalComparison() const
     return d->sortCategoriesByNaturalComparison;
 }
 
-
 bool CategorizedSortFilterProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     if (d->categorizedModel)
     {
         int compare = compareCategories(left, right);
 
-        if (compare > 0) // left is greater than right
+        if (compare > 0)   // left is greater than right
         {
             return false;
         }
-        else if (compare < 0) // left is less than right
+        else if (compare < 0)   // left is less than right
         {
             return true;
         }
@@ -132,11 +130,11 @@ int CategorizedSortFilterProxyModel::compareCategories(const QModelIndex &left, 
         QString lstr = l.toString();
         QString rstr = r.toString();
 
-//         if (d->sortCategoriesByNaturalComparison)
-//         {
-//             return KStringHandler::naturalCompare(lstr, rstr);
-//         }
-//         else
+        //         if (d->sortCategoriesByNaturalComparison)
+        //         {
+        //             return KStringHandler::naturalCompare(lstr, rstr);
+        //         }
+        //         else
         {
             if (lstr < rstr)
             {

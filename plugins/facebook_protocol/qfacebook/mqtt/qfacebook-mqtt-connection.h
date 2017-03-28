@@ -33,38 +33,37 @@ struct QMqttMessage;
 
 class QFacebookMqttConnection : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit QFacebookMqttConnection(QMqttConnection &mqttConnection, QObject *parent = nullptr);
-	virtual ~QFacebookMqttConnection();
+    explicit QFacebookMqttConnection(QMqttConnection &mqttConnection, QObject *parent = nullptr);
+    virtual ~QFacebookMqttConnection();
 
-	template<typename MessageType>
-	void send(const MessageType &message)
-	{
-		try
-		{
-			auto mqttMessage = message.encode();
-			m_mqttConnection.sendMessage(mqttMessage);
-		}
-		catch (...)
-		{
-			emit invalidOutgoingMessage();
-		}
-	}
+    template <typename MessageType>
+    void send(const MessageType &message)
+    {
+        try
+        {
+            auto mqttMessage = message.encode();
+            m_mqttConnection.sendMessage(mqttMessage);
+        }
+        catch (...)
+        {
+            emit invalidOutgoingMessage();
+        }
+    }
 
 signals:
-	void invalidOutgoingMessage();
-	void invalidIncomingMessage(const QByteArray &data);
+    void invalidOutgoingMessage();
+    void invalidIncomingMessage(const QByteArray &data);
 
-	void connectAckReceived(const QFacebookConnectAck &connectAck);
-	void pongReceived(const QFacebookPong &pong);
-	void publishReceived(const QFacebookPublish &publish);
+    void connectAckReceived(const QFacebookConnectAck &connectAck);
+    void pongReceived(const QFacebookPong &pong);
+    void publishReceived(const QFacebookPublish &publish);
 
 private:
-	QMqttConnection &m_mqttConnection;
+    QMqttConnection &m_mqttConnection;
 
-	void messageReceived(const QMqttMessage &message);
-	void sendPublishReceivedConfirmation(uint8_t flags, const QFacebookPublish &publish);
-
+    void messageReceived(const QMqttMessage &message);
+    void sendPublishReceivedConfirmation(uint8_t flags, const QFacebookPublish &publish);
 };

@@ -41,33 +41,32 @@ class KaduAbstractModel;
  */
 namespace MergedProxyModelFactory
 {
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new instance of model that merges other models into one.
-	 * @param models list of models to merge
-	 * @param parent qobject parent of new model
-	 * @return new instance of model that merges other models into one
-	 */
-	KADUAPI QAbstractItemModel * createInstance(QList<QAbstractItemModel *> models, QObject *parent = nullptr);
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Creates new instance of model that merges other models into one.
+ * @param models list of models to merge
+ * @param parent qobject parent of new model
+ * @return new instance of model that merges other models into one
+ */
+KADUAPI QAbstractItemModel *createInstance(QList<QAbstractItemModel *> models, QObject *parent = nullptr);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new instance of model that merges other models into one.
-	 * @param models list of models to merge
-	 * @param parent qobject parent of new model
-	 * @return new instance of model that merges other models into one
-	 *
-	 * The only difference between this method and createInstance is that every model in list must implement
-	 * KaduAbstractModel interface and resulting merged model will also implement this interface.
-	 *
-	 * Accepted items must either be ModelChain or QAbstractItemModel objects.
-	 */
-	KADUAPI QAbstractItemModel * createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = nullptr);
-
+/**
+ * @author Rafał 'Vogel' Malinowski
+ * @short Creates new instance of model that merges other models into one.
+ * @param models list of models to merge
+ * @param parent qobject parent of new model
+ * @return new instance of model that merges other models into one
+ *
+ * The only difference between this method and createInstance is that every model in list must implement
+ * KaduAbstractModel interface and resulting merged model will also implement this interface.
+ *
+ * Accepted items must either be ModelChain or QAbstractItemModel objects.
+ */
+KADUAPI QAbstractItemModel *createKaduModelInstance(QList<KaduAbstractModel *> models, QObject *parent = nullptr);
 }
 
 /**
  * @}
  */
 
-#endif // MERGED_PROXY_MODEL_FACTORY_H
+#endif   // MERGED_PROXY_MODEL_FACTORY_H

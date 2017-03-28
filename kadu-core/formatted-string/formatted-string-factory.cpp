@@ -48,122 +48,128 @@ FormattedStringFactory::~FormattedStringFactory()
 
 void FormattedStringFactory::setImageStorageService(ImageStorageService *imageStorageService)
 {
-	m_imageStorageService = imageStorageService;
+    m_imageStorageService = imageStorageService;
 }
 
-std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QString& plainText)
+std::unique_ptr<FormattedString> FormattedStringFactory::fromPlainText(const QString &plainText)
 {
-	return std::make_unique<FormattedStringTextBlock>(plainText, false, false, false, QColor{});
+    return std::make_unique<FormattedStringTextBlock>(plainText, false, false, false, QColor{});
 }
 
-std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
+std::unique_ptr<FormattedString>
+FormattedStringFactory::partFromQTextCharFormat(const QTextCharFormat &textCharFormat, const QString &text)
 {
-	auto replacedNewLine = text;
-	replacedNewLine.replace("\u00A0", " ");
-	replacedNewLine.replace(QChar::LineSeparator, '\n');
-	return std::make_unique<FormattedStringTextBlock>(replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(), textCharFormat.font().underline(), textCharFormat.foreground().color());
+    auto replacedNewLine = text;
+    replacedNewLine.replace("\u00A0", " ");
+    replacedNewLine.replace(QChar::LineSeparator, '\n');
+    return std::make_unique<FormattedStringTextBlock>(
+        replacedNewLine, textCharFormat.font().bold(), textCharFormat.font().italic(),
+        textCharFormat.font().underline(), textCharFormat.foreground().color());
 }
 
-std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat& textImageFormat)
+std::unique_ptr<FormattedString>
+FormattedStringFactory::partFromQTextImageFormat(const QTextImageFormat &textImageFormat)
 {
-	auto filePath = textImageFormat.name();
-	QFileInfo fileInfo{filePath};
+    auto filePath = textImageFormat.name();
+    QFileInfo fileInfo{filePath};
 
-	if (m_imageStorageService)
-		filePath = m_imageStorageService.data()->storeImage(filePath);
+    if (m_imageStorageService)
+        filePath = m_imageStorageService.data()->storeImage(filePath);
 
-	return std::make_unique<FormattedStringImageBlock>(filePath);
+    return std::make_unique<FormattedStringImageBlock>(filePath);
 }
 
-std::unique_ptr<FormattedString> FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
+std::unique_ptr<FormattedString>
+FormattedStringFactory::partFromQTextFragment(const QTextFragment &textFragment, bool prependNewLine)
 {
-	auto format = textFragment.charFormat();
-	if (!format.isImageFormat())
-		return partFromQTextCharFormat(format, prependNewLine ? '\n' + textFragment.text() : textFragment.text());
-	else
-		return partFromQTextImageFormat(format.toImageFormat());
+    auto format = textFragment.charFormat();
+    if (!format.isImageFormat())
+        return partFromQTextCharFormat(format, prependNewLine ? '\n' + textFragment.text() : textFragment.text());
+    else
+        return partFromQTextImageFormat(format.toImageFormat());
 }
 
-std::vector<std::unique_ptr<FormattedString>> FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
+std::vector<std::unique_ptr<FormattedString>>
+FormattedStringFactory::partsFromQTextBlock(const QTextBlock &textBlock, bool firstBlock)
 {
-	auto result = std::vector<std::unique_ptr<FormattedString>>{};
-	auto firstFragment = true;
-	for (auto it = textBlock.begin(); !it.atEnd(); ++it)
-	{
-		if (!it.fragment().isValid())
-			continue;
+    auto result = std::vector<std::unique_ptr<FormattedString>>{};
+    auto firstFragment = true;
+    for (auto it = textBlock.begin(); !it.atEnd(); ++it)
+    {
+        if (!it.fragment().isValid())
+            continue;
 
-		auto part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
-		if (part && !part->isEmpty())
-		{
-			result.push_back(std::move(part));
-			firstFragment = false;
-		}
-	}
+        auto part = partFromQTextFragment(it.fragment(), !firstBlock && firstFragment);
+        if (part && !part->isEmpty())
+        {
+            result.push_back(std::move(part));
+            firstFragment = false;
+        }
+    }
 
-	return result;
+    return result;
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const QString &html)
 {
-	QTextDocument document{};
-	try
-	{
-		document.setHtml(processDom(html, ForceSpaceDomVisitor{}));
-	}
-	catch (invalid_xml &)
-	{
-		// secure it by applying another html escape
-		// at least it won't break anything in webview
-		document.setHtml(plainToHtml(html).string());
-	}
+    QTextDocument document{};
+    try
+    {
+        document.setHtml(processDom(html, ForceSpaceDomVisitor{}));
+    }
+    catch (invalid_xml &)
+    {
+        // secure it by applying another html escape
+        // at least it won't break anything in webview
+        document.setHtml(plainToHtml(html).string());
+    }
 
-	return fromTextDocument(document);
+    return fromTextDocument(document);
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const HtmlString &html)
 {
-	return fromHtml(html.string());
+    return fromHtml(html.string());
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromHtml(const NormalizedHtmlString &html)
 {
-	return fromHtml(html.string());
+    return fromHtml(html.string());
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromTextDocument(const QTextDocument &textDocument)
 {
-	auto firstBlock = true;
-	auto items = std::vector<std::unique_ptr<FormattedString>>{};
+    auto firstBlock = true;
+    auto items = std::vector<std::unique_ptr<FormattedString>>{};
 
-	auto block = textDocument.firstBlock();
-	while (block.isValid())
-	{
-		auto parts = partsFromQTextBlock(block, firstBlock);
-		for (auto &&part : parts)
-			items.push_back(std::move(part));
+    auto block = textDocument.firstBlock();
+    while (block.isValid())
+    {
+        auto parts = partsFromQTextBlock(block, firstBlock);
+        for (auto &&part : parts)
+            items.push_back(std::move(part));
 
-		block = block.next();
-		firstBlock = false;
-	}
+        block = block.next();
+        firstBlock = false;
+    }
 
-	return std::make_unique<CompositeFormattedString>(std::move(items));
+    return std::make_unique<CompositeFormattedString>(std::move(items));
 }
 
 std::unique_ptr<FormattedString> FormattedStringFactory::fromText(const QString &text)
 {
-	QTextDocument document;
-	if (isHtml(text))
-		document.setHtml(text);
-	else
-		document.setPlainText(text);
+    QTextDocument document;
+    if (isHtml(text))
+        document.setHtml(text);
+    else
+        document.setPlainText(text);
 
-	return fromTextDocument(document);
+    return fromTextDocument(document);
 }
 
 bool FormattedStringFactory::isHtml(const QString &text) const
 {
-	return text.contains('<');
+    return text.contains('<');
 }
 
 #include "moc_formatted-string-factory.cpp"

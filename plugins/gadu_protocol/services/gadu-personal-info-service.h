@@ -32,30 +32,29 @@ class GaduConnection;
 
 class GaduPersonalInfoService : public PersonalInfoService
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ContactStorage> m_contactStorage;
-	QPointer<GaduConnection> Connection;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ContactStorage> m_contactStorage;
+    QPointer<GaduConnection> Connection;
 
-	unsigned int FetchSeq;
-	unsigned int UpdateSeq;
+    unsigned int FetchSeq;
+    unsigned int UpdateSeq;
 
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventPubdir50Read(struct gg_event *e);
-	void handleEventPubdir50Write(struct gg_event *e);
+    friend class GaduProtocolSocketNotifiers;
+    void handleEventPubdir50Read(struct gg_event *e);
+    void handleEventPubdir50Write(struct gg_event *e);
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 
 public:
-	explicit GaduPersonalInfoService(Account account, QObject *parent = nullptr);
-	virtual ~GaduPersonalInfoService();
+    explicit GaduPersonalInfoService(Account account, QObject *parent = nullptr);
+    virtual ~GaduPersonalInfoService();
 
-	void setConnection(GaduConnection *connection);
+    void setConnection(GaduConnection *connection);
 
-	virtual void fetchPersonalInfo(const QString &id);
-	virtual void updatePersonalInfo(const QString &id, Buddy buddy);
-
+    virtual void fetchPersonalInfo(const QString &id);
+    virtual void updatePersonalInfo(const QString &id, Buddy buddy);
 };

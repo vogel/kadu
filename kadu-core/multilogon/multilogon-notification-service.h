@@ -37,34 +37,33 @@ struct Notification;
 
 class MultilogonNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit MultilogonNotificationService(QObject *parent = nullptr);
-	virtual ~MultilogonNotificationService();
+    Q_INVOKABLE explicit MultilogonNotificationService(QObject *parent = nullptr);
+    virtual ~MultilogonNotificationService();
 
 public slots:
-	void notifyMultilogonSessionConnected(const MultilogonSession &session);
-	void notifyMultilogonSessionDisonnected(const MultilogonSession &session);
+    void notifyMultilogonSessionConnected(const MultilogonSession &session);
+    void notifyMultilogonSessionDisonnected(const MultilogonSession &session);
 
 private:
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationCallback m_mutlilogonDisconnectCallback;
-	NotificationEvent m_multilogonEvent;
-	NotificationEvent m_multilogonConnectedEvent;
-	NotificationEvent m_multilogonDisconnectedEvent;
+    NotificationCallback m_mutlilogonDisconnectCallback;
+    NotificationEvent m_multilogonEvent;
+    NotificationEvent m_multilogonConnectedEvent;
+    NotificationEvent m_multilogonDisconnectedEvent;
 
-	void disconnectSession(const Notification &notification);
+    void disconnectSession(const Notification &notification);
 
 private slots:
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

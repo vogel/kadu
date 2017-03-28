@@ -19,16 +19,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actions/action-description.h"
 #include "actions/action.h"
+#include "actions/action-description.h"
 #include "core/session-service.h"
 #include "windows/main-window.h"
 
 #include "actions.h"
 
-Actions::Actions(QObject *parent) :
-		QObject{parent},
-		BlockSignals{false}
+Actions::Actions(QObject *parent) : QObject{parent}, BlockSignals{false}
 {
 }
 
@@ -38,43 +36,43 @@ Actions::~Actions()
 
 void Actions::setSessionService(SessionService *sessionService)
 {
-	m_sessionService = sessionService;
+    m_sessionService = sessionService;
 }
 
 bool Actions::insert(ActionDescription *action)
 {
-	if (contains(action->name()))
-		return false;
+    if (contains(action->name()))
+        return false;
 
-	QMap<QString, ActionDescription *>::insert(action->name(), action);
+    QMap<QString, ActionDescription *>::insert(action->name(), action);
 
-	if (!BlockSignals)
-		emit actionLoaded(action);
-	return true;
+    if (!BlockSignals)
+        emit actionLoaded(action);
+    return true;
 }
 
 void Actions::remove(ActionDescription *action)
 {
-	QMap<QString, ActionDescription *>::remove(action->name());
+    QMap<QString, ActionDescription *>::remove(action->name());
 
-	if (!m_sessionService->isClosing())
-		emit actionUnloaded(action);
+    if (!m_sessionService->isClosing())
+        emit actionUnloaded(action);
 }
 
-QAction * Actions::createAction(const QString &name, ActionContext *context, QObject *parent)
+QAction *Actions::createAction(const QString &name, ActionContext *context, QObject *parent)
 {
-	if (!contains(name))
-		return nullptr;
+    if (!contains(name))
+        return nullptr;
 
-	auto v = value(name);
-	if (!v)
-		return nullptr;
+    auto v = value(name);
+    if (!v)
+        return nullptr;
 
-	auto result = v->createAction(context, parent);
+    auto result = v->createAction(context, parent);
 
-	emit actionCreated(result);
+    emit actionCreated(result);
 
-	return result;
+    return result;
 }
 
 #include "moc_actions.cpp"

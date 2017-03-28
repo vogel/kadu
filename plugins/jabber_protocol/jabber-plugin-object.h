@@ -37,37 +37,36 @@ class UrlHandlerManager;
 
 class JabberPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit JabberPluginObject(QObject *parent = nullptr);
-	virtual ~JabberPluginObject();
+    Q_INVOKABLE explicit JabberPluginObject(QObject *parent = nullptr);
+    virtual ~JabberPluginObject();
 
 private:
-	QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
-	QPointer<GTalkProtocolFactory> m_gtalkProtocolFactory;
-	QPointer<JabberActions> m_jabberActions;
-	QPointer<JabberProtocolFactory> m_jabberProtocolFactory;
-	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
-	QPointer<JabberUrlDomVisitorProvider> m_jabberUrlDomVisitorProvider;
-	QPointer<JabberUrlHandler> m_jabberUrlHandler;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<ProtocolsManager> m_protocolsManager;
-	QPointer<UrlHandlerManager> m_urlHandlerManager;
+    QPointer<DomVisitorProviderRepository> m_domVisitorProviderRepository;
+    QPointer<GTalkProtocolFactory> m_gtalkProtocolFactory;
+    QPointer<JabberActions> m_jabberActions;
+    QPointer<JabberProtocolFactory> m_jabberProtocolFactory;
+    QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
+    QPointer<JabberUrlDomVisitorProvider> m_jabberUrlDomVisitorProvider;
+    QPointer<JabberUrlHandler> m_jabberUrlHandler;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<ProtocolsManager> m_protocolsManager;
+    QPointer<UrlHandlerManager> m_urlHandlerManager;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
-	INJEQT_SET void setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory);
-	INJEQT_SET void setJabberActions(JabberActions *jabberActions);
-	INJEQT_SET void setJabberProtocolFactory(JabberProtocolFactory *jabberProtocolFactory);
-	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
-	INJEQT_SET void setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider);
-	INJEQT_SET void setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
-	INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository);
+    INJEQT_SET void setGTalkProtocolFactory(GTalkProtocolFactory *gtalkProtocolFactory);
+    INJEQT_SET void setJabberActions(JabberActions *jabberActions);
+    INJEQT_SET void setJabberProtocolFactory(JabberProtocolFactory *jabberProtocolFactory);
+    INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
+    INJEQT_SET void setJabberUrlDomVisitorProvider(JabberUrlDomVisitorProvider *jabberUrlDomVisitorProvider);
+    INJEQT_SET void setJabberUrlHandler(JabberUrlHandler *jabberUrlHandler);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
+    INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
 };

@@ -27,9 +27,7 @@
 
 #include "sms-token-read-job.h"
 
-SmsTokenReadJob::SmsTokenReadJob(QObject *parent) :
-		QObject{parent},
-		TokenNetworkReply{}
+SmsTokenReadJob::SmsTokenReadJob(QObject *parent) : QObject{parent}, TokenNetworkReply{}
 {
 }
 
@@ -39,83 +37,83 @@ SmsTokenReadJob::~SmsTokenReadJob()
 
 void SmsTokenReadJob::setCallback(const QScriptValue &callbackObject, const QScriptValue &callbackMethod)
 {
-	CallbackObject = callbackObject;
-	CallbackMethod = callbackMethod;
+    CallbackObject = callbackObject;
+    CallbackMethod = callbackMethod;
 }
 
 void SmsTokenReadJob::setTokenImageUrl(const QString &tokenImageUrl)
 {
-	TokenImageUrl = tokenImageUrl;
+    TokenImageUrl = tokenImageUrl;
 }
 
 void SmsTokenReadJob::exec()
 {
-	if (!CallbackObject.isValid() || !CallbackMethod.isValid() || TokenImageUrl.isEmpty())
-	{
-		emit finished(false, "dialog-error", tr("Invalid paremeters for token read job."));
-		return;
-	}
+    if (!CallbackObject.isValid() || !CallbackMethod.isValid() || TokenImageUrl.isEmpty())
+    {
+        emit finished(false, "dialog-error", tr("Invalid paremeters for token read job."));
+        return;
+    }
 
-	QNetworkAccessManager *network = new QNetworkAccessManager(this);
-	TokenNetworkReply = network->get(QNetworkRequest(TokenImageUrl));
+    QNetworkAccessManager *network = new QNetworkAccessManager(this);
+    TokenNetworkReply = network->get(QNetworkRequest(TokenImageUrl));
 
-	connect(TokenNetworkReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
+    connect(TokenNetworkReply, SIGNAL(finished()), this, SLOT(tokenImageDownloaded()));
 
-	emit progress("dialog-information", tr("Downloading token image..."));
+    emit progress("dialog-information", tr("Downloading token image..."));
 }
 
 void SmsTokenReadJob::cancel()
 {
-	if (TokenNetworkReply)
-	{
-		TokenNetworkReply->abort();
-		TokenNetworkReply->deleteLater();
-		TokenNetworkReply = 0;
-	}
+    if (TokenNetworkReply)
+    {
+        TokenNetworkReply->abort();
+        TokenNetworkReply->deleteLater();
+        TokenNetworkReply = 0;
+    }
 
-	deleteLater();
+    deleteLater();
 }
 
 void SmsTokenReadJob::tokenImageDownloaded()
 {
-	if (QNetworkReply::NoError != TokenNetworkReply->error())
-	{
-		emit finished(false, "dialog-error", tr("Unable to fetch token image."));
-		tokenValueEntered(QString());
-		return;
-	}
+    if (QNetworkReply::NoError != TokenNetworkReply->error())
+    {
+        emit finished(false, "dialog-error", tr("Unable to fetch token image."));
+        tokenValueEntered(QString());
+        return;
+    }
 
-	QPixmap tokenPixmap;
-	if (!tokenPixmap.loadFromData(TokenNetworkReply->readAll()))
-	{
-		emit finished(false, "dialog-error", tr("Unable to read token image."));
-		tokenValueEntered(QString());
-		return;
-	}
+    QPixmap tokenPixmap;
+    if (!tokenPixmap.loadFromData(TokenNetworkReply->readAll()))
+    {
+        emit finished(false, "dialog-error", tr("Unable to read token image."));
+        tokenValueEntered(QString());
+        return;
+    }
 
-	emit progress("dialog-information", tr("Waiting for entry of token value..."));
+    emit progress("dialog-information", tr("Waiting for entry of token value..."));
 
-	TokenWindow *tokenWindow = new TokenWindow(tokenPixmap, 0);
-	connect(tokenWindow, SIGNAL(tokenValueEntered(QString)), this, SLOT(tokenValueEntered(QString)));
-	tokenWindow->exec();
+    TokenWindow *tokenWindow = new TokenWindow(tokenPixmap, 0);
+    connect(tokenWindow, SIGNAL(tokenValueEntered(QString)), this, SLOT(tokenValueEntered(QString)));
+    tokenWindow->exec();
 }
 
 void SmsTokenReadJob::tokenValueEntered(const QString &tokenValue)
 {
-	if (tokenValue.isEmpty())
-	{
-		emit progress(QStringLiteral("dialog-error"), tr("No token value provided."));
-		emit finished(false, QStringLiteral("dialog-error"), QString());
-		return;
-	}
+    if (tokenValue.isEmpty())
+    {
+        emit progress(QStringLiteral("dialog-error"), tr("No token value provided."));
+        emit finished(false, QStringLiteral("dialog-error"), QString());
+        return;
+    }
 
-	emit progress(QStringLiteral("dialog-information"), tr("Received token value."));
+    emit progress(QStringLiteral("dialog-information"), tr("Received token value."));
 
-	QScriptValueList arguments;
-	arguments.append(tokenValue);
-	CallbackMethod.call(CallbackObject, arguments);
+    QScriptValueList arguments;
+    arguments.append(tokenValue);
+    CallbackMethod.call(CallbackObject, arguments);
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_sms-token-read-job.cpp"

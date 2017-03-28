@@ -25,29 +25,28 @@ OAuthConsumer::OAuthConsumer()
 
 OAuthConsumer::OAuthConsumer(const OAuthConsumer &copyMe)
 {
-	ConsumerKey = copyMe.ConsumerKey;
-	ConsumerSecret = copyMe.ConsumerSecret;
+    ConsumerKey = copyMe.ConsumerKey;
+    ConsumerSecret = copyMe.ConsumerSecret;
 }
 
-OAuthConsumer::OAuthConsumer(const QByteArray &key, const QByteArray &secret) :
-		ConsumerKey(key), ConsumerSecret(secret)
+OAuthConsumer::OAuthConsumer(const QByteArray &key, const QByteArray &secret) : ConsumerKey(key), ConsumerSecret(secret)
 {
 }
 
-OAuthConsumer & OAuthConsumer::operator = (const OAuthConsumer &copyMe)
+OAuthConsumer &OAuthConsumer::operator=(const OAuthConsumer &copyMe)
 {
-	ConsumerKey = copyMe.ConsumerKey;
-	ConsumerSecret = copyMe.ConsumerSecret;
+    ConsumerKey = copyMe.ConsumerKey;
+    ConsumerSecret = copyMe.ConsumerSecret;
 
-	return *this;
+    return *this;
 }
 
-const QByteArray & OAuthConsumer::consumerKey() const
+const QByteArray &OAuthConsumer::consumerKey() const
 {
-	return ConsumerKey;
+    return ConsumerKey;
 }
 
-const QByteArray & OAuthConsumer::consumerSecret() const
+const QByteArray &OAuthConsumer::consumerSecret() const
 {
-	return ConsumerSecret;
+    return ConsumerSecret;
 }

@@ -28,20 +28,19 @@
 
 #include "speech-configuration-widget.h"
 
-SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent) :
-		NotifierConfigurationWidget(parent)
+SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent) : NotifierConfigurationWidget(parent)
 {
-	maleLineEdit = new QLineEdit(this);
-	femaleLineEdit = new QLineEdit(this);
+    maleLineEdit = new QLineEdit(this);
+    femaleLineEdit = new QLineEdit(this);
 
-	QGridLayout *gridLayout = new QGridLayout(this);
-	gridLayout->setMargin(0);
-	gridLayout->addWidget(new QLabel(tr("Male format") + ':', this), 0, 0, Qt::AlignRight);
-	gridLayout->addWidget(maleLineEdit, 0, 1);
-	gridLayout->addWidget(new QLabel(tr("Female format") + ':', this), 1, 0, Qt::AlignRight);
-	gridLayout->addWidget(femaleLineEdit, 1, 1);
+    QGridLayout *gridLayout = new QGridLayout(this);
+    gridLayout->setMargin(0);
+    gridLayout->addWidget(new QLabel(tr("Male format") + ':', this), 0, 0, Qt::AlignRight);
+    gridLayout->addWidget(maleLineEdit, 0, 1);
+    gridLayout->addWidget(new QLabel(tr("Female format") + ':', this), 1, 0, Qt::AlignRight);
+    gridLayout->addWidget(femaleLineEdit, 1, 1);
 
-	parent->layout()->addWidget(this);
+    parent->layout()->addWidget(this);
 }
 
 SpeechConfigurationWidget::~SpeechConfigurationWidget()
@@ -50,52 +49,52 @@ SpeechConfigurationWidget::~SpeechConfigurationWidget()
 
 void SpeechConfigurationWidget::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SpeechConfigurationWidget::saveNotifyConfigurations()
 {
-	if (!currentNotificationEvent.isEmpty())
-	{
-		maleFormat[currentNotificationEvent] = maleLineEdit->text();
-		femaleFormat[currentNotificationEvent] = femaleLineEdit->text();
-	}
+    if (!currentNotificationEvent.isEmpty())
+    {
+        maleFormat[currentNotificationEvent] = maleLineEdit->text();
+        femaleFormat[currentNotificationEvent] = femaleLineEdit->text();
+    }
 
-	QMapIterator<QString, QString> i(maleFormat);
-	while (i.hasNext())
-	{
-		i.next();
-		const QString &eventName = i.key();
-		m_configuration->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
-	}
+    QMapIterator<QString, QString> i(maleFormat);
+    while (i.hasNext())
+    {
+        i.next();
+        const QString &eventName = i.key();
+        m_configuration->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Male", i.value());
+    }
 
-	QMapIterator<QString, QString> j(femaleFormat);
-	while (j.hasNext())
-	{
-		j.next();
-		const QString &eventName = j.key();
-		m_configuration->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
-	}
+    QMapIterator<QString, QString> j(femaleFormat);
+    while (j.hasNext())
+    {
+        j.next();
+        const QString &eventName = j.key();
+        m_configuration->deprecatedApi()->writeEntry("Speech", eventName + "_Syntax/Female", j.value());
+    }
 }
 
 void SpeechConfigurationWidget::switchToEvent(const QString &event)
 {
-	if (!currentNotificationEvent.isEmpty())
-	{
-		maleFormat[currentNotificationEvent] = maleLineEdit->text();
-		femaleFormat[currentNotificationEvent] = femaleLineEdit->text();
-	}
-	currentNotificationEvent = event;
+    if (!currentNotificationEvent.isEmpty())
+    {
+        maleFormat[currentNotificationEvent] = maleLineEdit->text();
+        femaleFormat[currentNotificationEvent] = femaleLineEdit->text();
+    }
+    currentNotificationEvent = event;
 
-	if (maleFormat.contains(event))
-		maleLineEdit->setText(maleFormat[event]);
-	else
-		maleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
+    if (maleFormat.contains(event))
+        maleLineEdit->setText(maleFormat[event]);
+    else
+        maleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Male"));
 
-	if (femaleFormat.contains(event))
-		femaleLineEdit->setText(femaleFormat[event]);
-	else
-		femaleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
+    if (femaleFormat.contains(event))
+        femaleLineEdit->setText(femaleFormat[event]);
+    else
+        femaleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
 }
 
 #include "moc_speech-configuration-widget.cpp"

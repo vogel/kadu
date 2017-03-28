@@ -37,26 +37,25 @@ class PluginInjectedFactory;
 
 class FacebookServices : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FacebookServices(Account account, std::unique_ptr<QFacebookSession> session);
-	virtual ~FacebookServices();
+    explicit FacebookServices(Account account, std::unique_ptr<QFacebookSession> session);
+    virtual ~FacebookServices();
 
 private:
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	Account m_account;
-	std::unique_ptr<QFacebookSession> m_session;
-	std::unique_ptr<FacebookChatService> m_chatService;
-	std::unique_ptr<FacebookRosterService> m_rosterService;
+    Account m_account;
+    std::unique_ptr<QFacebookSession> m_session;
+    std::unique_ptr<FacebookChatService> m_chatService;
+    std::unique_ptr<FacebookRosterService> m_rosterService;
 
 private slots:
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 };

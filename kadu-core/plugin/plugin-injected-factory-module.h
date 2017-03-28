@@ -25,8 +25,6 @@
 
 class KADUAPI PluginInjectedFactoryModule : public injeqt::module
 {
-
 public:
-	explicit PluginInjectedFactoryModule();
-
+    explicit PluginInjectedFactoryModule();
 };

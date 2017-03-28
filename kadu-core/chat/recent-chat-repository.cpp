@@ -21,8 +21,7 @@
 
 #include <algorithm>
 
-RecentChatRepository::RecentChatRepository(QObject *parent) :
-		QObject{parent}
+RecentChatRepository::RecentChatRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,29 +31,29 @@ RecentChatRepository::~RecentChatRepository()
 
 RecentChatRepository::Iterator RecentChatRepository::begin() const
 {
-	return m_chats.cbegin();
+    return m_chats.cbegin();
 }
 
 RecentChatRepository::Iterator RecentChatRepository::end() const
 {
-	return m_chats.cend();
+    return m_chats.cend();
 }
 
 void RecentChatRepository::addRecentChat(Chat chat)
 {
-	m_chats.insert(chat);
-	emit recentChatAdded(chat);
+    m_chats.insert(chat);
+    emit recentChatAdded(chat);
 }
 
 void RecentChatRepository::removeRecentChat(Chat chat)
 {
-	m_chats.erase(chat);
-	emit recentChatRemoved(chat);
+    m_chats.erase(chat);
+    emit recentChatRemoved(chat);
 }
 
 size_t RecentChatRepository::size() const
 {
-	return m_chats.size();
+    return m_chats.size();
 }
 
 #include "recent-chat-repository.moc"

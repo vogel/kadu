@@ -23,8 +23,8 @@
 #ifndef IDENTITY_H
 #define IDENTITY_H
 
-#include "identities/identity-shared.h"
 #include "exports.h"
+#include "identities/identity-shared.h"
 
 #include "storage/shared-base.h"
 
@@ -32,30 +32,27 @@ class Account;
 
 class KADUAPI Identity : public SharedBase<IdentityShared>
 {
-	KaduSharedBaseClass(Identity)
+    KaduSharedBaseClass(Identity)
 
-public:
-	static Identity null;
+        public : static Identity null;
 
-	Identity();
-	Identity(IdentityShared *data);
-	explicit Identity(QObject *data);
-	Identity(const Identity &copy);
-	virtual ~Identity();
+    Identity();
+    Identity(IdentityShared *data);
+    explicit Identity(QObject *data);
+    Identity(const Identity &copy);
+    virtual ~Identity();
 
-	void addAccount(Account account);
-	void removeAccount(Account account);
-	bool hasAccount(Account account) const;
-	bool hasAnyLoadedAccount() const;
-	bool isEmpty() const;
+    void addAccount(Account account);
+    void removeAccount(Account account);
+    bool hasAccount(Account account) const;
+    bool hasAnyLoadedAccount() const;
+    bool isEmpty() const;
 
-	StatusContainer * statusContainer() const;
+    StatusContainer *statusContainer() const;
 
-	KaduSharedBase_PropertyBool(Permanent)
-	KaduSharedBase_PropertyCRW(QString, name, Name)
-
+    KaduSharedBase_PropertyBool(Permanent) KaduSharedBase_PropertyCRW(QString, name, Name)
 };
 
 Q_DECLARE_METATYPE(Identity)
 
-#endif // IDENTITY_H
+#endif   // IDENTITY_H

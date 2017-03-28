@@ -31,27 +31,26 @@ class GaduConnection;
 
 class GaduContactPersonalInfoService : public ContactPersonalInfoService
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<BuddyStorage> m_buddyStorage;
-	QPointer<ContactStorage> m_contactStorage;
-	QPointer<GaduConnection> Connection;
+    QPointer<BuddyStorage> m_buddyStorage;
+    QPointer<ContactStorage> m_contactStorage;
+    QPointer<GaduConnection> Connection;
 
-	unsigned int FetchSeq;
-	QString Id;
+    unsigned int FetchSeq;
+    QString Id;
 
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventPubdir50Read(struct gg_event *e);
+    friend class GaduProtocolSocketNotifiers;
+    void handleEventPubdir50Read(struct gg_event *e);
 
 private slots:
-	INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
-	INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
+    INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
+    INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
 
 public:
-	GaduContactPersonalInfoService(Account account, QObject *parent);
+    GaduContactPersonalInfoService(Account account, QObject *parent);
 
-	void setConnection(GaduConnection *connection);
+    void setConnection(GaduConnection *connection);
 
-	virtual void fetchPersonalInfo(Contact contact);
-
+    virtual void fetchPersonalInfo(Contact contact);
 };

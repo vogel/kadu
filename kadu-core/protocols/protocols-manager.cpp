@@ -27,8 +27,7 @@
 
 #include "protocols-manager.h"
 
-ProtocolsManager::ProtocolsManager(QObject *parent) :
-		QObject{parent}
+ProtocolsManager::ProtocolsManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,48 +37,48 @@ ProtocolsManager::~ProtocolsManager()
 
 void ProtocolsManager::registerProtocolFactory(ProtocolFactory *factory)
 {
-	if (!factory || Factories.contains(factory))
-		return;
+    if (!factory || Factories.contains(factory))
+        return;
 
-	emit protocolFactoryAboutToBeRegistered(factory);
-	Factories.append(factory);
-	emit protocolFactoryRegistered(factory);
+    emit protocolFactoryAboutToBeRegistered(factory);
+    Factories.append(factory);
+    emit protocolFactoryRegistered(factory);
 }
 
 void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 {
-	if (!factory || !Factories.contains(factory))
-		return;
+    if (!factory || !Factories.contains(factory))
+        return;
 
-	emit protocolFactoryAboutToBeUnregistered(factory);
-	Factories.removeAll(factory);
-	emit protocolFactoryUnregistered(factory);
+    emit protocolFactoryAboutToBeUnregistered(factory);
+    Factories.removeAll(factory);
+    emit protocolFactoryUnregistered(factory);
 }
 
 bool ProtocolsManager::hasProtocolFactory(const QString &name)
 {
-	foreach (ProtocolFactory *factory, Factories)
-		if (factory->name() == name)
-			return true;
+    foreach (ProtocolFactory *factory, Factories)
+        if (factory->name() == name)
+            return true;
 
-	return false;
+    return false;
 }
 
-ProtocolFactory * ProtocolsManager::byName(const QString &name)
+ProtocolFactory *ProtocolsManager::byName(const QString &name)
 {
-	foreach (ProtocolFactory *factory, Factories)
-		if (factory->name() == name)
-			return factory;
+    foreach (ProtocolFactory *factory, Factories)
+        if (factory->name() == name)
+            return factory;
 
-	return 0;
+    return 0;
 }
 
-ProtocolFactory * ProtocolsManager::byIndex(int index)
+ProtocolFactory *ProtocolsManager::byIndex(int index)
 {
-	if (index < 0 || index >= Factories.count())
-		return 0;
+    if (index < 0 || index >= Factories.count())
+        return 0;
 
-	return Factories.at(index);
+    return Factories.at(index);
 }
 
 #include "moc_protocols-manager.cpp"

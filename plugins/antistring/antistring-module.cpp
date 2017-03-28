@@ -27,9 +27,9 @@
 
 AntistringModule::AntistringModule()
 {
-	add_type<AntistringConfigurationUiHandler>();
-	add_type<AntistringConfiguration>();
-	add_type<AntistringMessageFilter>();
-	add_type<AntistringNotificationService>();
-	add_type<AntistringPluginObject>();
+    add_type<AntistringConfigurationUiHandler>();
+    add_type<AntistringConfiguration>();
+    add_type<AntistringMessageFilter>();
+    add_type<AntistringNotificationService>();
+    add_type<AntistringPluginObject>();
 }

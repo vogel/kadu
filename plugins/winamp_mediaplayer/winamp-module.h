@@ -23,9 +23,7 @@
 
 class WinampModule : public injeqt::module
 {
-
 public:
-	explicit WinampModule();
-	virtual ~WinampModule();
-
+    explicit WinampModule();
+    virtual ~WinampModule();
 };

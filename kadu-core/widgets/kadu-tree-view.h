@@ -34,47 +34,47 @@ class QTemporaryFile;
 
 class KADUAPI KaduTreeView : public QTreeView, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum BackgroundMode
-	{
-		BackgroundNone,
-		BackgroundCentered,
-		BackgroundTiled,
-		BackgroundTiledAndCentered,
-		BackgroundStretched
-	};
+    enum BackgroundMode
+    {
+        BackgroundNone,
+        BackgroundCentered,
+        BackgroundTiled,
+        BackgroundTiledAndCentered,
+        BackgroundStretched
+    };
 
-	explicit KaduTreeView(QWidget *parent = nullptr);
-	virtual ~KaduTreeView();
+    explicit KaduTreeView(QWidget *parent = nullptr);
+    virtual ~KaduTreeView();
 
-	void setBackground(const QString& backgroundColor, const QString& alternateColor,
-	                   const QString& file = QString(), KaduTreeView::BackgroundMode mode = BackgroundNone);
-	void updateBackground();
+    void setBackground(
+        const QString &backgroundColor, const QString &alternateColor, const QString &file = QString(),
+        KaduTreeView::BackgroundMode mode = BackgroundNone);
+    void updateBackground();
 
 protected:
-	Configuration * configuration() const;
+    Configuration *configuration() const;
 
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
-	virtual void keyPressEvent(QKeyEvent *event);
-	virtual void resizeEvent(QResizeEvent *event);
-	virtual void startDrag(Qt::DropActions supportedActions);
+    virtual void keyPressEvent(QKeyEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
+    virtual void startDrag(Qt::DropActions supportedActions);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
 
-	QString BackgroundColor;
-	QString AlternateBackgroundColor;
-	BackgroundMode BackgroundImageMode;
-	QString BackgroundImageFile;
-	QTemporaryFile *BackgroundTemporaryFile;
+    QString BackgroundColor;
+    QString AlternateBackgroundColor;
+    BackgroundMode BackgroundImageMode;
+    QString BackgroundImageFile;
+    QTemporaryFile *BackgroundTemporaryFile;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_INIT void init();
 };

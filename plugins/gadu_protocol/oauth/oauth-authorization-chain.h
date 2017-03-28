@@ -29,36 +29,36 @@ class QNetworkAccessManager;
 
 class OAuthAuthorizationChain : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QNetworkAccessManager *NetworkAccessManager;
-	OAuthConsumer Consumer;
-	OAuthToken Token;
-	OAuthToken AccessToken;
-	QString RequestTokenUrl;
-	QString AuthorizeUrl;
-	QString AuthorizeCallbackUrl;
-	QString AccessTokenUrl;
+    QNetworkAccessManager *NetworkAccessManager;
+    OAuthConsumer Consumer;
+    OAuthToken Token;
+    OAuthToken AccessToken;
+    QString RequestTokenUrl;
+    QString AuthorizeUrl;
+    QString AuthorizeCallbackUrl;
+    QString AccessTokenUrl;
 
 private slots:
-	void requestTokenFetched(OAuthToken token);
-	void authorized(bool ok);
-	void accessTokenFetched(OAuthToken token);
+    void requestTokenFetched(OAuthToken token);
+    void authorized(bool ok);
+    void accessTokenFetched(OAuthToken token);
 
 public:
-	explicit OAuthAuthorizationChain(OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~OAuthAuthorizationChain();
+    explicit OAuthAuthorizationChain(
+        OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
+    virtual ~OAuthAuthorizationChain();
 
-	void setRequestTokenUrl(const QString &requestTokenUrl);
-	void setAuthorizeUrl(const QString &authorizeUrl);
-	void setAuthorizeCallbackUrl(const QString &authorizeCallbackUrl);
-	void setAccessTokenUrl(const QString &accessTokenUrl);
+    void setRequestTokenUrl(const QString &requestTokenUrl);
+    void setAuthorizeUrl(const QString &authorizeUrl);
+    void setAuthorizeCallbackUrl(const QString &authorizeCallbackUrl);
+    void setAccessTokenUrl(const QString &accessTokenUrl);
 
-	void authorize();
+    void authorize();
 
 signals:
-	void authorized(OAuthToken token);
-
+    void authorized(OAuthToken token);
 };
 
-#endif // OAUTH_AUTHORIZATION_CHAIN_H
+#endif   // OAUTH_AUTHORIZATION_CHAIN_H

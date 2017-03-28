@@ -22,35 +22,34 @@
 
 #include "parser-token.h"
 
-ParserToken::ParserToken() :
-		Type(PT_STRING), IsContentEncoded(false)
+ParserToken::ParserToken() : Type(PT_STRING), IsContentEncoded(false)
 {
 }
 
 void ParserToken::setType(ParserTokenType type)
 {
-	Type = type;
+    Type = type;
 }
 
 QString ParserToken::decodedContent() const
 {
-	if (!IsContentEncoded)
-		return Content;
+    if (!IsContentEncoded)
+        return Content;
 
-	return QString::fromUtf8(QByteArray::fromPercentEncoding(Content.toUtf8()));
+    return QString::fromUtf8(QByteArray::fromPercentEncoding(Content.toUtf8()));
 }
 
 void ParserToken::setContent(const QString &content)
 {
-	Content = content;
-	IsContentEncoded = false;
+    Content = content;
+    IsContentEncoded = false;
 }
 
 void ParserToken::encodeContent(const QByteArray &exclude, const QByteArray &include)
 {
-	if (IsContentEncoded || Content.isEmpty())
-		return;
+    if (IsContentEncoded || Content.isEmpty())
+        return;
 
-	Content = QString::fromUtf8(Content.toUtf8().toPercentEncoding(exclude, include));
-	IsContentEncoded = true;
+    Content = QString::fromUtf8(Content.toUtf8().toPercentEncoding(exclude, include));
+    IsContentEncoded = true;
 }

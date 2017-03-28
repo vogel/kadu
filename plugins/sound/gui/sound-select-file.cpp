@@ -32,65 +32,63 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QToolButton>
 
-SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) :
-		QWidget{parent},
-		m_manager{manager}
+SoundSelectFile::SoundSelectFile(SoundManager *manager, QWidget *parent) : QWidget{parent}, m_manager{manager}
 {
 }
 
 SoundSelectFile::~SoundSelectFile()
 {
-	stopSound();
+    stopSound();
 }
 
 void SoundSelectFile::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void SoundSelectFile::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void SoundSelectFile::init()
 {
-	auto testButton = new QToolButton{this};
-	testButton->setAutoRaise(true);
-	testButton->setIcon(m_iconsManager->iconByPath(KaduIcon{"external_modules/mediaplayer-media-playback-play"}));
-	testButton->setIconSize(QSize{14, 14});
-	connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
+    auto testButton = new QToolButton{this};
+    testButton->setAutoRaise(true);
+    testButton->setIcon(m_iconsManager->iconByPath(KaduIcon{"external_modules/mediaplayer-media-playback-play"}));
+    testButton->setIconSize(QSize{14, 14});
+    connect(testButton, SIGNAL(clicked()), this, SLOT(test()));
 
-	m_selectFile = m_pluginInjectedFactory->makeInjected<SelectFile>("audio", this);
-	connect(m_selectFile, SIGNAL(fileChanged()), this, SIGNAL(fileChanged()));
+    m_selectFile = m_pluginInjectedFactory->makeInjected<SelectFile>("audio", this);
+    connect(m_selectFile, SIGNAL(fileChanged()), this, SIGNAL(fileChanged()));
 
-	auto layout = new QHBoxLayout{this};
-	layout->setSpacing(0);
-	layout->setMargin(0);
-	layout->addWidget(testButton);
-	layout->addWidget(m_selectFile);
+    auto layout = new QHBoxLayout{this};
+    layout->setSpacing(0);
+    layout->setMargin(0);
+    layout->addWidget(testButton);
+    layout->addWidget(m_selectFile);
 }
 
 QString SoundSelectFile::file() const
 {
-	return m_selectFile->file();
+    return m_selectFile->file();
 }
 
-void SoundSelectFile::setFile(const QString& file)
+void SoundSelectFile::setFile(const QString &file)
 {
-	m_selectFile->setFile(file);
+    m_selectFile->setFile(file);
 }
 
 void SoundSelectFile::test()
 {
-	stopSound();
-	m_sound = m_manager->playFile(m_selectFile->file(), true, true);
+    stopSound();
+    m_sound = m_manager->playFile(m_selectFile->file(), true, true);
 }
 
 void SoundSelectFile::stopSound()
 {
-	if (m_sound)
-		delete m_sound.data();
+    if (m_sound)
+        delete m_sound.data();
 }
 
 #include "moc_sound-select-file.cpp"

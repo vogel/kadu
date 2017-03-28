@@ -29,42 +29,41 @@
 
 #include "change-status-action.h"
 
-ChangeStatusAction::ChangeStatusAction(QObject *parent) :
-		ActionDescription(parent)
+ChangeStatusAction::ChangeStatusAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeGlobal);
-	setName("openStatusAction");
-	setIcon(KaduIcon("kadu_icons/change-status"));
-	setText(tr("Change Status"));
+    setType(ActionDescription::TypeGlobal);
+    setName("openStatusAction");
+    setIcon(KaduIcon("kadu_icons/change-status"));
+    setText(tr("Change Status"));
 }
 
 ChangeStatusAction::~ChangeStatusAction()
 {
 }
 
-QMenu * ChangeStatusAction::menuForAction(Action *action)
+QMenu *ChangeStatusAction::menuForAction(Action *action)
 {
-	StatusContainer *container = action->context()->statusContainer();
-	if (!container)
-		return 0;
+    StatusContainer *container = action->context()->statusContainer();
+    if (!container)
+        return 0;
 
-	// no parents for menu as it is destroyed manually by Action class
-	auto menu = new QMenu();
-	injectedFactory()->makeInjected<StatusMenu>(container, false, menu);
-	return menu;
+    // no parents for menu as it is destroyed manually by Action class
+    auto menu = new QMenu();
+    injectedFactory()->makeInjected<StatusMenu>(container, false, menu);
+    return menu;
 }
 
 void ChangeStatusAction::actionInstanceCreated(Action *action)
 {
-	ActionDescription::actionInstanceCreated(action);
+    ActionDescription::actionInstanceCreated(action);
 
-	StatusContainer *statusContainer = action->context()->statusContainer();
-	if (statusContainer)
-	{
-		auto icon = injectedFactory()->makeInjected<StatusIcon>(statusContainer, action);
-		connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
-		action->setIcon(icon->icon());
-	}
+    StatusContainer *statusContainer = action->context()->statusContainer();
+    if (statusContainer)
+    {
+        auto icon = injectedFactory()->makeInjected<StatusIcon>(statusContainer, action);
+        connect(icon, SIGNAL(iconUpdated(KaduIcon)), action, SLOT(setIcon(KaduIcon)));
+        action->setIcon(icon->icon());
+    }
 }
 
 #include "moc_change-status-action.cpp"

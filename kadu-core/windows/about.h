@@ -43,68 +43,67 @@ class QString;
 class QTextEdit;
 
 /**
-	\class About
-	\brief Okno z informacjami o programie.
+        \class About
+        \brief Okno z informacjami o programie.
 **/
 class About : public QWidget, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<DomProcessorService> m_domProcessorService;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<UrlOpener> m_urlOpener;
-	QPointer<VersionService> m_versionService;
+    QPointer<Configuration> m_configuration;
+    QPointer<DomProcessorService> m_domProcessorService;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<UrlOpener> m_urlOpener;
+    QPointer<VersionService> m_versionService;
 
-	QTextEdit *tb_authors;
+    QTextEdit *tb_authors;
 
-	QString loadFile(const QString &name);
+    QString loadFile(const QString &name);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
+    INJEQT_SET void setVersionService(VersionService *versionService);
+    INJEQT_INIT void init();
 
-	void openUrl(const QUrl &url);
+    void openUrl(const QUrl &url);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	/**
-		\fn About(QWidget *parent = nullptr)
-		Konstruktor tworzy okno, ustawia zak�adki z informacjami o autorach, podzi�kowaniach, licencji oraz list� zmian w programie. \n
-		Domy�lnie okno ma rozmiar 640x420.
-		\param parent rodzic okna
-		\param name nazwa obiektu
-	**/
-	explicit About(QWidget *parent = nullptr);
+    /**
+            \fn About(QWidget *parent = nullptr)
+            Konstruktor tworzy okno, ustawia zak�adki z informacjami o autorach, podzi�kowaniach, licencji oraz list�
+    zmian w programie. \n
+            Domy�lnie okno ma rozmiar 640x420.
+            \param parent rodzic okna
+            \param name nazwa obiektu
+    **/
+    explicit About(QWidget *parent = nullptr);
 
-	/**
-		\fn ~About()
-		Destruktor zapisuje rozmiar okna.
-	**/
-	virtual ~About();
-
+    /**
+            \fn ~About()
+            Destruktor zapisuje rozmiar okna.
+    **/
+    virtual ~About();
 };
 
 class KaduLink : public QLabel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<UrlOpener> m_urlOpener;
-	QByteArray Link;
+    QPointer<UrlOpener> m_urlOpener;
+    QByteArray Link;
 
 protected:
-	virtual void mousePressEvent(QMouseEvent *);
+    virtual void mousePressEvent(QMouseEvent *);
 
 public:
-	explicit KaduLink(UrlOpener *urlOpener, const QByteArray &link, QWidget *parent = nullptr);
-	virtual ~KaduLink();
-
+    explicit KaduLink(UrlOpener *urlOpener, const QByteArray &link, QWidget *parent = nullptr);
+    virtual ~KaduLink();
 };

@@ -42,37 +42,36 @@
  */
 class CheckableBuddiesProxyModel : public QIdentityProxyModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	BuddySet CheckedBuddies;
+    BuddySet CheckedBuddies;
 
 public:
-	explicit CheckableBuddiesProxyModel(QObject *parent = nullptr);
-	virtual ~CheckableBuddiesProxyModel();
+    explicit CheckableBuddiesProxyModel(QObject *parent = nullptr);
+    virtual ~CheckableBuddiesProxyModel();
 
-	virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
-	virtual QVariant data(const QModelIndex &index, int role) const;
+    virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const;
+    virtual QVariant data(const QModelIndex &index, int role) const;
 
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns set of checked buddies.
-	 * @return set of checked buddies
-	 */
-	BuddySet checkedBuddies() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns set of checked buddies.
+     * @return set of checked buddies
+     */
+    BuddySet checkedBuddies() const;
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when set of checked buddies changes.
-	 */
-	void checkedBuddiesChanged(const BuddySet &checkedBuddies);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when set of checked buddies changes.
+     */
+    void checkedBuddiesChanged(const BuddySet &checkedBuddies);
 };
 
 /**
  * @}
  */
 
-#endif // CHECKABLE_BUDDIES_PROXY_MODEL_H
+#endif   // CHECKABLE_BUDDIES_PROXY_MODEL_H

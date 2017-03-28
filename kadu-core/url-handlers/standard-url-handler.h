@@ -29,17 +29,19 @@
 
 class StandardUrlHandler : public UrlHandler
 {
-	QRegExp UrlRegExp;
+    QRegExp UrlRegExp;
 
 public:
-	StandardUrlHandler();
-	virtual ~StandardUrlHandler();
+    StandardUrlHandler();
+    virtual ~StandardUrlHandler();
 
-	virtual bool isUrlValid(const QByteArray &url);
-	virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
+    virtual bool isUrlValid(const QByteArray &url);
+    virtual void openUrl(UrlOpener *urlOpener, const QByteArray &url, bool disableMenu = false);
 
-	const QRegExp &urlRegExp() { return UrlRegExp; }
-
+    const QRegExp &urlRegExp()
+    {
+        return UrlRegExp;
+    }
 };
 
-#endif // STANDARD_URL_HANDLER_H
+#endif   // STANDARD_URL_HANDLER_H

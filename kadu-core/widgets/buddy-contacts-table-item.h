@@ -28,59 +28,83 @@
 
 class BuddyContactsTableItem : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum ItemAction {
-		ItemEdit,
-		ItemAdd,
-		ItemDetach,
-		ItemRemove
-	};
+    enum ItemAction
+    {
+        ItemEdit,
+        ItemAdd,
+        ItemDetach,
+        ItemRemove
+    };
 
 private:
-	QPointer<ContactManager> m_contactManager;
+    QPointer<ContactManager> m_contactManager;
 
-	Contact ItemContact;
-	int ItemContactPriority;
-	Account ItemAccount;
-	QString Id;
-	bool RosterDetached;
-	ItemAction Action;
-	QString DetachedBuddyName;
+    Contact ItemContact;
+    int ItemContactPriority;
+    Account ItemAccount;
+    QString Id;
+    bool RosterDetached;
+    ItemAction Action;
+    QString DetachedBuddyName;
 
-	bool isAddValid() const;
-	bool isEditValid() const;
+    bool isAddValid() const;
+    bool isEditValid() const;
 
 public:
-	explicit BuddyContactsTableItem(ContactManager *contactManager, Contact contact = Contact::null, QObject *parent = nullptr);
-	virtual ~BuddyContactsTableItem() {}
+    explicit BuddyContactsTableItem(
+        ContactManager *contactManager, Contact contact = Contact::null, QObject *parent = nullptr);
+    virtual ~BuddyContactsTableItem()
+    {
+    }
 
-	Contact itemContact() const { return ItemContact; }
+    Contact itemContact() const
+    {
+        return ItemContact;
+    }
 
-	int itemContactPriority() const { return ItemContactPriority; }
-	void setItemContactPriority(int itemContactPriority);
+    int itemContactPriority() const
+    {
+        return ItemContactPriority;
+    }
+    void setItemContactPriority(int itemContactPriority);
 
-	Account itemAccount() const { return ItemAccount; }
-	void setItemAccount(Account account);
+    Account itemAccount() const
+    {
+        return ItemAccount;
+    }
+    void setItemAccount(Account account);
 
-	const QString & id() const { return Id; }
-	void setId(const QString &id);
+    const QString &id() const
+    {
+        return Id;
+    }
+    void setId(const QString &id);
 
-	bool rosterDetached() const { return RosterDetached; }
-	void setRosterDetached(bool rosterDetached);
+    bool rosterDetached() const
+    {
+        return RosterDetached;
+    }
+    void setRosterDetached(bool rosterDetached);
 
-	ItemAction action() const { return Action; }
-	void setAction(ItemAction action);
+    ItemAction action() const
+    {
+        return Action;
+    }
+    void setAction(ItemAction action);
 
-	const QString & detachedBuddyName() const { return DetachedBuddyName; }
-	void setDetachedBuddyName(const QString &detachedBuddyName);
+    const QString &detachedBuddyName() const
+    {
+        return DetachedBuddyName;
+    }
+    void setDetachedBuddyName(const QString &detachedBuddyName);
 
-	bool isValid() const;
+    bool isValid() const;
 
 signals:
-	void updated(BuddyContactsTableItem *item);
-
+    void updated(BuddyContactsTableItem *item);
 };
 
 Q_DECLARE_METATYPE(BuddyContactsTableItem *)

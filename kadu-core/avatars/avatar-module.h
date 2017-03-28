@@ -25,9 +25,7 @@
 
 class KADUAPI AvatarModule : public injeqt::module
 {
-
 public:
-	explicit AvatarModule();
-	virtual ~AvatarModule();
-
+    explicit AvatarModule();
+    virtual ~AvatarModule();
 };

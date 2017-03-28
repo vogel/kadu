@@ -23,9 +23,7 @@
 
 class HistoryModule : public injeqt::module
 {
-
 public:
-	explicit HistoryModule();
-	virtual ~HistoryModule();
-
+    explicit HistoryModule();
+    virtual ~HistoryModule();
 };

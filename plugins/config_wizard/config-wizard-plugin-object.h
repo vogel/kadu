@@ -30,23 +30,22 @@ class ShowConfigWizardAction;
 
 class ConfigWizardPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit ConfigWizardPluginObject(QObject *parent = nullptr);
-	virtual ~ConfigWizardPluginObject();
+    Q_INVOKABLE explicit ConfigWizardPluginObject(QObject *parent = nullptr);
+    virtual ~ConfigWizardPluginObject();
 
 private:
-	QPointer<ConfigWizardActions> m_configWizardActions;
-	QPointer<PluginStateService> m_pluginStateService;
-	QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
+    QPointer<ConfigWizardActions> m_configWizardActions;
+    QPointer<PluginStateService> m_pluginStateService;
+    QPointer<ShowConfigWizardAction> m_showConfigWizardAction;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setConfigWizardActions(ConfigWizardActions *configWizardActions);
-	INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
-	INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setConfigWizardActions(ConfigWizardActions *configWizardActions);
+    INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
+    INJEQT_SET void setShowConfigWizardAction(ShowConfigWizardAction *showConfigWizardAction);
 };

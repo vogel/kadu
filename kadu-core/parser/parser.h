@@ -21,16 +21,17 @@
 
 #pragma once
 
+#include "exports.h"
 #include "parser/parser-token-type.h"
 #include "talkable/talkable.h"
-#include "exports.h"
 
 #include <QtCore/QMap>
 #include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
 #include <functional>
+#include <injeqt/injeqt.h>
 
-template<typename T> class QStack;
+template <typename T>
+class QStack;
 
 class ChatDataExtractor;
 class Configuration;
@@ -43,66 +44,66 @@ class TalkableConverter;
 
 enum class ParserEscape
 {
-	NoEscape,
-	HtmlEscape
+    NoEscape,
+    HtmlEscape
 };
 
 class KADUAPI Parser : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Parser(QObject *parent = nullptr);
-	virtual ~Parser();
+    Q_INVOKABLE explicit Parser(QObject *parent = nullptr);
+    virtual ~Parser();
 
-	using ObjectTagCallback = std::function<QString(const ParserData * const)>;
-	using TalkableTagCallback = std::function<QString(Talkable)>;
+    using ObjectTagCallback = std::function<QString(const ParserData *const)>;
+    using TalkableTagCallback = std::function<QString(Talkable)>;
 
-	QMap<QString, QString> GlobalVariables;
+    QMap<QString, QString> GlobalVariables;
 
-	QString escape(const QString &string);
+    QString escape(const QString &string);
 
-	QString parse(const QString &s, const ParserData * const parserData, ParserEscape escape)
-	{
-		return parse(s, Talkable{}, parserData, escape);
-	}
-	QString parse(const QString &s, Talkable talkable, ParserEscape escape)
-	{
-		return parse(s, talkable, nullptr, escape);
-	}
-	QString parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape);
+    QString parse(const QString &s, const ParserData *const parserData, ParserEscape escape)
+    {
+        return parse(s, Talkable{}, parserData, escape);
+    }
+    QString parse(const QString &s, Talkable talkable, ParserEscape escape)
+    {
+        return parse(s, talkable, nullptr, escape);
+    }
+    QString parse(const QString &s, Talkable talkable, const ParserData *const parserData, ParserEscape escape);
 
-	bool registerTag(const QString &name, TalkableTagCallback);
-	bool unregisterTag(const QString &name);
+    bool registerTag(const QString &name, TalkableTagCallback);
+    bool unregisterTag(const QString &name);
 
-	bool registerObjectTag(const QString &name, ObjectTagCallback);
-	bool unregisterObjectTag(const QString &name);
+    bool registerObjectTag(const QString &name, ObjectTagCallback);
+    bool unregisterObjectTag(const QString &name);
 
 private:
-	QPointer<ChatDataExtractor> m_chatDataExtractor;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<StatusContainerManager> m_statusContainerManager;
-	QPointer<StatusTypeManager> m_statusTypeManager;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<ChatDataExtractor> m_chatDataExtractor;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	QMap<QString, TalkableTagCallback> m_registeredTalkableTags;
-	QMap<QString, ObjectTagCallback> m_registeredObjectTags;
+    QMap<QString, TalkableTagCallback> m_registeredTalkableTags;
+    QMap<QString, ObjectTagCallback> m_registeredObjectTags;
 
-	QString executeCmd(const QString &cmd);
+    QString executeCmd(const QString &cmd);
 
-	bool isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens);
-	ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, ParserEscape escape);
+    bool
+    isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens);
+    ParserToken parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, ParserEscape escape);
 
-	template<typename ContainerClass>
-	QString joinParserTokens(const ContainerClass &parseStack);
+    template <typename ContainerClass>
+    QString joinParserTokens(const ContainerClass &parseStack);
 
 private slots:
-	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-
+    INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
 };

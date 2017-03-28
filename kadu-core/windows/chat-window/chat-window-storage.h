@@ -47,35 +47,34 @@ class StoragePointFactory;
  */
 class ChatWindowStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatWindowStorage(QObject *parent = nullptr);
-	virtual ~ChatWindowStorage();
+    Q_INVOKABLE explicit ChatWindowStorage(QObject *parent = nullptr);
+    virtual ~ChatWindowStorage();
 
-	void setConfiguration(ChatWindowStorageConfiguration configuration);
+    void setConfiguration(ChatWindowStorageConfiguration configuration);
 
-	/**
-	 * @short Return list of chats loaded from persistent storage.
-	 */
-	QVector<Chat> loadChats() const;
+    /**
+     * @short Return list of chats loaded from persistent storage.
+     */
+    QVector<Chat> loadChats() const;
 
-	/**
-	 * @short Store list of chats to persistent storage.
-	 */
-	void storeChats(const QVector<Chat> &chats);
+    /**
+     * @short Store list of chats to persistent storage.
+     */
+    void storeChats(const QVector<Chat> &chats);
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<StoragePointFactory> m_storagePointFactory;
-	ChatWindowStorageConfiguration m_configuration;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<StoragePointFactory> m_storagePointFactory;
+    ChatWindowStorageConfiguration m_configuration;
 
-	std::unique_ptr<StoragePoint> storagePoint() const;
+    std::unique_ptr<StoragePoint> storagePoint() const;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setStoragePointFactory(StoragePointFactory *storagePointFactory);
 };
 
 /**

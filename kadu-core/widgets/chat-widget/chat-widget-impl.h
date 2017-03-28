@@ -24,10 +24,10 @@
 
 #include "chat/chat.h"
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "message/message.h"
 #include "misc/memory.h"
 #include "protocols/services/chat-state-service.h"
-#include "exports.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QList>
@@ -67,133 +67,144 @@ class WebkitMessagesView;
 
 class KADUAPI ChatWidgetImpl : public ChatWidget, public ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	friend class ChatWidgetManager;
+    friend class ChatWidgetManager;
 
-	QPointer<Actions> m_actions;
-	QPointer<BoldAction> m_boldAction;
-	QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
-	QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
-	QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
-	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<ChatWidgetActions> m_chatWidgetActions;
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<ItalicAction> m_italicAction;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<MessageManager> m_messageManager;
-	QPointer<MessageStorage> m_messageStorage;
-	QPointer<UnderlineAction> m_underlineAction;
-	QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
+    QPointer<Actions> m_actions;
+    QPointer<BoldAction> m_boldAction;
+    QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
+    QPointer<ChatEditBoxSizeManager> m_chatEditBoxSizeManager;
+    QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
+    QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<ChatWidgetActions> m_chatWidgetActions;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<ItalicAction> m_italicAction;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<MessageManager> m_messageManager;
+    QPointer<MessageStorage> m_messageStorage;
+    QPointer<UnderlineAction> m_underlineAction;
+    QPointer<WebkitMessagesViewFactory> m_webkitMessagesViewFactory;
 
-	Chat CurrentChat;
-	ChatTopBarContainerWidget *TopBarContainer;
-	owned_qptr<WebkitMessagesView> MessagesView;
-	FilteredTreeView *BuddiesWidget;
-	TalkableProxyModel *ProxyModel;
-	ChatEditBox *InputBox;
+    Chat CurrentChat;
+    ChatTopBarContainerWidget *TopBarContainer;
+    owned_qptr<WebkitMessagesView> MessagesView;
+    FilteredTreeView *BuddiesWidget;
+    TalkableProxyModel *ProxyModel;
+    ChatEditBox *InputBox;
 
-	QSplitter *VerticalSplitter;
-	QSplitter *HorizontalSplitter;
+    QSplitter *VerticalSplitter;
+    QSplitter *HorizontalSplitter;
 
-	QTimer ComposingTimer;
-	bool IsComposing;
-	ChatState CurrentContactActivity;
+    QTimer ComposingTimer;
+    bool IsComposing;
+    ChatState CurrentContactActivity;
 
-	bool SplittersInitialized;
+    bool SplittersInitialized;
 
-	ChatWidgetTitle *Title;
+    ChatWidgetTitle *Title;
 
-	QDateTime LastReceivedMessageTime;
+    QDateTime LastReceivedMessageTime;
 
-	void createGui();
-	void createContactsList();
+    void createGui();
+    void createContactsList();
 
-	void resetEditBox();
+    void resetEditBox();
 
-	bool decodeLocalFiles(QDropEvent *event, QStringList &files);
+    bool decodeLocalFiles(QDropEvent *event, QStringList &files);
 
-	void composingStopped();
+    void composingStopped();
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setBoldAction(BoldAction *boldAction);
-	INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
-	INJEQT_SET void setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager);
-	INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setItalicAction(ItalicAction *italicAction);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
-	INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
-	INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
-	INJEQT_INIT void init();
+    INJEQT_SET void setActions(Actions *actions);
+    INJEQT_SET void setBoldAction(BoldAction *boldAction);
+    INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
+    INJEQT_SET void setChatEditBoxSizeManager(ChatEditBoxSizeManager *chatEditBoxSizeManager);
+    INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setChatWidgetActions(ChatWidgetActions *chatWidgetActions);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setItalicAction(ItalicAction *italicAction);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setMessageStorage(MessageStorage *messageStorage);
+    INJEQT_SET void setWebkitMessagesViewFactory(WebkitMessagesViewFactory *webkitMessagesViewFactory);
+    INJEQT_SET void setUnderlineAction(UnderlineAction *underlineAction);
+    INJEQT_INIT void init();
 
-	virtual void configurationUpdated() override;
-	void chatUpdated();
+    virtual void configurationUpdated() override;
+    void chatUpdated();
 
-	void setUpVerticalSizes();
-	void commonHeightChanged(int height);
-	void verticalSplitterMoved(int pos, int index);
+    void setUpVerticalSizes();
+    void commonHeightChanged(int height);
+    void verticalSplitterMoved(int pos, int index);
 
-	void checkComposing();
-	void updateComposing();
-	void contactActivityChanged(const Contact &contact, ChatState state);
+    void checkComposing();
+    void updateComposing();
+    void contactActivityChanged(const Contact &contact, ChatState state);
 
-	void keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled);
+    void keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &handled);
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *e) override;
-	virtual void resizeEvent(QResizeEvent *e) override;
- 	virtual void showEvent(QShowEvent *e) override;
-	bool keyPressEventHandled(QKeyEvent *);
+    virtual void keyPressEvent(QKeyEvent *e) override;
+    virtual void resizeEvent(QResizeEvent *e) override;
+    virtual void showEvent(QShowEvent *e) override;
+    bool keyPressEventHandled(QKeyEvent *);
 
 public:
-	explicit ChatWidgetImpl(Chat chat, QWidget *parent = nullptr);
-	virtual ~ChatWidgetImpl();
+    explicit ChatWidgetImpl(Chat chat, QWidget *parent = nullptr);
+    virtual ~ChatWidgetImpl();
 
-	virtual Chat chat() const override { return CurrentChat; }
+    virtual Chat chat() const override
+    {
+        return CurrentChat;
+    }
 
-	virtual void appendSystemMessage(NormalizedHtmlString content) override;
+    virtual void appendSystemMessage(NormalizedHtmlString content) override;
 
-	virtual CustomInput * edit() const override;
-	virtual TalkableProxyModel * talkableProxyModel() const override;
-	virtual ChatEditBox * getChatEditBox() const override { return InputBox; }
-	virtual WebkitMessagesView * chatMessagesView() const override { return MessagesView.get(); }
+    virtual CustomInput *edit() const override;
+    virtual TalkableProxyModel *talkableProxyModel() const override;
+    virtual ChatEditBox *getChatEditBox() const override
+    {
+        return InputBox;
+    }
+    virtual WebkitMessagesView *chatMessagesView() const override
+    {
+        return MessagesView.get();
+    }
 
-	virtual void dragEnterEvent(QDragEnterEvent *e) override;
-	virtual void dropEvent(QDropEvent *e) override;
-	virtual void dragMoveEvent(QDragMoveEvent *e) override;
+    virtual void dragEnterEvent(QDragEnterEvent *e) override;
+    virtual void dropEvent(QDropEvent *e) override;
+    virtual void dragMoveEvent(QDragMoveEvent *e) override;
 
-	Protocol * currentProtocol() const;
+    Protocol *currentProtocol() const;
 
-	virtual ChatWidgetTitle * title() const override;
+    virtual ChatWidgetTitle *title() const override;
 
-	virtual const QDateTime & lastReceivedMessageTime() const override { return LastReceivedMessageTime; }
+    virtual const QDateTime &lastReceivedMessageTime() const override
+    {
+        return LastReceivedMessageTime;
+    }
 
-	virtual void kaduStoreGeometry() override;
-	virtual void kaduRestoreGeometry() override;
+    virtual void kaduStoreGeometry() override;
+    virtual void kaduRestoreGeometry() override;
 
-	virtual void addMessages(const SortedMessages &messages) override;
-	virtual void addMessage(const Message &message) override;
-	virtual SortedMessages messages() const override;
-	int countMessages() const;
+    virtual void addMessages(const SortedMessages &messages) override;
+    virtual void addMessage(const Message &message) override;
+    virtual SortedMessages messages() const override;
+    int countMessages() const;
 
-	virtual ChatState chatState() const override;
+    virtual ChatState chatState() const override;
 
 public slots:
-	virtual void sendMessage() override;
-	virtual void colorSelectorAboutToClose() override;
-	virtual void clearChatWindow() override;
+    virtual void sendMessage() override;
+    virtual void colorSelectorAboutToClose() override;
+    virtual void clearChatWindow() override;
 
-	virtual void requestClose() override;
-
+    virtual void requestClose() override;
 };

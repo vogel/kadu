@@ -26,15 +26,14 @@
 
 #include "accounts-proxy-model.h"
 
-AccountsProxyModel::AccountsProxyModel(QObject *parent) :
-		QSortFilterProxyModel(parent)
+AccountsProxyModel::AccountsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-	setDynamicSortFilter(true);
-	sort(0);
+    setDynamicSortFilter(true);
+    sort(0);
 
-	BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
-	if (BrokenStringCompare)
-		fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
+    BrokenStringCompare = (QString("a").localeAwareCompare(QString("B")) > 0);
+    if (BrokenStringCompare)
+        fprintf(stderr, "There's something wrong with native string compare function. Applying workaround (slower).\n");
 }
 
 AccountsProxyModel::~AccountsProxyModel()
@@ -43,61 +42,60 @@ AccountsProxyModel::~AccountsProxyModel()
 
 int AccountsProxyModel::compareNames(QString n1, QString n2) const
 {
-	return BrokenStringCompare
-			? n1.toLower().localeAwareCompare(n2.toLower())
-			: n1.localeAwareCompare(n2);
+    return BrokenStringCompare ? n1.toLower().localeAwareCompare(n2.toLower()) : n1.localeAwareCompare(n2);
 }
 
 bool AccountsProxyModel::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
-	Account leftAccount = left.data(AccountRole).value<Account>();
-	Account rightAccount = right.data(AccountRole).value<Account>();
+    Account leftAccount = left.data(AccountRole).value<Account>();
+    Account rightAccount = right.data(AccountRole).value<Account>();
 
-	if (leftAccount.isNull())
-		return false;
-	if (rightAccount.isNull())
-		return true;
+    if (leftAccount.isNull())
+        return false;
+    if (rightAccount.isNull())
+        return true;
 
-	int displayCompare = compareNames(leftAccount.accountIdentity().name(), rightAccount.accountIdentity().name());
-	return displayCompare < 0;
+    int displayCompare = compareNames(leftAccount.accountIdentity().name(), rightAccount.accountIdentity().name());
+    return displayCompare < 0;
 }
 
 bool AccountsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
 {
-	if (sourceParent.isValid())
-		return true;
+    if (sourceParent.isValid())
+        return true;
 
-	Account account = sourceModel()->index(sourceRow, 0).data(AccountRole).value<Account>();;
-	foreach (AbstractAccountFilter *filter, Filters)
-		if (!filter->acceptAccount(account))
-			return false;
+    Account account = sourceModel()->index(sourceRow, 0).data(AccountRole).value<Account>();
+    ;
+    foreach (AbstractAccountFilter *filter, Filters)
+        if (!filter->acceptAccount(account))
+            return false;
 
-		return true;
+    return true;
 }
 
 void AccountsProxyModel::addFilter(AbstractAccountFilter *filter)
 {
-	if (Filters.contains(filter))
-		return;
+    if (Filters.contains(filter))
+        return;
 
-	Filters.append(filter);
-	invalidateFilter();
-	connect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
+    Filters.append(filter);
+    invalidateFilter();
+    connect(filter, SIGNAL(filterChanged()), this, SLOT(filterChangedSlot()));
 }
 
 void AccountsProxyModel::removeFilter(AbstractAccountFilter *filter)
 {
-	if (Filters.removeAll(filter) <= 0)
-		return;
+    if (Filters.removeAll(filter) <= 0)
+        return;
 
-	invalidateFilter();
-	disconnect(filter, 0, this, 0);
+    invalidateFilter();
+    disconnect(filter, 0, this, 0);
 }
 
 void AccountsProxyModel::filterChangedSlot()
 {
-	invalidateFilter();
-	emit filterChanged();
+    invalidateFilter();
+    emit filterChanged();
 }
 
 #include "moc_accounts-proxy-model.cpp"

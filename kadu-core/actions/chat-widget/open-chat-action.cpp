@@ -24,14 +24,14 @@
 #include "chat/chat.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 
-OpenChatAction::OpenChatAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenChatAction::OpenChatAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"internet-group-chat"});
-	setName(QStringLiteral("chatAction"));
-	setText(tr("&Chat"));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"internet-group-chat"});
+    setName(QStringLiteral("chatAction"));
+    setText(tr("&Chat"));
+    setType(ActionDescription::TypeUser);
 }
 
 OpenChatAction::~OpenChatAction()
@@ -40,21 +40,21 @@ OpenChatAction::~OpenChatAction()
 
 void OpenChatAction::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void OpenChatAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	m_chatWidgetManager->openChat(action->context()->chat(), OpenChatActivation::Activate);
+    m_chatWidgetManager->openChat(action->context()->chat(), OpenChatActivation::Activate);
 }
 
-void OpenChatAction::updateActionState(Action* action)
+void OpenChatAction::updateActionState(Action *action)
 {
-	disableNoChat(action);
+    disableNoChat(action);
 }
 
 #include "moc_open-chat-action.cpp"

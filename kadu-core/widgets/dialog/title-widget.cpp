@@ -26,43 +26,41 @@
 
 #include "title-widget.h"
 
-
-TitleWidget::TitleWidget(QWidget *parent)
-		: QWidget(parent)
+TitleWidget::TitleWidget(QWidget *parent) : QWidget(parent)
 {
-	QFrame *titleFrame = new QFrame(this);
-	titleFrame->setFrameShape(QFrame::StyledPanel);
-	titleFrame->setFrameShadow(QFrame::Plain);
-	titleFrame->setBackgroundRole(QPalette::Base);
+    QFrame *titleFrame = new QFrame(this);
+    titleFrame->setFrameShape(QFrame::StyledPanel);
+    titleFrame->setFrameShadow(QFrame::Plain);
+    titleFrame->setBackgroundRole(QPalette::Base);
 
-	QGridLayout *headerLayout = new QGridLayout(titleFrame);
-	headerLayout->setColumnStretch(0, 1);
-	headerLayout->setMargin(6);
+    QGridLayout *headerLayout = new QGridLayout(titleFrame);
+    headerLayout->setColumnStretch(0, 1);
+    headerLayout->setMargin(6);
 
-	textLabel = new QLabel(titleFrame);
-	textLabel->setVisible(false);
-	textLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
-	QFont font = textLabel->font();
-	font.setBold(true);
-	textLabel->setFont(font);
+    textLabel = new QLabel(titleFrame);
+    textLabel->setVisible(false);
+    textLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
+    QFont font = textLabel->font();
+    font.setBold(true);
+    textLabel->setFont(font);
 
-	QLabel *imageLabel = new QLabel(titleFrame);
-	imageLabel->setVisible(false);
+    QLabel *imageLabel = new QLabel(titleFrame);
+    imageLabel->setVisible(false);
 
-	headerLayout->addWidget(textLabel, 0, 0);
-	headerLayout->addWidget(imageLabel, 0, 1, 1, 2);
+    headerLayout->addWidget(textLabel, 0, 0);
+    headerLayout->addWidget(imageLabel, 0, 1, 1, 2);
 
-	commentLabel = new QLabel(titleFrame);
-	commentLabel->setVisible(false);
-	commentLabel->setOpenExternalLinks(true);
-	commentLabel->setWordWrap(true);
-	commentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
-	headerLayout->addWidget(commentLabel, 1, 0);
+    commentLabel = new QLabel(titleFrame);
+    commentLabel->setVisible(false);
+    commentLabel->setOpenExternalLinks(true);
+    commentLabel->setWordWrap(true);
+    commentLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::LinksAccessibleByMouse);
+    headerLayout->addWidget(commentLabel, 1, 0);
 
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	mainLayout->addWidget(titleFrame);
-	mainLayout->setMargin(0);
-	setLayout(mainLayout);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(titleFrame);
+    mainLayout->setMargin(0);
+    setLayout(mainLayout);
 }
 
 TitleWidget::~TitleWidget()
@@ -71,17 +69,17 @@ TitleWidget::~TitleWidget()
 
 void TitleWidget::setText(const QString &text, Qt::Alignment alignment)
 {
-	textLabel->setVisible(!text.isNull());
-	textLabel->setText(text);
-	textLabel->setAlignment(alignment);
-	show();
+    textLabel->setVisible(!text.isNull());
+    textLabel->setText(text);
+    textLabel->setAlignment(alignment);
+    show();
 }
 
 void TitleWidget::setComment(const QString &comment)
 {
-	commentLabel->setVisible(!comment.isNull());
-	commentLabel->setText(comment);
-	show();
+    commentLabel->setVisible(!comment.isNull());
+    commentLabel->setText(comment);
+    show();
 }
 
 #include "moc_title-widget.cpp"

@@ -21,8 +21,8 @@
 #pragma once
 
 #include "actions/action-description.h"
-#include "model/roles.h"
 #include "injeqt-type-roles.h"
+#include "model/roles.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QAction>
@@ -38,44 +38,43 @@ class Myself;
 
 class EditTalkableAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
-	QPointer<BuddyDataWindowRepository> m_buddyDataWindowRepository;
-	QPointer<ChatDataWindowRepository> m_chatDataWindowRepository;
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<KaduWindowService> m_kaduWindowService;
-	QPointer<Myself> m_myself;
+    QPointer<BuddyDataWindowRepository> m_buddyDataWindowRepository;
+    QPointer<ChatDataWindowRepository> m_chatDataWindowRepository;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<Myself> m_myself;
 
-	int actionRole(ActionContext *context) const;
-	Chat actionChat(ActionContext *context) const;
-	Buddy actionBuddy(ActionContext *context) const;
+    int actionRole(ActionContext *context) const;
+    Chat actionChat(ActionContext *context) const;
+    Buddy actionBuddy(ActionContext *context) const;
 
-	void setChatActionTitleAndIcon(Action *action);
-	void setBuddyActionTitleAndIcon(Action *action);
+    void setChatActionTitleAndIcon(Action *action);
+    void setBuddyActionTitleAndIcon(Action *action);
 
-	void updateChatActionState(Action *action);
-	void updateBuddyActionState(Action *action);
+    void updateChatActionState(Action *action);
+    void updateBuddyActionState(Action *action);
 
-	void chatActionTriggered(ActionContext *context);
-	void buddyActionTriggered(ActionContext *context);
+    void chatActionTriggered(ActionContext *context);
+    void buddyActionTriggered(ActionContext *context);
 
 private slots:
-	INJEQT_SET void setBuddyDataWindowRepository(BuddyDataWindowRepository *buddyDataWindowRepository);
-	INJEQT_SET void setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository);
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setBuddyDataWindowRepository(BuddyDataWindowRepository *buddyDataWindowRepository);
+    INJEQT_SET void setChatDataWindowRepository(ChatDataWindowRepository *chatDataWindowRepository);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_SET void setMyself(Myself *myself);
 
 protected:
-	virtual void actionInstanceCreated(Action *action);
-	virtual void updateActionState(Action *action);
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
+    virtual void actionInstanceCreated(Action *action);
+    virtual void updateActionState(Action *action);
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 public:
-	Q_INVOKABLE explicit EditTalkableAction(QObject *parent = nullptr);
-	virtual ~EditTalkableAction();
+    Q_INVOKABLE explicit EditTalkableAction(QObject *parent = nullptr);
+    virtual ~EditTalkableAction();
 
-	void trigger(ActionContext *context);
-
+    void trigger(ActionContext *context);
 };

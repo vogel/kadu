@@ -23,9 +23,9 @@
 
 class FreedesktopNotifyModule : public injeqt::module
 {
-
 public:
-	FreedesktopNotifyModule();
-	virtual ~FreedesktopNotifyModule() {}
-
+    FreedesktopNotifyModule();
+    virtual ~FreedesktopNotifyModule()
+    {
+    }
 };

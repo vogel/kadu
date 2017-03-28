@@ -31,19 +31,18 @@ class Hint;
 
 class HintsNotifier : public QObject, public Notifier
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<HintsWidget> m_hintsWidget;
+    QPointer<HintsWidget> m_hintsWidget;
 
 private slots:
-	INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
+    INJEQT_SET void setHintsWidget(HintsWidget *hintsWidget);
 
 public:
-	Q_INVOKABLE explicit HintsNotifier(QObject *parent = nullptr);
-	virtual ~HintsNotifier();
+    Q_INVOKABLE explicit HintsNotifier(QObject *parent = nullptr);
+    virtual ~HintsNotifier();
 
-	virtual void notify(const Notification &notification);
+    virtual void notify(const Notification &notification);
 
-	virtual NotifierConfigurationWidget * createConfigurationWidget(QWidget *parent = nullptr);
-
+    virtual NotifierConfigurationWidget *createConfigurationWidget(QWidget *parent = nullptr);
 };

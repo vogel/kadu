@@ -25,8 +25,7 @@
 #include "windows/chat-window/chat-window-storage.h"
 #include "windows/chat-window/chat-window.h"
 
-ChatWindowManager::ChatWindowManager(QObject *parent) :
-		QObject(parent)
+ChatWindowManager::ChatWindowManager(QObject *parent) : QObject(parent)
 {
 }
 
@@ -35,41 +34,41 @@ ChatWindowManager::~ChatWindowManager()
 }
 void ChatWindowManager::setChatWidgetManager(ChatWidgetManager *chatWidgetManager)
 {
-	m_chatWidgetManager = chatWidgetManager;
+    m_chatWidgetManager = chatWidgetManager;
 }
 
 void ChatWindowManager::setChatWindowRepository(ChatWindowRepository *chatWindowRepository)
 {
-	m_chatWindowRepository = chatWindowRepository;
+    m_chatWindowRepository = chatWindowRepository;
 }
 
 void ChatWindowManager::setChatWindowStorage(ChatWindowStorage *chatWindowStorage)
 {
-	m_chatWindowStorage = chatWindowStorage;
+    m_chatWindowStorage = chatWindowStorage;
 }
 
 void ChatWindowManager::openStoredChatWindows()
 {
-	if (!m_chatWindowStorage || !m_chatWindowRepository)
-		return;
+    if (!m_chatWindowStorage || !m_chatWindowRepository)
+        return;
 
-	auto chats = m_chatWindowStorage.data()->loadChats();
-	for (const auto &chat : chats)
-		m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::DoNotActivate);
+    auto chats = m_chatWindowStorage.data()->loadChats();
+    for (const auto &chat : chats)
+        m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::DoNotActivate);
 }
 
 void ChatWindowManager::storeOpenedChatWindows()
 {
-	if (!m_chatWindowRepository)
-		return;
+    if (!m_chatWindowRepository)
+        return;
 
-	auto chats = QVector<Chat>{};
-	std::transform(begin(m_chatWindowRepository.data()), end(m_chatWindowRepository.data()), std::back_inserter(chats), [](ChatWindow *window) {
-		return window->chat();
-	});
+    auto chats = QVector<Chat>{};
+    std::transform(
+        begin(m_chatWindowRepository.data()), end(m_chatWindowRepository.data()), std::back_inserter(chats),
+        [](ChatWindow *window) { return window->chat(); });
 
-	if (m_chatWindowStorage)
-		m_chatWindowStorage.data()->storeChats(chats);
+    if (m_chatWindowStorage)
+        m_chatWindowStorage.data()->storeChats(chats);
 }
 
 #include "moc_chat-window-manager.cpp"

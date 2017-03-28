@@ -29,8 +29,7 @@
 #include "html/html-conversion.h"
 #include "message/message-manager.h"
 
-CenzorMessageFilter::CenzorMessageFilter(QObject *parent) :
-		QObject{parent}
+CenzorMessageFilter::CenzorMessageFilter(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,65 +39,64 @@ CenzorMessageFilter::~CenzorMessageFilter()
 
 void CenzorMessageFilter::setCenzorConfiguration(CenzorConfiguration *cenzorConfiguration)
 {
-	m_cenzorConfiguration = cenzorConfiguration;
+    m_cenzorConfiguration = cenzorConfiguration;
 }
 
 void CenzorMessageFilter::setCenzorNotificationService(CenzorNotificationService *cenzorNotificationService)
 {
-	m_cenzorNotificationService = cenzorNotificationService;
+    m_cenzorNotificationService = cenzorNotificationService;
 }
 
 void CenzorMessageFilter::setMessageManager(MessageManager *messageManager)
 {
-	m_messageManager = messageManager;
+    m_messageManager = messageManager;
 }
 
 bool CenzorMessageFilter::acceptMessage(const Message &message)
 {
-	if (MessageTypeSent == message.type())
-		return true;
+    if (MessageTypeSent == message.type())
+        return true;
 
-	if (!m_cenzorConfiguration->enabled())
-		return true;
+    if (!m_cenzorConfiguration->enabled())
+        return true;
 
-	if (!shouldIgnore(htmlToPlain(message.content())))
-		return true;
+    if (!shouldIgnore(htmlToPlain(message.content())))
+        return true;
 
-	Account account = message.messageChat().chatAccount();
+    Account account = message.messageChat().chatAccount();
 
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return false;
+    Protocol *protocol = account.protocolHandler();
+    if (!protocol)
+        return false;
 
+    if (m_messageManager->sendMessage(message.messageChat(), m_cenzorConfiguration->admonition(), true))
+        m_cenzorNotificationService->notifyCenzored(message.messageChat());
 
-	if (m_messageManager->sendMessage(message.messageChat(), m_cenzorConfiguration->admonition(), true))
-		m_cenzorNotificationService->notifyCenzored(message.messageChat());
-
-	return false;
+    return false;
 }
 
 bool CenzorMessageFilter::shouldIgnore(const QString &message)
 {
-	QStringList words = message.split(' ', QString::SkipEmptyParts);
+    QStringList words = message.split(' ', QString::SkipEmptyParts);
 
-	for (const QString &word : words)
-	{
-		QString lowerWord = word.toLower();
-		for (const QRegExp &swear : m_cenzorConfiguration->swearList())
-			if ((swear.indexIn(lowerWord) >= 0) && (!isExclusion(lowerWord)))
-				return true;
-	}
+    for (const QString &word : words)
+    {
+        QString lowerWord = word.toLower();
+        for (const QRegExp &swear : m_cenzorConfiguration->swearList())
+            if ((swear.indexIn(lowerWord) >= 0) && (!isExclusion(lowerWord)))
+                return true;
+    }
 
-	return false;
+    return false;
 }
 
 bool CenzorMessageFilter::isExclusion(const QString &word)
 {
-	for (const QRegExp &exclusion : m_cenzorConfiguration->exclusionList())
-		if (exclusion.indexIn(word) >= 0)
-			return true;
+    for (const QRegExp &exclusion : m_cenzorConfiguration->exclusionList())
+        if (exclusion.indexIn(word) >= 0)
+            return true;
 
-	return false;
+    return false;
 }
 
 #include "moc_cenzor-message-filter.cpp"

@@ -23,76 +23,66 @@
 #include "gadu-drive-send-ticket-mode.h"
 #include "gadu-drive-send-ticket-status.h"
 
-GaduDriveSendTicket::GaduDriveSendTicket() :
-	m_fileSize{0},
-	m_progress{0.0},
-	m_ackStatus{GaduDriveSendTicketAckStatus::Unknown},
-	m_mode{GaduDriveSendTicketMode::Normal},
-	m_status{GaduDriveSendTicketStatus::InProgress}
+GaduDriveSendTicket::GaduDriveSendTicket()
+        : m_fileSize{0}, m_progress{0.0}, m_ackStatus{GaduDriveSendTicketAckStatus::Unknown},
+          m_mode{GaduDriveSendTicketMode::Normal}, m_status{GaduDriveSendTicketStatus::InProgress}
 {
 }
 
-GaduDriveSendTicket::GaduDriveSendTicket(QString ticketId, QString sender, QString recipient, QString fileName,
-	qint64 fileSize, double progress, GaduDriveSendTicketAckStatus ackStatus,
-	GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status) :
-		m_tickedId{ticketId},
-		m_sender{sender},
-		m_recipient{recipient},
-		m_fileName{fileName},
-		m_fileSize{fileSize},
-		m_progress{progress},
-		m_ackStatus{ackStatus},
-		m_mode{mode},
-		m_status{status}
+GaduDriveSendTicket::GaduDriveSendTicket(
+    QString ticketId, QString sender, QString recipient, QString fileName, qint64 fileSize, double progress,
+    GaduDriveSendTicketAckStatus ackStatus, GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status)
+        : m_tickedId{ticketId}, m_sender{sender}, m_recipient{recipient}, m_fileName{fileName}, m_fileSize{fileSize},
+          m_progress{progress}, m_ackStatus{ackStatus}, m_mode{mode}, m_status{status}
 {
 }
 
 QString GaduDriveSendTicket::ticketId() const
 {
-	return m_tickedId;
+    return m_tickedId;
 }
 
 QString GaduDriveSendTicket::sender() const
 {
-	return m_sender;
+    return m_sender;
 }
 
 QString GaduDriveSendTicket::recipient() const
 {
-	return m_recipient;
+    return m_recipient;
 }
 
 QString GaduDriveSendTicket::fileName() const
 {
-	return m_fileName;
+    return m_fileName;
 }
 
 qint64 GaduDriveSendTicket::fileSize() const
 {
-	return m_fileSize;
+    return m_fileSize;
 }
 
 double GaduDriveSendTicket::progress() const
 {
-	return m_progress;
+    return m_progress;
 }
 
 GaduDriveSendTicketAckStatus GaduDriveSendTicket::ackStatus() const
 {
-	return m_ackStatus;
+    return m_ackStatus;
 }
 
 GaduDriveSendTicketMode GaduDriveSendTicket::mode() const
 {
-	return m_mode;
+    return m_mode;
 }
 
 GaduDriveSendTicketStatus GaduDriveSendTicket::status() const
 {
-	return m_status;
+    return m_status;
 }
 
 bool GaduDriveSendTicket::isValid() const
 {
-	return !m_tickedId.isEmpty();
+    return !m_tickedId.isEmpty();
 }

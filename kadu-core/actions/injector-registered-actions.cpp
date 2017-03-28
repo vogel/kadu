@@ -25,19 +25,18 @@
 
 #include <injeqt/injector.h>
 
-InjectorRegisteredActions::InjectorRegisteredActions(Actions &actions, injeqt::injector &injector) :
-		m_actions{actions}
+InjectorRegisteredActions::InjectorRegisteredActions(Actions &actions, injeqt::injector &injector) : m_actions{actions}
 {
-	for (const auto &o : injector.get_all_with_type_role(ACTION))
-	{
-		auto action = qobject_cast<ActionDescription *>(o);
-		if (action && m_actions.insert(action))
-			m_registeredActions.push_back(action);
-	}
+    for (const auto &o : injector.get_all_with_type_role(ACTION))
+    {
+        auto action = qobject_cast<ActionDescription *>(o);
+        if (action && m_actions.insert(action))
+            m_registeredActions.push_back(action);
+    }
 }
 
 InjectorRegisteredActions::~InjectorRegisteredActions()
 {
-	for (const auto &a : m_registeredActions)
-		m_actions.remove(a);
+    for (const auto &a : m_registeredActions)
+        m_actions.remove(a);
 }

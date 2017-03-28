@@ -22,8 +22,8 @@
 
 #include "formatted-string-image-key-received-visitor.h"
 
-FormattedStringImageKeyReceivedVisitor::FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent) :
-		QObject(parent), Id(id)
+FormattedStringImageKeyReceivedVisitor::FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent)
+        : QObject(parent), Id(id)
 {
 }
 
@@ -31,27 +31,27 @@ FormattedStringImageKeyReceivedVisitor::~FormattedStringImageKeyReceivedVisitor(
 {
 }
 
-void FormattedStringImageKeyReceivedVisitor::beginVisit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringImageKeyReceivedVisitor::beginVisit(const CompositeFormattedString *const compositeFormattedString)
 {
-	Q_UNUSED(compositeFormattedString);
+    Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringImageKeyReceivedVisitor::endVisit(const CompositeFormattedString * const compositeFormattedString)
+void FormattedStringImageKeyReceivedVisitor::endVisit(const CompositeFormattedString *const compositeFormattedString)
 {
-	Q_UNUSED(compositeFormattedString);
+    Q_UNUSED(compositeFormattedString);
 }
 
-void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlock * const formattedStringImageBlock)
+void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringImageBlock *const formattedStringImageBlock)
 {
-	if (formattedStringImageBlock->imagePath().length() != 16)
-		return;
+    if (formattedStringImageBlock->imagePath().length() != 16)
+        return;
 
-	emit chatImageKeyReceived(Id, formattedStringImageBlock->image());
+    emit chatImageKeyReceived(Id, formattedStringImageBlock->image());
 }
 
-void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-	Q_UNUSED(formattedStringTextBlock);
+    Q_UNUSED(formattedStringTextBlock);
 }
 
 #include "moc_formatted-string-image-key-received-visitor.cpp"

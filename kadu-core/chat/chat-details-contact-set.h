@@ -46,35 +46,37 @@ class ContactManager;
  */
 class ChatDetailsContactSet : public ChatDetails
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatDetailsContactSet(ChatShared *chatData);
-	virtual ~ChatDetailsContactSet();
+    explicit ChatDetailsContactSet(ChatShared *chatData);
+    virtual ~ChatDetailsContactSet();
 
-	virtual ChatType * type() const;
-	virtual ContactSet contacts() const { return m_contacts; }
-	virtual QString name() const;
+    virtual ChatType *type() const;
+    virtual ContactSet contacts() const
+    {
+        return m_contacts;
+    }
+    virtual QString name() const;
 
-	virtual bool isConnected() const;
+    virtual bool isConnected() const;
 
-	void setContacts(const ContactSet &contacts);
+    void setContacts(const ContactSet &contacts);
 
 protected:
-	virtual void load();
-	virtual void store();
-	virtual bool shouldStore();
+    virtual void load();
+    virtual void store();
+    virtual bool shouldStore();
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<ContactManager> m_contactManager;
 
-	ContactSet m_contacts;
+    ContactSet m_contacts;
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };
 
 /**

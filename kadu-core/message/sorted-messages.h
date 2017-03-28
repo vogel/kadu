@@ -19,9 +19,9 @@
 
 #pragma once
 
+#include "exports.h"
 #include "message/message.h"
 #include "misc/sorted-unique-vector.h"
-#include "exports.h"
 
 /**
  * @addtogroup Message
@@ -34,81 +34,79 @@
  */
 class KADUAPI SortedMessages
 {
-
 public:
-	/**
-	 * @short Return true is mesage \left is earlier than \right.
-	 */
-	static bool earlier(const Message &left, const Message &right);
+    /**
+     * @short Return true is mesage \left is earlier than \right.
+     */
+    static bool earlier(const Message &left, const Message &right);
 
-	/**
-	 * @short Return true is mesage \left is the same as \right.
-	 *
-	 * Messages are considered the same if they are the same object, or
-	 * all of they properties are the same (timestamp properties are compared
-	 * with one-second accuracy).
-	 */
-	static bool same(const Message &left, const Message &right);
+    /**
+     * @short Return true is mesage \left is the same as \right.
+     *
+     * Messages are considered the same if they are the same object, or
+     * all of they properties are the same (timestamp properties are compared
+     * with one-second accuracy).
+     */
+    static bool same(const Message &left, const Message &right);
 
-	/**
-	 * @short Create empty object.
-	 */
-	SortedMessages();
+    /**
+     * @short Create empty object.
+     */
+    SortedMessages();
 
-	/**
-	 * @short Create object from provided vector of messages.
-	 * @param messages messages to put into object
-	 *
-	 * All messages are sorted and non-unique ones are removed.
-	 */
-	explicit SortedMessages(std::vector<Message> messages);
+    /**
+     * @short Create object from provided vector of messages.
+     * @param messages messages to put into object
+     *
+     * All messages are sorted and non-unique ones are removed.
+     */
+    explicit SortedMessages(std::vector<Message> messages);
 
-	/**
-	 * @short Add new message.
-	 * @param message message to add
-	 *
-	 * Message is added in proper place using earlier method to determine order. If message
-	 * is already on list it will not be added.
-	 */
-	void add(Message message);
+    /**
+     * @short Add new message.
+     * @param message message to add
+     *
+     * Message is added in proper place using earlier method to determine order. If message
+     * is already on list it will not be added.
+     */
+    void add(Message message);
 
-	/**
-	 * @short Merge with another sorted list of messages.
-	 * @param sortedMessages sorted list to merge with
-	 *
-	 * All messages from @p sortedMessages are added in proper place using earlier method to
-	 * determine order. All non-unique messages are discared.
-	 */
-	void merge(const SortedMessages &sortedMessages);
+    /**
+     * @short Merge with another sorted list of messages.
+     * @param sortedMessages sorted list to merge with
+     *
+     * All messages from @p sortedMessages are added in proper place using earlier method to
+     * determine order. All non-unique messages are discared.
+     */
+    void merge(const SortedMessages &sortedMessages);
 
-	/**
-	 * @return Vector of all stored messages.
-	 */
-	const std::vector<Message> & messages() const;
+    /**
+     * @return Vector of all stored messages.
+     */
+    const std::vector<Message> &messages() const;
 
-	/**
-	 * @return Last message on list or Message::null.
-	 */
-	Message last() const;
+    /**
+     * @return Last message on list or Message::null.
+     */
+    Message last() const;
 
-	/**
-	 * @return true if no message is stored in list.
-	 */
-	bool empty() const;
+    /**
+     * @return true if no message is stored in list.
+     */
+    bool empty() const;
 
-	/**
-	 * @return number of messsages on list.
-	 */
-	std::vector<Message>::size_type size() const;
+    /**
+     * @return number of messsages on list.
+     */
+    std::vector<Message>::size_type size() const;
 
-	/**
-	 * @short Removes all messages.
-	 */
-	void clear();
+    /**
+     * @short Removes all messages.
+     */
+    void clear();
 
 private:
-	sorted_unique_vector<Message, SortedMessages::earlier, SortedMessages::same> m_messages;
-
+    sorted_unique_vector<Message, SortedMessages::earlier, SortedMessages::same> m_messages;
 };
 
 /**

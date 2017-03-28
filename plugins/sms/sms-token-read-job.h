@@ -33,7 +33,8 @@ class QNetworkReply;
 /**
  * @class SmsTokenReadJob
  * @author Rafał 'Vogel' Malinowski
- * @short This job is responsible for fetchng token image from URL, presenting it to user and call a javascript function.
+ * @short This job is responsible for fetchng token image from URL, presenting it to user and call a javascript
+ * function.
  *
  * This job fetches token image frm given URL, then it presents it to user using @link TokenWindow @endlink
  * and at last it calls a javascript function with entered token value.
@@ -42,80 +43,79 @@ class QNetworkReply;
  */
 class SmsTokenReadJob : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QNetworkReply *TokenNetworkReply;
+    QNetworkReply *TokenNetworkReply;
 
-	QScriptValue CallbackObject;
-	QScriptValue CallbackMethod;
-	QString TokenImageUrl;
+    QScriptValue CallbackObject;
+    QScriptValue CallbackMethod;
+    QString TokenImageUrl;
 
 private slots:
-	void tokenImageDownloaded();
-	void tokenValueEntered(const QString &tokenValue);
+    void tokenImageDownloaded();
+    void tokenValueEntered(const QString &tokenValue);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new SmsTokenReadJob instance.
-	 * @param parent QObject parent of new object
-	 */
-	explicit SmsTokenReadJob(QObject *parent = nullptr);
-	virtual ~SmsTokenReadJob();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new SmsTokenReadJob instance.
+     * @param parent QObject parent of new object
+     */
+    explicit SmsTokenReadJob(QObject *parent = nullptr);
+    virtual ~SmsTokenReadJob();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set callback object and method for this job.
-	 * @param callbackObject javascript object that will receive callback after token is read
-	 * @param callbackMethod javascript method that will be called on callbackObject after token is read
-	 */
-	void setCallback(const QScriptValue &callbackObject, const QScriptValue &callbackMethod);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set callback object and method for this job.
+     * @param callbackObject javascript object that will receive callback after token is read
+     * @param callbackMethod javascript method that will be called on callbackObject after token is read
+     */
+    void setCallback(const QScriptValue &callbackObject, const QScriptValue &callbackMethod);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set token image URL for this job.
-	 * @param tokenImageUrl URL of token image to read
-	 */
-	void setTokenImageUrl(const QString &tokenImageUrl);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set token image URL for this job.
+     * @param tokenImageUrl URL of token image to read
+     */
+    void setTokenImageUrl(const QString &tokenImageUrl);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Execute this job.
-	 *
-	 * If any of requires parameters is empty this method will immediately emit finished(false) signal.
-	 */
-	virtual void exec();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Execute this job.
+     *
+     * If any of requires parameters is empty this method will immediately emit finished(false) signal.
+     */
+    virtual void exec();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Cancels this job.
-	 *
-	 * Canceled job deletes itself and does not emits any signals.
-	 */
-	virtual void cancel();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Cancels this job.
+     *
+     * Canceled job deletes itself and does not emits any signals.
+     */
+    virtual void cancel();
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short A progress was done in doing this job.
-	 * @param entryIcon icon for progress message
-	 * @param entryMessage message for progress item
-	 */
-	void progress(const QString &entryIcon, const QString &entryMessage);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short A progress was done in doing this job.
+     * @param entryIcon icon for progress message
+     * @param entryMessage message for progress item
+     */
+    void progress(const QString &entryIcon, const QString &entryMessage);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Job has finished.
-	 * @param ok true, if job was finished successfully
-	 * @param entryIcon icon for finish message
-	 * @param entryMessage finish message
-	 */
-	void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Job has finished.
+     * @param ok true, if job was finished successfully
+     * @param entryIcon icon for finish message
+     * @param entryMessage finish message
+     */
+    void finished(bool ok, const QString &entryIcon, const QString &entryMessage);
 };
 
 /**
  * @}
  */
 
-#endif //SMS_TOKEN_READ_JOB_H
+#endif   // SMS_TOKEN_READ_JOB_H

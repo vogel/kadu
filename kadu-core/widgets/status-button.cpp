@@ -40,11 +40,10 @@
 #include "status/status-type-manager.h"
 #include "widgets/status-menu.h"
 
-
 #include "status-button.h"
 
-StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent) :
-		QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), MenuTitleAction{nullptr}
+StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent)
+        : QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), MenuTitleAction{nullptr}
 {
 }
 
@@ -54,160 +53,167 @@ StatusButton::~StatusButton()
 
 void StatusButton::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void StatusButton::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void StatusButton::setStatusConfigurationHolder(StatusConfigurationHolder *statusConfigurationHolder)
 {
-	m_statusConfigurationHolder = statusConfigurationHolder;
+    m_statusConfigurationHolder = statusConfigurationHolder;
 }
 
 void StatusButton::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void StatusButton::init()
 {
-	Icon = m_injectedFactory->makeInjected<StatusIcon>(MyStatusContainer, this);
+    Icon = m_injectedFactory->makeInjected<StatusIcon>(MyStatusContainer, this);
 
-	createGui();
-	setPopupMode(InstantPopup);
+    createGui();
+    setPopupMode(InstantPopup);
 
-	statusUpdated();
-	connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
-	connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(iconUpdated(KaduIcon)));
+    statusUpdated();
+    connect(MyStatusContainer, SIGNAL(statusUpdated(StatusContainer *)), this, SLOT(statusUpdated(StatusContainer *)));
+    connect(Icon, SIGNAL(iconUpdated(KaduIcon)), this, SLOT(iconUpdated(KaduIcon)));
 }
 
 void StatusButton::createGui()
 {
-	QMenu *menu = new QMenu(this);
-	if (!MyStatusContainer->statusContainerName().isEmpty())
-		addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
-	m_injectedFactory->makeInjected<StatusMenu>(MyStatusContainer, false, menu);
+    QMenu *menu = new QMenu(this);
+    if (!MyStatusContainer->statusContainerName().isEmpty())
+        addTitleToMenu(MyStatusContainer->statusContainerName(), menu);
+    m_injectedFactory->makeInjected<StatusMenu>(MyStatusContainer, false, menu);
 
-	setMenu(menu);
-	setIcon(m_iconsManager->iconByPath(Icon->icon()));
+    setMenu(menu);
+    setIcon(m_iconsManager->iconByPath(Icon->icon()));
 }
 
 void StatusButton::addTitleToMenu(const QString &title, QMenu *menu)
 {
-	MenuTitleAction = new QAction(menu);
-	QFont font = MenuTitleAction->font();
-	font.setBold(true);
+    MenuTitleAction = new QAction(menu);
+    QFont font = MenuTitleAction->font();
+    font.setBold(true);
 
-	MenuTitleAction->setFont(font);
-	MenuTitleAction->setText(title);
-	MenuTitleAction->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon()));
+    MenuTitleAction->setFont(font);
+    MenuTitleAction->setText(title);
+    MenuTitleAction->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon()));
 
-	QWidgetAction *action = new QWidgetAction(this);
-	action->setObjectName("status_menu_title");
-	QToolButton *titleButton = new QToolButton(this);
-	titleButton->installEventFilter(this); // prevent clicks on the title of the menu
-	titleButton->setDefaultAction(MenuTitleAction);
-	titleButton->setDown(true); // prevent hover style changes in some styles
-	titleButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-	action->setDefaultWidget(titleButton);
+    QWidgetAction *action = new QWidgetAction(this);
+    action->setObjectName("status_menu_title");
+    QToolButton *titleButton = new QToolButton(this);
+    titleButton->installEventFilter(this);   // prevent clicks on the title of the menu
+    titleButton->setDefaultAction(MenuTitleAction);
+    titleButton->setDown(true);   // prevent hover style changes in some styles
+    titleButton->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    action->setDefaultWidget(titleButton);
 
-	menu->addAction(action);
+    menu->addAction(action);
 }
 
 bool StatusButton::eventFilter(QObject *object, QEvent *event)
 {
-	Q_UNUSED(object);
+    Q_UNUSED(object);
 
-	if (event->type() == QEvent::ActionChanged || event->type() == QEvent::Paint || event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
-		return false;
+    if (event->type() == QEvent::ActionChanged || event->type() == QEvent::Paint || event->type() == QEvent::KeyPress ||
+        event->type() == QEvent::KeyRelease)
+        return false;
 
-	event->accept();
+    event->accept();
 
-	return true;
+    return true;
 }
 
 void StatusButton::updateStatus()
 {
-	QString tooltip("<table>");
+    QString tooltip("<table>");
 
-	if (DisplayStatusName)
-	{
-		setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-		setText(m_statusTypeManager->statusTypeData(MyStatusContainer->status().type()).displayName());
-	}
-	else
-	{
-		if (m_statusConfigurationHolder->isSetStatusPerIdentity())
-		{
-			setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-			setText(MyStatusContainer->statusContainerName());
-			tooltip +=
-				QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td style='white-space:nowrap;'>%2</td></tr>")
-					.arg(tr("Identity"), MyStatusContainer->statusContainerName());
-		}
-		else
-		{
-			setToolButtonStyle(Qt::ToolButtonIconOnly);
-			setText(QString());
-			tooltip +=
-				QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td style='white-space:nowrap;'>%2</td></tr>")
-					.arg(tr("Account"), MyStatusContainer->statusContainerName());
-		}
-	}
+    if (DisplayStatusName)
+    {
+        setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+        setText(m_statusTypeManager->statusTypeData(MyStatusContainer->status().type()).displayName());
+    }
+    else
+    {
+        if (m_statusConfigurationHolder->isSetStatusPerIdentity())
+        {
+            setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+            setText(MyStatusContainer->statusContainerName());
+            tooltip += QString(
+                           "<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td "
+                           "style='white-space:nowrap;'>%2</td></tr>")
+                           .arg(tr("Identity"), MyStatusContainer->statusContainerName());
+        }
+        else
+        {
+            setToolButtonStyle(Qt::ToolButtonIconOnly);
+            setText(QString());
+            tooltip += QString(
+                           "<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td "
+                           "style='white-space:nowrap;'>%2</td></tr>")
+                           .arg(tr("Account"), MyStatusContainer->statusContainerName());
+        }
+    }
 
-	tooltip +=
-		QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td style='white-space:nowrap;'>%2</td></tr>")
-			.arg(tr("Status"), m_statusTypeManager->statusTypeData(MyStatusContainer->status().type()).displayName());
-	tooltip
-		+= QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td>%2</td></tr>")
-			.arg(tr("Description"), prepareDescription(MyStatusContainer->status().description()));
+    tooltip +=
+        QString(
+            "<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td "
+            "style='white-space:nowrap;'>%2</td></tr>")
+            .arg(tr("Status"), m_statusTypeManager->statusTypeData(MyStatusContainer->status().type()).displayName());
+    tooltip += QString("<tr><td align='right' style='font-weight:bold; white-space:nowrap;'>%1:</td><td>%2</td></tr>")
+                   .arg(tr("Description"), prepareDescription(MyStatusContainer->status().description()));
 
-	tooltip += QString("</table>");
+    tooltip += QString("</table>");
 
-	setToolTip(tooltip);
+    setToolTip(tooltip);
 }
 
 void StatusButton::statusUpdated(StatusContainer *container)
 {
-	Q_UNUSED(container)
+    Q_UNUSED(container)
 
-	updateStatus();
+    updateStatus();
 }
 
 void StatusButton::configurationUpdated()
 {
-	updateStatus();
+    updateStatus();
 }
 
 void StatusButton::setDisplayStatusName(bool displayStatusName)
 {
-	if (DisplayStatusName != displayStatusName)
-	{
-		DisplayStatusName = displayStatusName;
-		updateStatus();
-	}
+    if (DisplayStatusName != displayStatusName)
+    {
+        DisplayStatusName = displayStatusName;
+        updateStatus();
+    }
 }
 
 void StatusButton::iconUpdated(const KaduIcon &icon)
 {
-	setIcon(m_iconsManager->iconByPath(icon));
-	if (MenuTitleAction)
-		MenuTitleAction->setIcon(m_iconsManager->iconByPath(icon));
+    setIcon(m_iconsManager->iconByPath(icon));
+    if (MenuTitleAction)
+        MenuTitleAction->setIcon(m_iconsManager->iconByPath(icon));
 }
 
 QString StatusButton::prepareDescription(const QString &description) const
 {
-	QColor color = palette().windowText().color();
-	color.setAlpha(128);
-	QString colorString = QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
+    QColor color = palette().windowText().color();
+    color.setAlpha(128);
+    QString colorString =
+        QString("rgba(%1,%2,%3,%4)").arg(color.red()).arg(color.green()).arg(color.blue()).arg(color.alpha());
 
-	QString html = Qt::escape(description);
-	html.replace('\n', QString(QStringLiteral("<span style='color:%1;'> ") + QChar(0x21B5) + QStringLiteral("</span><br />")).arg(colorString));
+    QString html = Qt::escape(description);
+    html.replace(
+        '\n', QString(QStringLiteral("<span style='color:%1;'> ") + QChar(0x21B5) + QStringLiteral("</span><br />"))
+                  .arg(colorString));
 
-	return html;
+    return html;
 }
 
 #include "moc_status-button.cpp"

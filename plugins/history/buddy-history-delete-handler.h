@@ -29,20 +29,19 @@ class History;
 
 class BuddyHistoryDeleteHandler : public QObject, public BuddyAdditionalDataDeleteHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit BuddyHistoryDeleteHandler(QObject *parent = nullptr);
-	virtual ~BuddyHistoryDeleteHandler();
+    Q_INVOKABLE explicit BuddyHistoryDeleteHandler(QObject *parent = nullptr);
+    virtual ~BuddyHistoryDeleteHandler();
 
-	virtual QString name();
-	virtual QString displayName();
-	virtual void deleteBuddyAdditionalData(Buddy buddy);
+    virtual QString name();
+    virtual QString displayName();
+    virtual void deleteBuddyAdditionalData(Buddy buddy);
 
 private:
-	QPointer<History> m_history;
+    QPointer<History> m_history;
 
 private slots:
-	INJEQT_SET void setHistory(History *history);
-
+    INJEQT_SET void setHistory(History *history);
 };

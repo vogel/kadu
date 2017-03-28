@@ -24,7 +24,7 @@
 #include <QtCore/QObject>
 
 #ifdef Q_OS_WIN
-	class QWinTaskbarProgress;
+class QWinTaskbarProgress;
 #endif
 
 class FileTransferManager;
@@ -33,18 +33,17 @@ class QWidget;
 
 class KADUAPI TaskbarProgress : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent = nullptr);
-	virtual ~TaskbarProgress();
+    explicit TaskbarProgress(FileTransferManager *fileTransferManager, QWidget *parent = nullptr);
+    virtual ~TaskbarProgress();
 
 private:
 #ifdef Q_OS_WIN
-	QWinTaskbarProgress *m_taskbarProgress;
+    QWinTaskbarProgress *m_taskbarProgress;
 #endif
 
 private slots:
-	void progressChanged(int progress);
-
+    void progressChanged(int progress);
 };

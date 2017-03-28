@@ -23,9 +23,7 @@
 
 class ExtSoundModule : public injeqt::module
 {
-
 public:
-	explicit ExtSoundModule();
-	virtual ~ExtSoundModule();
-
+    explicit ExtSoundModule();
+    virtual ~ExtSoundModule();
 };

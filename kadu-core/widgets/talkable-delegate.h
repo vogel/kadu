@@ -36,31 +36,31 @@ class UnreadMessageRepository;
 
 class TalkableDelegate : public KaduTreeViewDelegate
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit TalkableDelegate(TalkableTreeView *parent = nullptr);
-	virtual ~TalkableDelegate();
+    explicit TalkableDelegate(TalkableTreeView *parent = nullptr);
+    virtual ~TalkableDelegate();
 
-	virtual void setChain(ModelChain *chain);
+    virtual void setChain(ModelChain *chain);
 
-	virtual bool editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
+    virtual bool
+    editorEvent(QEvent *event, QAbstractItemModel *model, const QStyleOptionViewItem &option, const QModelIndex &index);
 
 private:
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<ContactManager> m_contactManager;
-	QPointer<UnreadMessageRepository> m_unreadMessageRepository;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<UnreadMessageRepository> m_unreadMessageRepository;
 
-	QPointer<ModelChain> Chain;
+    QPointer<ModelChain> Chain;
 
 private slots:
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
+    INJEQT_INIT void init();
 
-	void contactUpdated(const Contact &contact);
-	void buddyUpdated(const Buddy &buddy);
-	void messageStatusChanged(Message message);
-
+    void contactUpdated(const Contact &contact);
+    void buddyUpdated(const Buddy &buddy);
+    void messageStatusChanged(Message message);
 };

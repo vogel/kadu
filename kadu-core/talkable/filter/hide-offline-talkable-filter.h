@@ -47,39 +47,38 @@ class ContactManager;
  */
 class HideOfflineTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of HideOfflineTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit HideOfflineTalkableFilter(QObject *parent = nullptr);
-	virtual ~HideOfflineTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of HideOfflineTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit HideOfflineTalkableFilter(QObject *parent = nullptr);
+    virtual ~HideOfflineTalkableFilter();
 
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Enable or disalbe filter.
-	 * @param enabled new value of enabled property
-	 */
-	void setEnabled(bool enabled);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Enable or disalbe filter.
+     * @param enabled new value of enabled property
+     */
+    void setEnabled(bool enabled);
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<ContactManager> m_contactManager;
 
-	bool m_enabled;
+    bool m_enabled;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };
 
 /**

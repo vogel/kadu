@@ -34,24 +34,23 @@ class NotificationConfiguration;
 
 class ChatEventListener : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(LISTENER)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(LISTENER)
 
 public:
-	Q_INVOKABLE explicit ChatEventListener(QObject *parent = nullptr);
-	virtual ~ChatEventListener();
+    Q_INVOKABLE explicit ChatEventListener(QObject *parent = nullptr);
+    virtual ~ChatEventListener();
 
 private:
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<MessageNotificationService> m_messageNotificationService;
-	QPointer<NotificationConfiguration> m_notificationConfiguration;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<MessageNotificationService> m_messageNotificationService;
+    QPointer<NotificationConfiguration> m_notificationConfiguration;
 
 private slots:
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setMessageNotificationService(MessageNotificationService *messageNotificationService);
-	INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setMessageNotificationService(MessageNotificationService *messageNotificationService);
+    INJEQT_SET void setNotificationConfiguration(NotificationConfiguration *notificationConfiguration);
 
-	void messageReceived(const Message &message);
-
+    void messageReceived(const Message &message);
 };

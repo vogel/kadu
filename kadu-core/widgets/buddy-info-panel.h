@@ -38,46 +38,45 @@ class TalkableConverter;
 
 class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<BuddyPreferredManager> m_buddyPreferredManager;
-	QPointer<DomProcessorService> m_domProcessorService;
-	QPointer<Parser> m_parser;
-	QPointer<PathsProvider> m_pathsProvider;
-	QPointer<TalkableConverter> m_talkableConverter;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<BuddyPreferredManager> m_buddyPreferredManager;
+    QPointer<DomProcessorService> m_domProcessorService;
+    QPointer<Parser> m_parser;
+    QPointer<PathsProvider> m_pathsProvider;
+    QPointer<TalkableConverter> m_talkableConverter;
 
-	Talkable Item;
-	QString Template;
-	QString Syntax;
-	QString BackgroundColor;
+    Talkable Item;
+    QString Template;
+    QString Syntax;
+    QString BackgroundColor;
 
-	void connectItem();
-	void disconnectItem();
+    void connectItem();
+    void disconnectItem();
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
-	INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
+    INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setTalkableConverter(TalkableConverter *talkableConverter);
+    INJEQT_INIT void init();
 
-	void buddyUpdated(const Buddy &buddy);
+    void buddyUpdated(const Buddy &buddy);
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	explicit BuddyInfoPanel(QWidget *parent = nullptr);
-	virtual ~BuddyInfoPanel();
+    explicit BuddyInfoPanel(QWidget *parent = nullptr);
+    virtual ~BuddyInfoPanel();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
 public slots:
-	void displayItem(Talkable item);
-	void update();
-	void styleFixup(QString &syntax);
-
+    void displayItem(Talkable item);
+    void update();
+    void styleFixup(QString &syntax);
 };

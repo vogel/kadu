@@ -32,119 +32,115 @@ class QStyleOption;
 
 class CategorizedListView;
 
-
 class CategorizedListViewPainter : public QObject
 {
-        Q_OBJECT
+    Q_OBJECT
 
-        friend class CategorizedListView;
+    friend class CategorizedListView;
 
-        int LeftMargin;
-        int RightMargin;
-        CategorizedListView *View;
+    int LeftMargin;
+    int RightMargin;
+    CategorizedListView *View;
 
 public:
-        CategorizedListViewPainter(CategorizedListView *view);
-        virtual ~CategorizedListViewPainter();
+    CategorizedListViewPainter(CategorizedListView *view);
+    virtual ~CategorizedListViewPainter();
 
-        /**
-          * @return The view this category painter is associated with.
-          */
-        CategorizedListView *view() const;
+    /**
+      * @return The view this category painter is associated with.
+      */
+    CategorizedListView *view() const;
 
-        /**
-          * This method purpose is to draw a category represented by the given
-          * @param index with the given @param sortRole sorting role
-          *
-          * @note This method will be called one time per category, always with the
-          *       first element in that category
-          */
-        void drawCategory(const QModelIndex &index,
-                          int sortRole,
-                          const QStyleOption &option,
-                          QPainter *painter) const;
+    /**
+      * This method purpose is to draw a category represented by the given
+      * @param index with the given @param sortRole sorting role
+      *
+      * @note This method will be called one time per category, always with the
+      *       first element in that category
+      */
+    void drawCategory(const QModelIndex &index, int sortRole, const QStyleOption &option, QPainter *painter) const;
 
-        int categoryHeight(const QModelIndex &index, const QStyleOption &option) const;
+    int categoryHeight(const QModelIndex &index, const QStyleOption &option) const;
 
-        int leftMargin() const;
-        void setLeftMargin(int leftMargin);
+    int leftMargin() const;
+    void setLeftMargin(int leftMargin);
 
-        int rightMargin() const;
-        void setRightMargin(int rightMargin);
+    int rightMargin() const;
+    void setRightMargin(int rightMargin);
 
-        CategorizedListViewPainter &operator=(const CategorizedListViewPainter &cd);
+    CategorizedListViewPainter &operator=(const CategorizedListViewPainter &cd);
 
 protected:
-        /**
-          * Method called when the mouse button has been pressed.
-          *
-          * @param index The representative index of the block of items.
-          * @param blockRect The rect occupied by the block of items.
-          * @param event The mouse event.
-          *
-          * @warning You explicitly have to determine whether the event has been accepted or not. You
-          *          have to call event->accept() or event->ignore() at all possible case branches in
-          *          your code.
-          */
-        virtual void mouseButtonPressed(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
+    /**
+      * Method called when the mouse button has been pressed.
+      *
+      * @param index The representative index of the block of items.
+      * @param blockRect The rect occupied by the block of items.
+      * @param event The mouse event.
+      *
+      * @warning You explicitly have to determine whether the event has been accepted or not. You
+      *          have to call event->accept() or event->ignore() at all possible case branches in
+      *          your code.
+      */
+    virtual void mouseButtonPressed(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
 
-        /**
-          * Method called when the mouse button has been released.
-          *
-          * @param index The representative index of the block of items.
-          * @param blockRect The rect occupied by the block of items.
-          * @param event The mouse event.
-          *
-          * @warning You explicitly have to determine whether the event has been accepted or not. You
-          *          have to call event->accept() or event->ignore() at all possible case branches in
-          *          your code.
-          */
-        virtual void mouseButtonReleased(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
+    /**
+      * Method called when the mouse button has been released.
+      *
+      * @param index The representative index of the block of items.
+      * @param blockRect The rect occupied by the block of items.
+      * @param event The mouse event.
+      *
+      * @warning You explicitly have to determine whether the event has been accepted or not. You
+      *          have to call event->accept() or event->ignore() at all possible case branches in
+      *          your code.
+      */
+    virtual void mouseButtonReleased(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
 
-        /**
-          * Method called when the mouse has been moved.
-          *
-          * @param index The representative index of the block of items.
-          * @param blockRect The rect occupied by the block of items.
-          * @param event The mouse event.
-          */
-        virtual void mouseMoved(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
+    /**
+      * Method called when the mouse has been moved.
+      *
+      * @param index The representative index of the block of items.
+      * @param blockRect The rect occupied by the block of items.
+      * @param event The mouse event.
+      */
+    virtual void mouseMoved(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
 
-        /**
-          * Method called when the mouse button has been double clicked.
-          *
-          * @param index The representative index of the block of items.
-          * @param blockRect The rect occupied by the block of items.
-          * @param event The mouse event.
-          *
-          * @warning You explicitly have to determine whether the event has been accepted or not. You
-          *          have to call event->accept() or event->ignore() at all possible case branches in
-          *          your code.
-          */
-        virtual void mouseButtonDoubleClicked(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
+    /**
+      * Method called when the mouse button has been double clicked.
+      *
+      * @param index The representative index of the block of items.
+      * @param blockRect The rect occupied by the block of items.
+      * @param event The mouse event.
+      *
+      * @warning You explicitly have to determine whether the event has been accepted or not. You
+      *          have to call event->accept() or event->ignore() at all possible case branches in
+      *          your code.
+      */
+    virtual void mouseButtonDoubleClicked(const QModelIndex &index, const QRect &blockRect, QMouseEvent *event);
 
-        /**
-          * Method called when the mouse button has left this block.
-          *
-          * @param index The representative index of the block of items.
-          * @param blockRect The rect occupied by the block of items.
-          */
-        virtual void mouseLeft(const QModelIndex &index, const QRect &blockRect);
+    /**
+      * Method called when the mouse button has left this block.
+      *
+      * @param index The representative index of the block of items.
+      * @param blockRect The rect occupied by the block of items.
+      */
+    virtual void mouseLeft(const QModelIndex &index, const QRect &blockRect);
 
 Q_SIGNALS:
-        /**
-          * This signal becomes emitted when collapse or expand has been clicked.
-          */
-        void collapseOrExpandClicked(const QModelIndex &index);
+    /**
+      * This signal becomes emitted when collapse or expand has been clicked.
+      */
+    void collapseOrExpandClicked(const QModelIndex &index);
 
-        /**
-          * Emit this signal on your subclass implementation to notify that something happened. Usually
-          * this will be triggered when you have received an event, and its position matched some "hot spot".
-          *
-          * You give this action the integer you want, and having connected this signal to your code,
-          * the connected slot can perform the needed changes (view, model, selection model, delegate...)
-          */
-        void actionRequested(int action, const QModelIndex &index);
+    /**
+      * Emit this signal on your subclass implementation to notify that something happened. Usually
+      * this will be triggered when you have received an event, and its position matched some "hot spot".
+      *
+      * You give this action the integer you want, and having connected this signal to your code,
+      * the connected slot can perform the needed changes (view, model, selection model, delegate...)
+      */
+    void actionRequested(int action, const QModelIndex &index);
 };
 
-#endif // CATEGORIZED_LIST_VIEW_PAINTER_H
+#endif   // CATEGORIZED_LIST_VIEW_PAINTER_H

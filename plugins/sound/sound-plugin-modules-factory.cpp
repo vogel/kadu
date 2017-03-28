@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SoundPluginModulesFactory::SoundPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SoundPluginModulesFactory::SoundPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ SoundPluginModulesFactory::~SoundPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SoundPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SoundModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SoundModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_sound-plugin-modules-factory.cpp"

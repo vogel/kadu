@@ -35,37 +35,36 @@ class RecentChatRepository;
 
 class KADUAPI RecentChatsMenu : public QMenu
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit RecentChatsMenu(QWidget *parent = nullptr);
-	virtual ~RecentChatsMenu();
+    explicit RecentChatsMenu(QWidget *parent = nullptr);
+    virtual ~RecentChatsMenu();
 
 public slots:
-	void invalidate();
+    void invalidate();
 
 signals:
-	void chatsListAvailable(bool available);
+    void chatsListAvailable(bool available);
 
 private:
-	QPointer<ChatDataExtractor> m_chatDataExtractor;
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<RecentChatRepository> m_recentChatRepository;
+    QPointer<ChatDataExtractor> m_chatDataExtractor;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<RecentChatRepository> m_recentChatRepository;
 
-	bool m_recentChatsMenuNeedsUpdate;
+    bool m_recentChatsMenuNeedsUpdate;
 
 private slots:
-	INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatDataExtractor(ChatDataExtractor *chatDataExtractor);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setRecentChatRepository(RecentChatRepository *recentChatRepository);
+    INJEQT_INIT void init();
 
-	void checkIfListAvailable();
-	void update();
-	void iconThemeChanged();
-
+    void checkIfListAvailable();
+    void update();
+    void iconThemeChanged();
 };

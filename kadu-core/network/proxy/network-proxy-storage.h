@@ -32,20 +32,19 @@ class StoragePoint;
 
 class KADUAPI NetworkProxyStorage : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NetworkProxyStorage(QObject *parent = nullptr);
-	virtual ~NetworkProxyStorage();
+    Q_INVOKABLE explicit NetworkProxyStorage(QObject *parent = nullptr);
+    virtual ~NetworkProxyStorage();
 
-	NetworkProxy create();
-	NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
-	NetworkProxy loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    NetworkProxy create();
+    NetworkProxy loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
+    NetworkProxy loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

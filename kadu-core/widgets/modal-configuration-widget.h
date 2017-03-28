@@ -23,8 +23,8 @@
 #ifndef MODAL_CONFIGURATION_WIDGET_H
 #define MODAL_CONFIGURATION_WIDGET_H
 
-#include <QtWidgets/QWidget>
 #include "exports.h"
+#include <QtWidgets/QWidget>
 
 #include "configuration-value-state-notifier.h"
 
@@ -47,51 +47,50 @@
  */
 class KADUAPI ModalConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Creates new ModalConfigurationWidget.
-	 * @param parent parent widget
-	 *
-	 * Creates new ModalConfigurationWidget.
-	 */
-	explicit ModalConfigurationWidget(QWidget *parent = nullptr);
-	virtual ~ModalConfigurationWidget();
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Creates new ModalConfigurationWidget.
+     * @param parent parent widget
+     *
+     * Creates new ModalConfigurationWidget.
+     */
+    explicit ModalConfigurationWidget(QWidget *parent = nullptr);
+    virtual ~ModalConfigurationWidget();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns configuration state notifier for this widget.
-	 * @return configuration state notifier for this widget
-	 *
-	 * Returns configuration state notifier for this widget.
-	 */
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns configuration state notifier for this widget.
+     * @return configuration state notifier for this widget
+     *
+     * Returns configuration state notifier for this widget.
+     */
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const = 0;
 
 public slots:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Stores widget data.
-	 *
-	 * This method have to be overloaded in derivered widgets. It stores
-	 * all widget data and marks it as 'unmodified'.
-	 */
-	virtual void apply() = 0;
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Stores widget data.
+     *
+     * This method have to be overloaded in derivered widgets. It stores
+     * all widget data and marks it as 'unmodified'.
+     */
+    virtual void apply() = 0;
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Resets widget data to oryginal state.
-	 *
-	 * This method have to be overloaded in derivered widgets. It resets
-	 * all widget data to oryginal state and marks it as 'unmodified'.
-	 */
-	virtual void cancel() = 0;
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Resets widget data to oryginal state.
+     *
+     * This method have to be overloaded in derivered widgets. It resets
+     * all widget data to oryginal state and marks it as 'unmodified'.
+     */
+    virtual void cancel() = 0;
 };
 
 /**
  * @}
  */
 
-#endif // MODAL_CONFIGURATION_WIDGET_H
+#endif   // MODAL_CONFIGURATION_WIDGET_H

@@ -48,104 +48,112 @@
  */
 class KADUAPI Status
 {
-	StatusType Type;
-	QString Description;
+    StatusType Type;
+    QString Description;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new status with given type and description.
-	 * @param statusType type of new status
-	 * @param description description of new status.
-	 *
-	 * Creates new status with given type and description.
-	 */
-	explicit Status(StatusType statusType = StatusType::Offline, const QString &description = QString());
-	Status(const Status &copyme);
-	~Status();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new status with given type and description.
+     * @param statusType type of new status
+     * @param description description of new status.
+     *
+     * Creates new status with given type and description.
+     */
+    explicit Status(StatusType statusType = StatusType::Offline, const QString &description = QString());
+    Status(const Status &copyme);
+    ~Status();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns this status type.
-	 * @return this status type
-	 *
-	 * Returns this status type.
-	 */
-	StatusType type() const { return Type; }
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns this status type.
+     * @return this status type
+     *
+     * Returns this status type.
+     */
+    StatusType type() const
+    {
+        return Type;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Updates this status type.
-	 * @param type new status type
-	 *
-	 * Updates this status type. Values of displayName and group are also updated.
-	 */
-	void setType(StatusType type);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Updates this status type.
+     * @param type new status type
+     *
+     * Updates this status type. Values of displayName and group are also updated.
+     */
+    void setType(StatusType type);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns this status description.
-	 * @return this status description
-	 *
-	 * Returns this status description.
-	 */
-	const QString & description() const { return Description; }
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns this status description.
+     * @return this status description
+     *
+     * Returns this status description.
+     */
+    const QString &description() const
+    {
+        return Description;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Updates this status description.
-	 * @param escription new status description
-	 *
-	 * Updates this status description.
-	 */
-	void setDescription(const QString &description) { Description = description; }
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Updates this status description.
+     * @param escription new status description
+     *
+     * Updates this status description.
+     */
+    void setDescription(const QString &description)
+    {
+        Description = description;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if this status description is not empty.
-	 * @return true if this status description is not empty
-	 *
-	 * Returns true if this status description is not empty.
-	 */
-	bool hasDescription() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns true if this status description is not empty.
+     * @return true if this status description is not empty
+     *
+     * Returns true if this status description is not empty.
+     */
+    bool hasDescription() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Returns true if this status if not connected (offline).
-	 * @return true if this status if not connected (offline)
-	 *
-	 * Returns true if this status if not connected (offline).
-	 */
-	bool isDisconnected() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Returns true if this status if not connected (offline).
+     * @return true if this status if not connected (offline)
+     *
+     * Returns true if this status if not connected (offline).
+     */
+    bool isDisconnected() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Compares two statuses.
-	 * @return true if left status is more available than right one
-	 *
-	 * This method compares two statuses. Status which is more available is considered 'less', so it returns
-	 * true when left status is more available than right one.
-	 */
-	bool operator < (const Status &compare) const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Compares two statuses.
+     * @return true if left status is more available than right one
+     *
+     * This method compares two statuses. Status which is more available is considered 'less', so it returns
+     * true when left status is more available than right one.
+     */
+    bool operator<(const Status &compare) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Compares two statuses.
-	 * @return true if both statuses are equal
-	 *
-	 * This method compares two statuses. Statuses are equal when its types and description are equal.
-	 */
-	bool operator == (const Status &compare) const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Compares two statuses.
+     * @return true if both statuses are equal
+     *
+     * This method compares two statuses. Statuses are equal when its types and description are equal.
+     */
+    bool operator==(const Status &compare) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Compares two statuses.
-	 * @return true if statuses are not equal
-	 *
-	 * This method compares two statuses. Statuses are not equal when its types or description are not equal.
-	 */
-	bool operator != (const Status &compare) const;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Compares two statuses.
+     * @return true if statuses are not equal
+     *
+     * This method compares two statuses. Statuses are not equal when its types or description are not equal.
+     */
+    bool operator!=(const Status &compare) const;
 };
 
 /**
@@ -155,4 +163,4 @@ public:
 
 Q_DECLARE_METATYPE(Status)
 
-#endif // STATUS_H
+#endif   // STATUS_H

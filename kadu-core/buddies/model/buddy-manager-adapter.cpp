@@ -23,40 +23,37 @@
 
 #include "buddy-manager-adapter.h"
 
-BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) :
-		QObject(model), Model(model)
+BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) : QObject(model), Model(model)
 {
 }
 
 BuddyManagerAdapter::~BuddyManagerAdapter()
 {
-	BuddyManager *manager = m_buddyManager;
-	disconnect(manager, 0, this, 0);
+    BuddyManager *manager = m_buddyManager;
+    disconnect(manager, 0, this, 0);
 }
 
 void BuddyManagerAdapter::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void BuddyManagerAdapter::init()
 {
-	Model->setBuddyList(m_buddyManager->items().toList());
+    Model->setBuddyList(m_buddyManager->items().toList());
 
-	connect(m_buddyManager, SIGNAL(buddyAdded(Buddy)),
-			this, SLOT(buddyAdded(Buddy)), Qt::DirectConnection);
-	connect(m_buddyManager, SIGNAL(buddyRemoved(Buddy)),
-			this, SLOT(buddyRemoved(Buddy)), Qt::DirectConnection);
+    connect(m_buddyManager, SIGNAL(buddyAdded(Buddy)), this, SLOT(buddyAdded(Buddy)), Qt::DirectConnection);
+    connect(m_buddyManager, SIGNAL(buddyRemoved(Buddy)), this, SLOT(buddyRemoved(Buddy)), Qt::DirectConnection);
 }
 
 void BuddyManagerAdapter::buddyAdded(const Buddy &buddy)
 {
-	Model->addBuddy(buddy);
+    Model->addBuddy(buddy);
 }
 
 void BuddyManagerAdapter::buddyRemoved(const Buddy &buddy)
 {
-	Model->removeBuddy(buddy);
+    Model->removeBuddy(buddy);
 }
 
 #include "moc_buddy-manager-adapter.cpp"

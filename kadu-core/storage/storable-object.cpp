@@ -26,118 +26,116 @@
 
 #include <QtCore/QtAlgorithms>
 
-StorableObject::StorableObject(QObject *parent) :
-		QObject{parent},
-		State{StateNew}
+StorableObject::StorableObject(QObject *parent) : QObject{parent}, State{StateNew}
 {
-	Properties = new CustomProperties();
+    Properties = new CustomProperties();
 }
 
 StorableObject::~StorableObject()
 {
-	delete Properties;
+    delete Properties;
 }
 
 void StorableObject::setStoragePointFactory(StoragePointFactory *storagePointFactory)
 {
-	m_storagePointFactory = storagePointFactory;
+    m_storagePointFactory = storagePointFactory;
 }
 
-StoragePointFactory * StorableObject::storagePointFactory() const
+StoragePointFactory *StorableObject::storagePointFactory() const
 {
-	return m_storagePointFactory;
+    return m_storagePointFactory;
 }
 
 std::shared_ptr<StoragePoint> StorableObject::createStoragePoint()
 {
-	auto parent = storageParent();
-	return m_storagePointFactory->createStoragePoint(storageNodeName(), parent ? parent->storage().get() : nullptr);
+    auto parent = storageParent();
+    return m_storagePointFactory->createStoragePoint(storageNodeName(), parent ? parent->storage().get() : nullptr);
 }
 
 void StorableObject::setStorage(const std::shared_ptr<StoragePoint> &storage)
 {
-	State = StateNotLoaded;
-	Storage = storage;
+    State = StateNotLoaded;
+    Storage = storage;
 }
 
 bool StorableObject::isValidStorage()
 {
-	return storage() && storage()->storage();
+    return storage() && storage()->storage();
 }
 
-const std::shared_ptr<StoragePoint> & StorableObject::storage()
+const std::shared_ptr<StoragePoint> &StorableObject::storage()
 {
-	if (!Storage)
-		Storage = createStoragePoint();
+    if (!Storage)
+        Storage = createStoragePoint();
 
-	return Storage;
+    return Storage;
 }
 
 void StorableObject::store()
 {
-	ensureLoaded();
-	Properties->storeTo(storage());
+    ensureLoaded();
+    Properties->storeTo(storage());
 }
 
 bool StorableObject::shouldStore()
 {
-	return true;
+    return true;
 }
 
 void StorableObject::load()
 {
-	State = StateLoaded;
-	Properties->loadFrom(storage());
+    State = StateLoaded;
+    Properties->loadFrom(storage());
 }
 
 void StorableObject::ensureLoaded()
 {
-	if (StateNotLoaded == State)
-		load();
+    if (StateNotLoaded == State)
+        load();
 }
 
 void StorableObject::ensureStored()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (shouldStore())
-		store();
-	else
-		removeFromStorage();
+    if (shouldStore())
+        store();
+    else
+        removeFromStorage();
 }
 
 void StorableObject::removeFromStorage()
 {
-	if (!Storage)
-		return;
+    if (!Storage)
+        return;
 
-	Storage->point().parentNode().removeChild(Storage->point());
-	Storage.reset();
+    Storage->point().parentNode().removeChild(Storage->point());
+    Storage.reset();
 }
 
 void StorableObject::storeValue(const QString &name, const QVariant value)
 {
-	Storage->storeValue(name, value);
+    Storage->storeValue(name, value);
 }
 
 void StorableObject::storeAttribute(const QString &name, const QVariant value)
 {
-	Storage->storeAttribute(name, value);
+    Storage->storeAttribute(name, value);
 }
 
-void StorableObject::removeValue(const QString& name)
+void StorableObject::removeValue(const QString &name)
 {
-	Storage->removeValue(name);
+    Storage->removeValue(name);
 }
 
-void StorableObject::removeAttribute(const QString& name)
+void StorableObject::removeAttribute(const QString &name)
 {
-	Storage->removeAttribute(name);
+    Storage->removeAttribute(name);
 }
 
-CustomProperties * StorableObject::customProperties() const
+CustomProperties *StorableObject::customProperties() const
 {
-	return Properties;
+    return Properties;
 }
 
 #include "moc_storable-object.cpp"

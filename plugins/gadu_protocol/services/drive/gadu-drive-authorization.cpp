@@ -27,60 +27,59 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduDriveAuthorization::GaduDriveAuthorization(QString accountId, QString imToken, QString clientName, QNetworkAccessManager *networkAccessManager, QObject *parent) :
-		QObject{parent},
-		m_accountId{accountId},
-		m_imToken{imToken},
-		m_clientName{clientName},
-		m_networkAccessManager{networkAccessManager}
+GaduDriveAuthorization::GaduDriveAuthorization(
+    QString accountId, QString imToken, QString clientName, QNetworkAccessManager *networkAccessManager,
+    QObject *parent)
+        : QObject{parent}, m_accountId{accountId}, m_imToken{imToken}, m_clientName{clientName},
+          m_networkAccessManager{networkAccessManager}
 {
 }
 
 GaduDriveAuthorization::~GaduDriveAuthorization()
 {
-	if (m_reply)
-		m_reply->deleteLater();
+    if (m_reply)
+        m_reply->deleteLater();
 }
 
 void GaduDriveAuthorization::authorize()
 {
-	if (m_reply != nullptr)
-		return;
+    if (m_reply != nullptr)
+        return;
 
-	auto metadata = QJsonObject{};
-	metadata["id"] = "01234567890123456789012345678901";
-	metadata["name"] = "libgadu";
-	metadata["os_version"] = "WINNT x86-msvc";
-	metadata["client_version"] = m_clientName;
-	metadata["type"] = "desktop";
+    auto metadata = QJsonObject{};
+    metadata["id"] = "01234567890123456789012345678901";
+    metadata["name"] = "libgadu";
+    metadata["os_version"] = "WINNT x86-msvc";
+    metadata["client_version"] = m_clientName;
+    metadata["type"] = "desktop";
 
-	QNetworkRequest request;
-	request.setUrl(QUrl{"https://drive.mpa.gg.pl/signin"});
-	request.setRawHeader("Authorization", QString{"IMToken %1"}.arg(m_imToken).toAscii());
-	request.setRawHeader("Connection", "keep-alive");
-	request.setRawHeader("X-gged-api-version", "6");
-	request.setRawHeader("X-gged-user", QString{"gg/pl:%1"}.arg(m_accountId).toAscii());
-	request.setRawHeader("X-gged-client-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
+    QNetworkRequest request;
+    request.setUrl(QUrl{"https://drive.mpa.gg.pl/signin"});
+    request.setRawHeader("Authorization", QString{"IMToken %1"}.arg(m_imToken).toAscii());
+    request.setRawHeader("Connection", "keep-alive");
+    request.setRawHeader("X-gged-api-version", "6");
+    request.setRawHeader("X-gged-user", QString{"gg/pl:%1"}.arg(m_accountId).toAscii());
+    request.setRawHeader("X-gged-client-metadata", QJsonDocument{metadata}.toJson(QJsonDocument::Compact).data());
 
-	m_reply = m_networkAccessManager->put(request, QByteArray{});
-	connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
+    m_reply = m_networkAccessManager->put(request, QByteArray{});
+    connect(m_reply.get(), SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void GaduDriveAuthorization::requestFinished()
 {
-	if (QNetworkReply::NoError == m_reply->error())
-	{
-		auto json = QJsonDocument::fromJson(m_reply->readAll());
-		auto sessionData = json.object().value("result").toObject().value("session_data").toObject();
-		auto sessionId = sessionData.value("session_id").toString();
-		auto securityToken = sessionData.value("security_token").toString();
-		auto token = GaduDriveSessionToken{std::move(sessionId), std::move(securityToken)};
-		emit authorized(token);
-	}
-	else
-		emit authorized({});
+    if (QNetworkReply::NoError == m_reply->error())
+    {
+        auto json = QJsonDocument::fromJson(m_reply->readAll());
+        auto sessionData = json.object().value("result").toObject().value("session_data").toObject();
+        auto sessionId = sessionData.value("session_id").toString();
+        auto securityToken = sessionData.value("security_token").toString();
+        auto token = GaduDriveSessionToken{std::move(sessionId), std::move(securityToken)};
+        emit authorized(token);
+    }
+    else
+        emit authorized({});
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_gadu-drive-authorization.cpp"

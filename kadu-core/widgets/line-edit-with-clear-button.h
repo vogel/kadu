@@ -33,43 +33,45 @@ class LineEditClearButton;
 
 class KADUAPI LineEditWithClearButton : public QLineEdit
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit LineEditWithClearButton(QWidget *parent = nullptr);
-	virtual ~LineEditWithClearButton();
+    explicit LineEditWithClearButton(QWidget *parent = nullptr);
+    virtual ~LineEditWithClearButton();
 
-	bool isClearButtonVisible() const { return ClearButtonVisible; }
-	void setClearButtonVisible(bool clearButtonVisible);
+    bool isClearButtonVisible() const
+    {
+        return ClearButtonVisible;
+    }
+    void setClearButtonVisible(bool clearButtonVisible);
 
-	virtual void setReadOnly(bool readonly);
-	virtual void setEnabled(bool enabled);
+    virtual void setReadOnly(bool readonly);
+    virtual void setEnabled(bool enabled);
 
 signals:
-	void cleared();
+    void cleared();
 
 protected:
-	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseReleaseEvent(QMouseEvent *e);
-	virtual void resizeEvent(QResizeEvent *e);
+    virtual void mousePressEvent(QMouseEvent *e);
+    virtual void mouseReleaseEvent(QMouseEvent *e);
+    virtual void resizeEvent(QResizeEvent *e);
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	bool ClearButtonVisible;
+    bool ClearButtonVisible;
 
-	LineEditClearButton *ClearButton;
+    LineEditClearButton *ClearButton;
 
-	bool WideEnoughForClear;
-	bool ClickInClear;
+    bool WideEnoughForClear;
+    bool ClickInClear;
 
-	void createClearButton();
-	void updateClearButton();
-	bool canShowClearButton();
+    void createClearButton();
+    void updateClearButton();
+    bool canShowClearButton();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void updateClearButtonIcon();
-
+    void updateClearButtonIcon();
 };

@@ -24,18 +24,16 @@
 
 class SslCertificate
 {
-
 public:
-	SslCertificate(QString hostName, QByteArray pemHexEncodedCertificate);
+    SslCertificate(QString hostName, QByteArray pemHexEncodedCertificate);
 
-	QString hostName() const;
-	QByteArray pemHexEncodedCertificate() const;
+    QString hostName() const;
+    QByteArray pemHexEncodedCertificate() const;
 
 private:
-	QString m_hostName;
-	QByteArray m_pemHexEncodedCertificate;
-
+    QString m_hostName;
+    QByteArray m_pemHexEncodedCertificate;
 };
 
-bool operator == (const SslCertificate &x, const SslCertificate &y);
+bool operator==(const SslCertificate &x, const SslCertificate &y);
 uint qHash(const SslCertificate &key, uint seed = 0);

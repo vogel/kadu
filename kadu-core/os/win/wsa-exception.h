@@ -23,5 +23,8 @@
 
 class WSAException : public std::exception
 {
-	virtual const char *what() const noexcept { return "WSA initialization failed"; }
+    virtual const char *what() const noexcept
+    {
+        return "WSA initialization failed";
+    }
 };

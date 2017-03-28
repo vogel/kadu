@@ -24,80 +24,79 @@
 #include "qfacebook/http/qfacebook-http-api.h"
 #include "qfacebook/http/qfacebook-http-reply.h"
 #include "qfacebook/http/qfacebook-http-request.h"
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook/qfacebook-contact.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
 #include <QtCore/QJsonArray>
 
 namespace
 {
-
 QByteArray parseRemoved(const QByteArray &removed)
 {
-	auto parsed = QByteArray::fromBase64(removed).split(':');
-	if (parsed.length() != 4)
-		return {};
+    auto parsed = QByteArray::fromBase64(removed).split(':');
+    if (parsed.length() != 4)
+        return {};
 
-	if (parsed[0] != "contact")
-		return {};
+    if (parsed[0] != "contact")
+        return {};
 
-	return parsed[2];
+    return parsed[2];
+}
 }
 
-}
-
-QFacebookDownloadContactsDeltaJob::QFacebookDownloadContactsDeltaJob(QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QByteArray deltaCursor, QObject *parent) :
-		QObject{parent},
-		m_httpApi{httpApi}
+QFacebookDownloadContactsDeltaJob::QFacebookDownloadContactsDeltaJob(
+    QFacebookHttpApi &httpApi, QFacebookSessionToken facebookSessionToken, QByteArray deltaCursor, QObject *parent)
+        : QObject{parent}, m_httpApi{httpApi}
 {
-	auto reply = m_httpApi.usersQueryDelta(facebookSessionToken.accessToken(), std::move(deltaCursor));
-	connect(reply, &QFacebookHttpReply::finished, this, &QFacebookDownloadContactsDeltaJob::replyFinished);
+    auto reply = m_httpApi.usersQueryDelta(facebookSessionToken.accessToken(), std::move(deltaCursor));
+    connect(reply, &QFacebookHttpReply::finished, this, &QFacebookDownloadContactsDeltaJob::replyFinished);
 }
 
 QFacebookDownloadContactsDeltaJob::~QFacebookDownloadContactsDeltaJob()
 {
 }
 
-void QFacebookDownloadContactsDeltaJob::replyFinished(const std::experimental::optional<QFacebookJsonReader> &result) try
+void QFacebookDownloadContactsDeltaJob::replyFinished(
+    const std::experimental::optional<QFacebookJsonReader> &result) try
 {
-	deleteLater();
+    deleteLater();
 
-	if (!result)
-		return;
+    if (!result)
+        return;
 
-	auto deltas = result->readObject("viewer").readObject("messenger_contacts").readObject("deltas");
-	auto pageInfo = deltas.readObject("page_info");
-	if (pageInfo.readBool("has_next_page"))
-	{
-		emit finished(QFacebookDownloadContactsDeltaResult{QFacebookDownloadContactsDeltaStatus::ErrorManyPages, {}, {}, {}});
-		return;
-	}
+    auto deltas = result->readObject("viewer").readObject("messenger_contacts").readObject("deltas");
+    auto pageInfo = deltas.readObject("page_info");
+    if (pageInfo.readBool("has_next_page"))
+    {
+        emit finished(
+            QFacebookDownloadContactsDeltaResult{QFacebookDownloadContactsDeltaStatus::ErrorManyPages, {}, {}, {}});
+        return;
+    }
 
-	auto nodes = deltas.readArray("nodes");
-	auto changes = std::vector<QFacebookJsonReader>{std::begin(nodes), std::end(nodes)};
-	auto split = std::partition(std::begin(changes), std::end(changes), [](const QFacebookJsonReader &v){
-		return v.hasObject("added");
-	});
+    auto nodes = deltas.readArray("nodes");
+    auto changes = std::vector<QFacebookJsonReader>{std::begin(nodes), std::end(nodes)};
+    auto split = std::partition(
+        std::begin(changes), std::end(changes), [](const QFacebookJsonReader &v) { return v.hasObject("added"); });
 
-	auto friends = std::vector<QFacebookJsonReader>{};
-	std::copy_if(std::begin(changes), split, std::back_inserter(friends), [](const QFacebookJsonReader &v){
-		return v.readObject("added").readObject("represented_profile").readString("friendship_status") == "ARE_FRIENDS";
-	});
-	std::transform(std::begin(friends), std::end(friends), std::back_inserter(m_added), [](const QFacebookJsonReader &v){
-		return QFacebookContact::fromJson(v.readObject("added"));
-	});
+    auto friends = std::vector<QFacebookJsonReader>{};
+    std::copy_if(std::begin(changes), split, std::back_inserter(friends), [](const QFacebookJsonReader &v) {
+        return v.readObject("added").readObject("represented_profile").readString("friendship_status") == "ARE_FRIENDS";
+    });
+    std::transform(
+        std::begin(friends), std::end(friends), std::back_inserter(m_added),
+        [](const QFacebookJsonReader &v) { return QFacebookContact::fromJson(v.readObject("added")); });
 
-	auto allRemoved = std::vector<QByteArray>{};
-	std::transform(split, std::end(changes), std::back_inserter(allRemoved), [](const QFacebookJsonReader &v){
-		return parseRemoved(v.readString("removed").toUtf8());
-	});
-	std::copy_if(std::begin(allRemoved), std::end(allRemoved), std::back_inserter(m_removed), [](const QByteArray &b){
-		return !b.isEmpty();
-	});
+    auto allRemoved = std::vector<QByteArray>{};
+    std::transform(split, std::end(changes), std::back_inserter(allRemoved), [](const QFacebookJsonReader &v) {
+        return parseRemoved(v.readString("removed").toUtf8());
+    });
+    std::copy_if(std::begin(allRemoved), std::end(allRemoved), std::back_inserter(m_removed), [](const QByteArray &b) {
+        return !b.isEmpty();
+    });
 
-	emit finished(QFacebookDownloadContactsDeltaResult{
-		QFacebookDownloadContactsDeltaStatus::OK,
-		pageInfo.readString("end_cursor").toUtf8(), m_added, m_removed});
+    emit finished(
+        QFacebookDownloadContactsDeltaResult{QFacebookDownloadContactsDeltaStatus::OK,
+                                             pageInfo.readString("end_cursor").toUtf8(), m_added, m_removed});
 }
 catch (QFacebookInvalidDataException &)
 {

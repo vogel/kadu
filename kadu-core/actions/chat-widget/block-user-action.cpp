@@ -27,15 +27,15 @@
 #include "widgets/chat-widget/chat-widget.h"
 #include "widgets/custom-input.h"
 
-BlockUserAction::BlockUserAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+BlockUserAction::BlockUserAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/block-buddy"});
-	setName(QStringLiteral("blockUserAction"));
-	setText(tr("Block Buddy"));
-	setType(ActionDescription::TypeUser);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/block-buddy"});
+    setName(QStringLiteral("blockUserAction"));
+    setText(tr("Block Buddy"));
+    setType(ActionDescription::TypeUser);
 }
 
 BlockUserAction::~BlockUserAction()
@@ -44,71 +44,71 @@ BlockUserAction::~BlockUserAction()
 
 void BlockUserAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 void BlockUserAction::actionInstanceCreated(Action *action)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+    if (!chatEditBox)
+        return;
 
-	connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkState()));
-	connect(chatEditBox->chatWidget()->chat(), SIGNAL(connected()), action, SLOT(checkState()));
-	connect(chatEditBox->chatWidget()->chat(), SIGNAL(disconnected()), action, SLOT(checkState()));
+    connect(chatEditBox->inputBox(), SIGNAL(textChanged()), action, SLOT(checkState()));
+    connect(chatEditBox->chatWidget()->chat(), SIGNAL(connected()), action, SLOT(checkState()));
+    connect(chatEditBox->chatWidget()->chat(), SIGNAL(disconnected()), action, SLOT(checkState()));
 }
 
 void BlockUserAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	auto buddies = action->context()->buddies();
-	if (buddies.isEmpty())
-		return;
+    auto buddies = action->context()->buddies();
+    if (buddies.isEmpty())
+        return;
 
-	auto on = std::any_of(std::begin(buddies), std::end(buddies), [](auto const &buddy){ return !buddy.isBlocked(); });
-	for (auto const &buddy : buddies)
-	{
-		buddy.setBlocked(on);
-		updateBlockingActions(buddy);
-	}
+    auto on = std::any_of(std::begin(buddies), std::end(buddies), [](auto const &buddy) { return !buddy.isBlocked(); });
+    for (auto const &buddy : buddies)
+    {
+        buddy.setBlocked(on);
+        updateBlockingActions(buddy);
+    }
 }
 
-void BlockUserAction::updateActionState(Action* action)
+void BlockUserAction::updateActionState(Action *action)
 {
-	auto buddies = action->context()->buddies();
+    auto buddies = action->context()->buddies();
 
-	if (!buddies.count() || buddies.contains(m_myself->buddy()))
-	{
-		action->setEnabled(false);
-		return;
-	}
+    if (!buddies.count() || buddies.contains(m_myself->buddy()))
+    {
+        action->setEnabled(false);
+        return;
+    }
 
-	if (action->context()->buddies().isAnyTemporary())
-	{
-		action->setEnabled(false);
-		return;
-	}
+    if (action->context()->buddies().isAnyTemporary())
+    {
+        action->setEnabled(false);
+        return;
+    }
 
-	action->setEnabled(!action->context()->roles().contains(ContactRole));
+    action->setEnabled(!action->context()->roles().contains(ContactRole));
 
-	auto on = std::any_of(std::begin(buddies), std::end(buddies), [](auto const &buddy){ return buddy.isBlocked(); });
-	action->setChecked(on);
+    auto on = std::any_of(std::begin(buddies), std::end(buddies), [](auto const &buddy) { return buddy.isBlocked(); });
+    action->setChecked(on);
 }
 
 void BlockUserAction::updateBlockingActions(Buddy buddy)
 {
-	auto buddyContacts = buddy.contacts();
+    auto buddyContacts = buddy.contacts();
 
-	for (auto action : actions())
-	{
-		auto contact = action->context()->contacts().toContact();
-		if (contact)
-			if (buddyContacts.contains(contact))
-				action->setChecked(buddy.isBlocked());
-	}
+    for (auto action : actions())
+    {
+        auto contact = action->context()->contacts().toContact();
+        if (contact)
+            if (buddyContacts.contains(contact))
+                action->setChecked(buddy.isBlocked());
+    }
 }
 
 #include "moc_block-user-action.cpp"

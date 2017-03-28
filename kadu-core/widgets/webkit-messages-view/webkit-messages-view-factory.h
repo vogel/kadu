@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "misc/memory.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -34,22 +34,23 @@ class WebkitMessagesViewHandlerFactory;
 
 class KADUAPI WebkitMessagesViewFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit WebkitMessagesViewFactory(QObject *parent = nullptr);
-	virtual ~WebkitMessagesViewFactory();
+    Q_INVOKABLE explicit WebkitMessagesViewFactory(QObject *parent = nullptr);
+    virtual ~WebkitMessagesViewFactory();
 
-	owned_qptr<WebkitMessagesView> createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent);
+    owned_qptr<WebkitMessagesView> createWebkitMessagesView(Chat chat, bool supportTransparency, QWidget *parent);
 
 private:
-	QPointer<ChatStyleRendererFactoryProvider> m_chatStyleRendererFactoryProvider;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
+    QPointer<ChatStyleRendererFactoryProvider> m_chatStyleRendererFactoryProvider;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<WebkitMessagesViewHandlerFactory> m_webkitMessagesViewHandlerFactory;
 
 private slots:
-	INJEQT_SET void setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
-
+    INJEQT_SET void
+    setChatStyleRendererFactoryProvider(ChatStyleRendererFactoryProvider *chatStyleRendererFactoryProvider);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void
+    setWebkitMessagesViewHandlerFactory(WebkitMessagesViewHandlerFactory *webkitMessagesViewHandlerFactory);
 };

@@ -31,43 +31,46 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;combo-box caption="caption" id="id"&gt;
-		&lt;item value="value" caption="caption"&gt;
-		...
-	&lt;/combo-box&gt;
+        &lt;combo-box caption="caption" id="id"&gt;
+                &lt;item value="value" caption="caption"&gt;
+                ...
+        &lt;/combo-box&gt;
 
-	@arg value - wartość zapisana do pliku konfiguracyjnego
-	@arg caption - wartość wyświetlana
+        @arg value - wartość zapisana do pliku konfiguracyjnego
+        @arg caption - wartość wyświetlana
  **/
 class KADUAPI ConfigComboBox : public QComboBox, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
-	bool saveIndexNotCaption;
+    bool saveIndexNotCaption;
 
-	QStringList itemValues;
-	QStringList itemCaptions;
+    QStringList itemValues;
+    QStringList itemCaptions;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigComboBox(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigComboBox();
+    ConfigComboBox(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        const QStringList &itemValues, const QStringList &itemCaptions, ConfigGroupBox *parentConfigGroupBox,
+        ConfigurationWindowDataManager *dataManager);
+    ConfigComboBox(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigComboBox();
 
-	void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
-	void setCurrentItem(const QString &value);
-	QString currentItemValue();
+    void setItems(const QStringList &itemValues, const QStringList &itemCaptions);
+    void setCurrentItem(const QString &value);
+    QString currentItemValue();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 
-	virtual bool fromDomElement(QDomElement domElement);
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

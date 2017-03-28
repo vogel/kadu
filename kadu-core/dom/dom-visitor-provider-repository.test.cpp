@@ -24,79 +24,81 @@
 
 class DomVisitorProviderRepositoryTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void shouldBeEmptyAfterCreation();
-	void shouldContainAddedElementsInProperOrder();
-	void shouldNotContainRemovedElements();
-
+    void shouldBeEmptyAfterCreation();
+    void shouldContainAddedElementsInProperOrder();
+    void shouldNotContainRemovedElements();
 };
 
 class MockDomVisitorProvider : public DomVisitorProvider
 {
-	virtual const DomVisitor * provide() const override { return {}; };
+    virtual const DomVisitor *provide() const override
+    {
+        return {};
+    };
 };
 
 void DomVisitorProviderRepositoryTest::shouldBeEmptyAfterCreation()
 {
-	DomVisitorProviderRepository domVisitorProviderRepository{};
+    DomVisitorProviderRepository domVisitorProviderRepository{};
 
-	QCOMPARE(domVisitorProviderRepository.size(), size_t{0});
-	QVERIFY(domVisitorProviderRepository.begin() == domVisitorProviderRepository.end());
+    QCOMPARE(domVisitorProviderRepository.size(), size_t{0});
+    QVERIFY(domVisitorProviderRepository.begin() == domVisitorProviderRepository.end());
 }
 
 void DomVisitorProviderRepositoryTest::shouldContainAddedElementsInProperOrder()
 {
-	DomVisitorProviderRepository domVisitorProviderRepository{};
-	auto provider1 = MockDomVisitorProvider{};
-	auto provider2 = MockDomVisitorProvider{};
-	auto provider3 = MockDomVisitorProvider{};
-	auto provider4 = MockDomVisitorProvider{};
-	auto provider5 = MockDomVisitorProvider{};
+    DomVisitorProviderRepository domVisitorProviderRepository{};
+    auto provider1 = MockDomVisitorProvider{};
+    auto provider2 = MockDomVisitorProvider{};
+    auto provider3 = MockDomVisitorProvider{};
+    auto provider4 = MockDomVisitorProvider{};
+    auto provider5 = MockDomVisitorProvider{};
 
-	domVisitorProviderRepository.addVisitorProvider(&provider1, 0);
-	domVisitorProviderRepository.addVisitorProvider(&provider2, 1000);
-	domVisitorProviderRepository.addVisitorProvider(&provider3, -1000);
-	domVisitorProviderRepository.addVisitorProvider(&provider4, -500);
-	domVisitorProviderRepository.addVisitorProvider(&provider5, 500);
+    domVisitorProviderRepository.addVisitorProvider(&provider1, 0);
+    domVisitorProviderRepository.addVisitorProvider(&provider2, 1000);
+    domVisitorProviderRepository.addVisitorProvider(&provider3, -1000);
+    domVisitorProviderRepository.addVisitorProvider(&provider4, -500);
+    domVisitorProviderRepository.addVisitorProvider(&provider5, 500);
 
-	QCOMPARE(domVisitorProviderRepository.size(), size_t{5});
-	QVERIFY(domVisitorProviderRepository.begin() != domVisitorProviderRepository.end());
+    QCOMPARE(domVisitorProviderRepository.size(), size_t{5});
+    QVERIFY(domVisitorProviderRepository.begin() != domVisitorProviderRepository.end());
 
-	auto it = domVisitorProviderRepository.begin();
-	QCOMPARE(*it++, &provider3);
-	QCOMPARE(*it++, &provider4);
-	QCOMPARE(*it++, &provider1);
-	QCOMPARE(*it++, &provider5);
-	QCOMPARE(*it++, &provider2);
+    auto it = domVisitorProviderRepository.begin();
+    QCOMPARE(*it++, &provider3);
+    QCOMPARE(*it++, &provider4);
+    QCOMPARE(*it++, &provider1);
+    QCOMPARE(*it++, &provider5);
+    QCOMPARE(*it++, &provider2);
 }
 
 void DomVisitorProviderRepositoryTest::shouldNotContainRemovedElements()
 {
-	DomVisitorProviderRepository domVisitorProviderRepository{};
-	auto provider1 = MockDomVisitorProvider{};
-	auto provider2 = MockDomVisitorProvider{};
-	auto provider3 = MockDomVisitorProvider{};
-	auto provider4 = MockDomVisitorProvider{};
-	auto provider5 = MockDomVisitorProvider{};
+    DomVisitorProviderRepository domVisitorProviderRepository{};
+    auto provider1 = MockDomVisitorProvider{};
+    auto provider2 = MockDomVisitorProvider{};
+    auto provider3 = MockDomVisitorProvider{};
+    auto provider4 = MockDomVisitorProvider{};
+    auto provider5 = MockDomVisitorProvider{};
 
-	domVisitorProviderRepository.addVisitorProvider(&provider1, 0);
-	domVisitorProviderRepository.addVisitorProvider(&provider2, 1000);
-	domVisitorProviderRepository.addVisitorProvider(&provider3, -1000);
-	domVisitorProviderRepository.addVisitorProvider(&provider4, -500);
-	domVisitorProviderRepository.addVisitorProvider(&provider5, 500);
+    domVisitorProviderRepository.addVisitorProvider(&provider1, 0);
+    domVisitorProviderRepository.addVisitorProvider(&provider2, 1000);
+    domVisitorProviderRepository.addVisitorProvider(&provider3, -1000);
+    domVisitorProviderRepository.addVisitorProvider(&provider4, -500);
+    domVisitorProviderRepository.addVisitorProvider(&provider5, 500);
 
-	domVisitorProviderRepository.removeVisitorProvider(&provider1);
-	domVisitorProviderRepository.removeVisitorProvider(&provider3);
-	domVisitorProviderRepository.removeVisitorProvider(&provider2);
+    domVisitorProviderRepository.removeVisitorProvider(&provider1);
+    domVisitorProviderRepository.removeVisitorProvider(&provider3);
+    domVisitorProviderRepository.removeVisitorProvider(&provider2);
 
-	QCOMPARE(domVisitorProviderRepository.size(), size_t{2});
-	QVERIFY(domVisitorProviderRepository.begin() != domVisitorProviderRepository.end());
+    QCOMPARE(domVisitorProviderRepository.size(), size_t{2});
+    QVERIFY(domVisitorProviderRepository.begin() != domVisitorProviderRepository.end());
 
-	auto it = domVisitorProviderRepository.begin();
-	QCOMPARE(*it++, &provider4);
-	QCOMPARE(*it++, &provider5);
+    auto it = domVisitorProviderRepository.begin();
+    QCOMPARE(*it++, &provider4);
+    QCOMPARE(*it++, &provider5);
 }
 
 QTEST_APPLESS_MAIN(DomVisitorProviderRepositoryTest)

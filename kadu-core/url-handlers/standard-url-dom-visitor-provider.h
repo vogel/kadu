@@ -25,15 +25,13 @@
 
 class StandardUrlDomVisitorProvider : public DomVisitorProvider
 {
-
 public:
-	explicit StandardUrlDomVisitorProvider(Configuration *configuration);
-	virtual ~StandardUrlDomVisitorProvider();
+    explicit StandardUrlDomVisitorProvider(Configuration *configuration);
+    virtual ~StandardUrlDomVisitorProvider();
 
-	virtual const DomVisitor * provide() const;
+    virtual const DomVisitor *provide() const;
 
 private:
-	IgnoreLinksDomVisitor m_ignoreLinks;
-	StandardUrlExpanderConfigurator m_configurator;
-
+    IgnoreLinksDomVisitor m_ignoreLinks;
+    StandardUrlExpanderConfigurator m_configurator;
 };

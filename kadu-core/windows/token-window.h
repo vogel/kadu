@@ -42,40 +42,39 @@ class QLineEdit;
  */
 class KADUAPI TokenWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLineEdit *TokenValue;
+    QLineEdit *TokenValue;
 
-	void createGui(const QPixmap &tokenPixmap);
-	void result(const QString &value);
+    void createGui(const QPixmap &tokenPixmap);
+    void result(const QString &value);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new window with given picture.
-	 * @param tokenPixmap pixmap to present to user
-	 */
-	explicit TokenWindow(const QPixmap &tokenPixmap, QWidget *parent = nullptr);
-	virtual ~TokenWindow();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new window with given picture.
+     * @param tokenPixmap pixmap to present to user
+     */
+    explicit TokenWindow(const QPixmap &tokenPixmap, QWidget *parent = nullptr);
+    virtual ~TokenWindow();
 
 public slots:
-	virtual void accept();
-	virtual void reject();
+    virtual void accept();
+    virtual void reject();
 
 signals:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emited when user enters text from picture or closes window.
-	 * @param tokenValue value entered by user
-	 *
-	 * If user closed window without entering value or with Escape key then tokenValue parameter is empty.
-	 */
-	void tokenValueEntered(const QString &tokenValue);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emited when user enters text from picture or closes window.
+     * @param tokenValue value entered by user
+     *
+     * If user closed window without entering value or with Escape key then tokenValue parameter is empty.
+     */
+    void tokenValueEntered(const QString &tokenValue);
 };
 
 /**
  * @}
  */
 
-#endif // TOKEN_WINDOW_H
+#endif   // TOKEN_WINDOW_H

@@ -27,18 +27,16 @@
 
 #include "accounts/account-manager.h"
 #include "contacts/contact-manager.h"
+#include "exports.h"
 #include "menu/menu-inventory.h"
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"
-#include "exports.h"
 
 #include "infos.h"
 #include "infos_dialog.h"
 #include "show-infos-window-action.h"
 
-Infos::Infos(QObject *parent) :
-		QObject{parent},
-		menuID{}
+Infos::Infos(QObject *parent) : QObject{parent}, menuID{}
 {
 }
 
@@ -48,147 +46,140 @@ Infos::~Infos()
 
 void Infos::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void Infos::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 void Infos::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void Infos::setMenuInventory(MenuInventory *menuInventory)
 {
-	m_menuInventory = menuInventory;
+    m_menuInventory = menuInventory;
 }
 
 void Infos::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void Infos::setShowInfosWindowAction(ShowInfosWindowAction *showInfosWindowAction)
 {
-	m_showInfosWindowAction = showInfosWindowAction;
+    m_showInfosWindowAction = showInfosWindowAction;
 }
 
 void Infos::init()
 {
-	triggerAllAccountsAdded(m_accountManager);
+    triggerAllAccountsAdded(m_accountManager);
 
-	fileName = m_pathsProvider->profilePath() + QStringLiteral("last_seen.data");
+    fileName = m_pathsProvider->profilePath() + QStringLiteral("last_seen.data");
 
-	if (QFile::exists(fileName))
-	{
-		QFile file(fileName);
-		if (file.open(QIODevice::ReadOnly))
-		{
-			QTextStream stream(&file);
-			while (!stream.atEnd())
-			{
-				QStringList fullId = stream.readLine().split(':', QString::SkipEmptyParts);
-				if (fullId.count() != 2)
-					continue;
-				QString protocol = fullId[0];
-				QString uin = fullId[1];
-				QString dateTime = stream.readLine();
+    if (QFile::exists(fileName))
+    {
+        QFile file(fileName);
+        if (file.open(QIODevice::ReadOnly))
+        {
+            QTextStream stream(&file);
+            while (!stream.atEnd())
+            {
+                QStringList fullId = stream.readLine().split(':', QString::SkipEmptyParts);
+                if (fullId.count() != 2)
+                    continue;
+                QString protocol = fullId[0];
+                QString uin = fullId[1];
+                QString dateTime = stream.readLine();
 
-				Contact contact;
-				// wstawiamy tylko konta, które są na liście kontaktów
-				foreach(Account account, m_accountManager->byProtocolName(protocol))
-				{
-					contact = m_contactManager->byId(account, uin, ActionReturnNull);
-					if (contact.isNull())
-						continue;
-					if (!contact.isAnonymous())
-					{
-						lastSeen[qMakePair(protocol, uin)] = dateTime;
-						// wystarczy, że kontakt jest na jednym koncie, omijamy resztę
-						continue;
-					}
-				}
-				QString tmp = stream.readLine(); // skip empty line
-			}
-			file.close();
-		}
-		else
-		{
-			fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
-			fflush(stderr);
-		}
-	}
+                Contact contact;
+                // wstawiamy tylko konta, które są na liście kontaktów
+                foreach (Account account, m_accountManager->byProtocolName(protocol))
+                {
+                    contact = m_contactManager->byId(account, uin, ActionReturnNull);
+                    if (contact.isNull())
+                        continue;
+                    if (!contact.isAnonymous())
+                    {
+                        lastSeen[qMakePair(protocol, uin)] = dateTime;
+                        // wystarczy, że kontakt jest na jednym koncie, omijamy resztę
+                        continue;
+                    }
+                }
+                QString tmp = stream.readLine();   // skip empty line
+            }
+            file.close();
+        }
+        else
+        {
+            fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
+            fflush(stderr);
+        }
+    }
 
-	// Main menu entry
-	m_menuInventory
-		->menu("tools")
-		->addAction(m_showInfosWindowAction, KaduMenu::SectionTools, 3)
-		->update();
+    // Main menu entry
+    m_menuInventory->menu("tools")->addAction(m_showInfosWindowAction, KaduMenu::SectionTools, 3)->update();
 }
 
 void Infos::done()
 {
-	updateTimes();
-	QFile file(fileName);
-	if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
-	{
-		QTextStream stream(&file);
-		for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
-		{
-			QPair<QString, QString> lastSeenKey = it.key();
-			stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
-		}
-		file.close();
-	}
-	else
-	{
-		fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
-		fflush(stderr);
-	}
+    updateTimes();
+    QFile file(fileName);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+    {
+        QTextStream stream(&file);
+        for (LastSeen::Iterator it = lastSeen.begin(); it != lastSeen.end(); ++it)
+        {
+            QPair<QString, QString> lastSeenKey = it.key();
+            stream << lastSeenKey.first << ":" << lastSeenKey.second << "\n" << it.value() << "\n\n";
+        }
+        file.close();
+    }
+    else
+    {
+        fprintf(stderr, "cannot open '%s': %s\n", qPrintable(file.fileName()), qPrintable(file.errorString()));
+        fflush(stderr);
+    }
 
-	m_menuInventory
-		->menu("tools")
-		->removeAction(m_showInfosWindowAction)
-		->update();
+    m_menuInventory->menu("tools")->removeAction(m_showInfosWindowAction)->update();
 }
 
 void Infos::onShowInfos()
 {
-	updateTimes();
-	InfosDialog *infosDialog = m_pluginInjectedFactory->makeInjected<InfosDialog>(lastSeen);
-	infosDialog->show();
+    updateTimes();
+    InfosDialog *infosDialog = m_pluginInjectedFactory->makeInjected<InfosDialog>(lastSeen);
+    infosDialog->show();
 }
 
 void Infos::accountAdded(Account account)
 {
-	connect(account, SIGNAL(buddyStatusChanged(Contact, Status)),
-			this, SLOT(contactStatusChanged(Contact, Status)));
+    connect(account, SIGNAL(buddyStatusChanged(Contact, Status)), this, SLOT(contactStatusChanged(Contact, Status)));
 }
 
 void Infos::accountRemoved(Account account)
 {
-	disconnect(account, 0, this, 0);
+    disconnect(account, 0, this, 0);
 }
 
 void Infos::contactStatusChanged(Contact contact, Status status)
 {
-	Q_UNUSED(status)
-	// interesuje nas tylko zmiana na offline, lastSeen dla ludzi online
-	// zostanie zapisany przy wyjściu z programu
-	if (contact.currentStatus().isDisconnected())
-		lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
-		         = QDateTime::currentDateTime().toString(QStringLiteral("dd-MM-yyyy hh:mm"));
+    Q_UNUSED(status)
+    // interesuje nas tylko zmiana na offline, lastSeen dla ludzi online
+    // zostanie zapisany przy wyjściu z programu
+    if (contact.currentStatus().isDisconnected())
+        lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())] =
+            QDateTime::currentDateTime().toString(QStringLiteral("dd-MM-yyyy hh:mm"));
 }
 
 void Infos::updateTimes()
 {
-	foreach (const Contact &contact, m_contactManager->items())
-		if (!contact.currentStatus().isDisconnected())
-			lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())]
-			         = QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
+    foreach (const Contact &contact, m_contactManager->items())
+        if (!contact.currentStatus().isDisconnected())
+            lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())] =
+                QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 }
 
 #include "moc_infos.cpp"

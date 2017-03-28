@@ -29,8 +29,7 @@
 
 #include <algorithm>
 
-ChatWidgetContainerHandlerMapper::ChatWidgetContainerHandlerMapper(QObject *parent) :
-		QObject{parent}
+ChatWidgetContainerHandlerMapper::ChatWidgetContainerHandlerMapper(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,127 +37,136 @@ ChatWidgetContainerHandlerMapper::~ChatWidgetContainerHandlerMapper()
 {
 }
 
-void ChatWidgetContainerHandlerMapper::setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
+void ChatWidgetContainerHandlerMapper::setChatWidgetContainerHandlerRepository(
+    ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository)
 {
-	m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
+    m_chatWidgetContainerHandlerRepository = chatWidgetContainerHandlerRepository;
 
-	if (!m_chatWidgetContainerHandlerRepository)
-		return;
+    if (!m_chatWidgetContainerHandlerRepository)
+        return;
 
-	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)),
-			this, SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler*)));
-	connect(m_chatWidgetContainerHandlerRepository.data(), SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)),
-			this, SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler*)));
+    connect(
+        m_chatWidgetContainerHandlerRepository.data(),
+        SIGNAL(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *)), this,
+        SLOT(chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *)));
+    connect(
+        m_chatWidgetContainerHandlerRepository.data(),
+        SIGNAL(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *)), this,
+        SLOT(chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *)));
 
-	for (auto chatWidgetContainerHandler : m_chatWidgetContainerHandlerRepository.data())
-		chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
+    for (auto chatWidgetContainerHandler : m_chatWidgetContainerHandlerRepository.data())
+        chatWidgetContainerHandlerRegistered(chatWidgetContainerHandler);
 }
 
 void ChatWidgetContainerHandlerMapper::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
-	connect(m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget*)), this, SLOT(chatWidgetRemoved(ChatWidget*)));
+    m_chatWidgetRepository = chatWidgetRepository;
+    connect(
+        m_chatWidgetRepository, SIGNAL(chatWidgetRemoved(ChatWidget *)), this, SLOT(chatWidgetRemoved(ChatWidget *)));
 }
 
-ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerForChat(Chat chat) const
+ChatWidgetContainerHandler *ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerForChat(Chat chat) const
 {
-	if (!chat)
-		return {};
-	return m_mapping.value(chat);
+    if (!chat)
+        return {};
+    return m_mapping.value(chat);
 }
 
-void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerRegistered(
+    ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	connect(chatWidgetContainerHandler, SIGNAL(chatAcceptanceChanged(Chat)),
-			this, SLOT(chatAcceptanceChanged(Chat)));
+    connect(chatWidgetContainerHandler, SIGNAL(chatAcceptanceChanged(Chat)), this, SLOT(chatAcceptanceChanged(Chat)));
 
-	auto chats = m_mapping.keys();
-	for (auto chat : chats)
-		if (chatWidgetContainerHandler->acceptChat(chat))
-		{
-			unmap(chat);
-			if (m_chatWidgetRepository)
-				m_chatWidgetRepository->removeChatWidget(chat);
-			map(chatWidgetContainerHandler, chat);
-			createHandledChatWidget(chat, OpenChatActivation::Ignore);
-		}
+    auto chats = m_mapping.keys();
+    for (auto chat : chats)
+        if (chatWidgetContainerHandler->acceptChat(chat))
+        {
+            unmap(chat);
+            if (m_chatWidgetRepository)
+                m_chatWidgetRepository->removeChatWidget(chat);
+            map(chatWidgetContainerHandler, chat);
+            createHandledChatWidget(chat, OpenChatActivation::Ignore);
+        }
 }
 
-void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(ChatWidgetContainerHandler *chatWidgetContainerHandler)
+void ChatWidgetContainerHandlerMapper::chatWidgetContainerHandlerUnregistered(
+    ChatWidgetContainerHandler *chatWidgetContainerHandler)
 {
-	disconnect(chatWidgetContainerHandler, SIGNAL(chatAcceptanceChanged(Chat)),
-			   this, SLOT(chatAcceptanceChanged(Chat)));
+    disconnect(
+        chatWidgetContainerHandler, SIGNAL(chatAcceptanceChanged(Chat)), this, SLOT(chatAcceptanceChanged(Chat)));
 
-	auto chats = m_mapping.keys(chatWidgetContainerHandler);
-	for (auto chat : chats)
-		chatAcceptanceChanged(chat);
+    auto chats = m_mapping.keys(chatWidgetContainerHandler);
+    for (auto chat : chats)
+        chatAcceptanceChanged(chat);
 }
 
 void ChatWidgetContainerHandlerMapper::chatAcceptanceChanged(Chat chat)
 {
-	auto oldChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
-	auto messages = oldChatWidget ? oldChatWidget->messages() : SortedMessages{};
+    auto oldChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
+    auto messages = oldChatWidget ? oldChatWidget->messages() : SortedMessages{};
 
-	unmap(chat);
-	if (m_chatWidgetRepository)
-		m_chatWidgetRepository->removeChatWidget(chat);
-	createHandledChatWidget(chat, OpenChatActivation::Ignore);
+    unmap(chat);
+    if (m_chatWidgetRepository)
+        m_chatWidgetRepository->removeChatWidget(chat);
+    createHandledChatWidget(chat, OpenChatActivation::Ignore);
 
-	auto newChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
-	if (newChatWidget)
-		newChatWidget->addMessages(messages);
+    auto newChatWidget = m_chatWidgetRepository ? m_chatWidgetRepository->widgetForChat(chat) : nullptr;
+    if (newChatWidget)
+        newChatWidget->addMessages(messages);
 }
 
-ChatWidget * ChatWidgetContainerHandlerMapper::createHandledChatWidget(Chat chat, OpenChatActivation activation)
+ChatWidget *ChatWidgetContainerHandlerMapper::createHandledChatWidget(Chat chat, OpenChatActivation activation)
 {
-	auto chatWidgetContainerHandler = bestContainerHandler(chat);
-	if (!chatWidgetContainerHandler)
-		return nullptr;
+    auto chatWidgetContainerHandler = bestContainerHandler(chat);
+    if (!chatWidgetContainerHandler)
+        return nullptr;
 
-	map(chatWidgetContainerHandler, chat);
+    map(chatWidgetContainerHandler, chat);
 
-	auto chatWidget = chatWidgetContainerHandler->addChat(chat, activation);
-	if (m_chatWidgetRepository)
-		m_chatWidgetRepository.data()->addChatWidget(chatWidget);
+    auto chatWidget = chatWidgetContainerHandler->addChat(chat, activation);
+    if (m_chatWidgetRepository)
+        m_chatWidgetRepository.data()->addChatWidget(chatWidget);
 
-	return chatWidget;
+    return chatWidget;
 }
 
 void ChatWidgetContainerHandlerMapper::map(ChatWidgetContainerHandler *chatWidgetContainerHandler, Chat chat)
 {
-	if (chatWidgetContainerHandler)
-		m_mapping.insert(chat, chatWidgetContainerHandler);
+    if (chatWidgetContainerHandler)
+        m_mapping.insert(chat, chatWidgetContainerHandler);
 }
 
 void ChatWidgetContainerHandlerMapper::unmap(Chat chat)
 {
-	auto chatWidgetContainerHandler = m_mapping.value(chat);
-	m_mapping.remove(chat);
-	if (!chatWidgetContainerHandler)
-		return;
+    auto chatWidgetContainerHandler = m_mapping.value(chat);
+    m_mapping.remove(chat);
+    if (!chatWidgetContainerHandler)
+        return;
 
-	chatWidgetContainerHandler->removeChat(chat);
+    chatWidgetContainerHandler->removeChat(chat);
 }
 
-ChatWidgetContainerHandler * ChatWidgetContainerHandlerMapper::bestContainerHandler(Chat chat) const
+ChatWidgetContainerHandler *ChatWidgetContainerHandlerMapper::bestContainerHandler(Chat chat) const
 {
-	if (!m_chatWidgetContainerHandlerRepository || !chat)
-		return {};
+    if (!m_chatWidgetContainerHandlerRepository || !chat)
+        return {};
 
-	auto currentMapping = chatWidgetContainerHandlerForChat(chat);
-	if (currentMapping)
-		return currentMapping;
+    auto currentMapping = chatWidgetContainerHandlerForChat(chat);
+    if (currentMapping)
+        return currentMapping;
 
-	auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
-	auto accepted = [chat](ChatWidgetContainerHandler *chatWidgetContainerHandler){ return chatWidgetContainerHandler->acceptChat(chat); };
-	auto result = std::find_if(chatWidgetContainerHandlers.begin(), chatWidgetContainerHandlers.end(), accepted);
-	return result == chatWidgetContainerHandlers.end() ? nullptr : *result;
+    auto chatWidgetContainerHandlers = m_chatWidgetContainerHandlerRepository.data()->chatWidgetContainerHandlers();
+    auto accepted = [chat](ChatWidgetContainerHandler *chatWidgetContainerHandler) {
+        return chatWidgetContainerHandler->acceptChat(chat);
+    };
+    auto result = std::find_if(chatWidgetContainerHandlers.begin(), chatWidgetContainerHandlers.end(), accepted);
+    return result == chatWidgetContainerHandlers.end() ? nullptr : *result;
 }
 
 void ChatWidgetContainerHandlerMapper::chatWidgetRemoved(ChatWidget *chatWidget)
 {
-	if (chatWidget)
-		unmap(chatWidget->chat());
+    if (chatWidget)
+        unmap(chatWidget->chat());
 }
 
 #include "moc_chat-widget-container-handler-mapper.cpp"

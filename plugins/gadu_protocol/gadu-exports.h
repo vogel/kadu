@@ -18,4 +18,4 @@
 #define GADUAPI Q_DECL_IMPORT
 #endif
 
-#endif // GADU_EXPORTS_H
+#endif   // GADU_EXPORTS_H

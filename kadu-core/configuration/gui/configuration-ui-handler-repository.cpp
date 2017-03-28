@@ -19,8 +19,7 @@
 
 #include "configuration-ui-handler-repository.h"
 
-ConfigurationUiHandlerRepository::ConfigurationUiHandlerRepository(QObject *parent) :
-		QObject{parent}
+ConfigurationUiHandlerRepository::ConfigurationUiHandlerRepository(QObject *parent) : QObject{parent}
 {
 }
 
@@ -30,20 +29,20 @@ ConfigurationUiHandlerRepository::~ConfigurationUiHandlerRepository()
 
 void ConfigurationUiHandlerRepository::addConfigurationUiHandler(ConfigurationUiHandler *configurationUiHandler)
 {
-	auto found = std::find(begin(), end(), configurationUiHandler);
-	if (found == end())
-	{
-		m_configuratorUiHandlers.push_back(configurationUiHandler);
-		emit configurationUiHandlerAdded(configurationUiHandler);
-	}
+    auto found = std::find(begin(), end(), configurationUiHandler);
+    if (found == end())
+    {
+        m_configuratorUiHandlers.push_back(configurationUiHandler);
+        emit configurationUiHandlerAdded(configurationUiHandler);
+    }
 }
 
 void ConfigurationUiHandlerRepository::removeConfigurationUiHandler(ConfigurationUiHandler *configurationUiHandler)
 {
-	auto found = std::find(begin(), end(), configurationUiHandler);
-	if (found != end())
-	{
-		m_configuratorUiHandlers.erase(found);
-		emit configurationUiHandlerRemoved(configurationUiHandler);
-	}
+    auto found = std::find(begin(), end(), configurationUiHandler);
+    if (found != end())
+    {
+        m_configuratorUiHandlers.erase(found);
+        emit configurationUiHandlerRemoved(configurationUiHandler);
+    }
 }

@@ -23,9 +23,9 @@
 
 class AntistringModule : public injeqt::module
 {
-
 public:
-	AntistringModule();
-	virtual ~AntistringModule() {}
-
+    AntistringModule();
+    virtual ~AntistringModule()
+    {
+    }
 };

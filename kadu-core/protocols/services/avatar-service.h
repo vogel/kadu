@@ -24,8 +24,8 @@
 #ifndef AVATAR_SERVICE_H
 #define AVATAR_SERVICE_H
 
-#include "protocols/services/account-service.h"
 #include "exports.h"
+#include "protocols/services/account-service.h"
 
 class Account;
 class AvatarDownloader;
@@ -46,59 +46,58 @@ class AvatarUploader;
  */
 class KADUAPI AvatarService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	explicit AvatarService(Account account, QObject *parent = nullptr);
-	virtual ~AvatarService();
+    explicit AvatarService(Account account, QObject *parent = nullptr);
+    virtual ~AvatarService();
 
 public:
-	/**
-	 * @short Return avatar service for given account.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param account account to get avatar service from
-	 * @return avatar service for given account
-	 */
-	static AvatarService * fromAccount(Account account);
+    /**
+     * @short Return avatar service for given account.
+     * @author Rafał 'Vogel' Malinowski
+     * @param account account to get avatar service from
+     * @return avatar service for given account
+     */
+    static AvatarService *fromAccount(Account account);
 
-	/**
-	 * @short Get AvatarDownloader for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return AvatarDownloader for this service
-	 *
-	 * This method will create and return AvatarDownloader class that can be used to download avatar for a contact.
-	 * This method can return null if it is impossible to download an avatar.
-	 *
-	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
-	 * itself after one use, so next instance should be created in case first upload fails.
-	 */
-	virtual AvatarDownloader * createAvatarDownloader() = 0;
+    /**
+     * @short Get AvatarDownloader for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return AvatarDownloader for this service
+     *
+     * This method will create and return AvatarDownloader class that can be used to download avatar for a contact.
+     * This method can return null if it is impossible to download an avatar.
+     *
+     * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+     * itself after one use, so next instance should be created in case first upload fails.
+     */
+    virtual AvatarDownloader *createAvatarDownloader() = 0;
 
-	/**
-	 * @short Get AvatarUploader for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return AvatarUploader for this service
-	 *
-	 * This method will create and return AvatarUploader class that can be used to upload new avatar for account owner.
-	 * This method can return null if it is impossible to upload an avatar.
-	 *
-	 * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
-	 * itself after one use, so next instance should be created in case first upload fails.
-	 */
-	virtual AvatarUploader * createAvatarUploader() = 0;
+    /**
+     * @short Get AvatarUploader for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return AvatarUploader for this service
+     *
+     * This method will create and return AvatarUploader class that can be used to upload new avatar for account owner.
+     * This method can return null if it is impossible to upload an avatar.
+     *
+     * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
+     * itself after one use, so next instance should be created in case first upload fails.
+     */
+    virtual AvatarUploader *createAvatarUploader() = 0;
 
-	/**
-	 * @return true, if updates are event-based
-	 *
-	 * If updates are event based then protocol handler is responsible for updating avatars.
-	 * If not, all contacts will be checked for new avatars periodically.
-	 **/
-	virtual bool eventBasedUpdates() = 0;
-
+    /**
+     * @return true, if updates are event-based
+     *
+     * If updates are event based then protocol handler is responsible for updating avatars.
+     * If not, all contacts will be checked for new avatars periodically.
+     **/
+    virtual bool eventBasedUpdates() = 0;
 };
 
 /**
  * @}
  */
 
-#endif // AVATAR_SERVICE_H
+#endif   // AVATAR_SERVICE_H

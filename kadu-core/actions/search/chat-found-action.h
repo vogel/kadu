@@ -26,15 +26,14 @@
 
 class ChatFoundAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit ChatFoundAction(QObject *parent = nullptr);
-	virtual ~ChatFoundAction();
+    Q_INVOKABLE explicit ChatFoundAction(QObject *parent = nullptr);
+    virtual ~ChatFoundAction();
 
 protected:
-	virtual void actionInstanceCreated(Action *action) override;
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-
+    virtual void actionInstanceCreated(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
 };

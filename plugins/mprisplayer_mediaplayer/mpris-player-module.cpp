@@ -25,9 +25,9 @@
 
 MprisPlayerModule::MprisPlayerModule()
 {
-	add_type<MPRISPlayerConfigurationUiHandler>();
-	add_type<MprisPlayerPluginObject>();
-	add_type<MPRISPlayer>();
+    add_type<MPRISPlayerConfigurationUiHandler>();
+    add_type<MprisPlayerPluginObject>();
+    add_type<MPRISPlayer>();
 }
 
 MprisPlayerModule::~MprisPlayerModule()

@@ -23,9 +23,9 @@
 
 class DockingModule : public injeqt::module
 {
-
 public:
-	DockingModule();
-	virtual ~DockingModule() {}
-
+    DockingModule();
+    virtual ~DockingModule()
+    {
+    }
 };

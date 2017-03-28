@@ -50,35 +50,35 @@ class EmoticonPathProvider;
  */
 class EmoticonSelectorButtonPopup : public QLabel
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Emoticon DisplayEmoticon;
+    Emoticon DisplayEmoticon;
 
 protected:
-	void mouseMoveEvent(QMouseEvent *e);
-	void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
 public:
-	/**
-	 * @short Create new EmoticonSelectorButtonPopup widget.
-	 * @param emoticon emoticon to display
-	 * @param pathProvider EmoticonPathProvider used to get image file name for emoticon
-	 * @param parent parent widget
-	 */
-	explicit EmoticonSelectorButtonPopup(const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = nullptr);
-	virtual ~EmoticonSelectorButtonPopup();
+    /**
+     * @short Create new EmoticonSelectorButtonPopup widget.
+     * @param emoticon emoticon to display
+     * @param pathProvider EmoticonPathProvider used to get image file name for emoticon
+     * @param parent parent widget
+     */
+    explicit EmoticonSelectorButtonPopup(
+        const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent = nullptr);
+    virtual ~EmoticonSelectorButtonPopup();
 
 signals:
-	/**
-	 * @short Signal emited when popup is clicked.
-	 * @param emoticon clicked emoticon
-	 */
-	void clicked(const Emoticon &emoticon);
-
+    /**
+     * @short Signal emited when popup is clicked.
+     * @param emoticon clicked emoticon
+     */
+    void clicked(const Emoticon &emoticon);
 };
 
 /**
  * @}
  */
 
-#endif // EMOTICON_SELECTOR_BUTTON_POPUP_H
+#endif   // EMOTICON_SELECTOR_BUTTON_POPUP_H

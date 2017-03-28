@@ -60,90 +60,93 @@ class SqlAccountsMapping;
  */
 class SqlContactsMapping : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ContactManager> m_contactManager;
+    QPointer<ContactManager> m_contactManager;
 
-	const QSqlDatabase &Database;
-	mutable QMutex Mutex;
-	SqlAccountsMapping *AccountsMapping;
-	QMap<int, Contact> ContactMapping;
+    const QSqlDatabase &Database;
+    mutable QMutex Mutex;
+    SqlAccountsMapping *AccountsMapping;
+    QMap<int, Contact> ContactMapping;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add mapping of given id to given contact.
-	 * @param id id to map
-	 * @param contact contact to map
-	 *
-	 * This method operates only on internal QMap and contact's custom properties. No database changes
-	 * are performed.
-	 */
-	void addMapping(int id, const Contact &contact);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add mapping of given id to given contact.
+     * @param id id to map
+     * @param contact contact to map
+     *
+     * This method operates only on internal QMap and contact's custom properties. No database changes
+     * are performed.
+     */
+    void addMapping(int id, const Contact &contact);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Load mapping from database.
-	 *
-	 * This method loads mapping from database. All database entries from kadu_contacts table are matched
-	 * to existing contacts. Entries without valid contacts will be ignored by this method.
-	 */
-	void loadMappingsFromDatabase();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Load mapping from database.
+     *
+     * This method loads mapping from database. All database entries from kadu_contacts table are matched
+     * to existing contacts. Entries without valid contacts will be ignored by this method.
+     */
+    void loadMappingsFromDatabase();
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_INIT void init();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Update kadu_contacts entry to new contact's data.
-	 * @param contact updated contact
-	 *
-	 * This slot is called every time an contact that registered in @link ContactManager @endlink changes. Database data
-	 * is updated to match new data of changed contact only if this contact is already in database.
-	 */
-	void contactUpdated(const Contact &contact);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Update kadu_contacts entry to new contact's data.
+     * @param contact updated contact
+     *
+     * This slot is called every time an contact that registered in @link ContactManager @endlink changes. Database data
+     * is updated to match new data of changed contact only if this contact is already in database.
+     */
+    void contactUpdated(const Contact &contact);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of SqlContactsMapping class.
-	 * @param database database with kadu_contact table
-	 * @param accountsMapping object providing account to database mapping, must be not null
-	 * @param parent QObject parent of new SqlContactsMapping object
-	 *
-	 * Database provided in this constructor is not checked for existence or validity of kadu_contacts table. It is caller responsibility
-	 * to provide proper database.
-	 */
-	explicit SqlContactsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent = nullptr);
-	virtual ~SqlContactsMapping();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of SqlContactsMapping class.
+     * @param database database with kadu_contact table
+     * @param accountsMapping object providing account to database mapping, must be not null
+     * @param parent QObject parent of new SqlContactsMapping object
+     *
+     * Database provided in this constructor is not checked for existence or validity of kadu_contacts table. It is
+     * caller responsibility
+     * to provide proper database.
+     */
+    explicit SqlContactsMapping(
+        const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent = nullptr);
+    virtual ~SqlContactsMapping();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return Contact matched with given id from database.
-	 * @param sqlId id from database
-	 *
-	 * This method return a Contact that matches with given id from database. If no matching contact is found, Contact::null is returned.
-	 */
-	Contact contactById(int sqlId) const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return Contact matched with given id from database.
+     * @param sqlId id from database
+     *
+     * This method return a Contact that matches with given id from database. If no matching contact is found,
+     * Contact::null is returned.
+     */
+    Contact contactById(int sqlId) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return sql id matched with given contact.
-	 * @param contact contact to match to sql id
-	 * @param create if true then valid id will be created if not already available
-	 *
-	 * This method return sql id that matches with given contact. If no matching id is found and create is false, 0 is returned. If create
-	 * is true and no id is available then new one will be created and assigned to given contact.
-	 */
-	int idByContact(const Contact &contact, bool create);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return sql id matched with given contact.
+     * @param contact contact to match to sql id
+     * @param create if true then valid id will be created if not already available
+     *
+     * This method return sql id that matches with given contact. If no matching id is found and create is false, 0 is
+     * returned. If create
+     * is true and no id is available then new one will be created and assigned to given contact.
+     */
+    int idByContact(const Contact &contact, bool create);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return current mappings.
-	 * @param return current mappings
-	 */
-	const QMap<int, Contact> & mapping() const;
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return current mappings.
+     * @param return current mappings
+     */
+    const QMap<int, Contact> &mapping() const;
 };
 
 /**

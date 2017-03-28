@@ -39,22 +39,22 @@ class Message;
  */
 class KADUAPI MessageFilter
 {
-
 public:
-	virtual ~MessageFilter() {}
+    virtual ~MessageFilter()
+    {
+    }
 
-	/**
-	 * @short Filter message.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param message message to accept (or not)
-	 * @return true if message can be accepted, false otherwise
-	 */
-	virtual bool acceptMessage(const Message &message) = 0;
-
+    /**
+     * @short Filter message.
+     * @author Rafał 'Vogel' Malinowski
+     * @param message message to accept (or not)
+     * @return true if message can be accepted, false otherwise
+     */
+    virtual bool acceptMessage(const Message &message) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // MESSAGE_FILTER_H
+#endif   // MESSAGE_FILTER_H

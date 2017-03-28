@@ -27,11 +27,11 @@
 
 ScreenshotModule::ScreenshotModule()
 {
-	add_type<ScreenshotActions>();
-	add_type<ScreenShotConfigurationUiHandler>();
-	add_type<ScreenShotConfiguration>();
-	add_type<ScreenshotNotificationService>();
-	add_type<ScreenshotPluginObject>();
+    add_type<ScreenshotActions>();
+    add_type<ScreenShotConfigurationUiHandler>();
+    add_type<ScreenShotConfiguration>();
+    add_type<ScreenshotNotificationService>();
+    add_type<ScreenshotPluginObject>();
 }
 
 ScreenshotModule::~ScreenshotModule()

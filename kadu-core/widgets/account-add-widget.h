@@ -34,22 +34,21 @@ class SimpleConfigurationValueStateNotifier;
 
 class KADUAPI AccountAddWidget : public ModalConfigurationWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	SimpleConfigurationValueStateNotifier *StateNotifier;
+    SimpleConfigurationValueStateNotifier *StateNotifier;
 
 protected:
-	SimpleConfigurationValueStateNotifier * simpleStateNotifier() const;
+    SimpleConfigurationValueStateNotifier *simpleStateNotifier() const;
 
 public:
-	explicit AccountAddWidget(QWidget *parent = nullptr);
-	virtual ~AccountAddWidget();
+    explicit AccountAddWidget(QWidget *parent = nullptr);
+    virtual ~AccountAddWidget();
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const;
 
 signals:
-	void accountCreated(Account account);
-
+    void accountCreated(Account account);
 };
 
-#endif // ACCOUNT_ADD_WIDGET_H
+#endif   // ACCOUNT_ADD_WIDGET_H

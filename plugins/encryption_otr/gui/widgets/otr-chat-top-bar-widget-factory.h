@@ -34,29 +34,29 @@ class OtrTrustLevelService;
 
 class OtrChatTopBarWidgetFactory : public QObject, public ChatTopBarWidgetFactory
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE OtrChatTopBarWidgetFactory();
-	virtual ~OtrChatTopBarWidgetFactory();
+    Q_INVOKABLE OtrChatTopBarWidgetFactory();
+    virtual ~OtrChatTopBarWidgetFactory();
 
-	virtual QWidget * createWidget(const Chat &chat, QWidget *parent);
+    virtual QWidget *createWidget(const Chat &chat, QWidget *parent);
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
-	QPointer<OtrSessionService> SessionService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
-	QList<OtrChatTopBarWidget *> Widgets;
+    QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<OtrPeerIdentityVerificationWindowRepository> PeerIdentityVerificationWindowRepository;
+    QPointer<OtrSessionService> SessionService;
+    QPointer<OtrTrustLevelService> TrustLevelService;
+    QList<OtrChatTopBarWidget *> Widgets;
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
-	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
-	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPeerIdentityVerificationWindowRepository(
+        OtrPeerIdentityVerificationWindowRepository *peerIdentityVerificationWindowRepository);
+    INJEQT_SET void setSessionService(OtrSessionService *sessionService);
+    INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
-	void widgetDestroyed(QObject *widget);
-
+    void widgetDestroyed(QObject *widget);
 };

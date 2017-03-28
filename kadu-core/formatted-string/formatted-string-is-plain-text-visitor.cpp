@@ -26,8 +26,7 @@
 
 #include "formatted-string-is-plain-text-visitor.h"
 
-FormattedStringIsPlainTextVisitor::FormattedStringIsPlainTextVisitor() :
-		m_isPlain{true}
+FormattedStringIsPlainTextVisitor::FormattedStringIsPlainTextVisitor() : m_isPlain{true}
 {
 }
 
@@ -35,28 +34,28 @@ FormattedStringIsPlainTextVisitor::~FormattedStringIsPlainTextVisitor()
 {
 }
 
-void FormattedStringIsPlainTextVisitor::beginVisit(const CompositeFormattedString * const)
+void FormattedStringIsPlainTextVisitor::beginVisit(const CompositeFormattedString *const)
 {
 }
 
-void FormattedStringIsPlainTextVisitor::endVisit(const CompositeFormattedString * const)
+void FormattedStringIsPlainTextVisitor::endVisit(const CompositeFormattedString *const)
 {
 }
 
-void FormattedStringIsPlainTextVisitor::visit(const FormattedStringImageBlock * const)
+void FormattedStringIsPlainTextVisitor::visit(const FormattedStringImageBlock *const)
 {
-	m_first = false;
-	m_isPlain = false;
+    m_first = false;
+    m_isPlain = false;
 }
 
-void FormattedStringIsPlainTextVisitor::visit(const FormattedStringTextBlock * const formattedStringTextBlock)
+void FormattedStringIsPlainTextVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-	// ignore colors
-	if (formattedStringTextBlock->bold() || formattedStringTextBlock->italic() || formattedStringTextBlock->underline())
-		m_isPlain = false;
+    // ignore colors
+    if (formattedStringTextBlock->bold() || formattedStringTextBlock->italic() || formattedStringTextBlock->underline())
+        m_isPlain = false;
 }
 
 bool FormattedStringIsPlainTextVisitor::isPlainText() const
 {
-	return m_isPlain;
+    return m_isPlain;
 }

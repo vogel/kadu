@@ -27,15 +27,14 @@ class QXmppIq;
 
 class JabberErrorService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberErrorService(QObject *parent = nullptr);
-	virtual ~JabberErrorService();
+    explicit JabberErrorService(QObject *parent = nullptr);
+    virtual ~JabberErrorService();
 
-	bool isErrorIq(const QXmppIq &iq) const;
-	QString errorMessage(QXmppClient *client, QXmppClient::Error error) const;
-	QString errorMessage(const QXmppStanza &stanza, QString conditionString = QString{}) const;
-	QString conditionToString(QXmppStanza::Error::Condition condition) const;
-
+    bool isErrorIq(const QXmppIq &iq) const;
+    QString errorMessage(QXmppClient *client, QXmppClient::Error error) const;
+    QString errorMessage(const QXmppStanza &stanza, QString conditionString = QString{}) const;
+    QString conditionToString(QXmppStanza::Error::Condition condition) const;
 };

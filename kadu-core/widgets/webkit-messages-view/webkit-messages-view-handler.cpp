@@ -23,14 +23,16 @@
 #include "protocols/services/chat-state.h"
 #include "widgets/webkit-messages-view/webkit-messages-view-display.h"
 
-WebkitMessagesViewHandler::WebkitMessagesViewHandler(not_owned_qptr<ChatStyleRenderer> chatStyleRenderer,
-	std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay, QObject *parent) :
-		QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)}, m_messagesDisplay{std::move(messagesDisplay)}
+WebkitMessagesViewHandler::WebkitMessagesViewHandler(
+    not_owned_qptr<ChatStyleRenderer> chatStyleRenderer, std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay,
+    QObject *parent)
+        : QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)},
+          m_messagesDisplay{std::move(messagesDisplay)}
 {
-	if (m_chatStyleRenderer->isReady())
-		rendererReady();
-	else
-		connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
+    if (m_chatStyleRenderer->isReady())
+        rendererReady();
+    else
+        connect(m_chatStyleRenderer.get(), SIGNAL(ready()), this, SLOT(rendererReady()));
 }
 
 WebkitMessagesViewHandler::~WebkitMessagesViewHandler()
@@ -39,93 +41,93 @@ WebkitMessagesViewHandler::~WebkitMessagesViewHandler()
 
 void WebkitMessagesViewHandler::setMessageLimit(unsigned int limit)
 {
-	m_messagesLimiter.setLimit(limit);
-	limitAndDisplayMessages();
+    m_messagesLimiter.setLimit(limit);
+    limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::setMessageLimitPolicy(MessageLimitPolicy messageLimitPolicy)
 {
-	m_messagesLimiter.setLimitPolicy(messageLimitPolicy);
-	limitAndDisplayMessages();
+    m_messagesLimiter.setLimitPolicy(messageLimitPolicy);
+    limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::rendererReady()
 {
-	limitAndDisplayMessages();
+    limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::add(const Message &message)
 {
-	if (!message)
-		return;
+    if (!message)
+        return;
 
-	m_messages.add(message);
-	limitAndDisplayMessages();
+    m_messages.add(message);
+    limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::add(const SortedMessages &messages)
 {
-	if (messages.empty())
-		return;
+    if (messages.empty())
+        return;
 
-	m_messages.merge(messages);
-	limitAndDisplayMessages();
+    m_messages.merge(messages);
+    limitAndDisplayMessages();
 }
 
 void WebkitMessagesViewHandler::limitAndDisplayMessages()
 {
-	m_messages = m_messagesLimiter.limitMessages(m_messages);
-	if (m_chatStyleRenderer->isReady())
-		m_messagesDisplay->displayMessages(m_messages);
+    m_messages = m_messagesLimiter.limitMessages(m_messages);
+    if (m_chatStyleRenderer->isReady())
+        m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::clear()
 {
-	m_messages.clear();
-	if (m_chatStyleRenderer->isReady())
-		m_messagesDisplay->displayMessages(m_messages);
+    m_messages.clear();
+    if (m_chatStyleRenderer->isReady())
+        m_messagesDisplay->displayMessages(m_messages);
 }
 
 void WebkitMessagesViewHandler::displayMessageStatus(const QString &id, MessageStatus status)
 {
-	if (m_chatStyleRenderer->isReady())
-		m_chatStyleRenderer->displayMessageStatus(id, status);
+    if (m_chatStyleRenderer->isReady())
+        m_chatStyleRenderer->displayMessageStatus(id, status);
 }
 
 void WebkitMessagesViewHandler::displayChatState(const Contact &contact, ChatState state)
 {
-	if (!m_chatStyleRenderer->isReady())
-		return;
+    if (!m_chatStyleRenderer->isReady())
+        return;
 
-	auto display = contact.display(true);
-	auto message = QString{};
-	switch (state)
-	{
-		case ChatState::Active:
-			message = tr("%1 is active").arg(display);
-			break;
-		case ChatState::Composing:
-			message = tr("%1 is composing...").arg(display);
-			break;
-		case ChatState::Gone:
-			message = tr("%1 is gone").arg(display);
-			break;
-		case ChatState::Inactive:
-			message = tr("%1 is inactive").arg(display);
-			break;
-		case ChatState::None:
-			break;
-		case ChatState::Paused:
-			message = tr("%1 has paused composing").arg(display);
-			break;
-	}
-	m_chatStyleRenderer->displayChatState(state, message, display);
+    auto display = contact.display(true);
+    auto message = QString{};
+    switch (state)
+    {
+    case ChatState::Active:
+        message = tr("%1 is active").arg(display);
+        break;
+    case ChatState::Composing:
+        message = tr("%1 is composing...").arg(display);
+        break;
+    case ChatState::Gone:
+        message = tr("%1 is gone").arg(display);
+        break;
+    case ChatState::Inactive:
+        message = tr("%1 is inactive").arg(display);
+        break;
+    case ChatState::None:
+        break;
+    case ChatState::Paused:
+        message = tr("%1 has paused composing").arg(display);
+        break;
+    }
+    m_chatStyleRenderer->displayChatState(state, message, display);
 }
 
 void WebkitMessagesViewHandler::displayChatImage(const ChatImage &chatImage, const QString &fileName)
 {
-	if (m_chatStyleRenderer->isReady())
-		m_chatStyleRenderer->displayChatImage(chatImage, fileName);
+    if (m_chatStyleRenderer->isReady())
+        m_chatStyleRenderer->displayChatImage(chatImage, fileName);
 }
 
 #include "moc_webkit-messages-view-handler.cpp"

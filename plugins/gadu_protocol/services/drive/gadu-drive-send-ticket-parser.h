@@ -25,5 +25,5 @@ class QJsonDocument;
 
 namespace GaduDriveSendTicketParser
 {
-	GaduDriveSendTicket fromJson(QJsonDocument);
+GaduDriveSendTicket fromJson(QJsonDocument);
 }

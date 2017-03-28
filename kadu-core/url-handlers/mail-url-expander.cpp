@@ -22,8 +22,7 @@
 
 #include "mail-url-expander.h"
 
-MailUrlExpander::MailUrlExpander(QRegExp regExp) :
-		DomTextRegexpVisitor(regExp)
+MailUrlExpander::MailUrlExpander(QRegExp regExp) : DomTextRegexpVisitor(regExp)
 {
 }
 
@@ -33,12 +32,12 @@ MailUrlExpander::~MailUrlExpander()
 
 QList<QDomNode> MailUrlExpander::matchToDomNodes(QDomDocument document, QRegExp regExp) const
 {
-	QDomElement linkElement = document.createElement("a");
-	QString mail = regExp.cap();
+    QDomElement linkElement = document.createElement("a");
+    QString mail = regExp.cap();
 
-	linkElement.setAttribute("href", "mailto:" + mail);
-	linkElement.setAttribute("title", mail);
+    linkElement.setAttribute("href", "mailto:" + mail);
+    linkElement.setAttribute("title", mail);
 
-	linkElement.appendChild(document.createTextNode(mail));
-	return QList<QDomNode>() << linkElement;
+    linkElement.appendChild(document.createTextNode(mail));
+    return QList<QDomNode>() << linkElement;
 }

@@ -25,8 +25,7 @@
 
 #include "web-view-highlighter.h"
 
-WebViewHighlighter::WebViewHighlighter(WebkitMessagesView *parent) :
-		QObject(parent), AutoUpdate(false)
+WebViewHighlighter::WebViewHighlighter(WebkitMessagesView *parent) : QObject(parent), AutoUpdate(false)
 {
 }
 
@@ -34,88 +33,90 @@ WebViewHighlighter::~WebViewHighlighter()
 {
 }
 
-WebkitMessagesView * WebViewHighlighter::chatMessagesView() const
+WebkitMessagesView *WebViewHighlighter::chatMessagesView() const
 {
-	return static_cast<WebkitMessagesView *>(parent());
+    return static_cast<WebkitMessagesView *>(parent());
 }
 
 void WebViewHighlighter::setAutoUpdate(const bool autoUpdate)
 {
-	if (AutoUpdate == autoUpdate)
-		return;
+    if (AutoUpdate == autoUpdate)
+        return;
 
-	// we might assume that when any message is added to web view its size changes
-	// unfortunately contentChanged() does not work when content is updated by javascript
-	// inside webkit instance
+    // we might assume that when any message is added to web view its size changes
+    // unfortunately contentChanged() does not work when content is updated by javascript
+    // inside webkit instance
 
-	if (AutoUpdate)
-		disconnect(chatMessagesView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
-		           this, SLOT(updateHighlighting()));
+    if (AutoUpdate)
+        disconnect(
+            chatMessagesView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)), this,
+            SLOT(updateHighlighting()));
 
-	AutoUpdate = autoUpdate;
+    AutoUpdate = autoUpdate;
 
-	if (AutoUpdate)
-		connect(chatMessagesView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)),
-		        this, SLOT(updateHighlighting()));
+    if (AutoUpdate)
+        connect(
+            chatMessagesView()->page()->mainFrame(), SIGNAL(contentsSizeChanged(QSize)), this,
+            SLOT(updateHighlighting()));
 }
 
 void WebViewHighlighter::setHighlight(const QString &highlightString)
 {
-	if (HighlightString == highlightString)
-		return;
+    if (HighlightString == highlightString)
+        return;
 
-	clearHighlighting();
-	HighlightString = highlightString;
-	updateHighlighting();
+    clearHighlighting();
+    HighlightString = highlightString;
+    updateHighlighting();
 }
 
 void WebViewHighlighter::updateHighlighting()
 {
-	if (HighlightString.isEmpty())
-		return;
+    if (HighlightString.isEmpty())
+        return;
 
-	bool found = false;
-	// reset to first occurence
-	chatMessagesView()->findText(QString(), QWebPage::FindWrapsAroundDocument);
-	chatMessagesView()->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
+    bool found = false;
+    // reset to first occurence
+    chatMessagesView()->findText(QString(), QWebPage::FindWrapsAroundDocument);
+    chatMessagesView()->findText(HighlightString, QWebPage::FindWrapsAroundDocument);
 
-	// highlight all other
-	found = chatMessagesView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
+    // highlight all other
+    found = chatMessagesView()->findText(HighlightString, QWebPage::HighlightAllOccurrences);
 
-	emit somethingFound(found);
+    emit somethingFound(found);
 }
 
 void WebViewHighlighter::clearHighlighting()
 {
-	chatMessagesView()->findText(QString(), QWebPage::HighlightAllOccurrences);
+    chatMessagesView()->findText(QString(), QWebPage::HighlightAllOccurrences);
 
-	emit somethingFound(true);
+    emit somethingFound(true);
 }
 
 void WebViewHighlighter::selectNext(const QString &select)
 {
-	bool found = chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument);
-	chatMessagesView()->updateAtBottom();
+    bool found = chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument);
+    chatMessagesView()->updateAtBottom();
 
-	emit somethingFound(found);
+    emit somethingFound(found);
 }
 
 void WebViewHighlighter::selectPrevious(const QString &select)
 {
-	bool found = chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
-	chatMessagesView()->updateAtBottom();
+    bool found = chatMessagesView()->findText(select, QWebPage::FindWrapsAroundDocument | QWebPage::FindBackward);
+    chatMessagesView()->updateAtBottom();
 
-	emit somethingFound(found);
+    emit somethingFound(found);
 }
 
 void WebViewHighlighter::clearSelect()
 {
-	chatMessagesView()->findText(QString(), 0);
-	chatMessagesView()->updateAtBottom();
+    chatMessagesView()->findText(QString(), 0);
+    chatMessagesView()->updateAtBottom();
 
-	emit somethingFound(true);
+    emit somethingFound(true);
 
-	updateHighlighting();
+    updateHighlighting();
 }
 
 #include "moc_web-view-highlighter.cpp"

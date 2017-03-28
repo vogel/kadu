@@ -32,24 +32,23 @@ class ScreenShotConfiguration;
 
 class ScreenshotActions : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ScreenshotActions(QObject *parent = nullptr);
-	virtual ~ScreenshotActions();
+    Q_INVOKABLE explicit ScreenshotActions(QObject *parent = nullptr);
+    virtual ~ScreenshotActions();
 
 private:
-	QPointer<Actions> m_actions;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
+    QPointer<Actions> m_actions;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<ScreenShotConfiguration> m_screenShotConfiguration;
 
-	owned_qptr<ScreenshotAction> m_screenShotActionDescription;
+    owned_qptr<ScreenshotAction> m_screenShotActionDescription;
 
 private slots:
-	INJEQT_SET void setActions(Actions *actions);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setActions(Actions *actions);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setScreenShotConfiguration(ScreenShotConfiguration *screenShotConfiguration);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

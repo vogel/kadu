@@ -35,14 +35,13 @@
 
 #include "screenshot-action.h"
 
-ScreenshotAction::ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent) :
-		ActionDescription(parent),
-		m_screenShotConfiguration{screenShotConfiguration}
+ScreenshotAction::ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent)
+        : ActionDescription(parent), m_screenShotConfiguration{screenShotConfiguration}
 {
-	setType(ActionDescription::TypeChat);
-	setName("ScreenShotAction");
-	setIcon(KaduIcon("external_modules/screenshot-camera-photo"));
-	setText(tr("ScreenShot"));
+    setType(ActionDescription::TypeChat);
+    setName("ScreenShotAction");
+    setIcon(KaduIcon("external_modules/screenshot-camera-photo"));
+    setText(tr("ScreenShot"));
 }
 
 ScreenshotAction::~ScreenshotAction()
@@ -51,87 +50,89 @@ ScreenshotAction::~ScreenshotAction()
 
 void ScreenshotAction::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void ScreenshotAction::actionInstanceCreated(Action *action)
 {
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox || !chatEditBox->chatWidget())
-		return;
+    ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+    if (!chatEditBox || !chatEditBox->chatWidget())
+        return;
 
-	QVariant chatWidgetData = (qlonglong)chatEditBox->chatWidget();
-	action->setData(chatWidgetData);
+    QVariant chatWidgetData = (qlonglong)chatEditBox->chatWidget();
+    action->setData(chatWidgetData);
 
-	// not a menu
-	if (action->context()->chat() != chatEditBox->actionContext()->chat())
-		return;
+    // not a menu
+    if (action->context()->chat() != chatEditBox->actionContext()->chat())
+        return;
 
-	// no parents for menu as it is destroyed manually by Action class
-	QMenu *menu = new QMenu();
-	menu->addAction(tr("Simple Shot"), this, SLOT(takeStandardShotSlot()))->setData(chatWidgetData);
-	menu->addAction(tr("With Chat Window Hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()))->setData(chatWidgetData);
-	menu->addAction(tr("Window Shot"), this, SLOT(takeWindowShotSlot()))->setData(chatWidgetData);
-	action->setMenu(menu);
+    // no parents for menu as it is destroyed manually by Action class
+    QMenu *menu = new QMenu();
+    menu->addAction(tr("Simple Shot"), this, SLOT(takeStandardShotSlot()))->setData(chatWidgetData);
+    menu->addAction(tr("With Chat Window Hidden"), this, SLOT(takeShotWithChatWindowHiddenSlot()))
+        ->setData(chatWidgetData);
+    menu->addAction(tr("Window Shot"), this, SLOT(takeWindowShotSlot()))->setData(chatWidgetData);
+    action->setMenu(menu);
 }
 
 void ScreenshotAction::actionTriggered(QAction *sender, bool toggled)
 {
-	Q_UNUSED(sender)
-	Q_UNUSED(toggled)
+    Q_UNUSED(sender)
+    Q_UNUSED(toggled)
 
-	takeStandardShotSlot(findChatWidget(sender));
+    takeStandardShotSlot(findChatWidget(sender));
 }
 
 void ScreenshotAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
-	if (!chatEditBox)
-		return;
+    ChatEditBox *chatEditBox = qobject_cast<ChatEditBox *>(action->parent());
+    if (!chatEditBox)
+        return;
 
-	const Account &account = action->context()->chat().chatAccount();
-	if (!account)
-		return;
+    const Account &account = action->context()->chat().chatAccount();
+    if (!account)
+        return;
 
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return;
+    Protocol *protocol = account.protocolHandler();
+    if (!protocol)
+        return;
 
-	action->setEnabled(protocol->chatImageService());
+    action->setEnabled(protocol->chatImageService());
 }
 
-ChatWidget * ScreenshotAction::findChatWidget(QObject *object)
+ChatWidget *ScreenshotAction::findChatWidget(QObject *object)
 {
-	QAction *action = qobject_cast<QAction *>(object);
-	if (!action)
-		return 0;
+    QAction *action = qobject_cast<QAction *>(object);
+    if (!action)
+        return 0;
 
-	return static_cast<ChatWidget *>((void*)(action->data().toLongLong()));
+    return static_cast<ChatWidget *>((void *)(action->data().toLongLong()));
 }
 
 void ScreenshotAction::takeStandardShotSlot(ChatWidget *chatWidget)
 {
-	// in case of non-menu call
-	if (!chatWidget)
-		chatWidget = findChatWidget(sender());
-	if (chatWidget)
-		(m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeStandardShot();
+    // in case of non-menu call
+    if (!chatWidget)
+        chatWidget = findChatWidget(sender());
+    if (chatWidget)
+        (m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeStandardShot();
 }
 
 void ScreenshotAction::takeShotWithChatWindowHiddenSlot()
 {
-	ChatWidget *chatWidget = findChatWidget(sender());
-	if (chatWidget)
-		(m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeShotWithChatWindowHidden();
+    ChatWidget *chatWidget = findChatWidget(sender());
+    if (chatWidget)
+        (m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))
+            ->takeShotWithChatWindowHidden();
 }
 
 void ScreenshotAction::takeWindowShotSlot()
 {
-	ChatWidget *chatWidget = findChatWidget(sender());
-	if (chatWidget)
-		(m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeWindowShot();
+    ChatWidget *chatWidget = findChatWidget(sender());
+    if (chatWidget)
+        (m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeWindowShot();
 }
 
 #include "moc_screenshot-action.cpp"

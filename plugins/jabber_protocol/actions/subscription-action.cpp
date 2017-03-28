@@ -27,12 +27,11 @@
 #include "contacts/contact.h"
 #include "core/myself.h"
 
-SubscriptionAction::SubscriptionAction(QObject *parent) :
-		ActionDescription(parent)
+SubscriptionAction::SubscriptionAction(QObject *parent) : ActionDescription(parent)
 {
-	setType(ActionDescription::TypeUser);
-	setName("rosterResendSubscription");
-	setText(tr("Resend Subscription"));
+    setType(ActionDescription::TypeUser);
+    setName("rosterResendSubscription");
+    setText(tr("Resend Subscription"));
 }
 
 SubscriptionAction::~SubscriptionAction()
@@ -41,62 +40,62 @@ SubscriptionAction::~SubscriptionAction()
 
 void SubscriptionAction::setMyself(Myself *myself)
 {
-	m_myself = myself;
+    m_myself = myself;
 }
 
 Contact SubscriptionAction::contactFromAction(QAction *action)
 {
-	auto kaduAction = qobject_cast<Action *>(action);
-	if (!kaduAction)
-		return Contact::null;
+    auto kaduAction = qobject_cast<Action *>(action);
+    if (!kaduAction)
+        return Contact::null;
 
-	return kaduAction->context()->contacts().toContact();
+    return kaduAction->context()->contacts().toContact();
 }
 
-SubscriptionService * SubscriptionAction::subscriptionServiceFromContact(const Contact &contact)
+SubscriptionService *SubscriptionAction::subscriptionServiceFromContact(const Contact &contact)
 {
-	auto jabberProtocolHandler = qobject_cast<JabberProtocol *>(contact.contactAccount().protocolHandler());
-	if (!jabberProtocolHandler)
-		return 0;
+    auto jabberProtocolHandler = qobject_cast<JabberProtocol *>(contact.contactAccount().protocolHandler());
+    if (!jabberProtocolHandler)
+        return 0;
 
-	return jabberProtocolHandler->subscriptionService();
+    return jabberProtocolHandler->subscriptionService();
 }
 
 void SubscriptionAction::actionTriggered(QAction *sender, bool)
 {
-	auto contact = contactFromAction(sender);
-	if (!contact)
-		return;
+    auto contact = contactFromAction(sender);
+    if (!contact)
+        return;
 
-	auto subscriptionService = subscriptionServiceFromContact(contact);
-	if (!subscriptionService)
-		return;
+    auto subscriptionService = subscriptionServiceFromContact(contact);
+    if (!subscriptionService)
+        return;
 
-	execute(subscriptionService, contact);
+    execute(subscriptionService, contact);
 }
 
 void SubscriptionAction::updateActionState(Action *action)
 {
-	action->setEnabled(false);
+    action->setEnabled(false);
 
-	if (action->context()->buddies().isAnyTemporary())
-		return;
+    if (action->context()->buddies().isAnyTemporary())
+        return;
 
-	auto const &contact = action->context()->contacts().toContact();
-	if (!contact)
-		return;
+    auto const &contact = action->context()->contacts().toContact();
+    if (!contact)
+        return;
 
-	if (action->context()->buddies().contains(m_myself->buddy()))
-		return;
+    if (action->context()->buddies().contains(m_myself->buddy()))
+        return;
 
-	auto account = contact.contactAccount();
-	if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
-		return;
+    auto account = contact.contactAccount();
+    if (!account || !account.protocolHandler() || !account.protocolHandler()->rosterService())
+        return;
 
-	if (!account.protocolHandler()->isConnected())
-		return;
+    if (!account.protocolHandler()->isConnected())
+        return;
 
-	action->setEnabled(true);
+    action->setEnabled(true);
 }
 
 #include "moc_subscription-action.cpp"

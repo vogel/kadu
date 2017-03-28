@@ -26,35 +26,31 @@
 
 namespace QThrift
 {
-
 class Reader
 {
-
 public:
-	explicit Reader(const QByteArray &data);
+    explicit Reader(const QByteArray &data);
 
-	template<typename T>
-	T readValue();
+    template <typename T>
+    T readValue();
 
-	QByteArray readString();
+    QByteArray readString();
 
 private:
-	const QByteArray &m_data;
-	int m_lastBool {0};
-	int m_pos {0};
+    const QByteArray &m_data;
+    int m_lastBool{0};
+    int m_pos{0};
 
-	FieldHeader readHeader(int16_t lastId);
-	Value readValue(FieldType type);
+    FieldHeader readHeader(int16_t lastId);
+    Value readValue(FieldType type);
 
-	uint8_t readUInt8();
-	int64_t readInt64();
-	uint32_t readVInt32();
-	uint64_t readVInt64();
+    uint8_t readUInt8();
+    int64_t readInt64();
+    uint32_t readVInt32();
+    uint64_t readVInt64();
 
-	Value readList();
-	template<typename T>
-	List<T> readList(uint32_t size);
-
+    Value readList();
+    template <typename T>
+    List<T> readList(uint32_t size);
 };
-
 }

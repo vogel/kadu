@@ -24,8 +24,8 @@
 
 IndicatorDockingModule::IndicatorDockingModule()
 {
-	add_type<IndicatorDocking>();
-	add_type<IndicatorDockingPluginObject>();
+    add_type<IndicatorDocking>();
+    add_type<IndicatorDockingPluginObject>();
 }
 
 IndicatorDockingModule::~IndicatorDockingModule()

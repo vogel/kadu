@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-BuddyStorage::BuddyStorage(QObject *parent) :
-		QObject{parent}
+BuddyStorage::BuddyStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,29 +35,29 @@ BuddyStorage::~BuddyStorage()
 
 void BuddyStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Buddy BuddyStorage::create()
 {
-	return m_injectedFactory->makeInjected<BuddyShared>();
+    return m_injectedFactory->makeInjected<BuddyShared>();
 }
 
 Buddy BuddyStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<BuddyShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<BuddyShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Buddy BuddyStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<BuddyShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<BuddyShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_buddy-storage.cpp"

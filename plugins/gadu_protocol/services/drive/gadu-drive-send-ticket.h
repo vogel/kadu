@@ -27,34 +27,32 @@ enum class GaduDriveSendTicketStatus;
 
 class GaduDriveSendTicket
 {
-
 public:
-	GaduDriveSendTicket();
-	GaduDriveSendTicket(QString ticketId, QString sender, QString recipient, QString fileName,
-		qint64 fileSize, double progress, GaduDriveSendTicketAckStatus ackStatus,
-		GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status);
+    GaduDriveSendTicket();
+    GaduDriveSendTicket(
+        QString ticketId, QString sender, QString recipient, QString fileName, qint64 fileSize, double progress,
+        GaduDriveSendTicketAckStatus ackStatus, GaduDriveSendTicketMode mode, GaduDriveSendTicketStatus status);
 
-	QString ticketId() const;
-	QString sender() const;
-	QString recipient() const;
-	QString fileName() const;
-	qint64 fileSize() const;
-	double progress() const;
-	GaduDriveSendTicketAckStatus ackStatus() const;
-	GaduDriveSendTicketMode mode() const;
-	GaduDriveSendTicketStatus status() const;
+    QString ticketId() const;
+    QString sender() const;
+    QString recipient() const;
+    QString fileName() const;
+    qint64 fileSize() const;
+    double progress() const;
+    GaduDriveSendTicketAckStatus ackStatus() const;
+    GaduDriveSendTicketMode mode() const;
+    GaduDriveSendTicketStatus status() const;
 
-	bool isValid() const;
+    bool isValid() const;
 
 private:
-	QString m_tickedId;
-	QString m_sender;
-	QString m_recipient;
-	QString m_fileName;
-	qint64 m_fileSize;
-	double m_progress;
-	GaduDriveSendTicketAckStatus m_ackStatus;
-	GaduDriveSendTicketMode m_mode;
-	GaduDriveSendTicketStatus m_status;
-
+    QString m_tickedId;
+    QString m_sender;
+    QString m_recipient;
+    QString m_fileName;
+    qint64 m_fileSize;
+    double m_progress;
+    GaduDriveSendTicketAckStatus m_ackStatus;
+    GaduDriveSendTicketMode m_mode;
+    GaduDriveSendTicketStatus m_status;
 };

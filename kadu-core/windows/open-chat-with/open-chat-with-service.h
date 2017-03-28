@@ -30,21 +30,20 @@ class OpenChatWith;
 
 class KADUAPI OpenChatWithService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit OpenChatWithService(QObject *parent = nullptr);
-	virtual ~OpenChatWithService();
+    Q_INVOKABLE explicit OpenChatWithService(QObject *parent = nullptr);
+    virtual ~OpenChatWithService();
 
-	void show();
+    void show();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<OpenChatWith> m_openChatWithWindow;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<OpenChatWith> m_openChatWithWindow;
 
-	QList<QString> m_uiFiles;
+    QList<QString> m_uiFiles;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };

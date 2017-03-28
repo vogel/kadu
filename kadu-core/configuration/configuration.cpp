@@ -23,36 +23,35 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "misc/memory.h"
 
-Configuration::Configuration(QString version, std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent) :
-		QObject{parent},
-		m_version{std::move(version)},
-		m_configurationApi{std::move(configurationApi)}
+Configuration::Configuration(QString version, std::unique_ptr<ConfigurationApi> configurationApi, QObject *parent)
+        : QObject{parent}, m_version{std::move(version)}, m_configurationApi{std::move(configurationApi)}
 {
-	m_deprecatedConfigurationApi = std::make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QStringLiteral("kadu.conf"));
+    m_deprecatedConfigurationApi =
+        std::make_unique<DeprecatedConfigurationApi>(m_configurationApi.get(), QStringLiteral("kadu.conf"));
 }
 
 Configuration::~Configuration()
 {
 }
 
-ConfigurationApi * Configuration::api() const
+ConfigurationApi *Configuration::api() const
 {
-	return m_configurationApi.get();
+    return m_configurationApi.get();
 }
 
-DeprecatedConfigurationApi * Configuration::deprecatedApi() const
+DeprecatedConfigurationApi *Configuration::deprecatedApi() const
 {
-	return m_deprecatedConfigurationApi.get();
+    return m_deprecatedConfigurationApi.get();
 }
 
 void Configuration::touch()
 {
-	m_configurationApi->touch(m_version);
+    m_configurationApi->touch(m_version);
 }
 
 QString Configuration::content() const
 {
-	return m_configurationApi->configuration();
+    return m_configurationApi->configuration();
 }
 
 #include "moc_configuration.cpp"

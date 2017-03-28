@@ -36,22 +36,22 @@
 
 #include "gadu-contact-personal-info-widget.h"
 
-GaduContactPersonalInfoWidget::GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent) :
-		QWidget(parent), MyContact(contact)
+GaduContactPersonalInfoWidget::GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent)
+        : QWidget(parent), MyContact(contact)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
+    setAttribute(Qt::WA_DeleteOnClose);
 
-	createGui();
+    createGui();
 
-	ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
-	if (!service)
-	{
-		reset();
-		return;
-	}
+    ContactPersonalInfoService *service = contact.contactAccount().protocolHandler()->contactPersonalInfoService();
+    if (!service)
+    {
+        reset();
+        return;
+    }
 
-	connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
-	service->fetchPersonalInfo(contact);
+    connect(service, SIGNAL(personalInfoAvailable(Buddy)), this, SLOT(personalInfoAvailable(Buddy)));
+    service->fetchPersonalInfo(contact);
 }
 
 GaduContactPersonalInfoWidget::~GaduContactPersonalInfoWidget()
@@ -60,81 +60,81 @@ GaduContactPersonalInfoWidget::~GaduContactPersonalInfoWidget()
 
 void GaduContactPersonalInfoWidget::createGui()
 {
-	QVBoxLayout *layout = new QVBoxLayout(this);
+    QVBoxLayout *layout = new QVBoxLayout(this);
 
-	QGroupBox *infoWidget = new QGroupBox(this);
-	QFormLayout *infoLayout = new QFormLayout(infoWidget);
+    QGroupBox *infoWidget = new QGroupBox(this);
+    QFormLayout *infoLayout = new QFormLayout(infoWidget);
 
-	FirstNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("First Name") + ':', infoWidget), FirstNameText);
+    FirstNameText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("First Name") + ':', infoWidget), FirstNameText);
 
-	LastNameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Last Name") + ':', infoWidget), LastNameText);
+    LastNameText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Last Name") + ':', infoWidget), LastNameText);
 
-	NicknameText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Nickname") + ':', infoWidget), NicknameText);
+    NicknameText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Nickname") + ':', infoWidget), NicknameText);
 
-	GenderText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Gender") + ':', infoWidget), GenderText);
+    GenderText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Gender") + ':', infoWidget), GenderText);
 
-	BirthdateText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("Birthdate") + ':', infoWidget), BirthdateText);
+    BirthdateText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("Birthdate") + ':', infoWidget), BirthdateText);
 
-	CityText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("City") + ':', infoWidget), CityText);
+    CityText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("City") + ':', infoWidget), CityText);
 
-	StateProvinceText = new QLabel(this);
-	infoLayout->addRow(new QLabel(tr("State/Province") + ':', infoWidget), StateProvinceText);
+    StateProvinceText = new QLabel(this);
+    infoLayout->addRow(new QLabel(tr("State/Province") + ':', infoWidget), StateProvinceText);
 
-	layout->addWidget(infoWidget);
-	layout->addStretch(100);
+    layout->addWidget(infoWidget);
+    layout->addStretch(100);
 }
 
 void GaduContactPersonalInfoWidget::reset()
 {
-	FirstNameText->clear();
-	LastNameText->clear();
-	NicknameText->clear();
-	GenderText->clear();
-	BirthdateText->clear();
-	CityText->clear();
-	StateProvinceText->clear();
+    FirstNameText->clear();
+    LastNameText->clear();
+    NicknameText->clear();
+    GenderText->clear();
+    BirthdateText->clear();
+    CityText->clear();
+    StateProvinceText->clear();
 }
 
 void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
 {
-	if (buddy.contacts().isEmpty())
-		return;
+    if (buddy.contacts().isEmpty())
+        return;
 
-	Contact contact = buddy.contacts().at(0);
+    Contact contact = buddy.contacts().at(0);
 
-	if (MyContact.id() != contact.id())
-		return;
+    if (MyContact.id() != contact.id())
+        return;
 
-	FirstNameText->setText(buddy.firstName());
-	LastNameText->setText(buddy.lastName());
-	NicknameText->setText(buddy.nickName());
+    FirstNameText->setText(buddy.firstName());
+    LastNameText->setText(buddy.lastName());
+    NicknameText->setText(buddy.nickName());
 
-	switch (buddy.gender())
-	{
-		case GenderFemale:
-			GenderText->setText(tr("Female"));
-			break;
-		case GenderMale:
-			GenderText->setText(tr("Male"));
-			break;
-		case GenderUnknown:
-			GenderText->clear();
-			break;
-	}
+    switch (buddy.gender())
+    {
+    case GenderFemale:
+        GenderText->setText(tr("Female"));
+        break;
+    case GenderMale:
+        GenderText->setText(tr("Male"));
+        break;
+    case GenderUnknown:
+        GenderText->clear();
+        break;
+    }
 
-	if (0 != buddy.birthYear())
-		BirthdateText->setText(QString::number(buddy.birthYear()));
-	else
-		BirthdateText->clear();
+    if (0 != buddy.birthYear())
+        BirthdateText->setText(QString::number(buddy.birthYear()));
+    else
+        BirthdateText->clear();
 
-	CityText->setText(buddy.city());
-	StateProvinceText->clear(); // do not have any info, do we need this control anyway?
+    CityText->setText(buddy.city());
+    StateProvinceText->clear();   // do not have any info, do we need this control anyway?
 }
 
 #include "moc_gadu-contact-personal-info-widget.cpp"

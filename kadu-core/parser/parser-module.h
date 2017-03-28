@@ -25,9 +25,7 @@
 
 class KADUAPI ParserModule : public injeqt::module
 {
-
 public:
-	explicit ParserModule();
-	virtual ~ParserModule();
-
+    explicit ParserModule();
+    virtual ~ParserModule();
 };

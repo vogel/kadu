@@ -23,22 +23,21 @@
 
 class ImageLinkConfiguration
 {
-	bool ShowImages;
-	bool ShowVideos;
+    bool ShowImages;
+    bool ShowVideos;
 
 public:
-	ImageLinkConfiguration();
-	ImageLinkConfiguration(const ImageLinkConfiguration &copyMe);
-	~ImageLinkConfiguration();
+    ImageLinkConfiguration();
+    ImageLinkConfiguration(const ImageLinkConfiguration &copyMe);
+    ~ImageLinkConfiguration();
 
-	ImageLinkConfiguration & operator = (const ImageLinkConfiguration &copyMe);
+    ImageLinkConfiguration &operator=(const ImageLinkConfiguration &copyMe);
 
-	void setShowImages(bool showImages);
-	bool showImages() const;
+    void setShowImages(bool showImages);
+    bool showImages() const;
 
-	void setShowVideos(bool showVideos);
-	bool showVideos() const;
-
+    void setShowVideos(bool showVideos);
+    bool showVideos() const;
 };
 
-#endif // IMAGE_LINK_CONFIGURATION_H
+#endif   // IMAGE_LINK_CONFIGURATION_H

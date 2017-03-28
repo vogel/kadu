@@ -33,27 +33,27 @@ class QNetworkReply;
 
 class GaduDriveGetTransfer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduDriveGetTransfer(QString downloadId, QString fileName, QIODevice *destination,
-		QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~GaduDriveGetTransfer();
+    explicit GaduDriveGetTransfer(
+        QString downloadId, QString fileName, QIODevice *destination, QNetworkAccessManager *networkAccessManager,
+        QObject *parent = nullptr);
+    virtual ~GaduDriveGetTransfer();
 
 signals:
-	void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
-	void finished(QNetworkReply *reply);
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
+    void finished(QNetworkReply *reply);
 
 private:
-	QString m_downloadId;
-	QString m_fileName;
-	QPointer<QIODevice> m_destination;
-	QNetworkAccessManager *m_networkAccessManager;
-	QPointer<QNetworkReply> m_reply;
+    QString m_downloadId;
+    QString m_fileName;
+    QPointer<QIODevice> m_destination;
+    QNetworkAccessManager *m_networkAccessManager;
+    QPointer<QNetworkReply> m_reply;
 
 private slots:
-	void readyRead();
-	void managedPageVisited();
-	void requestFinished();
-
+    void readyRead();
+    void managedPageVisited();
+    void requestFinished();
 };

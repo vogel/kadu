@@ -28,35 +28,34 @@ class HtmlString;
 class KADUAPI NormalizedHtmlString
 {
 public:
-	NormalizedHtmlString() = default;
+    NormalizedHtmlString() = default;
 
-	const QString & string() const;
+    const QString &string() const;
 
-	template<typename ... T>
-	NormalizedHtmlString arg(const T & ... args)
-	{
-		return NormalizedHtmlString{m_string.arg(args.string()...)};
-	}
+    template <typename... T>
+    NormalizedHtmlString arg(const T &... args)
+    {
+        return NormalizedHtmlString{m_string.arg(args.string()...)};
+    }
 
-	friend bool operator == (const NormalizedHtmlString &x, const NormalizedHtmlString &y)
-	{
-		return x.m_string == y.m_string;
-	}
+    friend bool operator==(const NormalizedHtmlString &x, const NormalizedHtmlString &y)
+    {
+        return x.m_string == y.m_string;
+    }
 
-	friend bool operator != (const NormalizedHtmlString &x, const NormalizedHtmlString &y)
-	{
-		return !(x == y);
-	}
+    friend bool operator!=(const NormalizedHtmlString &x, const NormalizedHtmlString &y)
+    {
+        return !(x == y);
+    }
 
-	friend bool operator < (const NormalizedHtmlString &x, const NormalizedHtmlString &y)
-	{
-		return x.m_string < y.m_string;
-	}
+    friend bool operator<(const NormalizedHtmlString &x, const NormalizedHtmlString &y)
+    {
+        return x.m_string < y.m_string;
+    }
 
 private:
-	friend NormalizedHtmlString normalizeHtml(const HtmlString &html);
+    friend NormalizedHtmlString normalizeHtml(const HtmlString &html);
 
-	explicit NormalizedHtmlString(QString string);
-	QString m_string;
-
+    explicit NormalizedHtmlString(QString string);
+    QString m_string;
 };

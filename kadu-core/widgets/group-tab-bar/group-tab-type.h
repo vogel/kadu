@@ -22,9 +22,9 @@
 
 enum GroupTabType
 {
-	GroupTabRegular,
-	GroupTabEverybody,
-	GroupTabUngroupped
+    GroupTabRegular,
+    GroupTabEverybody,
+    GroupTabUngroupped
 };
 
-#endif // GROUP_TAB_TYPE_H
+#endif   // GROUP_TAB_TYPE_H

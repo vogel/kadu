@@ -20,8 +20,7 @@
 
 #include "notifier-configuration-widget.h"
 
-NotifierConfigurationWidget::NotifierConfigurationWidget(QWidget *parent) :
-		QWidget(parent)
+NotifierConfigurationWidget::NotifierConfigurationWidget(QWidget *parent) : QWidget(parent)
 {
 }
 

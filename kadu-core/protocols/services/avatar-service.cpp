@@ -22,20 +22,19 @@
 
 #include "avatar-service.h"
 
-AvatarService * AvatarService::fromAccount(Account account)
+AvatarService *AvatarService::fromAccount(Account account)
 {
-	if (!account)
-		return 0;
+    if (!account)
+        return 0;
 
-	Protocol *protocol = account.protocolHandler();
-	if (!protocol)
-		return 0;
+    Protocol *protocol = account.protocolHandler();
+    if (!protocol)
+        return 0;
 
-	return protocol->avatarService();
+    return protocol->avatarService();
 }
 
-AvatarService::AvatarService(Account account, QObject *parent) :
-		AccountService(account, parent)
+AvatarService::AvatarService(Account account, QObject *parent) : AccountService(account, parent)
 {
 }
 

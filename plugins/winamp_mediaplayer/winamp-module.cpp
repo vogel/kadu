@@ -24,8 +24,8 @@
 
 WinampModule::WinampModule()
 {
-	add_type<WinampMediaPlayer>();
-	add_type<WinampPluginObject>();
+    add_type<WinampMediaPlayer>();
+    add_type<WinampPluginObject>();
 }
 
 WinampModule::~WinampModule()

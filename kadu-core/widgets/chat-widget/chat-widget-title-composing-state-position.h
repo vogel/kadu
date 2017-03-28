@@ -21,7 +21,7 @@
 
 enum class ChatWidgetTitleComposingStatePosition
 {
-	None,
-	AtBegining,
-	AtEnd
+    None,
+    AtBegining,
+    AtEnd
 };

@@ -19,38 +19,38 @@
 
 #include "otr-peer-identity-verification-window.h"
 
-OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent) :
-		QWizard(parent), MyContact(contact)
+OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent)
+        : QWizard(parent), MyContact(contact)
 {
-	setAttribute(Qt::WA_DeleteOnClose, true);
-	setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
+    setAttribute(Qt::WA_DeleteOnClose, true);
+    setWindowTitle(tr("Verify Identity of %1").arg(MyContact.display(true)));
 
-	setOption(QWizard::NoBackButtonOnLastPage, true);
+    setOption(QWizard::NoBackButtonOnLastPage, true);
 }
 
 OtrPeerIdentityVerificationWindow::~OtrPeerIdentityVerificationWindow()
 {
-	emit destroyed(MyContact);
+    emit destroyed(MyContact);
 }
 
 void OtrPeerIdentityVerificationWindow::showRespondQuestionAndAnswer(const QString &question)
 {
-	setStartId(RespondQuestionAndAnswerPage);
-	setField("respondQuestion", question);
-	show();
+    setStartId(RespondQuestionAndAnswerPage);
+    setField("respondQuestion", question);
+    show();
 }
 
 void OtrPeerIdentityVerificationWindow::showRespondSharedSecret()
 {
-	setStartId(RespondSharedSecretPage);
-	show();
+    setStartId(RespondSharedSecretPage);
+    show();
 }
 
 void OtrPeerIdentityVerificationWindow::reject()
 {
-	emit aboutToBeRejected();
+    emit aboutToBeRejected();
 
-	QWizard::reject();
+    QWizard::reject();
 }
 
 #include "moc_otr-peer-identity-verification-window.cpp"

@@ -21,14 +21,14 @@
 
 #include "os/generic/url-opener.h"
 
-OpenTranslateAction::OpenTranslateAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenTranslateAction::OpenTranslateAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"kadu_icons/translate-kadu"});
-	setName(QStringLiteral("translateAction"));
-	setText(tr("Translate Kadu"));
-	setType(ActionDescription::TypeMainMenu);
+    setIcon(KaduIcon{"kadu_icons/translate-kadu"});
+    setName(QStringLiteral("translateAction"));
+    setText(tr("Translate Kadu"));
+    setType(ActionDescription::TypeMainMenu);
 }
 
 OpenTranslateAction::~OpenTranslateAction()
@@ -37,12 +37,12 @@ OpenTranslateAction::~OpenTranslateAction()
 
 void OpenTranslateAction::setUrlOpener(UrlOpener *urlOpener)
 {
-	m_urlOpener = urlOpener;
+    m_urlOpener = urlOpener;
 }
 
 void OpenTranslateAction::actionTriggered(QAction *, bool)
 {
-	m_urlOpener->openUrl("http://www.transifex.net/projects/p/kadu/");
+    m_urlOpener->openUrl("http://www.transifex.net/projects/p/kadu/");
 }
 
 #include "moc_open-translate-action.cpp"

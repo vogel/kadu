@@ -32,185 +32,231 @@
 
 class OpenChatServiceTest : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	injeqt::injector makeInjector() const;
+    injeqt::injector makeInjector() const;
 
 private slots:
-	void shouldBeEmptyAfterCreation();
-	void shouldAddChatFromWidgetToOpenWhenServiceAlreadyInstantiated();
-	void shouldAddChatFromWidgetToOpenWhenServiceInstantiatedLater();
-	void shouldRemoteChatFromWidgetFromOpenWhenServiceAlreadyInstantiated();
-	void shouldRemoteChatFromWidgetFromOpenWhenServiceInstantiatedLater();
-
+    void shouldBeEmptyAfterCreation();
+    void shouldAddChatFromWidgetToOpenWhenServiceAlreadyInstantiated();
+    void shouldAddChatFromWidgetToOpenWhenServiceInstantiatedLater();
+    void shouldRemoteChatFromWidgetFromOpenWhenServiceAlreadyInstantiated();
+    void shouldRemoteChatFromWidgetFromOpenWhenServiceInstantiatedLater();
 };
 
 class ChatWidgetStub : public ChatWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatWidgetStub(Chat chat) : m_chat{chat} {}
-	~ChatWidgetStub() {}
+    explicit ChatWidgetStub(Chat chat) : m_chat{chat}
+    {
+    }
+    ~ChatWidgetStub()
+    {
+    }
 
-	virtual Chat chat() const override { return m_chat; }
-	virtual ChatState chatState() const override { return {}; }
+    virtual Chat chat() const override
+    {
+        return m_chat;
+    }
+    virtual ChatState chatState() const override
+    {
+        return {};
+    }
 
-	virtual void addMessages(const SortedMessages &) override { }
-	virtual void addMessage(const Message &) override { }
-	virtual void appendSystemMessage(NormalizedHtmlString) override { }
-	virtual SortedMessages messages() const override { return {}; }
+    virtual void addMessages(const SortedMessages &) override
+    {
+    }
+    virtual void addMessage(const Message &) override
+    {
+    }
+    virtual void appendSystemMessage(NormalizedHtmlString) override
+    {
+    }
+    virtual SortedMessages messages() const override
+    {
+        return {};
+    }
 
-	virtual const QDateTime & lastReceivedMessageTime() const override { return m_dateTime; }
+    virtual const QDateTime &lastReceivedMessageTime() const override
+    {
+        return m_dateTime;
+    }
 
-	virtual void kaduStoreGeometry() override { }
-	virtual void kaduRestoreGeometry() override { }
+    virtual void kaduStoreGeometry() override
+    {
+    }
+    virtual void kaduRestoreGeometry() override
+    {
+    }
 
-	virtual ChatEditBox * getChatEditBox() const override { return {}; }
-	virtual ChatWidgetTitle * title() const override { return {}; }
-	virtual CustomInput * edit() const override { return {}; }
-	virtual TalkableProxyModel * talkableProxyModel() const override { return {}; }
-	virtual WebkitMessagesView * chatMessagesView() const override { return {}; }
+    virtual ChatEditBox *getChatEditBox() const override
+    {
+        return {};
+    }
+    virtual ChatWidgetTitle *title() const override
+    {
+        return {};
+    }
+    virtual CustomInput *edit() const override
+    {
+        return {};
+    }
+    virtual TalkableProxyModel *talkableProxyModel() const override
+    {
+        return {};
+    }
+    virtual WebkitMessagesView *chatMessagesView() const override
+    {
+        return {};
+    }
 
 public slots:
-	virtual void sendMessage() override { }
-	virtual void colorSelectorAboutToClose() override { }
-	virtual void clearChatWindow() override { }
+    virtual void sendMessage() override
+    {
+    }
+    virtual void colorSelectorAboutToClose() override
+    {
+    }
+    virtual void clearChatWindow() override
+    {
+    }
 
-	virtual void requestClose() override { }
-
+    virtual void requestClose() override
+    {
+    }
 
 private:
-	Chat m_chat;
-	QDateTime m_dateTime;
-
+    Chat m_chat;
+    QDateTime m_dateTime;
 };
 
 injeqt::injector OpenChatServiceTest::makeInjector() const
 {
-	class module : public injeqt::module
-	{
-	public:
-		module()
-		{
-			add_type<ChatWidgetRepositoryImpl>();
-			add_type<OpenChatRepository>();
-			add_type<OpenChatService>();
-		}
-	};
+    class module : public injeqt::module
+    {
+    public:
+        module()
+        {
+            add_type<ChatWidgetRepositoryImpl>();
+            add_type<OpenChatRepository>();
+            add_type<OpenChatService>();
+        }
+    };
 
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<module>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<module>());
 
-	return injeqt::injector{std::move(modules)};
+    return injeqt::injector{std::move(modules)};
 }
 
 void OpenChatServiceTest::shouldBeEmptyAfterCreation()
 {
-	auto injector = makeInjector();
-	auto openChatRepository = injector.get<OpenChatRepository>();
+    auto injector = makeInjector();
+    auto openChatRepository = injector.get<OpenChatRepository>();
 
-	QCOMPARE(openChatRepository->size(), size_t{0});
-	QVERIFY(openChatRepository->begin() == openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{0});
+    QVERIFY(openChatRepository->begin() == openChatRepository->end());
 }
 
 void OpenChatServiceTest::shouldAddChatFromWidgetToOpenWhenServiceAlreadyInstantiated()
 {
-	Chat chat1{new ChatShared()};
-	ChatWidgetStub chatWidget1{chat1};
-	Chat chat2{new ChatShared()};
-	ChatWidgetStub chatWidget2{chat2};
+    Chat chat1{new ChatShared()};
+    ChatWidgetStub chatWidget1{chat1};
+    Chat chat2{new ChatShared()};
+    ChatWidgetStub chatWidget2{chat2};
 
-	auto injector = makeInjector();
-	auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
-	auto openChatRepository = injector.get<OpenChatRepository>();
-	injector.instantiate<OpenChatService>();
+    auto injector = makeInjector();
+    auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
+    auto openChatRepository = injector.get<OpenChatRepository>();
+    injector.instantiate<OpenChatService>();
 
-	chatWidgetRepository->addChatWidget(&chatWidget1);
+    chatWidgetRepository->addChatWidget(&chatWidget1);
 
-	QCOMPARE(openChatRepository->size(), size_t{1});
-	QVERIFY(openChatRepository->begin() != openChatRepository->end());
-	QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat1) != openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{1});
+    QVERIFY(openChatRepository->begin() != openChatRepository->end());
+    QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat1) != openChatRepository->end());
 
-	chatWidgetRepository->addChatWidget(&chatWidget2);
+    chatWidgetRepository->addChatWidget(&chatWidget2);
 
-	QCOMPARE(openChatRepository->size(), size_t{2});
-	QVERIFY(openChatRepository->begin() != openChatRepository->end());
-	QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat2) != openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{2});
+    QVERIFY(openChatRepository->begin() != openChatRepository->end());
+    QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat2) != openChatRepository->end());
 }
 
 void OpenChatServiceTest::shouldAddChatFromWidgetToOpenWhenServiceInstantiatedLater()
 {
-	Chat chat1{new ChatShared()};
-	ChatWidgetStub chatWidget1{chat1};
-	Chat chat2{new ChatShared()};
-	ChatWidgetStub chatWidget2{chat2};
+    Chat chat1{new ChatShared()};
+    ChatWidgetStub chatWidget1{chat1};
+    Chat chat2{new ChatShared()};
+    ChatWidgetStub chatWidget2{chat2};
 
-	auto injector = makeInjector();
-	auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
-	auto openChatRepository = injector.get<OpenChatRepository>();
+    auto injector = makeInjector();
+    auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
+    auto openChatRepository = injector.get<OpenChatRepository>();
 
-	chatWidgetRepository->addChatWidget(&chatWidget1);
-	chatWidgetRepository->addChatWidget(&chatWidget2);
+    chatWidgetRepository->addChatWidget(&chatWidget1);
+    chatWidgetRepository->addChatWidget(&chatWidget2);
 
-	injector.instantiate<OpenChatService>();
+    injector.instantiate<OpenChatService>();
 
-	QCOMPARE(openChatRepository->size(), size_t{2});
-	QVERIFY(openChatRepository->begin() != openChatRepository->end());
-	QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat1) != openChatRepository->end());
-	QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat2) != openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{2});
+    QVERIFY(openChatRepository->begin() != openChatRepository->end());
+    QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat1) != openChatRepository->end());
+    QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat2) != openChatRepository->end());
 }
 
 void OpenChatServiceTest::shouldRemoteChatFromWidgetFromOpenWhenServiceAlreadyInstantiated()
 {
-	Chat chat1{new ChatShared()};
-	ChatWidgetStub chatWidget1{chat1};
-	Chat chat2{new ChatShared()};
-	ChatWidgetStub chatWidget2{chat2};
+    Chat chat1{new ChatShared()};
+    ChatWidgetStub chatWidget1{chat1};
+    Chat chat2{new ChatShared()};
+    ChatWidgetStub chatWidget2{chat2};
 
-	auto injector = makeInjector();
-	auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
-	auto openChatRepository = injector.get<OpenChatRepository>();
-	injector.instantiate<OpenChatService>();
+    auto injector = makeInjector();
+    auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
+    auto openChatRepository = injector.get<OpenChatRepository>();
+    injector.instantiate<OpenChatService>();
 
-	chatWidgetRepository->addChatWidget(&chatWidget1);
-	chatWidgetRepository->addChatWidget(&chatWidget2);
+    chatWidgetRepository->addChatWidget(&chatWidget1);
+    chatWidgetRepository->addChatWidget(&chatWidget2);
 
-	chatWidgetRepository->removeChatWidget(&chatWidget2);
+    chatWidgetRepository->removeChatWidget(&chatWidget2);
 
-	QCOMPARE(openChatRepository->size(), size_t{1});
-	QVERIFY(openChatRepository->begin() != openChatRepository->end());
-	QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat1) != openChatRepository->end());
-	QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat2) == openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{1});
+    QVERIFY(openChatRepository->begin() != openChatRepository->end());
+    QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat1) != openChatRepository->end());
+    QVERIFY(std::find(openChatRepository->begin(), openChatRepository->end(), chat2) == openChatRepository->end());
 
-	chatWidgetRepository->removeChatWidget(chat1);
+    chatWidgetRepository->removeChatWidget(chat1);
 
-	QCOMPARE(openChatRepository->size(), size_t{0});
-	QVERIFY(openChatRepository->begin() == openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{0});
+    QVERIFY(openChatRepository->begin() == openChatRepository->end());
 }
 
 void OpenChatServiceTest::shouldRemoteChatFromWidgetFromOpenWhenServiceInstantiatedLater()
 {
-	Chat chat1{new ChatShared()};
-	ChatWidgetStub chatWidget1{chat1};
-	Chat chat2{new ChatShared()};
-	ChatWidgetStub chatWidget2{chat2};
+    Chat chat1{new ChatShared()};
+    ChatWidgetStub chatWidget1{chat1};
+    Chat chat2{new ChatShared()};
+    ChatWidgetStub chatWidget2{chat2};
 
-	auto injector = makeInjector();
-	auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
-	auto openChatRepository = injector.get<OpenChatRepository>();
+    auto injector = makeInjector();
+    auto chatWidgetRepository = injector.get<ChatWidgetRepository>();
+    auto openChatRepository = injector.get<OpenChatRepository>();
 
-	chatWidgetRepository->addChatWidget(&chatWidget1);
-	chatWidgetRepository->addChatWidget(&chatWidget2);
+    chatWidgetRepository->addChatWidget(&chatWidget1);
+    chatWidgetRepository->addChatWidget(&chatWidget2);
 
-	chatWidgetRepository->removeChatWidget(&chatWidget2);
-	chatWidgetRepository->removeChatWidget(chat1);
+    chatWidgetRepository->removeChatWidget(&chatWidget2);
+    chatWidgetRepository->removeChatWidget(chat1);
 
-	injector.instantiate<OpenChatService>();
+    injector.instantiate<OpenChatService>();
 
-	QCOMPARE(openChatRepository->size(), size_t{0});
-	QVERIFY(openChatRepository->begin() == openChatRepository->end());
+    QCOMPARE(openChatRepository->size(), size_t{0});
+    QVERIFY(openChatRepository->begin() == openChatRepository->end());
 }
 
 QTEST_MAIN(OpenChatServiceTest)

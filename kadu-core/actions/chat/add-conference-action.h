@@ -32,23 +32,22 @@ class AccountManager;
 
 class AddConferenceAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit AddConferenceAction(QObject *parent = nullptr);
-	virtual ~AddConferenceAction();
+    Q_INVOKABLE explicit AddConferenceAction(QObject *parent = nullptr);
+    virtual ~AddConferenceAction();
 
 protected:
-	virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
+    virtual void triggered(QWidget *widget, ActionContext *context, bool toggled);
 
 private:
-	QPointer<AccountManager> m_accountManager;
+    QPointer<AccountManager> m_accountManager;
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_INIT void init();
 
-	void updateAddChatMenuItem();
-
+    void updateAddChatMenuItem();
 };

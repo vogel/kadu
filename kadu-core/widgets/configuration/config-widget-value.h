@@ -28,23 +28,27 @@ class ConfigGroupBox;
 class ConfigurationWindowDataManager;
 
 /**
-	&lt;widget config-section="section" config-item="item" /&gt;
+        &lt;widget config-section="section" config-item="item" /&gt;
 
-	@arg section - sekcja w której trzymany jest element
-	@arg item - element, w którym trzymana jest wartość parametry
+        @arg section - sekcja w której trzymany jest element
+        @arg item - element, w którym trzymana jest wartość parametry
  **/
 class KADUAPI ConfigWidgetValue : public ConfigWidget
 {
 protected:
-	QString section;
-	QString item;
+    QString section;
+    QString item;
 
 public:
-	ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigWidgetValue(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigWidgetValue() {}
+    ConfigWidgetValue(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigWidgetValue(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigWidgetValue()
+    {
+    }
 
-	virtual bool fromDomElement(QDomElement domElement);
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

@@ -47,89 +47,88 @@ class QVBoxLayout;
 
 class JabberEditAccountWidget : public AccountEditWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberEditAccountWidget(Account account, QWidget *parent = nullptr);
-	virtual ~JabberEditAccountWidget();
+    explicit JabberEditAccountWidget(Account account, QWidget *parent = nullptr);
+    virtual ~JabberEditAccountWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SystemInfo> m_systemInfo;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SystemInfo> m_systemInfo;
 
-	JabberPersonalInfoWidget *PersonalInfoWidget;
+    JabberPersonalInfoWidget *PersonalInfoWidget;
 
-	QLineEdit *AccountId;
-	QLineEdit *AccountPassword;
-	QCheckBox *RememberPassword;
+    QLineEdit *AccountId;
+    QLineEdit *AccountPassword;
+    QCheckBox *RememberPassword;
 
-	QCheckBox *CustomHostPort;
-	QLabel *CustomHostLabel;
-	QLineEdit *CustomHost;
-	QLabel *CustomPortLabel;
-	QLineEdit *CustomPort;
-	QLabel *EncryptionModeLabel;
-	QComboBox *EncryptionMode;
-	QComboBox *PlainTextAuth;
+    QCheckBox *CustomHostPort;
+    QLabel *CustomHostLabel;
+    QLineEdit *CustomHost;
+    QLabel *CustomPortLabel;
+    QLineEdit *CustomPort;
+    QLabel *EncryptionModeLabel;
+    QComboBox *EncryptionMode;
+    QComboBox *PlainTextAuth;
 
-	IdentitiesComboBox *Identities;
+    IdentitiesComboBox *Identities;
 
-	QCheckBox *AutoResource;
-	QLabel *ResourceLabel;
-	QLineEdit *ResourceName;
-	QLabel *PriorityLabel;
-	QLineEdit *Priority;
+    QCheckBox *AutoResource;
+    QLabel *ResourceLabel;
+    QLineEdit *ResourceName;
+    QLabel *PriorityLabel;
+    QLineEdit *Priority;
 
-	QLineEdit *DataTransferProxy;
-	QCheckBox *RequireDataTransferProxy;
+    QLineEdit *DataTransferProxy;
+    QCheckBox *RequireDataTransferProxy;
 
-	QCheckBox *SendTypingNotification;
-	QCheckBox *SendGoneNotification;
+    QCheckBox *SendTypingNotification;
+    QCheckBox *SendGoneNotification;
 
-	QCheckBox *PublishSystemInfo;
+    QCheckBox *PublishSystemInfo;
 
-	ProxyComboBox *ProxyCombo;
+    ProxyComboBox *ProxyCombo;
 
-	QPushButton *ApplyButton;
-	QPushButton *CancelButton;
+    QPushButton *ApplyButton;
+    QPushButton *CancelButton;
 
-	void createGui();
+    void createGui();
 
-	void createGeneralTab(QTabWidget *);
-	void createPersonalDataTab(QTabWidget *);
-	void createConnectionTab(QTabWidget *);
-	void createOptionsTab(QTabWidget *);
-	void createGeneralGroupBox(QVBoxLayout *layout);
+    void createGeneralTab(QTabWidget *);
+    void createPersonalDataTab(QTabWidget *);
+    void createConnectionTab(QTabWidget *);
+    void createOptionsTab(QTabWidget *);
+    void createGeneralGroupBox(QVBoxLayout *layout);
 
-	void loadAccountData();
-	void loadAccountDetailsData();
+    void loadAccountData();
+    void loadAccountDetailsData();
 
-	void resetState();
+    void resetState();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
+    INJEQT_INIT void init();
 
-	virtual void removeAccount();
+    virtual void removeAccount();
 
-	void hostToggled(bool on);
-	void autoResourceToggled(bool on);
-	void dataChanged();
-	void changePasssword();
-	void passwordChanged(const QString &newPassword);
-	void stateChangedSlot(ConfigurationValueState);
-
+    void hostToggled(bool on);
+    void autoResourceToggled(bool on);
+    void dataChanged();
+    void changePasssword();
+    void passwordChanged(const QString &newPassword);
+    void stateChangedSlot(ConfigurationValueState);
 };

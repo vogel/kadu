@@ -24,74 +24,82 @@
 #include <QtGui/QColor>
 
 #undef PROPERTY
-#define PROPERTY(type, name, capitalized_name) \
-	const type & name() const { return capitalized_name; } \
-	void set##capitalized_name(const type &name) { capitalized_name = name; }
+#define PROPERTY(type, name, capitalized_name)   \
+    const type &name() const                     \
+    {                                            \
+        return capitalized_name;                 \
+    }                                            \
+    void set##capitalized_name(const type &name) \
+    {                                            \
+        capitalized_name = name;                 \
+    }
 
 class PathsProvider;
 
 class AdiumStyle
 {
-	static QSettings::Format plistFormat;
+    static QSettings::Format plistFormat;
 
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QString Name;
+    QString Name;
 
-	int StyleViewVersion;
-	QColor DefaultBackgroundColor;
-	bool DefaultBackgroundIsTransparent;
+    int StyleViewVersion;
+    QColor DefaultBackgroundColor;
+    bool DefaultBackgroundIsTransparent;
 
-	bool UsesCustomTemplateHtml;
+    bool UsesCustomTemplateHtml;
 
-	QString BaseHref;
-	QString TemplateHref;
-	QString MainHref;
-	QString HeaderHtml;
-	QString FooterHtml;
-	QString IncomingHtml;
-	QString NextIncomingHtml;
-	QString OutgoingHtml;
-	QString NextOutgoingHtml;
-	QString StatusHtml;
+    QString BaseHref;
+    QString TemplateHref;
+    QString MainHref;
+    QString HeaderHtml;
+    QString FooterHtml;
+    QString IncomingHtml;
+    QString NextIncomingHtml;
+    QString OutgoingHtml;
+    QString NextOutgoingHtml;
+    QString StatusHtml;
 
-	QString CurrentVariant;
-	QString DefaultVariant;
-	QStringList StyleVariants;
+    QString CurrentVariant;
+    QString DefaultVariant;
+    QStringList StyleVariants;
 
-	QString readStylePart(const QString &part);
+    QString readStylePart(const QString &part);
 
-	void readConfigurationFile();
-	void loadHtmlFiles();
-	void loadVariants();
+    void readConfigurationFile();
+    void loadHtmlFiles();
+    void loadVariants();
 
-	QString performTemplateHtmlWorkarounds(QString html);
+    QString performTemplateHtmlWorkarounds(QString html);
 
 public:
-	AdiumStyle();
-	explicit AdiumStyle(PathsProvider *pathsProvider, const QString &styleName);
+    AdiumStyle();
+    explicit AdiumStyle(PathsProvider *pathsProvider, const QString &styleName);
 
-	static bool isStyleValid(const QString &stylePath);
+    static bool isStyleValid(const QString &stylePath);
 
-	PROPERTY(QString, name, Name)
-	PROPERTY(QString, baseHref, BaseHref)
-	PROPERTY(QString, mainHref, MainHref)
-	PROPERTY(QString, headerHtml, HeaderHtml)
-	PROPERTY(QString, footerHtml, FooterHtml)
-	PROPERTY(QString, incomingHtml, IncomingHtml)
-	PROPERTY(QString, nextIncomingHtml, NextIncomingHtml)
-	PROPERTY(QString, outgoingHtml, OutgoingHtml)
-	PROPERTY(QString, nextOutgoingHtml, NextOutgoingHtml)
-	PROPERTY(QString, statusHtml, StatusHtml)
-	PROPERTY(QString, currentVariant, CurrentVariant)
+    PROPERTY(QString, name, Name)
+    PROPERTY(QString, baseHref, BaseHref)
+    PROPERTY(QString, mainHref, MainHref)
+    PROPERTY(QString, headerHtml, HeaderHtml)
+    PROPERTY(QString, footerHtml, FooterHtml)
+    PROPERTY(QString, incomingHtml, IncomingHtml)
+    PROPERTY(QString, nextIncomingHtml, NextIncomingHtml)
+    PROPERTY(QString, outgoingHtml, OutgoingHtml)
+    PROPERTY(QString, nextOutgoingHtml, NextOutgoingHtml)
+    PROPERTY(QString, statusHtml, StatusHtml)
+    PROPERTY(QString, currentVariant, CurrentVariant)
 
-	PROPERTY(QString, defaultVariant, DefaultVariant)
-	PROPERTY(bool, defaultBackgroundIsTransparent, DefaultBackgroundIsTransparent)
-	PROPERTY(bool, usesCustomTemplateHtml, UsesCustomTemplateHtml)
-	PROPERTY(int, styleViewVersion, StyleViewVersion)
+    PROPERTY(QString, defaultVariant, DefaultVariant)
+    PROPERTY(bool, defaultBackgroundIsTransparent, DefaultBackgroundIsTransparent)
+    PROPERTY(bool, usesCustomTemplateHtml, UsesCustomTemplateHtml)
+    PROPERTY(int, styleViewVersion, StyleViewVersion)
 
-	QString templateHtml();
+    QString templateHtml();
 
-	const QStringList & styleVariants() const { return StyleVariants; }
-
+    const QStringList &styleVariants() const
+    {
+        return StyleVariants;
+    }
 };

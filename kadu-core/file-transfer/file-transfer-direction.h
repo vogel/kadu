@@ -19,7 +19,8 @@
 
 #pragma once
 
-enum class FileTransferDirection {
-	Outgoing,
-	Incoming
+enum class FileTransferDirection
+{
+    Outgoing,
+    Incoming
 };

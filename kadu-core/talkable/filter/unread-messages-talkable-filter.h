@@ -37,25 +37,24 @@
  */
 class UnreadMessagesTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of UnreadMessagesTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit UnreadMessagesTalkableFilter(QObject *parent = nullptr);
-	virtual ~UnreadMessagesTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of UnreadMessagesTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit UnreadMessagesTalkableFilter(QObject *parent = nullptr);
+    virtual ~UnreadMessagesTalkableFilter();
 
-	virtual FilterResult filterChat(const Chat &chat);
-	virtual FilterResult filterBuddy(const Buddy &buddy);
-	virtual FilterResult filterContact(const Contact &contact);
-
+    virtual FilterResult filterChat(const Chat &chat);
+    virtual FilterResult filterBuddy(const Buddy &buddy);
+    virtual FilterResult filterContact(const Contact &contact);
 };
 
 /**
  * @}
  */
 
-#endif // UNREAD_MESSAGES_TALKABLE_FILTER_H
+#endif   // UNREAD_MESSAGES_TALKABLE_FILTER_H

@@ -32,8 +32,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-EmoticonsPluginObject::EmoticonsPluginObject(QObject *parent) :
-		QObject{parent}
+EmoticonsPluginObject::EmoticonsPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -41,71 +40,79 @@ EmoticonsPluginObject::~EmoticonsPluginObject()
 {
 }
 
-void EmoticonsPluginObject::setClipboardHtmlTransformerService(ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
+void EmoticonsPluginObject::setClipboardHtmlTransformerService(
+    ClipboardHtmlTransformerService *clipboardHtmlTransformerService)
 {
-	m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
+    m_clipboardHtmlTransformerService = clipboardHtmlTransformerService;
 }
 
-void EmoticonsPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void EmoticonsPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
 void EmoticonsPluginObject::setDomVisitorProviderRepository(DomVisitorProviderRepository *domVisitorProviderRepository)
 {
-	m_domVisitorProviderRepository = domVisitorProviderRepository;
+    m_domVisitorProviderRepository = domVisitorProviderRepository;
 }
 
-void EmoticonsPluginObject::setEmoticonClipboardHtmlTransformer(EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer)
+void EmoticonsPluginObject::setEmoticonClipboardHtmlTransformer(
+    EmoticonClipboardHtmlTransformer *emoticonClipboardHtmlTransformer)
 {
-	m_emoticonClipboardHtmlTransformer = emoticonClipboardHtmlTransformer;
+    m_emoticonClipboardHtmlTransformer = emoticonClipboardHtmlTransformer;
 }
 
 void EmoticonsPluginObject::setEmoticonConfigurator(EmoticonConfigurator *emoticonConfigurator)
 {
-	m_emoticonConfigurator = emoticonConfigurator;
+    m_emoticonConfigurator = emoticonConfigurator;
 }
 
-void EmoticonsPluginObject::setEmoticonExpanderDomVisitorProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider)
+void EmoticonsPluginObject::setEmoticonExpanderDomVisitorProvider(
+    EmoticonExpanderDomVisitorProvider *emoticonExpanderDomVisitorProvider)
 {
-	m_emoticonExpanderDomVisitorProvider = emoticonExpanderDomVisitorProvider;
+    m_emoticonExpanderDomVisitorProvider = emoticonExpanderDomVisitorProvider;
 }
 
-void EmoticonsPluginObject::setEmoticonsConfigurationUiHandler(EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler)
+void EmoticonsPluginObject::setEmoticonsConfigurationUiHandler(
+    EmoticonsConfigurationUiHandler *emoticonsConfigurationUiHandler)
 {
-	m_emoticonsConfigurationUiHandler = emoticonsConfigurationUiHandler;
+    m_emoticonsConfigurationUiHandler = emoticonsConfigurationUiHandler;
 }
 
 void EmoticonsPluginObject::setInsertEmoticonAction(InsertEmoticonAction *insertEmoticonAction)
 {
-	m_insertEmoticonAction = insertEmoticonAction;
+    m_insertEmoticonAction = insertEmoticonAction;
 }
 
-void EmoticonsPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void EmoticonsPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void EmoticonsPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void EmoticonsPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
-	m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
-	m_domVisitorProviderRepository->addVisitorProvider(m_emoticonExpanderDomVisitorProvider, 2000);
-	m_emoticonConfigurator->configure();
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
+    m_clipboardHtmlTransformerService->registerTransformer(m_emoticonClipboardHtmlTransformer);
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
+    m_domVisitorProviderRepository->addVisitorProvider(m_emoticonExpanderDomVisitorProvider, 2000);
+    m_emoticonConfigurator->configure();
 }
 
 void EmoticonsPluginObject::done()
 {
-	m_domVisitorProviderRepository->removeVisitorProvider(m_emoticonExpanderDomVisitorProvider);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
-	m_clipboardHtmlTransformerService->unregisterTransformer(m_emoticonClipboardHtmlTransformer);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
+    m_domVisitorProviderRepository->removeVisitorProvider(m_emoticonExpanderDomVisitorProvider);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_emoticonsConfigurationUiHandler);
+    m_clipboardHtmlTransformerService->unregisterTransformer(m_emoticonClipboardHtmlTransformer);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
 }
 
 #include "moc_emoticons-plugin-object.cpp"

@@ -23,8 +23,8 @@
 
 #include <injeqt/injector.h>
 
-WindowsIntegrationPluginModulesFactory::WindowsIntegrationPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+WindowsIntegrationPluginModulesFactory::WindowsIntegrationPluginModulesFactory(QObject *parent)
+        : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +34,10 @@ WindowsIntegrationPluginModulesFactory::~WindowsIntegrationPluginModulesFactory(
 
 std::vector<std::unique_ptr<injeqt::module>> WindowsIntegrationPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<WindowsIntegrationModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<WindowsIntegrationModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_windows-integration-plugin-modules-factory.cpp"

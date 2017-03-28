@@ -19,25 +19,25 @@
 
 #pragma once
 
-#include "formatted-string/formatted-string-html-visitor.h"
 #include "exports.h"
+#include "formatted-string/formatted-string-html-visitor.h"
 
 class ChatImageService;
 class ImageStorageService;
 
 class FormattedStringGaduHtmlVisitor : public FormattedStringHtmlVisitor
 {
-	Q_DISABLE_COPY(FormattedStringGaduHtmlVisitor);
+    Q_DISABLE_COPY(FormattedStringGaduHtmlVisitor);
 
 public:
-	explicit FormattedStringGaduHtmlVisitor(ChatImageService *chatImageService, ImageStorageService *imageStorageService);
-	virtual ~FormattedStringGaduHtmlVisitor();
+    explicit FormattedStringGaduHtmlVisitor(
+        ChatImageService *chatImageService, ImageStorageService *imageStorageService);
+    virtual ~FormattedStringGaduHtmlVisitor();
 
-	virtual void visit(const FormattedStringImageBlock * const formattedStringImageBlock) override;
-	virtual void visit(const FormattedStringTextBlock * const formattedStringTextBlock) override;
+    virtual void visit(const FormattedStringImageBlock *const formattedStringImageBlock) override;
+    virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock) override;
 
 private:
-	ChatImageService *m_chatImageService;
-	ImageStorageService *m_imageStorageService;
-
+    ChatImageService *m_chatImageService;
+    ImageStorageService *m_imageStorageService;
 };

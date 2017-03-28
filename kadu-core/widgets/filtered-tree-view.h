@@ -35,50 +35,52 @@ class InjectedFactory;
 
 class KADUAPI FilteredTreeView : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum FilterPosition
-	{
-		FilterAtTop,
-		FilterAtBottom
-	};
+    enum FilterPosition
+    {
+        FilterAtTop,
+        FilterAtBottom
+    };
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	FilterPosition CurrentFilterPosition;
+    FilterPosition CurrentFilterPosition;
 
-	QVBoxLayout *Layout;
-	FilterWidget *NameFilterWidget;
-	QAbstractItemView *View;
+    QVBoxLayout *Layout;
+    FilterWidget *NameFilterWidget;
+    QAbstractItemView *View;
 
-	void removeView();
-	void insertView();
+    void removeView();
+    void insertView();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 
 protected:
-	InjectedFactory * injectedFactory() const;
+    InjectedFactory *injectedFactory() const;
 
-	virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	static bool shouldEventGoToFilter(QKeyEvent *event);
+    static bool shouldEventGoToFilter(QKeyEvent *event);
 
-	explicit FilteredTreeView(FilterPosition filterPosition, QWidget *parent = nullptr, Qt::WindowFlags f = 0);
-	virtual ~FilteredTreeView();
+    explicit FilteredTreeView(FilterPosition filterPosition, QWidget *parent = nullptr, Qt::WindowFlags f = 0);
+    virtual ~FilteredTreeView();
 
-	FilterWidget * filterWidget() { return NameFilterWidget; }
+    FilterWidget *filterWidget()
+    {
+        return NameFilterWidget;
+    }
 
-	void setPosition(FilterPosition filterPosition);
-	void setView(QAbstractItemView *view);
+    void setPosition(FilterPosition filterPosition);
+    void setView(QAbstractItemView *view);
 
 signals:
-	void filterChanged(const QString &filterText);
-
+    void filterChanged(const QString &filterText);
 };
 
-#endif // FILTERED_TREE_VIEW_H
+#endif   // FILTERED_TREE_VIEW_H

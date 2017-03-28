@@ -37,22 +37,22 @@ class QString;
  */
 enum class PluginState
 {
-	/**
-	 * Plugin has been never successfully activated before. May be activated automatically
-	 * if has PluginMetadata::loadByDefault() set to true.
-	 */
-	New,
+    /**
+     * Plugin has been never successfully activated before. May be activated automatically
+     * if has PluginMetadata::loadByDefault() set to true.
+     */
+    New,
 
-	/**
-	 * Plugin is normally disabled and will be activated only as dependency of other plugin
-	 * or at user request.
-	 */
-	Disabled,
+    /**
+     * Plugin is normally disabled and will be activated only as dependency of other plugin
+     * or at user request.
+     */
+    Disabled,
 
-	/**
-	 * Plugin is enabled and will be activated at Kadu start automatically.
-	 */
-	Enabled
+    /**
+     * Plugin is enabled and will be activated at Kadu start automatically.
+     */
+    Enabled
 
 };
 

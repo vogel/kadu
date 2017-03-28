@@ -24,9 +24,7 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 
-ChatEditBoxSizeManager::ChatEditBoxSizeManager(QObject *parent) :
-		QObject{parent},
-		CommonHeight{}
+ChatEditBoxSizeManager::ChatEditBoxSizeManager(QObject *parent) : QObject{parent}, CommonHeight{}
 {
 }
 
@@ -36,32 +34,32 @@ ChatEditBoxSizeManager::~ChatEditBoxSizeManager()
 
 void ChatEditBoxSizeManager::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ChatEditBoxSizeManager::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void ChatEditBoxSizeManager::configurationUpdated()
 {
-	setCommonHeight(m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
+    setCommonHeight(m_configuration->deprecatedApi()->readNumEntry("Chat", "ChatEditBoxHeight", 0));
 }
 
 void ChatEditBoxSizeManager::setCommonHeight(int height)
 {
-	if (height != CommonHeight)
-	{
-		CommonHeight = height;
-		m_configuration->deprecatedApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
-		emit commonHeightChanged(CommonHeight);
-	}
+    if (height != CommonHeight)
+    {
+        CommonHeight = height;
+        m_configuration->deprecatedApi()->writeEntry("Chat", "ChatEditBoxHeight", CommonHeight);
+        emit commonHeightChanged(CommonHeight);
+    }
 }
 
 bool ChatEditBoxSizeManager::initialized()
 {
-	return 0 != CommonHeight;
+    return 0 != CommonHeight;
 }
 
 #include "moc_chat-edit-box-size-manager.cpp"

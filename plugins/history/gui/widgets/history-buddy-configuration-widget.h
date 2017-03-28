@@ -29,34 +29,33 @@ class QCheckBox;
 
 class HistoryBuddyConfigurationWidget : public BuddyConfigurationWidget, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	bool GlobalStoreHistory;
-	QCheckBox *StoreHistoryCheckBox;
+    bool GlobalStoreHistory;
+    QCheckBox *StoreHistoryCheckBox;
 
-	SimpleConfigurationValueStateNotifier *StateNotifier;
+    SimpleConfigurationValueStateNotifier *StateNotifier;
 
-	void createGui();
-	void loadValues();
+    void createGui();
+    void loadValues();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 
-	void updateState();
+    void updateState();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	explicit HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~HistoryBuddyConfigurationWidget();
+    explicit HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~HistoryBuddyConfigurationWidget();
 
-	virtual const ConfigurationValueStateNotifier * stateNotifier() const;
+    virtual const ConfigurationValueStateNotifier *stateNotifier() const;
 
-	virtual void apply();
-	virtual void cancel();
-
+    virtual void apply();
+    virtual void cancel();
 };

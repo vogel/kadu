@@ -23,10 +23,10 @@
 
 #include "sql-messages-sms-storage.h"
 
-SqlMessagesSmsStorage::SqlMessagesSmsStorage(HistorySqlStorage *sqlStorage) :
-		HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
+SqlMessagesSmsStorage::SqlMessagesSmsStorage(HistorySqlStorage *sqlStorage)
+        : HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
 {
-	Q_ASSERT(SqlStorage);
+    Q_ASSERT(SqlStorage);
 }
 
 SqlMessagesSmsStorage::~SqlMessagesSmsStorage()
@@ -35,22 +35,22 @@ SqlMessagesSmsStorage::~SqlMessagesSmsStorage()
 
 QFuture<QVector<Talkable>> SqlMessagesSmsStorage::talkables()
 {
-	return SqlStorage->smsRecipients();
+    return SqlStorage->smsRecipients();
 }
 
 QFuture<QVector<HistoryQueryResult>> SqlMessagesSmsStorage::dates(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->smsRecipientDates(historyQuery);
+    return SqlStorage->smsRecipientDates(historyQuery);
 }
 
 QFuture<SortedMessages> SqlMessagesSmsStorage::messages(const HistoryQuery &historyQuery)
 {
-	return SqlStorage->smses(historyQuery);
+    return SqlStorage->smses(historyQuery);
 }
 
 void SqlMessagesSmsStorage::deleteMessages(const Talkable &talkable, const QDate &date)
 {
-	SqlStorage->clearSmsHistory(talkable, date);
+    SqlStorage->clearSmsHistory(talkable, date);
 }
 
 #include "moc_sql-messages-sms-storage.cpp"

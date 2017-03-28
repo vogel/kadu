@@ -31,32 +31,32 @@ class QDomElement;
 class ConfigGroupBox;
 
 /**
-	&lt;select-file caption="caption" id="id" type="type" /&gt;
+        &lt;select-file caption="caption" id="id" type="type" /&gt;
 
-	@arg type all = wszystkie pliki, images = obrazki, audio = pliki dźwiękowe
+        @arg type all = wszystkie pliki, images = obrazki, audio = pliki dźwiękowe
  **/
 class KADUAPI ConfigSelectFile : public SelectFile, public ConfigWidgetValue
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QLabel *label;
+    QLabel *label;
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigSelectFile(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
-		const QString &type, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigSelectFile();
+    ConfigSelectFile(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        const QString &type, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigSelectFile(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigSelectFile();
 
-	virtual void setVisible(bool visible);
+    virtual void setVisible(bool visible);
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 
-	virtual bool fromDomElement(QDomElement domElement);
-
+    virtual bool fromDomElement(QDomElement domElement);
 };
 
 #endif

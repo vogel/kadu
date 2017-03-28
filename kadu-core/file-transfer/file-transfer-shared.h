@@ -37,62 +37,59 @@ enum class FileTransferType;
 
 class KADUAPI FileTransferShared : public Shared
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(FileTransferShared)
+    Q_OBJECT
+    Q_DISABLE_COPY(FileTransferShared)
 
 public:
-	explicit FileTransferShared(const QUuid &uuid = QUuid{});
-	virtual ~FileTransferShared();
+    explicit FileTransferShared(const QUuid &uuid = QUuid{});
+    virtual ~FileTransferShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	void setError(QString error);
-	void setTransferStatus(FileTransferStatus transferStatus);
-	void setHandler(FileTransferHandler *handler);
+    void setError(QString error);
+    void setTransferStatus(FileTransferStatus transferStatus);
+    void setHandler(FileTransferHandler *handler);
 
-	KaduShared_PropertyDeclCRW(Contact, peer, Peer)
-	KaduShared_Property_M(const QString &, localFileName, LocalFileName)
-	KaduShared_Property_M(const QString &, remoteFileName, RemoteFileName)
-	KaduShared_Property_M(unsigned long, fileSize, FileSize)
-	KaduShared_Property_M(unsigned long, transferredSize, TransferredSize)
-	KaduShared_Property_M(FileTransferDirection, transferDirection, TransferDirection)
-	KaduShared_Property_M(FileTransferType, transferType, TransferType)
-	KaduShared_PropertyRead_M(QString, error)
-	KaduShared_PropertyRead_M(FileTransferStatus, transferStatus)
-	KaduShared_PropertyRead_M(FileTransferHandler *, handler)
+    KaduShared_PropertyDeclCRW(Contact, peer, Peer) KaduShared_Property_M(const QString &, localFileName, LocalFileName)
+        KaduShared_Property_M(const QString &, remoteFileName, RemoteFileName)
+            KaduShared_Property_M(unsigned long, fileSize, FileSize)
+                KaduShared_Property_M(unsigned long, transferredSize, TransferredSize)
+                    KaduShared_Property_M(FileTransferDirection, transferDirection, TransferDirection)
+                        KaduShared_Property_M(FileTransferType, transferType, TransferType)
+                            KaduShared_PropertyRead_M(QString, error)
+                                KaduShared_PropertyRead_M(FileTransferStatus, transferStatus)
+                                    KaduShared_PropertyRead_M(FileTransferHandler *, handler)
 
-signals:
-	void statusChanged();
+                                        signals : void statusChanged();
 
-	void updated();
+    void updated();
 
 protected:
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 private:
-	QPointer<ContactManager> m_contactManager;
-	QPointer<FileTransferManager> m_fileTransferManager;
+    QPointer<ContactManager> m_contactManager;
+    QPointer<FileTransferManager> m_fileTransferManager;
 
-	Contact *m_peer;
-	QString m_localFileName;
-	QString m_remoteFileName;
+    Contact *m_peer;
+    QString m_localFileName;
+    QString m_remoteFileName;
 
-	unsigned long m_fileSize;
-	unsigned long m_transferredSize;
+    unsigned long m_fileSize;
+    unsigned long m_transferredSize;
 
-	QString m_error;
-	FileTransferDirection m_transferDirection;
-	FileTransferStatus m_transferStatus;
-	FileTransferType m_transferType;
+    QString m_error;
+    FileTransferDirection m_transferDirection;
+    FileTransferStatus m_transferStatus;
+    FileTransferType m_transferType;
 
-	FileTransferHandler *m_handler;
+    FileTransferHandler *m_handler;
 
 private slots:
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-	INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setFileTransferManager(FileTransferManager *fileTransferManager);
 
-	void handlerDestroyed();
-
+    void handlerDestroyed();
 };

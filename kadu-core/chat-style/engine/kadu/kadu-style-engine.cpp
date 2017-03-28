@@ -29,8 +29,7 @@
 
 #include <QtCore/QFileInfo>
 
-KaduStyleEngine::KaduStyleEngine(QObject *parent) :
-		QObject{parent}
+KaduStyleEngine::KaduStyleEngine(QObject *parent) : QObject{parent}
 {
 }
 
@@ -40,34 +39,34 @@ KaduStyleEngine::~KaduStyleEngine()
 
 void KaduStyleEngine::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void KaduStyleEngine::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void KaduStyleEngine::init()
 {
-	syntaxList = QSharedPointer<SyntaxList>(m_injectedFactory->makeInjected<SyntaxList>("chat"));
+    syntaxList = QSharedPointer<SyntaxList>(m_injectedFactory->makeInjected<SyntaxList>("chat"));
 }
 
 QString KaduStyleEngine::isStyleValid(QString stylePath)
 {
-	QFileInfo fi;
-	fi.setFile(stylePath);
-	return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
+    QFileInfo fi;
+    fi.setFile(stylePath);
+    return fi.suffix() == "syntax" ? fi.completeBaseName() : QString();
 }
 
 std::unique_ptr<ChatStyleRendererFactory> KaduStyleEngine::createRendererFactory(const ChatStyle &chatStyle)
 {
-	QString chatSyntax = SyntaxList::readSyntax(m_pathsProvider, "chat", chatStyle.name(),
-		"<p style=\"background-color: #{backgroundColor};\">#{separator}"
-		  "<font color=\"#{fontColor}\"><kadu:header><b><font color=\"#{nickColor}\">%a</font> :: "
-			"#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"
-		"#{message}</font></p>"
-	);
+    QString chatSyntax = SyntaxList::readSyntax(
+        m_pathsProvider, "chat", chatStyle.name(),
+        "<p style=\"background-color: #{backgroundColor};\">#{separator}"
+        "<font color=\"#{fontColor}\"><kadu:header><b><font color=\"#{nickColor}\">%a</font> :: "
+        "#{receivedDate}[ / S #{sentDate}]</b><br /></kadu:header>"
+        "#{message}</font></p>");
 
-	return m_injectedFactory->makeUnique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
+    return m_injectedFactory->makeUnique<KaduStyleRendererFactory>(std::make_shared<KaduChatSyntax>(chatSyntax));
 }

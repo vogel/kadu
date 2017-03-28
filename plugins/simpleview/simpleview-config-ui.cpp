@@ -26,7 +26,7 @@
 
 void SimpleViewConfigUi::createDefaultConfiguration(Configuration *configuration)
 {
-	configuration->deprecatedApi()->addVariable("Look", "SimpleViewKeepSize", true);
-	configuration->deprecatedApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
-	configuration->deprecatedApi()->addVariable("Look", "SimpleViewBorderless", true);
+    configuration->deprecatedApi()->addVariable("Look", "SimpleViewKeepSize", true);
+    configuration->deprecatedApi()->addVariable("Look", "SimpleViewNoScrollBar", true);
+    configuration->deprecatedApi()->addVariable("Look", "SimpleViewBorderless", true);
 }

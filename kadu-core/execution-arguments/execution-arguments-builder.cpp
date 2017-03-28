@@ -21,49 +21,41 @@
 
 #include "execution-arguments/execution-arguments.h"
 
-ExecutionArgumentsBuilder::ExecutionArgumentsBuilder() :
-		m_queryVersion{false},
-		m_queryUsage{false}
+ExecutionArgumentsBuilder::ExecutionArgumentsBuilder() : m_queryVersion{false}, m_queryUsage{false}
 {
 }
 
-ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setQueryVersion(bool queryVersion)
+ExecutionArgumentsBuilder &ExecutionArgumentsBuilder::setQueryVersion(bool queryVersion)
 {
-	m_queryVersion = queryVersion;
-	return *this;
+    m_queryVersion = queryVersion;
+    return *this;
 }
 
-ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setQueryUsage(bool queryUsage)
+ExecutionArgumentsBuilder &ExecutionArgumentsBuilder::setQueryUsage(bool queryUsage)
 {
-	m_queryUsage = queryUsage;
-	return *this;
+    m_queryUsage = queryUsage;
+    return *this;
 }
 
-ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setProfileDirectory(QString profileDirectory)
+ExecutionArgumentsBuilder &ExecutionArgumentsBuilder::setProfileDirectory(QString profileDirectory)
 {
-	m_profileDirectory = std::move(profileDirectory);
-	return *this;
+    m_profileDirectory = std::move(profileDirectory);
+    return *this;
 }
 
-ExecutionArgumentsBuilder & ExecutionArgumentsBuilder::setOpenIds(QStringList openIds)
+ExecutionArgumentsBuilder &ExecutionArgumentsBuilder::setOpenIds(QStringList openIds)
 {
-	m_openIds = std::move(openIds);
-	return *this;
+    m_openIds = std::move(openIds);
+    return *this;
 }
 
 ExecutionArgumentsBuilder &ExecutionArgumentsBuilder::setOpenUuid(QString openUuid)
 {
-	m_openUuid = std::move(openUuid);
-	return *this;
+    m_openUuid = std::move(openUuid);
+    return *this;
 }
 
 ExecutionArguments ExecutionArgumentsBuilder::build() const
 {
-	return {
-		m_queryVersion,
-		m_queryUsage,
-		m_profileDirectory,
-		m_openIds,
-		m_openUuid
-	};
+    return {m_queryVersion, m_queryUsage, m_profileDirectory, m_openIds, m_openUuid};
 }

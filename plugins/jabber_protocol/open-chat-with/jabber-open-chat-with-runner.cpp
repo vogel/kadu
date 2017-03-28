@@ -27,9 +27,8 @@
 #include "buddies/buddy.h"
 #include "contacts/contact-manager.h"
 
-JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account, QObject *parent) :
-		QObject{parent},
-		m_account{account}
+JabberOpenChatWithRunner::JabberOpenChatWithRunner(Account account, QObject *parent)
+        : QObject{parent}, m_account{account}
 {
 }
 
@@ -39,33 +38,33 @@ JabberOpenChatWithRunner::~JabberOpenChatWithRunner()
 
 void JabberOpenChatWithRunner::setBuddyManager(BuddyManager *buddyManager)
 {
-	m_buddyManager = buddyManager;
+    m_buddyManager = buddyManager;
 }
 
 void JabberOpenChatWithRunner::setContactManager(ContactManager *contactManager)
 {
-	m_contactManager = contactManager;
+    m_contactManager = contactManager;
 }
 
 BuddyList JabberOpenChatWithRunner::matchingContacts(const QString &query)
 {
-	BuddyList matchedContacts;
-	QString queryCopy(query);
-	int pos = 0;
-	JabberIdValidator validator;
-	if (validator.validate(queryCopy, pos) != QValidator::Acceptable)
-		return matchedContacts;
+    BuddyList matchedContacts;
+    QString queryCopy(query);
+    int pos = 0;
+    JabberIdValidator validator;
+    if (validator.validate(queryCopy, pos) != QValidator::Acceptable)
+        return matchedContacts;
 
-	auto contact = m_contactManager->byId(m_account, query, ActionCreate);
-	auto buddy = m_buddyManager->byContact(contact, ActionCreate);
-	matchedContacts.append(buddy);
+    auto contact = m_contactManager->byId(m_account, query, ActionCreate);
+    auto buddy = m_buddyManager->byContact(contact, ActionCreate);
+    matchedContacts.append(buddy);
 
-	return matchedContacts;
+    return matchedContacts;
 }
 
 void JabberOpenChatWithRunner::setAccount(Account account)
 {
-	m_account = account;
+    m_account = account;
 }
 
 #include "moc_jabber-open-chat-with-runner.cpp"

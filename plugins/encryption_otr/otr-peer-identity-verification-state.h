@@ -22,30 +22,28 @@
 
 class OtrPeerIdentityVerificationState
 {
-
 public:
-	enum State
-	{
-		StateNotStarted,
-		StateInProgress,
-		StateFailed,
-		StateSucceeded
-	};
+    enum State
+    {
+        StateNotStarted,
+        StateInProgress,
+        StateFailed,
+        StateSucceeded
+    };
 
 private:
-	State MyState;
-	int PercentCompleted;
+    State MyState;
+    int PercentCompleted;
 
 public:
-	OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
-	OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
+    OtrPeerIdentityVerificationState(State state = StateNotStarted, int percentCompleted = 0);
+    OtrPeerIdentityVerificationState(const OtrPeerIdentityVerificationState &copyMe);
 
-	OtrPeerIdentityVerificationState & operator = (const OtrPeerIdentityVerificationState &copyMe);
+    OtrPeerIdentityVerificationState &operator=(const OtrPeerIdentityVerificationState &copyMe);
 
-	bool isFinished() const;
-	State state() const;
-	int percentCompleted() const;
-
+    bool isFinished() const;
+    State state() const;
+    int percentCompleted() const;
 };
 
-#endif // OTR_PEER_IDENTITY_VERIFICATION_STATE_H
+#endif   // OTR_PEER_IDENTITY_VERIFICATION_STATE_H

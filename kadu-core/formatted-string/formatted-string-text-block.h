@@ -41,75 +41,74 @@
  */
 class KADUAPI FormattedStringTextBlock : public FormattedString
 {
-	QString Content;
-	bool Bold;
-	bool Italic;
-	bool Underline;
-	QColor Color;
+    QString Content;
+    bool Bold;
+    bool Italic;
+    bool Underline;
+    QColor Color;
 
 public:
-	/**
-	 * @short Create new instance of FormattedStringTextBlock with given content and formatting settings.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param content content of text block
-	 * @param bold bold flag
-	 * @param italic italic flag
-	 * @param underline underline flag
-	 * @param color color flag
-	 */
-	FormattedStringTextBlock(const QString &content, bool bold, bool italic, bool underline, QColor color);
-	virtual ~FormattedStringTextBlock();
+    /**
+     * @short Create new instance of FormattedStringTextBlock with given content and formatting settings.
+     * @author Rafał 'Vogel' Malinowski
+     * @param content content of text block
+     * @param bold bold flag
+     * @param italic italic flag
+     * @param underline underline flag
+     * @param color color flag
+     */
+    FormattedStringTextBlock(const QString &content, bool bold, bool italic, bool underline, QColor color);
+    virtual ~FormattedStringTextBlock();
 
-	virtual bool operator == (const FormattedString &compareTo);
+    virtual bool operator==(const FormattedString &compareTo);
 
-	virtual void accept(FormattedStringVisitor *visitor) const;
+    virtual void accept(FormattedStringVisitor *visitor) const;
 
-	/**
-	 * @short Return true if content is empty.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return true if content is empty
-	 */
-	virtual bool isEmpty() const;
+    /**
+     * @short Return true if content is empty.
+     * @author Rafał 'Vogel' Malinowski
+     * @return true if content is empty
+     */
+    virtual bool isEmpty() const;
 
-	/**
-	 * @short Return provided content.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided content
-	 */
-	QString content() const;
+    /**
+     * @short Return provided content.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided content
+     */
+    QString content() const;
 
-	/**
-	 * @short Return provided bold flag.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided bold flag
-	 */
-	bool bold() const;
+    /**
+     * @short Return provided bold flag.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided bold flag
+     */
+    bool bold() const;
 
-	/**
-	 * @short Return provided italic flag.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided italic flag
-	 */
-	bool italic() const;
+    /**
+     * @short Return provided italic flag.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided italic flag
+     */
+    bool italic() const;
 
-	/**
-	 * @short Return provided underline flag.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided underline flag
-	 */
-	bool underline() const;
+    /**
+     * @short Return provided underline flag.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided underline flag
+     */
+    bool underline() const;
 
-	/**
-	 * @short Return provided color.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return provided color
-	 */
-	QColor color() const;
-
+    /**
+     * @short Return provided color.
+     * @author Rafał 'Vogel' Malinowski
+     * @return provided color
+     */
+    QColor color() const;
 };
 
 /**
  * @}
  */
 
-#endif // FORMATTED_STRING_TEXT_BLOCK_H
+#endif   // FORMATTED_STRING_TEXT_BLOCK_H

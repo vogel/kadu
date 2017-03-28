@@ -24,8 +24,8 @@
 
 #include "handler-rect-item.h"
 
-HandlerRectItem::HandlerRectItem(HandlerType type, int size, QGraphicsItem *parent) :
-		QGraphicsWidget(parent), Type(type), Size(size), IsMouseButtonPressed(false)
+HandlerRectItem::HandlerRectItem(HandlerType type, int size, QGraphicsItem *parent)
+        : QGraphicsWidget(parent), Type(type), Size(size), IsMouseButtonPressed(false)
 {
 }
 
@@ -36,56 +36,56 @@ HandlerRectItem::~HandlerRectItem()
 void HandlerRectItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     if (Qt::LeftButton != event->button())
-	{
-		event->ignore();
-		return;
-	}
+    {
+        event->ignore();
+        return;
+    }
 
-	grabMouse();
+    grabMouse();
 
-	IsMouseButtonPressed = true;
-	event->accept();
+    IsMouseButtonPressed = true;
+    event->accept();
 }
 
 void HandlerRectItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
-	if ((Qt::LeftButton != event->button()) || !IsMouseButtonPressed)
-	{
-		event->ignore();
-		return;
-	}
+    if ((Qt::LeftButton != event->button()) || !IsMouseButtonPressed)
+    {
+        event->ignore();
+        return;
+    }
 
-	ungrabMouse();
+    ungrabMouse();
 
-	IsMouseButtonPressed = false;
-	event->accept();
+    IsMouseButtonPressed = false;
+    event->accept();
 }
 
 void HandlerRectItem::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
 {
     if (!IsMouseButtonPressed)
-	{
-		event->ignore();
-		return;
-	}
+    {
+        event->ignore();
+        return;
+    }
 
-	emit movedTo(Type, static_cast<int>(event->scenePos().x()), static_cast<int>(event->scenePos().y()));
+    emit movedTo(Type, static_cast<int>(event->scenePos().x()), static_cast<int>(event->scenePos().y()));
 }
 
 QRectF HandlerRectItem::boundingRect() const
 {
-	return QRectF(0, 0, Size, Size);
+    return QRectF(0, 0, Size, Size);
 }
 
 void HandlerRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-	Q_UNUSED(option)
-	Q_UNUSED(widget)
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
 
-	painter->fillRect(QRect(0, 0, Size, Size), Qt::white);
+    painter->fillRect(QRect(0, 0, Size, Size), Qt::white);
 
-	painter->setPen(Qt::black);
-	painter->drawRect(QRect(0, 0, Size, Size));
+    painter->setPen(Qt::black);
+    painter->drawRect(QRect(0, 0, Size, Size));
 }
 
 #include "moc_handler-rect-item.cpp"

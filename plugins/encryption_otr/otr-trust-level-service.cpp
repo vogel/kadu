@@ -27,9 +27,9 @@
 
 void OtrTrustLevelService::wrapperOtrUpdateContextList(void *data)
 {
-	OtrOpData *opData = static_cast<OtrOpData *>(data);
-	if (opData->trustLevelService())
-		opData->trustLevelService()->updateTrustLevels();
+    OtrOpData *opData = static_cast<OtrOpData *>(data);
+    if (opData->trustLevelService())
+        opData->trustLevelService()->updateTrustLevels();
 }
 
 OtrTrustLevelService::OtrTrustLevelService()
@@ -42,62 +42,62 @@ OtrTrustLevelService::~OtrTrustLevelService()
 
 void OtrTrustLevelService::setContextConverter(OtrContextConverter *contextConverter)
 {
-	ContextConverter = contextConverter;
+    ContextConverter = contextConverter;
 }
 
 void OtrTrustLevelService::setUserStateService(OtrUserStateService *userStateService)
 {
-	UserStateService = userStateService;
+    UserStateService = userStateService;
 }
 
 void OtrTrustLevelService::storeTrustLevelToContact(const Contact &contact, TrustLevel level) const
 {
-	contact.addProperty("otr:trustLevel", (int)level, CustomProperties::NonStorable);
+    contact.addProperty("otr:trustLevel", (int)level, CustomProperties::NonStorable);
 }
 
 OtrTrustLevelService::TrustLevel OtrTrustLevelService::loadTrustLevelFromContact(const Contact &contact) const
 {
-	return (TrustLevel)contact.property("otr:trustLevel", QVariant(TrustLevelNotPrivate)).toInt();
+    return (TrustLevel)contact.property("otr:trustLevel", QVariant(TrustLevelNotPrivate)).toInt();
 }
 
 OtrTrustLevelService::TrustLevel OtrTrustLevelService::trustLevelFromContext(ConnContext *context) const
 {
-	if (!context)
-		return TrustLevelNotPrivate;
+    if (!context)
+        return TrustLevelNotPrivate;
 
-	if (context->msgstate == OTRL_MSGSTATE_FINISHED)
-		return TrustLevelNotPrivate;
+    if (context->msgstate == OTRL_MSGSTATE_FINISHED)
+        return TrustLevelNotPrivate;
 
-	if (context->msgstate != OTRL_MSGSTATE_ENCRYPTED)
-		return TrustLevelNotPrivate;
+    if (context->msgstate != OTRL_MSGSTATE_ENCRYPTED)
+        return TrustLevelNotPrivate;
 
-	if (!context->active_fingerprint)
-		return TrustLevelUnverified;
+    if (!context->active_fingerprint)
+        return TrustLevelUnverified;
 
-	if (!context->active_fingerprint->trust)
-		return TrustLevelUnverified;
+    if (!context->active_fingerprint->trust)
+        return TrustLevelUnverified;
 
-	if (context->active_fingerprint->trust[0] == '\0')
-		return TrustLevelUnverified;
+    if (context->active_fingerprint->trust[0] == '\0')
+        return TrustLevelUnverified;
 
-	return TrustLevelPrivate;
+    return TrustLevelPrivate;
 }
 
 void OtrTrustLevelService::updateTrustLevels()
 {
-	if (!ContextConverter || !UserStateService)
-		return;
+    if (!ContextConverter || !UserStateService)
+        return;
 
-	ConnContext *context = UserStateService->userState()->context_root;
-	while (context)
-	{
-		Contact contact = ContextConverter->connectionContextToContact(context);
-		storeTrustLevelToContact(contact, trustLevelFromContext(context));
+    ConnContext *context = UserStateService->userState()->context_root;
+    while (context)
+    {
+        Contact contact = ContextConverter->connectionContextToContact(context);
+        storeTrustLevelToContact(contact, trustLevelFromContext(context));
 
-		context = context->next;
-	}
+        context = context->next;
+    }
 
-	emit trustLevelsUpdated();
+    emit trustLevelsUpdated();
 }
 
 #include "moc_otr-trust-level-service.cpp"

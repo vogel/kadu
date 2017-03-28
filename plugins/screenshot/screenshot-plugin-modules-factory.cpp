@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-ScreenshotPluginModulesFactory::ScreenshotPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+ScreenshotPluginModulesFactory::ScreenshotPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ ScreenshotPluginModulesFactory::~ScreenshotPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> ScreenshotPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<ScreenshotModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<ScreenshotModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_screenshot-plugin-modules-factory.cpp"

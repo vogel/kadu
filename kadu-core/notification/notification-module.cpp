@@ -31,23 +31,23 @@
 #include "notification/notifier-repository.h"
 #include "notification/notify-configuration-importer.h"
 #include "notification/notify-configuration-ui-handler.h"
-#include "notification/silent-mode-service.h" 
+#include "notification/silent-mode-service.h"
 
 NotificationModule::NotificationModule()
 {
-	add_type<AccountEventListener>();
-	add_type<ChatEventListener>();
-	add_type<FullScreenService>();
-	add_type<GroupEventListener>();
-	add_type<NotificationCallbackRepository>();
-	add_type<NotificationConfiguration>();
-	add_type<NotificationDispatcher>();
-	add_type<NotificationEventRepository>();
-	add_type<NotificationService>();
-	add_type<NotifierRepository>();
-	add_type<NotifyConfigurationImporter>();
-	add_type<NotifyConfigurationUiHandler>();
-	add_type<SilentModeService>();
+    add_type<AccountEventListener>();
+    add_type<ChatEventListener>();
+    add_type<FullScreenService>();
+    add_type<GroupEventListener>();
+    add_type<NotificationCallbackRepository>();
+    add_type<NotificationConfiguration>();
+    add_type<NotificationDispatcher>();
+    add_type<NotificationEventRepository>();
+    add_type<NotificationService>();
+    add_type<NotifierRepository>();
+    add_type<NotifyConfigurationImporter>();
+    add_type<NotifyConfigurationUiHandler>();
+    add_type<SilentModeService>();
 }
 
 NotificationModule::~NotificationModule()

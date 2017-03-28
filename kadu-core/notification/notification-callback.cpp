@@ -25,39 +25,38 @@ NotificationCallback::NotificationCallback()
 {
 }
 
-NotificationCallback::NotificationCallback(QString name, QString title, std::function<void(const Notification &)> callback) :
-		m_name{std::move(name)},
-		m_title{std::move(title)},
-		m_callback{std::move(callback)}
+NotificationCallback::NotificationCallback(
+    QString name, QString title, std::function<void(const Notification &)> callback)
+        : m_name{std::move(name)}, m_title{std::move(title)}, m_callback{std::move(callback)}
 {
 }
 
 QString NotificationCallback::name() const
 {
-	return m_name;
+    return m_name;
 }
 
 QString NotificationCallback::title() const
 {
-	return m_title;
+    return m_title;
 }
 
 std::function<void(const Notification &)> NotificationCallback::callback() const
 {
-	return m_callback;
+    return m_callback;
 }
 
 void NotificationCallback::call(const Notification &notification) const
 {
-	if (m_callback)
-		m_callback(notification);
+    if (m_callback)
+        m_callback(notification);
 }
 
-bool operator == (const NotificationCallback &x, const NotificationCallback &y)
+bool operator==(const NotificationCallback &x, const NotificationCallback &y)
 {
-	if (x.name() != y.name())
-		return false;
-	if (x.title() != y.title())
-		return false;
-	return true;
+    if (x.name() != y.name())
+        return false;
+    if (x.title() != y.title())
+        return false;
+    return true;
 }

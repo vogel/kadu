@@ -27,12 +27,12 @@ class AccountConfigurationWidget;
 
 class AccountConfigurationWidgetFactory
 {
-
 public:
-	virtual ~AccountConfigurationWidgetFactory() {}
+    virtual ~AccountConfigurationWidgetFactory()
+    {
+    }
 
-	virtual AccountConfigurationWidget * createWidget(const Account &account, QWidget *parent) = 0;
-
+    virtual AccountConfigurationWidget *createWidget(const Account &account, QWidget *parent) = 0;
 };
 
-#endif // ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H
+#endif   // ACCOUNT_CONFIGURATION_WIDGET_FACTORY_H

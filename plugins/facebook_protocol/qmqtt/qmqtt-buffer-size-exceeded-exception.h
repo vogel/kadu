@@ -23,8 +23,9 @@
 
 class QMqttBufferSizeExceededException : public QMqttException
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Receiving packet would exceed message buffer"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Receiving packet would exceed message buffer";
+    };
 };

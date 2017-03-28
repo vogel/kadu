@@ -22,8 +22,7 @@
 
 #include "dom-text-regexp-visitor.h"
 
-DomTextRegexpVisitor::DomTextRegexpVisitor(QRegExp regExp) :
-		RegExp(regExp)
+DomTextRegexpVisitor::DomTextRegexpVisitor(QRegExp regExp) : RegExp(regExp)
 {
 }
 
@@ -33,41 +32,41 @@ DomTextRegexpVisitor::~DomTextRegexpVisitor()
 
 QDomText DomTextRegexpVisitor::expandFirstMatch(QDomText textNode) const
 {
-	auto text = textNode.nodeValue();
-	auto index = RegExp.indexIn(text);
-	if (index < 0)
-		return QDomText();
+    auto text = textNode.nodeValue();
+    auto index = RegExp.indexIn(text);
+    if (index < 0)
+        return QDomText();
 
-	auto length = RegExp.matchedLength();
+    auto length = RegExp.matchedLength();
 
-	auto afterMatch = textNode.splitText(index + length);
-	textNode.setNodeValue(textNode.nodeValue().mid(0, index));
+    auto afterMatch = textNode.splitText(index + length);
+    textNode.setNodeValue(textNode.nodeValue().mid(0, index));
 
-	auto newNodes = matchToDomNodes(textNode.ownerDocument(), RegExp);
-	for (auto newNode : newNodes)
-		textNode.parentNode().insertBefore(newNode, afterMatch);
+    auto newNodes = matchToDomNodes(textNode.ownerDocument(), RegExp);
+    for (auto newNode : newNodes)
+        textNode.parentNode().insertBefore(newNode, afterMatch);
 
-	return afterMatch;
+    return afterMatch;
 }
 
 QDomNode DomTextRegexpVisitor::visit(QDomText textNode) const
 {
-	auto result = textNode;
-	while (!textNode.isNull())
-	{
-		result = textNode;
-		textNode = expandFirstMatch(textNode);
-	}
+    auto result = textNode;
+    while (!textNode.isNull())
+    {
+        result = textNode;
+        textNode = expandFirstMatch(textNode);
+    }
 
-	return result;
+    return result;
 }
 
 QDomNode DomTextRegexpVisitor::beginVisit(QDomElement elementNode) const
 {
-	return elementNode;
+    return elementNode;
 }
 
 QDomNode DomTextRegexpVisitor::endVisit(QDomElement elementNode) const
 {
-	return elementNode.nextSibling();
+    return elementNode.nextSibling();
 }

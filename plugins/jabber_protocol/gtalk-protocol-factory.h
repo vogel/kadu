@@ -31,40 +31,45 @@ class JabberProtocolMenuManager;
 
 class GTalkProtocolFactory : public ProtocolFactory
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(GTalkProtocolFactory)
+    Q_OBJECT
+    Q_DISABLE_COPY(GTalkProtocolFactory)
 
 public:
-	Q_INVOKABLE explicit GTalkProtocolFactory(QObject *parent = nullptr);
-	virtual ~GTalkProtocolFactory();
+    Q_INVOKABLE explicit GTalkProtocolFactory(QObject *parent = nullptr);
+    virtual ~GTalkProtocolFactory();
 
-	virtual Protocol * createProtocolHandler(Account account) override;
-	virtual AccountAddWidget * newAddAccountWidget(bool showButtons, QWidget *parent) override;
-	virtual AccountCreateWidget * newCreateAccountWidget(bool showButtons, QWidget *parent) override;
-	virtual AccountEditWidget* newEditAccountWidget(Account, QWidget*) override;
-	virtual QWidget * newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
-    virtual ProtocolMenuManager * protocolMenuManager() override;
-	virtual QList<StatusType> supportedStatusTypes() override;
-	virtual Status adaptStatus(Status) const override;
-	virtual QString idLabel() override;
-	virtual QValidator::State validateId(QString id) override;
-	virtual bool canRegister() override;
+    virtual Protocol *createProtocolHandler(Account account) override;
+    virtual AccountAddWidget *newAddAccountWidget(bool showButtons, QWidget *parent) override;
+    virtual AccountCreateWidget *newCreateAccountWidget(bool showButtons, QWidget *parent) override;
+    virtual AccountEditWidget *newEditAccountWidget(Account, QWidget *) override;
+    virtual QWidget *newContactPersonalInfoWidget(Contact contact, QWidget *parent = nullptr) override;
+    virtual ProtocolMenuManager *protocolMenuManager() override;
+    virtual QList<StatusType> supportedStatusTypes() override;
+    virtual Status adaptStatus(Status) const override;
+    virtual QString idLabel() override;
+    virtual QValidator::State validateId(QString id) override;
+    virtual bool canRegister() override;
 
-	virtual QString name() override { return "gmail/google talk"; }
-	virtual QString displayName() override { return "Gmail/Google Talk"; }
+    virtual QString name() override
+    {
+        return "gmail/google talk";
+    }
+    virtual QString displayName() override
+    {
+        return "Gmail/Google Talk";
+    }
 
-	virtual KaduIcon icon() override;
+    virtual KaduIcon icon() override;
 
 private:
-	QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
+    QPointer<FacebookDepreceatedMessage> m_facebookDepreceatedMessage;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<JabberProtocolMenuManager> m_jabberProtocolMenuManager;
 
-	QList<StatusType> m_supportedStatusTypes;
+    QList<StatusType> m_supportedStatusTypes;
 
 private slots:
-	INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
-
+    INJEQT_SET void setFacebookDepreceatedMessage(FacebookDepreceatedMessage *facebookDepreceatedMessage);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setJabberProtocolMenuManager(JabberProtocolMenuManager *jabberProtocolMenuManager);
 };

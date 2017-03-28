@@ -26,32 +26,30 @@ class AccountShared;
 
 class GaduAccountData final
 {
-
 public:
-	explicit GaduAccountData(AccountShared *data);
-	~GaduAccountData();
+    explicit GaduAccountData(AccountShared *data);
+    ~GaduAccountData();
 
-	UinType uin();
+    UinType uin();
 
-	bool receiveImagesDuringInvisibility() const;
-	void setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility) const;
+    bool receiveImagesDuringInvisibility() const;
+    void setReceiveImagesDuringInvisibility(bool receiveImagesDuringInvisibility) const;
 
-	bool chatImageSizeWarning() const;
-	void setChatImageSizeWarning(bool chatImageSizeWarning) const;
+    bool chatImageSizeWarning() const;
+    void setChatImageSizeWarning(bool chatImageSizeWarning) const;
 
-	bool initialRosterImport() const;
-	void setInitialRosterImport(bool initialRosterImport) const;
+    bool initialRosterImport() const;
+    void setInitialRosterImport(bool initialRosterImport) const;
 
-	bool sendTypingNotification() const;
-	void setSendTypingNotification(bool sendTypingNotification) const;
+    bool sendTypingNotification() const;
+    void setSendTypingNotification(bool sendTypingNotification) const;
 
-	int userlistVersion() const;
-	void setUserlistVersion(int userlistVersion) const;
+    int userlistVersion() const;
+    void setUserlistVersion(int userlistVersion) const;
 
-	bool receiveSpam() const;
-	void setReceiveSpam(bool receiveSpam) const;
+    bool receiveSpam() const;
+    void setReceiveSpam(bool receiveSpam) const;
 
 private:
-	AccountShared *m_data;
-
+    AccountShared *m_data;
 };

@@ -25,9 +25,9 @@
 
 #include <QtCore/QSharedData>
 
+#include "exports.h"
 #include "misc/change-notifier.h"
 #include "storage/uuid-storable-object.h"
-#include "exports.h"
 
 /**
  * @addtogroup Storage
@@ -35,14 +35,25 @@
  */
 
 #define KaduShared_PropertyRead_M(type, name) \
-	type name() { ensureLoaded(); return m_##name; }
+    type name()                               \
+    {                                         \
+        ensureLoaded();                       \
+        return m_##name;                      \
+    }
 
 #define KaduShared_PropertyWrite_M(type, name, capitalized_name) \
-	void set##capitalized_name(type name) { ensureLoaded(); if (m_##name != name) { m_##name = name; changeNotifier().notify(); } }
+    void set##capitalized_name(type name)                        \
+    {                                                            \
+        ensureLoaded();                                          \
+        if (m_##name != name)                                    \
+        {                                                        \
+            m_##name = name;                                     \
+            changeNotifier().notify();                           \
+        }                                                        \
+    }
 
 #define KaduShared_Property_M(type, name, capitalized_name) \
-	KaduShared_PropertyRead_M(type, name) \
-	KaduShared_PropertyWrite_M(type, name, capitalized_name)
+    KaduShared_PropertyRead_M(type, name) KaduShared_PropertyWrite_M(type, name, capitalized_name)
 /**
  * @author Rafal 'Vogel' Malinowski
  * @short Defines getter for given property of StorableObject.
@@ -55,7 +66,11 @@
  * fully loaded before this method returns. Getter is called name.
  */
 #define KaduShared_PropertyRead(type, name, capitalized_name) \
-	type name() { ensureLoaded(); return capitalized_name; }
+    type name()                                               \
+    {                                                         \
+        ensureLoaded();                                       \
+        return capitalized_name;                              \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -70,7 +85,15 @@
  * Calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyWrite(type, name, capitalized_name) \
-	void set##capitalized_name(type name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier().notify(); } }
+    void set##capitalized_name(type name)                      \
+    {                                                          \
+        ensureLoaded();                                        \
+        if (capitalized_name != name)                          \
+        {                                                      \
+            capitalized_name = name;                           \
+            changeNotifier().notify();                         \
+        }                                                      \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -85,9 +108,7 @@
  * Setter calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_Property(type, name, capitalized_name) \
-	KaduShared_PropertyRead(type, name, capitalized_name) \
-	KaduShared_PropertyWrite(type, name, capitalized_name)
-
+    KaduShared_PropertyRead(type, name, capitalized_name) KaduShared_PropertyWrite(type, name, capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -99,7 +120,11 @@
  * fully loaded before this method returns. Getter is called is##capitalized_name.
  */
 #define KaduShared_PropertyBoolRead(capitalized_name) \
-	bool is##capitalized_name() { ensureLoaded(); return capitalized_name; }
+    bool is##capitalized_name()                       \
+    {                                                 \
+        ensureLoaded();                               \
+        return capitalized_name;                      \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -112,7 +137,15 @@
  * Calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyBoolWrite(capitalized_name) \
-	void set##capitalized_name(bool name) { ensureLoaded(); if (capitalized_name != name) { capitalized_name = name; changeNotifier().notify(); } }
+    void set##capitalized_name(bool name)              \
+    {                                                  \
+        ensureLoaded();                                \
+        if (capitalized_name != name)                  \
+        {                                              \
+            capitalized_name = name;                   \
+            changeNotifier().notify();                 \
+        }                                              \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -121,12 +154,12 @@
  *
  * Defines both getter and setter for given property of @link StorableObject @endlink. Value of property will
  * always be valid, because these methods calls @link<StorableObject::ensureLoaded @endLink, so object is always
- * fully loaded before this method returns. Getter is called is##capitlized_name, setter is called set##capitalized_name).
+ * fully loaded before this method returns. Getter is called is##capitlized_name, setter is called
+ * set##capitalized_name).
  * Setter calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyBool(capitalized_name) \
-	KaduShared_PropertyBoolRead(capitalized_name) \
-	KaduShared_PropertyBoolWrite(capitalized_name)
+    KaduShared_PropertyBoolRead(capitalized_name) KaduShared_PropertyBoolWrite(capitalized_name)
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -136,8 +169,7 @@
  *
  * Declares getter for given property of @link StorableObject @endlink.
  */
-#define KaduShared_PropertyReadDecl(type, name) \
-	type name();
+#define KaduShared_PropertyReadDecl(type, name) type name();
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -148,8 +180,7 @@
  *
  * Declares setter for given property of @link StorableObject @endlink. Setter is called set##capitalized_name).
  */
-#define KaduShared_PropertyWriteDecl(type, name, capitalized_name) \
-	void set##capitalized_name(type name);
+#define KaduShared_PropertyWriteDecl(type, name, capitalized_name) void set##capitalized_name(type name);
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -163,8 +194,7 @@
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduShared_PropertyDeclCRW(type, name, capitalized_name) \
-	KaduShared_PropertyReadDecl(type, name) \
-	KaduShared_PropertyWriteDecl(const type &, name, capitalized_name)
+    KaduShared_PropertyReadDecl(type, name) KaduShared_PropertyWriteDecl(const type &, name, capitalized_name)
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -179,7 +209,11 @@
  * fully loaded before this method returns. Getter is called name.
  */
 #define KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name) \
-	type class_name::name() { ensureLoaded(); return *capitalized_name; }
+    type class_name::name()                                                     \
+    {                                                                           \
+        ensureLoaded();                                                         \
+        return *capitalized_name;                                               \
+    }
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -195,7 +229,15 @@
  * Calls @link changeNotifier().notify @endlink method after data is changed.
  */
 #define KaduShared_PropertyPtrWriteDef(class_name, type, name, capitalized_name) \
-	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*capitalized_name != name) { *capitalized_name = name; changeNotifier().notify(); } }
+    void class_name::set##capitalized_name(type name)                            \
+    {                                                                            \
+        ensureLoaded();                                                          \
+        if (*capitalized_name != name)                                           \
+        {                                                                        \
+            *capitalized_name = name;                                            \
+            changeNotifier().notify();                                           \
+        }                                                                        \
+    }
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -212,18 +254,30 @@
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduShared_PropertyPtrDefCRW(class_name, type, name, capitalized_name) \
-	KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name) \
-	KaduShared_PropertyPtrWriteDef(class_name, const type &, name, capitalized_name)
+    KaduShared_PropertyPtrReadDef(class_name, type, name, capitalized_name)    \
+        KaduShared_PropertyPtrWriteDef(class_name, const type &, name, capitalized_name)
 
 #define KaduShared_PropertyPtrReadDef_M(class_name, type, name) \
-	type class_name::name() { ensureLoaded(); return *m_##name; }
+    type class_name::name()                                     \
+    {                                                           \
+        ensureLoaded();                                         \
+        return *m_##name;                                       \
+    }
 
 #define KaduShared_PropertyPtrWriteDef_M(class_name, type, name, capitalized_name) \
-	void class_name::set##capitalized_name(type name) { ensureLoaded(); if (*m_##name != name) { *m_##name = name; changeNotifier().notify(); } }
+    void class_name::set##capitalized_name(type name)                              \
+    {                                                                              \
+        ensureLoaded();                                                            \
+        if (*m_##name != name)                                                     \
+        {                                                                          \
+            *m_##name = name;                                                      \
+            changeNotifier().notify();                                             \
+        }                                                                          \
+    }
 
 #define KaduShared_PropertyPtrDefCRW_M(class_name, type, name, capitalized_name) \
-	KaduShared_PropertyPtrReadDef_M(class_name, type, name) \
-	KaduShared_PropertyPtrWriteDef_M(class_name, const type &, name, capitalized_name)
+    KaduShared_PropertyPtrReadDef_M(class_name, type, name)                      \
+        KaduShared_PropertyPtrWriteDef_M(class_name, const type &, name, capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -247,33 +301,32 @@
  */
 class KADUAPI Shared : public UuidStorableObject, public QSharedData
 {
-	ChangeNotifier MyChangeNotifier;
+    ChangeNotifier MyChangeNotifier;
 
 protected:
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 public:
-	explicit Shared(const QUuid &uuid, QObject *parent = nullptr);
-	virtual ~Shared();
+    explicit Shared(const QUuid &uuid, QObject *parent = nullptr);
+    virtual ~Shared();
 
-	void loadStub();
+    void loadStub();
 
-	virtual void aboutToBeRemoved();
+    virtual void aboutToBeRemoved();
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return ChangeNotifier for this object.
-	 * @return ChangeNotifier instance for this object
-	 *
-	 * This method never returns null value.
-	 */
-	ChangeNotifier & changeNotifier();
-
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Return ChangeNotifier for this object.
+     * @return ChangeNotifier instance for this object
+     *
+     * This method never returns null value.
+     */
+    ChangeNotifier &changeNotifier();
 };
 
 /**
  * @}
  */
 
-#endif // SHARED_H
+#endif   // SHARED_H

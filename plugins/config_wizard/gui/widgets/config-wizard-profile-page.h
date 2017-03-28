@@ -33,30 +33,29 @@ class QLineEdit;
 
 class ConfigWizardProfilePage : public ConfigWizardPage
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QComboBox *LanguagesCombo;
-	QLineEdit *NickNameEdit;
+    QComboBox *LanguagesCombo;
+    QLineEdit *NickNameEdit;
 
-	void createGui();
-	void setLanguages();
+    void createGui();
+    void setLanguages();
 
 public:
-	explicit ConfigWizardProfilePage(QWidget *parent = nullptr);
-	virtual ~ConfigWizardProfilePage();
+    explicit ConfigWizardProfilePage(QWidget *parent = nullptr);
+    virtual ~ConfigWizardProfilePage();
 
-	virtual void initializePage();
-	virtual void acceptPage();
+    virtual void initializePage();
+    virtual void acceptPage();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<LanguagesManager> m_languagesManager;
-	QPointer<Myself> m_myself;
+    QPointer<Configuration> m_configuration;
+    QPointer<LanguagesManager> m_languagesManager;
+    QPointer<Myself> m_myself;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setLanguagesManager(LanguagesManager *languagesManager);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setLanguagesManager(LanguagesManager *languagesManager);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_INIT void init();
 };

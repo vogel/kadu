@@ -24,8 +24,8 @@
 #include <injeqt/injeqt.h>
 
 extern "C" {
-#	include <libotr/proto.h>
-#	include <libotr/message.h>
+#include <libotr/proto.h>
+#include <libotr/message.h>
 }
 
 class ChatManager;
@@ -35,27 +35,29 @@ class Contact;
 
 class OtrMessageEventService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	static void wrapperOtrHandleMessageEvent(void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error);
+    static void wrapperOtrHandleMessageEvent(
+        void *data, OtrlMessageEvent event, ConnContext *context, const char *message, gcry_error_t error);
 
-	Q_INVOKABLE OtrMessageEventService();
-	virtual ~OtrMessageEventService();
+    Q_INVOKABLE OtrMessageEventService();
+    virtual ~OtrMessageEventService();
 
-	void handleMessageEvent(const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
+    void handleMessageEvent(
+        const Contact &contact, OtrlMessageEvent event, const QString &message, gcry_error_t errorCode) const;
 
 private:
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
 
-	QString messageString(OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
-	QString gpgErrorString(gcry_error_t errorCode) const;
+    QString messageString(
+        OtrlMessageEvent event, const QString &message, gcry_error_t errorCode, const QString &peerDisplay) const;
+    QString gpgErrorString(gcry_error_t errorCode) const;
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
 };

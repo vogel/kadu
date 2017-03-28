@@ -25,15 +25,15 @@
 #include "actions/action.h"
 #include "buddies/buddy-set.h"
 
-SendSmsAction::SendSmsAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+SendSmsAction::SendSmsAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"phone"});
-	setName(QStringLiteral("sendSmsAction"));
-	setShortcut("kadu_sendsms");
-	setText(tr("Send SMS..."));
-	setType(ActionDescription::TypeGlobal);
+    setIcon(KaduIcon{"phone"});
+    setName(QStringLiteral("sendSmsAction"));
+    setShortcut("kadu_sendsms");
+    setText(tr("Send SMS..."));
+    setType(ActionDescription::TypeGlobal);
 }
 
 SendSmsAction::~SendSmsAction()
@@ -42,16 +42,16 @@ SendSmsAction::~SendSmsAction()
 
 void SendSmsAction::setSmsActions(SmsActions *smsActions)
 {
-	m_smsActions = smsActions;
+    m_smsActions = smsActions;
 }
 
 void SendSmsAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	m_smsActions->newSms(action->context()->buddies().toBuddy().mobile());
+    m_smsActions->newSms(action->context()->buddies().toBuddy().mobile());
 }
 
 #include "moc_send-sms-action.cpp"

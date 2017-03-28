@@ -45,46 +45,45 @@ class TalkableTreeView;
 
 class SimpleView : public QObject, private ConfigurationAwareObject, CompositingAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit SimpleView(QObject *parent = nullptr);
-	virtual ~SimpleView();
+    Q_INVOKABLE explicit SimpleView(QObject *parent = nullptr);
+    virtual ~SimpleView();
 
 public slots:
-	void simpleViewToggle(bool activate);
+    void simpleViewToggle(bool activate);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<KaduWindowService> m_kaduWindowService;
+    QPointer<Configuration> m_configuration;
+    QPointer<DockingMenuActionRepository> m_dockingMenuActionRepository;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<KaduWindowService> m_kaduWindowService;
 
-	bool KeepSize;
-	bool NoScrollBar;
-	bool SimpleViewActive;
-	bool Borderless;
+    bool KeepSize;
+    bool NoScrollBar;
+    bool SimpleViewActive;
+    bool Borderless;
 
-	QRect DiffRect;
-	QString BuddiesListViewStyle;
+    QRect DiffRect;
+    QString BuddiesListViewStyle;
 
-	QAction *DockAction;
-	KaduWindow *KaduWindowHandle;
-	MainWindow *MainWindowHandle;
-	GroupTabBar *GroupTabBarHandle;
-	StatusButtons *StatusButtonsHandle;
-	TalkableTreeView *TalkableTreeViewHandle;
+    QAction *DockAction;
+    KaduWindow *KaduWindowHandle;
+    MainWindow *MainWindowHandle;
+    GroupTabBar *GroupTabBarHandle;
+    StatusButtons *StatusButtonsHandle;
+    TalkableTreeView *TalkableTreeViewHandle;
 
-	virtual void compositingEnabled();
-	virtual void compositingDisabled();
-	virtual void configurationUpdated();
+    virtual void compositingEnabled();
+    virtual void compositingDisabled();
+    virtual void configurationUpdated();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setDockingMenuActionRepository(DockingMenuActionRepository *dockingMenuActionRepository);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setKaduWindowService(KaduWindowService *kaduWindowService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

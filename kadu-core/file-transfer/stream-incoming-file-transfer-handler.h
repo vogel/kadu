@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "file-transfer/file-transfer-handler.h"
 #include "exports.h"
+#include "file-transfer/file-transfer-handler.h"
 
 #include <QtCore/QObject>
 
@@ -28,13 +28,12 @@ class QIODevice;
 
 class KADUAPI StreamIncomingFileTransferHandler : public FileTransferHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit StreamIncomingFileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
-	virtual ~StreamIncomingFileTransferHandler();
+    explicit StreamIncomingFileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
+    virtual ~StreamIncomingFileTransferHandler();
 
-	virtual void accept(QIODevice *destination) = 0;
-	virtual void reject() = 0;
-
+    virtual void accept(QIODevice *destination) = 0;
+    virtual void reject() = 0;
 };

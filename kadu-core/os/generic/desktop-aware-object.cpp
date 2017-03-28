@@ -30,17 +30,16 @@ QList<DesktopAwareObject *> DesktopAwareObject::Objects;
 
 DesktopAwareObjectHelper *DesktopAwareObject::Helper = 0;
 
-DesktopAwareObject::DesktopAwareObject(QWidget *widget) :
-		Widget(widget)
+DesktopAwareObject::DesktopAwareObject(QWidget *widget) : Widget(widget)
 {
-	Objects.append(this);
-	if (!Helper)
-		Helper = new DesktopAwareObjectHelper();
+    Objects.append(this);
+    if (!Helper)
+        Helper = new DesktopAwareObjectHelper();
 }
 
 DesktopAwareObject::~DesktopAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }
 
 /**
@@ -52,8 +51,8 @@ DesktopAwareObject::~DesktopAwareObject()
  */
 void DesktopAwareObject::notifyDesktopModified()
 {
-	foreach (DesktopAwareObject *object, Objects)
-		object->desktopModified();
+    foreach (DesktopAwareObject *object, Objects)
+        object->desktopModified();
 }
 
 /**
@@ -64,26 +63,26 @@ void DesktopAwareObject::notifyDesktopModified()
  */
 void DesktopAwareObject::desktopModified()
 {
-	if (!Widget)
-		return;
+    if (!Widget)
+        return;
 
-	if (!Widget->isWindow())
-		return;
+    if (!Widget->isWindow())
+        return;
 
-	QRect rect = QRect(Widget->pos(), Widget->size());
-	QRect properRect = properGeometry(rect);
-	if (properRect != rect)
-	{
-		bool visible = Widget->isVisible();
-		// workaround for window frame positioning
-		// TODO is it still needed?
-		Widget->hide();
+    QRect rect = QRect(Widget->pos(), Widget->size());
+    QRect properRect = properGeometry(rect);
+    if (properRect != rect)
+    {
+        bool visible = Widget->isVisible();
+        // workaround for window frame positioning
+        // TODO is it still needed?
+        Widget->hide();
 
-		// refer to setWindowGeometry() why not using here QWidget::setGeometry()
-		Widget->resize(properRect.size());
-		Widget->move(properRect.topLeft());
+        // refer to setWindowGeometry() why not using here QWidget::setGeometry()
+        Widget->resize(properRect.size());
+        Widget->move(properRect.topLeft());
 
-		if (visible)
-			Widget->show();
-	}
+        if (visible)
+            Widget->show();
+    }
 }

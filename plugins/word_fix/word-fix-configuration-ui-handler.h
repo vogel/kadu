@@ -37,38 +37,37 @@ class WordFix;
 
 class WordFixConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit WordFixConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~WordFixConfigurationUiHandler();
+    Q_INVOKABLE explicit WordFixConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~WordFixConfigurationUiHandler();
 
 public slots:
-	void wordSelected();
-	void changeSelected();
-	void deleteSelected();
-	void addNew();
-	void moveToNewValue();
+    void wordSelected();
+    void changeSelected();
+    void deleteSelected();
+    void addNew();
+    void moveToNewValue();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<WordFix> m_wordFix;
+    QPointer<Configuration> m_configuration;
+    QPointer<WordFix> m_wordFix;
 
-	QPushButton *m_changeButton;
-	QPushButton *m_deleteButton;
-	QPushButton *m_addButton;
-	QLineEdit *m_wordEdit;
-	QLineEdit *m_valueEdit;
-	QTreeWidget *m_list;
+    QPushButton *m_changeButton;
+    QPushButton *m_deleteButton;
+    QPushButton *m_addButton;
+    QLineEdit *m_wordEdit;
+    QLineEdit *m_valueEdit;
+    QTreeWidget *m_list;
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
-	void saveList();
+    void saveList();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setWordFix(WordFix *wordFix);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setWordFix(WordFix *wordFix);
 };

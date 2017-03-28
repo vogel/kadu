@@ -30,10 +30,12 @@ struct QMqttMessage;
 class QFacebookSubscribe : public QFacebookMessage
 {
 public:
-	virtual QFacebookMessageType messageType() const { return QFacebookMessageType::Subscribe; }
-	virtual QMqttMessage encode() const;
+    virtual QFacebookMessageType messageType() const
+    {
+        return QFacebookMessageType::Subscribe;
+    }
+    virtual QMqttMessage encode() const;
 
-	uint16_t mid;
-	std::vector<QByteArray> topics;
-
+    uint16_t mid;
+    std::vector<QByteArray> topics;
 };

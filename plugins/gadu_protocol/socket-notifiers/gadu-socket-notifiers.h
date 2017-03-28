@@ -28,39 +28,38 @@ class QTimer;
 
 class GaduSocketNotifiers : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	int Socket;
-	bool Started;
-	QSocketNotifier *ReadNotifier;
-	QSocketNotifier *WriteNotifier;
-	QTimer *TimeoutTimer;
+    int Socket;
+    bool Started;
+    QSocketNotifier *ReadNotifier;
+    QSocketNotifier *WriteNotifier;
+    QTimer *TimeoutTimer;
 
-	void createSocketNotifiers();
-	void deleteSocketNotifiers();
+    void createSocketNotifiers();
+    void deleteSocketNotifiers();
 
 private slots:
-	void socketTimeout();
-	void dataReceived();
-	void dataSent();
+    void socketTimeout();
+    void dataReceived();
+    void dataSent();
 
 protected:
-	void watchFor(int socket);
+    void watchFor(int socket);
 
-	virtual bool checkRead() = 0;
-	virtual bool checkWrite() = 0;
-	virtual void socketEvent() = 0;
-	virtual int timeout() = 0;
-	virtual bool handleSoftTimeout() = 0;
-	virtual void connectionTimeout() = 0;
+    virtual bool checkRead() = 0;
+    virtual bool checkWrite() = 0;
+    virtual void socketEvent() = 0;
+    virtual int timeout() = 0;
+    virtual bool handleSoftTimeout() = 0;
+    virtual void connectionTimeout() = 0;
 
 public:
-	GaduSocketNotifiers(QObject *parent = nullptr);
-	virtual ~GaduSocketNotifiers();
+    GaduSocketNotifiers(QObject *parent = nullptr);
+    virtual ~GaduSocketNotifiers();
 
-	void disable();
-	void enable();
-
+    void disable();
+    void enable();
 };
 
-#endif // GADU_SOCKET_NOTIFIERS_H
+#endif   // GADU_SOCKET_NOTIFIERS_H

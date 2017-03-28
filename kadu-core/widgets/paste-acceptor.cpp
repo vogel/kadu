@@ -24,21 +24,21 @@
 
 void acceptPasteData(const QMimeData *source, PasteAcceptor *acceptor)
 {
-	if (source->hasFormat(QStringLiteral("text/plain")))
-	{
-		acceptor->acceptPlainText(source->text());
-		return;
-	}
+    if (source->hasFormat(QStringLiteral("text/plain")))
+    {
+        acceptor->acceptPlainText(source->text());
+        return;
+    }
 
-	if (!source->urls().isEmpty())
-	{
-		auto url = source->urls().first();
-		if (url.isEmpty() || url.scheme() != "file")
-			return;
-		acceptor->acceptFileUrl(url);
-		return;
-	}
+    if (!source->urls().isEmpty())
+    {
+        auto url = source->urls().first();
+        if (url.isEmpty() || url.scheme() != "file")
+            return;
+        acceptor->acceptFileUrl(url);
+        return;
+    }
 
-	if (source->hasFormat(QStringLiteral("application/x-qt-image")))
-		acceptor->acceptImageData(source->data(QStringLiteral("application/x-qt-image")));
+    if (source->hasFormat(QStringLiteral("application/x-qt-image")))
+        acceptor->acceptImageData(source->data(QStringLiteral("application/x-qt-image")));
 }

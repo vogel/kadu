@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-SqlHistoryPluginModulesFactory::SqlHistoryPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+SqlHistoryPluginModulesFactory::SqlHistoryPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ SqlHistoryPluginModulesFactory::~SqlHistoryPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> SqlHistoryPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<SqlHistoryModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<SqlHistoryModule>());
 
-	return modules;
+    return modules;
 }
 
 QString SqlHistoryPluginModulesFactory::parentInjectorName() const
 {
-	return "history";
+    return "history";
 }
 
 #include "moc_sql-history-plugin-modules-factory.cpp"

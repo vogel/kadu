@@ -33,24 +33,23 @@ class InjectedFactory;
 
 class KADUAPI BuddyGroupsConfigurationWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~BuddyGroupsConfigurationWidget();
+    explicit BuddyGroupsConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~BuddyGroupsConfigurationWidget();
 
-	void save();
+    void save();
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	Buddy m_buddy;
-	GroupList *m_groupList;
+    Buddy m_buddy;
+    GroupList *m_groupList;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_INIT void init();
 };

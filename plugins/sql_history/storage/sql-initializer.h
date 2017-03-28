@@ -34,37 +34,36 @@ class QSqlError;
 
 class SqlInitializer : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QSqlDatabase Database;
+    QSqlDatabase Database;
 
-	bool oldHistoryFileExists();
-	bool currentHistoryFileExists();
-	bool copyHistoryFile();
+    bool oldHistoryFileExists();
+    bool currentHistoryFileExists();
+    bool copyHistoryFile();
 
-	void initDatabaseFile();
-	void initDatabase();
+    void initDatabaseFile();
+    void initDatabase();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 public:
-	explicit SqlInitializer(QObject *parent = nullptr);
-	virtual ~SqlInitializer();
+    explicit SqlInitializer(QObject *parent = nullptr);
+    virtual ~SqlInitializer();
 
 public slots:
-	void initialize();
+    void initialize();
 
 signals:
-	void databaseReady(bool ok);
+    void databaseReady(bool ok);
 
-	void progressMessage(const QString &iconName, const QString &message);
-	void progressFinished(bool ok, const QString &iconName, const QString &message);
-
+    void progressMessage(const QString &iconName, const QString &message);
+    void progressFinished(bool ok, const QString &iconName, const QString &message);
 };

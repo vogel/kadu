@@ -26,30 +26,30 @@
 
 void GaduProxyHelper::cleanUpProxySettings()
 {
-	delete [] gg_proxy_host;
-	gg_proxy_host = 0;
+    delete[] gg_proxy_host;
+    gg_proxy_host = 0;
 
-	delete [] gg_proxy_username;
-	gg_proxy_username = 0;
+    delete[] gg_proxy_username;
+    gg_proxy_username = 0;
 
-	delete [] gg_proxy_password;
-	gg_proxy_password = 0;
+    delete[] gg_proxy_password;
+    gg_proxy_password = 0;
 }
 
 void GaduProxyHelper::setupProxy(NetworkProxy networkProxy)
 {
-	GaduProxyHelper::cleanUpProxySettings();
+    GaduProxyHelper::cleanUpProxySettings();
 
-	gg_proxy_enabled = !networkProxy.isNull() && !networkProxy.address().isEmpty();
-	if (!gg_proxy_enabled)
-		return;
+    gg_proxy_enabled = !networkProxy.isNull() && !networkProxy.address().isEmpty();
+    if (!gg_proxy_enabled)
+        return;
 
-	gg_proxy_host = qstrdup(networkProxy.address().toLatin1().constData());
-	gg_proxy_port = networkProxy.port();
+    gg_proxy_host = qstrdup(networkProxy.address().toLatin1().constData());
+    gg_proxy_port = networkProxy.port();
 
-	if (!networkProxy.user().isEmpty())
-	{
-		gg_proxy_username = qstrdup(networkProxy.user().toLatin1().constData());
-		gg_proxy_password = qstrdup(networkProxy.password().toLatin1().constData());
-	}
+    if (!networkProxy.user().isEmpty())
+    {
+        gg_proxy_username = qstrdup(networkProxy.user().toLatin1().constData());
+        gg_proxy_password = qstrdup(networkProxy.password().toLatin1().constData());
+    }
 }

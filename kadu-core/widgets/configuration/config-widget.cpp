@@ -29,28 +29,31 @@
 #include "widgets/configuration/configuration-widget.h"
 
 ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: parentConfigGroupBox(parentConfigGroupBox), dataManager(dataManager)
+        : parentConfigGroupBox(parentConfigGroupBox), dataManager(dataManager)
 {
 }
 
-ConfigWidget::ConfigWidget(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: parentConfigGroupBox(parentConfigGroupBox), widgetCaption(widgetCaption), toolTip(toolTip), dataManager(dataManager)
+ConfigWidget::ConfigWidget(
+    const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+    ConfigurationWindowDataManager *dataManager)
+        : parentConfigGroupBox(parentConfigGroupBox), widgetCaption(widgetCaption), toolTip(toolTip),
+          dataManager(dataManager)
 {
 }
 
 bool ConfigWidget::fromDomElement(QDomElement domElement)
 {
-	widgetCaption = domElement.attribute("caption");
+    widgetCaption = domElement.attribute("caption");
 
-	CurrentWidgetId = domElement.attribute("id");
-	ParentWidgetId = domElement.attribute("parent-widget");
-	StateDependency = domElement.attribute("state-dependency");
+    CurrentWidgetId = domElement.attribute("id");
+    ParentWidgetId = domElement.attribute("parent-widget");
+    StateDependency = domElement.attribute("state-dependency");
 
-	if (widgetCaption.isEmpty())
-		return false;
+    if (widgetCaption.isEmpty())
+        return false;
 
-	ConfigWidget::toolTip = domElement.attribute("tool-tip");
+    ConfigWidget::toolTip = domElement.attribute("tool-tip");
 
-	createWidgets();
-	return true;
+    createWidgets();
+    return true;
 }

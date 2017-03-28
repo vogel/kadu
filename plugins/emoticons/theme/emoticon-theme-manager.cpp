@@ -31,22 +31,21 @@
 QString EmoticonThemeManager::defaultTheme()
 {
 #ifdef Q_OS_LINUX
-	return QStringLiteral("penguins");
+    return QStringLiteral("penguins");
 #else
-	return QStringLiteral("tango");
+    return QStringLiteral("tango");
 #endif
 }
 
 bool EmoticonThemeManager::containsEmotsTxt(const QString &dir)
 {
-	QString kaduIconFileName = dir + "/emots.txt";
-	QFileInfo kaduIconFile(kaduIconFileName);
+    QString kaduIconFileName = dir + "/emots.txt";
+    QFileInfo kaduIconFile(kaduIconFileName);
 
-	return kaduIconFile.exists();
+    return kaduIconFile.exists();
 }
 
-EmoticonThemeManager::EmoticonThemeManager(QObject *parent) :
-		ThemeManager(parent)
+EmoticonThemeManager::EmoticonThemeManager(QObject *parent) : ThemeManager(parent)
 {
 }
 
@@ -56,39 +55,39 @@ EmoticonThemeManager::~EmoticonThemeManager()
 
 void EmoticonThemeManager::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 QString EmoticonThemeManager::defaultThemeName() const
 {
-	return defaultTheme();
+    return defaultTheme();
 }
 
 QStringList EmoticonThemeManager::defaultThemePaths() const
 {
-	// Allow local themes to override global ones.
-	QStringList result = getSubDirs(m_pathsProvider->profilePath() + QStringLiteral("emoticons"));
-	result += getSubDirs(m_pathsProvider->dataPath() + QStringLiteral("themes/emoticons"));
+    // Allow local themes to override global ones.
+    QStringList result = getSubDirs(m_pathsProvider->profilePath() + QStringLiteral("emoticons"));
+    result += getSubDirs(m_pathsProvider->dataPath() + QStringLiteral("themes/emoticons"));
 
-	return result;
+    return result;
 }
 
 bool EmoticonThemeManager::isValidThemePath(const QString &themePath) const
 {
-	if (containsEmotsTxt(themePath))
-		return true;
+    if (containsEmotsTxt(themePath))
+        return true;
 
-	QDir themeDir(themePath);
-	QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
+    QDir themeDir(themePath);
+    QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
 
-	foreach (const QFileInfo &subDirInfo, subDirs)
-	{
-		if (!subDirInfo.fileName().startsWith('.'))
-			if (containsEmotsTxt(subDirInfo.canonicalFilePath()))
-				return true;
-	}
+    foreach (const QFileInfo &subDirInfo, subDirs)
+    {
+        if (!subDirInfo.fileName().startsWith('.'))
+            if (containsEmotsTxt(subDirInfo.canonicalFilePath()))
+                return true;
+    }
 
-	return false;
+    return false;
 }
 
 #include "moc_emoticon-theme-manager.cpp"

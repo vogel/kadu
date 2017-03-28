@@ -22,8 +22,7 @@
 #include "core/injected-factory.h"
 #include "windows/open-chat-with/open-chat-with.h"
 
-OpenChatWithService::OpenChatWithService(QObject *parent) :
-		QObject{parent}
+OpenChatWithService::OpenChatWithService(QObject *parent) : QObject{parent}
 {
 }
 
@@ -31,16 +30,15 @@ OpenChatWithService::~OpenChatWithService()
 {
 }
 
-
 void OpenChatWithService::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void OpenChatWithService::show()
 {
-	if (!m_openChatWithWindow)
-		m_openChatWithWindow = m_injectedFactory->makeInjected<OpenChatWith>();
+    if (!m_openChatWithWindow)
+        m_openChatWithWindow = m_injectedFactory->makeInjected<OpenChatWith>();
 
-	m_openChatWithWindow->show();
+    m_openChatWithWindow->show();
 }

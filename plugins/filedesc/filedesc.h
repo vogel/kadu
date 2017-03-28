@@ -34,38 +34,43 @@ class QTimer;
 
 class FileDescription : public QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FileDescription(QObject *parent = nullptr);
-	virtual ~FileDescription();
+    Q_INVOKABLE explicit FileDescription(QObject *parent = nullptr);
+    virtual ~FileDescription();
 
-	bool allowOther() const { return m_allowOther; }
-	bool forceDesc() const { return m_forceDesc; }
+    bool allowOther() const
+    {
+        return m_allowOther;
+    }
+    bool forceDesc() const
+    {
+        return m_forceDesc;
+    }
 
 public slots:
-	void checkTitle();
+    void checkTitle();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<FileDescStatusChanger> m_fileDescStatusChanger;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QTimer *m_timer;
+    QTimer *m_timer;
 
-	QString m_file;
-	bool m_allowOther;
-	bool m_forceDesc;
+    QString m_file;
+    bool m_allowOther;
+    bool m_forceDesc;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setFileDescStatusChanger(FileDescStatusChanger *fileDescStatusChanger);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

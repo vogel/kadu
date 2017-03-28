@@ -29,21 +29,20 @@ class FileDescription;
 
 class FileDescStatusChanger : public StatusChanger
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit FileDescStatusChanger(QObject *parent = nullptr);
-	virtual ~FileDescStatusChanger();
+    Q_INVOKABLE explicit FileDescStatusChanger(QObject *parent = nullptr);
+    virtual ~FileDescStatusChanger();
 
-	virtual void changeStatus(StatusContainer *container, Status &status);
+    virtual void changeStatus(StatusContainer *container, Status &status);
 
-	void setTitle(const QString &title);
+    void setTitle(const QString &title);
 
 private:
-	QPointer<FileDescription> m_fileDescription;
-	QString m_title;
+    QPointer<FileDescription> m_fileDescription;
+    QString m_title;
 
 private slots:
-	INJEQT_SET void setFileDescription(FileDescription *fileDescription);
-
+    INJEQT_SET void setFileDescription(FileDescription *fileDescription);
 };

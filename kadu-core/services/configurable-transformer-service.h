@@ -33,37 +33,37 @@
  * @short Template for services that registers list of ConfigurableTransformer instances.
  * @author Rafał 'Vogel' Malinowski
  */
-template<typename T>
+template <typename T>
 class ConfigurableTransformerService
 {
-	QList<T *> ConfigurableTransformers;
+    QList<T *> ConfigurableTransformers;
 
 public:
-	void registerTransformer(T *transformer)
-	{
-		if (!transformer || ConfigurableTransformers.contains(transformer))
-			return;
+    void registerTransformer(T *transformer)
+    {
+        if (!transformer || ConfigurableTransformers.contains(transformer))
+            return;
 
-		ConfigurableTransformers.append(transformer);
-	}
+        ConfigurableTransformers.append(transformer);
+    }
 
-	void unregisterTransformer(T *transformer)
-	{
-		ConfigurableTransformers.removeAll(transformer);
-	}
+    void unregisterTransformer(T *transformer)
+    {
+        ConfigurableTransformers.removeAll(transformer);
+    }
 
-	typename T::object_type transform(const typename T::object_type &object, const typename T::config_type &configurationObject)
-	{
-		typename T::object_type result = object;
-		foreach (T *transformer, ConfigurableTransformers)
-			result = transformer->transform(result, configurationObject);
-		return result;
-	}
-
+    typename T::object_type
+    transform(const typename T::object_type &object, const typename T::config_type &configurationObject)
+    {
+        typename T::object_type result = object;
+        foreach (T *transformer, ConfigurableTransformers)
+            result = transformer->transform(result, configurationObject);
+        return result;
+    }
 };
 
 /**
  * @}
  */
 
-#endif // CONFIGURABLE_TRANSFORMER_SERVICE_H
+#endif   // CONFIGURABLE_TRANSFORMER_SERVICE_H

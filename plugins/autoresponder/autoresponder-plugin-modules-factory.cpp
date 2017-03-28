@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-AutoresponderPluginModulesFactory::AutoresponderPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+AutoresponderPluginModulesFactory::AutoresponderPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,10 +33,10 @@ AutoresponderPluginModulesFactory::~AutoresponderPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> AutoresponderPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<AutoresponderModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<AutoresponderModule>());
 
-	return modules;
+    return modules;
 }
 
 #include "moc_autoresponder-plugin-modules-factory.cpp"

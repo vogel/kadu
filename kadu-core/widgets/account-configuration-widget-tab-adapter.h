@@ -20,8 +20,8 @@
 #ifndef ACCOUNT_CONFIGURATION_WIDGET_TAB_ADAPTER_H
 #define ACCOUNT_CONFIGURATION_WIDGET_TAB_ADAPTER_H
 
-#include <QtCore/QObject>
 #include "exports.h"
+#include <QtCore/QObject>
 
 class QTab;
 class QTabWidget;
@@ -31,18 +31,18 @@ class AccountEditWidget;
 
 class KADUAPI AccountConfigurationWidgetTabAdapter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	AccountEditWidget *MyAccountEditWidget;
-	QTabWidget *MyTabWidget;
+    AccountEditWidget *MyAccountEditWidget;
+    QTabWidget *MyTabWidget;
 
 private slots:
-	void widgetAdded(AccountConfigurationWidget *widget);
+    void widgetAdded(AccountConfigurationWidget *widget);
 
 public:
-	explicit AccountConfigurationWidgetTabAdapter(AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent = nullptr);
-	virtual ~AccountConfigurationWidgetTabAdapter();
-
+    explicit AccountConfigurationWidgetTabAdapter(
+        AccountEditWidget *accountEditWidget, QTabWidget *tabWidget, QObject *parent = nullptr);
+    virtual ~AccountConfigurationWidgetTabAdapter();
 };
 
-#endif // ACCOUNT_CONFIGURATION_WIDGET_TAB_ADAPTER_H
+#endif   // ACCOUNT_CONFIGURATION_WIDGET_TAB_ADAPTER_H

@@ -25,13 +25,11 @@ class QWidget;
 
 class KADUAPI ScopedUpdatesDisabler
 {
-
 public:
-	ScopedUpdatesDisabler(QWidget &widget);
-	~ScopedUpdatesDisabler();
+    ScopedUpdatesDisabler(QWidget &widget);
+    ~ScopedUpdatesDisabler();
 
 private:
-	QWidget &m_widget;
-	bool m_wasEnabled;
-
+    QWidget &m_widget;
+    bool m_wasEnabled;
 };

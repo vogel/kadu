@@ -28,17 +28,17 @@ class QSystemTrayIcon;
 
 class StatusNotifierItemAttentionAnimator : public StatusNotifierItemAttention
 {
-	Q_OBJECT
-	
+    Q_OBJECT
+
 public:
-	explicit StatusNotifierItemAttentionAnimator(QString moviePath, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
-	virtual ~StatusNotifierItemAttentionAnimator();
+    explicit StatusNotifierItemAttentionAnimator(
+        QString moviePath, QSystemTrayIcon *systemTrayIcon, QObject *parent = nullptr);
+    virtual ~StatusNotifierItemAttentionAnimator();
 
 private:
-	QSystemTrayIcon *m_systemTrayIcon;
-	owned_qptr<QMovie> m_movie;
+    QSystemTrayIcon *m_systemTrayIcon;
+    owned_qptr<QMovie> m_movie;
 
 private slots:
-	void frameChanged();
-
+    void frameChanged();
 };

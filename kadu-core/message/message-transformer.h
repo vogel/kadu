@@ -22,8 +22,8 @@
 #define MESSAGE_TRANSFORMER_H
 
 #include "core/transformer.h"
-#include "message/message.h"
 #include "exports.h"
+#include "message/message.h"
 
 /**
  * @addtogroup Message
@@ -46,4 +46,4 @@ class KADUAPI MessageTransformer : public Transformer<Message>
  * @}
  */
 
-#endif // MESSAGE_TRANSFORMER_H
+#endif   // MESSAGE_TRANSFORMER_H

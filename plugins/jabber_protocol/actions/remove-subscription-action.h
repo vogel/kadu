@@ -23,13 +23,12 @@
 
 class RemoveSubscriptionAction : public SubscriptionAction
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit RemoveSubscriptionAction(QObject *parent = nullptr);
-	virtual ~RemoveSubscriptionAction();
+    Q_INVOKABLE explicit RemoveSubscriptionAction(QObject *parent = nullptr);
+    virtual ~RemoveSubscriptionAction();
 
 protected:
-	virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
-
+    virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
 };

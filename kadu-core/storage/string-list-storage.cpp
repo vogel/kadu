@@ -26,24 +26,24 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVector>
 
-StringListStorage::StringListStorage(StoragePoint *storagePoint, QString nodeName) :
-		m_storagePoint(storagePoint), m_nodeName(nodeName)
+StringListStorage::StringListStorage(StoragePoint *storagePoint, QString nodeName)
+        : m_storagePoint(storagePoint), m_nodeName(nodeName)
 {
 }
 
 QStringList StringListStorage::load() const
 {
-	auto result = QStringList{};
-	auto elements = m_storagePoint->storage()->getNodes(m_storagePoint->point(), m_nodeName);
-	for (const auto &element : elements)
-		result.append(element.text());
-	return result;
+    auto result = QStringList{};
+    auto elements = m_storagePoint->storage()->getNodes(m_storagePoint->point(), m_nodeName);
+    for (const auto &element : elements)
+        result.append(element.text());
+    return result;
 }
 
 void StringListStorage::store(const QStringList &values) const
 {
-	m_storagePoint->storage()->removeChildren(m_storagePoint->point());
+    m_storagePoint->storage()->removeChildren(m_storagePoint->point());
 
-	for (const auto &value : values)
-		m_storagePoint->storage()->appendTextNode(m_storagePoint->point(), m_nodeName, value);
+    for (const auto &value : values)
+        m_storagePoint->storage()->appendTextNode(m_storagePoint->point(), m_nodeName, value);
 }

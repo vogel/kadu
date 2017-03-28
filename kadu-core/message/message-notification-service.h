@@ -38,35 +38,34 @@ struct Notification;
 
 class MessageNotificationService : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit MessageNotificationService(QObject *parent = nullptr);
-	virtual ~MessageNotificationService();
+    Q_INVOKABLE explicit MessageNotificationService(QObject *parent = nullptr);
+    virtual ~MessageNotificationService();
 
 public slots:
-	void notifyNewChat(const Message &message);
-	void notifyNewMessage(const Message &message);
+    void notifyNewChat(const Message &message);
+    void notifyNewMessage(const Message &message);
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
-	QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotificationService> m_notificationService;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<NotificationCallbackRepository> m_notificationCallbackRepository;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotificationService> m_notificationService;
 
-	NotificationCallback m_openChatCallback;
-	NotificationEvent m_newChatEvent;
-	NotificationEvent m_newMessageEvent;
+    NotificationCallback m_openChatCallback;
+    NotificationEvent m_newChatEvent;
+    NotificationEvent m_newMessageEvent;
 
-	void openChat(const Notification &notification);
+    void openChat(const Notification &notification);
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-	INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotificationService(NotificationService *notificationService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
+    INJEQT_SET void setNotificationCallbackRepository(NotificationCallbackRepository *notificationCallbackRepository);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotificationService(NotificationService *notificationService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

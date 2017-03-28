@@ -25,34 +25,34 @@ QList<StatusContainerAwareObject *> StatusContainerAwareObject::Objects;
 
 StatusContainerAwareObject::StatusContainerAwareObject()
 {
-	Objects.append(this);
+    Objects.append(this);
 }
 
 StatusContainerAwareObject::~StatusContainerAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }
 
 void StatusContainerAwareObject::notifyStatusContainerRegistered(StatusContainer *statusContainer)
 {
-	for (auto object : Objects)
-		object->statusContainerRegistered(statusContainer);
+    for (auto object : Objects)
+        object->statusContainerRegistered(statusContainer);
 }
 
 void StatusContainerAwareObject::notifyStatusContainerUnregistered(StatusContainer *statusContainer)
 {
-	for (auto object : Objects)
-		object->statusContainerUnregistered(statusContainer);
+    for (auto object : Objects)
+        object->statusContainerUnregistered(statusContainer);
 }
 
 void StatusContainerAwareObject::triggerAllStatusContainerRegistered(StatusContainerManager *statusContainerManager)
 {
-	for (auto statusContainer : statusContainerManager->statusContainers())
-		statusContainerRegistered(statusContainer);
+    for (auto statusContainer : statusContainerManager->statusContainers())
+        statusContainerRegistered(statusContainer);
 }
 
 void StatusContainerAwareObject::triggerAllStatusContainerUnregistered(StatusContainerManager *statusContainerManager)
 {
-	for (auto statusContainer : statusContainerManager->statusContainers())
-		statusContainerUnregistered(statusContainer);
+    for (auto statusContainer : statusContainerManager->statusContainers())
+        statusContainerUnregistered(statusContainer);
 }

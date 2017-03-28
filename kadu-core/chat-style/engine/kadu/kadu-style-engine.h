@@ -32,31 +32,33 @@ class SyntaxList;
 
 class KaduStyleEngine : public QObject, public ChatStyleEngine
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit KaduStyleEngine(QObject *parent = nullptr);
-	virtual ~KaduStyleEngine();
+    Q_INVOKABLE explicit KaduStyleEngine(QObject *parent = nullptr);
+    virtual ~KaduStyleEngine();
 
-	virtual bool supportVariants() { return false; }
-	virtual QString isStyleValid(QString styleName);
-	virtual bool styleUsesTransparencyByDefault(QString styleName)
-	{
-		Q_UNUSED(styleName)
-		return false;
-	}
+    virtual bool supportVariants()
+    {
+        return false;
+    }
+    virtual QString isStyleValid(QString styleName);
+    virtual bool styleUsesTransparencyByDefault(QString styleName)
+    {
+        Q_UNUSED(styleName)
+        return false;
+    }
 
-	virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
+    virtual std::unique_ptr<ChatStyleRendererFactory> createRendererFactory(const ChatStyle &chatStyle);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<PathsProvider> m_pathsProvider;
 
-	QSharedPointer<SyntaxList> syntaxList;
+    QSharedPointer<SyntaxList> syntaxList;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_INIT void init();
 };

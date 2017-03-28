@@ -22,12 +22,12 @@
 
 #pragma once
 
+#include "jabber-account-data.h"
 #include "services/jabber-avatar-service.h"
 #include "services/jabber-contact-personal-info-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
 #include "services/jabber-subscription-service.h"
-#include "jabber-account-data.h"
 
 #include "protocols/protocol.h"
 #include "protocols/services/chat-service.h"
@@ -59,84 +59,107 @@ class QXmppTransferManager;
 
 class JabberProtocol : public Protocol
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberProtocol(Account account, ProtocolFactory *factory);
-	virtual ~JabberProtocol();
+    explicit JabberProtocol(Account account, ProtocolFactory *factory);
+    virtual ~JabberProtocol();
 
-	void setContactsListReadOnly(bool contactsListReadOnly);
-	virtual bool contactsListReadOnly() override { return m_contactsListReadOnly; }
+    void setContactsListReadOnly(bool contactsListReadOnly);
+    virtual bool contactsListReadOnly() override
+    {
+        return m_contactsListReadOnly;
+    }
 
-	virtual QString statusPixmapPath() override;
+    virtual QString statusPixmapPath() override;
 
-	virtual AvatarService * avatarService() override { return m_avatarService; }
-	virtual ContactPersonalInfoService * contactPersonalInfoService() override { return m_contactPersonalInfoService; }
-	virtual FileTransferService * fileTransferService() override { return m_fileTransferService; }
-	virtual PersonalInfoService * personalInfoService() override { return m_personalInfoService; }
-	virtual SubscriptionService * subscriptionService() override { return m_subscriptionService; }
-	virtual JabberStreamDebugService * streamDebugService() { return m_streamDebugService; }
-	virtual JabberVCardService * vcardService() { return m_vcardService; }
+    virtual AvatarService *avatarService() override
+    {
+        return m_avatarService;
+    }
+    virtual ContactPersonalInfoService *contactPersonalInfoService() override
+    {
+        return m_contactPersonalInfoService;
+    }
+    virtual FileTransferService *fileTransferService() override
+    {
+        return m_fileTransferService;
+    }
+    virtual PersonalInfoService *personalInfoService() override
+    {
+        return m_personalInfoService;
+    }
+    virtual SubscriptionService *subscriptionService() override
+    {
+        return m_subscriptionService;
+    }
+    virtual JabberStreamDebugService *streamDebugService()
+    {
+        return m_streamDebugService;
+    }
+    virtual JabberVCardService *vcardService()
+    {
+        return m_vcardService;
+    }
 
-	JabberChangePasswordService * changePasswordService() const;
+    JabberChangePasswordService *changePasswordService() const;
 
 signals:
-	void userStatusChangeIgnored(Buddy);
+    void userStatusChangeIgnored(Buddy);
 
 protected:
-	virtual void login() override;
-	virtual void logout() override;
-	virtual void sendStatusToServer() override;
+    virtual void login() override;
+    virtual void logout() override;
+    virtual void sendStatusToServer() override;
 
-	virtual void changePrivateMode() override;
+    virtual void changePrivateMode() override;
 
 private:
-	QPointer<ChatServiceRepository> m_chatServiceRepository;
-	QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<SystemInfo> m_systemInfo;
-	QPointer<VersionService> m_versionService;
+    QPointer<ChatServiceRepository> m_chatServiceRepository;
+    QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<SystemInfo> m_systemInfo;
+    QPointer<VersionService> m_versionService;
 
-	JabberAvatarService *m_avatarService;
-	JabberChatService *m_chatService;
-	JabberChatStateService *m_chatStateService;
-	JabberChangePasswordService *m_changePasswordService;
-	JabberContactPersonalInfoService *m_contactPersonalInfoService;
-	JabberErrorService *m_errorService;
-	JabberFileTransferService *m_fileTransferService;
-	JabberPersonalInfoService *m_personalInfoService;
-	JabberSubscriptionService *m_subscriptionService;
-	JabberPresenceService *m_presenceService;
-	JabberRoomChatService *m_roomChatService;
-	JabberStreamDebugService *m_streamDebugService;
-	JabberVCardService *m_vcardService;
-	JabberResourceService *m_resourceService;
-	JabberOpenChatWithRunner *m_jabberOpenChatWithRunner;
+    JabberAvatarService *m_avatarService;
+    JabberChatService *m_chatService;
+    JabberChatStateService *m_chatStateService;
+    JabberChangePasswordService *m_changePasswordService;
+    JabberContactPersonalInfoService *m_contactPersonalInfoService;
+    JabberErrorService *m_errorService;
+    JabberFileTransferService *m_fileTransferService;
+    JabberPersonalInfoService *m_personalInfoService;
+    JabberSubscriptionService *m_subscriptionService;
+    JabberPresenceService *m_presenceService;
+    JabberRoomChatService *m_roomChatService;
+    JabberStreamDebugService *m_streamDebugService;
+    JabberVCardService *m_vcardService;
+    JabberResourceService *m_resourceService;
+    JabberOpenChatWithRunner *m_jabberOpenChatWithRunner;
 
-	QXmppClient *m_client;
-	std::unique_ptr<JabberRegisterExtension> m_registerExtension;
-	std::unique_ptr<JabberRosterExtension> m_rosterExtension;
-	std::unique_ptr<QXmppMucManager> m_mucManager;
-	std::unique_ptr<QXmppTransferManager> m_transferManager;
+    QXmppClient *m_client;
+    std::unique_ptr<JabberRegisterExtension> m_registerExtension;
+    std::unique_ptr<JabberRosterExtension> m_rosterExtension;
+    std::unique_ptr<QXmppMucManager> m_mucManager;
+    std::unique_ptr<QXmppTransferManager> m_transferManager;
 
-	bool m_contactsListReadOnly;
+    bool m_contactsListReadOnly;
 
 private slots:
-	INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
-	INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
-	INJEQT_SET void setVersionService(VersionService *versionService);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
+    INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
+    INJEQT_SET void setVersionService(VersionService *versionService);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void connectedToServer();
-	void disconenctedFromServer();
-	void error(QXmppClient::Error error);
+    void connectedToServer();
+    void disconenctedFromServer();
+    void error(QXmppClient::Error error);
 
-	void rosterReady();
+    void rosterReady();
 
-	void updatePresence();
-	void presenceReceived(const QXmppPresence &presence);
-
+    void updatePresence();
+    void presenceReceived(const QXmppPresence &presence);
 };

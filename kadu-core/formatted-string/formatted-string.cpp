@@ -27,7 +27,7 @@ FormattedString::~FormattedString()
 {
 }
 
-bool FormattedString::operator != (const FormattedString &compareTo)
+bool FormattedString::operator!=(const FormattedString &compareTo)
 {
-	return !(*this == compareTo);
+    return !(*this == compareTo);
 }

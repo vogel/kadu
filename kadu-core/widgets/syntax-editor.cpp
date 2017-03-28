@@ -33,15 +33,14 @@
 
 #include "syntax-editor.h"
 
-SyntaxEditor::SyntaxEditor(QWidget *parent) :
-		QWidget(parent)
+SyntaxEditor::SyntaxEditor(QWidget *parent) : QWidget(parent)
 {
-	QHBoxLayout *layout = new QHBoxLayout(this);
+    QHBoxLayout *layout = new QHBoxLayout(this);
 
-	syntaxListCombo = new QComboBox(this);
-	connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(syntaxChangedSlot(const QString &)));
+    syntaxListCombo = new QComboBox(this);
+    connect(syntaxListCombo, SIGNAL(activated(const QString &)), this, SLOT(syntaxChangedSlot(const QString &)));
 
-	layout->addWidget(syntaxListCombo, 100);
+    layout->addWidget(syntaxListCombo, 100);
 }
 
 SyntaxEditor::~SyntaxEditor()
@@ -50,83 +49,85 @@ SyntaxEditor::~SyntaxEditor()
 
 void SyntaxEditor::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 void SyntaxEditor::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void SyntaxEditor::setCurrentSyntax(const QString &syntax)
 {
-	syntaxListCombo->setCurrentIndex(syntaxListCombo->findText(syntax));
-	syntaxChangedSlot(syntax);
+    syntaxListCombo->setCurrentIndex(syntaxListCombo->findText(syntax));
+    syntaxChangedSlot(syntax);
 }
 
 QString SyntaxEditor::currentSyntax()
 {
-	return syntaxListCombo->currentText();
+    return syntaxListCombo->currentText();
 }
 
 void SyntaxEditor::setCategory(const QString &category)
 {
-	if (this->category == category)
-		return;
+    if (this->category == category)
+        return;
 
-	this->category = category;
-	updateSyntaxList();
+    this->category = category;
+    updateSyntaxList();
 }
 
 void SyntaxEditor::setSyntaxHint(const QString &syntaxHint)
 {
-	this->syntaxHint = syntaxHint;
+    this->syntaxHint = syntaxHint;
 }
 
 void SyntaxEditor::syntaxChangedSlot(const QString &newSyntax)
 {
-	if (!syntaxList)
-		return;
+    if (!syntaxList)
+        return;
 
-	if (!syntaxList->contains(newSyntax))
-		return;
+    if (!syntaxList->contains(newSyntax))
+        return;
 
-	QFile file;
-	QString fileName;
-	QString content;
+    QFile file;
+    QString fileName;
+    QString content;
 
-	SyntaxInfo info = (*syntaxList)[newSyntax];
-	if (info.global)
-		fileName = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + category.toLower() + '/' + newSyntax + QStringLiteral(".syntax");
-	else
-		fileName = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + category.toLower() + '/' + newSyntax + QStringLiteral(".syntax");
+    SyntaxInfo info = (*syntaxList)[newSyntax];
+    if (info.global)
+        fileName = m_pathsProvider->dataPath() + QStringLiteral("syntax/") + category.toLower() + '/' + newSyntax +
+                   QStringLiteral(".syntax");
+    else
+        fileName = m_pathsProvider->profilePath() + QStringLiteral("syntax/") + category.toLower() + '/' + newSyntax +
+                   QStringLiteral(".syntax");
 
-	file.setFileName(fileName);
-	if (!file.open(QIODevice::ReadOnly))
-		return;
+    file.setFileName(fileName);
+    if (!file.open(QIODevice::ReadOnly))
+        return;
 
-	QTextStream stream(&file);
-	stream.setCodec("UTF-8");
-	content = stream.readAll();
-	file.close();
+    QTextStream stream(&file);
+    stream.setCodec("UTF-8");
+    content = stream.readAll();
+    file.close();
 
-	emit syntaxChanged(content);
+    emit syntaxChanged(content);
 }
 
 void SyntaxEditor::updateSyntaxList()
 {
-	syntaxList = QSharedPointer<SyntaxList>(m_injectedFactory->makeInjected<SyntaxList>(category.toLower()));
+    syntaxList = QSharedPointer<SyntaxList>(m_injectedFactory->makeInjected<SyntaxList>(category.toLower()));
 
-	syntaxListCombo->clear();
-	syntaxListCombo->addItems(syntaxList->keys());
+    syntaxListCombo->clear();
+    syntaxListCombo->addItems(syntaxList->keys());
 
-	connect(syntaxList.data(), SIGNAL(updated()), this, SLOT(syntaxListUpdated()));
+    connect(syntaxList.data(), SIGNAL(updated()), this, SLOT(syntaxListUpdated()));
 }
 
 void SyntaxEditor::syntaxListUpdated()
 {
-	syntaxListCombo->clear();
-	syntaxListCombo->addItems(syntaxList->keys());
+    syntaxListCombo->clear();
+    syntaxListCombo->addItems(syntaxList->keys());
 }
 
 #include "moc_syntax-editor.cpp"

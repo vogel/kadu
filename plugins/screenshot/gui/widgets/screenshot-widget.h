@@ -32,31 +32,30 @@ class CropImageWidget;
 
 class ScreenshotWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	CropImageWidget *CropWidget;
+    CropImageWidget *CropWidget;
 
-	ScreenShotMode ShotMode;
-	QRect ShotRegion;
+    ScreenShotMode ShotMode;
+    QRect ShotRegion;
 
 private slots:
-	void pixmapCapturedSlot(QPixmap pixmap);
-	void canceledSlot();
+    void pixmapCapturedSlot(QPixmap pixmap);
+    void canceledSlot();
 
 protected:
-	virtual void keyPressEvent(QKeyEvent *event);
+    virtual void keyPressEvent(QKeyEvent *event);
 
 public:
-	explicit ScreenshotWidget(QWidget *parent = nullptr);
-	virtual ~ScreenshotWidget();
+    explicit ScreenshotWidget(QWidget *parent = nullptr);
+    virtual ~ScreenshotWidget();
 
-	void setShotMode(ScreenShotMode shotMode);
-	void setPixmap(QPixmap pixmap);
+    void setShotMode(ScreenShotMode shotMode);
+    void setPixmap(QPixmap pixmap);
 
 signals:
-	void pixmapCaptured(QPixmap pixmap);
-	void canceled();
-
+    void pixmapCaptured(QPixmap pixmap);
+    void canceled();
 };
 
-#endif // SCREENSHOT_WIDGET_H
+#endif   // SCREENSHOT_WIDGET_H

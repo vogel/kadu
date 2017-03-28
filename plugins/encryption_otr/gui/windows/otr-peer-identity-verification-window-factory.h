@@ -32,24 +32,24 @@ class OtrTrustLevelService;
 
 class OtrPeerIdentityVerificationWindowFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE OtrPeerIdentityVerificationWindowFactory();
-	virtual ~OtrPeerIdentityVerificationWindowFactory();
+    Q_INVOKABLE OtrPeerIdentityVerificationWindowFactory();
+    virtual ~OtrPeerIdentityVerificationWindowFactory();
 
-	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
+    OtrPeerIdentityVerificationWindow *windowForContact(const Contact &contact);
 
 private slots:
-	INJEQT_SET void setFingerprintService(OtrFingerprintService *fingerprintService);
-	INJEQT_SET void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    INJEQT_SET void setFingerprintService(OtrFingerprintService *fingerprintService);
+    INJEQT_SET void
+    setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+    INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 private:
-	QPointer<OtrFingerprintService> FingerprintService;
-	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
+    QPointer<OtrFingerprintService> FingerprintService;
+    QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+    QPointer<OtrTrustLevelService> TrustLevelService;
 
-	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
-
+    QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 };

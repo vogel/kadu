@@ -24,93 +24,93 @@
 #include <memory>
 #include <type_traits>
 
-template<typename T>
+template <typename T>
 struct not_owned_qobject_deleter
 {
-	void operator() (T *qobject)
-	{
-		if (!qobject)
-			return;
+    void operator()(T *qobject)
+    {
+        if (!qobject)
+            return;
 
-		assert(qobject->QObject::parent() == nullptr);
-		if (!qobject->QObject::parent())
-			delete qobject;
-	}
+        assert(qobject->QObject::parent() == nullptr);
+        if (!qobject->QObject::parent())
+            delete qobject;
+    }
 };
 
-template<typename T>
+template <typename T>
 class not_owned_qptr : public std::unique_ptr<T, not_owned_qobject_deleter<T>>
 {
-
 public:
-	not_owned_qptr()
-	{
-	}
+    not_owned_qptr()
+    {
+    }
 
-	not_owned_qptr(T *qobject) :
-			std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject)
-	{
-		assert(qobject->QObject::parent() == nullptr);
-	}
+    not_owned_qptr(T *qobject) : std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject)
+    {
+        assert(qobject->QObject::parent() == nullptr);
+    }
 
-	template<typename U>
-	not_owned_qptr(not_owned_qptr<U> &&qobject) :
-			std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject.release())
-	{
-	}
+    template <typename U>
+    not_owned_qptr(not_owned_qptr<U> &&qobject) : std::unique_ptr<T, not_owned_qobject_deleter<T>>(qobject.release())
+    {
+    }
 
-	operator T*() const { return this->get(); }
+    operator T *() const
+    {
+        return this->get();
+    }
 };
 
-template<typename T, typename ...Args>
-not_owned_qptr<T> make_not_owned(Args&& ...args)
+template <typename T, typename... Args>
+not_owned_qptr<T> make_not_owned(Args &&... args)
 {
-	auto result = not_owned_qptr<T>(new T(std::forward<Args>(args)...));
-	assert(result->QObject::parent() == nullptr);
-	return result;
+    auto result = not_owned_qptr<T>(new T(std::forward<Args>(args)...));
+    assert(result->QObject::parent() == nullptr);
+    return result;
 }
 
-template<typename T>
+template <typename T>
 struct owned_qobject_deleter
 {
-	void operator() (T *qobject)
-	{
-		if (!qobject)
-			return;
+    void operator()(T *qobject)
+    {
+        if (!qobject)
+            return;
 
-		// assert(qobject->parent() != nullptr); could be already deleted here
-		// parent will delete this object when needed
-	}
+        // assert(qobject->parent() != nullptr); could be already deleted here
+        // parent will delete this object when needed
+    }
 };
 
-template<typename T>
+template <typename T>
 class owned_qptr : public std::unique_ptr<T, owned_qobject_deleter<T>>
 {
-
 public:
-	owned_qptr()
-	{
-	}
+    owned_qptr()
+    {
+    }
 
-	owned_qptr(T *qobject) :
-			std::unique_ptr<T, owned_qobject_deleter<T>>(qobject)
-	{
-		assert(qobject->QObject::parent() != nullptr);
-	}
+    owned_qptr(T *qobject) : std::unique_ptr<T, owned_qobject_deleter<T>>(qobject)
+    {
+        assert(qobject->QObject::parent() != nullptr);
+    }
 
-	template<typename U>
-	owned_qptr(owned_qptr<U> &&qobject) :
-			std::unique_ptr<T, owned_qobject_deleter<T>>(qobject.release())
-	{
-	}
+    template <typename U>
+    owned_qptr(owned_qptr<U> &&qobject) : std::unique_ptr<T, owned_qobject_deleter<T>>(qobject.release())
+    {
+    }
 
-	operator T*() const { return this->get(); }
+    operator T *() const
+    {
+        return this->get();
+    }
 };
 
-template<typename T, typename ...Args>
-owned_qptr<T> make_owned(Args&& ...args)
+template <typename T, typename... Args>
+owned_qptr<T> make_owned(Args &&... args)
 {
-	auto result = owned_qptr<T>(new T(std::forward<Args>(args)...));
-	assert(result->QObject::parent() != nullptr);
-	return result;
+    auto result = owned_qptr<T>(new T(std::forward<Args>(args)...));
+    assert(result->QObject::parent() != nullptr);
+    return result;
 }

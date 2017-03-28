@@ -25,9 +25,7 @@
 
 class KADUAPI IdentityModule : public injeqt::module
 {
-
 public:
-	explicit IdentityModule();
-	virtual ~IdentityModule();
-
+    explicit IdentityModule();
+    virtual ~IdentityModule();
 };

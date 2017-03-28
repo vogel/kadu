@@ -19,17 +19,17 @@
 
 #include "qfacebook-login-job.h"
 
-#include "qfacebook/exceptions/qfacebook-invalid-data-exception.h"
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook-http-api.h"
 #include "qfacebook-http-reply.h"
 #include "qfacebook-http-request.h"
+#include "qfacebook/exceptions/qfacebook-invalid-data-exception.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
-QFacebookLoginJob::QFacebookLoginJob(QFacebookHttpApi &httpApi, QString userName, QString password, QObject *parent) :
-		QObject{parent}
+QFacebookLoginJob::QFacebookLoginJob(QFacebookHttpApi &httpApi, QString userName, QString password, QObject *parent)
+        : QObject{parent}
 {
-	auto reply = httpApi.auth(std::move(userName), std::move(password));
-	connect(reply, &QFacebookHttpReply::finished, this, &QFacebookLoginJob::replyFinished);
+    auto reply = httpApi.auth(std::move(userName), std::move(password));
+    connect(reply, &QFacebookHttpReply::finished, this, &QFacebookLoginJob::replyFinished);
 }
 
 QFacebookLoginJob::~QFacebookLoginJob()
@@ -38,30 +38,29 @@ QFacebookLoginJob::~QFacebookLoginJob()
 
 void QFacebookLoginJob::replyFinished(const std::experimental::optional<QFacebookJsonReader> &result)
 {
-	deleteLater();
-	emit finished(loginResult(result));
+    deleteLater();
+    emit finished(loginResult(result));
 }
 
-QFacebookLoginResult QFacebookLoginJob::loginResult(const std::experimental::optional<QFacebookJsonReader> &result) const
-try
+QFacebookLoginResult
+QFacebookLoginJob::loginResult(const std::experimental::optional<QFacebookJsonReader> &result) const try
 {
-	if (!result)
-		return QFacebookLoginError{QFacebookLoginErrorType::Unknown, {}};
+    if (!result)
+        return QFacebookLoginError{QFacebookLoginErrorType::Unknown, {}};
 
     if (!result->hasInt("error_code"))
-		return QFacebookSessionToken::fromJson(*result);
+        return QFacebookSessionToken::fromJson(*result);
 
-	auto errorCode = result->readInt("error_code");
-	auto errorMessage = result->hasObject("error_data")
-			? result->readObject("error_data").readString("error_message")
-			: QString{};
+    auto errorCode = result->readInt("error_code");
+    auto errorMessage =
+        result->hasObject("error_data") ? result->readObject("error_data").readString("error_message") : QString{};
 
-	if (errorCode == 401)
-		return QFacebookLoginError{QFacebookLoginErrorType::InvalidPassword, errorMessage};
+    if (errorCode == 401)
+        return QFacebookLoginError{QFacebookLoginErrorType::InvalidPassword, errorMessage};
 
-	return QFacebookLoginError{QFacebookLoginErrorType::Unknown, errorMessage};
+    return QFacebookLoginError{QFacebookLoginErrorType::Unknown, errorMessage};
 }
 catch (QFacebookInvalidDataException &)
 {
-	return QFacebookLoginError{QFacebookLoginErrorType::Unknown, {}};
+    return QFacebookLoginError{QFacebookLoginErrorType::Unknown, {}};
 }

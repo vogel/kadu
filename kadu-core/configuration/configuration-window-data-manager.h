@@ -27,15 +27,14 @@
 
 class KADUAPI ConfigurationWindowDataManager : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ConfigurationWindowDataManager(QObject *parent = nullptr);
-	virtual ~ConfigurationWindowDataManager();
+    explicit ConfigurationWindowDataManager(QObject *parent = nullptr);
+    virtual ~ConfigurationWindowDataManager();
 
-	virtual void writeEntry(const QString &section, const QString &name, const QVariant &value) = 0;
-	virtual QVariant readEntry(const QString &section, const QString &name) = 0;
-
+    virtual void writeEntry(const QString &section, const QString &name, const QVariant &value) = 0;
+    virtual QVariant readEntry(const QString &section, const QString &name) = 0;
 };
 
-#endif // CONFIGURATION_WINDOW_DATA_MANAGER_H
+#endif   // CONFIGURATION_WINDOW_DATA_MANAGER_H

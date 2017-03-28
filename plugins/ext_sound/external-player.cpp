@@ -20,54 +20,52 @@
 
 #include "external-player.h"
 
-
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
 #include <QtCore/QProcess>
 
-ExternalPlayer::ExternalPlayer(QObject *parent) :
-		SoundPlayer{parent}
+ExternalPlayer::ExternalPlayer(QObject *parent) : SoundPlayer{parent}
 {
 }
 
 ExternalPlayer::~ExternalPlayer()
 {
-	if (m_playerProcess)
-		m_playerProcess->deleteLater();
+    if (m_playerProcess)
+        m_playerProcess->deleteLater();
 }
 
 void ExternalPlayer::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ExternalPlayer::init()
 {
-	createDefaultConfiguration();
+    createDefaultConfiguration();
 }
 
-QObject * ExternalPlayer::playSound(const QString &path)
+QObject *ExternalPlayer::playSound(const QString &path)
 {
-	if (m_playerProcess)
-		return nullptr;
+    if (m_playerProcess)
+        return nullptr;
 
-	auto playerCommand = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
-	if (playerCommand.isEmpty())
-		return nullptr;
+    auto playerCommand = m_configuration->deprecatedApi()->readEntry("Sounds", "SoundPlayer");
+    if (playerCommand.isEmpty())
+        return nullptr;
 
-	auto argumentList = QStringList{};
-	argumentList.append(path);
+    auto argumentList = QStringList{};
+    argumentList.append(path);
 
-	m_playerProcess = new QProcess{this};
-	m_playerProcess->start(playerCommand, argumentList);
-	connect(m_playerProcess, SIGNAL(finished(int)), m_playerProcess, SLOT(deleteLater()));
-	return m_playerProcess;
+    m_playerProcess = new QProcess{this};
+    m_playerProcess->start(playerCommand, argumentList);
+    connect(m_playerProcess, SIGNAL(finished(int)), m_playerProcess, SLOT(deleteLater()));
+    return m_playerProcess;
 }
 
 void ExternalPlayer::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
+    m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 }
 
 #include "moc_external-player.cpp"

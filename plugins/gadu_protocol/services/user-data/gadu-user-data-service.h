@@ -32,22 +32,21 @@ class ContactManager;
 
 class GaduUserDataService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduUserDataService(Account account, QObject *parent = nullptr);
-	virtual ~GaduUserDataService();
+    explicit GaduUserDataService(Account account, QObject *parent = nullptr);
+    virtual ~GaduUserDataService();
 
-	void handleUserDataEvent(const gg_event_user_data &userData);
+    void handleUserDataEvent(const gg_event_user_data &userData);
 
 private:
-	QPointer<AvatarManager> m_avatarManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<AvatarManager> m_avatarManager;
+    QPointer<ContactManager> m_contactManager;
 
-	void handleUserDataItem(const gg_event_user_data_user &userDataUser, bool update);
+    void handleUserDataItem(const gg_event_user_data_user &userDataUser, bool update);
 
 private slots:
-	INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };

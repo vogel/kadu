@@ -24,8 +24,8 @@
 
 ExtSoundModule::ExtSoundModule()
 {
-	add_type<ExternalPlayer>();
-	add_type<ExtSoundPluginObject>();
+    add_type<ExternalPlayer>();
+    add_type<ExtSoundPluginObject>();
 }
 
 ExtSoundModule::~ExtSoundModule()

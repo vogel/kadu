@@ -23,13 +23,12 @@
 
 namespace QThrift
 {
-
 class StopExpectedException : public Exception
 {
-
 public:
-	virtual const char * what() const noexcept override { return "Stop expected at end of Thfift list"; };
-
+    virtual const char *what() const noexcept override
+    {
+        return "Stop expected at end of Thfift list";
+    };
 };
-
 }

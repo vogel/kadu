@@ -29,8 +29,8 @@
 
 #include <QtCore/QTimer>
 
-AvatarJobRunner::AvatarJobRunner(const Contact &contact, QObject *parent) :
-		QObject(parent), MyContact(contact), Timer(0)
+AvatarJobRunner::AvatarJobRunner(const Contact &contact, QObject *parent)
+        : QObject(parent), MyContact(contact), Timer(0)
 {
 }
 
@@ -40,55 +40,55 @@ AvatarJobRunner::~AvatarJobRunner()
 
 void AvatarJobRunner::setAvatarManager(AvatarManager *avatarManager)
 {
-	m_avatarManager = avatarManager;
+    m_avatarManager = avatarManager;
 }
 
 void AvatarJobRunner::runJob()
 {
-	AvatarService *service = AvatarService::fromAccount(MyContact.contactAccount());
-	if (!service)
-	{
-		emit jobFinished(false);
-		deleteLater();
+    AvatarService *service = AvatarService::fromAccount(MyContact.contactAccount());
+    if (!service)
+    {
+        emit jobFinished(false);
+        deleteLater();
 
-		return;
-	}
+        return;
+    }
 
-	AvatarDownloader *avatarDownloader = service->createAvatarDownloader();
-	if (!avatarDownloader)
-	{
-		emit jobFinished(false);
-		deleteLater();
+    AvatarDownloader *avatarDownloader = service->createAvatarDownloader();
+    if (!avatarDownloader)
+    {
+        emit jobFinished(false);
+        deleteLater();
 
-		return;
-	}
+        return;
+    }
 
-	connect(avatarDownloader, SIGNAL(avatarDownloaded(bool,QImage)), this, SLOT(avatarDownloaded(bool,QImage)));
-	avatarDownloader->downloadAvatar(MyContact.id());
+    connect(avatarDownloader, SIGNAL(avatarDownloaded(bool, QImage)), this, SLOT(avatarDownloaded(bool, QImage)));
+    avatarDownloader->downloadAvatar(MyContact.id());
 
-	Timer = new QTimer(this);
-	connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));
-	Timer->start(15000);
+    Timer = new QTimer(this);
+    connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    Timer->start(15000);
 }
 
 void AvatarJobRunner::avatarDownloaded(bool ok, QImage avatar)
 {
-	if (Timer)
-		Timer->stop();
+    if (Timer)
+        Timer->stop();
 
-	Avatar contactAvatar = m_avatarManager->byContact(MyContact, ActionCreateAndAdd);
-	contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-	contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
-	contactAvatar.setPixmap(QPixmap::fromImage(avatar));
+    Avatar contactAvatar = m_avatarManager->byContact(MyContact, ActionCreateAndAdd);
+    contactAvatar.setLastUpdated(QDateTime::currentDateTime());
+    contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
+    contactAvatar.setPixmap(QPixmap::fromImage(avatar));
 
-	emit jobFinished(ok);
-	deleteLater();
+    emit jobFinished(ok);
+    deleteLater();
 }
 
 void AvatarJobRunner::timeout()
 {
-	emit jobFinished(false);
-	deleteLater();
+    emit jobFinished(false);
+    deleteLater();
 }
 
 #include "moc_avatar-job-runner.cpp"

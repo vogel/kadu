@@ -33,30 +33,29 @@ class QCheckBox;
 
 class KADUAPI BuddyOptionsConfigurationWidget : public QWidget, ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	Buddy MyBuddy;
+    Buddy MyBuddy;
 
-	QCheckBox *BlockCheckBox;
-	QCheckBox *OfflineToCheckBox;
-	QCheckBox *NotifyCheckBox;
-	QCheckBox *HideDescriptionCheckBox;
+    QCheckBox *BlockCheckBox;
+    QCheckBox *OfflineToCheckBox;
+    QCheckBox *NotifyCheckBox;
+    QCheckBox *HideDescriptionCheckBox;
 
-	void createGui();
+    void createGui();
 
 private slots:
-	void updateOfflineTo();
-	void offlineToToggled(bool toggled);
+    void updateOfflineTo();
+    void offlineToToggled(bool toggled);
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	explicit BuddyOptionsConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
-	virtual ~BuddyOptionsConfigurationWidget();
+    explicit BuddyOptionsConfigurationWidget(const Buddy &buddy, QWidget *parent = nullptr);
+    virtual ~BuddyOptionsConfigurationWidget();
 
-	void save();
-
+    void save();
 };
 
-#endif // BUDDY_OPTIONS_CONFIGURATION_WIDGET_H
+#endif   // BUDDY_OPTIONS_CONFIGURATION_WIDGET_H

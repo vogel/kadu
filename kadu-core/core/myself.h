@@ -33,27 +33,26 @@ class InjectorProvider;
 
 class KADUAPI Myself : public QObject, private ConfigurationAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit Myself(QObject *parent = nullptr);
-	virtual ~Myself();
+    Q_INVOKABLE explicit Myself(QObject *parent = nullptr);
+    virtual ~Myself();
 
-	Buddy buddy();
+    Buddy buddy();
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectorProvider> m_injectorProvider;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectorProvider> m_injectorProvider;
 
-	Buddy m_buddy;
+    Buddy m_buddy;
 
-	void makeMyself();
+    void makeMyself();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectorProvider(InjectorProvider *injectorProvider);
 };

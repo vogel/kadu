@@ -36,58 +36,57 @@ class RosterReplacer;
 
 class GaduRosterService : public RosterService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduRosterService(GaduListHelper *gaduListHelper, const QVector<Contact> &contacts, Protocol *protocol);
-	virtual ~GaduRosterService();
+    explicit GaduRosterService(GaduListHelper *gaduListHelper, const QVector<Contact> &contacts, Protocol *protocol);
+    virtual ~GaduRosterService();
 
-	void setConnection(GaduConnection *connection);
+    void setConnection(GaduConnection *connection);
 
-	void prepareRoster();
+    void prepareRoster();
 
 signals:
-	// state machine signals
-	void stateMachinePutFinished();
-	void stateMachinePutFailed();
+    // state machine signals
+    void stateMachinePutFinished();
+    void stateMachinePutFailed();
 
-	void stateMachineGetFinished();
-	void stateMachineGetFailed();
+    void stateMachineGetFinished();
+    void stateMachineGetFailed();
 
-	void stateMachineLocalDirty();
-	void stateMachineRemoteDirty();
+    void stateMachineLocalDirty();
+    void stateMachineRemoteDirty();
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
+    QPointer<BuddyManager> m_buddyManager;
 
-	QPointer<GaduConnection> m_connection;
-	QPointer<RosterNotifier> m_rosterNotifier;
-	QPointer<RosterReplacer> m_rosterReplacer;
-	GaduRosterStateMachine *m_stateMachine;
-	QVector<Contact> m_synchronizingContacts;
+    QPointer<GaduConnection> m_connection;
+    QPointer<RosterNotifier> m_rosterNotifier;
+    QPointer<RosterReplacer> m_rosterReplacer;
+    GaduRosterStateMachine *m_stateMachine;
+    QVector<Contact> m_synchronizingContacts;
 
-	GaduListHelper *m_gaduListHelper;
+    GaduListHelper *m_gaduListHelper;
 
-	friend class GaduProtocolSocketNotifiers;
-	void handleEventUserlist100Version(struct gg_event *e);
-	void handleEventUserlist100PutReply(struct gg_event *e);
-	void handleEventUserlist100GetReply(struct gg_event *e);
-	void handleEventUserlist100Reply(struct gg_event *e);
+    friend class GaduProtocolSocketNotifiers;
+    void handleEventUserlist100Version(struct gg_event *e);
+    void handleEventUserlist100PutReply(struct gg_event *e);
+    void handleEventUserlist100GetReply(struct gg_event *e);
+    void handleEventUserlist100Reply(struct gg_event *e);
 
-	void putFinished(bool ok);
-	void getFinished(bool ok);
+    void putFinished(bool ok);
+    void getFinished(bool ok);
 
-	bool haveToAskForAddingContacts() const;
-	void markSynchronizingAsSynchronized();
+    bool haveToAskForAddingContacts() const;
+    void markSynchronizingAsSynchronized();
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setRosterNotifier(RosterNotifier *rosterNotifier);
-	INJEQT_SET void setRosterReplacer(RosterReplacer *rosterReplacer);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setRosterNotifier(RosterNotifier *rosterNotifier);
+    INJEQT_SET void setRosterReplacer(RosterReplacer *rosterReplacer);
+    INJEQT_INIT void init();
 
-	void exportContactList();
-	void importContactList();
-	void rosterChanged();
-
+    void exportContactList();
+    void importContactList();
+    void rosterChanged();
 };

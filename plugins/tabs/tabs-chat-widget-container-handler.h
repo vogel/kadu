@@ -20,8 +20,8 @@
 
 #pragma once
 
-#include "widgets/chat-widget/chat-widget-container-handler.h"
 #include "injeqt-type-roles.h"
+#include "widgets/chat-widget/chat-widget-container-handler.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
@@ -33,29 +33,29 @@ enum class OpenChatActivation;
 
 class TabsChatWidgetContainerHandler : public ChatWidgetContainerHandler
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit TabsChatWidgetContainerHandler(QObject *parent = nullptr);
-	virtual ~TabsChatWidgetContainerHandler();
+    Q_INVOKABLE explicit TabsChatWidgetContainerHandler(QObject *parent = nullptr);
+    virtual ~TabsChatWidgetContainerHandler();
 
-	virtual bool acceptChat(Chat chat) const override;
-	virtual ChatWidget * addChat(Chat chat, OpenChatActivation activation) override;
-	virtual void removeChat(Chat chat) override;
+    virtual bool acceptChat(Chat chat) const override;
+    virtual ChatWidget *addChat(Chat chat, OpenChatActivation activation) override;
+    virtual void removeChat(Chat chat) override;
 
-	virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
-	virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
-	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
+    virtual bool isChatWidgetActive(ChatWidget *chatWidget) override;
+    virtual void tryActivateChatWidget(ChatWidget *chatWidget) override;
+    virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) override;
 
 private:
-	QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
-	QPointer<TabsManager> m_tabsManager;
+    QPointer<ChatWidgetContainerHandlerRepository> m_chatWidgetContainerHandlerRepository;
+    QPointer<TabsManager> m_tabsManager;
 
 private slots:
-	INJEQT_SET void setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
-	INJEQT_SET void setTabsManager(TabsManager *tabsManager);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-
+    INJEQT_SET void
+    setChatWidgetContainerHandlerRepository(ChatWidgetContainerHandlerRepository *chatWidgetContainerHandlerRepository);
+    INJEQT_SET void setTabsManager(TabsManager *tabsManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 };

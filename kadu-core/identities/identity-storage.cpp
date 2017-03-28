@@ -25,8 +25,7 @@
 
 #include <QtWidgets/QApplication>
 
-IdentityStorage::IdentityStorage(QObject *parent) :
-		QObject{parent}
+IdentityStorage::IdentityStorage(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,29 +35,29 @@ IdentityStorage::~IdentityStorage()
 
 void IdentityStorage::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 Identity IdentityStorage::create()
 {
-	return m_injectedFactory->makeInjected<IdentityShared>();
+    return m_injectedFactory->makeInjected<IdentityShared>();
 }
 
 Identity IdentityStorage::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<IdentityShared>();
-	result->setStorage(storagePoint);
-	result->loadStub();
+    auto result = m_injectedFactory->makeInjected<IdentityShared>();
+    result->setStorage(storagePoint);
+    result->loadStub();
 
-	return result;
+    return result;
 }
 
 Identity IdentityStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
-	auto result = m_injectedFactory->makeInjected<IdentityShared>();
-	result->setStorage(storagePoint);
+    auto result = m_injectedFactory->makeInjected<IdentityShared>();
+    result->setStorage(storagePoint);
 
-	return result;
+    return result;
 }
 
 #include "moc_identity-storage.cpp"

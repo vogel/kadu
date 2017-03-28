@@ -47,35 +47,34 @@ class QTextEdit;
 
 class SMSAPI SmsConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
+    QPointer<Configuration> m_configuration;
 
-	QCheckBox *useBuiltIn;
-	QLineEdit *customApp;
-	QCheckBox *useCustomString;
-	QLineEdit *customString;
-	ConfigComboBox *EraGatewayComboBox;
-	ConfigLineEdit *EraSponsoredUser;
-	ConfigLineEdit *EraSponsoredPassword;
-	ConfigLineEdit *EraOmnixUser;
-	ConfigLineEdit *EraOmnixPassword;
+    QCheckBox *useBuiltIn;
+    QLineEdit *customApp;
+    QCheckBox *useCustomString;
+    QLineEdit *customString;
+    ConfigComboBox *EraGatewayComboBox;
+    ConfigLineEdit *EraSponsoredUser;
+    ConfigLineEdit *EraSponsoredPassword;
+    ConfigLineEdit *EraOmnixUser;
+    ConfigLineEdit *EraOmnixPassword;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 
-	void onSmsBuildInCheckToggle(bool);
-	void onEraGatewayChanged(int);
+    void onSmsBuildInCheckToggle(bool);
+    void onEraGatewayChanged(int);
 
 public:
-	Q_INVOKABLE explicit SmsConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~SmsConfigurationUiHandler();
+    Q_INVOKABLE explicit SmsConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~SmsConfigurationUiHandler();
 
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };

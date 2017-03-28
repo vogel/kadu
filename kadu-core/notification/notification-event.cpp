@@ -25,29 +25,28 @@ NotificationEvent::NotificationEvent()
 {
 }
 
-NotificationEvent::NotificationEvent(QString name, QString description) :
-		m_name{std::move(name)},
-		m_description{std::move(description)}
+NotificationEvent::NotificationEvent(QString name, QString description)
+        : m_name{std::move(name)}, m_description{std::move(description)}
 {
 }
 
 QString NotificationEvent::name() const
 {
-	return m_name;
+    return m_name;
 }
 
 QString NotificationEvent::category() const
 {
-	auto index = m_name.indexOf("/");
-	return (index > 0) ? m_name.left(index) : QString();
+    auto index = m_name.indexOf("/");
+    return (index > 0) ? m_name.left(index) : QString();
 }
 
 QString NotificationEvent::description() const
 {
-	return m_description;
+    return m_description;
 }
 
-bool operator == (const NotificationEvent &x, const NotificationEvent &y)
+bool operator==(const NotificationEvent &x, const NotificationEvent &y)
 {
-	return x.name() == y.name();
+    return x.name() == y.name();
 }

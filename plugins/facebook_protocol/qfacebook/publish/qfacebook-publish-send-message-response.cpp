@@ -26,26 +26,26 @@
 
 QFacebookPublishSendMessageResponse QFacebookPublishSendMessageResponse::decode(const QByteArray &content)
 {
-	auto result = QFacebookPublishSendMessageResponse{};
-	auto jsonReader = QFacebookJsonReader{content};
-	result.succeeded = jsonReader.readBool("succeeded");
-	result.msgid = jsonReader.readMsgId("msgid");
-	result.err = jsonReader.readInt("errno");
-	result.isRetryable = jsonReader.readBool("isRetryable");
+    auto result = QFacebookPublishSendMessageResponse{};
+    auto jsonReader = QFacebookJsonReader{content};
+    result.succeeded = jsonReader.readBool("succeeded");
+    result.msgid = jsonReader.readMsgId("msgid");
+    result.err = jsonReader.readInt("errno");
+    result.isRetryable = jsonReader.readBool("isRetryable");
 
-	return result;
+    return result;
 }
 
 QByteArray QFacebookPublishSendMessageResponse::encode()
 {
-	auto json = QJsonObject{};
-	json.insert("succeeded", succeeded);
-	json.insert("msgid", static_cast<double>(msgid));
-	json.insert("errno", err);
-	json.insert("isRetryable", isRetryable);
+    auto json = QJsonObject{};
+    json.insert("succeeded", succeeded);
+    json.insert("msgid", static_cast<double>(msgid));
+    json.insert("errno", err);
+    json.insert("isRetryable", isRetryable);
 
-	auto document = QJsonDocument{};
-	document.setObject(json);
+    auto document = QJsonDocument{};
+    document.setObject(json);
 
-	return document.toJson(QJsonDocument::Compact);
+    return document.toJson(QJsonDocument::Compact);
 }

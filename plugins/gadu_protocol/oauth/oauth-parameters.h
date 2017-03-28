@@ -27,59 +27,58 @@
 
 class OAuthParameters
 {
-	OAuthConsumer Consumer;
-	QString HttpMethod;
-	QString Url;
-	QString SignatureMethod;
-	QString Nonce;
-	QString Timestamp;
-	QString Version;
-	QString Realm;
-	QByteArray Signature;
-	OAuthToken Token;
+    OAuthConsumer Consumer;
+    QString HttpMethod;
+    QString Url;
+    QString SignatureMethod;
+    QString Nonce;
+    QString Timestamp;
+    QString Version;
+    QString Realm;
+    QByteArray Signature;
+    OAuthToken Token;
 
 public:
-	static QString createUniqueNonce();
-	static QString createTimestamp();
+    static QString createUniqueNonce();
+    static QString createTimestamp();
 
-	OAuthParameters();
-	OAuthParameters(const OAuthConsumer &consumer, const OAuthToken &token);
+    OAuthParameters();
+    OAuthParameters(const OAuthConsumer &consumer, const OAuthToken &token);
 
-	void setConsumer(const OAuthConsumer &consumer);
-	const OAuthConsumer & consumer() const;
+    void setConsumer(const OAuthConsumer &consumer);
+    const OAuthConsumer &consumer() const;
 
-	void setHttpMethod(const QString &httpMethod);
-	const QString & httpMethod() const;
+    void setHttpMethod(const QString &httpMethod);
+    const QString &httpMethod() const;
 
-	void setUrl(const QString &url);
-	const QString & url() const;
+    void setUrl(const QString &url);
+    const QString &url() const;
 
-	void setSignatureMethod(const QString &signatureMethod);
-	const QString & signatureMethod() const;
+    void setSignatureMethod(const QString &signatureMethod);
+    const QString &signatureMethod() const;
 
-	void setNonce(const QString &nonce);
-	const QString & nonce() const;
+    void setNonce(const QString &nonce);
+    const QString &nonce() const;
 
-	void setTimestamp(const QString &timestamp);
-	const QString & timestamp() const;
+    void setTimestamp(const QString &timestamp);
+    const QString &timestamp() const;
 
-	void setVerison(const QString &version);
-	const QString & version() const;
+    void setVerison(const QString &version);
+    const QString &version() const;
 
-	void setRealm(const QString &realm);
-	const QString & realm() const;
+    void setRealm(const QString &realm);
+    const QString &realm() const;
 
-	void setSignature(const QByteArray &signature);
-	const QByteArray & signature() const;
+    void setSignature(const QByteArray &signature);
+    const QByteArray &signature() const;
 
-	void setToken(const OAuthToken &token);
-	const OAuthToken & token() const;
+    void setToken(const OAuthToken &token);
+    const OAuthToken &token() const;
 
-	void sign();
+    void sign();
 
-	QByteArray toSignatureBase();
-	QByteArray toAuthorizationHeader();
-
+    QByteArray toSignatureBase();
+    QByteArray toAuthorizationHeader();
 };
 
-#endif // OAUTH_PARAMETERS_H
+#endif   // OAUTH_PARAMETERS_H

@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-MediaplayerPluginModulesFactory::MediaplayerPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+MediaplayerPluginModulesFactory::MediaplayerPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ MediaplayerPluginModulesFactory::~MediaplayerPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> MediaplayerPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<MediaplayerModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<MediaplayerModule>());
 
-	return modules;
+    return modules;
 }
 
 QString MediaplayerPluginModulesFactory::parentInjectorName() const
 {
-	return "docking";
+    return "docking";
 }
 
 #include "moc_mediaplayer-plugin-modules-factory.cpp"

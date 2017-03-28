@@ -42,47 +42,46 @@
  */
 class StandardUrlExpanderConfiguration
 {
-	bool FoldLink;
-	int FoldLinkThreshold;
+    bool FoldLink;
+    int FoldLinkThreshold;
 
 public:
-	StandardUrlExpanderConfiguration();
-	StandardUrlExpanderConfiguration(const StandardUrlExpanderConfiguration &copyMe);
+    StandardUrlExpanderConfiguration();
+    StandardUrlExpanderConfiguration(const StandardUrlExpanderConfiguration &copyMe);
 
-	StandardUrlExpanderConfiguration & operator = (const StandardUrlExpanderConfiguration &copyMe);
+    StandardUrlExpanderConfiguration &operator=(const StandardUrlExpanderConfiguration &copyMe);
 
-	/**
-	 * @short Set value of foldLink property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param autoRespondText new value of foldLink property
-	 */
-	void setFoldLink(bool foldLink);
+    /**
+     * @short Set value of foldLink property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param autoRespondText new value of foldLink property
+     */
+    void setFoldLink(bool foldLink);
 
-	/**
-	 * @short Return value of foldLink property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of foldLink property
-	 */
-	bool foldLink() const;
+    /**
+     * @short Return value of foldLink property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of foldLink property
+     */
+    bool foldLink() const;
 
-	/**
-	 * @short Set value of foldLinkThreshold property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param foldLinkThreshold new value of foldLinkThreshold property
-	 */
-	void setFoldLinkThreshold(int foldLinkThreshold);
+    /**
+     * @short Set value of foldLinkThreshold property.
+     * @author Rafał 'Vogel' Malinowski
+     * @param foldLinkThreshold new value of foldLinkThreshold property
+     */
+    void setFoldLinkThreshold(int foldLinkThreshold);
 
-	/**
-	 * @short Return value of foldLinkThreshold property.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return value of foldLinkThreshold property
-	 */
-	int foldLinkThreshold() const;
-
+    /**
+     * @short Return value of foldLinkThreshold property.
+     * @author Rafał 'Vogel' Malinowski
+     * @return value of foldLinkThreshold property
+     */
+    int foldLinkThreshold() const;
 };
 
 /**
  * @}
  */
 
-#endif // STANDARD_URL_EXPANDER_CONFIGURATION_H
+#endif   // STANDARD_URL_EXPANDER_CONFIGURATION_H

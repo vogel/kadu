@@ -28,17 +28,16 @@ class WindowsIntegration;
 
 class WindowsIntegrationPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit WindowsIntegrationPluginObject(QObject *parent = nullptr);
-	virtual ~WindowsIntegrationPluginObject();
+    Q_INVOKABLE explicit WindowsIntegrationPluginObject(QObject *parent = nullptr);
+    virtual ~WindowsIntegrationPluginObject();
 
 private:
-	QPointer<WindowsIntegration> m_windowsIntegration;
+    QPointer<WindowsIntegration> m_windowsIntegration;
 
 private slots:
-	INJEQT_SET void setWindowsIntegration(WindowsIntegration *windowsIntegration);
-
+    INJEQT_SET void setWindowsIntegration(WindowsIntegration *windowsIntegration);
 };

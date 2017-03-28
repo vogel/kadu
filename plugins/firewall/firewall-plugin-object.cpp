@@ -29,8 +29,7 @@
 #include "windows/main-configuration-window-service.h"
 #include "windows/main-configuration-window.h"
 
-FirewallPluginObject::FirewallPluginObject(QObject *parent) :
-		QObject{parent}
+FirewallPluginObject::FirewallPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -38,48 +37,53 @@ FirewallPluginObject::~FirewallPluginObject()
 {
 }
 
-void FirewallPluginObject::setConfigurationUiHandlerRepository(ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
+void FirewallPluginObject::setConfigurationUiHandlerRepository(
+    ConfigurationUiHandlerRepository *configurationUiHandlerRepository)
 {
-	m_configurationUiHandlerRepository = configurationUiHandlerRepository;
+    m_configurationUiHandlerRepository = configurationUiHandlerRepository;
 }
 
-void FirewallPluginObject::setFirewallConfigurationUiHandler(FirewallConfigurationUiHandler *firewallConfigurationUiHandler)
+void FirewallPluginObject::setFirewallConfigurationUiHandler(
+    FirewallConfigurationUiHandler *firewallConfigurationUiHandler)
 {
-	m_firewallConfigurationUiHandler = firewallConfigurationUiHandler;
+    m_firewallConfigurationUiHandler = firewallConfigurationUiHandler;
 }
 
 void FirewallPluginObject::setFirewallMessageFilter(FirewallMessageFilter *firewallMessageFilter)
 {
-	m_firewallMessageFilter = firewallMessageFilter;
+    m_firewallMessageFilter = firewallMessageFilter;
 }
 
-void FirewallPluginObject::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void FirewallPluginObject::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void FirewallPluginObject::setMessageFilterService(MessageFilterService *messageFilterService)
 {
-	m_messageFilterService = messageFilterService;
+    m_messageFilterService = messageFilterService;
 }
 
 void FirewallPluginObject::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void FirewallPluginObject::init()
 {
-	m_mainConfigurationWindowService->registerUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/firewall.ui"));
-	m_configurationUiHandlerRepository->addConfigurationUiHandler(m_firewallConfigurationUiHandler);
-	m_messageFilterService->registerMessageFilter(m_firewallMessageFilter);
+    m_mainConfigurationWindowService->registerUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/firewall.ui"));
+    m_configurationUiHandlerRepository->addConfigurationUiHandler(m_firewallConfigurationUiHandler);
+    m_messageFilterService->registerMessageFilter(m_firewallMessageFilter);
 }
 
 void FirewallPluginObject::done()
 {
-	m_messageFilterService->unregisterMessageFilter(m_firewallMessageFilter);
-	m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_firewallConfigurationUiHandler);
-	m_mainConfigurationWindowService->unregisterUiFile(m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/firewall.ui"));
+    m_messageFilterService->unregisterMessageFilter(m_firewallMessageFilter);
+    m_configurationUiHandlerRepository->removeConfigurationUiHandler(m_firewallConfigurationUiHandler);
+    m_mainConfigurationWindowService->unregisterUiFile(
+        m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/firewall.ui"));
 }
 
 #include "moc_firewall-plugin-object.cpp"

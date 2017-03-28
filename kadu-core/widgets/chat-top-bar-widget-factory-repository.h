@@ -20,30 +20,29 @@
 #ifndef CHAT_TOP_BAR_WIDGET_FACTORY_REPOSITORY_H
 #define CHAT_TOP_BAR_WIDGET_FACTORY_REPOSITORY_H
 
-#include <QtCore/QObject>
 #include "exports.h"
+#include <QtCore/QObject>
 
 class ChatTopBarWidgetFactory;
 
 class KADUAPI ChatTopBarWidgetFactoryRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QList<ChatTopBarWidgetFactory *> Factories;
+    QList<ChatTopBarWidgetFactory *> Factories;
 
 public:
-	Q_INVOKABLE explicit ChatTopBarWidgetFactoryRepository(QObject *parent = nullptr);
-	virtual ~ChatTopBarWidgetFactoryRepository();
+    Q_INVOKABLE explicit ChatTopBarWidgetFactoryRepository(QObject *parent = nullptr);
+    virtual ~ChatTopBarWidgetFactoryRepository();
 
-	void registerFactory(ChatTopBarWidgetFactory *factory);
-	void unregisterFactory(ChatTopBarWidgetFactory *factory);
+    void registerFactory(ChatTopBarWidgetFactory *factory);
+    void unregisterFactory(ChatTopBarWidgetFactory *factory);
 
-	QList<ChatTopBarWidgetFactory *> factories() const;
+    QList<ChatTopBarWidgetFactory *> factories() const;
 
 signals:
-	void factoryRegistered(ChatTopBarWidgetFactory *factory);
-	void factoryUnregistered(ChatTopBarWidgetFactory *factory);
-
+    void factoryRegistered(ChatTopBarWidgetFactory *factory);
+    void factoryUnregistered(ChatTopBarWidgetFactory *factory);
 };
 
-#endif // CHAT_TOP_BAR_WIDGET_FACTORY_REPOSITORY_H
+#endif   // CHAT_TOP_BAR_WIDGET_FACTORY_REPOSITORY_H

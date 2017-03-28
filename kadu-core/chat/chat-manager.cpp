@@ -24,8 +24,7 @@
 
 #include "chat-manager.h"
 
-ChatManager::ChatManager(QObject *parent) :
-		Manager<Chat>{parent}
+ChatManager::ChatManager(QObject *parent) : Manager<Chat>{parent}
 {
 }
 
@@ -35,22 +34,22 @@ ChatManager::~ChatManager()
 
 void ChatManager::itemAboutToBeAdded(Chat item)
 {
-	emit chatAboutToBeAdded(item);
+    emit chatAboutToBeAdded(item);
 }
 
 void ChatManager::itemAdded(Chat item)
 {
-	emit chatAdded(item);
+    emit chatAdded(item);
 }
 
 void ChatManager::itemAboutToBeRemoved(Chat item)
 {
-	emit chatAboutToBeRemoved(item);
+    emit chatAboutToBeRemoved(item);
 }
 
 void ChatManager::itemRemoved(Chat item)
 {
-	emit chatRemoved(item);
+    emit chatRemoved(item);
 }
 
 #include "moc_chat-manager.cpp"

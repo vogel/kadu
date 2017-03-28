@@ -50,8 +50,8 @@
  * be assigned to this object, if not, new unique id will be
  * created.
  */
-ChatShared::ChatShared(const QUuid &uuid) :
-		Shared(uuid), ChatAccount{nullptr}, Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
+ChatShared::ChatShared(const QUuid &uuid)
+        : Shared(uuid), ChatAccount{nullptr}, Details(0), IgnoreAllMessages(false), UnreadMessagesCount(0), Open(false)
 {
 }
 
@@ -64,43 +64,43 @@ ChatShared::ChatShared(const QUuid &uuid) :
  */
 ChatShared::~ChatShared()
 {
-	ref.ref();
+    ref.ref();
 
-	delete ChatAccount;
-	if (Details)
-		delete Details;
+    delete ChatAccount;
+    if (Details)
+        delete Details;
 }
 
 void ChatShared::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void ChatShared::setChatManager(ChatManager *chatManager)
 {
-	m_chatManager = chatManager;
+    m_chatManager = chatManager;
 }
 
 void ChatShared::setChatTypeManager(ChatTypeManager *chatTypeManager)
 {
-	m_chatTypeManager = chatTypeManager;
+    m_chatTypeManager = chatTypeManager;
 }
 
 void ChatShared::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void ChatShared::setGroupManager(GroupManager *groupManager)
 {
-	m_groupManager = groupManager;
+    m_groupManager = groupManager;
 }
 
 void ChatShared::init()
 {
-	ChatAccount = new Account();
+    ChatAccount = new Account();
 
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+    connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 /**
@@ -110,9 +110,9 @@ void ChatShared::init()
  *
  * Returns parent storage node for this object - @link ChatManager @endlink node.
  */
-StorableObject * ChatShared::storageParent()
+StorableObject *ChatShared::storageParent()
 {
-	return m_chatManager;
+    return m_chatManager;
 }
 
 /**
@@ -124,7 +124,7 @@ StorableObject * ChatShared::storageParent()
  */
 QString ChatShared::storageNodeName()
 {
-	return QStringLiteral("Chat");
+    return QStringLiteral("Chat");
 }
 
 /**
@@ -140,45 +140,45 @@ QString ChatShared::storageNodeName()
  */
 void ChatShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement parent = storage()->point();
+    ConfigurationApi *configurationStorage = storage()->storage();
+    QDomElement parent = storage()->point();
 
-	Groups.clear();
+    Groups.clear();
 
-	QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeFind);
-	if (!groupsNode.isNull())
-	{
-		QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
+    QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeFind);
+    if (!groupsNode.isNull())
+    {
+        QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
 
-		int count = groupsList.count();
-		for (int i = 0; i < count; i++)
-		{
-			QDomElement groupElement = groupsList.at(i).toElement();
-			if (groupElement.isNull())
-				continue;
-			doAddToGroup(m_groupManager->byUuid(groupElement.text()));
-		}
-	}
+        int count = groupsList.count();
+        for (int i = 0; i < count; i++)
+        {
+            QDomElement groupElement = groupsList.at(i).toElement();
+            if (groupElement.isNull())
+                continue;
+            doAddToGroup(m_groupManager->byUuid(groupElement.text()));
+        }
+    }
 
-	*ChatAccount = m_accountManager->byUuid(QUuid(loadValue<QString>("Account")));
-	Display = loadValue<QString>("Display");
-	auto type = loadValue<QString>("Type");
+    *ChatAccount = m_accountManager->byUuid(QUuid(loadValue<QString>("Account")));
+    Display = loadValue<QString>("Display");
+    auto type = loadValue<QString>("Type");
 
-	// import from alias to new name of chat type
-	ChatType *chatType = m_chatTypeManager->chatType(type);
-	if (chatType)
-		type = chatType->name();
+    // import from alias to new name of chat type
+    ChatType *chatType = m_chatTypeManager->chatType(type);
+    if (chatType)
+        type = chatType->name();
 
-	// we should not have display names for Contact chats
-	if (type == "Contact")
-		Display.clear();
+    // we should not have display names for Contact chats
+    if (type == "Contact")
+        Display.clear();
 
-	setType(type);
+    setType(type);
 }
 
 /**
@@ -189,37 +189,37 @@ void ChatShared::load()
  */
 void ChatShared::store()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::store();
+    Shared::store();
 
-	ConfigurationApi *configurationStorage = storage()->storage();
-	QDomElement parent = storage()->point();
+    ConfigurationApi *configurationStorage = storage()->storage();
+    QDomElement parent = storage()->point();
 
-	storeValue("Account", ChatAccount->uuid().toString());
-	storeValue("Display", Display);
+    storeValue("Account", ChatAccount->uuid().toString());
+    storeValue("Display", Display);
 
-	// import from alias to new name of chat type
-	ChatType *chatType = m_chatTypeManager->chatType(Type);
-	if (chatType)
-		Type = chatType->name();
+    // import from alias to new name of chat type
+    ChatType *chatType = m_chatTypeManager->chatType(Type);
+    if (chatType)
+        Type = chatType->name();
 
-	storeValue("Type", Type);
+    storeValue("Type", Type);
 
-	if (!Groups.isEmpty())
-	{
-		QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeCreate);
-		foreach (const Group &group, Groups)
-			configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
-	}
-	else
-		configurationStorage->removeNode(parent, "ChatGroups");
+    if (!Groups.isEmpty())
+    {
+        QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeCreate);
+        foreach (const Group &group, Groups)
+            configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
+    }
+    else
+        configurationStorage->removeNode(parent, "ChatGroups");
 
-	if (Details)
-		Details->ensureStored();
+    if (Details)
+        Details->ensureStored();
 }
 
 /**
@@ -231,22 +231,20 @@ void ChatShared::store()
  */
 bool ChatShared::shouldStore()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (type().isEmpty())
-		return false;
+    if (type().isEmpty())
+        return false;
 
-	// we dont need data for non-roster contacts only from 4 version of sql schema
-	if (m_configuration->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
-		return true;
+    // we dont need data for non-roster contacts only from 4 version of sql schema
+    if (m_configuration->deprecatedApi()->readNumEntry("History", "Schema", 0) < 4)
+        return true;
 
-	if (customProperties()->shouldStore())
-		return true;
+    if (customProperties()->shouldStore())
+        return true;
 
-	return UuidStorableObject::shouldStore()
-			&& !ChatAccount->uuid().isNull()
-			&& (!Details || Details->shouldStore())
-			&& (!Display.isEmpty() && type() != "Contact");
+    return UuidStorableObject::shouldStore() && !ChatAccount->uuid().isNull() && (!Details || Details->shouldStore()) &&
+           (!Display.isEmpty() && type() != "Contact");
 }
 
 /**
@@ -258,39 +256,39 @@ bool ChatShared::shouldStore()
  */
 void ChatShared::aboutToBeRemoved()
 {
-	if (ChatAccount)
-		*ChatAccount = Account::null;
-	Groups.clear();
+    if (ChatAccount)
+        *ChatAccount = Account::null;
+    Groups.clear();
 
-	if (Details)
-	{
-		Details->ensureStored();
-		delete Details;
-		Details = 0;
-	}
+    if (Details)
+    {
+        Details->ensureStored();
+        delete Details;
+        Details = 0;
+    }
 }
 
 void ChatShared::loadDetails()
 {
-	auto chatType = m_chatTypeManager->chatType(type());
-	if (!chatType)
-		return;
+    auto chatType = m_chatTypeManager->chatType(type());
+    if (!chatType)
+        return;
 
-	if (!Details)
-	{
-		Details = chatType->createChatDetails(this);
-		if (!Details)
-			return;
+    if (!Details)
+    {
+        Details = chatType->createChatDetails(this);
+        if (!Details)
+            return;
 
-		connect(Details, SIGNAL(connected()), this, SIGNAL(connected()));
-		connect(Details, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
-		connect(Details, SIGNAL(contactAboutToBeAdded(Contact)), this, SIGNAL(contactAboutToBeAdded(Contact)));
-		connect(Details, SIGNAL(contactAdded(Contact)), this, SIGNAL(contactAdded(Contact)));
-		connect(Details, SIGNAL(contactAboutToBeRemoved(Contact)), this, SIGNAL(contactAboutToBeRemoved(Contact)));
-		connect(Details, SIGNAL(contactRemoved(Contact)), this, SIGNAL(contactRemoved(Contact)));
+        connect(Details, SIGNAL(connected()), this, SIGNAL(connected()));
+        connect(Details, SIGNAL(disconnected()), this, SIGNAL(disconnected()));
+        connect(Details, SIGNAL(contactAboutToBeAdded(Contact)), this, SIGNAL(contactAboutToBeAdded(Contact)));
+        connect(Details, SIGNAL(contactAdded(Contact)), this, SIGNAL(contactAdded(Contact)));
+        connect(Details, SIGNAL(contactAboutToBeRemoved(Contact)), this, SIGNAL(contactAboutToBeRemoved(Contact)));
+        connect(Details, SIGNAL(contactRemoved(Contact)), this, SIGNAL(contactRemoved(Contact)));
 
-		Details->ensureLoaded();
-	}
+        Details->ensureLoaded();
+    }
 }
 
 /**
@@ -303,9 +301,9 @@ void ChatShared::loadDetails()
  */
 ContactSet ChatShared::contacts()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Details ? Details->contacts() : ContactSet();
+    return Details ? Details->contacts() : ContactSet();
 }
 
 /**
@@ -318,135 +316,135 @@ ContactSet ChatShared::contacts()
  */
 QString ChatShared::name()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Details ? Details->name() : QString();
+    return Details ? Details->name() : QString();
 }
 
 void ChatShared::setType(const QString &type)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Type == type)
-		return;
+    if (Type == type)
+        return;
 
-	if (Details)
-	{
-		Details->ensureStored();
-		delete Details;
-		Details = 0;
-	}
+    if (Details)
+    {
+        Details->ensureStored();
+        delete Details;
+        Details = 0;
+    }
 
-	Type = type;
-	loadDetails();
+    Type = type;
+    loadDetails();
 }
 
 void ChatShared::setGroups(const QSet<Group> &groups)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Groups == groups)
-		return;
+    if (Groups == groups)
+        return;
 
-	QSet<Group> groupsToRemove = Groups;
+    QSet<Group> groupsToRemove = Groups;
 
-	foreach (const Group &group, groups)
-		if (!groupsToRemove.remove(group))
-			doAddToGroup(group);
+    foreach (const Group &group, groups)
+        if (!groupsToRemove.remove(group))
+            doAddToGroup(group);
 
-	foreach (const Group &group, groupsToRemove)
-		doRemoveFromGroup(group);
+    foreach (const Group &group, groupsToRemove)
+        doRemoveFromGroup(group);
 
-	changeNotifier().notify();
+    changeNotifier().notify();
 }
 
 bool ChatShared::isInGroup(const Group &group)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	return Groups.contains(group);
+    return Groups.contains(group);
 }
 
 bool ChatShared::showInAllGroup()
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	foreach (const Group &group, Groups)
-		if (group && !group.showInAllGroup())
-			return false;
+    foreach (const Group &group, Groups)
+        if (group && !group.showInAllGroup())
+            return false;
 
-	return true;
+    return true;
 }
 
 bool ChatShared::doAddToGroup(const Group &group)
 {
-	if (!group || Groups.contains(group))
-		return false;
+    if (!group || Groups.contains(group))
+        return false;
 
-	Groups.insert(group);
-	connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
+    Groups.insert(group);
+    connect(group, SIGNAL(groupAboutToBeRemoved()), this, SLOT(groupAboutToBeRemoved()));
 
-	return true;
+    return true;
 }
 
 bool ChatShared::doRemoveFromGroup(const Group &group)
 {
-	if (!Groups.remove(group))
-		return false;
+    if (!Groups.remove(group))
+        return false;
 
-	disconnect(group, 0, this, 0);
+    disconnect(group, 0, this, 0);
 
-	return true;
+    return true;
 }
 
 void ChatShared::addToGroup(const Group &group)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (doAddToGroup(group))
-		changeNotifier().notify();
+    if (doAddToGroup(group))
+        changeNotifier().notify();
 }
 
 void ChatShared::removeFromGroup(const Group &group)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (doRemoveFromGroup(group))
-		changeNotifier().notify();
+    if (doRemoveFromGroup(group))
+        changeNotifier().notify();
 }
 
 void ChatShared::groupAboutToBeRemoved()
 {
-	Group group(sender());
-	if (!group.isNull())
-		removeFromGroup(group);
+    Group group(sender());
+    if (!group.isNull())
+        removeFromGroup(group);
 }
 
 KaduShared_PropertyPtrDefCRW(ChatShared, Account, chatAccount, ChatAccount);
 
 bool ChatShared::isConnected() const
 {
-	if (!Details)
-		return false;
+    if (!Details)
+        return false;
 
-	return Details->isConnected();
+    return Details->isConnected();
 }
 
 bool ChatShared::isOpen() const
 {
-	return Open;
+    return Open;
 }
 
 void ChatShared::setOpen(bool open)
 {
-	if (Open == open)
-		return;
+    if (Open == open)
+        return;
 
-	Open = open;
-	if (Open)
-		emit opened();
-	else
-		emit closed();
+    Open = open;
+    if (Open)
+        emit opened();
+    else
+        emit closed();
 }
 
 #include "moc_chat-shared.cpp"

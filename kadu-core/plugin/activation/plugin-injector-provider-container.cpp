@@ -22,16 +22,13 @@
 #include "plugin/plugin-injector-provider.h"
 
 PluginInjectorProviderContainer::PluginInjectorProviderContainer::PluginInjectorProviderContainer(
-	QString pluginName,
-	PluginInjectorProvider* pluginInjectorProvider,
-	injeqt::injector& injector) :
-		m_pluginName{std::move(pluginName)},
-		m_pluginInjectorProvider{pluginInjectorProvider}
+    QString pluginName, PluginInjectorProvider *pluginInjectorProvider, injeqt::injector &injector)
+        : m_pluginName{std::move(pluginName)}, m_pluginInjectorProvider{pluginInjectorProvider}
 {
-	m_pluginInjectorProvider->insert(m_pluginName, injector);
+    m_pluginInjectorProvider->insert(m_pluginName, injector);
 }
 
 PluginInjectorProviderContainer::~PluginInjectorProviderContainer()
 {
-	m_pluginInjectorProvider->remove(m_pluginName);
+    m_pluginInjectorProvider->remove(m_pluginName);
 }

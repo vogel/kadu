@@ -21,8 +21,8 @@
 
 #pragma once
 
-#include "storage/shared.h"
 #include "exports.h"
+#include "storage/shared.h"
 
 #include <QtNetwork/QHostAddress>
 #include <injeqt/injeqt.h>
@@ -31,42 +31,39 @@ class NetworkProxyManager;
 
 class KADUAPI NetworkProxyShared : public Shared
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit NetworkProxyShared(const QUuid &uuid = QUuid());
-	virtual ~NetworkProxyShared();
+    explicit NetworkProxyShared(const QUuid &uuid = QUuid());
+    virtual ~NetworkProxyShared();
 
-	virtual StorableObject * storageParent();
-	virtual QString storageNodeName();
+    virtual StorableObject *storageParent();
+    virtual QString storageNodeName();
 
-	KaduShared_Property(const QString &, type, Type)
-	KaduShared_Property(const QString &, address, Address)
-	KaduShared_Property(int, port, Port)
-	KaduShared_Property(const QString &, user, User)
-	KaduShared_Property(const QString &, password, Password)
-	KaduShared_Property(const QString &, pollingUrl, PollingUrl)
+    KaduShared_Property(const QString &, type, Type) KaduShared_Property(const QString &, address, Address)
+        KaduShared_Property(int, port, Port) KaduShared_Property(const QString &, user, User)
+            KaduShared_Property(const QString &, password, Password)
+                KaduShared_Property(const QString &, pollingUrl, PollingUrl)
 
-	QString displayName();
+                    QString displayName();
 
 signals:
-	void updated();
+    void updated();
 
 protected:
-	virtual void load();
-	virtual void store();
+    virtual void load();
+    virtual void store();
 
 private:
-	QPointer<NetworkProxyManager> m_networkProxyManager;
+    QPointer<NetworkProxyManager> m_networkProxyManager;
 
-	QString Type;
-	QString Address;
-	int Port;
-	QString User;
-	QString Password;
-	QString PollingUrl;
+    QString Type;
+    QString Address;
+    int Port;
+    QString User;
+    QString Password;
+    QString PollingUrl;
 
 private slots:
-	INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
-
+    INJEQT_SET void setNetworkProxyManager(NetworkProxyManager *networkProxyManager);
 };

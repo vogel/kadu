@@ -43,28 +43,27 @@ class StandardUrlExpander;
  */
 class StandardUrlExpanderConfigurator : private ConfigurationAwareObject
 {
-	QPointer<Configuration> m_configuration;
-	QPointer<StandardUrlExpander> ConfigurableStandardUrlExpander;
+    QPointer<Configuration> m_configuration;
+    QPointer<StandardUrlExpander> ConfigurableStandardUrlExpander;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 public:
-	StandardUrlExpanderConfigurator(Configuration *configuration);
+    StandardUrlExpanderConfigurator(Configuration *configuration);
 
-	/**
-	 * @short Sets StandardUrlExpander to configure.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param standardUrlExpander standardUrlExpander to configured
-	 */
-	void setStandardUrlExpander(StandardUrlExpander *standardUrlExpander);
-
+    /**
+     * @short Sets StandardUrlExpander to configure.
+     * @author Rafał 'Vogel' Malinowski
+     * @param standardUrlExpander standardUrlExpander to configured
+     */
+    void setStandardUrlExpander(StandardUrlExpander *standardUrlExpander);
 };
 
 /**
  * @}
  */
 
-#endif // STANDARD_URL_EXPANDER_CONFIGURATOR_H
+#endif   // STANDARD_URL_EXPANDER_CONFIGURATOR_H

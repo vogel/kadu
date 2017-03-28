@@ -34,12 +34,11 @@
 
 #include "sms-internal-sender.h"
 
-SmsInternalSender::SmsInternalSender(SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number, const SmsGateway &gateway, QObject *parent) :
-		SmsSender{number, parent},
-		m_smsGatewayManager{smsGatewayManager},
-		m_smsScriptsManager{smsScriptsManager},
-		Gateway{gateway},
-		TokenJob{0}
+SmsInternalSender::SmsInternalSender(
+    SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number,
+    const SmsGateway &gateway, QObject *parent)
+        : SmsSender{number, parent}, m_smsGatewayManager{smsGatewayManager}, m_smsScriptsManager{smsScriptsManager},
+          Gateway{gateway}, TokenJob{0}
 {
 }
 
@@ -49,126 +48,130 @@ SmsInternalSender::~SmsInternalSender()
 
 void SmsInternalSender::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void SmsInternalSender::sendMessage(const QString &message)
 {
-	Message = message;
+    Message = message;
 
-	if (Gateway.signatureRequired() && !validateSignature())
-	{
-		emit finished(false, "dialog-error", tr("Signature can't be empty."));
-		return;
-	}
+    if (Gateway.signatureRequired() && !validateSignature())
+    {
+        emit finished(false, "dialog-error", tr("Signature can't be empty."));
+        return;
+    }
 
-	if (Gateway.id().isEmpty())
-		queryForGateway();
-	else
-		sendSms();
+    if (Gateway.id().isEmpty())
+        queryForGateway();
+    else
+        sendSms();
 }
 
 void SmsInternalSender::queryForGateway()
 {
-	emit progress("dialog-information", tr("Detecting gateway..."));
+    emit progress("dialog-information", tr("Detecting gateway..."));
 
-	auto query = new SmsGatewayQuery(m_smsScriptsManager, this);
-	connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
-	query->process(number());
+    auto query = new SmsGatewayQuery(m_smsScriptsManager, this);
+    connect(query, SIGNAL(finished(const QString &)), this, SLOT(gatewayQueryDone(const QString &)));
+    query->process(number());
 }
 
 void SmsInternalSender::jobFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
 {
-	if (!ok)
-	{
-		emit finished(ok, entryIcon, entryMessage);
-		emit canceled();
-		deleteLater();
-	}
-	else
-		emit progress(entryIcon, entryMessage);
+    if (!ok)
+    {
+        emit finished(ok, entryIcon, entryMessage);
+        emit canceled();
+        deleteLater();
+    }
+    else
+        emit progress(entryIcon, entryMessage);
 
-	TokenJob = 0;
+    TokenJob = 0;
 }
 
-void SmsInternalSender::readToken(const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
+void SmsInternalSender::readToken(
+    const QString &tokenImageUrl, QScriptValue callbackObject, QScriptValue callbackMethod)
 {
-	TokenJob = new SmsTokenReadJob(this);
+    TokenJob = new SmsTokenReadJob(this);
 
-	TokenJob->setCallback(callbackObject, callbackMethod);
-	TokenJob->setTokenImageUrl(tokenImageUrl);
+    TokenJob->setCallback(callbackObject, callbackMethod);
+    TokenJob->setTokenImageUrl(tokenImageUrl);
 
-	connect(TokenJob, SIGNAL(progress(QString,QString)), this, SIGNAL(progress(QString,QString)));
-	connect(TokenJob, SIGNAL(finished(bool,QString,QString)), this, SLOT(jobFinished(bool,QString,QString)));
+    connect(TokenJob, SIGNAL(progress(QString, QString)), this, SIGNAL(progress(QString, QString)));
+    connect(TokenJob, SIGNAL(finished(bool, QString, QString)), this, SLOT(jobFinished(bool, QString, QString)));
 
-	TokenJob->exec();
+    TokenJob->exec();
 }
 
 void SmsInternalSender::gatewayQueryDone(const QString &gatewayId)
 {
-	if (gatewayId.isEmpty())
-	{
-		emit finished(false, "dialog-error", tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
-		return;
-	}
+    if (gatewayId.isEmpty())
+    {
+        emit finished(
+            false, "dialog-error",
+            tr("Automatic gateway selection is not available. Please select SMS gateway manually."));
+        return;
+    }
 
-	Gateway = m_smsGatewayManager->byId(gatewayId);
+    Gateway = m_smsGatewayManager->byId(gatewayId);
 
-	emit progress("dialog-information", tr("Detected gateway: %1.").arg(Gateway.name()));
+    emit progress("dialog-information", tr("Detected gateway: %1.").arg(Gateway.name()));
 
-	sendSms();
+    sendSms();
 }
 
-QScriptValue SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
+QScriptValue
+SmsInternalSender::readFromConfiguration(const QString &group, const QString &name, const QString &defaultValue)
 {
-	return m_configuration->deprecatedApi()->readEntry(group, name, defaultValue);
+    return m_configuration->deprecatedApi()->readEntry(group, name, defaultValue);
 }
 
 void SmsInternalSender::sendSms()
 {
-	emit gatewayAssigned(number(), Gateway.id());
+    emit gatewayAssigned(number(), Gateway.id());
 
-	emit progress("dialog-information", tr("Sending SMS..."));
+    emit progress("dialog-information", tr("Sending SMS..."));
 
-	QScriptEngine *engine = m_smsScriptsManager->engine();
+    QScriptEngine *engine = m_smsScriptsManager->engine();
 
-	QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");
-	QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");
-	QScriptValueList arguments;
-	arguments.append(Gateway.id());
-	arguments.append(number());
-	arguments.append(signature());
-	arguments.append(Message);
-	arguments.append(engine->newQObject(this));
+    QScriptValue jsGatewayManagerObject = engine->evaluate("gatewayManager");
+    QScriptValue jsSendSms = jsGatewayManagerObject.property("sendSms");
+    QScriptValueList arguments;
+    arguments.append(Gateway.id());
+    arguments.append(number());
+    arguments.append(signature());
+    arguments.append(Message);
+    arguments.append(engine->newQObject(this));
 
-	jsSendSms.call(jsGatewayManagerObject, arguments);
+    jsSendSms.call(jsGatewayManagerObject, arguments);
 }
 
 void SmsInternalSender::cancel()
 {
-	if (TokenJob)
-	{
-		disconnect(TokenJob, 0, this, 0);
-		TokenJob->cancel(); // it will destroy job
-		TokenJob = 0;
-	}
+    if (TokenJob)
+    {
+        disconnect(TokenJob, 0, this, 0);
+        TokenJob->cancel();   // it will destroy job
+        TokenJob = 0;
+    }
 
-	deleteLater();
+    deleteLater();
 }
 
 void SmsInternalSender::result()
 {
-	emit smsSent(number(), Message);
-	emit finished(true, "dialog-information", tr("SMS sent"));
+    emit smsSent(number(), Message);
+    emit finished(true, "dialog-information", tr("SMS sent"));
 
-	deleteLater();
+    deleteLater();
 }
 
 void SmsInternalSender::failure(const QString &errorMessage)
 {
-	emit finished(false, "dialog-error", errorMessage);
+    emit finished(false, "dialog-error", errorMessage);
 
-	deleteLater();
+    deleteLater();
 }
 
 #include "moc_sms-internal-sender.cpp"

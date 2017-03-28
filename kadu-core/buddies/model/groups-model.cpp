@@ -27,18 +27,17 @@
 #include "model/roles.h"
 #include "protocols/protocol.h"
 
-GroupsModel::GroupsModel(GroupManager *groupManager, QObject *parent) :
-		QAbstractListModel{parent},
-		m_groupManager{groupManager}
+GroupsModel::GroupsModel(GroupManager *groupManager, QObject *parent)
+        : QAbstractListModel{parent}, m_groupManager{groupManager}
 {
-	connect(m_groupManager, SIGNAL(groupAboutToBeAdded(Group)),
-			this, SLOT(groupAboutToBeAdded(Group)), Qt::DirectConnection);
-	connect(m_groupManager, SIGNAL(groupAdded(Group)),
-			this, SLOT(groupAdded(Group)), Qt::DirectConnection);
-	connect(m_groupManager, SIGNAL(groupAboutToBeRemoved(Group)),
-			this, SLOT(groupAboutToBeRemoved(Group)), Qt::DirectConnection);
-	connect(m_groupManager, SIGNAL(groupRemoved(Group)),
-			this, SLOT(groupRemoved(Group)), Qt::DirectConnection);
+    connect(
+        m_groupManager, SIGNAL(groupAboutToBeAdded(Group)), this, SLOT(groupAboutToBeAdded(Group)),
+        Qt::DirectConnection);
+    connect(m_groupManager, SIGNAL(groupAdded(Group)), this, SLOT(groupAdded(Group)), Qt::DirectConnection);
+    connect(
+        m_groupManager, SIGNAL(groupAboutToBeRemoved(Group)), this, SLOT(groupAboutToBeRemoved(Group)),
+        Qt::DirectConnection);
+    connect(m_groupManager, SIGNAL(groupRemoved(Group)), this, SLOT(groupRemoved(Group)), Qt::DirectConnection);
 }
 
 GroupsModel::~GroupsModel()
@@ -47,84 +46,83 @@ GroupsModel::~GroupsModel()
 
 int GroupsModel::rowCount(const QModelIndex &parent) const
 {
-	return parent.isValid() ? 0 : m_groupManager->count();
+    return parent.isValid() ? 0 : m_groupManager->count();
 }
 
 QVariant GroupsModel::data(const QModelIndex &index, int role) const
 {
-	Group grp = group(index);
-	if (0 == grp)
-		return QVariant();
+    Group grp = group(index);
+    if (0 == grp)
+        return QVariant();
 
-	switch (role)
-	{
-		case Qt::DisplayRole:
-			return grp.name();
-		case Qt::DecorationRole:
-			return grp.icon();
-		case GroupRole:
-			return QVariant::fromValue(grp);
-		case ItemTypeRole:
-			return GroupRole;
-		default:
-			return QVariant();
-	}
+    switch (role)
+    {
+    case Qt::DisplayRole:
+        return grp.name();
+    case Qt::DecorationRole:
+        return grp.icon();
+    case GroupRole:
+        return QVariant::fromValue(grp);
+    case ItemTypeRole:
+        return GroupRole;
+    default:
+        return QVariant();
+    }
 }
 
 Group GroupsModel::group(const QModelIndex &index) const
 {
-	if (!index.isValid())
-		return Group::null;
+    if (!index.isValid())
+        return Group::null;
 
-	if (index.row() < 0 || index.row() >= rowCount())
-		return Group::null;
+    if (index.row() < 0 || index.row() >= rowCount())
+        return Group::null;
 
-	return m_groupManager->byIndex(index.row());
+    return m_groupManager->byIndex(index.row());
 }
 
 int GroupsModel::groupIndex(Group group) const
 {
-	return m_groupManager->indexOf(group);
+    return m_groupManager->indexOf(group);
 }
-
 
 QModelIndexList GroupsModel::indexListForValue(const QVariant &value) const
 {
-	QModelIndexList result;
+    QModelIndexList result;
 
-	const int i = groupIndex(value.value<Group>());
-	if (-1 != i)
-		result.append(index(i, 0));
+    const int i = groupIndex(value.value<Group>());
+    if (-1 != i)
+        result.append(index(i, 0));
 
-	return result;
+    return result;
 }
 
 void GroupsModel::groupAboutToBeAdded(Group group)
 {
-	Q_UNUSED(group)
+    Q_UNUSED(group)
 
-	int count = rowCount();
-	beginInsertRows(QModelIndex(), count, count);
+    int count = rowCount();
+    beginInsertRows(QModelIndex(), count, count);
 }
 
 void GroupsModel::groupAdded(Group group)
 {
-	Q_UNUSED(group)
+    Q_UNUSED(group)
 
-	endInsertRows();
+    endInsertRows();
 }
 
 void GroupsModel::groupAboutToBeRemoved(Group group)
 {
-	int index = groupIndex(group);
-	beginRemoveRows(QModelIndex(), index, index);
+    int index = groupIndex(group);
+    beginRemoveRows(QModelIndex(), index, index);
 }
 
 void GroupsModel::groupRemoved(Group group)
 {
-	Q_UNUSED(group)
+    Q_UNUSED(group)
 
-	endRemoveRows();
+    endRemoveRows();
 }
 
 #include "moc_groups-model.cpp"

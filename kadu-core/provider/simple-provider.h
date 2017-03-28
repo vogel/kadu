@@ -36,42 +36,43 @@
  *
  * This implementation of Provider interface just holds a value of given type as a member.
  */
-template<typename T>
+template <typename T>
 class SimpleProvider : public Provider<T>
 {
-	T Value;
+    T Value;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create instance of SimpleProvider with default value to provide.
-	 * @param value value that will be provided
-	 */
-	explicit SimpleProvider(T value) : Value(value) {}
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create instance of SimpleProvider with default value to provide.
+     * @param value value that will be provided
+     */
+    explicit SimpleProvider(T value) : Value(value)
+    {
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Update provded value.
-	 * @param value value that will be provided
-	 */
-	void provideValue(T value)
-	{
-		Value = value;
-	}
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Update provded value.
+     * @param value value that will be provided
+     */
+    void provideValue(T value)
+    {
+        Value = value;
+    }
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return value set in constructor or in provideValue method.
-	 */
-	virtual T provide() const
-	{
-		return Value;
-	}
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return value set in constructor or in provideValue method.
+     */
+    virtual T provide() const
+    {
+        return Value;
+    }
 };
 
 /**
  * @}
  */
 
-#endif // SIMPLE_PROVIDER_H
+#endif   // SIMPLE_PROVIDER_H

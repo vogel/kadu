@@ -43,76 +43,83 @@ class NotifyTreeWidget;
 
 struct NotifierConfigurationGuiItem
 {
-	NotifierConfigurationWidget *ConfigurationWidget;
-	NotifyGroupBox *ConfigurationGroupBox;
-	QMap<QString, bool> Events;
+    NotifierConfigurationWidget *ConfigurationWidget;
+    NotifyGroupBox *ConfigurationGroupBox;
+    QMap<QString, bool> Events;
 
-	NotifierConfigurationGuiItem() : ConfigurationWidget(0), ConfigurationGroupBox(0) {}
+    NotifierConfigurationGuiItem() : ConfigurationWidget(0), ConfigurationGroupBox(0)
+    {
+    }
 };
 
 struct NotificationEventConfigurationItem
 {
-	NotificationEvent event;
-	bool useCustomSettings;
+    NotificationEvent event;
+    bool useCustomSettings;
 };
 
 class NotifyConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<NotifierRepository> m_notifierRepository;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<NotifierRepository> m_notifierRepository;
 
-	QMap<Notifier *, NotifierConfigurationGuiItem> NotifierGui;
-	QMap<QString, NotificationEventConfigurationItem> NotificationEvents;
+    QMap<Notifier *, NotifierConfigurationGuiItem> NotifierGui;
+    QMap<QString, NotificationEventConfigurationItem> NotificationEvents;
 
-	QListWidget *allUsers;
-	QListWidget *notifiedUsers;
-	ConfigGroupBox *notificationsGroupBox;
+    QListWidget *allUsers;
+    QListWidget *notifiedUsers;
+    ConfigGroupBox *notificationsGroupBox;
 
-	QCheckBox *useCustomSettingsCheckBox;
-	NotifyTreeWidget *notifyTreeWidget;
-	QWidget *notifierMainWidget;
-	QVBoxLayout *notifierMainWidgetLayout;
+    QCheckBox *useCustomSettingsCheckBox;
+    NotifyTreeWidget *notifyTreeWidget;
+    QWidget *notifierMainWidget;
+    QVBoxLayout *notifierMainWidgetLayout;
 
-	QString CurrentEvent;
+    QString CurrentEvent;
 
-	void addConfigurationWidget(Notifier *notifier);
-	void removeConfigurationWidget(Notifier *notifier);
+    void addConfigurationWidget(Notifier *notifier);
+    void removeConfigurationWidget(Notifier *notifier);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void setNotifierRepository(NotifierRepository *notifierRepository);
+    INJEQT_INIT void init();
 
-	void notifierRegistered(Notifier *notifier);
-	void notifierUnregistered(Notifier *notifier);
+    void notifierRegistered(Notifier *notifier);
+    void notifierUnregistered(Notifier *notifier);
 
-	void notificationEventAdded(NotificationEvent notifyEvent);
-	void notificationEventRemoved(NotificationEvent notifyEvent);
+    void notificationEventAdded(NotificationEvent notifyEvent);
+    void notificationEventRemoved(NotificationEvent notifyEvent);
 
-	void moveToNotifyList();
-	void moveToAllList();
+    void moveToNotifyList();
+    void moveToAllList();
 
-	void eventSwitched();
-	void notifierToggled(Notifier *notifier, bool toggled);
+    void eventSwitched();
+    void notifierToggled(Notifier *notifier, bool toggled);
 
-	void customSettingsCheckBoxToggled(bool toggled);
+    void customSettingsCheckBoxToggled(bool toggled);
 
 protected:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 
 public:
-	Q_INVOKABLE explicit NotifyConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~NotifyConfigurationUiHandler();
+    Q_INVOKABLE explicit NotifyConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~NotifyConfigurationUiHandler();
 
-	const QMap<Notifier *, NotifierConfigurationGuiItem> & notifierGui() { return NotifierGui; }
-	const QMap<QString, NotificationEventConfigurationItem> & notifyEvents() { return NotificationEvents; }
-
+    const QMap<Notifier *, NotifierConfigurationGuiItem> &notifierGui()
+    {
+        return NotifierGui;
+    }
+    const QMap<QString, NotificationEventConfigurationItem> &notifyEvents()
+    {
+        return NotificationEvents;
+    }
 };

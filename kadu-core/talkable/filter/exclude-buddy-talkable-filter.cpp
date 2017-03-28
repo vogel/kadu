@@ -20,10 +20,10 @@
 
 #include "exclude-buddy-talkable-filter.h"
 
-ExcludeBuddyTalkableFilter::ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent) :
-		TalkableFilter(parent), ExcludedBuddy(excludedBuddy)
+ExcludeBuddyTalkableFilter::ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent)
+        : TalkableFilter(parent), ExcludedBuddy(excludedBuddy)
 {
-	Q_ASSERT(ExcludedBuddy);
+    Q_ASSERT(ExcludedBuddy);
 }
 
 ExcludeBuddyTalkableFilter::~ExcludeBuddyTalkableFilter()
@@ -32,10 +32,10 @@ ExcludeBuddyTalkableFilter::~ExcludeBuddyTalkableFilter()
 
 TalkableFilter::FilterResult ExcludeBuddyTalkableFilter::filterBuddy(const Buddy &buddy)
 {
-	if (ExcludedBuddy == buddy)
-		return Rejected;
-	else
-		return Undecided;
+    if (ExcludedBuddy == buddy)
+        return Rejected;
+    else
+        return Undecided;
 }
 
 #include "moc_exclude-buddy-talkable-filter.cpp"

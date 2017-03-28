@@ -31,30 +31,33 @@
 
 #include "config-gg-password-edit.h"
 
-ConfigGGPasswordEdit::ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
+ConfigGGPasswordEdit::ConfigGGPasswordEdit(
+    const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : ConfigLineEdit(section, item, widgetCaption, toolTip, parentConfigGroupBox, dataManager)
 {
-	setEchoMode(QLineEdit::Password);
+    setEchoMode(QLineEdit::Password);
 }
 
-ConfigGGPasswordEdit::ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
-	: ConfigLineEdit(parentConfigGroupBox, dataManager)
+ConfigGGPasswordEdit::ConfigGGPasswordEdit(
+    ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
+        : ConfigLineEdit(parentConfigGroupBox, dataManager)
 {
-	setEchoMode(QLineEdit::Password);
+    setEchoMode(QLineEdit::Password);
 }
 
 void ConfigGGPasswordEdit::loadConfiguration()
 {
-	if (!dataManager)
-		return;
-	setText(pwHash(dataManager->readEntry(section, item).toString()));
+    if (!dataManager)
+        return;
+    setText(pwHash(dataManager->readEntry(section, item).toString()));
 }
 
 void ConfigGGPasswordEdit::saveConfiguration()
 {
-	if (!dataManager)
-		return;
-	dataManager->writeEntry(section, item, QVariant(pwHash(text())));
+    if (!dataManager)
+        return;
+    dataManager->writeEntry(section, item, QVariant(pwHash(text())));
 }
 
 #include "moc_config-gg-password-edit.cpp"

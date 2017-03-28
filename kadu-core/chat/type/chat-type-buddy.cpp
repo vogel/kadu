@@ -25,11 +25,10 @@
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 
-ChatTypeBuddy::ChatTypeBuddy(QObject *parent) :
-		ChatType(parent)
+ChatTypeBuddy::ChatTypeBuddy(QObject *parent) : ChatType(parent)
 {
-	m_aliases.append(QStringLiteral("Buddy"));
-	m_aliases.append(QStringLiteral("Aggregate"));
+    m_aliases.append(QStringLiteral("Buddy"));
+    m_aliases.append(QStringLiteral("Aggregate"));
 }
 
 ChatTypeBuddy::~ChatTypeBuddy()
@@ -38,7 +37,7 @@ ChatTypeBuddy::~ChatTypeBuddy()
 
 void ChatTypeBuddy::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 /**
@@ -53,7 +52,7 @@ void ChatTypeBuddy::setInjectedFactory(InjectedFactory *injectedFactory)
  */
 QString ChatTypeBuddy::name() const
 {
-	return "Buddy";
+    return "Buddy";
 }
 
 /**
@@ -67,7 +66,7 @@ QString ChatTypeBuddy::name() const
  */
 QStringList ChatTypeBuddy::aliases() const
 {
-	return m_aliases;
+    return m_aliases;
 }
 
 /**
@@ -81,7 +80,7 @@ QStringList ChatTypeBuddy::aliases() const
  */
 KaduIcon ChatTypeBuddy::icon() const
 {
-	return KaduIcon(QStringLiteral("kadu_icons/conference"));
+    return KaduIcon(QStringLiteral("kadu_icons/conference"));
 }
 
 /**
@@ -94,7 +93,7 @@ KaduIcon ChatTypeBuddy::icon() const
  */
 QString ChatTypeBuddy::windowRole() const
 {
-	return QStringLiteral("kadu-chat-aggregate");
+    return QStringLiteral("kadu-chat-aggregate");
 }
 
 /**
@@ -105,17 +104,17 @@ QString ChatTypeBuddy::windowRole() const
  * Creates new @link ChatDetailsBuddy @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeBuddy::createChatDetails(ChatShared *chatData) const
+ChatDetails *ChatTypeBuddy::createChatDetails(ChatShared *chatData) const
 {
-	return m_injectedFactory->makeInjected<ChatDetailsBuddy>(chatData);
+    return m_injectedFactory->makeInjected<ChatDetailsBuddy>(chatData);
 }
 
-ChatEditWidget * ChatTypeBuddy::createEditWidget(const Chat &chat, QWidget *parent) const
+ChatEditWidget *ChatTypeBuddy::createEditWidget(const Chat &chat, QWidget *parent) const
 {
-	Q_UNUSED(chat);
-	Q_UNUSED(parent);
+    Q_UNUSED(chat);
+    Q_UNUSED(parent);
 
-	return 0;
+    return 0;
 }
 
 #include "moc_chat-type-buddy.cpp"

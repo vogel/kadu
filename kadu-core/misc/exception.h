@@ -22,20 +22,20 @@
 #include <QtTest/QTest>
 #include <functional>
 
-template<typename E>
+template <typename E>
 void expect(std::function<void()> call)
 {
-	try
-	{
-		call();
-		QFAIL("Exception not thrown");
-	}
-	catch (E &e)
-	{
-		// OK
-	}
-	catch (...)
-	{
-		QFAIL("Unexpected exception thrown");
-	}
+    try
+    {
+        call();
+        QFAIL("Exception not thrown");
+    }
+    catch (E &e)
+    {
+        // OK
+    }
+    catch (...)
+    {
+        QFAIL("Unexpected exception thrown");
+    }
 }

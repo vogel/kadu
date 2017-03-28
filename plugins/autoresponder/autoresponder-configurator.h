@@ -46,27 +46,26 @@ class Configuration;
  */
 class AutoresponderConfigurator : private QObject, ConfigurationAwareObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(SERVICE)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-	Q_INVOKABLE explicit AutoresponderConfigurator(QObject *parent = nullptr);
-	virtual ~AutoresponderConfigurator();
+    Q_INVOKABLE explicit AutoresponderConfigurator(QObject *parent = nullptr);
+    virtual ~AutoresponderConfigurator();
 
 protected:
-	virtual void configurationUpdated();
+    virtual void configurationUpdated();
 
 private:
-	QPointer<AutoresponderMessageFilter> m_autoresponderMessageFilter;
-	QPointer<Configuration> m_configuration;
+    QPointer<AutoresponderMessageFilter> m_autoresponderMessageFilter;
+    QPointer<Configuration> m_configuration;
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
 private slots:
-	INJEQT_SET void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setAutoresponderMessageFilter(AutoresponderMessageFilter *autoresponderMessageFilter);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_INIT void init();
 };
 
 /**

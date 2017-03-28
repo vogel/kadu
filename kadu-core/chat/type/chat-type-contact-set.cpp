@@ -26,66 +26,66 @@
 #include "core/injected-factory.h"
 #include "icons/kadu-icon.h"
 
-Chat ChatTypeContactSet::findChat(ChatManager *chatManager, ChatStorage *chatStorage, const ContactSet &contacts, NotFoundAction notFoundAction)
+Chat ChatTypeContactSet::findChat(
+    ChatManager *chatManager, ChatStorage *chatStorage, const ContactSet &contacts, NotFoundAction notFoundAction)
 {
-	if (contacts.count() < 2)
-		return Chat::null;
+    if (contacts.count() < 2)
+        return Chat::null;
 
-	Account account = (*contacts.constBegin()).contactAccount();
-	if (account.isNull())
-		return Chat::null;
+    Account account = (*contacts.constBegin()).contactAccount();
+    if (account.isNull())
+        return Chat::null;
 
-	foreach (const Contact &contact, contacts)
-		if (account != contact.contactAccount())
-			return Chat::null;
+    foreach (const Contact &contact, contacts)
+        if (account != contact.contactAccount())
+            return Chat::null;
 
-	// TODO #1694
-	// for some users that have self on user list
-	// this should not be possible, and prevented on other level (like in ContactManager)
-	foreach (const Contact &contact, contacts)
-		if (contact.id() == account.id())
-			return Chat::null;
+    // TODO #1694
+    // for some users that have self on user list
+    // this should not be possible, and prevented on other level (like in ContactManager)
+    foreach (const Contact &contact, contacts)
+        if (contact.id() == account.id())
+            return Chat::null;
 
-	foreach (const Chat &chat, chatManager->items())
-		if (chat.type() == QStringLiteral("ContactSet") || chat.type() == QStringLiteral("Conference"))
-			if (chat.contacts() == contacts)
-			{
-				// when contacts changed their accounts we need to change account of chat too
-				chat.setChatAccount(account);
-				return chat;
-			}
+    foreach (const Chat &chat, chatManager->items())
+        if (chat.type() == QStringLiteral("ContactSet") || chat.type() == QStringLiteral("Conference"))
+            if (chat.contacts() == contacts)
+            {
+                // when contacts changed their accounts we need to change account of chat too
+                chat.setChatAccount(account);
+                return chat;
+            }
 
-	if (ActionReturnNull == notFoundAction)
-		return Chat::null;
+    if (ActionReturnNull == notFoundAction)
+        return Chat::null;
 
-	auto chat = chatStorage->create("ContactSet");
-	chat.setChatAccount(account);
+    auto chat = chatStorage->create("ContactSet");
+    chat.setChatAccount(account);
 
-	Contact contact = contacts.toContact();
+    Contact contact = contacts.toContact();
 
-	// only gadu-gadu support contact-sets
-	// TODO: this should be done better
-	if (chat.chatAccount().protocolName() != "gadu")
-		return Chat::null;
+    // only gadu-gadu support contact-sets
+    // TODO: this should be done better
+    if (chat.chatAccount().protocolName() != "gadu")
+        return Chat::null;
 
-	ChatDetailsContactSet *chatDetailsContactSet = dynamic_cast<ChatDetailsContactSet *>(chat.details());
-	if (chatDetailsContactSet)
-	{
-		chatDetailsContactSet->setState(StorableObject::StateNew);
-		chatDetailsContactSet->setContacts(contacts);
-	}
+    ChatDetailsContactSet *chatDetailsContactSet = dynamic_cast<ChatDetailsContactSet *>(chat.details());
+    if (chatDetailsContactSet)
+    {
+        chatDetailsContactSet->setState(StorableObject::StateNew);
+        chatDetailsContactSet->setContacts(contacts);
+    }
 
-	if (ActionCreateAndAdd == notFoundAction)
-		chatManager->addItem(chat);
+    if (ActionCreateAndAdd == notFoundAction)
+        chatManager->addItem(chat);
 
-	return chat;
+    return chat;
 }
 
-ChatTypeContactSet::ChatTypeContactSet(QObject *parent) :
-		ChatType(parent)
+ChatTypeContactSet::ChatTypeContactSet(QObject *parent) : ChatType(parent)
 {
-	m_aliases.append("ContactSet");
-	m_aliases.append("Conference");
+    m_aliases.append("ContactSet");
+    m_aliases.append("Conference");
 }
 
 ChatTypeContactSet::~ChatTypeContactSet()
@@ -94,7 +94,7 @@ ChatTypeContactSet::~ChatTypeContactSet()
 
 void ChatTypeContactSet::setInjectedFactory(InjectedFactory *injectedFactory)
 {
-	m_injectedFactory = injectedFactory;
+    m_injectedFactory = injectedFactory;
 }
 
 /**
@@ -109,7 +109,7 @@ void ChatTypeContactSet::setInjectedFactory(InjectedFactory *injectedFactory)
  */
 QString ChatTypeContactSet::name() const
 {
-	return "ContactSet";
+    return "ContactSet";
 }
 
 /**
@@ -123,7 +123,7 @@ QString ChatTypeContactSet::name() const
  */
 QStringList ChatTypeContactSet::aliases() const
 {
-	return m_aliases;
+    return m_aliases;
 }
 
 /**
@@ -137,7 +137,7 @@ QStringList ChatTypeContactSet::aliases() const
  */
 KaduIcon ChatTypeContactSet::icon() const
 {
-	return KaduIcon("kadu_icons/conference");
+    return KaduIcon("kadu_icons/conference");
 }
 
 /**
@@ -150,7 +150,7 @@ KaduIcon ChatTypeContactSet::icon() const
  */
 QString ChatTypeContactSet::windowRole() const
 {
-	return "kadu-chat-contact-set";
+    return "kadu-chat-contact-set";
 }
 
 /**
@@ -161,17 +161,17 @@ QString ChatTypeContactSet::windowRole() const
  * Creates new @link ChatDetailsContactSet @endlink object for
  * given @link Chat @endlink (@link ChatShared @endlink).
  */
-ChatDetails * ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
+ChatDetails *ChatTypeContactSet::createChatDetails(ChatShared *chatData) const
 {
-	return m_injectedFactory->makeInjected<ChatDetailsContactSet>(chatData);
+    return m_injectedFactory->makeInjected<ChatDetailsContactSet>(chatData);
 }
 
-ChatEditWidget * ChatTypeContactSet::createEditWidget(const Chat &chat, QWidget *parent) const
+ChatEditWidget *ChatTypeContactSet::createEditWidget(const Chat &chat, QWidget *parent) const
 {
-	Q_UNUSED(chat);
-	Q_UNUSED(parent);
+    Q_UNUSED(chat);
+    Q_UNUSED(parent);
 
-	return 0;
+    return 0;
 }
 
 #include "moc_chat-type-contact-set.cpp"

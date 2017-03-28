@@ -37,39 +37,38 @@ class QMenu;
 
 class DOCKINGAPI StatusNotifierItem final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit StatusNotifierItem(QObject *parent = nullptr);
-	virtual ~StatusNotifierItem();
+    Q_INVOKABLE explicit StatusNotifierItem(QObject *parent = nullptr);
+    virtual ~StatusNotifierItem();
 
-	void setConfiguration(StatusNotifierItemConfiguration configuration);
-	void setNeedAttention(bool needAttention);
-	void setTooltip(const QString &tooltip);
+    void setConfiguration(StatusNotifierItemConfiguration configuration);
+    void setNeedAttention(bool needAttention);
+    void setTooltip(const QString &tooltip);
 
-	void showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs);
+    void showMessage(QString title, QString message, QSystemTrayIcon::MessageIcon icon, int msecs);
 
-	QPoint trayPosition();
-	QMenu * contextMenu();
+    QPoint trayPosition();
+    QMenu *contextMenu();
 
 signals:
-	void activateRequested();
-	void messageClicked();
+    void activateRequested();
+    void messageClicked();
 
 private:
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<IconsManager> m_iconsManager;
 
-	StatusNotifierItemConfiguration m_configuration;
-	bool m_needAttention;
-	QPoint m_systemTrayLastPosition;
-	owned_qptr<QSystemTrayIcon> m_systemTrayIcon;
-	not_owned_qptr<StatusNotifierItemAttention> m_attention;
+    StatusNotifierItemConfiguration m_configuration;
+    bool m_needAttention;
+    QPoint m_systemTrayLastPosition;
+    owned_qptr<QSystemTrayIcon> m_systemTrayIcon;
+    not_owned_qptr<StatusNotifierItemAttention> m_attention;
 
-	void updateAttention();
+    void updateAttention();
 
 private slots:
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 
-	void activated(QSystemTrayIcon::ActivationReason reason);
-
+    void activated(QSystemTrayIcon::ActivationReason reason);
 };

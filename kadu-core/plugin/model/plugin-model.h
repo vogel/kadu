@@ -32,30 +32,29 @@
 
 class PluginModel : public QAbstractListModel
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	enum ExtraRoles
-	{
-		MetadataRole = 0x09386561,
-		NameRole = 0x0CBBBB00,
-		CommentRole = 0x19FC6DE2
-	};
+    enum ExtraRoles
+    {
+        MetadataRole = 0x09386561,
+        NameRole = 0x0CBBBB00,
+        CommentRole = 0x19FC6DE2
+    };
 
-	explicit PluginModel(QObject *parent = nullptr);
-	virtual ~PluginModel();
+    explicit PluginModel(QObject *parent = nullptr);
+    virtual ~PluginModel();
 
-	virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex{}) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const;
+    virtual QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex{}) const;
+    virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+    virtual int rowCount(const QModelIndex &parent = QModelIndex{}) const;
 
-	void setPluginEntries(QVector<PluginMetadata> pluginEntries);
-	void setActivePlugins(QSet<QString> activePlugins);
-	const QSet<QString> & activePlugins() const;
+    void setPluginEntries(QVector<PluginMetadata> pluginEntries);
+    void setActivePlugins(QSet<QString> activePlugins);
+    const QSet<QString> &activePlugins() const;
 
 private:
-	QVector<PluginMetadata> m_pluginEntries;
-	QSet<QString> m_activePlugins;
-
+    QVector<PluginMetadata> m_pluginEntries;
+    QSet<QString> m_activePlugins;
 };

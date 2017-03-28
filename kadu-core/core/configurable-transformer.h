@@ -38,28 +38,28 @@
 template <typename T, typename T_config>
 class ConfigurableTransformer
 {
-
 public:
-	typedef T object_type;
-	typedef T_config config_type;
+    typedef T object_type;
+    typedef T_config config_type;
 
-	virtual ~ConfigurableTransformer<T, T_config>() {}
+    virtual ~ConfigurableTransformer<T, T_config>()
+    {
+    }
 
-	/**
-	 * @short Transform instance of class.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param object object to transform
-	 * @param configurationObject object use to configure transformation parameters
-	 * @return transformed object
-	 *
-	 * This method returns new object. Original one is untouched.
-	 */
-	virtual T transform(const T &object, const T_config &configurationObject) = 0;
-
+    /**
+     * @short Transform instance of class.
+     * @author Rafał 'Vogel' Malinowski
+     * @param object object to transform
+     * @param configurationObject object use to configure transformation parameters
+     * @return transformed object
+     *
+     * This method returns new object. Original one is untouched.
+     */
+    virtual T transform(const T &object, const T_config &configurationObject) = 0;
 };
 
 /**
  * @}
  */
 
-#endif // CONFIGURABLE_TRANSFORMER_H
+#endif   // CONFIGURABLE_TRANSFORMER_H

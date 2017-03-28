@@ -30,37 +30,36 @@ class History;
 
 class HistorySaveThread : public QThread
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	History *CurrentHistory;
-	bool Enabled;
+    History *CurrentHistory;
+    bool Enabled;
 
-	QMutex SomethingToSave;
-	QWaitCondition WaitForSomethingToSave;
+    QMutex SomethingToSave;
+    QWaitCondition WaitForSomethingToSave;
 
-	QDateTime LastSyncTime;
+    QDateTime LastSyncTime;
 
-	bool Stopped;
-	bool CurrentlySaving;
-	bool ForceSyncOnce;
+    bool Stopped;
+    bool CurrentlySaving;
+    bool ForceSyncOnce;
 
-	void storeMessages();
-	void storeStatusChanges();
-	void sync();
+    void storeMessages();
+    void storeStatusChanges();
+    void sync();
 
 public:
-	explicit HistorySaveThread(History *history, QObject *parent = nullptr);
-	virtual ~HistorySaveThread();
+    explicit HistorySaveThread(History *history, QObject *parent = nullptr);
+    virtual ~HistorySaveThread();
 
-	virtual void run();
+    virtual void run();
 
-	void forceSync(bool crashed = false);
+    void forceSync(bool crashed = false);
 
-	void setEnabled(bool enabled);
+    void setEnabled(bool enabled);
 
-	void newDataAvailable();
-	void stop();
-
+    void newDataAvailable();
+    void stop();
 };
 
-#endif // HISTORY_SAVE_THREAD_H
+#endif   // HISTORY_SAVE_THREAD_H

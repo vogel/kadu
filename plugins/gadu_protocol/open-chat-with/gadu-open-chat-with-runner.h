@@ -31,23 +31,25 @@ class ContactManager;
 
 class GaduOpenChatWithRunner : public QObject, public OpenChatWithRunner
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit GaduOpenChatWithRunner(Account account, QObject *parent = nullptr);
-	virtual ~GaduOpenChatWithRunner();
+    explicit GaduOpenChatWithRunner(Account account, QObject *parent = nullptr);
+    virtual ~GaduOpenChatWithRunner();
 
-	virtual BuddyList matchingContacts(const QString &query) override;
-	void setAccount(Account account) { m_account = account; }
+    virtual BuddyList matchingContacts(const QString &query) override;
+    void setAccount(Account account)
+    {
+        m_account = account;
+    }
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<ContactManager> m_contactManager;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<ContactManager> m_contactManager;
 
-	Account m_account;
+    Account m_account;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setContactManager(ContactManager *contactManager);
-
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
 };

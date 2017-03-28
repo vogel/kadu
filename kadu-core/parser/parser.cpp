@@ -61,21 +61,21 @@ Q_GLOBAL_STATIC(QSet<QChar>, searchChars)
 
 static void prepareSearchChars(Configuration *configuration, bool forceExecSeachChars = false)
 {
-	QSet<QChar> &chars = *searchChars();
-	if (chars.isEmpty())
-		foreach (QChar c, QString(SEARCH_CHARS))
-			chars.insert(c);
+    QSet<QChar> &chars = *searchChars();
+    if (chars.isEmpty())
+        foreach (QChar c, QString(SEARCH_CHARS))
+            chars.insert(c);
 
-	bool allowExec = forceExecSeachChars || configuration->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
-	foreach (QChar c, QString(EXEC_SEARCH_CHARS))
-		if (allowExec)
-			chars.insert(c);
-		else
-			chars.remove(c);
+    bool allowExec = forceExecSeachChars ||
+                     configuration->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
+    foreach (QChar c, QString(EXEC_SEARCH_CHARS))
+        if (allowExec)
+            chars.insert(c);
+        else
+            chars.remove(c);
 }
 
-Parser::Parser(QObject *parent) :
-		QObject{parent}
+Parser::Parser(QObject *parent) : QObject{parent}
 {
 }
 
@@ -85,802 +85,801 @@ Parser::~Parser()
 
 void Parser::setChatDataExtractor(ChatDataExtractor *chatDataExtractor)
 {
-	m_chatDataExtractor = chatDataExtractor;
+    m_chatDataExtractor = chatDataExtractor;
 }
 
 void Parser::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void Parser::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void Parser::setStatusContainerManager(StatusContainerManager *statusContainerManager)
 {
-	m_statusContainerManager = statusContainerManager;
+    m_statusContainerManager = statusContainerManager;
 }
 
 void Parser::setStatusTypeManager(StatusTypeManager *statusTypeManager)
 {
-	m_statusTypeManager = statusTypeManager;
+    m_statusTypeManager = statusTypeManager;
 }
 
 void Parser::setTalkableConverter(TalkableConverter *talkableConverter)
 {
-	m_talkableConverter = talkableConverter;
+    m_talkableConverter = talkableConverter;
 }
 
 QString Parser::escape(const QString &string)
 {
-	prepareSearchChars(m_configuration, true);
+    prepareSearchChars(m_configuration, true);
 
-	QString escaped;
-	escaped.reserve(string.size() * 2);
-	QSet<QChar> &chars = *searchChars();
-	foreach (QChar c, string)
-	{
-		if (chars.contains(c))
-			escaped.append('\'');
-		escaped.append(c);
-	}
+    QString escaped;
+    escaped.reserve(string.size() * 2);
+    QSet<QChar> &chars = *searchChars();
+    foreach (QChar c, string)
+    {
+        if (chars.contains(c))
+            escaped.append('\'');
+        escaped.append(c);
+    }
 
-	return escaped;
+    return escaped;
 }
 
 bool Parser::registerTag(const QString &name, TalkableTagCallback func)
 {
-	if (m_registeredTalkableTags.contains(name))
-	{
-		return false;
-	}
+    if (m_registeredTalkableTags.contains(name))
+    {
+        return false;
+    }
 
-	if (m_registeredObjectTags.contains(name))
-	{
-		return false;
-	}
+    if (m_registeredObjectTags.contains(name))
+    {
+        return false;
+    }
 
-	m_registeredTalkableTags.insert(name, func);
-	return true;
+    m_registeredTalkableTags.insert(name, func);
+    return true;
 }
 
 bool Parser::unregisterTag(const QString &name)
 {
-	if (!m_registeredTalkableTags.contains(name))
-		return false;
+    if (!m_registeredTalkableTags.contains(name))
+        return false;
 
-	m_registeredTalkableTags.remove(name);
-	return true;
+    m_registeredTalkableTags.remove(name);
+    return true;
 }
 
 bool Parser::registerObjectTag(const QString &name, ObjectTagCallback func)
 {
-	if (m_registeredObjectTags.contains(name))
-		return false;
+    if (m_registeredObjectTags.contains(name))
+        return false;
 
-	if (m_registeredTalkableTags.contains(name))
-		return false;
+    if (m_registeredTalkableTags.contains(name))
+        return false;
 
-	m_registeredObjectTags.insert(name, func);
-	return true;
+    m_registeredObjectTags.insert(name, func);
+    return true;
 }
 
 bool Parser::unregisterObjectTag(const QString &name)
 {
-	if (!m_registeredObjectTags.contains(name))
-		return false;
+    if (!m_registeredObjectTags.contains(name))
+        return false;
 
-	m_registeredObjectTags.remove(name);
-	return true;
+    m_registeredObjectTags.remove(name);
+    return true;
 }
 
 QString Parser::executeCmd(const QString &cmd)
 {
-	QString s(cmd);
-	// TODO: check if Qt escapes these
-	s.remove(QRegExp("`|>|<"));
+    QString s(cmd);
+    // TODO: check if Qt escapes these
+    s.remove(QRegExp("`|>|<"));
 
-	QProcess executor;
-	executor.start(s);
-	executor.closeWriteChannel();
+    QProcess executor;
+    executor.start(s);
+    executor.closeWriteChannel();
 
-	QString ret;
-	if (executor.waitForFinished())
-		ret = executor.readAll();
+    QString ret;
+    if (executor.waitForFinished())
+        ret = executor.readAll();
 
-	return ret;
+    return ret;
 }
 
-bool Parser::isActionParserTokenAtTop(const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens)
+bool Parser::isActionParserTokenAtTop(
+    const QStack<ParserToken> &parseStack, const QVector<ParserTokenType> &acceptedTokens)
 {
-	bool found = false;
-	QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
-	QStack<ParserToken>::const_iterator it = parseStack.constEnd();
+    bool found = false;
+    QStack<ParserToken>::const_iterator begin = parseStack.constBegin();
+    QStack<ParserToken>::const_iterator it = parseStack.constEnd();
 
-	while (it != begin)
-	{
-		--it;
-		ParserTokenType t = it->type();
+    while (it != begin)
+    {
+        --it;
+        ParserTokenType t = it->type();
 
-		if (acceptedTokens.contains(t))
-		{
-			found = true;
-			break;
-		}
+        if (acceptedTokens.contains(t))
+        {
+            found = true;
+            break;
+        }
 
-		if (PT_STRING == t)
-			continue;
+        if (PT_STRING == t)
+            continue;
 
-		break;
-	}
+        break;
+    }
 
-	return found;
+    return found;
 }
 
 ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkable &talkable, ParserEscape escape)
 {
-	ParserToken pe;
-	pe.setType(PT_STRING);
+    ParserToken pe;
+    pe.setType(PT_STRING);
 
-	Chat chat = m_talkableConverter->toChat(talkable);
-	Buddy buddy = m_talkableConverter->toBuddy(talkable);
-	Contact contact = m_talkableConverter->toContact(talkable);
+    Chat chat = m_talkableConverter->toChat(talkable);
+    Buddy buddy = m_talkableConverter->toBuddy(talkable);
+    Contact contact = m_talkableConverter->toContact(talkable);
 
-	switch (s.at(idx).toAscii())
-	{
-		// 'o' does not work so we should just ignore it
-		// see bug #2199
-		case 'o':
-		// 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
-		case 't':
-			++idx;
-			break;
-		case 's':
-			++idx;
+    switch (s.at(idx).toAscii())
+    {
+    // 'o' does not work so we should just ignore it
+    // see bug #2199
+    case 'o':
+    // 't' was removed in commit 48d3cd65 during 0.9 (aka 0.6.6) release cycle
+    case 't':
+        ++idx;
+        break;
+    case 's':
+        ++idx;
 
-			if (buddy && buddy.isBlocked())
-				pe.setContent(QCoreApplication::translate("@default", "Blocked"));
-			else if (contact)
-			{
-				if (contact.isBlocking())
-					pe.setContent(QCoreApplication::translate("@default", "Blocking"));
-				else
-				{
-					const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(contact.currentStatus().type());
-					pe.setContent(typeData.displayName());
-				}
-			}
-			else if (chat && chat.chatAccount().statusContainer())
-			{
-				const StatusTypeData & typeData = m_statusTypeManager->statusTypeData(chat.chatAccount().statusContainer()->status().type());
-				pe.setContent(typeData.displayName());
-			}
+        if (buddy && buddy.isBlocked())
+            pe.setContent(QCoreApplication::translate("@default", "Blocked"));
+        else if (contact)
+        {
+            if (contact.isBlocking())
+                pe.setContent(QCoreApplication::translate("@default", "Blocking"));
+            else
+            {
+                const StatusTypeData &typeData = m_statusTypeManager->statusTypeData(contact.currentStatus().type());
+                pe.setContent(typeData.displayName());
+            }
+        }
+        else if (chat && chat.chatAccount().statusContainer())
+        {
+            const StatusTypeData &typeData =
+                m_statusTypeManager->statusTypeData(chat.chatAccount().statusContainer()->status().type());
+            pe.setContent(typeData.displayName());
+        }
 
-			break;
-		case 'q':
-			++idx;
+        break;
+    case 'q':
+        ++idx;
 
-			if (contact)
-			{
-				StatusContainer *container = contact.contactAccount().statusContainer();
-				if (container)
-					pe.setContent(container->statusIcon(Status{contact.currentStatus().type()}).path());
-				else
-					pe.setContent(m_statusContainerManager->statusIcon(Status{contact.currentStatus().type()}).path());
-			}
-			else if (chat)
-			{
-				StatusContainer *container = chat.chatAccount().statusContainer();
-				if (container)
-					pe.setContent(container->statusIcon().path());
-				else
-					pe.setContent(m_statusContainerManager->statusIcon(Status()).path());
-			}
+        if (contact)
+        {
+            StatusContainer *container = contact.contactAccount().statusContainer();
+            if (container)
+                pe.setContent(container->statusIcon(Status{contact.currentStatus().type()}).path());
+            else
+                pe.setContent(m_statusContainerManager->statusIcon(Status{contact.currentStatus().type()}).path());
+        }
+        else if (chat)
+        {
+            StatusContainer *container = chat.chatAccount().statusContainer();
+            if (container)
+                pe.setContent(container->statusIcon().path());
+            else
+                pe.setContent(m_statusContainerManager->statusIcon(Status()).path());
+        }
 
-			break;
-		case 'd':
-			++idx;
+        break;
+    case 'd':
+        ++idx;
 
-			if (contact)
-			{
-				QString description = contact.currentStatus().description();
-				if (escape == ParserEscape::HtmlEscape)
-					description = Qt::escape(description);
+        if (contact)
+        {
+            QString description = contact.currentStatus().description();
+            if (escape == ParserEscape::HtmlEscape)
+                description = Qt::escape(description);
 
-				pe.setContent(description);
+            pe.setContent(description);
 
-				if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
-				{
-					QString content = pe.decodedContent();
-					content.replace('\n', QStringLiteral("<br/>"));
-					content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
-					pe.setContent(content);
-				}
-			}
+            if (m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowMultilineDesc"))
+            {
+                QString content = pe.decodedContent();
+                content.replace('\n', QStringLiteral("<br/>"));
+                content.replace(QRegExp("\\s\\s"), QString(" &nbsp;"));
+                pe.setContent(content);
+            }
+        }
 
-			break;
-		case 'i':
-			++idx;
-			break;
-		case 'v':
-			++idx;
-			break;
-		case 'p':
-			++idx;
-			break;
-		case 'u':
-			++idx;
+        break;
+    case 'i':
+        ++idx;
+        break;
+    case 'v':
+        ++idx;
+        break;
+    case 'p':
+        ++idx;
+        break;
+    case 'u':
+        ++idx;
 
-			if (contact)
-				pe.setContent(contact.id());
-			else if (buddy)
-				pe.setContent(buddy.mobile().isEmpty() ? buddy.email() : buddy.mobile());
+        if (contact)
+            pe.setContent(contact.id());
+        else if (buddy)
+            pe.setContent(buddy.mobile().isEmpty() ? buddy.email() : buddy.mobile());
 
-			break;
-		case 'h':
-			++idx;
-			break;
-		case 'n':
-		{
-			++idx;
+        break;
+    case 'h':
+        ++idx;
+        break;
+    case 'n':
+    {
+        ++idx;
 
-			QString nickName = chat ? m_chatDataExtractor->data(chat, Qt::DisplayRole).toString() : buddy.nickName();
-			if (escape == ParserEscape::HtmlEscape)
-				nickName = Qt::escape(nickName);
+        QString nickName = chat ? m_chatDataExtractor->data(chat, Qt::DisplayRole).toString() : buddy.nickName();
+        if (escape == ParserEscape::HtmlEscape)
+            nickName = Qt::escape(nickName);
 
-			pe.setContent(nickName);
+        pe.setContent(nickName);
 
-			break;
-		}
-		case 'a':
-		{
-			++idx;
+        break;
+    }
+    case 'a':
+    {
+        ++idx;
 
-			QString display = chat ? m_chatDataExtractor->data(chat, Qt::DisplayRole).toString() : buddy.display();
-			if (escape == ParserEscape::HtmlEscape)
-				display = Qt::escape(display);
+        QString display = chat ? m_chatDataExtractor->data(chat, Qt::DisplayRole).toString() : buddy.display();
+        if (escape == ParserEscape::HtmlEscape)
+            display = Qt::escape(display);
 
-			pe.setContent(display);
+        pe.setContent(display);
 
-			break;
-		}
-		case 'f':
-		{
-			++idx;
+        break;
+    }
+    case 'f':
+    {
+        ++idx;
 
-			QString firstName = buddy.firstName();
-			if (escape == ParserEscape::HtmlEscape)
-				firstName = Qt::escape(firstName);
+        QString firstName = buddy.firstName();
+        if (escape == ParserEscape::HtmlEscape)
+            firstName = Qt::escape(firstName);
 
-			pe.setContent(firstName);
+        pe.setContent(firstName);
 
-			break;
-		}
-		case 'r':
-		{
-			++idx;
+        break;
+    }
+    case 'r':
+    {
+        ++idx;
 
-			QString lastName = buddy.lastName();
-			if (escape == ParserEscape::HtmlEscape)
-				lastName = Qt::escape(lastName);
+        QString lastName = buddy.lastName();
+        if (escape == ParserEscape::HtmlEscape)
+            lastName = Qt::escape(lastName);
 
-			pe.setContent(lastName);
+        pe.setContent(lastName);
 
-			break;
-		}
-		case 'm':
-			++idx;
+        break;
+    }
+    case 'm':
+        ++idx;
 
-			pe.setContent(buddy.mobile());
+        pe.setContent(buddy.mobile());
 
-			break;
-		case 'g':
-		{
-			++idx;
+        break;
+    case 'g':
+    {
+        ++idx;
 
-			QStringList groups;
-			if (chat)
-				foreach (const Group &group, chat.groups())
-					groups << group.name();
-			else
-				foreach (const Group &group, buddy.groups())
-					groups << group.name();
+        QStringList groups;
+        if (chat)
+            foreach (const Group &group, chat.groups())
+                groups << group.name();
+        else
+            foreach (const Group &group, buddy.groups())
+                groups << group.name();
 
-			pe.setContent(groups.join(","));
+        pe.setContent(groups.join(","));
 
-			break;
-		}
-		case 'e':
-			++idx;
+        break;
+    }
+    case 'e':
+        ++idx;
 
-			pe.setContent(buddy.email());
+        pe.setContent(buddy.email());
 
-			break;
-		case 'x':
-			++idx;
+        break;
+    case 'x':
+        ++idx;
 
-			if (contact)
-				pe.setContent(QString::number(contact.maximumImageSize()));
+        if (contact)
+            pe.setContent(QString::number(contact.maximumImageSize()));
 
-			break;
-		case 'z':
-			++idx;
+        break;
+    case 'z':
+        ++idx;
 
-			if (buddy)
-				pe.setContent(QString::number(buddy.gender()));
+        if (buddy)
+            pe.setContent(QString::number(buddy.gender()));
 
-			break;
-		case '%':
-			++idx;
-			// fall through
-		default:
-			pe.setContent("%");
+        break;
+    case '%':
+        ++idx;
+    // fall through
+    default:
+        pe.setContent("%");
 
-			break;
-	}
+        break;
+    }
 
-	return pe;
+    return pe;
 }
 
-template<typename ContainerClass>
+template <typename ContainerClass>
 QString Parser::joinParserTokens(const ContainerClass &parseStack)
 {
-	QString joined;
-	foreach(const ParserToken &elem, parseStack)
-	{
-		switch (elem.type())
-		{
-			case PT_STRING:
-				joined += elem.decodedContent();
-				break;
-			case PT_EXTERNAL_VARIABLE:
-				joined += "#{";
-				break;
-			case PT_ICONPATH:
-				joined += "@{";
-				break;
-			case PT_VARIABLE:
-				joined += "${";
-				break;
-			case PT_CHECK_FILE_EXISTS:
-				joined += '{';
-				break;
-			case PT_CHECK_FILE_NOT_EXISTS:
-				joined += "{!";
-				break;
-			case PT_CHECK_ALL_NOT_NULL:
-				joined += '[';
-				break;
-			case PT_CHECK_ANY_NULL:
-				joined += "[!";
-				break;
-			case PT_EXECUTE:
-				joined += '`';
-				break;
-			case PT_EXECUTE2:
-				joined += "`{";
-				break;
-		}
-	}
+    QString joined;
+    foreach (const ParserToken &elem, parseStack)
+    {
+        switch (elem.type())
+        {
+        case PT_STRING:
+            joined += elem.decodedContent();
+            break;
+        case PT_EXTERNAL_VARIABLE:
+            joined += "#{";
+            break;
+        case PT_ICONPATH:
+            joined += "@{";
+            break;
+        case PT_VARIABLE:
+            joined += "${";
+            break;
+        case PT_CHECK_FILE_EXISTS:
+            joined += '{';
+            break;
+        case PT_CHECK_FILE_NOT_EXISTS:
+            joined += "{!";
+            break;
+        case PT_CHECK_ALL_NOT_NULL:
+            joined += '[';
+            break;
+        case PT_CHECK_ANY_NULL:
+            joined += "[!";
+            break;
+        case PT_EXECUTE:
+            joined += '`';
+            break;
+        case PT_EXECUTE2:
+            joined += "`{";
+            break;
+        }
+    }
 
-	return joined;
+    return joined;
 }
 
-QString Parser::parse(const QString &s, Talkable talkable, const ParserData * const parserData, ParserEscape escape = ParserEscape::HtmlEscape)
+QString Parser::parse(
+    const QString &s, Talkable talkable, const ParserData *const parserData,
+    ParserEscape escape = ParserEscape::HtmlEscape)
 {
-	prepareSearchChars(m_configuration);
+    prepareSearchChars(m_configuration);
 
-	QStack<ParserToken> parseStack;
-	int idx = 0, len = s.length();
-	while (idx < len)
-	{
-		ParserToken pe1, pe;
+    QStack<ParserToken> parseStack;
+    int idx = 0, len = s.length();
+    while (idx < len)
+    {
+        ParserToken pe1, pe;
 
-		int prevIdx = idx;
-		for (; idx < len; ++idx)
-			if (searchChars()->contains(s.at(idx)))
-				break;
+        int prevIdx = idx;
+        for (; idx < len; ++idx)
+            if (searchChars()->contains(s.at(idx)))
+                break;
 
-		if (idx != prevIdx)
-		{
-			pe1.setType(PT_STRING);
-			pe1.setContent(s.mid(prevIdx, idx - prevIdx));
-			parseStack.push(pe1);
+        if (idx != prevIdx)
+        {
+            pe1.setType(PT_STRING);
+            pe1.setContent(s.mid(prevIdx, idx - prevIdx));
+            parseStack.push(pe1);
 
-			if (idx == len)
-				break;
-		}
+            if (idx == len)
+                break;
+        }
 
-		const QChar c(s.at(idx));
-		if (c == '%')
-		{
-			++idx;
-			if (idx == len)
-				break;
+        const QChar c(s.at(idx));
+        if (c == '%')
+        {
+            ++idx;
+            if (idx == len)
+                break;
 
-			pe = parsePercentSyntax(s, idx, talkable, escape);
-			pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
+            pe = parsePercentSyntax(s, idx, talkable, escape);
+            pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
 
-			parseStack.push(pe);
-		}
-		else if (c == '[')
-		{
-			++idx;
-			if (idx == len)
-				break;
+            parseStack.push(pe);
+        }
+        else if (c == '[')
+        {
+            ++idx;
+            if (idx == len)
+                break;
 
-			if (s.at(idx) == '!')
-			{
-				pe.setType(PT_CHECK_ANY_NULL);
-				++idx;
-			}
-			else
-				pe.setType(PT_CHECK_ALL_NOT_NULL);
+            if (s.at(idx) == '!')
+            {
+                pe.setType(PT_CHECK_ANY_NULL);
+                ++idx;
+            }
+            else
+                pe.setType(PT_CHECK_ALL_NOT_NULL);
 
-			parseStack.push(pe);
-		}
-		else if (c == ']')
-		{
-			++idx;
+            parseStack.push(pe);
+        }
+        else if (c == ']')
+        {
+            ++idx;
 
-			QVector<ParserTokenType> acceptedTokens;
-			acceptedTokens
-					<< PT_CHECK_ALL_NOT_NULL
-					<< PT_CHECK_ANY_NULL;
+            QVector<ParserTokenType> acceptedTokens;
+            acceptedTokens << PT_CHECK_ALL_NOT_NULL << PT_CHECK_ANY_NULL;
 
-			if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
-			{
-				pe.setContent("]");
-				pe.setType(PT_STRING);
+            if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
+            {
+                pe.setContent("]");
+                pe.setType(PT_STRING);
 
-				parseStack.push(pe);
-			}
-			else
-			{
-				bool anyNull = false;
-				while (!parseStack.empty())
-				{
-					ParserToken pe2 = parseStack.pop();
+                parseStack.push(pe);
+            }
+            else
+            {
+                bool anyNull = false;
+                while (!parseStack.empty())
+                {
+                    ParserToken pe2 = parseStack.pop();
 
-					if (pe2.type() == PT_CHECK_ALL_NOT_NULL)
-					{
-						if (!anyNull)
-						{
-							pe.setType(PT_STRING);
+                    if (pe2.type() == PT_CHECK_ALL_NOT_NULL)
+                    {
+                        if (!anyNull)
+                        {
+                            pe.setType(PT_STRING);
 
-							parseStack.push(pe);
-						}
+                            parseStack.push(pe);
+                        }
 
-						break;
-					}
+                        break;
+                    }
 
-					if (pe2.type() == PT_CHECK_ANY_NULL)
-					{
-						if (anyNull)
-						{
-							pe.setType(PT_STRING);
+                    if (pe2.type() == PT_CHECK_ANY_NULL)
+                    {
+                        if (anyNull)
+                        {
+                            pe.setType(PT_STRING);
 
-							parseStack.push(pe);
-						}
+                            parseStack.push(pe);
+                        }
 
-						break;
-					}
+                        break;
+                    }
 
-					// here we know for sure that pe2.type() == PT_STRING,
-					// as it is guaranteed by isActionParserTokenAtTop() call
-					anyNull = anyNull || pe2.decodedContent().isEmpty();
-					QString content = pe.decodedContent();
-					content.prepend(pe2.decodedContent());
-					pe.setContent(content);
-				}
-			}
-		}
-		else if (c == '{')
-		{
-			++idx;
-			if (idx == len)
-				break;
+                    // here we know for sure that pe2.type() == PT_STRING,
+                    // as it is guaranteed by isActionParserTokenAtTop() call
+                    anyNull = anyNull || pe2.decodedContent().isEmpty();
+                    QString content = pe.decodedContent();
+                    content.prepend(pe2.decodedContent());
+                    pe.setContent(content);
+                }
+            }
+        }
+        else if (c == '{')
+        {
+            ++idx;
+            if (idx == len)
+                break;
 
-			if (s.at(idx) == '!' || s.at(idx) == '~')
-			{
-				++idx;
-				pe.setType(PT_CHECK_FILE_NOT_EXISTS);
-			}
-			else
-				pe.setType(PT_CHECK_FILE_EXISTS);
+            if (s.at(idx) == '!' || s.at(idx) == '~')
+            {
+                ++idx;
+                pe.setType(PT_CHECK_FILE_NOT_EXISTS);
+            }
+            else
+                pe.setType(PT_CHECK_FILE_EXISTS);
 
-			parseStack.push(pe);
-		}
-		else if (c == '}')
-		{
-			++idx;
+            parseStack.push(pe);
+        }
+        else if (c == '}')
+        {
+            ++idx;
 
-			QVector<ParserTokenType> acceptedTokens;
-			acceptedTokens
-					<< PT_CHECK_FILE_EXISTS
-					<< PT_CHECK_FILE_NOT_EXISTS
-					<< PT_VARIABLE
-					<< PT_ICONPATH
-					<< PT_EXTERNAL_VARIABLE
-					<< PT_EXECUTE2;
+            QVector<ParserTokenType> acceptedTokens;
+            acceptedTokens << PT_CHECK_FILE_EXISTS << PT_CHECK_FILE_NOT_EXISTS << PT_VARIABLE << PT_ICONPATH
+                           << PT_EXTERNAL_VARIABLE << PT_EXECUTE2;
 
-			if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
-			{
-				pe.setContent("}");
-				pe.setType(PT_STRING);
+            if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
+            {
+                pe.setContent("}");
+                pe.setType(PT_STRING);
 
-				parseStack.push(pe);
-			}
-			else
-			{
-				QList<ParserToken> tokens;
+                parseStack.push(pe);
+            }
+            else
+            {
+                QList<ParserToken> tokens;
 
-				while (!parseStack.empty())
-				{
-					ParserToken pe2 = parseStack.pop();
+                while (!parseStack.empty())
+                {
+                    ParserToken pe2 = parseStack.pop();
 
-					if (pe2.type() == PT_CHECK_FILE_EXISTS || pe2.type() == PT_CHECK_FILE_NOT_EXISTS)
-					{
-						int firstSpaceTokenIdx = 0, spacePos = -1;
-						foreach (const ParserToken &token, tokens)
-						{
-							// encoded cannot contain space
-							if (!token.isEncoded())
-							{
-								spacePos = token.rawContent().indexOf(' ');
-								if (spacePos != -1)
-									break;
-							}
+                    if (pe2.type() == PT_CHECK_FILE_EXISTS || pe2.type() == PT_CHECK_FILE_NOT_EXISTS)
+                    {
+                        int firstSpaceTokenIdx = 0, spacePos = -1;
+                        foreach (const ParserToken &token, tokens)
+                        {
+                            // encoded cannot contain space
+                            if (!token.isEncoded())
+                            {
+                                spacePos = token.rawContent().indexOf(' ');
+                                if (spacePos != -1)
+                                    break;
+                            }
 
-							++firstSpaceTokenIdx;
-						}
+                            ++firstSpaceTokenIdx;
+                        }
 
-						QString filePath;
-						if (spacePos == -1)
-							filePath = joinParserTokens(tokens);
-						else
-							filePath = joinParserTokens(tokens.mid(0, firstSpaceTokenIdx)) +
-									tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
+                        QString filePath;
+                        if (spacePos == -1)
+                            filePath = joinParserTokens(tokens);
+                        else
+                            filePath = joinParserTokens(tokens.mid(0, firstSpaceTokenIdx)) +
+                                       tokens.at(firstSpaceTokenIdx).rawContent().left(spacePos);
 
 #ifdef Q_OS_WIN
-						if (filePath.startsWith(QStringLiteral("file:///")))
-							filePath = filePath.mid(static_cast<int>(qstrlen("file:///")));
+                        if (filePath.startsWith(QStringLiteral("file:///")))
+                            filePath = filePath.mid(static_cast<int>(qstrlen("file:///")));
 #else
-						if (filePath.startsWith(QStringLiteral("file:///")))
-							filePath = filePath.mid(static_cast<int>(qstrlen("file://")));
+                        if (filePath.startsWith(QStringLiteral("file:///")))
+                            filePath = filePath.mid(static_cast<int>(qstrlen("file://")));
 #endif
 
-						bool checkFileExists = (pe2.type() == PT_CHECK_FILE_EXISTS);
-						if (QFileInfo::exists(filePath) == checkFileExists)
-						{
-							pe.setType(PT_STRING);
+                        bool checkFileExists = (pe2.type() == PT_CHECK_FILE_EXISTS);
+                        if (QFileInfo::exists(filePath) == checkFileExists)
+                        {
+                            pe.setType(PT_STRING);
 
-							if (spacePos == -1)
-								pe.setContent(filePath);
-							else
-							{
-								QString content = tokens.at(firstSpaceTokenIdx).rawContent().mid(spacePos + 1) +
-										joinParserTokens(tokens.mid(firstSpaceTokenIdx + 1));
+                            if (spacePos == -1)
+                                pe.setContent(filePath);
+                            else
+                            {
+                                QString content = tokens.at(firstSpaceTokenIdx).rawContent().mid(spacePos + 1) +
+                                                  joinParserTokens(tokens.mid(firstSpaceTokenIdx + 1));
 
-								pe.setContent(content);
-							}
+                                pe.setContent(content);
+                            }
 
-							parseStack.push(pe);
-						}
+                            parseStack.push(pe);
+                        }
 
-						break;
-					}
+                        break;
+                    }
 
-					if (pe2.type() == PT_VARIABLE)
-					{
-						QString content = joinParserTokens(tokens);
+                    if (pe2.type() == PT_VARIABLE)
+                    {
+                        QString content = joinParserTokens(tokens);
 
-						pe.setType(PT_STRING);
+                        pe.setType(PT_STRING);
 
-						if (GlobalVariables.contains(content))
-						{
-							pe.setContent(GlobalVariables[content]);
-							pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
-						}
-						else
-							pe.setContent(QString());
+                        if (GlobalVariables.contains(content))
+                        {
+                            pe.setContent(GlobalVariables[content]);
+                            pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
+                        }
+                        else
+                            pe.setContent(QString());
 
-						parseStack.push(pe);
+                        parseStack.push(pe);
 
-						break;
-					}
+                        break;
+                    }
 
-					if (pe2.type() == PT_ICONPATH)
-					{
-						QString content = joinParserTokens(tokens);
+                    if (pe2.type() == PT_ICONPATH)
+                    {
+                        QString content = joinParserTokens(tokens);
 
-						pe.setType(PT_STRING);
-						if (content.contains(':'))
-						{
-							QStringList parts = content.split(':');
-							pe.setContent(PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon(parts.at(0), parts.at(1)))));
-						}
-						else
-							pe.setContent(PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon(content))));
+                        pe.setType(PT_STRING);
+                        if (content.contains(':'))
+                        {
+                            QStringList parts = content.split(':');
+                            pe.setContent(
+                                PathsProvider::webKitPath(
+                                    m_iconsManager->iconPath(KaduIcon(parts.at(0), parts.at(1)))));
+                        }
+                        else
+                            pe.setContent(PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon(content))));
 
-						parseStack.push(pe);
+                        parseStack.push(pe);
 
-						break;
-					}
+                        break;
+                    }
 
-					if (pe2.type() == PT_EXTERNAL_VARIABLE)
-					{
-						QString content = joinParserTokens(tokens);
+                    if (pe2.type() == PT_EXTERNAL_VARIABLE)
+                    {
+                        QString content = joinParserTokens(tokens);
 
-						pe.setType(PT_STRING);
+                        pe.setType(PT_STRING);
 
-						if (m_registeredTalkableTags.contains(content))
-							pe.setContent(m_registeredTalkableTags[content](talkable));
-						else if (parserData && m_registeredObjectTags.contains(content))
-							pe.setContent(m_registeredObjectTags[content](parserData));
-						else
-						{
-							pe.setContent(QString());
-						}
+                        if (m_registeredTalkableTags.contains(content))
+                            pe.setContent(m_registeredTalkableTags[content](talkable));
+                        else if (parserData && m_registeredObjectTags.contains(content))
+                            pe.setContent(m_registeredObjectTags[content](parserData));
+                        else
+                        {
+                            pe.setContent(QString());
+                        }
 
-						pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
-						parseStack.push(pe);
+                        pe.encodeContent(QByteArray(), ENCODE_INCLUDE_CHARS);
+                        parseStack.push(pe);
 
-						break;
-					}
+                        break;
+                    }
 
-					if (pe2.type() == PT_EXECUTE2)
-					{
-						pe.setType(PT_STRING);
-						pe.setContent(executeCmd(joinParserTokens(tokens)));
+                    if (pe2.type() == PT_EXECUTE2)
+                    {
+                        pe.setType(PT_STRING);
+                        pe.setContent(executeCmd(joinParserTokens(tokens)));
 
-						parseStack.push(pe);
+                        parseStack.push(pe);
 
-						break;
-					}
+                        break;
+                    }
 
-					// here we know for sure that pe2.type() == PT_STRING,
-					// as it is guaranteed by isActionParserTokenAtTop() call
-					tokens.prepend(pe2);
-				}
-			}
-		}
-		else if (c == '`')
-		{
-			++idx;
+                    // here we know for sure that pe2.type() == PT_STRING,
+                    // as it is guaranteed by isActionParserTokenAtTop() call
+                    tokens.prepend(pe2);
+                }
+            }
+        }
+        else if (c == '`')
+        {
+            ++idx;
 
-			if (idx == len || s.at(idx) != '{')
-			{
-				pe.setType(PT_EXECUTE);
+            if (idx == len || s.at(idx) != '{')
+            {
+                pe.setType(PT_EXECUTE);
 
-				parseStack.push(pe);
-			}
-			else
-			{
-				++idx;
+                parseStack.push(pe);
+            }
+            else
+            {
+                ++idx;
 
-				pe.setType(PT_EXECUTE2);
+                pe.setType(PT_EXECUTE2);
 
-				parseStack.push(pe);
-			}
-		}
-		else if (c == '\'')
-		{
-			++idx;
+                parseStack.push(pe);
+            }
+        }
+        else if (c == '\'')
+        {
+            ++idx;
 
-			pe.setContent(QString());
+            pe.setContent(QString());
 
-			QVector<ParserTokenType> acceptedTokens(PT_EXECUTE);
+            QVector<ParserTokenType> acceptedTokens(PT_EXECUTE);
 
-			if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
-			{
-				pe.setContent("\'");
-				pe.setType(PT_STRING);
+            if (!isActionParserTokenAtTop(parseStack, acceptedTokens))
+            {
+                pe.setContent("\'");
+                pe.setType(PT_STRING);
 
-				parseStack.push(pe);
-			}
-			else
-				while (!parseStack.empty())
-				{
-					ParserToken pe2 = parseStack.pop();
+                parseStack.push(pe);
+            }
+            else
+                while (!parseStack.empty())
+                {
+                    ParserToken pe2 = parseStack.pop();
 
-					if (pe2.type() == PT_EXECUTE)
-					{
-						pe.setType(PT_STRING);
-						pe.setContent(executeCmd(pe.decodedContent()));
+                    if (pe2.type() == PT_EXECUTE)
+                    {
+                        pe.setType(PT_STRING);
+                        pe.setContent(executeCmd(pe.decodedContent()));
 
-						parseStack.push(pe);
+                        parseStack.push(pe);
 
-						break;
-					}
+                        break;
+                    }
 
-					// here we know for sure that pe2.type() == PT_STRING,
-					// as it is guaranteed by isActionParserTokenAtTop() call
-					QString content = pe.decodedContent();
-					content.prepend(pe2.decodedContent());
-					pe.setContent(content);
-				}
-		}
-		else if (c == '\\')
-		{
-			++idx;
-			if (idx == len)
-				break;
+                    // here we know for sure that pe2.type() == PT_STRING,
+                    // as it is guaranteed by isActionParserTokenAtTop() call
+                    QString content = pe.decodedContent();
+                    content.prepend(pe2.decodedContent());
+                    pe.setContent(content);
+                }
+        }
+        else if (c == '\\')
+        {
+            ++idx;
+            if (idx == len)
+                break;
 
-			pe.setType(PT_STRING);
-			pe.setContent(s.at(idx));
+            pe.setType(PT_STRING);
+            pe.setContent(s.at(idx));
 
-			++idx;
+            ++idx;
 
-			parseStack.push(pe);
-		}
-		else if (c == '$')
-		{
-			++idx;
+            parseStack.push(pe);
+        }
+        else if (c == '$')
+        {
+            ++idx;
 
-			if (idx == len || s.at(idx) != '{')
-			{
-				pe.setType(PT_STRING);
-				pe.setContent("$");
+            if (idx == len || s.at(idx) != '{')
+            {
+                pe.setType(PT_STRING);
+                pe.setContent("$");
 
-				parseStack.push(pe);
-			}
-			else
-			{
-				++idx;
+                parseStack.push(pe);
+            }
+            else
+            {
+                ++idx;
 
-				pe.setType(PT_VARIABLE);
+                pe.setType(PT_VARIABLE);
 
-				parseStack.push(pe);
-			}
-		}
-		else if (c == '@')
-		{
-			++idx;
+                parseStack.push(pe);
+            }
+        }
+        else if (c == '@')
+        {
+            ++idx;
 
-			if (idx == len || s.at(idx) != '{')
-			{
-				pe.setType(PT_STRING);
-				pe.setContent("@");
+            if (idx == len || s.at(idx) != '{')
+            {
+                pe.setType(PT_STRING);
+                pe.setContent("@");
 
-				parseStack.push(pe);
-			}
-			else
-			{
-				++idx;
+                parseStack.push(pe);
+            }
+            else
+            {
+                ++idx;
 
-				pe.setType(PT_ICONPATH);
+                pe.setType(PT_ICONPATH);
 
-				parseStack.push(pe);
-			}
-		}
-		else if (c == '#')
-		{
-			++idx;
+                parseStack.push(pe);
+            }
+        }
+        else if (c == '#')
+        {
+            ++idx;
 
-			if (idx == len || s.at(idx) != '{')
-			{
-				pe.setType(PT_STRING);
-				pe.setContent("#");
+            if (idx == len || s.at(idx) != '{')
+            {
+                pe.setType(PT_STRING);
+                pe.setContent("#");
 
-				parseStack.push(pe);
-			}
-			else
-			{
-				++idx;
+                parseStack.push(pe);
+            }
+            else
+            {
+                ++idx;
 
-				pe.setType(PT_EXTERNAL_VARIABLE);
+                pe.setType(PT_EXTERNAL_VARIABLE);
 
-				parseStack.push(pe);
-			}
-		}
-	}
+                parseStack.push(pe);
+            }
+        }
+    }
 
-	QString ret = joinParserTokens(parseStack);
+    QString ret = joinParserTokens(parseStack);
 
-	return ret;
+    return ret;
 }
 
 #include "moc_parser.cpp"

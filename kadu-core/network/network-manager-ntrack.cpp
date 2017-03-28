@@ -23,14 +23,15 @@
 
 #include "network-manager-ntrack.h"
 
-NetworkManagerNTrack::NetworkManagerNTrack(QObject *parent) :
-		QObject{parent}
+NetworkManagerNTrack::NetworkManagerNTrack(QObject *parent) : QObject{parent}
 {
-	int argc = QCoreApplication::argc();
-	char **argv = QCoreApplication::argv();
-	QNtrack::instance()->init(&argc, &argv);
+    int argc = QCoreApplication::argc();
+    char **argv = QCoreApplication::argv();
+    QNtrack::instance()->init(&argc, &argv);
 
-	connect(QNtrack::instance(), SIGNAL(stateChanged(QNTrackState,QNTrackState)), this, SLOT(stateChanged(QNTrackState,QNTrackState)));
+    connect(
+        QNtrack::instance(), SIGNAL(stateChanged(QNTrackState, QNTrackState)), this,
+        SLOT(stateChanged(QNTrackState, QNTrackState)));
 }
 
 NetworkManagerNTrack::~NetworkManagerNTrack()
@@ -39,26 +40,26 @@ NetworkManagerNTrack::~NetworkManagerNTrack()
 
 bool NetworkManagerNTrack::isOnline(QNTrackState state) const
 {
-	return state == NTRACK_STATE_ONLINE || state == NTRACK_STATE_UNKNOWN;
+    return state == NTRACK_STATE_ONLINE || state == NTRACK_STATE_UNKNOWN;
 }
 
 bool NetworkManagerNTrack::isOnline()
 {
-	return isOnline(QNtrack::instance()->networkState());
+    return isOnline(QNtrack::instance()->networkState());
 }
 
 void NetworkManagerNTrack::forceOnline()
 {
-	onlineStateChanged(true);
+    onlineStateChanged(true);
 }
 
 void NetworkManagerNTrack::stateChanged(QNTrackState oldState, QNTrackState newState)
 {
-	bool wasOnline = isOnline(oldState);
-	bool nowOnline = isOnline(newState);
+    bool wasOnline = isOnline(oldState);
+    bool nowOnline = isOnline(newState);
 
-	if (wasOnline != nowOnline)
-		onlineStateChanged(nowOnline);
+    if (wasOnline != nowOnline)
+        onlineStateChanged(nowOnline);
 }
 
 #include "moc_network-manager-ntrack.cpp"

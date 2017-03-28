@@ -30,26 +30,24 @@
 
 KaduSharedBaseClassImpl(NetworkProxy)
 
-NetworkProxy NetworkProxy::null;
+    NetworkProxy NetworkProxy::null;
 
 NetworkProxy::NetworkProxy()
 {
 }
 
-NetworkProxy::NetworkProxy(NetworkProxyShared *data) :
-		SharedBase<NetworkProxyShared>(data)
+NetworkProxy::NetworkProxy(NetworkProxyShared *data) : SharedBase<NetworkProxyShared>(data)
 {
 }
 
 NetworkProxy::NetworkProxy(QObject *data)
 {
-	NetworkProxyShared *shared = qobject_cast<NetworkProxyShared *>(data);
-	if (shared)
-		setData(shared);
+    NetworkProxyShared *shared = qobject_cast<NetworkProxyShared *>(data);
+    if (shared)
+        setData(shared);
 }
 
-NetworkProxy::NetworkProxy(const NetworkProxy&copy) :
-		SharedBase<NetworkProxyShared>(copy)
+NetworkProxy::NetworkProxy(const NetworkProxy &copy) : SharedBase<NetworkProxyShared>(copy)
 {
 }
 
@@ -58,28 +56,28 @@ NetworkProxy::~NetworkProxy()
 }
 
 KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, type, Type, QString("http"))
-KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, address, Address, QString())
-KaduSharedBase_PropertyDef(NetworkProxy, int, port, Port, 0)
-KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString())
-KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, password, Password, QString())
-KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, pollingUrl, PollingUrl, QString())
-KaduSharedBase_PropertyReadDef(NetworkProxy, QString, displayName, DisplayName, QString())
+    KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, address, Address, QString())
+        KaduSharedBase_PropertyDef(NetworkProxy, int, port, Port, 0)
+            KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString())
+                KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, password, Password, QString())
+                    KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, pollingUrl, PollingUrl, QString())
+                        KaduSharedBase_PropertyReadDef(NetworkProxy, QString, displayName, DisplayName, QString())
 
-QNetworkProxy toQNetworkProxy(const NetworkProxy& networkProxy)
+                            QNetworkProxy toQNetworkProxy(const NetworkProxy &networkProxy)
 {
-	if (!networkProxy)
-		return {};
+    if (!networkProxy)
+        return {};
 
-	auto proxy = QNetworkProxy{};
-	if (networkProxy.type() == "socks")
-		proxy.setType(QNetworkProxy::Socks5Proxy);
-	else
-		proxy.setType(QNetworkProxy::HttpProxy);
+    auto proxy = QNetworkProxy{};
+    if (networkProxy.type() == "socks")
+        proxy.setType(QNetworkProxy::Socks5Proxy);
+    else
+        proxy.setType(QNetworkProxy::HttpProxy);
 
-	proxy.setHostName(networkProxy.address());
-	proxy.setPort(networkProxy.port());
-	proxy.setUser(networkProxy.user());
-	proxy.setPassword(networkProxy.password());
+    proxy.setHostName(networkProxy.address());
+    proxy.setPort(networkProxy.port());
+    proxy.setUser(networkProxy.user());
+    proxy.setPassword(networkProxy.password());
 
-	return proxy;
+    return proxy;
 }

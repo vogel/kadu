@@ -26,15 +26,14 @@
 
 class ScreenShotConfigurationUiHandler : public QObject, public ConfigurationUiHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ScreenShotConfigurationUiHandler(QObject *parent = nullptr);
-	virtual ~ScreenShotConfigurationUiHandler();
+    Q_INVOKABLE explicit ScreenShotConfigurationUiHandler(QObject *parent = nullptr);
+    virtual ~ScreenShotConfigurationUiHandler();
 
 private:
-	virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
-	virtual void mainConfigurationWindowDestroyed() override;
-	virtual void mainConfigurationWindowApplied() override;
-
+    virtual void mainConfigurationWindowCreated(MainConfigurationWindow *mainConfigurationWindow) override;
+    virtual void mainConfigurationWindowDestroyed() override;
+    virtual void mainConfigurationWindowApplied() override;
 };

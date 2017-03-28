@@ -27,8 +27,7 @@
  *
  * Constructs StoragePoint from given XML file and DOM node.
  */
-StoragePoint::StoragePoint(ConfigurationApi *storage, QDomElement point)
-		: Storage(storage), Point(point)
+StoragePoint::StoragePoint(ConfigurationApi *storage, QDomElement point) : Storage(storage), Point(point)
 {
 }
 
@@ -38,9 +37,9 @@ StoragePoint::StoragePoint(ConfigurationApi *storage, QDomElement point)
  *
  * Returns pointer to current XML storage file.
  */
-ConfigurationApi * StoragePoint::storage() const
+ConfigurationApi *StoragePoint::storage() const
 {
-	return Storage;
+    return Storage;
 }
 
 /**
@@ -51,25 +50,25 @@ ConfigurationApi * StoragePoint::storage() const
  */
 QDomElement StoragePoint::point() const
 {
-	return Point;
+    return Point;
 }
 
 void StoragePoint::storeValue(const QString &name, const QVariant value)
 {
-	Storage->createTextNode(Point, name, value.toString());
+    Storage->createTextNode(Point, name, value.toString());
 }
 
 void StoragePoint::storeAttribute(const QString &name, const QVariant value)
 {
-	Point.setAttribute(name, value.toString());
+    Point.setAttribute(name, value.toString());
 }
 
-void StoragePoint::removeValue(const QString& name)
+void StoragePoint::removeValue(const QString &name)
 {
-	Storage->removeNode(Point, name);
+    Storage->removeNode(Point, name);
 }
 
-void StoragePoint::removeAttribute(const QString& name)
+void StoragePoint::removeAttribute(const QString &name)
 {
-	Point.removeAttribute(name);
+    Point.removeAttribute(name);
 }

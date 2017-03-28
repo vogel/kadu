@@ -37,36 +37,35 @@ class PathsProvider;
  */
 class EmoticonThemeManager : public ThemeManager
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private:
-	QPointer<PathsProvider> m_pathsProvider;
+    QPointer<PathsProvider> m_pathsProvider;
 
 private slots:
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 
 protected:
-	virtual QString defaultThemeName() const;
-	virtual QStringList defaultThemePaths() const;
-	virtual bool isValidThemePath(const QString &themePath) const;
+    virtual QString defaultThemeName() const;
+    virtual QStringList defaultThemePaths() const;
+    virtual bool isValidThemePath(const QString &themePath) const;
 
 public:
-	/**
-	 * @short Return default theme name.
-	 * @return default theme name
-	 */
-	static QString defaultTheme();
+    /**
+     * @short Return default theme name.
+     * @return default theme name
+     */
+    static QString defaultTheme();
 
-	/**
-	 * @short Check if given directory contains emots.txt file.
-	 * @param dir directory path to check
-	 * @return true if directory dir contains emots.txt file
-	 */
-	static bool containsEmotsTxt(const QString &dir);
+    /**
+     * @short Check if given directory contains emots.txt file.
+     * @param dir directory path to check
+     * @return true if directory dir contains emots.txt file
+     */
+    static bool containsEmotsTxt(const QString &dir);
 
-	explicit EmoticonThemeManager(QObject *parent = nullptr);
-	virtual ~EmoticonThemeManager();
-
+    explicit EmoticonThemeManager(QObject *parent = nullptr);
+    virtual ~EmoticonThemeManager();
 };
 
 /**

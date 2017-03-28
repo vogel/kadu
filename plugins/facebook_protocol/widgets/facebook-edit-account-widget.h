@@ -36,49 +36,48 @@ class QPushButton;
 
 class FacebookEditAccountWidget : public AccountEditWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FacebookEditAccountWidget(Account account, QWidget *parent = nullptr);
-	virtual ~FacebookEditAccountWidget();
+    explicit FacebookEditAccountWidget(Account account, QWidget *parent = nullptr);
+    virtual ~FacebookEditAccountWidget();
 
 public slots:
-	virtual void apply();
-	virtual void cancel();
+    virtual void apply();
+    virtual void cancel();
 
 private:
-	QPointer<AccountManager> m_accountManager;
-	QPointer<ConfigurationManager> m_configurationManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<IdentityManager> m_identityManager;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<ConfigurationManager> m_configurationManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<IdentityManager> m_identityManager;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
-	owned_qptr<QLineEdit> m_accountId;
-	owned_qptr<QLineEdit> m_password;
-	owned_qptr<QCheckBox> m_rememberPassword;
-	owned_qptr<IdentitiesComboBox> m_identities;
-	owned_qptr<ProxyComboBox> m_proxies;
-	owned_qptr<QPushButton> m_apply;
-	owned_qptr<QPushButton> m_cancel;
+    owned_qptr<QLineEdit> m_accountId;
+    owned_qptr<QLineEdit> m_password;
+    owned_qptr<QCheckBox> m_rememberPassword;
+    owned_qptr<IdentitiesComboBox> m_identities;
+    owned_qptr<ProxyComboBox> m_proxies;
+    owned_qptr<QPushButton> m_apply;
+    owned_qptr<QPushButton> m_cancel;
 
-	void createGui();
-	void createGeneralTab(QTabWidget *);
+    void createGui();
+    void createGeneralTab(QTabWidget *);
 
-	void loadAccountData();
+    void loadAccountData();
 
-	void resetState();
+    void resetState();
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_INIT void init();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setConfigurationManager(ConfigurationManager *configurationManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setIdentityManager(IdentityManager *identityManager);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_INIT void init();
 
-	virtual void removeAccount();
+    virtual void removeAccount();
 
-	void dataChanged();
-	void stateChangedSlot(ConfigurationValueState);
-
+    void dataChanged();
+    void stateChangedSlot(ConfigurationValueState);
 };

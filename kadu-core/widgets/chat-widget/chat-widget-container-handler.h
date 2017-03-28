@@ -52,58 +52,57 @@ enum class OpenChatActivation;
  */
 class KADUAPI ChatWidgetContainerHandler : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ChatWidgetContainerHandler(QObject *parent = nullptr);
-	virtual ~ChatWidgetContainerHandler();
+    explicit ChatWidgetContainerHandler(QObject *parent = nullptr);
+    virtual ~ChatWidgetContainerHandler();
 
-	/**
-	 * @short Check if container accepts given chat.
-	 */
-	virtual bool acceptChat(Chat chat) const = 0;
+    /**
+     * @short Check if container accepts given chat.
+     */
+    virtual bool acceptChat(Chat chat) const = 0;
 
-	/**
-	 * @short Add chat to container.
-	 *
-	 * This method will fail silently if acceptChat(chatWidget) returns false.
-	 * This method will not fail if acceptChat(chatWidget) returns true.
-	 */
-	virtual ChatWidget * addChat(Chat chat, OpenChatActivation activation) = 0;
+    /**
+     * @short Add chat to container.
+     *
+     * This method will fail silently if acceptChat(chatWidget) returns false.
+     * This method will not fail if acceptChat(chatWidget) returns true.
+     */
+    virtual ChatWidget *addChat(Chat chat, OpenChatActivation activation) = 0;
 
-	/**
-	 * @short Remove chat from container.
-	 *
-	 * If container does not contain given chat widget this method does nothing.
-	 */
-	virtual void removeChat(Chat chat) = 0;
+    /**
+     * @short Remove chat from container.
+     *
+     * If container does not contain given chat widget this method does nothing.
+     */
+    virtual void removeChat(Chat chat) = 0;
 
-	/**
-	 * @short Return true if given chat widget is active and its container is active.
-	 */
-	virtual bool isChatWidgetActive(ChatWidget *chatWidget) = 0;
+    /**
+     * @short Return true if given chat widget is active and its container is active.
+     */
+    virtual bool isChatWidgetActive(ChatWidget *chatWidget) = 0;
 
-	/**
-	 * @short Try to activate given chat widget and its container.
-	 */
-	virtual void tryActivateChatWidget(ChatWidget *chatWidget) = 0;
+    /**
+     * @short Try to activate given chat widget and its container.
+     */
+    virtual void tryActivateChatWidget(ChatWidget *chatWidget) = 0;
 
-	/**
-	 * @short Try to minimize given chat widget and its container.
-	 */
-	virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) = 0;
+    /**
+     * @short Try to minimize given chat widget and its container.
+     */
+    virtual void tryMinimizeChatWidget(ChatWidget *chatWidget) = 0;
 
 signals:
-	/**
-	 * @short Signal emitted when given chat widget was activated.
-	 */
-	void chatWidgetActivated(ChatWidget *chatWidget);
+    /**
+     * @short Signal emitted when given chat widget was activated.
+     */
+    void chatWidgetActivated(ChatWidget *chatWidget);
 
-	/**
-	 * @short Signal emitted when acceptance state for given chat widget changes.
-	 */
-	void chatAcceptanceChanged(Chat chat);
-
+    /**
+     * @short Signal emitted when acceptance state for given chat widget changes.
+     */
+    void chatAcceptanceChanged(Chat chat);
 };
 
 /**

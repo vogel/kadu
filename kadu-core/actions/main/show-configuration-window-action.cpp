@@ -21,29 +21,30 @@
 
 #include "windows/main-configuration-window-service.h"
 
-ShowConfigurationWindowAction::ShowConfigurationWindowAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ShowConfigurationWindowAction::ShowConfigurationWindowAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"preferences-other"});
-	setName(QStringLiteral("configurationAction"));
-	setShortcut("kadu_configure", Qt::ApplicationShortcut);
-	setText(tr("Preferences"));
-	setType(ActionDescription::TypeGlobal);
+    setIcon(KaduIcon{"preferences-other"});
+    setName(QStringLiteral("configurationAction"));
+    setShortcut("kadu_configure", Qt::ApplicationShortcut);
+    setText(tr("Preferences"));
+    setType(ActionDescription::TypeGlobal);
 }
 
 ShowConfigurationWindowAction::~ShowConfigurationWindowAction()
 {
 }
 
-void ShowConfigurationWindowAction::setMainConfigurationWindowService(MainConfigurationWindowService *mainConfigurationWindowService)
+void ShowConfigurationWindowAction::setMainConfigurationWindowService(
+    MainConfigurationWindowService *mainConfigurationWindowService)
 {
-	m_mainConfigurationWindowService = mainConfigurationWindowService;
+    m_mainConfigurationWindowService = mainConfigurationWindowService;
 }
 
 void ShowConfigurationWindowAction::actionTriggered(QAction *, bool)
 {
-	m_mainConfigurationWindowService->show();
+    m_mainConfigurationWindowService->show();
 }
 
 #include "moc_show-configuration-window-action.cpp"

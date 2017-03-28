@@ -26,14 +26,14 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
 
-MediaplayerMenuAction::MediaplayerMenuAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+MediaplayerMenuAction::MediaplayerMenuAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"external_modules/mediaplayer"});
-	setName(QStringLiteral("mediaplayer_button"));
-	setText(tr("MediaPlayer"));
-	setType(ActionDescription::TypeChat);
+    setIcon(KaduIcon{"external_modules/mediaplayer"});
+    setName(QStringLiteral("mediaplayer_button"));
+    setText(tr("MediaPlayer"));
+    setType(ActionDescription::TypeChat);
 }
 
 MediaplayerMenuAction::~MediaplayerMenuAction()
@@ -42,25 +42,25 @@ MediaplayerMenuAction::~MediaplayerMenuAction()
 
 void MediaplayerMenuAction::setMediaPlayer(MediaPlayer *mediaPlayer)
 {
-	m_mediaPlayer = mediaPlayer;
+    m_mediaPlayer = mediaPlayer;
 }
 
 void MediaplayerMenuAction::actionTriggered(QAction *sender, bool)
 {
-	auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
-	if (!chatEditBox)
-		return;
+    auto chatEditBox = qobject_cast<ChatEditBox *>(sender->parent());
+    if (!chatEditBox)
+        return;
 
-	auto chatWidget = chatEditBox->chatWidget();
-	if (chatWidget)
-	{
-		auto widgets = sender->associatedWidgets();
-		if (widgets.isEmpty())
-			return;
+    auto chatWidget = chatEditBox->chatWidget();
+    if (chatWidget)
+    {
+        auto widgets = sender->associatedWidgets();
+        if (widgets.isEmpty())
+            return;
 
-		auto widget = widgets[widgets.size() - 1];
-		m_mediaPlayer->menu()->popup(widget->mapToGlobal(QPoint(0, widget->height())));
-	}
+        auto widget = widgets[widgets.size() - 1];
+        m_mediaPlayer->menu()->popup(widget->mapToGlobal(QPoint(0, widget->height())));
+    }
 }
 
 #include "moc_mediaplayer-menu-action.cpp"

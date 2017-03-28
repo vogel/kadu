@@ -28,26 +28,25 @@ class InjectedFactory;
 
 class ChatDataWindowRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ChatDataWindowRepository(QObject *parent = nullptr);
-	virtual ~ChatDataWindowRepository();
+    Q_INVOKABLE explicit ChatDataWindowRepository(QObject *parent = nullptr);
+    virtual ~ChatDataWindowRepository();
 
-	ChatDataWindow * windowForChat(const Chat &chat);
-	const QMap<Chat, ChatDataWindow *> & windows() const;
+    ChatDataWindow *windowForChat(const Chat &chat);
+    const QMap<Chat, ChatDataWindow *> &windows() const;
 
 public slots:
-	void showChatWindow(const Chat &chat);
+    void showChatWindow(const Chat &chat);
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QMap<Chat, ChatDataWindow *> Windows;
+    QMap<Chat, ChatDataWindow *> Windows;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
-	void windowDestroyed(const Chat &chat);
-
+    void windowDestroyed(const Chat &chat);
 };

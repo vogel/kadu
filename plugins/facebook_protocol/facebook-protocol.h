@@ -30,28 +30,30 @@ struct QFacebookPublishPresence;
 
 class FacebookProtocol : public Protocol
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit FacebookProtocol(Account account, ProtocolFactory *factory);
-	virtual ~FacebookProtocol();
+    explicit FacebookProtocol(Account account, ProtocolFactory *factory);
+    virtual ~FacebookProtocol();
 
-	virtual bool contactsListReadOnly() override { return true; }
-	virtual QString statusPixmapPath() override;
+    virtual bool contactsListReadOnly() override
+    {
+        return true;
+    }
+    virtual QString statusPixmapPath() override;
 
 protected:
-	virtual void login() override;
-	virtual void logout() override;
-	virtual void sendStatusToServer() override;
+    virtual void login() override;
+    virtual void logout() override;
+    virtual void sendStatusToServer() override;
 
 private:
-	std::unique_ptr<QFacebookLogin> m_facebookLogin;
-	not_owned_qptr<FacebookServices> m_facebookServices;
+    std::unique_ptr<QFacebookLogin> m_facebookLogin;
+    not_owned_qptr<FacebookServices> m_facebookServices;
 
-	void facebookLoginFinished(QFacebookLogin::Result &&result);
-	void facebookDisconnected();
+    void facebookLoginFinished(QFacebookLogin::Result &&result);
+    void facebookDisconnected();
 
-	void invalidDataReceived(const QByteArray &data);
-	void presenceReceived(const QFacebookPublishPresence &presence);
-
+    void invalidDataReceived(const QByteArray &data);
+    void presenceReceived(const QFacebookPublishPresence &presence);
 };

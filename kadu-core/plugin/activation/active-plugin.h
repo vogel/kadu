@@ -50,25 +50,25 @@
  */
 class ActivePlugin
 {
-
 public:
-	/**
-	 * @short Loads all plugin data.
-	 * @throws PluginActivationErrorException
-	 *
-	 * Loads plugin transaltion for pluginName, then plugin library file. After that plugin root
-	 * object is created and initialized.
-	 *
-	 * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
-	 * destroyed and memory is freed in this case.
-	 */
-	explicit ActivePlugin(const QString &pluginDirPath, const QString &pluginTranslationDir, const QString &language, const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
+    /**
+     * @short Loads all plugin data.
+     * @throws PluginActivationErrorException
+     *
+     * Loads plugin transaltion for pluginName, then plugin library file. After that plugin root
+     * object is created and initialized.
+     *
+     * In case of any error PluginActivationErrorException is thrown. All allocated data is properly
+     * destroyed and memory is freed in this case.
+     */
+    explicit ActivePlugin(
+        const QString &pluginDirPath, const QString &pluginTranslationDir, const QString &language,
+        const QString &pluginName, PluginInjectorProvider *pluginInjectorProvider);
 
 private:
-	// translations must be loaded first and uloaded last, see #2177
-	std::unique_ptr<PluginTranslationsLoader> m_pluginTranslationsLoader;
-	std::unique_ptr<PluginLoader> m_pluginLoader;
-
+    // translations must be loaded first and uloaded last, see #2177
+    std::unique_ptr<PluginTranslationsLoader> m_pluginTranslationsLoader;
+    std::unique_ptr<PluginLoader> m_pluginLoader;
 };
 
 /**

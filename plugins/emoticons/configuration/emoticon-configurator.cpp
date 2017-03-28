@@ -31,8 +31,7 @@
 
 #include "emoticon-configurator.h"
 
-EmoticonConfigurator::EmoticonConfigurator(QObject *parent) :
-		ConfigurationHolder{parent}
+EmoticonConfigurator::EmoticonConfigurator(QObject *parent) : ConfigurationHolder{parent}
 {
 }
 
@@ -42,74 +41,79 @@ EmoticonConfigurator::~EmoticonConfigurator()
 
 void EmoticonConfigurator::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void EmoticonConfigurator::setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory)
 {
-	m_pluginInjectedFactory = pluginInjectedFactory;
+    m_pluginInjectedFactory = pluginInjectedFactory;
 }
 
 void EmoticonConfigurator::setInsertAction(InsertEmoticonAction *insertAction)
 {
-	InsertAction = insertAction;
+    InsertAction = insertAction;
 }
 
 void EmoticonConfigurator::setEmoticonExpanderProvider(EmoticonExpanderDomVisitorProvider *emoticonExpanderProvider)
 {
-	EmoticonExpanderProvider = emoticonExpanderProvider;
+    EmoticonExpanderProvider = emoticonExpanderProvider;
 }
 
 void EmoticonConfigurator::configure()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void EmoticonConfigurator::init()
 {
-	ThemeManager.reset(m_pluginInjectedFactory->makeInjected<EmoticonThemeManager>());
+    ThemeManager.reset(m_pluginInjectedFactory->makeInjected<EmoticonThemeManager>());
 
-	createDefaultConfiguration();
+    createDefaultConfiguration();
 }
 
 void EmoticonConfigurator::createDefaultConfiguration()
 {
-	m_configuration->deprecatedApi()->addVariable("Chat", "EmoticonsPaths", QString());
-	m_configuration->deprecatedApi()->addVariable("Chat", "EnableEmoticonAnimations", 1 != m_configuration->deprecatedApi()->readNumEntry("Chat", "EmoticonsStyle", 2));
-	m_configuration->deprecatedApi()->addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
-	m_configuration->deprecatedApi()->addVariable("Chat", "EnableEmoticons", m_configuration->deprecatedApi()->readEntry("Chat", "EmoticonsTheme") != "None");
+    m_configuration->deprecatedApi()->addVariable("Chat", "EmoticonsPaths", QString());
+    m_configuration->deprecatedApi()->addVariable(
+        "Chat", "EnableEmoticonAnimations",
+        1 != m_configuration->deprecatedApi()->readNumEntry("Chat", "EmoticonsStyle", 2));
+    m_configuration->deprecatedApi()->addVariable("Chat", "EmoticonsTheme", ThemeManager->defaultTheme());
+    m_configuration->deprecatedApi()->addVariable(
+        "Chat", "EnableEmoticons", m_configuration->deprecatedApi()->readEntry("Chat", "EmoticonsTheme") != "None");
 }
 
 void EmoticonConfigurator::configurationUpdated()
 {
-	if (!EmoticonExpanderProvider && !InsertAction)
-		return;
+    if (!EmoticonExpanderProvider && !InsertAction)
+        return;
 
-	ThemeManager->loadThemes();
+    ThemeManager->loadThemes();
 
-	m_emoticonConfiguration.setEnabled(m_configuration->deprecatedApi()->readBoolEntry("Chat", "EnableEmoticons", true));
-	m_emoticonConfiguration.setAnimate(m_configuration->deprecatedApi()->readBoolEntry("Chat", "EnableEmoticonAnimations", true));
+    m_emoticonConfiguration.setEnabled(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "EnableEmoticons", true));
+    m_emoticonConfiguration.setAnimate(
+        m_configuration->deprecatedApi()->readBoolEntry("Chat", "EnableEmoticonAnimations", true));
 
-	if (m_emoticonConfiguration.enabled())
-	{
-		if (LastLoadedThemeName != m_configuration->deprecatedApi()->readEntry("Chat", "EmoticonsTheme"))
-		{
-			LastLoadedThemeName = m_configuration->deprecatedApi()->readEntry("Chat", "EmoticonsTheme");
-			ThemeManager->setCurrentTheme(LastLoadedThemeName);
+    if (m_emoticonConfiguration.enabled())
+    {
+        if (LastLoadedThemeName != m_configuration->deprecatedApi()->readEntry("Chat", "EmoticonsTheme"))
+        {
+            LastLoadedThemeName = m_configuration->deprecatedApi()->readEntry("Chat", "EmoticonsTheme");
+            ThemeManager->setCurrentTheme(LastLoadedThemeName);
 
-			GaduEmoticonThemeLoader loader;
-			LastTheme = loader.loadEmoticonTheme(ThemeManager->currentTheme().path());
-		}
+            GaduEmoticonThemeLoader loader;
+            LastTheme = loader.loadEmoticonTheme(ThemeManager->currentTheme().path());
+        }
 
-		m_emoticonConfiguration.setEmoticonTheme(LastTheme);
-	}
-	else
-		m_emoticonConfiguration.setEmoticonTheme(EmoticonTheme());
+        m_emoticonConfiguration.setEmoticonTheme(LastTheme);
+    }
+    else
+        m_emoticonConfiguration.setEmoticonTheme(EmoticonTheme());
 
-	if (InsertAction)
-		InsertAction->setConfiguration(m_emoticonConfiguration);
-	if (EmoticonExpanderProvider)
-		EmoticonExpanderProvider->setConfiguration(m_emoticonConfiguration);
+    if (InsertAction)
+        InsertAction->setConfiguration(m_emoticonConfiguration);
+    if (EmoticonExpanderProvider)
+        EmoticonExpanderProvider->setConfiguration(m_emoticonConfiguration);
 }
 
 #include "moc_emoticon-configurator.cpp"

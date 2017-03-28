@@ -23,8 +23,8 @@
 
 #include <QtCore/QString>
 
-#include "misc/error-severity.h"
 #include "exports.h"
+#include "misc/error-severity.h"
 
 /**
  * @addtogroup Misc
@@ -40,51 +40,50 @@
  */
 class KADUAPI Error
 {
-	ErrorSeverity Severity;
-	QString Message;
+    ErrorSeverity Severity;
+    QString Message;
 
 public:
-	/**
-	 * @short Create new Error class.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param severity this error severity
-	 * @param message this error message
-	 */
-	Error(ErrorSeverity severity, const QString &message);
+    /**
+     * @short Create new Error class.
+     * @author Rafał 'Vogel' Malinowski
+     * @param severity this error severity
+     * @param message this error message
+     */
+    Error(ErrorSeverity severity, const QString &message);
 
-	/**
-	 * @short Copy Error object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe Error object to copy
-	 */
-	Error(const Error &copyMe);
+    /**
+     * @short Copy Error object.
+     * @author Rafał 'Vogel' Malinowski
+     * @param copyMe Error object to copy
+     */
+    Error(const Error &copyMe);
 
-	/**
-	 * @short Copy Error object and return this object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param copyMe Error object to copy
-	 * @return this object
-	 */
-	Error & operator = (const Error &copyMe);
+    /**
+     * @short Copy Error object and return this object.
+     * @author Rafał 'Vogel' Malinowski
+     * @param copyMe Error object to copy
+     * @return this object
+     */
+    Error &operator=(const Error &copyMe);
 
-	/**
-	 * @short Return severity of this object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return severity of this object
-	 */
-	ErrorSeverity severity() const;
+    /**
+     * @short Return severity of this object.
+     * @author Rafał 'Vogel' Malinowski
+     * @return severity of this object
+     */
+    ErrorSeverity severity() const;
 
-	/**
-	 * @short Return message of this object.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return message of this object
-	 */
-	QString message() const;
-
+    /**
+     * @short Return message of this object.
+     * @author Rafał 'Vogel' Malinowski
+     * @return message of this object
+     */
+    QString message() const;
 };
 
 /**
  * @}
  */
 
-#endif // ERROR_H
+#endif   // ERROR_H

@@ -28,24 +28,23 @@
 
 class KADUAPI OpenChatWithRunnerManager : public QObject
 {
-	Q_OBJECT
-	Q_DISABLE_COPY(OpenChatWithRunnerManager)
+    Q_OBJECT
+    Q_DISABLE_COPY(OpenChatWithRunnerManager)
 
-	static OpenChatWithRunnerManager *Instance;
+    static OpenChatWithRunnerManager *Instance;
 
-	QList<OpenChatWithRunner *> Runners;
+    QList<OpenChatWithRunner *> Runners;
 
-	OpenChatWithRunnerManager();
-	~OpenChatWithRunnerManager();
+    OpenChatWithRunnerManager();
+    ~OpenChatWithRunnerManager();
 
 public:
-	static OpenChatWithRunnerManager * instance();
+    static OpenChatWithRunnerManager *instance();
 
-	void registerRunner(OpenChatWithRunner *runner);
-	void unregisterRunner(OpenChatWithRunner *runner);
+    void registerRunner(OpenChatWithRunner *runner);
+    void unregisterRunner(OpenChatWithRunner *runner);
 
-	BuddyList matchingContacts(const QString &query);
-
+    BuddyList matchingContacts(const QString &query);
 };
 
-#endif // OPEN_CHAT_WITH_RUNNER_MANAGER_H
+#endif   // OPEN_CHAT_WITH_RUNNER_MANAGER_H

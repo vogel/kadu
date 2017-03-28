@@ -33,55 +33,55 @@ BuddySet::BuddySet()
 
 BuddySet::BuddySet(Buddy buddy)
 {
-	insert(buddy);
+    insert(buddy);
 }
 
 bool BuddySet::isAllAnonymous() const
 {
-	foreach (const Buddy &buddy, *this)
-		if (!buddy.isAnonymous())
-			return false;
+    foreach (const Buddy &buddy, *this)
+        if (!buddy.isAnonymous())
+            return false;
 
-	return true;
+    return true;
 }
 
 bool BuddySet::isAnyTemporary() const
 {
-	for (auto &&buddy : *this)
-		if (buddy.isTemporary())
-			return true;
+    for (auto &&buddy : *this)
+        if (buddy.isTemporary())
+            return true;
 
-	return false;
+    return false;
 }
 
 BuddyList BuddySet::toBuddyList() const
 {
-	return toList();
+    return toList();
 }
 
 Buddy BuddySet::toBuddy() const
 {
-	if (count() != 1)
-		return Buddy::null;
+    if (count() != 1)
+        return Buddy::null;
 
-	return *constBegin();
+    return *constBegin();
 }
 
 QVector<Contact> BuddySet::getAllContacts() const
 {
-	QVector<Contact> allContacts;
-	foreach (const Buddy &buddy, *this)
-		foreach (const Contact &contact, buddy.contacts())
-			allContacts.append(contact);
+    QVector<Contact> allContacts;
+    foreach (const Buddy &buddy, *this)
+        foreach (const Contact &contact, buddy.contacts())
+            allContacts.append(contact);
 
-	return allContacts;
+    return allContacts;
 }
 
 uint qHash(const BuddySet &buddySet)
 {
-	uint hash = 0;
-	foreach (const Buddy &buddy, buddySet)
-		hash = hash ^ qHash(buddy);
+    uint hash = 0;
+    foreach (const Buddy &buddy, buddySet)
+        hash = hash ^ qHash(buddy);
 
-	return hash;
+    return hash;
 }

@@ -23,9 +23,9 @@
 
 #include "actions/action-context-provider.h"
 #include "configuration/configuration-aware-object.h"
+#include "exports.h"
 #include "os/generic/compositing-aware-object.h"
 #include "talkable/talkable.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -43,62 +43,64 @@ class StatusContainerManager;
 class TalkableProxyModel;
 class TalkableTreeView;
 
-class KADUAPI RosterWidget : public QWidget, public ActionContextProvider, ConfigurationAwareObject, CompositingAwareObject
+class KADUAPI RosterWidget : public QWidget,
+                             public ActionContextProvider,
+                             ConfigurationAwareObject,
+                             CompositingAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<StatusContainerManager> m_statusContainerManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<StatusContainerManager> m_statusContainerManager;
 
-	GroupTabBar *GroupBar;
-	QScopedPointer<GroupTabBarConfigurator> TabBarConfigurator;
+    GroupTabBar *GroupBar;
+    QScopedPointer<GroupTabBarConfigurator> TabBarConfigurator;
 
-	TalkableProxyModel *ProxyModel;
-	GroupTalkableFilter *MyGroupFilter;
+    TalkableProxyModel *ProxyModel;
+    GroupTalkableFilter *MyGroupFilter;
 
-	FilteredTreeView *TalkableWidget;
-	TalkableTreeView *TalkableTree;
+    FilteredTreeView *TalkableWidget;
+    TalkableTreeView *TalkableTree;
 
-	ProxyActionContext *Context;
+    ProxyActionContext *Context;
 
-	bool CompositingEnabled;
+    bool CompositingEnabled;
 
-	void createGui();
+    void createGui();
 
-	ModelChain * createModelChain();
-	void createTalkableWidget(QWidget *parent);
+    ModelChain *createModelChain();
+    void createTalkableWidget(QWidget *parent);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
+    INJEQT_INIT void init();
 
 protected:
-	virtual void configurationUpdated() override;
+    virtual void configurationUpdated() override;
 
-	virtual void compositingEnabled() override;
-	virtual void compositingDisabled() override;
+    virtual void compositingEnabled() override;
+    virtual void compositingDisabled() override;
 
 public:
-	explicit RosterWidget(QWidget *parent = nullptr);
-	virtual ~RosterWidget();
+    explicit RosterWidget(QWidget *parent = nullptr);
+    virtual ~RosterWidget();
 
-	void clearFilter();
+    void clearFilter();
 
-	// TODO 0.11.0: rething
-	TalkableTreeView * talkableTreeView();
-	TalkableProxyModel * talkableProxyModel();
+    // TODO 0.11.0: rething
+    TalkableTreeView *talkableTreeView();
+    TalkableProxyModel *talkableProxyModel();
 
-	// ActionContextProvider implementation
-	virtual ActionContext * actionContext() override;
+    // ActionContextProvider implementation
+    virtual ActionContext *actionContext() override;
 
 public slots:
-	void storeConfiguration();
+    void storeConfiguration();
 
 signals:
-	void currentChanged(const Talkable &talkable);
-	void talkableActivated(const Talkable &talkable);
-
+    void currentChanged(const Talkable &talkable);
+    void talkableActivated(const Talkable &talkable);
 };

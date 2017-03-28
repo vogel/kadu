@@ -20,95 +20,93 @@
 
 #include "base-action-context.h"
 
-BaseActionContext::BaseActionContext(QWidget *widget) :
-		Widget{widget},
-		CurrentStatusContainer{nullptr}
+BaseActionContext::BaseActionContext(QWidget *widget) : Widget{widget}, CurrentStatusContainer{nullptr}
 {
-	connect(&MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(changed()));
+    connect(&MyChangeNotifier, SIGNAL(changed()), this, SIGNAL(changed()));
 }
 
 BaseActionContext::~BaseActionContext()
 {
 }
 
-ChangeNotifier & BaseActionContext::changeNotifier()
+ChangeNotifier &BaseActionContext::changeNotifier()
 {
-	return MyChangeNotifier;
+    return MyChangeNotifier;
 }
 
-QWidget * BaseActionContext::widget()
+QWidget *BaseActionContext::widget()
 {
-	return Widget;
+    return Widget;
 }
 
 ContactSet BaseActionContext::contacts()
 {
-	return Contacts;
+    return Contacts;
 }
 
 void BaseActionContext::setContacts(const ContactSet &contacts)
 {
-	if (Contacts != contacts)
-	{
-		Contacts = contacts;
-		MyChangeNotifier.notify();
-	}
+    if (Contacts != contacts)
+    {
+        Contacts = contacts;
+        MyChangeNotifier.notify();
+    }
 }
 
 BuddySet BaseActionContext::buddies()
 {
-	return Buddies;
+    return Buddies;
 }
 
 void BaseActionContext::setBuddies(const BuddySet &buddies)
 {
-	if (Buddies != buddies)
-	{
-		Buddies = buddies;
-		MyChangeNotifier.notify();
-	}
+    if (Buddies != buddies)
+    {
+        Buddies = buddies;
+        MyChangeNotifier.notify();
+    }
 }
 
 Chat BaseActionContext::chat()
 {
-	return CurrentChat;
+    return CurrentChat;
 }
 
 void BaseActionContext::setChat(const Chat &chat)
 {
-	if (CurrentChat != chat)
-	{
-		CurrentChat = chat;
-		MyChangeNotifier.notify();
-	}
+    if (CurrentChat != chat)
+    {
+        CurrentChat = chat;
+        MyChangeNotifier.notify();
+    }
 }
 
-StatusContainer * BaseActionContext::statusContainer()
+StatusContainer *BaseActionContext::statusContainer()
 {
-	return CurrentStatusContainer;
+    return CurrentStatusContainer;
 }
 
 void BaseActionContext::setStatusContainer(StatusContainer *statusContainer)
 {
-	if (CurrentStatusContainer != statusContainer)
-	{
-		CurrentStatusContainer = statusContainer;
-		MyChangeNotifier.notify();
-	}
+    if (CurrentStatusContainer != statusContainer)
+    {
+        CurrentStatusContainer = statusContainer;
+        MyChangeNotifier.notify();
+    }
 }
 
 RoleSet BaseActionContext::roles()
 {
-	return Roles;
+    return Roles;
 }
 
 void BaseActionContext::setRoles(const RoleSet &roles)
 {
-	if (Roles != roles)
-	{
-		Roles = roles;
-		MyChangeNotifier.notify();
-	}
+    if (Roles != roles)
+    {
+        Roles = roles;
+        MyChangeNotifier.notify();
+    }
 }
 
 #include "moc_base-action-context.cpp"

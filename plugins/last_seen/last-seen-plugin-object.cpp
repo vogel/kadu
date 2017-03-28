@@ -21,8 +21,7 @@
 
 #include "infos.h"
 
-LastSeenPluginObject::LastSeenPluginObject(QObject *parent) :
-		QObject{parent}
+LastSeenPluginObject::LastSeenPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -32,7 +31,7 @@ LastSeenPluginObject::~LastSeenPluginObject()
 
 void LastSeenPluginObject::setInfos(Infos *infos)
 {
-	m_infos = infos;
+    m_infos = infos;
 }
 
 void LastSeenPluginObject::init()

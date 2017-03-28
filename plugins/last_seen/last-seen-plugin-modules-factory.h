@@ -23,14 +23,13 @@
 
 class LastSeenPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit LastSeenPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~LastSeenPluginModulesFactory();
+    explicit LastSeenPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~LastSeenPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

@@ -20,8 +20,7 @@
 
 #include "raw-message-transformer-service.h"
 
-RawMessageTransformerService::RawMessageTransformerService(QObject* parent) :
-		QObject(parent)
+RawMessageTransformerService::RawMessageTransformerService(QObject *parent) : QObject(parent)
 {
 }
 

@@ -19,34 +19,32 @@
 
 #pragma once
 
-#include "message/message.h"
 #include "exports.h"
+#include "message/message.h"
 
 class MessageRenderInfo;
 
 class KADUAPI MessageRenderInfoBuilder
 {
-
 public:
-	MessageRenderInfoBuilder();
+    MessageRenderInfoBuilder();
 
-	MessageRenderInfoBuilder & setMessage(Message message);
-	MessageRenderInfoBuilder & setBackgroundColor(QString backgroundColor);
-	MessageRenderInfoBuilder & setFontColor(QString fontColor);
-	MessageRenderInfoBuilder & setNickColor(QString nickColor);
-	MessageRenderInfoBuilder & setIncludeHeader(bool includeHeader);
-	MessageRenderInfoBuilder & setSeparatorSize(int separatorSize);
-	MessageRenderInfoBuilder & setShowServerTime(bool showServerTime);
+    MessageRenderInfoBuilder &setMessage(Message message);
+    MessageRenderInfoBuilder &setBackgroundColor(QString backgroundColor);
+    MessageRenderInfoBuilder &setFontColor(QString fontColor);
+    MessageRenderInfoBuilder &setNickColor(QString nickColor);
+    MessageRenderInfoBuilder &setIncludeHeader(bool includeHeader);
+    MessageRenderInfoBuilder &setSeparatorSize(int separatorSize);
+    MessageRenderInfoBuilder &setShowServerTime(bool showServerTime);
 
-	MessageRenderInfo create();
+    MessageRenderInfo create();
 
 private:
-	Message m_message;
-	QString m_backgroundColor;
-	QString m_fontColor;
-	QString m_nickColor;
-	bool m_includeHeader;
-	int m_separatorSize;
-	bool m_showServerTime;
-
+    Message m_message;
+    QString m_backgroundColor;
+    QString m_fontColor;
+    QString m_nickColor;
+    bool m_includeHeader;
+    int m_separatorSize;
+    bool m_showServerTime;
 };

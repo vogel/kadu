@@ -23,9 +23,7 @@
 
 class MediaplayerModule : public injeqt::module
 {
-
 public:
-	explicit MediaplayerModule();
-	virtual ~MediaplayerModule();
-
+    explicit MediaplayerModule();
+    virtual ~MediaplayerModule();
 };

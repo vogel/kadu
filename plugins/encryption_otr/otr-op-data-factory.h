@@ -41,41 +41,41 @@ class OtrTrustLevelService;
 
 class OtrOpDataFactory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE OtrOpDataFactory();
-	virtual ~OtrOpDataFactory();
+    Q_INVOKABLE OtrOpDataFactory();
+    virtual ~OtrOpDataFactory();
 
-	OtrOpData opData();
-	OtrOpData opDataForContact(const Contact &contact);
+    OtrOpData opData();
+    OtrOpData opDataForContact(const Contact &contact);
 
 private slots:
-	INJEQT_SET void setErrorMessageService(OtrErrorMessageService *errorMessageService);
-	INJEQT_SET void setFingerprintService(OtrFingerprintService *fingerprintService);
-	INJEQT_SET void setInstanceTagService(OtrInstanceTagService *instanceTagService);
-	INJEQT_SET void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
-	INJEQT_SET void setMessageEventService(OtrMessageEventService *messageEventService);
-	INJEQT_SET void setMessageService(OtrMessageService *messageService);
-	INJEQT_SET void setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
-	INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
-	INJEQT_SET void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
-	INJEQT_SET void setSessionService(OtrSessionService *sessionService);
-	INJEQT_SET void setTimerService(OtrTimerService *timerService);
-	INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
+    INJEQT_SET void setErrorMessageService(OtrErrorMessageService *errorMessageService);
+    INJEQT_SET void setFingerprintService(OtrFingerprintService *fingerprintService);
+    INJEQT_SET void setInstanceTagService(OtrInstanceTagService *instanceTagService);
+    INJEQT_SET void setIsLoggedInService(OtrIsLoggedInService *isLoggedInService);
+    INJEQT_SET void setMessageEventService(OtrMessageEventService *messageEventService);
+    INJEQT_SET void setMessageService(OtrMessageService *messageService);
+    INJEQT_SET void
+    setPeerIdentityVerificationService(OtrPeerIdentityVerificationService *peerIdentityVerificationService);
+    INJEQT_SET void setPolicyService(OtrPolicyService *policyService);
+    INJEQT_SET void setPrivateKeyService(OtrPrivateKeyService *privateKeyService);
+    INJEQT_SET void setSessionService(OtrSessionService *sessionService);
+    INJEQT_SET void setTimerService(OtrTimerService *timerService);
+    INJEQT_SET void setTrustLevelService(OtrTrustLevelService *trustLevelService);
 
 private:
-	QPointer<OtrErrorMessageService> ErrorMessageService;
-	QPointer<OtrFingerprintService> FingerprintService;
-	QPointer<OtrInstanceTagService> InstanceTagService;
-	QPointer<OtrIsLoggedInService> IsLoggedInService;
-	QPointer<OtrMessageEventService> MessageEventService;
-	QPointer<OtrMessageService> MessageService;
-	QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
-	QPointer<OtrPolicyService> PolicyService;
-	QPointer<OtrPrivateKeyService> PrivateKeyService;
-	QPointer<OtrSessionService> SessionService;
-	QPointer<OtrTimerService> TimerService;
-	QPointer<OtrTrustLevelService> TrustLevelService;
-
+    QPointer<OtrErrorMessageService> ErrorMessageService;
+    QPointer<OtrFingerprintService> FingerprintService;
+    QPointer<OtrInstanceTagService> InstanceTagService;
+    QPointer<OtrIsLoggedInService> IsLoggedInService;
+    QPointer<OtrMessageEventService> MessageEventService;
+    QPointer<OtrMessageService> MessageService;
+    QPointer<OtrPeerIdentityVerificationService> PeerIdentityVerificationService;
+    QPointer<OtrPolicyService> PolicyService;
+    QPointer<OtrPrivateKeyService> PrivateKeyService;
+    QPointer<OtrSessionService> SessionService;
+    QPointer<OtrTimerService> TimerService;
+    QPointer<OtrTrustLevelService> TrustLevelService;
 };

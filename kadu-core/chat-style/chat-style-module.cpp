@@ -27,11 +27,11 @@
 
 ChatStyleModule::ChatStyleModule()
 {
-	add_type<AdiumStyleEngine>();
-	add_type<ChatStyleConfigurationUiHandler>();
-	add_type<ChatStyleManager>();
-	add_type<ConfiguredChatStyleRendererFactoryProvider>();
-	add_type<KaduStyleEngine>();
+    add_type<AdiumStyleEngine>();
+    add_type<ChatStyleConfigurationUiHandler>();
+    add_type<ChatStyleManager>();
+    add_type<ConfiguredChatStyleRendererFactoryProvider>();
+    add_type<KaduStyleEngine>();
 }
 
 ChatStyleModule::~ChatStyleModule()

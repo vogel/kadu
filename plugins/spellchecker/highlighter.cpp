@@ -27,45 +27,44 @@ QTextCharFormat Highlighter::HighlightFormat;
 
 void Highlighter::rehighlightAll()
 {
-	foreach (Highlighter *highlighter, Highlighters)
-		highlighter->rehighlight();
+    foreach (Highlighter *highlighter, Highlighters)
+        highlighter->rehighlight();
 }
 
-Highlighter::Highlighter(SpellChecker *spellChecker, QTextDocument *document) :
-		QSyntaxHighlighter(document),
-		m_spellChecker{spellChecker}
+Highlighter::Highlighter(SpellChecker *spellChecker, QTextDocument *document)
+        : QSyntaxHighlighter(document), m_spellChecker{spellChecker}
 {
-	Highlighters.append(this);
+    Highlighters.append(this);
 }
 
 Highlighter::~Highlighter()
 {
-	Highlighters.removeAll(this);
+    Highlighters.removeAll(this);
 }
 
-void Highlighter::highlightBlock(const QString& text)
+void Highlighter::highlightBlock(const QString &text)
 {
-	QRegExp word("\\b\\w+\\b");
+    QRegExp word("\\b\\w+\\b");
 
-	int index = 0;
-	while ((index = word.indexIn(text, index)) != -1)
-	{
-		if (!m_spellChecker->checkWord(word.cap()))
-			setFormat(index, word.matchedLength(), HighlightFormat);
-		index += word.matchedLength();
-	}
+    int index = 0;
+    while ((index = word.indexIn(text, index)) != -1)
+    {
+        if (!m_spellChecker->checkWord(word.cap()))
+            setFormat(index, word.matchedLength(), HighlightFormat);
+        index += word.matchedLength();
+    }
 }
 
 void Highlighter::setHighlightFormat(const QTextCharFormat &format)
 {
-	HighlightFormat = format;
+    HighlightFormat = format;
 }
 
 void Highlighter::removeAll()
 {
-	foreach (Highlighter *highlighter, Highlighters)
-		delete highlighter;
-	Q_ASSERT(Highlighters.isEmpty());
+    foreach (Highlighter *highlighter, Highlighters)
+        delete highlighter;
+    Q_ASSERT(Highlighters.isEmpty());
 }
 
 #include "moc_highlighter.cpp"

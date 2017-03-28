@@ -19,8 +19,8 @@
 
 #pragma once
 
-#include "file-transfer/file-transfer-handler.h"
 #include "exports.h"
+#include "file-transfer/file-transfer-handler.h"
 
 #include <QtCore/QObject>
 
@@ -28,12 +28,11 @@ class QIODevice;
 
 class KADUAPI UrlIncomingFileTransferHandler : public FileTransferHandler
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit UrlIncomingFileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
-	virtual ~UrlIncomingFileTransferHandler();
+    explicit UrlIncomingFileTransferHandler(FileTransfer transfer, QObject *parent = nullptr);
+    virtual ~UrlIncomingFileTransferHandler();
 
-	virtual void save(QIODevice *destination) = 0;
-
+    virtual void save(QIODevice *destination) = 0;
 };

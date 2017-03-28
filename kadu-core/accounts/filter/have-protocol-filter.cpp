@@ -21,8 +21,7 @@
 
 #include "accounts/account.h"
 
-HaveProtocolFilter::HaveProtocolFilter(QObject *parent) :
-		AbstractAccountFilter{parent}
+HaveProtocolFilter::HaveProtocolFilter(QObject *parent) : AbstractAccountFilter{parent}
 {
 }
 
@@ -32,7 +31,7 @@ HaveProtocolFilter::~HaveProtocolFilter()
 
 bool HaveProtocolFilter::acceptAccount(Account account)
 {
-	return account.protocolHandler();
+    return account.protocolHandler();
 }
 
 #include "moc_have-protocol-filter.cpp"

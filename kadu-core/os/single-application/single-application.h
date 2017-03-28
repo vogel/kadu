@@ -30,32 +30,29 @@ class QLocalServer;
 
 class SingleApplication : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit SingleApplication(
-		const QString &applicationId,
-		std::function<void(void)> executeAsFirst,
-		std::function<void(SingleApplication &)> executeAsNext,
-		std::function<void(const QString &)> onReceiveMessage,
-		QObject *parent = nullptr);
-	virtual ~SingleApplication();
+    explicit SingleApplication(
+        const QString &applicationId, std::function<void(void)> executeAsFirst,
+        std::function<void(SingleApplication &)> executeAsNext, std::function<void(const QString &)> onReceiveMessage,
+        QObject *parent = nullptr);
+    virtual ~SingleApplication();
 
-	void sendMessage(const QString &message, int timeout) const;
+    void sendMessage(const QString &message, int timeout) const;
 
 private:
-	static QString defaultApplicationId(const QString &applicationId);
-	static QString normalizedPrefix(bool useOnlyLastSection, const QString &applicationId);
-	static QString socketName(const QString &prefix, const QString &applicationId);
-	static QString lockName(const QString &socketName);
+    static QString defaultApplicationId(const QString &applicationId);
+    static QString normalizedPrefix(bool useOnlyLastSection, const QString &applicationId);
+    static QString socketName(const QString &prefix, const QString &applicationId);
+    static QString lockName(const QString &socketName);
 
-	QString m_socketName;
-	QLocalServer *m_localServer;
-	std::function<void(const QString &)> m_onReceiveMessage;
+    QString m_socketName;
+    QLocalServer *m_localServer;
+    std::function<void(const QString &)> m_onReceiveMessage;
 
-	void startServer();
+    void startServer();
 
 private slots:
-	void receiveConnection();
-
+    void receiveConnection();
 };

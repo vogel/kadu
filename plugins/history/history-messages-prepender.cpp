@@ -25,19 +25,18 @@
 
 #include <QtCore/QFutureWatcher>
 
-HistoryMessagesPrepender::HistoryMessagesPrepender(QFuture<SortedMessages> messages, WebkitMessagesView *chatMessagesView, QObject *parent) :
-		QObject{parent},
-		m_messages{std::move(messages)},
-		m_messagesView(chatMessagesView)
+HistoryMessagesPrepender::HistoryMessagesPrepender(
+    QFuture<SortedMessages> messages, WebkitMessagesView *chatMessagesView, QObject *parent)
+        : QObject{parent}, m_messages{std::move(messages)}, m_messagesView(chatMessagesView)
 {
-	Q_ASSERT(m_messagesView);
+    Q_ASSERT(m_messagesView);
 
-	connect(m_messagesView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
+    connect(m_messagesView, SIGNAL(destroyed()), this, SLOT(deleteLater()));
 
-	auto futureWatcher = make_owned<QFutureWatcher<SortedMessages>>(this);
-	connect(futureWatcher.get(), SIGNAL(finished()), this, SLOT(messagesAvailable()));
+    auto futureWatcher = make_owned<QFutureWatcher<SortedMessages>>(this);
+    connect(futureWatcher.get(), SIGNAL(finished()), this, SLOT(messagesAvailable()));
 
-	futureWatcher->setFuture(m_messages);
+    futureWatcher->setFuture(m_messages);
 }
 
 HistoryMessagesPrepender::~HistoryMessagesPrepender()
@@ -46,13 +45,13 @@ HistoryMessagesPrepender::~HistoryMessagesPrepender()
 
 void HistoryMessagesPrepender::messagesAvailable()
 {
-	if (!m_messagesView)
-		return;
+    if (!m_messagesView)
+        return;
 
-	m_messagesView->setForcePruneDisabled(true);
-	m_messagesView->add(m_messages.result());
-	m_messagesView = nullptr;
-	deleteLater();
+    m_messagesView->setForcePruneDisabled(true);
+    m_messagesView->add(m_messages.result());
+    m_messagesView = nullptr;
+    deleteLater();
 }
 
 #include "moc_history-messages-prepender.cpp"

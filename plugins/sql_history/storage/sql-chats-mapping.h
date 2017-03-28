@@ -57,128 +57,135 @@ class SqlContactsMapping;
  * Chat::null if no valid mapping exists for given id.
  *
  * This class holds instance of @link SqlAccountsMapping @endlink and @link SqlContactsMapping @endlink to get
- * account to database mapping and contact to database mapping that are required to store full chat information in database.
+ * account to database mapping and contact to database mapping that are required to store full chat information in
+ * database.
  */
 class SqlChatsMapping : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<ChatManager> m_chatManager;
-	QPointer<ChatStorage> m_chatStorage;
+    QPointer<ChatManager> m_chatManager;
+    QPointer<ChatStorage> m_chatStorage;
 
-	const QSqlDatabase &Database;
-	mutable QMutex Mutex;
-	SqlAccountsMapping *AccountsMapping;
-	SqlContactsMapping *ContactsMapping;
-	QMap<int, Chat> ChatMapping;
+    const QSqlDatabase &Database;
+    mutable QMutex Mutex;
+    SqlAccountsMapping *AccountsMapping;
+    SqlContactsMapping *ContactsMapping;
+    QMap<int, Chat> ChatMapping;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Add mapping of given id to given contact.
-	 * @param id id to map
-	 * @param contact contact to map
-	 *
-	 * This method operates only on internal QMap and chats's custom properties. No database changes
-	 * are performed.
-	 */
-	void addMapping(int id, const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Add mapping of given id to given contact.
+     * @param id id to map
+     * @param contact contact to map
+     *
+     * This method operates only on internal QMap and chats's custom properties. No database changes
+     * are performed.
+     */
+    void addMapping(int id, const Chat &chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Load mapping from database.
-	 *
-	 * This method loads mapping from database. All database entries from kadu_chats table are matched
-	 * to existing chats. Entries without valid chats will be ignored by this method.
-	 */
-	void loadMappingsFromDatabase();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Load mapping from database.
+     *
+     * This method loads mapping from database. All database entries from kadu_chats table are matched
+     * to existing chats. Entries without valid chats will be ignored by this method.
+     */
+    void loadMappingsFromDatabase();
 
 private slots:
-	INJEQT_SET void setChatManager(ChatManager *chatManager);
-	INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
-	INJEQT_INIT void init();
+    INJEQT_SET void setChatManager(ChatManager *chatManager);
+    INJEQT_SET void setChatStorage(ChatStorage *chatStorage);
+    INJEQT_INIT void init();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Update SQL mapping of changed chat.
-	 * @param chat changes chat
-	 *
-	 * This method is called when chat's data changes. Probably an update is required in mapping table.
-	 */
-	void chatUpdated(const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Update SQL mapping of changed chat.
+     * @param chat changes chat
+     *
+     * This method is called when chat's data changes. Probably an update is required in mapping table.
+     */
+    void chatUpdated(const Chat &chat);
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of SqlChatsMapping class.
-	 * @param database database with kadu_chats table
-	 * @param accountsMapping object providing account to database mapping, must be not null
-	 * @param contactsMapping object providing chat to database mapping, must be not null
-	 * @param parent QObject parent of new SqlChatsMapping object
-	 *
-	 * Database provided in this constructor is not checked for existence or validity of kadu_chats table. It is caller responsibility
-	 * to provide proper database.
-	 */
-	explicit SqlChatsMapping(const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, SqlContactsMapping *contactsMapping, QObject *parent = nullptr);
-	virtual ~SqlChatsMapping();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of SqlChatsMapping class.
+     * @param database database with kadu_chats table
+     * @param accountsMapping object providing account to database mapping, must be not null
+     * @param contactsMapping object providing chat to database mapping, must be not null
+     * @param parent QObject parent of new SqlChatsMapping object
+     *
+     * Database provided in this constructor is not checked for existence or validity of kadu_chats table. It is caller
+     * responsibility
+     * to provide proper database.
+     */
+    explicit SqlChatsMapping(
+        const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, SqlContactsMapping *contactsMapping,
+        QObject *parent = nullptr);
+    virtual ~SqlChatsMapping();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return Chat matched with given id from database.
-	 * @param sqlId id from database
-	 *
-	 * This method return a Chat that matches with given id from database. If no matching contact is found, Chat::null is returned.
-	 */
-	Chat chatById(int sqlId) const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return Chat matched with given id from database.
+     * @param sqlId id from database
+     *
+     * This method return a Chat that matches with given id from database. If no matching contact is found, Chat::null
+     * is returned.
+     */
+    Chat chatById(int sqlId) const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return sql id matched with given chat.
-	 * @param chat chat to match to sql id
-	 * @param create if true then valid id will be created if not already available
-	 *
-	 * This method return sql id that matches with given chat. If no matching id is found and create is false, 0 is returned. If create
-	 * is true and no id is available then new one will be created and assigned to given contact.
-	 */
-	int idByChat(const Chat &chat, bool create);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return sql id matched with given chat.
+     * @param chat chat to match to sql id
+     * @param create if true then valid id will be created if not already available
+     *
+     * This method return sql id that matches with given chat. If no matching id is found and create is false, 0 is
+     * returned. If create
+     * is true and no id is available then new one will be created and assigned to given contact.
+     */
+    int idByChat(const Chat &chat, bool create);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Remove chat from mapping.
-	 * @param chat chat to remove
-	 *
-	 * Given chat is removed from mapping. It can by re-added by using @link idByChat @endlink method.
-	 */
-	void removeChat(const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Remove chat from mapping.
+     * @param chat chat to remove
+     *
+     * Given chat is removed from mapping. It can by re-added by using @link idByChat @endlink method.
+     */
+    void removeChat(const Chat &chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Return current mappings.
-	 * @param return current mappings
-	 */
-	const QMap<int, Chat> & mapping() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return current mappings.
+     * @param return current mappings
+     */
+    const QMap<int, Chat> &mapping() const;
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Converts chat to string that can be stored in database.
-	 * @param chat chat to convert
-	 * @return String representation of given chat.
-	 *
-	 * Currently Kadu supports only two types of chat: Contact and ContactSet chats. String representation of these chats look like:
-	 * <type-name>;<contact-id-1>;<contact-id-1>....
-	 */
-	QString chatToString(const Chat &chat);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Converts chat to string that can be stored in database.
+     * @param chat chat to convert
+     * @return String representation of given chat.
+     *
+     * Currently Kadu supports only two types of chat: Contact and ContactSet chats. String representation of these
+     * chats look like:
+     * <type-name>;<contact-id-1>;<contact-id-1>....
+     */
+    QString chatToString(const Chat &chat);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Converts string from database to chat.
-	 * @param account account of converted chat
-	 * @param string string  to convert
-	 * @return Chat that is representated by given string.
-	 *
-	 * This method return Chat::null only if given string can not be translated to a valid chat. No items are added to @link ChatManager @endlink.
-	 */
-	Chat stringToChat(const Account &account, const QString &string);
-
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Converts string from database to chat.
+     * @param account account of converted chat
+     * @param string string  to convert
+     * @return Chat that is representated by given string.
+     *
+     * This method return Chat::null only if given string can not be translated to a valid chat. No items are added to
+     * @link ChatManager @endlink.
+     */
+    Chat stringToChat(const Account &account, const QString &string);
 };
 
 /**

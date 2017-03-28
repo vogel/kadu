@@ -30,23 +30,26 @@
 class ConfigGroupBox;
 
 /**
-	&lt;action-button caption="caption" id="id" /&gt;
+        &lt;action-button caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigActionButton : public QPushButton, public ConfigWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	virtual void createWidgets();
+    virtual void createWidgets();
 
 public:
-	ConfigActionButton(const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigActionButton() {}
+    ConfigActionButton(
+        const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
+        ConfigurationWindowDataManager *dataManager);
+    ConfigActionButton(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigActionButton()
+    {
+    }
 
-	virtual void loadConfiguration() {};
-	virtual void saveConfiguration() {};
-
+    virtual void loadConfiguration(){};
+    virtual void saveConfiguration(){};
 };
 
 #endif

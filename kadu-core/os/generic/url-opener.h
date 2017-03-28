@@ -34,22 +34,22 @@ class IconsManager;
 
 class KADUAPI UrlOpener : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit UrlOpener(QObject *parent = nullptr);
-	virtual ~UrlOpener();
+    Q_INVOKABLE explicit UrlOpener(QObject *parent = nullptr);
+    virtual ~UrlOpener();
 
-	bool openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application);
-	void openUrl(const QByteArray &url);
-	void openEmail(const QByteArray &email);
+    bool
+    openUrl(const QByteArray &urlForDesktopServices, const QByteArray &urlForApplication, const QString &application);
+    void openUrl(const QByteArray &url);
+    void openEmail(const QByteArray &email);
 
 private:
-	QPointer<Configuration> m_configuration;
-	QPointer<IconsManager> m_iconsManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<IconsManager> m_iconsManager;
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

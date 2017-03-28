@@ -29,21 +29,20 @@ class ChatWidgetManager;
 
 class OpenChatAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit OpenChatAction(QObject *parent = nullptr);
-	virtual ~OpenChatAction();
+    Q_INVOKABLE explicit OpenChatAction(QObject *parent = nullptr);
+    virtual ~OpenChatAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<ChatWidgetManager> m_chatWidgetManager;
+    QPointer<ChatWidgetManager> m_chatWidgetManager;
 
 private slots:
-	INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
-
+    INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
 };

@@ -23,13 +23,12 @@
 
 class AskForSubscriptionAction : public SubscriptionAction
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit AskForSubscriptionAction(QObject *parent = nullptr);
-	virtual ~AskForSubscriptionAction();
+    Q_INVOKABLE explicit AskForSubscriptionAction(QObject *parent = nullptr);
+    virtual ~AskForSubscriptionAction();
 
 protected:
-	virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
-
+    virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
 };

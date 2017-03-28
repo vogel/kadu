@@ -29,26 +29,26 @@ class OtrPeerIdentityVerificationWindowFactory;
 
 class OtrPeerIdentityVerificationWindowRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
-	QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
+    QPointer<OtrPeerIdentityVerificationWindowFactory> PeerIdentityVerificationWindowFactory;
+    QMap<Contact, OtrPeerIdentityVerificationWindow *> Windows;
 
 private slots:
-	void windowDestroyed(const Contact &contact);
+    void windowDestroyed(const Contact &contact);
 
 public:
-	Q_INVOKABLE OtrPeerIdentityVerificationWindowRepository();
-	virtual ~OtrPeerIdentityVerificationWindowRepository();
+    Q_INVOKABLE OtrPeerIdentityVerificationWindowRepository();
+    virtual ~OtrPeerIdentityVerificationWindowRepository();
 
-	OtrPeerIdentityVerificationWindow * windowForContact(const Contact &contact);
+    OtrPeerIdentityVerificationWindow *windowForContact(const Contact &contact);
 
 public slots:
-	void showRespondQuestionAndAnswerVerificationWindow(const Contact &contact, const QString &question);
-	void showRespondSharedSecretVerificationWindow(const Contact &contact);
-	void showVerificationWindow(const Contact &contact);
+    void showRespondQuestionAndAnswerVerificationWindow(const Contact &contact, const QString &question);
+    void showRespondSharedSecretVerificationWindow(const Contact &contact);
+    void showVerificationWindow(const Contact &contact);
 
 private slots:
-	INJEQT_SET void setPeerIdentityVerificationWindowFactory(OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
-
+    INJEQT_SET void setPeerIdentityVerificationWindowFactory(
+        OtrPeerIdentityVerificationWindowFactory *peerIdentityVerificationWindowFactory);
 };

@@ -21,7 +21,13 @@
 
 #include <vector>
 
-namespace injeqt { namespace v1 { class injector; } }
+namespace injeqt
+{
+namespace v1
+{
+class injector;
+}
+}
 
 class ActionDescription;
 class Actions;
@@ -29,11 +35,10 @@ class Actions;
 class InjectorRegisteredActions final
 {
 public:
-	explicit InjectorRegisteredActions(Actions &actions, injeqt::v1::injector &injector);
-	~InjectorRegisteredActions();
+    explicit InjectorRegisteredActions(Actions &actions, injeqt::v1::injector &injector);
+    ~InjectorRegisteredActions();
 
 private:
-	Actions &m_actions;
-	std::vector<ActionDescription *> m_registeredActions;
-
+    Actions &m_actions;
+    std::vector<ActionDescription *> m_registeredActions;
 };

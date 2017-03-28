@@ -36,44 +36,43 @@ class MPRISController;
 
 class MPRISMediaPlayer : public QObject, public PlayerCommands, public PlayerInfo
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<MPRISController> m_controller;
-	QString service;
-	QString name;
+    QPointer<MPRISController> m_controller;
+    QString service;
+    QString name;
 
 public:
-	explicit MPRISMediaPlayer(QObject *parent = nullptr);
-	virtual ~MPRISMediaPlayer();
+    explicit MPRISMediaPlayer(QObject *parent = nullptr);
+    virtual ~MPRISMediaPlayer();
 
-	QString getTitle();
-	QString getAlbum();
-	QString getArtist();
-	QString getFile();
-	int getLength();
-	int getCurrentPos();
-	bool isPlaying();
-	bool isActive();
-	QStringList getPlayListTitles();
-	QStringList getPlayListFiles();
-	QString getPlayerName();
-	QString getPlayerVersion();
-	void setService(const QString &service);
-	void setName(const QString &name);
+    QString getTitle();
+    QString getAlbum();
+    QString getArtist();
+    QString getFile();
+    int getLength();
+    int getCurrentPos();
+    bool isPlaying();
+    bool isActive();
+    QStringList getPlayListTitles();
+    QStringList getPlayListFiles();
+    QString getPlayerName();
+    QString getPlayerVersion();
+    void setService(const QString &service);
+    void setName(const QString &name);
 
-	void nextTrack();
-	void prevTrack();
-	void play();
-	void stop();
-	void pause();
-	void setVolume(int vol);
-	void incrVolume();
-	void decrVolume();
+    void nextTrack();
+    void prevTrack();
+    void play();
+    void stop();
+    void pause();
+    void setVolume(int vol);
+    void incrVolume();
+    void decrVolume();
 
 protected:
-	QPointer<MediaPlayer> m_mediaPlayer;
+    QPointer<MediaPlayer> m_mediaPlayer;
 
 private slots:
-	INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
-
+    INJEQT_SET void setMediaPlayer(MediaPlayer *mediaPlayer);
 };

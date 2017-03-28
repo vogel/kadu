@@ -26,20 +26,19 @@ class PathsProvider;
 
 class OtrPathService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit OtrPathService(QObject *parent = nullptr);
-	virtual ~OtrPathService();
+    Q_INVOKABLE explicit OtrPathService(QObject *parent = nullptr);
+    virtual ~OtrPathService();
 
-	QString fingerprintsStoreFilePath() const;
-	QString instanceTagsStoreFilePath() const;
-	QString privateKeysStoreFilePath() const;
+    QString fingerprintsStoreFilePath() const;
+    QString instanceTagsStoreFilePath() const;
+    QString privateKeysStoreFilePath() const;
 
 private:
-	QString m_dir;
+    QString m_dir;
 
 private slots:
-	INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
-
+    INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);
 };

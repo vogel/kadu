@@ -32,28 +32,27 @@ class Parser;
 
 class Preview : public QFrame
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit Preview(QWidget *parent = nullptr);
-	virtual ~Preview();
+    explicit Preview(QWidget *parent = nullptr);
+    virtual ~Preview();
 
-	KaduWebView * webView() const;
+    KaduWebView *webView() const;
 
 public slots:
-	void syntaxChanged(const QString &content);
+    void syntaxChanged(const QString &content);
 
 signals:
-	void needFixup(QString &syntax);
+    void needFixup(QString &syntax);
 
 private:
-	QPointer<BuddyDummyFactory> m_buddyDummyFactory;
-	QPointer<Parser> m_parser;
+    QPointer<BuddyDummyFactory> m_buddyDummyFactory;
+    QPointer<Parser> m_parser;
 
-	KaduWebView *m_webView;
+    KaduWebView *m_webView;
 
 private slots:
-	INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
-	INJEQT_SET void setParser(Parser *parser);
-
+    INJEQT_SET void setBuddyDummyFactory(BuddyDummyFactory *buddyDummyFactory);
+    INJEQT_SET void setParser(Parser *parser);
 };

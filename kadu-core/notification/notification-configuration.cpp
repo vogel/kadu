@@ -22,11 +22,9 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 
-NotificationConfiguration::NotificationConfiguration(QObject *parent) :
-		QObject{parent},
-		m_newMessageOnlyIfInactive{true},
-		m_notifyIgnoreOnConnection{true},
-		m_ignoreOnlineToOnline{true}
+NotificationConfiguration::NotificationConfiguration(QObject *parent)
+        : QObject{parent}, m_newMessageOnlyIfInactive{true}, m_notifyIgnoreOnConnection{true},
+          m_ignoreOnlineToOnline{true}
 {
 }
 
@@ -36,35 +34,35 @@ NotificationConfiguration::~NotificationConfiguration()
 
 void NotificationConfiguration::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void NotificationConfiguration::init()
 {
-	configurationUpdated();
+    configurationUpdated();
 }
 
 void NotificationConfiguration::configurationUpdated()
 {
-	m_newMessageOnlyIfInactive = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
-	m_notifyIgnoreOnConnection = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
-	m_ignoreOnlineToOnline = m_configuration->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
+    m_newMessageOnlyIfInactive = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NewMessageOnlyIfInactive");
+    m_notifyIgnoreOnConnection = m_configuration->deprecatedApi()->readBoolEntry("Notify", "NotifyIgnoreOnConnection");
+    m_ignoreOnlineToOnline = m_configuration->deprecatedApi()->readBoolEntry("Notify", "IgnoreOnlineToOnline");
 }
 
 QString NotificationConfiguration::notifyConfigurationKey(const QString &eventType) const
 {
-	auto event = eventType;
-	while (true)
-	{
-		int slashPosition = event.lastIndexOf('/');
-		if (-1 == slashPosition)
-			return event;
+    auto event = eventType;
+    while (true)
+    {
+        int slashPosition = event.lastIndexOf('/');
+        if (-1 == slashPosition)
+            return event;
 
-		if (m_configuration->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
-			return event;
+        if (m_configuration->deprecatedApi()->readBoolEntry("Notify", event + "_UseCustomSettings", false))
+            return event;
 
-		event = event.left(slashPosition);
-	}
+        event = event.left(slashPosition);
+    }
 
-	Q_ASSERT(false);
+    Q_ASSERT(false);
 }

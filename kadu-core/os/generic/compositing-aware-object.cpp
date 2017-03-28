@@ -28,39 +28,39 @@ bool CompositingAwareObject::CompositingEnabled = false;
 
 void CompositingAwareObject::compositingStateChanged()
 {
-	CompositingEnabled = !CompositingEnabled;
+    CompositingEnabled = !CompositingEnabled;
 
-	if (CompositingEnabled)
-	{
-		foreach (CompositingAwareObject *object, Objects)
-			object->compositingEnabled();
-	}
-	else
-	{
-		foreach (CompositingAwareObject *object, Objects)
-			object->compositingDisabled();
-	}
+    if (CompositingEnabled)
+    {
+        foreach (CompositingAwareObject *object, Objects)
+            object->compositingEnabled();
+    }
+    else
+    {
+        foreach (CompositingAwareObject *object, Objects)
+            object->compositingDisabled();
+    }
 }
 
 void CompositingAwareObject::triggerCompositingStateChanged()
 {
-	if (CompositingEnabled)
-		compositingEnabled();
-	else
-		compositingDisabled();
+    if (CompositingEnabled)
+        compositingEnabled();
+    else
+        compositingDisabled();
 }
 
 CompositingAwareObject::CompositingAwareObject()
 {
-	Objects.append(this);
+    Objects.append(this);
 }
 
 CompositingAwareObject::~CompositingAwareObject()
 {
-	Objects.removeAll(this);
+    Objects.removeAll(this);
 }
 
 bool CompositingAwareObject::isCompositingEnabled() const
 {
-	return CompositingEnabled;
+    return CompositingEnabled;
 }

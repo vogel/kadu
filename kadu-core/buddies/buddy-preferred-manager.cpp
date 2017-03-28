@@ -21,6 +21,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "buddy.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
 #include "chat/chat-manager.h"
@@ -29,12 +30,10 @@
 #include "status/status-container.h"
 #include "widgets/chat-widget/chat-widget-repository.h"
 #include "widgets/chat-widget/chat-widget.h"
-#include "buddy.h"
 
 #include "buddies/buddy-preferred-manager.h"
 
-BuddyPreferredManager::BuddyPreferredManager(QObject *parent) :
-		QObject{parent}
+BuddyPreferredManager::BuddyPreferredManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -44,152 +43,155 @@ BuddyPreferredManager::~BuddyPreferredManager()
 
 void BuddyPreferredManager::setAccountManager(AccountManager *accountManager)
 {
-	m_accountManager = accountManager;
+    m_accountManager = accountManager;
 }
 
 void BuddyPreferredManager::setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository)
 {
-	m_chatWidgetRepository = chatWidgetRepository;
+    m_chatWidgetRepository = chatWidgetRepository;
 }
 
 Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, const Account &account, bool includechats)
 {
-	Q_UNUSED(includechats)
+    Q_UNUSED(includechats)
 
-	if (!buddy || buddy.contacts().isEmpty())
-		return Contact::null;
+    if (!buddy || buddy.contacts().isEmpty())
+        return Contact::null;
 
-	if (!buddy.preferHigherStatuses())
-		return preferredContactByPriority(buddy, account);
+    if (!buddy.preferHigherStatuses())
+        return preferredContactByPriority(buddy, account);
 
-	return preferredContactByStatus(buddy, account);
+    return preferredContactByStatus(buddy, account);
 }
 
 Contact BuddyPreferredManager::preferredContact2(const Buddy &buddy)
 {
-	auto contact = preferredContactByUnreadMessages(buddy);
-	if (!contact)
-		contact = preferredContact(buddy);
+    auto contact = preferredContactByUnreadMessages(buddy);
+    if (!contact)
+        contact = preferredContact(buddy);
 
-	return contact;
+    return contact;
 }
 
 ContactSet BuddyPreferredManager::preferredContacts(const BuddySet &buddies)
 {
-	if (buddies.isEmpty())
-		return ContactSet();
+    if (buddies.isEmpty())
+        return ContactSet();
 
-	Contact contact = preferredContact2(*buddies.constBegin());
+    Contact contact = preferredContact2(*buddies.constBegin());
 
-	Account account = contact.contactAccount();
-	if (account.isNull())
-		return ContactSet();
+    Account account = contact.contactAccount();
+    if (account.isNull())
+        return ContactSet();
 
-	Account commonAccount = getCommonAccount(buddies);
-	if (!commonAccount)
-		return ContactSet();
+    Account commonAccount = getCommonAccount(buddies);
+    if (!commonAccount)
+        return ContactSet();
 
-	ContactSet contacts;
-	foreach (const Buddy &buddy, buddies)
-		contacts.insert(preferredContact(buddy, commonAccount));
+    ContactSet contacts;
+    foreach (const Buddy &buddy, buddies)
+        contacts.insert(preferredContact(buddy, commonAccount));
 
-	return contacts;
+    return contacts;
 }
 
 Contact BuddyPreferredManager::preferredContactByPriority(const Buddy &buddy, const Account &account)
 {
-	if (account.isNull())
-		return buddy.contacts().at(0);
+    if (account.isNull())
+        return buddy.contacts().at(0);
 
-	foreach (const Contact &contact, buddy.contacts())
-		if (contact.contactAccount() == account)
-			return contact;
+    foreach (const Contact &contact, buddy.contacts())
+        if (contact.contactAccount() == account)
+            return contact;
 
-	return Contact::null;
+    return Contact::null;
 }
 
 Contact BuddyPreferredManager::preferredContact(const Buddy &buddy, bool includechats)
 {
-	return BuddyPreferredManager::preferredContact(buddy, Account::null, includechats);
+    return BuddyPreferredManager::preferredContact(buddy, Account::null, includechats);
 }
 
 Account BuddyPreferredManager::preferredAccount(const Buddy &buddy, bool includechats)
 {
-	Contact contact = BuddyPreferredManager::preferredContact(buddy, includechats);
-	return contact.contactAccount();
+    Contact contact = BuddyPreferredManager::preferredContact(buddy, includechats);
+    return contact.contactAccount();
 }
 
 Contact BuddyPreferredManager::preferredContactByUnreadMessages(const Buddy &buddy, const Account &account)
 {
-	Contact result;
-	foreach (const Contact &contact, buddy.contacts())
-	{
-		if (contact.unreadMessagesCount() > 0)
-			result = morePreferredContactByStatus(result, contact, account);
-	}
-	return result;
+    Contact result;
+    foreach (const Contact &contact, buddy.contacts())
+    {
+        if (contact.unreadMessagesCount() > 0)
+            result = morePreferredContactByStatus(result, contact, account);
+    }
+    return result;
 }
 
 Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy, const Account &account)
 {
-	if (!m_chatWidgetRepository)
-		return Contact::null;
+    if (!m_chatWidgetRepository)
+        return Contact::null;
 
-	Contact result;
-	for (auto chatwidget : m_chatWidgetRepository.data())
-	{
-		Chat chat = chatwidget->chat();
-		if (chat.contacts().isEmpty())
-			continue;
-		Contact contact = *chat.contacts().constBegin();
-		if (contact.ownerBuddy() != buddy)
-			continue;
-		result = morePreferredContactByStatus(result, contact, account);
-	}
-	return result;
+    Contact result;
+    for (auto chatwidget : m_chatWidgetRepository.data())
+    {
+        Chat chat = chatwidget->chat();
+        if (chat.contacts().isEmpty())
+            continue;
+        Contact contact = *chat.contacts().constBegin();
+        if (contact.ownerBuddy() != buddy)
+            continue;
+        result = morePreferredContactByStatus(result, contact, account);
+    }
+    return result;
 }
 
 Contact BuddyPreferredManager::preferredContactByStatus(const Buddy &buddy, const Account &account)
 {
-	Contact result;
-	foreach (const Contact &contact, buddy.contacts())
-		result = morePreferredContactByStatus(result, contact, account);
-	return result;
+    Contact result;
+    foreach (const Contact &contact, buddy.contacts())
+        result = morePreferredContactByStatus(result, contact, account);
+    return result;
 }
 
-Contact BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, const Contact &c2, const Account &account)
+Contact
+BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, const Contact &c2, const Account &account)
 {
-	if (!c1 || (account && c1.contactAccount() != account))
-		return c2;
+    if (!c1 || (account && c1.contactAccount() != account))
+        return c2;
 
-	if (!c2 || (account && c2.contactAccount() != account))
-		return c1;
+    if (!c2 || (account && c2.contactAccount() != account))
+        return c1;
 
-	if (c1.contactAccount().statusContainer()->status().isDisconnected() && !c2.contactAccount().statusContainer()->status().isDisconnected())
-		return c2;
+    if (c1.contactAccount().statusContainer()->status().isDisconnected() &&
+        !c2.contactAccount().statusContainer()->status().isDisconnected())
+        return c2;
 
-	if (c2.contactAccount().statusContainer()->status().isDisconnected() && !c1.contactAccount().statusContainer()->status().isDisconnected())
-		return c1;
+    if (c2.contactAccount().statusContainer()->status().isDisconnected() &&
+        !c1.contactAccount().statusContainer()->status().isDisconnected())
+        return c1;
 
-	return Contact::contactWithHigherStatus(c1, c2);
+    return Contact::contactWithHigherStatus(c1, c2);
 }
 
 bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddySet &buddies)
 {
-	foreach (const Buddy &buddy, buddies)
-		if (buddy.contacts(account).isEmpty())
-			return false;
+    foreach (const Buddy &buddy, buddies)
+        if (buddy.contacts(account).isEmpty())
+            return false;
 
-	return true;
+    return true;
 }
 
 Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 {
-	foreach (const Account &account, m_accountManager->items())
-		if (account.protocolHandler() && isAccountCommon(account, buddies))
-			return account;
+    foreach (const Account &account, m_accountManager->items())
+        if (account.protocolHandler() && isAccountCommon(account, buddies))
+            return account;
 
-	return Account::null;
+    return Account::null;
 }
 
 #include "moc_buddy-preferred-manager.cpp"

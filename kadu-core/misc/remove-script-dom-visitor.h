@@ -29,13 +29,11 @@
  */
 class KADUAPI RemoveScriptDomVisitor : public DomVisitor
 {
-
 public:
-	explicit RemoveScriptDomVisitor();
-	virtual ~RemoveScriptDomVisitor();
+    explicit RemoveScriptDomVisitor();
+    virtual ~RemoveScriptDomVisitor();
 
-	virtual QDomNode beginVisit(QDomElement elementNode) const override;
-	virtual QDomNode endVisit(QDomElement elementNode) const override;
-	virtual QDomNode visit(QDomText textNode) const override;
-
+    virtual QDomNode beginVisit(QDomElement elementNode) const override;
+    virtual QDomNode endVisit(QDomElement elementNode) const override;
+    virtual QDomNode visit(QDomText textNode) const override;
 };

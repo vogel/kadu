@@ -25,131 +25,127 @@
 
 #include "gadu-emoticon-parser.h"
 
-GaduEmoticonParser::GaduEmoticonParser(const QString &themePath, const QString &emoticonLine) :
-		ThemePath(themePath), EmoticonLine(emoticonLine), Index(0)
+GaduEmoticonParser::GaduEmoticonParser(const QString &themePath, const QString &emoticonLine)
+        : ThemePath(themePath), EmoticonLine(emoticonLine), Index(0)
 {
-	parse();
+    parse();
 }
 
 QChar GaduEmoticonParser::peek()
 {
-	if (Index >= EmoticonLine.length())
-		return QChar();
-	return EmoticonLine.at(Index);
+    if (Index >= EmoticonLine.length())
+        return QChar();
+    return EmoticonLine.at(Index);
 }
 
 QChar GaduEmoticonParser::get()
 {
-	QChar result = peek();
-	Index++;
-	return result;
+    QChar result = peek();
+    Index++;
+    return result;
 }
 
 void GaduEmoticonParser::eat()
 {
-	Index++;
+    Index++;
 }
 
 void GaduEmoticonParser::parse()
 {
-	QChar c = peek();
-	if (c.isNull())
-		return;
+    QChar c = peek();
+    if (c.isNull())
+        return;
 
-	if (c == '*') // ignore first *, I don't know why
-		eat();
+    if (c == '*')   // ignore first *, I don't know why
+        eat();
 
-	QStringList aliases = parseAliases();
-	eat(); // ,
-	QString animatedPath = parseQuoted();
-	eat(); // ,
-	QString staticPath = parseQuoted();
+    QStringList aliases = parseAliases();
+    eat();   // ,
+    QString animatedPath = parseQuoted();
+    eat();   // ,
+    QString staticPath = parseQuoted();
 
-	if (aliases.isEmpty() || animatedPath.isEmpty())
-		return;
+    if (aliases.isEmpty() || animatedPath.isEmpty())
+        return;
 
-	animatedPath = ThemePath + fixFileName(ThemePath, animatedPath);
-	if (staticPath.isEmpty())
-		staticPath = animatedPath;
-	else
-		staticPath = ThemePath + fixFileName(ThemePath, staticPath);
+    animatedPath = ThemePath + fixFileName(ThemePath, animatedPath);
+    if (staticPath.isEmpty())
+        staticPath = animatedPath;
+    else
+        staticPath = ThemePath + fixFileName(ThemePath, staticPath);
 
-	Result = Emoticon(aliases.at(0), staticPath, animatedPath);
-	foreach (const QString &alias, aliases)
-		Aliases.append(Emoticon(alias, staticPath, animatedPath));
+    Result = Emoticon(aliases.at(0), staticPath, animatedPath);
+    foreach (const QString &alias, aliases)
+        Aliases.append(Emoticon(alias, staticPath, animatedPath));
 }
 
 QStringList GaduEmoticonParser::parseAliases()
 {
-	QStringList result;
+    QStringList result;
 
-	QChar c = peek();
-	if (c.isNull())
-		return result;
+    QChar c = peek();
+    if (c.isNull())
+        return result;
 
-	bool multiple = false;
-	if (c == '(')
-	{
-		multiple = true;
-		eat();
-	}
+    bool multiple = false;
+    if (c == '(')
+    {
+        multiple = true;
+        eat();
+    }
 
-	while (true)
-	{
-		QString alias = parseQuoted();
-		if (!alias.isEmpty())
-			result.append(alias);
+    while (true)
+    {
+        QString alias = parseQuoted();
+        if (!alias.isEmpty())
+            result.append(alias);
 
-		if (!multiple)
-			return result;
+        if (!multiple)
+            return result;
 
-		c = get();
-		if (c.isNull() || c == ')')
-			return result;
+        c = get();
+        if (c.isNull() || c == ')')
+            return result;
 
-		if (c != ',') // some kind of error
-			return result;
-	}
+        if (c != ',')   // some kind of error
+            return result;
+    }
 
-	Q_ASSERT(false);
+    Q_ASSERT(false);
 }
 
 QString GaduEmoticonParser::parseQuoted()
 {
-	QChar c = peek();
-	if (c == '"')
-	{
-		eat();
-		int quoteIndex = EmoticonLine.indexOf('"', Index);
-		if (quoteIndex < 0)
-			return getToIndex(EmoticonLine.length());
-		else
-			return getToIndex(quoteIndex);
-	}
+    QChar c = peek();
+    if (c == '"')
+    {
+        eat();
+        int quoteIndex = EmoticonLine.indexOf('"', Index);
+        if (quoteIndex < 0)
+            return getToIndex(EmoticonLine.length());
+        else
+            return getToIndex(quoteIndex);
+    }
 
-	int bracketIndex = EmoticonLine.indexOf(')', Index);
-	int comaIndex = EmoticonLine.indexOf(',', Index);
-	int endIndex = bracketIndex < 0
-			? comaIndex
-			: comaIndex < 0
-					? bracketIndex
-					: qMin(bracketIndex, comaIndex);
+    int bracketIndex = EmoticonLine.indexOf(')', Index);
+    int comaIndex = EmoticonLine.indexOf(',', Index);
+    int endIndex = bracketIndex < 0 ? comaIndex : comaIndex < 0 ? bracketIndex : qMin(bracketIndex, comaIndex);
 
-	return getToIndex(endIndex);
+    return getToIndex(endIndex);
 }
 
 QString GaduEmoticonParser::getToIndex(int endIndexExclusive)
 {
-	QString result = EmoticonLine.mid(Index, endIndexExclusive - Index);
-	Index = endIndexExclusive + 1;
-	return result;
+    QString result = EmoticonLine.mid(Index, endIndexExclusive - Index);
+    Index = endIndexExclusive + 1;
+    return result;
 }
 Emoticon GaduEmoticonParser::emoticon() const
 {
-	return Result;
+    return Result;
 }
 
 QVector<Emoticon> GaduEmoticonParser::aliases() const
 {
-	return Aliases;
+    return Aliases;
 }

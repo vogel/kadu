@@ -30,27 +30,30 @@ class QNetworkReply;
 
 class OAuthTokenFetcher : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QString RequestTokenUrl;
-	OAuthToken Token;
-	OAuthConsumer Consumer;
-	QNetworkAccessManager *NetworkAccessManager;
-	QNetworkReply *Reply;
+    QString RequestTokenUrl;
+    OAuthToken Token;
+    OAuthConsumer Consumer;
+    QNetworkAccessManager *NetworkAccessManager;
+    QNetworkReply *Reply;
 
 private slots:
-	void requestFinished();
+    void requestFinished();
 
 public:
-	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	explicit OAuthTokenFetcher(QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
-	virtual ~OAuthTokenFetcher();
+    explicit OAuthTokenFetcher(
+        QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager,
+        QObject *parent = nullptr);
+    explicit OAuthTokenFetcher(
+        QString requestTokenUrl, OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager,
+        QObject *parent = nullptr);
+    virtual ~OAuthTokenFetcher();
 
-	void fetchToken();
+    void fetchToken();
 
 signals:
-	void tokenFetched(OAuthToken token);
-
+    void tokenFetched(OAuthToken token);
 };
 
-#endif // OAUTH_TOKEN_FETCHER_H
+#endif   // OAUTH_TOKEN_FETCHER_H

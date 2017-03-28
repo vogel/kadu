@@ -26,18 +26,19 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
-BuddyConfigurationWidgetGroupBoxesAdapter::BuddyConfigurationWidgetGroupBoxesAdapter(BuddyDataWindow *buddyDataWindow, QWidget *widget) :
-		QObject{buddyDataWindow},
-		m_buddyDataWindow{buddyDataWindow},
-		m_widget{widget}
+BuddyConfigurationWidgetGroupBoxesAdapter::BuddyConfigurationWidgetGroupBoxesAdapter(
+    BuddyDataWindow *buddyDataWindow, QWidget *widget)
+        : QObject{buddyDataWindow}, m_buddyDataWindow{buddyDataWindow}, m_widget{widget}
 {
-	if (!m_buddyDataWindow || !m_widget)
-		return;
+    if (!m_buddyDataWindow || !m_widget)
+        return;
 
-	connect(m_buddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget*)), this, SLOT(widgetAdded(BuddyConfigurationWidget*)));
+    connect(
+        m_buddyDataWindow, SIGNAL(widgetAdded(BuddyConfigurationWidget *)), this,
+        SLOT(widgetAdded(BuddyConfigurationWidget *)));
 
-	for (auto buddyConfigurationWidget : m_buddyDataWindow->buddyConfigurationWidgets())
-		widgetAdded(buddyConfigurationWidget);
+    for (auto buddyConfigurationWidget : m_buddyDataWindow->buddyConfigurationWidgets())
+        widgetAdded(buddyConfigurationWidget);
 }
 
 BuddyConfigurationWidgetGroupBoxesAdapter::~BuddyConfigurationWidgetGroupBoxesAdapter()
@@ -46,19 +47,19 @@ BuddyConfigurationWidgetGroupBoxesAdapter::~BuddyConfigurationWidgetGroupBoxesAd
 
 void BuddyConfigurationWidgetGroupBoxesAdapter::widgetAdded(BuddyConfigurationWidget *widget)
 {
-	auto groupBox = new QGroupBox{m_widget};
-	connect(widget, SIGNAL(destroyed(QObject*)), groupBox, SLOT(deleteLater()));
-	groupBox->setFlat(true);
-	groupBox->setTitle(widget->windowTitle());
+    auto groupBox = new QGroupBox{m_widget};
+    connect(widget, SIGNAL(destroyed(QObject *)), groupBox, SLOT(deleteLater()));
+    groupBox->setFlat(true);
+    groupBox->setTitle(widget->windowTitle());
 
-	auto groupBoxLayout = new QVBoxLayout{groupBox};
-	groupBoxLayout->setMargin(0);
-	groupBoxLayout->setSpacing(4);
-	groupBoxLayout->addWidget(widget);
+    auto groupBoxLayout = new QVBoxLayout{groupBox};
+    groupBoxLayout->setMargin(0);
+    groupBoxLayout->setSpacing(4);
+    groupBoxLayout->addWidget(widget);
 
-	auto layout = qobject_cast<QBoxLayout *>(m_widget->layout());
-	if (layout)
-		layout->insertWidget(layout->count() - 1, groupBox);
+    auto layout = qobject_cast<QBoxLayout *>(m_widget->layout());
+    if (layout)
+        layout->insertWidget(layout->count() - 1, groupBox);
 }
 
 #include "moc_buddy-configuration-widget-group-boxes-adapter.cpp"

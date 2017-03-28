@@ -32,25 +32,24 @@ class PluginInjectedFactory;
 
 class HistoryWindowService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit HistoryWindowService(QObject *parent = nullptr);
-	virtual ~HistoryWindowService();
+    Q_INVOKABLE explicit HistoryWindowService(QObject *parent = nullptr);
+    virtual ~HistoryWindowService();
 
-	void show(const Chat &chat);
+    void show(const Chat &chat);
 
 private:
-	QPointer<BuddyChatManager> m_buddyChatManager;
-	QPointer<Configuration> m_configuration;
-	QPointer<HistoryWindow> m_historyWindow;
-	QPointer<History> m_history;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<BuddyChatManager> m_buddyChatManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<HistoryWindow> m_historyWindow;
+    QPointer<History> m_history;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
 
 private slots:
-	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setHistory(History *history);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-
+    INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setHistory(History *history);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
 };

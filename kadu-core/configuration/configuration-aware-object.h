@@ -29,18 +29,16 @@
 
 class KADUAPI ConfigurationAwareObject
 {
-
 public:
-	static void notifyAll();
+    static void notifyAll();
 
-	ConfigurationAwareObject();
-	virtual ~ConfigurationAwareObject();
+    ConfigurationAwareObject();
+    virtual ~ConfigurationAwareObject();
 
-	virtual void configurationUpdated() = 0;
+    virtual void configurationUpdated() = 0;
 
 private:
-	static QList<ConfigurationAwareObject *> Objects;
-
+    static QList<ConfigurationAwareObject *> Objects;
 };
 
-#endif // CONFIGURATION_AWARE_OBJECT
+#endif   // CONFIGURATION_AWARE_OBJECT

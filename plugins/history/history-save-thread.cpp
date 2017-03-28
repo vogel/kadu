@@ -27,10 +27,11 @@
 #include "history.h"
 
 // 15 seconds
-#define SYNCHRONIZATION_TIMEOUT 15*1000
+#define SYNCHRONIZATION_TIMEOUT 15 * 1000
 
-HistorySaveThread::HistorySaveThread(History *history, QObject *parent) :
-		QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false), CurrentlySaving(false), ForceSyncOnce(false)
+HistorySaveThread::HistorySaveThread(History *history, QObject *parent)
+        : QThread(parent), CurrentHistory(history), Enabled(true), Stopped(false), CurrentlySaving(false),
+          ForceSyncOnce(false)
 {
 }
 
@@ -40,132 +41,132 @@ HistorySaveThread::~HistorySaveThread()
 
 void HistorySaveThread::storeMessages()
 {
-	if (!CurrentHistory->currentStorage())
-		return;
+    if (!CurrentHistory->currentStorage())
+        return;
 
-	while (Message message = CurrentHistory->dequeueUnsavedMessage())
-		CurrentHistory->currentStorage()->appendMessage(message);
+    while (Message message = CurrentHistory->dequeueUnsavedMessage())
+        CurrentHistory->currentStorage()->appendMessage(message);
 }
 
 void HistorySaveThread::storeStatusChanges()
 {
-	if (!CurrentHistory->currentStorage())
-		return;
+    if (!CurrentHistory->currentStorage())
+        return;
 
-	while (true)
-	{
-		QPair<Contact, Status> statusChange = CurrentHistory->dequeueUnsavedStatusChange();
-		if (!statusChange.first)
-			return;
+    while (true)
+    {
+        QPair<Contact, Status> statusChange = CurrentHistory->dequeueUnsavedStatusChange();
+        if (!statusChange.first)
+            return;
 
-		CurrentHistory->currentStorage()->appendStatus(statusChange.first, statusChange.second);
-	}
+        CurrentHistory->currentStorage()->appendStatus(statusChange.first, statusChange.second);
+    }
 }
 
 void HistorySaveThread::sync()
 {
-	if (CurrentHistory->currentStorage())
-	{
-		CurrentHistory->currentStorage()->sync();
-		LastSyncTime = QDateTime::currentDateTime();
-	}
+    if (CurrentHistory->currentStorage())
+    {
+        CurrentHistory->currentStorage()->sync();
+        LastSyncTime = QDateTime::currentDateTime();
+    }
 }
 
 void HistorySaveThread::forceSync(bool crashed)
 {
-	if (crashed)
-	{
-		// just sync, using threads won't work after crash
-		storeMessages();
-		storeStatusChanges();
-		sync();
+    if (crashed)
+    {
+        // just sync, using threads won't work after crash
+        storeMessages();
+        storeStatusChanges();
+        sync();
 
-		return;
-	}
+        return;
+    }
 
-	if (isRunning())
-	{
-		ForceSyncOnce = true;
-		// It doesn't really guarantee that all new data will be sync'ed
-		// now, for the same reason as in newDataAvailable() method.
-		// But I don't think we really need that - it would decrease
-		// history importing performance even more at the cost of very
-		// questionable safety.
-		WaitForSomethingToSave.wakeAll();
-	}
-	else
-	{
-		QMutexLocker locker(&SomethingToSave);
+    if (isRunning())
+    {
+        ForceSyncOnce = true;
+        // It doesn't really guarantee that all new data will be sync'ed
+        // now, for the same reason as in newDataAvailable() method.
+        // But I don't think we really need that - it would decrease
+        // history importing performance even more at the cost of very
+        // questionable safety.
+        WaitForSomethingToSave.wakeAll();
+    }
+    else
+    {
+        QMutexLocker locker(&SomethingToSave);
 
-		storeMessages();
-		storeStatusChanges();
-		sync();
-	}
+        storeMessages();
+        storeStatusChanges();
+        sync();
+    }
 }
 
 void HistorySaveThread::run()
 {
-	LastSyncTime = QDateTime::currentDateTime();
+    LastSyncTime = QDateTime::currentDateTime();
 
-	// Solution copied from QWaitCondition docs and adjusted.
-	SomethingToSave.lock();
-	while (!Stopped)
-	{
-		CurrentlySaving = true;
-		SomethingToSave.unlock();
+    // Solution copied from QWaitCondition docs and adjusted.
+    SomethingToSave.lock();
+    while (!Stopped)
+    {
+        CurrentlySaving = true;
+        SomethingToSave.unlock();
 
-		if (!Stopped && (Enabled || ForceSyncOnce))
-		{
-			storeMessages();
-			storeStatusChanges();
-			if (ForceSyncOnce || QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
-			{
-				sync();
-				ForceSyncOnce = false;
-			}
-		}
+        if (!Stopped && (Enabled || ForceSyncOnce))
+        {
+            storeMessages();
+            storeStatusChanges();
+            if (ForceSyncOnce || QDateTime::currentDateTime().addMSecs(-SYNCHRONIZATION_TIMEOUT) >= LastSyncTime)
+            {
+                sync();
+                ForceSyncOnce = false;
+            }
+        }
 
-		SomethingToSave.lock();
-		CurrentlySaving = false;
-		WaitForSomethingToSave.wait(&SomethingToSave, SYNCHRONIZATION_TIMEOUT);
-	}
-	SomethingToSave.unlock();
+        SomethingToSave.lock();
+        CurrentlySaving = false;
+        WaitForSomethingToSave.wait(&SomethingToSave, SYNCHRONIZATION_TIMEOUT);
+    }
+    SomethingToSave.unlock();
 
-	storeMessages();
-	storeStatusChanges();
-	sync();
+    storeMessages();
+    storeStatusChanges();
+    sync();
 }
 
 void HistorySaveThread::setEnabled(bool enabled)
 {
-	Enabled = enabled;
+    Enabled = enabled;
 }
 
 void HistorySaveThread::newDataAvailable()
 {
-	// If we are currently sync'ing, it will do nothing and some
-	// data may be potentially not dequeued now. But we cannot afford
-	// to apply the same solution as in stop() method, which would
-	// block the main thread. That data will be dequeued later anyway,
-	// even if the app crashes.
-	WaitForSomethingToSave.wakeAll();
+    // If we are currently sync'ing, it will do nothing and some
+    // data may be potentially not dequeued now. But we cannot afford
+    // to apply the same solution as in stop() method, which would
+    // block the main thread. That data will be dequeued later anyway,
+    // even if the app crashes.
+    WaitForSomethingToSave.wakeAll();
 }
 
 void HistorySaveThread::stop()
 {
-	// Solution copied from QWaitCondition docs and adjusted.
+    // Solution copied from QWaitCondition docs and adjusted.
 
-	Stopped = true;
+    Stopped = true;
 
-	SomethingToSave.lock();
-	while (CurrentlySaving)
-	{
-		SomethingToSave.unlock();
-		QThread::msleep(200);
-		SomethingToSave.lock();
-	}
-	WaitForSomethingToSave.wakeAll();
-	SomethingToSave.unlock();
+    SomethingToSave.lock();
+    while (CurrentlySaving)
+    {
+        SomethingToSave.unlock();
+        QThread::msleep(200);
+        SomethingToSave.lock();
+    }
+    WaitForSomethingToSave.wakeAll();
+    SomethingToSave.unlock();
 }
 
 #include "moc_history-save-thread.cpp"

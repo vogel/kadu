@@ -20,8 +20,8 @@
 #pragma once
 
 #include "qfacebook/http/qfacebook-login-job.h"
-#include "qfacebook/session/qfacebook-session-token.h"
 #include "qfacebook/qfacebook-device-id.h"
+#include "qfacebook/session/qfacebook-session-token.h"
 
 #include "libs/boost/variant/variant.hpp"
 
@@ -36,24 +36,24 @@ struct QFacebookLoginError;
 
 class QFacebookLogin final : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	using Result = boost::variant<QFacebookLoginError, std::unique_ptr<QFacebookSession>>;
-	using Callback = std::function<void(Result &&)>;
+    using Result = boost::variant<QFacebookLoginError, std::unique_ptr<QFacebookSession>>;
+    using Callback = std::function<void(Result &&)>;
 
-	explicit QFacebookLogin(QString userName, QString password, QFacebookDeviceId deviceId, Callback callback, QObject *parent = nullptr);
-	virtual ~QFacebookLogin();
+    explicit QFacebookLogin(
+        QString userName, QString password, QFacebookDeviceId deviceId, Callback callback, QObject *parent = nullptr);
+    virtual ~QFacebookLogin();
 
 private:
-	QFacebookSessionToken m_sessionToken;
-	std::unique_ptr<QFacebookHttpApi> m_httpApi;
-	std::unique_ptr<QFacebookMqttApi> m_mqttApi;
-	QFacebookDeviceId m_deviceId;
-	Callback m_callback;
+    QFacebookSessionToken m_sessionToken;
+    std::unique_ptr<QFacebookHttpApi> m_httpApi;
+    std::unique_ptr<QFacebookMqttApi> m_mqttApi;
+    QFacebookDeviceId m_deviceId;
+    Callback m_callback;
 
-	void loginJobFinished(const QFacebookLoginResult &result);
-	void mqttConnected();
-	void mqttDisconnected();
-
+    void loginJobFinished(const QFacebookLoginResult &result);
+    void mqttConnected();
+    void mqttDisconnected();
 };

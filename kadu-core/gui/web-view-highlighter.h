@@ -45,99 +45,99 @@ class WebkitMessagesView;
  */
 class KADUAPI WebViewHighlighter : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	bool AutoUpdate;
-	QString HighlightString;
+    bool AutoUpdate;
+    QString HighlightString;
 
-	WebkitMessagesView * chatMessagesView() const;
+    WebkitMessagesView *chatMessagesView() const;
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Creates new WebViewHighlighter on given WebkitMessagesView.
-	 * @param parent WebkitMessagesView parent of new highlighter
-	 *
-	 * Page in main frame of parent WebkitMessagesView will have given string highlighted.
-	 * Use setHighlight() to set text to highlight.
-	 */
-	explicit WebViewHighlighter(WebkitMessagesView *parent);
-	virtual ~WebViewHighlighter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Creates new WebViewHighlighter on given WebkitMessagesView.
+     * @param parent WebkitMessagesView parent of new highlighter
+     *
+     * Page in main frame of parent WebkitMessagesView will have given string highlighted.
+     * Use setHighlight() to set text to highlight.
+     */
+    explicit WebViewHighlighter(WebkitMessagesView *parent);
+    virtual ~WebViewHighlighter();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Set auto update value for highlighting.
-	 * @param autoUpdate new auto update value for highlighting
-	 *
-	 * If this property is true then any change in content of web view will trigger update of
-	 * highlighting.
-	 */
-	void setAutoUpdate(const bool autoUpdate);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Set auto update value for highlighting.
+     * @param autoUpdate new auto update value for highlighting
+     *
+     * If this property is true then any change in content of web view will trigger update of
+     * highlighting.
+     */
+    void setAutoUpdate(const bool autoUpdate);
 
 public slots:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Sets new text to highlight.
-	 * @param highlightString new text to highlight
-	 *
-	 * All instances of highlightString will be highlighted in web view. If auto update is set to true
-	 * after any change in content of web view highlighting will be updated to cover new content.
-	 */
-	void setHighlight(const QString &highlightString);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Sets new text to highlight.
+     * @param highlightString new text to highlight
+     *
+     * All instances of highlightString will be highlighted in web view. If auto update is set to true
+     * after any change in content of web view highlighting will be updated to cover new content.
+     */
+    void setHighlight(const QString &highlightString);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Updates highlighting on WebkitMessagesView.
-	 *
-	 * When auto udpate is set to true this method is called automatically when content size of parent
-	 * WebkitMessagesView changes or when highlight string changes.
-	 */
-	void updateHighlighting();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Updates highlighting on WebkitMessagesView.
+     *
+     * When auto udpate is set to true this method is called automatically when content size of parent
+     * WebkitMessagesView changes or when highlight string changes.
+     */
+    void updateHighlighting();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears highlighting on WebkitMessagesView.
-	 *
-	 * Temporary removes highlighting from web view. If auto update is set to true then any change in
-	 * content of web view will redo highligting. Use setHighlight(QString()) to remove highlighting
-	 * for good.
-	 */
-	void clearHighlighting();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Clears highlighting on WebkitMessagesView.
+     *
+     * Temporary removes highlighting from web view. If auto update is set to true then any change in
+     * content of web view will redo highligting. Use setHighlight(QString()) to remove highlighting
+     * for good.
+     */
+    void clearHighlighting();
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Select next found text in WebkitMessagesView.
-	 * @param select text to select
-	 *
-	 * This method moves selection to next found instance of select string. If there is no selection,
-	 * this method will move to first instance of select string.
-	 */
-	void selectNext(const QString &select);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Select next found text in WebkitMessagesView.
+     * @param select text to select
+     *
+     * This method moves selection to next found instance of select string. If there is no selection,
+     * this method will move to first instance of select string.
+     */
+    void selectNext(const QString &select);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Select previous found text in WebkitMessagesView.
-	 * @param select text to select
-	 *
-	 * This method moves selection to previous found instance of select string. If there is no selection,
-	 * this method will move to last instance of select string.
-	 */
-	void selectPrevious(const QString &select);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Select previous found text in WebkitMessagesView.
+     * @param select text to select
+     *
+     * This method moves selection to previous found instance of select string. If there is no selection,
+     * this method will move to last instance of select string.
+     */
+    void selectPrevious(const QString &select);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Clears found text in WebkitMessagesView.
-	 *
-	 * This method clears selection in web view.
-	 */
-	void clearSelect();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Clears found text in WebkitMessagesView.
+     *
+     * This method clears selection in web view.
+     */
+    void clearSelect();
 
 signals:
-	void somethingFound(bool found);
+    void somethingFound(bool found);
 };
 
 /**
  * @}
  */
 
-#endif // WEB_VIEW_HIGHLIGHTER_H
+#endif   // WEB_VIEW_HIGHLIGHTER_H

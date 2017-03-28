@@ -46,59 +46,65 @@ class RawMessageTransformerService;
 
 class OtrPluginObject : public QObject
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(PLUGIN)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(PLUGIN)
 
 public:
-	Q_INVOKABLE explicit OtrPluginObject(QObject *parent = nullptr);
-	virtual ~OtrPluginObject();
+    Q_INVOKABLE explicit OtrPluginObject(QObject *parent = nullptr);
+    virtual ~OtrPluginObject();
 
 private:
-	QPointer<AccountConfigurationWidgetFactoryRepository> m_accountConfigurationWidgetFactoryRepository;
-	QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
-	QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
-	QPointer<NotificationEventRepository> m_notificationEventRepository;
-	QPointer<OtrAccountConfigurationWidgetFactory> m_otrAccountConfigurationWidgetFactory;
-	QPointer<OtrBuddyConfigurationWidgetFactory> m_otrBuddyConfigurationWidgetFactory;
-	QPointer<OtrChatTopBarWidgetFactory> m_otrChatTopBarWidgetFactory;
-	QPointer<OtrFingerprintService> m_otrFingerprintService;
-	QPointer<OtrInstanceTagService> m_otrInstanceTagService;
-	QPointer<OtrIsLoggedInService> m_otrIsLoggedInService;
-	QPointer<OtrMessageService> m_otrMessageService;
-	QPointer<OtrNotifier> m_otrNotifier;
-	QPointer<OtrPeerIdentityVerificationService> m_otrPeerIdentityVerificationService;
-	QPointer<OtrPeerIdentityVerificationWindowRepository> m_otrPeerIdentityVerificationWindowRepository;
-	QPointer<OtrPrivateKeyService> m_otrPrivateKeyService;
-	QPointer<OtrRawMessageTransformer> m_otrRawMessageTransformer;
-	QPointer<OtrSessionService> m_otrSessionService;
-	QPointer<OtrTrustLevelService> m_otrTrustLevelService;
-	QPointer<RawMessageTransformerService> m_rawMessageTransformerService;
+    QPointer<AccountConfigurationWidgetFactoryRepository> m_accountConfigurationWidgetFactoryRepository;
+    QPointer<BuddyConfigurationWidgetFactoryRepository> m_buddyConfigurationWidgetFactoryRepository;
+    QPointer<ChatTopBarWidgetFactoryRepository> m_chatTopBarWidgetFactoryRepository;
+    QPointer<NotificationEventRepository> m_notificationEventRepository;
+    QPointer<OtrAccountConfigurationWidgetFactory> m_otrAccountConfigurationWidgetFactory;
+    QPointer<OtrBuddyConfigurationWidgetFactory> m_otrBuddyConfigurationWidgetFactory;
+    QPointer<OtrChatTopBarWidgetFactory> m_otrChatTopBarWidgetFactory;
+    QPointer<OtrFingerprintService> m_otrFingerprintService;
+    QPointer<OtrInstanceTagService> m_otrInstanceTagService;
+    QPointer<OtrIsLoggedInService> m_otrIsLoggedInService;
+    QPointer<OtrMessageService> m_otrMessageService;
+    QPointer<OtrNotifier> m_otrNotifier;
+    QPointer<OtrPeerIdentityVerificationService> m_otrPeerIdentityVerificationService;
+    QPointer<OtrPeerIdentityVerificationWindowRepository> m_otrPeerIdentityVerificationWindowRepository;
+    QPointer<OtrPrivateKeyService> m_otrPrivateKeyService;
+    QPointer<OtrRawMessageTransformer> m_otrRawMessageTransformer;
+    QPointer<OtrSessionService> m_otrSessionService;
+    QPointer<OtrTrustLevelService> m_otrTrustLevelService;
+    QPointer<RawMessageTransformerService> m_rawMessageTransformerService;
 
-	bool m_otrAvailable;
+    bool m_otrAvailable;
 
-	bool fragmentsFixAvailable() const;
+    bool fragmentsFixAvailable() const;
 
 private slots:
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
-	INJEQT_SET void setAccountConfigurationWidgetFactoryRepository(AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
-	INJEQT_SET void setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository);
-	INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
-	INJEQT_SET void setOtrAccountConfigurationWidgetFactory(OtrAccountConfigurationWidgetFactory *otrAccountConfigurationWidgetFactory);
-	INJEQT_SET void setOtrBuddyConfigurationWidgetFactory(OtrBuddyConfigurationWidgetFactory *otrBuddyConfigurationWidgetFactory);
-	INJEQT_SET void setOtrChatTopBarWidgetFactory(OtrChatTopBarWidgetFactory *otrChatTopBarWidgetFactory);
-	INJEQT_SET void setOtrFingerprintService(OtrFingerprintService *otrFingerprintService);
-	INJEQT_SET void setOtrInstanceTagService(OtrInstanceTagService *otrInstanceTagService);
-	INJEQT_SET void setOtrIsLoggedInService(OtrIsLoggedInService *otrIsLoggedInService);
-	INJEQT_SET void setOtrMessageService(OtrMessageService *otrMessageService);
-	INJEQT_SET void setOtrNotifier(OtrNotifier *otrNotifier);
-	INJEQT_SET void setOtrPeerIdentityVerificationService(OtrPeerIdentityVerificationService *otrPeerIdentityVerificationService);
-	INJEQT_SET void setOtrPeerIdentityVerificationWindowRepository(OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository);
-	INJEQT_SET void setOtrPrivateKeyService(OtrPrivateKeyService *otrPrivateKeyService);
-	INJEQT_SET void setOtrRawMessageTransformer(OtrRawMessageTransformer *otrRawMessageTransformer);
-	INJEQT_SET void setOtrSessionService(OtrSessionService *otrSessionService);
-	INJEQT_SET void setOtrTrustLevelService(OtrTrustLevelService *otrTrustLevelService);
-	INJEQT_SET void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
-
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
+    INJEQT_SET void setAccountConfigurationWidgetFactoryRepository(
+        AccountConfigurationWidgetFactoryRepository *accountConfigurationWidgetFactoryRepository);
+    INJEQT_SET void setBuddyConfigurationWidgetFactoryRepository(
+        BuddyConfigurationWidgetFactoryRepository *buddyConfigurationWidgetFactoryRepository);
+    INJEQT_SET void
+    setChatTopBarWidgetFactoryRepository(ChatTopBarWidgetFactoryRepository *chatTopBarWidgetFactoryRepository);
+    INJEQT_SET void setNotificationEventRepository(NotificationEventRepository *notificationEventRepository);
+    INJEQT_SET void
+    setOtrAccountConfigurationWidgetFactory(OtrAccountConfigurationWidgetFactory *otrAccountConfigurationWidgetFactory);
+    INJEQT_SET void
+    setOtrBuddyConfigurationWidgetFactory(OtrBuddyConfigurationWidgetFactory *otrBuddyConfigurationWidgetFactory);
+    INJEQT_SET void setOtrChatTopBarWidgetFactory(OtrChatTopBarWidgetFactory *otrChatTopBarWidgetFactory);
+    INJEQT_SET void setOtrFingerprintService(OtrFingerprintService *otrFingerprintService);
+    INJEQT_SET void setOtrInstanceTagService(OtrInstanceTagService *otrInstanceTagService);
+    INJEQT_SET void setOtrIsLoggedInService(OtrIsLoggedInService *otrIsLoggedInService);
+    INJEQT_SET void setOtrMessageService(OtrMessageService *otrMessageService);
+    INJEQT_SET void setOtrNotifier(OtrNotifier *otrNotifier);
+    INJEQT_SET void
+    setOtrPeerIdentityVerificationService(OtrPeerIdentityVerificationService *otrPeerIdentityVerificationService);
+    INJEQT_SET void setOtrPeerIdentityVerificationWindowRepository(
+        OtrPeerIdentityVerificationWindowRepository *otrPeerIdentityVerificationWindowRepository);
+    INJEQT_SET void setOtrPrivateKeyService(OtrPrivateKeyService *otrPrivateKeyService);
+    INJEQT_SET void setOtrRawMessageTransformer(OtrRawMessageTransformer *otrRawMessageTransformer);
+    INJEQT_SET void setOtrSessionService(OtrSessionService *otrSessionService);
+    INJEQT_SET void setOtrTrustLevelService(OtrTrustLevelService *otrTrustLevelService);
+    INJEQT_SET void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
 };

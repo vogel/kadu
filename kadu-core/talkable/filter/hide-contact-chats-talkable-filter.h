@@ -37,23 +37,22 @@
  */
 class HideContactChatsTalkableFilter : public TalkableFilter
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Create new instance of HideContactChatsTalkableFilter with given parent.
-	 * @param parent QObject parent of new object
-	 */
-	explicit HideContactChatsTalkableFilter(QObject *parent = nullptr);
-	virtual ~HideContactChatsTalkableFilter();
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Create new instance of HideContactChatsTalkableFilter with given parent.
+     * @param parent QObject parent of new object
+     */
+    explicit HideContactChatsTalkableFilter(QObject *parent = nullptr);
+    virtual ~HideContactChatsTalkableFilter();
 
-	virtual FilterResult filterChat(const Chat &chat);
-
+    virtual FilterResult filterChat(const Chat &chat);
 };
 
 /**
  * @}
  */
 
-#endif // HIDE_SIMPLE_CHATS_TALKABLE_FILTER_H
+#endif   // HIDE_SIMPLE_CHATS_TALKABLE_FILTER_H

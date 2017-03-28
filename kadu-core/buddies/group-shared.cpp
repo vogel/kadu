@@ -26,103 +26,101 @@
 
 #include "group-shared.h"
 
-GroupShared::GroupShared(const QUuid &uuid) :
-		Shared(uuid),
-		NotifyAboutStatusChanges(true), ShowInAllGroup(true),
-		OfflineToGroup(false), ShowIcon(false), ShowName(true),
-		TabPosition(-1)
+GroupShared::GroupShared(const QUuid &uuid)
+        : Shared(uuid), NotifyAboutStatusChanges(true), ShowInAllGroup(true), OfflineToGroup(false), ShowIcon(false),
+          ShowName(true), TabPosition(-1)
 {
-	connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
+    connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
 GroupShared::~GroupShared()
 {
-	ref.ref();
+    ref.ref();
 }
 
 void GroupShared::setConfiguration(Configuration *configuration)
 {
-	m_configuration = configuration;
+    m_configuration = configuration;
 }
 
 void GroupShared::setGroupManager(GroupManager *groupManager)
 {
-	m_groupManager = groupManager;
+    m_groupManager = groupManager;
 }
 
-StorableObject * GroupShared::storageParent()
+StorableObject *GroupShared::storageParent()
 {
-	return m_groupManager;
+    return m_groupManager;
 }
 
 QString GroupShared::storageNodeName()
 {
-	return QStringLiteral("Group");
+    return QStringLiteral("Group");
 }
 
 void GroupShared::importConfiguration(const QString &name)
 {
-	Name = name;
-	Icon = m_configuration->deprecatedApi()->readEntry("GroupIcon", name);
-	NotifyAboutStatusChanges = true;
-	ShowInAllGroup= true;
-	OfflineToGroup= false;
-	ShowIcon = !Icon.isEmpty();
-	ShowName = true;
-	TabPosition = -1;
+    Name = name;
+    Icon = m_configuration->deprecatedApi()->readEntry("GroupIcon", name);
+    NotifyAboutStatusChanges = true;
+    ShowInAllGroup = true;
+    OfflineToGroup = false;
+    ShowIcon = !Icon.isEmpty();
+    ShowName = true;
+    TabPosition = -1;
 }
 
 void GroupShared::load()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	Shared::load();
+    Shared::load();
 
-	Name = loadValue<QString>("Name");
-	Icon = loadValue<QString>("Icon");
-	NotifyAboutStatusChanges = loadValue<bool>("NotifyAboutStatusChanges", true);
-	ShowInAllGroup= loadValue<bool>("ShowInAllGroup", true);
-	OfflineToGroup= loadValue<bool>("OfflineTo", true);
-	ShowIcon = loadValue<bool>("ShowIcon", true);
-	ShowName = loadValue<bool>("ShowName", true);
-	TabPosition = loadValue<int>("TabPosition", -1);
+    Name = loadValue<QString>("Name");
+    Icon = loadValue<QString>("Icon");
+    NotifyAboutStatusChanges = loadValue<bool>("NotifyAboutStatusChanges", true);
+    ShowInAllGroup = loadValue<bool>("ShowInAllGroup", true);
+    OfflineToGroup = loadValue<bool>("OfflineTo", true);
+    ShowIcon = loadValue<bool>("ShowIcon", true);
+    ShowName = loadValue<bool>("ShowName", true);
+    TabPosition = loadValue<int>("TabPosition", -1);
 }
 
 void GroupShared::store()
 {
-	if (!isValidStorage())
-		return;
+    if (!isValidStorage())
+        return;
 
-	ensureLoaded();
+    ensureLoaded();
 
-	Shared::store();
+    Shared::store();
 
-	storeValue("Name", Name);
-	storeValue("Icon", Icon);
-	storeValue("NotifyAboutStatusChanges", NotifyAboutStatusChanges);
-	storeValue("ShowInAllGroup", ShowInAllGroup);
-	storeValue("OfflineTo", OfflineToGroup);
-	storeValue("ShowIcon", ShowIcon);
-	storeValue("ShowName", ShowName);
-	storeValue("TabPosition", TabPosition);
+    storeValue("Name", Name);
+    storeValue("Icon", Icon);
+    storeValue("NotifyAboutStatusChanges", NotifyAboutStatusChanges);
+    storeValue("ShowInAllGroup", ShowInAllGroup);
+    storeValue("OfflineTo", OfflineToGroup);
+    storeValue("ShowIcon", ShowIcon);
+    storeValue("ShowName", ShowName);
+    storeValue("TabPosition", TabPosition);
 }
 
 void GroupShared::aboutToBeRemoved()
 {
-	emit groupAboutToBeRemoved();
+    emit groupAboutToBeRemoved();
 }
 
 void GroupShared::setName(const QString &name)
 {
-	ensureLoaded();
+    ensureLoaded();
 
-	if (Name != name)
-	{
-		Name = name;
-		changeNotifier().notify();
-		emit nameChanged();
-	}
+    if (Name != name)
+    {
+        Name = name;
+        changeNotifier().notify();
+        emit nameChanged();
+    }
 }
 
 #include "moc_group-shared.cpp"

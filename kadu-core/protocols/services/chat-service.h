@@ -54,96 +54,95 @@ class RawMessageTransformerService;
  */
 class KADUAPI ChatService : public AccountService
 {
-	Q_OBJECT
+    Q_OBJECT
 
 protected:
-	explicit ChatService(Account account, QObject *parent = nullptr);
-	virtual ~ChatService();
+    explicit ChatService(Account account, QObject *parent = nullptr);
+    virtual ~ChatService();
 
 public:
-	/**
-	 * @short Return raw message transformer service of this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return raw message transformer service of this service
-	 */
-	RawMessageTransformerService * rawMessageTransformerService() const;
+    /**
+     * @short Return raw message transformer service of this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @return raw message transformer service of this service
+     */
+    RawMessageTransformerService *rawMessageTransformerService() const;
 
-	/**
-	 * @short Return max message length for this implementation.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @return max message length for this implementation
-	 */
-	virtual int maxMessageLength() const = 0;
+    /**
+     * @short Return max message length for this implementation.
+     * @author Rafał 'Vogel' Malinowski
+     * @return max message length for this implementation
+     */
+    virtual int maxMessageLength() const = 0;
 
 public slots:
-	/**
-	 * @short Send new message to given chat.
-	 * @param message message to be sent
-	 *
-	 * This methods sends a message. Service is allowed to ignore this requst and to ignore any formatting
-	 * that is present in message.
-	 *
-	 * Message can be altered by RawMessageTransformerService to allow any encryption on any protocol.
-	 */
-	virtual bool sendMessage(const Message &message) = 0;
+    /**
+     * @short Send new message to given chat.
+     * @param message message to be sent
+     *
+     * This methods sends a message. Service is allowed to ignore this requst and to ignore any formatting
+     * that is present in message.
+     *
+     * Message can be altered by RawMessageTransformerService to allow any encryption on any protocol.
+     */
+    virtual bool sendMessage(const Message &message) = 0;
 
-	/**
-	 * @short Send raw message to given chat.
-	 * @param chat chat for the message
-	 * @param message message to be sent
-	 * @param transform is message should be transformed by RawMessageTransformerService
-	 *
-	 * This methods sends a message. Service is allowed to ignore this requst.
-	 *
-	 * This message won't be altered by RawMessageTransformerService.
-	 */
-	virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) = 0;
+    /**
+     * @short Send raw message to given chat.
+     * @param chat chat for the message
+     * @param message message to be sent
+     * @param transform is message should be transformed by RawMessageTransformerService
+     *
+     * This methods sends a message. Service is allowed to ignore this requst.
+     *
+     * This message won't be altered by RawMessageTransformerService.
+     */
+    virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) = 0;
 
-	/**
-	 * @short Leave @p chat.
-	 *
-	 * Use to leave chats in GG and room chats in XMPP. In current implemntations does nothing for single
-	 * contact chats in XMPP. May change in future.
-	 */
-	virtual void leaveChat(const Chat &chat) = 0;
+    /**
+     * @short Leave @p chat.
+     *
+     * Use to leave chats in GG and room chats in XMPP. In current implemntations does nothing for single
+     * contact chats in XMPP. May change in future.
+     */
+    virtual void leaveChat(const Chat &chat) = 0;
 
 signals:
-	/**
-	 * @short Signal emitted when sent message status has changed.
-	 * @param message message with changed status
-	 *
-	 * This signal is emitted every time a protocol learns about delivery status of sent message.
-	 */
-	void sentMessageStatusChanged(const Message &message);
+    /**
+     * @short Signal emitted when sent message status has changed.
+     * @param message message with changed status
+     *
+     * This signal is emitted every time a protocol learns about delivery status of sent message.
+     */
+    void sentMessageStatusChanged(const Message &message);
 
-	/**
-	 * @author Rafał 'Vogel' Malinowski
-	 * @short Signal emitted when message was sent.
-	 * @param message sent message
-	 *
-	 * This signal is emited every time a message is sent trought one of registered acocunts.
-	 */
-	void messageSent(const Message &message);
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Signal emitted when message was sent.
+     * @param message sent message
+     *
+     * This signal is emited every time a message is sent trought one of registered acocunts.
+     */
+    void messageSent(const Message &message);
 
-	/**
-	 * @short Signal emitted when message is received.
-	 * @param message received message
-	 *
-	 * This signal is emitted every message is received and not ignored.
-	 */
-	void messageReceived(const Message &message);
+    /**
+     * @short Signal emitted when message is received.
+     * @param message received message
+     *
+     * This signal is emitted every message is received and not ignored.
+     */
+    void messageReceived(const Message &message);
 
 private:
-	QPointer<RawMessageTransformerService> m_rawMessageTransformerService;
+    QPointer<RawMessageTransformerService> m_rawMessageTransformerService;
 
 private slots:
-	/**
-	 * @short Set raw message transformer service for this service.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param rawMessageTransformerService raw message transformer service for this service
-	 */
-	INJEQT_SET void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
-
+    /**
+     * @short Set raw message transformer service for this service.
+     * @author Rafał 'Vogel' Malinowski
+     * @param rawMessageTransformerService raw message transformer service for this service
+     */
+    INJEQT_SET void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
 };
 
 /**

@@ -30,8 +30,8 @@
 
 #include "password-dialog-widget.h"
 
-PasswordDialogWidget::PasswordDialogWidget(const QString &message, QVariant data, QWidget *parent) :
-		DialogWidget(tr("Incorrect password"), message, QPixmap(), parent), Data(data)
+PasswordDialogWidget::PasswordDialogWidget(const QString &message, QVariant data, QWidget *parent)
+        : DialogWidget(tr("Incorrect password"), message, QPixmap(), parent), Data(data)
 {
 }
 
@@ -41,49 +41,49 @@ PasswordDialogWidget::~PasswordDialogWidget()
 
 void PasswordDialogWidget::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void PasswordDialogWidget::init()
 {
-	QIcon icon = m_iconsManager->iconByPath(KaduIcon("dialog-password"));
-	Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
+    QIcon icon = m_iconsManager->iconByPath(KaduIcon("dialog-password"));
+    Pixmap = icon.pixmap(icon.actualSize(QSize(64, 64)));
 
-	createGui();
+    createGui();
 }
 
 void PasswordDialogWidget::createGui()
 {
-	formLayout = new QFormLayout(this);
-	formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+    formLayout = new QFormLayout(this);
+    formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
 
-	Password = new QLineEdit(this);
-	Password->setEchoMode(QLineEdit::Password);
-	Password->setFocus();
-	connect(Password, SIGNAL(textChanged(const QString &)), this, SLOT(passwordTextChanged(const QString &)));
+    Password = new QLineEdit(this);
+    Password->setEchoMode(QLineEdit::Password);
+    Password->setFocus();
+    connect(Password, SIGNAL(textChanged(const QString &)), this, SLOT(passwordTextChanged(const QString &)));
 
-	QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
-	formLayout->addRow(passwordLabel, Password);
+    QLabel *passwordLabel = new QLabel(tr("Password") + ":", this);
+    formLayout->addRow(passwordLabel, Password);
 
-	Store = new QCheckBox(tr("Store this password"), this);
-	formLayout->addWidget(Store);
+    Store = new QCheckBox(tr("Store this password"), this);
+    formLayout->addWidget(Store);
 
-	setLayout(formLayout);
+    setLayout(formLayout);
 }
 
 void PasswordDialogWidget::dialogAccepted()
 {
-	emit passwordEntered(Data, Password->text(), Store->isChecked());
+    emit passwordEntered(Data, Password->text(), Store->isChecked());
 }
 
 void PasswordDialogWidget::dialogRejected()
 {
-	emit passwordEntered(Data, QString(), false);
+    emit passwordEntered(Data, QString(), false);
 }
 
 void PasswordDialogWidget::passwordTextChanged(const QString &text)
 {
-	emit valid(!text.isEmpty());
+    emit valid(!text.isEmpty());
 }
 
 #include "moc_password-dialog-widget.cpp"

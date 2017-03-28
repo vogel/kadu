@@ -34,28 +34,27 @@ class Contact;
 
 class JabberResourceService : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit JabberResourceService(QObject *parent = nullptr);
-	virtual ~JabberResourceService();
+    explicit JabberResourceService(QObject *parent = nullptr);
+    virtual ~JabberResourceService();
 
-	void updateResource(JabberResource resource);
-	void removeResource(const Jid &jid);
-	void removeResources(const QString &bareJid);
-	void clear();
+    void updateResource(JabberResource resource);
+    void removeResource(const Jid &jid);
+    void removeResources(const QString &bareJid);
+    void clear();
 
-	JabberResource bestResource(const QString &bareJid) const;
+    JabberResource bestResource(const QString &bareJid) const;
 
-	Jid bestChatJid(const Chat &chat) const;
-	Jid bestContactJid(const Contact &chat) const;
+    Jid bestChatJid(const Chat &chat) const;
+    Jid bestContactJid(const Contact &chat) const;
 
 private:
-	QPointer<ChatTypeManager> m_chatTypeManager;
+    QPointer<ChatTypeManager> m_chatTypeManager;
 
-	QVector<JabberResource> m_resources;
+    QVector<JabberResource> m_resources;
 
 private slots:
-	INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
-
+    INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 };

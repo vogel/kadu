@@ -33,20 +33,19 @@ class QLabel;
 
 class ToolTipWidget : public QFrame
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ToolTipWidget(const Talkable &talkable, QWidget *parent = nullptr);
-	virtual ~ToolTipWidget();
+    explicit ToolTipWidget(const Talkable &talkable, QWidget *parent = nullptr);
+    virtual ~ToolTipWidget();
 
 private:
-	QPointer<Parser> m_parser;
+    QPointer<Parser> m_parser;
 
-	owned_qptr<QLabel> m_tipLabel;
-	Talkable m_talkable;
+    owned_qptr<QLabel> m_tipLabel;
+    Talkable m_talkable;
 
 private slots:
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_INIT void init();
-
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_INIT void init();
 };

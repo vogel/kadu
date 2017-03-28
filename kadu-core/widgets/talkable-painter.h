@@ -30,84 +30,84 @@ class TalkableDelegateConfiguration;
 
 class TalkablePainter
 {
-	TalkableDelegateConfiguration *Configuration;
-	QStyleOptionViewItemV4 Option;
-	const QModelIndex &Index;
-	const QTreeView *Widget;
-	const QStyle *Style;
+    TalkableDelegateConfiguration *Configuration;
+    QStyleOptionViewItemV4 Option;
+    const QModelIndex &Index;
+    const QTreeView *Widget;
+    const QStyle *Style;
 
-	int HFrameMargin;
-	int VFrameMargin;
+    int HFrameMargin;
+    int VFrameMargin;
 
-	QFontMetrics FontMetrics;
-	QFontMetrics BoldFontMetrics;
-	QFontMetrics DescriptionFontMetrics;
+    QFontMetrics FontMetrics;
+    QFontMetrics BoldFontMetrics;
+    QFontMetrics DescriptionFontMetrics;
 
-	QTextDocument *DescriptionDocument;
+    QTextDocument *DescriptionDocument;
 
-	QRect ItemRect;
+    QRect ItemRect;
 
-	QRect CheckboxRect;
-	QRect IconRect;
-	QRect AvatarRect;
-	QRect IdentityNameRect;
-	QRect NameRect;
-	QRect DescriptionRect;
+    QRect CheckboxRect;
+    QRect IconRect;
+    QRect AvatarRect;
+    QRect IdentityNameRect;
+    QRect NameRect;
+    QRect DescriptionRect;
 
-	QString getIdentityName();
-	QString getName();
+    QString getIdentityName();
+    QString getName();
 
-	bool drawSelected() const;
-	bool drawDisabled() const;
+    bool drawSelected() const;
+    bool drawDisabled() const;
 
-	QTextDocument * createDescriptionDocument(const QString &text, int width, QColor color) const;
-	QTextDocument * getDescriptionDocument(int width);
+    QTextDocument *createDescriptionDocument(const QString &text, int width, QColor color) const;
+    QTextDocument *getDescriptionDocument(int width);
 
-	const QFontMetrics & fontMetrics();
-	int itemIndentation();
+    const QFontMetrics &fontMetrics();
+    int itemIndentation();
 
-	void fixColors();
-	QColor textColor() const;
+    void fixColors();
+    QColor textColor() const;
 
-	bool useBold() const;
-	bool showCheckbox() const;
-	bool showMessagePixmap() const;
-	bool showIdentityName() const;
-	bool showDescription() const;
+    bool useBold() const;
+    bool showCheckbox() const;
+    bool showMessagePixmap() const;
+    bool showIdentityName() const;
+    bool showDescription() const;
 
-	void computeCheckboxRect();
-	void computeIconRect();
-	void computeAvatarRect();
-	void computeIdentityNameRect();
-	void computeNameRect();
-	void computeDescriptionRect();
+    void computeCheckboxRect();
+    void computeIconRect();
+    void computeAvatarRect();
+    void computeIdentityNameRect();
+    void computeNameRect();
+    void computeDescriptionRect();
 
-	void computeLayout();
+    void computeLayout();
 
-	void paintDebugRect(QPainter *painter, QRect rect, QColor color) const;
+    void paintDebugRect(QPainter *painter, QRect rect, QColor color) const;
 
-	void paintCheckbox(QPainter *painter);
-	void paintIcon(QPainter *painter);
-	void paintAvatar(QPainter *painter);
-	void paintIdentityName(QPainter *painter);
-	void paintName(QPainter *painter);
-	void paintDescription(QPainter *painter);
+    void paintCheckbox(QPainter *painter);
+    void paintIcon(QPainter *painter);
+    void paintAvatar(QPainter *painter);
+    void paintIdentityName(QPainter *painter);
+    void paintName(QPainter *painter);
+    void paintDescription(QPainter *painter);
 
 #ifdef Q_OS_WIN
-	static bool useColorsWorkaround();
+    static bool useColorsWorkaround();
 #endif
 
 public:
-	TalkablePainter(TalkableDelegateConfiguration *configuration, QStyleOptionViewItemV4 option, const QModelIndex &index);
-	~TalkablePainter();
+    TalkablePainter(
+        TalkableDelegateConfiguration *configuration, QStyleOptionViewItemV4 option, const QModelIndex &index);
+    ~TalkablePainter();
 
-	QPixmap avatar() const;
-	QPixmap icon() const;
+    QPixmap avatar() const;
+    QPixmap icon() const;
 
-	int height();
-	void paint(QPainter *painter);
-	QRect checkboxRect();
-
+    int height();
+    void paint(QPainter *painter);
+    QRect checkboxRect();
 };
 
-#endif // TALKABLE_PAINTER_H
+#endif   // TALKABLE_PAINTER_H

@@ -27,19 +27,18 @@ class NotificationCallback;
 
 class KADUAPI NotificationCallbackRepository : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit NotificationCallbackRepository(QObject *parent = nullptr);
-	virtual ~NotificationCallbackRepository();
+    Q_INVOKABLE explicit NotificationCallbackRepository(QObject *parent = nullptr);
+    virtual ~NotificationCallbackRepository();
 
-	void addCallback(NotificationCallback callback);
-	void removeCallback(NotificationCallback callback);
-	void removeCallback(const QString &name);
+    void addCallback(NotificationCallback callback);
+    void removeCallback(NotificationCallback callback);
+    void removeCallback(const QString &name);
 
-	NotificationCallback callback(const QString &name);
+    NotificationCallback callback(const QString &name);
 
 private:
-	std::vector<NotificationCallback> m_callbacks;
-
+    std::vector<NotificationCallback> m_callbacks;
 };

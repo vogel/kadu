@@ -18,15 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "languages-manager.h"
 
 #include "misc/paths-provider.h"
 
 #include <QtCore/QDir>
 
-LanguagesManager::LanguagesManager(QObject *parent) :
-		QObject{parent}
+LanguagesManager::LanguagesManager(QObject *parent) : QObject{parent}
 {
 }
 
@@ -36,35 +34,35 @@ LanguagesManager::~LanguagesManager()
 
 void LanguagesManager::setPathsProvider(PathsProvider *pathsProvider)
 {
-	m_pathsProvider = pathsProvider;
+    m_pathsProvider = pathsProvider;
 }
 
 void LanguagesManager::init()
 {
-	loadLanguages();
+    loadLanguages();
 }
 
 void LanguagesManager::loadLanguages()
 {
-	auto tranlationsDir = QDir{m_pathsProvider->dataPath() + QStringLiteral("translations")};
-	auto languagesFilter = QStringList{} << "*.language";
-	auto languageFiles = tranlationsDir.entryInfoList(languagesFilter, QDir::Files);
+    auto tranlationsDir = QDir{m_pathsProvider->dataPath() + QStringLiteral("translations")};
+    auto languagesFilter = QStringList{} << "*.language";
+    auto languageFiles = tranlationsDir.entryInfoList(languagesFilter, QDir::Files);
 
-	for (auto const &languageFileInfo : languageFiles)
-	{
-		QFile languageFile{languageFileInfo.filePath()};
-		if (!languageFile.open(QIODevice::ReadOnly))
-			continue;
+    for (auto const &languageFileInfo : languageFiles)
+    {
+        QFile languageFile{languageFileInfo.filePath()};
+        if (!languageFile.open(QIODevice::ReadOnly))
+            continue;
 
-		auto fileName = languageFileInfo.fileName();
-		auto languageCode = fileName.left(fileName.length() - QString{".language"}.length());
-		m_languages.insert(languageCode, QString::fromUtf8(languageFile.readAll()).trimmed());
-	}
+        auto fileName = languageFileInfo.fileName();
+        auto languageCode = fileName.left(fileName.length() - QString{".language"}.length());
+        m_languages.insert(languageCode, QString::fromUtf8(languageFile.readAll()).trimmed());
+    }
 }
 
 QMap<QString, QString> LanguagesManager::languages() const
 {
-	return m_languages;
+    return m_languages;
 }
 
 #include "moc_languages-manager.cpp"

@@ -37,14 +37,14 @@
 
 #include "progress-window.h"
 
-ProgressWindow::ProgressWindow(const QString &label, QWidget *parent) :
-		QDialog(parent), Label(label), Finished(false), Cancellable(false)
+ProgressWindow::ProgressWindow(const QString &label, QWidget *parent)
+        : QDialog(parent), Label(label), Finished(false), Cancellable(false)
 {
-	setAttribute(Qt::WA_DeleteOnClose);
-	setWindowRole("kadu-progress");
-	createGui();
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowRole("kadu-progress");
+    createGui();
 
-	setFixedWidth(width());
+    setFixedWidth(width());
 }
 
 ProgressWindow::~ProgressWindow()
@@ -53,138 +53,139 @@ ProgressWindow::~ProgressWindow()
 
 void ProgressWindow::setIconsManager(IconsManager *iconsManager)
 {
-	m_iconsManager = iconsManager;
+    m_iconsManager = iconsManager;
 }
 
 void ProgressWindow::createGui()
 {
-	QVBoxLayout *mainLayout = new QVBoxLayout(this);
-	mainLayout->setMargin(12);
-	mainLayout->setSpacing(16);
+    QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->setMargin(12);
+    mainLayout->setSpacing(16);
 
-	QLabel *label = new QLabel(this);
-	label->setText(QString("<b>%1</b>").arg(Label));
-	label->setWordWrap(true);
+    QLabel *label = new QLabel(this);
+    label->setText(QString("<b>%1</b>").arg(Label));
+    label->setWordWrap(true);
 
-	QWidget *progressWidget = new QWidget(this);
-	QHBoxLayout *progressLayout = new QHBoxLayout(progressWidget);
-	progressLayout->setMargin(0);
+    QWidget *progressWidget = new QWidget(this);
+    QHBoxLayout *progressLayout = new QHBoxLayout(progressWidget);
+    progressLayout->setMargin(0);
 
-	ProgressBar = new QProgressBar(this);
-	ProgressBar->setMinimum(0);
-	ProgressBar->setMaximum(0);
+    ProgressBar = new QProgressBar(this);
+    ProgressBar->setMinimum(0);
+    ProgressBar->setMaximum(0);
 
-	progressLayout->addWidget(new QLabel(tr("Progress:"), progressWidget));
-	progressLayout->addWidget(ProgressBar);
+    progressLayout->addWidget(new QLabel(tr("Progress:"), progressWidget));
+    progressLayout->addWidget(ProgressBar);
 
-	TextListWidget = new QListWidget(this);
-	TextListWidget->setMinimumHeight(200);
-	TextListWidget->hide();
+    TextListWidget = new QListWidget(this);
+    TextListWidget->setMinimumHeight(200);
+    TextListWidget->hide();
 
-	QDialogButtonBox *buttons = new QDialogButtonBox(this);
-	CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
-	CloseButton->setEnabled(false);
-	connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
+    QDialogButtonBox *buttons = new QDialogButtonBox(this);
+    CloseButton = new QPushButton(qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Close"));
+    CloseButton->setEnabled(false);
+    connect(CloseButton, SIGNAL(clicked(bool)), this, SLOT(close()));
 
-	ShowDetailsButton = new QPushButton(tr("Show details >>>"));
-	connect(ShowDetailsButton, SIGNAL(clicked(bool)), this, SLOT(showDetailsClicked()));
+    ShowDetailsButton = new QPushButton(tr("Show details >>>"));
+    connect(ShowDetailsButton, SIGNAL(clicked(bool)), this, SLOT(showDetailsClicked()));
 
-	buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
-	buttons->addButton(ShowDetailsButton, QDialogButtonBox::ActionRole);
+    buttons->addButton(CloseButton, QDialogButtonBox::DestructiveRole);
+    buttons->addButton(ShowDetailsButton, QDialogButtonBox::ActionRole);
 
-	mainLayout->addWidget(label);
-	mainLayout->addWidget(progressWidget);
-	mainLayout->addWidget(TextListWidget);
-	mainLayout->addStretch(1);
-	mainLayout->addWidget(buttons);
+    mainLayout->addWidget(label);
+    mainLayout->addWidget(progressWidget);
+    mainLayout->addWidget(TextListWidget);
+    mainLayout->addStretch(1);
+    mainLayout->addWidget(buttons);
 }
 
 void ProgressWindow::setCancellable(bool cancellable)
 {
-	if (Cancellable == cancellable)
-		return;
+    if (Cancellable == cancellable)
+        return;
 
-	Cancellable = cancellable;
+    Cancellable = cancellable;
 
-	CloseButton->setEnabled(Cancellable || Finished);
-	CloseButton->setDefault(Cancellable || Finished);
+    CloseButton->setEnabled(Cancellable || Finished);
+    CloseButton->setDefault(Cancellable || Finished);
 }
 
 void ProgressWindow::closeEvent(QCloseEvent *closeEvent)
 {
-	if (Finished)
-	{
-		QDialog::closeEvent(closeEvent);
-		return;
-	}
+    if (Finished)
+    {
+        QDialog::closeEvent(closeEvent);
+        return;
+    }
 
-	if (Cancellable)
-	{
-		emit canceled();
-		QDialog::closeEvent(closeEvent);
-		return;
-	}
+    if (Cancellable)
+    {
+        emit canceled();
+        QDialog::closeEvent(closeEvent);
+        return;
+    }
 
-	closeEvent->ignore();
+    closeEvent->ignore();
 }
 
 void ProgressWindow::keyPressEvent(QKeyEvent *keyEvent)
 {
-	if (Qt::Key_Escape != keyEvent->key() || Finished)
-	{
-		QDialog::keyPressEvent(keyEvent);
-		return;
-	}
+    if (Qt::Key_Escape != keyEvent->key() || Finished)
+    {
+        QDialog::keyPressEvent(keyEvent);
+        return;
+    }
 
-	if (Cancellable)
-	{
-		emit canceled();
-		QDialog::keyPressEvent(keyEvent);
-		return;
-	}
+    if (Cancellable)
+    {
+        emit canceled();
+        QDialog::keyPressEvent(keyEvent);
+        return;
+    }
 
-	keyEvent->ignore();
+    keyEvent->ignore();
 }
 
 void ProgressWindow::showDetailsClicked()
 {
-	ShowDetailsButton->setEnabled(false);
-	TextListWidget->show();
+    ShowDetailsButton->setEnabled(false);
+    TextListWidget->show();
 }
 
 void ProgressWindow::addProgressEntry(const QString &entryIcon, const QString &entryMessage)
 {
-	QListWidgetItem *item = new QListWidgetItem(m_iconsManager->iconByPath(KaduIcon(entryIcon)), entryMessage, TextListWidget);
-	TextListWidget->addItem(item);
+    QListWidgetItem *item =
+        new QListWidgetItem(m_iconsManager->iconByPath(KaduIcon(entryIcon)), entryMessage, TextListWidget);
+    TextListWidget->addItem(item);
 }
 
 void ProgressWindow::setProgressValue(int value, int maximum)
 {
-	ProgressBar->setMaximum(maximum);
-	ProgressBar->setValue(value);
+    ProgressBar->setMaximum(maximum);
+    ProgressBar->setValue(value);
 }
 
 void ProgressWindow::progressFinished(bool ok, const QString &entryIcon, const QString &entryMessage)
 {
-	Finished = true;
-	CloseButton->setEnabled(true);
-	CloseButton->setDefault(true);
-	CloseButton->setFocus();
+    Finished = true;
+    CloseButton->setEnabled(true);
+    CloseButton->setDefault(true);
+    CloseButton->setFocus();
 
-	ProgressBar->setMaximum(10);
+    ProgressBar->setMaximum(10);
 
-	if (ok)
-		ProgressBar->setValue(10);
-	else
-		ProgressBar->setValue(0);
+    if (ok)
+        ProgressBar->setValue(10);
+    else
+        ProgressBar->setValue(0);
 
-	if (!entryMessage.isEmpty())
-		addProgressEntry(entryIcon, entryMessage);
+    if (!entryMessage.isEmpty())
+        addProgressEntry(entryIcon, entryMessage);
 
-	qApp->alert(this);
+    qApp->alert(this);
 
-	if (!ok && !entryMessage.isEmpty())
-		MessageDialog::show(m_iconsManager->iconByPath(KaduIcon(entryIcon)), Label, entryMessage);
+    if (!ok && !entryMessage.isEmpty())
+        MessageDialog::show(m_iconsManager->iconByPath(KaduIcon(entryIcon)), Label, entryMessage);
 }
 
 #include "moc_progress-window.cpp"

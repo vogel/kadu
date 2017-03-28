@@ -22,8 +22,7 @@
 
 #include "kadu-merged-proxy-model.h"
 
-KaduMergedProxyModel::KaduMergedProxyModel(QObject *parent) :
-		MergedProxyModel(parent)
+KaduMergedProxyModel::KaduMergedProxyModel(QObject *parent) : MergedProxyModel(parent)
 {
 }
 
@@ -33,37 +32,37 @@ KaduMergedProxyModel::~KaduMergedProxyModel()
 
 void KaduMergedProxyModel::setKaduModels(QList<KaduAbstractModel *> models)
 {
-	QList<QAbstractItemModel *> itemModels;
+    QList<QAbstractItemModel *> itemModels;
 
-	KaduModels.clear();
-	foreach (KaduAbstractModel *model, models)
-	{
-		KaduModels.append(model);
+    KaduModels.clear();
+    foreach (KaduAbstractModel *model, models)
+    {
+        KaduModels.append(model);
 
-		QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
-		ModelChain *modelChain = dynamic_cast<ModelChain *>(model);
-		if (itemModel)
-			itemModels.append(itemModel);
-		else if (modelChain)
-			itemModels.append(modelChain->lastModel());
+        QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
+        ModelChain *modelChain = dynamic_cast<ModelChain *>(model);
+        if (itemModel)
+            itemModels.append(itemModel);
+        else if (modelChain)
+            itemModels.append(modelChain->lastModel());
 
-		Q_ASSERT(itemModel || modelChain);
-	}
+        Q_ASSERT(itemModel || modelChain);
+    }
 
-	MergedProxyModel::setModels(itemModels);
+    MergedProxyModel::setModels(itemModels);
 }
 
 QModelIndexList KaduMergedProxyModel::indexListForValue(const QVariant &value) const
 {
-	QModelIndexList result;
-	foreach (KaduAbstractModel *kaduModel, KaduModels)
-	{
-		const QModelIndexList &kaduModelIndexes = kaduModel->indexListForValue(value);
-		foreach (const QModelIndex &index, kaduModelIndexes)
-			result.append(mapFromSource(index));
-	}
+    QModelIndexList result;
+    foreach (KaduAbstractModel *kaduModel, KaduModels)
+    {
+        const QModelIndexList &kaduModelIndexes = kaduModel->indexListForValue(value);
+        foreach (const QModelIndex &index, kaduModelIndexes)
+            result.append(mapFromSource(index));
+    }
 
-	return result;
+    return result;
 }
 
 #include "moc_kadu-merged-proxy-model.cpp"

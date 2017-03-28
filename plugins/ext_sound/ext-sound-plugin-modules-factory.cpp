@@ -23,8 +23,7 @@
 
 #include <injeqt/injector.h>
 
-ExtSoundPluginModulesFactory::ExtSoundPluginModulesFactory(QObject *parent) :
-		PluginModulesFactory{parent}
+ExtSoundPluginModulesFactory::ExtSoundPluginModulesFactory(QObject *parent) : PluginModulesFactory{parent}
 {
 }
 
@@ -34,15 +33,15 @@ ExtSoundPluginModulesFactory::~ExtSoundPluginModulesFactory()
 
 std::vector<std::unique_ptr<injeqt::module>> ExtSoundPluginModulesFactory::createPluginModules() const
 {
-	auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
-	modules.emplace_back(std::make_unique<ExtSoundModule>());
+    auto modules = std::vector<std::unique_ptr<injeqt::module>>{};
+    modules.emplace_back(std::make_unique<ExtSoundModule>());
 
-	return modules;
+    return modules;
 }
 
 QString ExtSoundPluginModulesFactory::parentInjectorName() const
 {
-	return "sound";
+    return "sound";
 }
 
 #include "moc_ext-sound-plugin-modules-factory.cpp"

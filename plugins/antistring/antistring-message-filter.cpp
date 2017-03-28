@@ -31,8 +31,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
 
-AntistringMessageFilter::AntistringMessageFilter(QObject *parent) :
-		QObject{parent}
+AntistringMessageFilter::AntistringMessageFilter(QObject *parent) : QObject{parent}
 {
 }
 
@@ -42,76 +41,76 @@ AntistringMessageFilter::~AntistringMessageFilter()
 
 void AntistringMessageFilter::setAntistringConfiguration(AntistringConfiguration *antistringConfiguration)
 {
-	m_antistringConfiguration = antistringConfiguration;
+    m_antistringConfiguration = antistringConfiguration;
 }
 
-void AntistringMessageFilter::setAntistringNotificationService(AntistringNotificationService *antistringNotificationService)
+void AntistringMessageFilter::setAntistringNotificationService(
+    AntistringNotificationService *antistringNotificationService)
 {
-	m_antistringNotificationService = antistringNotificationService;
+    m_antistringNotificationService = antistringNotificationService;
 }
 
 void AntistringMessageFilter::setMessageManager(MessageManager *messageManager)
 {
-	m_messageManager = messageManager;
+    m_messageManager = messageManager;
 }
 
 bool AntistringMessageFilter::acceptMessage(const Message &message)
 {
-	if (!m_antistringConfiguration->enabled())
-		return true;
+    if (!m_antistringConfiguration->enabled())
+        return true;
 
-	if (MessageTypeSent == message.type())
-		return true;
+    if (MessageTypeSent == message.type())
+        return true;
 
-	if (points(htmlToPlain(message.content())) < 3)
-		return true;
+    if (points(htmlToPlain(message.content())) < 3)
+        return true;
 
-	m_antistringNotificationService->notifyStringReceived(message.messageChat());
-	m_messageManager->sendMessage(message.messageChat(), m_antistringConfiguration->returnMessage(), true);
+    m_antistringNotificationService->notifyStringReceived(message.messageChat());
+    m_messageManager->sendMessage(message.messageChat(), m_antistringConfiguration->returnMessage(), true);
 
-	if (m_antistringConfiguration->logMessage())
-		writeLog(message.messageSender(), message.content().string());
+    if (m_antistringConfiguration->logMessage())
+        writeLog(message.messageSender(), message.content().string());
 
-	return !m_antistringConfiguration->messageStop();
+    return !m_antistringConfiguration->messageStop();
 }
 
 void AntistringMessageFilter::writeLog(Contact sender, const QString &message)
 {
-	QFile logFile(m_antistringConfiguration->logFile());
+    QFile logFile(m_antistringConfiguration->logFile());
 
-	if (!logFile.exists())
-	{
-		if (!logFile.open(QFile::WriteOnly))
-			return;
+    if (!logFile.exists())
+    {
+        if (!logFile.open(QFile::WriteOnly))
+            return;
 
-		QTextStream stream(&logFile);
-		stream << tr("     DATA AND TIME      ::   ID   ::    MESSAGE\n") <<
-		             "====================================================\n";
+        QTextStream stream(&logFile);
+        stream << tr("     DATA AND TIME      ::   ID   ::    MESSAGE\n")
+               << "====================================================\n";
 
-		logFile.close();
-	}
+        logFile.close();
+    }
 
-	if (!logFile.open(QFile::WriteOnly | QFile::Append))
-		return;
+    if (!logFile.open(QFile::WriteOnly | QFile::Append))
+        return;
 
-	QTextStream stream(&logFile);
-	stream << QDateTime::currentDateTime().toString() << " :: " << sender.id() << " :: " <<
-			message << "\n";
-	logFile.close();
+    QTextStream stream(&logFile);
+    stream << QDateTime::currentDateTime().toString() << " :: " << sender.id() << " :: " << message << "\n";
+    logFile.close();
 }
 
 int AntistringMessageFilter::points(const QString &message)
 {
-	int result = 0;
+    int result = 0;
 
-	if (message.length() > 600)
-		result++;
+    if (message.length() > 600)
+        result++;
 
-	foreach (const ConditionPair &condition, m_antistringConfiguration->conditions())
-		if (message.indexOf(QRegExp(condition.first)) >= 0)
-			result += condition.second;
+    foreach (const ConditionPair &condition, m_antistringConfiguration->conditions())
+        if (message.indexOf(QRegExp(condition.first)) >= 0)
+            result += condition.second;
 
-	return result;
+    return result;
 }
 
 #include "moc_antistring-message-filter.cpp"

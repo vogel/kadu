@@ -35,16 +35,16 @@ class ChatStyleRendererConfiguration;
  */
 class ChatStyleRendererFactory
 {
-
 public:
-	virtual ~ChatStyleRendererFactory() {}
+    virtual ~ChatStyleRendererFactory()
+    {
+    }
 
-	/**
-	 * @return New instance of ChatStyleRenderer with given configuration.
-	 * @param configuration configuration used to create ChatStyleRenderer.
-	 */
-	virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) = 0;
-
+    /**
+     * @return New instance of ChatStyleRenderer with given configuration.
+     * @param configuration configuration used to create ChatStyleRenderer.
+     */
+    virtual not_owned_qptr<ChatStyleRenderer> createChatStyleRenderer(ChatStyleRendererConfiguration configuration) = 0;
 };
 
 /**

@@ -23,9 +23,9 @@
 
 class GaduModule : public injeqt::module
 {
-
 public:
-	GaduModule();
-	virtual ~GaduModule() {}
-
+    GaduModule();
+    virtual ~GaduModule()
+    {
+    }
 };

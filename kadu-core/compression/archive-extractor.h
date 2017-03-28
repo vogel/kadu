@@ -28,22 +28,30 @@
 
 class KADUAPI ArchiveExtractor
 {
-	struct ArchiveReadCustomDeleter;
-	struct ArchiveWriteCustomDeleter;
+    struct ArchiveReadCustomDeleter;
+    struct ArchiveWriteCustomDeleter;
 
-        typedef QScopedPointer<struct archive, ArchiveReadCustomDeleter> ArchiveRead;
-	typedef QScopedPointer<struct archive, ArchiveWriteCustomDeleter> ArchiveWrite;
+    typedef QScopedPointer<struct archive, ArchiveReadCustomDeleter> ArchiveRead;
+    typedef QScopedPointer<struct archive, ArchiveWriteCustomDeleter> ArchiveWrite;
 
-	QString Message;
+    QString Message;
 
-	void copyData(struct archive *source, struct archive *dest);
+    void copyData(struct archive *source, struct archive *dest);
+
 public:
-	ArchiveExtractor() {}
-	virtual ~ArchiveExtractor() {}
+    ArchiveExtractor()
+    {
+    }
+    virtual ~ArchiveExtractor()
+    {
+    }
 
-	bool extract( const QString& sourcePath, const QString& destPath );
+    bool extract(const QString &sourcePath, const QString &destPath);
 
-	QString message() { return Message; }
+    QString message()
+    {
+        return Message;
+    }
 };
 
-#endif // ARCHIVE_EXTRACTOR_H
+#endif   // ARCHIVE_EXTRACTOR_H

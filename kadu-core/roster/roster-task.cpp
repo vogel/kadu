@@ -21,28 +21,25 @@
 
 #include "roster/roster-task-type.h"
 
-RosterTask::RosterTask() :
-		m_type{RosterTaskType::None}
+RosterTask::RosterTask() : m_type{RosterTaskType::None}
 {
 }
 
-RosterTask::RosterTask(RosterTaskType type, const QString &id) :
-		m_type{type},
-		m_id{id}
+RosterTask::RosterTask(RosterTaskType type, const QString &id) : m_type{type}, m_id{id}
 {
 }
 
 RosterTaskType RosterTask::type() const
 {
-	return m_type;
+    return m_type;
 }
 
 QString RosterTask::id() const
 {
-	return m_id;
+    return m_id;
 }
 
-bool operator == (const RosterTask &x, const RosterTask &y)
+bool operator==(const RosterTask &x, const RosterTask &y)
 {
-	return x.m_type == y.m_type && x.m_id == y.m_id;
+    return x.m_type == y.m_type && x.m_id == y.m_id;
 }

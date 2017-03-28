@@ -30,39 +30,40 @@ class StatusTypeManager;
 
 class AutoawayStatusChanger : public StatusChanger
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	friend class Autoaway;
+    friend class Autoaway;
 
 public:
-	enum ChangeStatusTo {
-		NoChangeStatus,
-		ChangeStatusToAway,
-		ChangeStatusToExtendedAway,
-		ChangeStatusToInvisible,
-		ChangeStatusToOffline
-	};
+    enum ChangeStatusTo
+    {
+        NoChangeStatus,
+        ChangeStatusToAway,
+        ChangeStatusToExtendedAway,
+        ChangeStatusToInvisible,
+        ChangeStatusToOffline
+    };
 
-	enum ChangeDescriptionTo {
-		NoChangeDescription,
-		ChangeDescriptionReplace,
-		ChangeDescriptionPrepend,
-		ChangeDescriptionAppend
-	};
+    enum ChangeDescriptionTo
+    {
+        NoChangeDescription,
+        ChangeDescriptionReplace,
+        ChangeDescriptionPrepend,
+        ChangeDescriptionAppend
+    };
 
-	Q_INVOKABLE explicit AutoawayStatusChanger(QObject *parent = nullptr);
-	virtual ~AutoawayStatusChanger();
+    Q_INVOKABLE explicit AutoawayStatusChanger(QObject *parent = nullptr);
+    virtual ~AutoawayStatusChanger();
 
-	virtual void changeStatus(StatusContainer *container, Status &status);
+    virtual void changeStatus(StatusContainer *container, Status &status);
 
-	void update();
+    void update();
 
 private:
-	QPointer<Autoaway> m_autoaway;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<Autoaway> m_autoaway;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
 private slots:
-	INJEQT_SET void setAutoaway(Autoaway *autoaway);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-
+    INJEQT_SET void setAutoaway(Autoaway *autoaway);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
 };

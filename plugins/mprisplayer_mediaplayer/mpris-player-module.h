@@ -23,9 +23,7 @@
 
 class MprisPlayerModule : public injeqt::module
 {
-
 public:
-	explicit MprisPlayerModule();
-	virtual ~MprisPlayerModule();
-
+    explicit MprisPlayerModule();
+    virtual ~MprisPlayerModule();
 };

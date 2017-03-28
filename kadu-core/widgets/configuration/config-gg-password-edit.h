@@ -29,19 +29,23 @@
 class ConfigGroupBox;
 
 /**
-	&lt;gg-password-edit caption="caption" id="id" /&gt;
+        &lt;gg-password-edit caption="caption" id="id" /&gt;
  **/
 class KADUAPI ConfigGGPasswordEdit : public ConfigLineEdit
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ConfigGGPasswordEdit(const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
-	virtual ~ConfigGGPasswordEdit() {}
+    ConfigGGPasswordEdit(
+        const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
+        ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    ConfigGGPasswordEdit(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager);
+    virtual ~ConfigGGPasswordEdit()
+    {
+    }
 
-	virtual void loadConfiguration();
-	virtual void saveConfiguration();
+    virtual void loadConfiguration();
+    virtual void saveConfiguration();
 };
 
 #endif

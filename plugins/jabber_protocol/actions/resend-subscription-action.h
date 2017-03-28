@@ -23,13 +23,12 @@
 
 class ResendSubscriptionAction : public SubscriptionAction
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit ResendSubscriptionAction(QObject *parent = nullptr);
-	virtual ~ResendSubscriptionAction();
+    Q_INVOKABLE explicit ResendSubscriptionAction(QObject *parent = nullptr);
+    virtual ~ResendSubscriptionAction();
 
 protected:
-	virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
-
+    virtual void execute(SubscriptionService *subscriptionService, const Contact &contact) override;
 };

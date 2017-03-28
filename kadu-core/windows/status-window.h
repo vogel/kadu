@@ -22,9 +22,9 @@
 
 #pragma once
 
+#include "exports.h"
 #include "os/generic/desktop-aware-object.h"
 #include "status/status.h"
-#include "exports.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QDialog>
@@ -45,66 +45,66 @@ class StatusTypeManager;
 
 class KADUAPI StatusWindow : public QDialog, DesktopAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<Configuration> m_configuration;
-	QPointer<DescriptionManager> m_descriptionManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<Myself> m_myself;
-	QPointer<Parser> m_parser;
-	QPointer<StatusSetter> m_statusSetter;
-	QPointer<StatusTypeManager> m_statusTypeManager;
+    QPointer<Configuration> m_configuration;
+    QPointer<DescriptionManager> m_descriptionManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<Myself> m_myself;
+    QPointer<Parser> m_parser;
+    QPointer<StatusSetter> m_statusSetter;
+    QPointer<StatusTypeManager> m_statusTypeManager;
 
-	StatusContainer *Container;
+    StatusContainer *Container;
 
-	QComboBox *StatusSelect;
-	QComboBox *DescriptionSelect;
-	QPushButton *ClearDescriptionsHistoryButton;
-	QLabel *DescriptionCounter;
-	QTextEdit *DescriptionEdit;
-	QPushButton *EraseButton;
-	QPushButton *SetStatusButton;
-	QPushButton *CancelButton;
+    QComboBox *StatusSelect;
+    QComboBox *DescriptionSelect;
+    QPushButton *ClearDescriptionsHistoryButton;
+    QLabel *DescriptionCounter;
+    QTextEdit *DescriptionEdit;
+    QPushButton *EraseButton;
+    QPushButton *SetStatusButton;
+    QPushButton *CancelButton;
 
-	/**
-	 * Don't allow descriptionEditTextChanged() to modify DescriptionSelect after changing text (programically) in DescriptionEdit.
-	 */
-	bool IgnoreNextTextChange;
+    /**
+     * Don't allow descriptionEditTextChanged() to modify DescriptionSelect after changing text (programically) in
+     * DescriptionEdit.
+     */
+    bool IgnoreNextTextChange;
 
-	void createLayout();
-	void setupStatusSelect();
-	void setupDescriptionSelect(const QString &description);
+    void createLayout();
+    void setupStatusSelect();
+    void setupDescriptionSelect(const QString &description);
 
-	void checkDescriptionLengthLimit();
+    void checkDescriptionLengthLimit();
 
-	StatusType findCommonStatusType(const QList<StatusContainer *> &containers);
+    StatusType findCommonStatusType(const QList<StatusContainer *> &containers);
 
 private slots:
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setDescriptionManager(DescriptionManager *descriptionManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setMyself(Myself *myself);
-	INJEQT_SET void setParser(Parser *parser);
-	INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
-	INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
-	INJEQT_INIT void init();
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setDescriptionManager(DescriptionManager *descriptionManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setMyself(Myself *myself);
+    INJEQT_SET void setParser(Parser *parser);
+    INJEQT_SET void setStatusSetter(StatusSetter *statusSetter);
+    INJEQT_SET void setStatusTypeManager(StatusTypeManager *statusTypeManager);
+    INJEQT_INIT void init();
 
-	void applyStatus();
-	void descriptionSelected(int index);
-	void clearDescriptionsHistory();
-	void eraseDescription();
-	void descriptionEditTextChanged();
+    void applyStatus();
+    void descriptionSelected(int index);
+    void clearDescriptionsHistory();
+    void eraseDescription();
+    void descriptionEditTextChanged();
 
 protected:
-	virtual bool eventFilter(QObject *source, QEvent *event);
+    virtual bool eventFilter(QObject *source, QEvent *event);
 
 public:
-	explicit StatusWindow(StatusContainer *Container, QWidget *parent = nullptr);
-	virtual ~StatusWindow();
+    explicit StatusWindow(StatusContainer *Container, QWidget *parent = nullptr);
+    virtual ~StatusWindow();
 
-	virtual QSize sizeHint() const;
+    virtual QSize sizeHint() const;
 
 signals:
-	void statusWindowClosed(StatusContainer *statusContainer);
-
+    void statusWindowClosed(StatusContainer *statusContainer);
 };

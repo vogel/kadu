@@ -24,9 +24,8 @@
 
 #include "sms-gateway-query.h"
 
-SmsGatewayQuery::SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent) :
-		QObject{parent},
-		m_smsScriptsManager{smsScriptsManager}
+SmsGatewayQuery::SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent)
+        : QObject{parent}, m_smsScriptsManager{smsScriptsManager}
 {
 }
 
@@ -36,22 +35,22 @@ SmsGatewayQuery::~SmsGatewayQuery()
 
 void SmsGatewayQuery::queryFinished(const QString &provider)
 {
-	emit finished(provider);
+    emit finished(provider);
 
-	deleteLater();
+    deleteLater();
 }
 
 void SmsGatewayQuery::process(const QString &number)
 {
-	auto engine = m_smsScriptsManager->engine();
-	auto jsGatewayQueryObject = engine->evaluate("new GatewayQuery()");
-	auto jsGetGateway = jsGatewayQueryObject.property("getGateway");
+    auto engine = m_smsScriptsManager->engine();
+    auto jsGatewayQueryObject = engine->evaluate("new GatewayQuery()");
+    auto jsGetGateway = jsGatewayQueryObject.property("getGateway");
 
-	QScriptValueList arguments;
-	arguments.append(number);
-	arguments.append(engine->newQObject(this));
+    QScriptValueList arguments;
+    arguments.append(number);
+    arguments.append(engine->newQObject(this));
 
-	jsGetGateway.call(jsGatewayQueryObject, arguments);
+    jsGetGateway.call(jsGatewayQueryObject, arguments);
 }
 
 #include "moc_sms-gateway-query.cpp"

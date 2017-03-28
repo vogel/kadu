@@ -38,32 +38,33 @@ class Roster;
 
 class KADUAPI AccountBuddyListWidget : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit AccountBuddyListWidget(Account account, QWidget *parent = nullptr);
-	virtual ~AccountBuddyListWidget() {}
+    explicit AccountBuddyListWidget(Account account, QWidget *parent = nullptr);
+    virtual ~AccountBuddyListWidget()
+    {
+    }
 
 private:
-	QPointer<BuddyManager> m_buddyManager;
-	QPointer<IconsManager> m_iconsManager;
-	QPointer<InjectedFactory> m_injectedFactory;
-	QPointer<RosterReplacer> m_rosterReplacer;
-	QPointer<Roster> m_roster;
+    QPointer<BuddyManager> m_buddyManager;
+    QPointer<IconsManager> m_iconsManager;
+    QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<RosterReplacer> m_rosterReplacer;
+    QPointer<Roster> m_roster;
 
-	Account CurrentAccount;
+    Account CurrentAccount;
 
-	FilteredTreeView *BuddiesWidget;
+    FilteredTreeView *BuddiesWidget;
 
 private slots:
-	INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
-	INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-	INJEQT_SET void setRosterReplacer(RosterReplacer *rosterReplacer);
-	INJEQT_SET void setRoster(Roster *roster);
-	INJEQT_INIT void init();
+    INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
+    INJEQT_SET void setIconsManager(IconsManager *iconsManager);
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
+    INJEQT_SET void setRosterReplacer(RosterReplacer *rosterReplacer);
+    INJEQT_SET void setRoster(Roster *roster);
+    INJEQT_INIT void init();
 
-	void restoreFromFile();
-	void storeToFile();
-
+    void restoreFromFile();
+    void storeToFile();
 };

@@ -23,14 +23,13 @@
 
 class ExecNotifyPluginModulesFactory : public PluginModulesFactory
 {
-	Q_OBJECT
-	Q_INTERFACES(PluginModulesFactory)
-	Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
+    Q_OBJECT
+    Q_INTERFACES(PluginModulesFactory)
+    Q_PLUGIN_METADATA(IID "im.kadu.PluginModulesFactory")
 
 public:
-	explicit ExecNotifyPluginModulesFactory(QObject *parent = nullptr);
-	virtual ~ExecNotifyPluginModulesFactory();
+    explicit ExecNotifyPluginModulesFactory(QObject *parent = nullptr);
+    virtual ~ExecNotifyPluginModulesFactory();
 
-	virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
-
+    virtual std::vector<std::unique_ptr<injeqt::module>> createPluginModules() const override;
 };

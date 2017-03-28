@@ -24,29 +24,28 @@
 
 class SmsGateway
 {
-	QString Name;
-	QString Id;
-	quint16 MaxLength;
-	bool SignatureRequired;
+    QString Name;
+    QString Id;
+    quint16 MaxLength;
+    bool SignatureRequired;
 
 public:
-	SmsGateway();
-	SmsGateway(const SmsGateway &copyMe);
+    SmsGateway();
+    SmsGateway(const SmsGateway &copyMe);
 
-	SmsGateway & operator = (const SmsGateway &copyMe);
+    SmsGateway &operator=(const SmsGateway &copyMe);
 
-	void setName(const QString &name);
-	QString name() const;
+    void setName(const QString &name);
+    QString name() const;
 
-	void setId(const QString &id);
-	QString id() const;
+    void setId(const QString &id);
+    QString id() const;
 
-	void setMaxLength(const quint16 maxLength);
-	quint16 maxLength() const;
+    void setMaxLength(const quint16 maxLength);
+    quint16 maxLength() const;
 
-	void setSignatureRequired(const bool signatureRequired);
-	bool signatureRequired() const;
-
+    void setSignatureRequired(const bool signatureRequired);
+    bool signatureRequired() const;
 };
 
-#endif // SMS_GATEWAY_H
+#endif   // SMS_GATEWAY_H

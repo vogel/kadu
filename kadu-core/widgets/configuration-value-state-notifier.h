@@ -20,29 +20,28 @@
 #ifndef CONFIGURATION_VALUE_STATE_NOTIFIER_H
 #define CONFIGURATION_VALUE_STATE_NOTIFIER_H
 
-#include <QtCore/QObject>
 #include "exports.h"
+#include <QtCore/QObject>
 
 enum ConfigurationValueState
 {
-	StateNotChanged,
-	StateChangedDataValid,
-	StateChangedDataInvalid
+    StateNotChanged,
+    StateChangedDataValid,
+    StateChangedDataInvalid
 };
 
 class KADUAPI ConfigurationValueStateNotifier : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	explicit ConfigurationValueStateNotifier(QObject *parent = nullptr);
-	virtual ~ConfigurationValueStateNotifier();
+    explicit ConfigurationValueStateNotifier(QObject *parent = nullptr);
+    virtual ~ConfigurationValueStateNotifier();
 
-	virtual ConfigurationValueState state() const = 0;
+    virtual ConfigurationValueState state() const = 0;
 
 signals:
-	void stateChanged(ConfigurationValueState state);
-
+    void stateChanged(ConfigurationValueState state);
 };
 
-#endif // CONFIGURATION_VALUE_STATE_NOTIFIER_H
+#endif   // CONFIGURATION_VALUE_STATE_NOTIFIER_H

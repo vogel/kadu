@@ -65,93 +65,95 @@ class ShowHistoryAction;
 
 class HISTORYAPI History : public QObject, ConfigurationAwareObject, CrashAwareObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
-	QPointer<AccountManager> m_accountManager;
-	QPointer<BuddyChatManager> m_buddyChatManager;
-	QPointer<ChatWidgetRepository> m_chatWidgetRepository;
-	QPointer<ClearHistoryAction> m_clearHistoryAction;
-	QPointer<Configuration> m_configuration;
-	QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
-	QPointer<MenuInventory> m_menuInventory;
-	QPointer<ShowHistoryAction> m_showHistoryAction;
+    QPointer<AccountManager> m_accountManager;
+    QPointer<BuddyChatManager> m_buddyChatManager;
+    QPointer<ChatWidgetRepository> m_chatWidgetRepository;
+    QPointer<ClearHistoryAction> m_clearHistoryAction;
+    QPointer<Configuration> m_configuration;
+    QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
+    QPointer<MenuInventory> m_menuInventory;
+    QPointer<ShowHistoryAction> m_showHistoryAction;
 
-	bool SaveChats;
-	bool SaveChatsWithAnonymous;
-	bool SaveStatuses;
-	bool SaveOnlyStatusesWithDescription;
-	bool SyncEnabled;
+    bool SaveChats;
+    bool SaveChatsWithAnonymous;
+    bool SaveStatuses;
+    bool SaveOnlyStatusesWithDescription;
+    bool SyncEnabled;
 
-	int ChatHistoryCitation;
-	int ChatHistoryQuotationTime;
+    int ChatHistoryCitation;
+    int ChatHistoryQuotationTime;
 
-	QMutex UnsavedDataMutex;
-	QQueue<Message> UnsavedMessages;
-	QQueue<QPair<Contact, Status> > UnsavedStatusChanges;
-	HistorySaveThread *SaveThread;
+    QMutex UnsavedDataMutex;
+    QQueue<Message> UnsavedMessages;
+    QQueue<QPair<Contact, Status>> UnsavedStatusChanges;
+    HistorySaveThread *SaveThread;
 
-	HistoryStorage *CurrentStorage;
+    HistoryStorage *CurrentStorage;
 
-	QListWidget *allStatusUsers;
-	QListWidget *selectedStatusUsers;
-	QListWidget *allChatsUsers;
-	QListWidget *selectedChatsUsers;
+    QListWidget *allStatusUsers;
+    QListWidget *selectedStatusUsers;
+    QListWidget *allChatsUsers;
+    QListWidget *selectedChatsUsers;
 
-	void startSaveThread();
-	void stopSaveThread();
+    void startSaveThread();
+    void stopSaveThread();
 
-	void createDefaultConfiguration();
+    void createDefaultConfiguration();
 
-	void createActionDescriptions();
-	void deleteActionDescriptions();
-	virtual void configurationUpdated();
+    void createActionDescriptions();
+    void deleteActionDescriptions();
+    virtual void configurationUpdated();
 
-	friend class HistorySaveThread;
-	Message dequeueUnsavedMessage();
-	QPair<Contact, Status> dequeueUnsavedStatusChange();
+    friend class HistorySaveThread;
+    Message dequeueUnsavedMessage();
+    QPair<Contact, Status> dequeueUnsavedStatusChange();
 
-	bool shouldSaveForBuddy(const Buddy &buddy);
-	bool shouldSaveForChat(const Chat &chat);
-	bool shouldEnqueueMessage(const Message &message);
+    bool shouldSaveForBuddy(const Buddy &buddy);
+    bool shouldSaveForChat(const Chat &chat);
+    bool shouldEnqueueMessage(const Message &message);
 
 private slots:
-	INJEQT_SET void setAccountManager(AccountManager *accountManager);
-	INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
-	INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
-	INJEQT_SET void setClearHistoryAction(ClearHistoryAction *clearHistoryAction);
-	INJEQT_SET void setConfiguration(Configuration *configuration);
-	INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
-	INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
-	INJEQT_SET void setMessageManager(MessageManager *messageManager);
-	INJEQT_SET void setShowHistoryAction(ShowHistoryAction *showHistoryAction);
-	INJEQT_INIT void init();
-	INJEQT_DONE void done();
+    INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
+    INJEQT_SET void setChatWidgetRepository(ChatWidgetRepository *chatWidgetRepository);
+    INJEQT_SET void setClearHistoryAction(ClearHistoryAction *clearHistoryAction);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
+    INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
+    INJEQT_SET void setMenuInventory(MenuInventory *menuInventory);
+    INJEQT_SET void setMessageManager(MessageManager *messageManager);
+    INJEQT_SET void setShowHistoryAction(ShowHistoryAction *showHistoryAction);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
-	void accountAdded(Account);
-	void accountRemoved(Account);
+    void accountAdded(Account);
+    void accountRemoved(Account);
 
-	void enqueueMessage(const Message &);
-	void contactStatusChanged(Contact contact, Status oldStatus);
+    void enqueueMessage(const Message &);
+    void contactStatusChanged(Contact contact, Status oldStatus);
 
-	void chatWidgetAdded(ChatWidget *chatWidget);
+    void chatWidgetAdded(ChatWidget *chatWidget);
 
 protected:
-	virtual void crash();
+    virtual void crash();
 
 public:
-	Q_INVOKABLE explicit History(QObject *parent = nullptr);
-	virtual ~History();
+    Q_INVOKABLE explicit History(QObject *parent = nullptr);
+    virtual ~History();
 
-	HistoryStorage * currentStorage() { return CurrentStorage; }
-	void registerStorage(HistoryStorage *storage);
-	void unregisterStorage(HistoryStorage *storage);
+    HistoryStorage *currentStorage()
+    {
+        return CurrentStorage;
+    }
+    void registerStorage(HistoryStorage *storage);
+    void unregisterStorage(HistoryStorage *storage);
 
-	void forceSync();
-	void setSyncEnabled(bool syncEnabled);
+    void forceSync();
+    void setSyncEnabled(bool syncEnabled);
 
 signals:
-	void storageChanged(HistoryStorage *newStorage);
-
+    void storageChanged(HistoryStorage *newStorage);
 };
 
 void disableNonHistoryContacts(Action *action);

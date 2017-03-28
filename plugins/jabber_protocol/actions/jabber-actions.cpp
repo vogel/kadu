@@ -22,8 +22,7 @@
 
 #include "actions/show-xml-console-action.h"
 
-JabberActions::JabberActions(QObject *parent) :
-		QObject{parent}
+JabberActions::JabberActions(QObject *parent) : QObject{parent}
 {
 }
 
@@ -33,7 +32,7 @@ JabberActions::~JabberActions()
 
 void JabberActions::setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsoleAction)
 {
-	m_showXmlConsoleAction = showXmlConsoleAction;
+    m_showXmlConsoleAction = showXmlConsoleAction;
 }
 
 #include "moc_jabber-actions.cpp"

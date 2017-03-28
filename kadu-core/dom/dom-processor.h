@@ -42,45 +42,45 @@ class DomVisitor;
  */
 class KADUAPI DomProcessor
 {
-	
 public:
-	/**
-	 * @short Create new instance of DomProcessor.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param domDocument DOM document to process
-	 */
-	DomProcessor(QDomDocument &domDocument);
+    /**
+     * @short Create new instance of DomProcessor.
+     * @author Rafał 'Vogel' Malinowski
+     * @param domDocument DOM document to process
+     */
+    DomProcessor(QDomDocument &domDocument);
 
-	/**
-	 * @short Accept a visitor.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitor to accept
-	 *
-	 * Processing is not read-only, so domDocument can be changed after calling this method.
-	 */
-	void accept(const DomVisitor *visitor);
+    /**
+     * @short Accept a visitor.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitor to accept
+     *
+     * Processing is not read-only, so domDocument can be changed after calling this method.
+     */
+    void accept(const DomVisitor *visitor);
 
-	/**
-	 * @short Accept set of visitors.
-	 * @author Rafał 'Vogel' Malinowski
-	 * @param visitor to accept
-	 *
-	 * Processing is not read-only, so domDocument can be changed after calling this method.
-	 */
-	template<class Iterator>
-	void accept(Iterator begin, Iterator end)
-	{
-		std::for_each(begin, end, [this](const DomVisitor *visitor){ accept(visitor); });
-	}
+    /**
+     * @short Accept set of visitors.
+     * @author Rafał 'Vogel' Malinowski
+     * @param visitor to accept
+     *
+     * Processing is not read-only, so domDocument can be changed after calling this method.
+     */
+    template <class Iterator>
+    void accept(Iterator begin, Iterator end)
+    {
+        std::for_each(begin, end, [this](const DomVisitor *visitor) { accept(visitor); });
+    }
 
 private:
-	QDomDocument &m_domDocument;
+    QDomDocument &m_domDocument;
 
-	QDomNode acceptNode(const DomVisitor *visitor, QDomNode node);
-
+    QDomNode acceptNode(const DomVisitor *visitor, QDomNode node);
 };
 
-class invalid_xml : public std::exception {};
+class invalid_xml : public std::exception
+{
+};
 
 KADUAPI QDomDocument toDomDocument(const QString &xml);
 KADUAPI QString toString(const QDomDocument &domDocument);

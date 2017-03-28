@@ -23,8 +23,7 @@
 
 #include "accounts/account-shared.h"
 
-FacebookAccountData::FacebookAccountData(AccountShared *data) :
-		m_data{data}
+FacebookAccountData::FacebookAccountData(AccountShared *data) : m_data{data}
 {
 }
 
@@ -34,36 +33,31 @@ FacebookAccountData::~FacebookAccountData()
 
 QByteArray FacebookAccountData::deltaCursor() const
 {
-	return m_data->isValidStorage()
-		? m_data->loadValue<QByteArray>("DeltaCursor")
-		: QByteArray{};
+    return m_data->isValidStorage() ? m_data->loadValue<QByteArray>("DeltaCursor") : QByteArray{};
 }
 
 void FacebookAccountData::setDeltaCursor(const QByteArray &deltaCursor) const
 {
-	m_data->ensureLoaded();
-	if (m_data->isValidStorage())
-		m_data->storeValue("DeltaCursor", deltaCursor);
+    m_data->ensureLoaded();
+    if (m_data->isValidStorage())
+        m_data->storeValue("DeltaCursor", deltaCursor);
 }
 
 QFacebookDeviceId FacebookAccountData::deviceId() const
 {
-	if (!m_data->isValidStorage())
-		return QFacebookDeviceId::random();
+    if (!m_data->isValidStorage())
+        return QFacebookDeviceId::random();
 
-	auto result = QFacebookDeviceId{
-		m_data->loadValue<QByteArray>("DeviceId"),
-		m_data->loadValue<QByteArray>("ClientId"),
-		m_data->loadValue<int64_t>("MQTTId")
-	};
+    auto result = QFacebookDeviceId{m_data->loadValue<QByteArray>("DeviceId"),
+                                    m_data->loadValue<QByteArray>("ClientId"), m_data->loadValue<int64_t>("MQTTId")};
 
-	if (!result.isValid())
-	{
-		result = QFacebookDeviceId::random();
-		m_data->storeValue("DeviceId", result.deviceId);
-		m_data->storeValue("ClientId", result.clientId);
-		m_data->storeValue("MQTTId", static_cast<qlonglong>(result.mqttId));
-	}
+    if (!result.isValid())
+    {
+        result = QFacebookDeviceId::random();
+        m_data->storeValue("DeviceId", result.deviceId);
+        m_data->storeValue("ClientId", result.clientId);
+        m_data->storeValue("MQTTId", static_cast<qlonglong>(result.mqttId));
+    }
 
-	return result;
+    return result;
 }

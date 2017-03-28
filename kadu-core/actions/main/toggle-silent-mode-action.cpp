@@ -22,15 +22,15 @@
 #include "actions/action.h"
 #include "notification/silent-mode-service.h"
 
-ToggleSilentModeAction::ToggleSilentModeAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+ToggleSilentModeAction::ToggleSilentModeAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setCheckable(true);
-	setIcon(KaduIcon{"kadu_icons/enable-notifications"});
-	setName(QStringLiteral("silentModeAction"));
-	setText(tr("Silent Mode"));
-	setType(ActionDescription::TypeGlobal);
+    setCheckable(true);
+    setIcon(KaduIcon{"kadu_icons/enable-notifications"});
+    setName(QStringLiteral("silentModeAction"));
+    setText(tr("Silent Mode"));
+    setType(ActionDescription::TypeGlobal);
 }
 
 ToggleSilentModeAction::~ToggleSilentModeAction()
@@ -39,17 +39,17 @@ ToggleSilentModeAction::~ToggleSilentModeAction()
 
 void ToggleSilentModeAction::setSilentModeService(SilentModeService *silentModeService)
 {
-	m_silentModeService = silentModeService;
+    m_silentModeService = silentModeService;
 }
 
-void ToggleSilentModeAction::actionInstanceCreated(Action* action)
+void ToggleSilentModeAction::actionInstanceCreated(Action *action)
 {
-	action->setChecked(m_silentModeService->isSilent());
+    action->setChecked(m_silentModeService->isSilent());
 }
 
 void ToggleSilentModeAction::actionTriggered(QAction *, bool toggled)
 {
-	m_silentModeService->setSilent(toggled);
+    m_silentModeService->setSilent(toggled);
 }
 
 #include "moc_toggle-silent-mode-action.cpp"

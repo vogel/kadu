@@ -28,21 +28,20 @@ class SoundManager;
 
 class SoundMuteAction : public ActionDescription
 {
-	Q_OBJECT
-	INJEQT_TYPE_ROLE(ACTION)
+    Q_OBJECT
+    INJEQT_TYPE_ROLE(ACTION)
 
 public:
-	Q_INVOKABLE explicit SoundMuteAction(QObject *parent = nullptr);
-	virtual ~SoundMuteAction();
+    Q_INVOKABLE explicit SoundMuteAction(QObject *parent = nullptr);
+    virtual ~SoundMuteAction();
 
 protected:
-	virtual void actionTriggered(QAction *sender, bool toggled) override;
-	virtual void updateActionState(Action *action) override;
+    virtual void actionTriggered(QAction *sender, bool toggled) override;
+    virtual void updateActionState(Action *action) override;
 
 private:
-	QPointer<SoundManager> m_soundManager;
+    QPointer<SoundManager> m_soundManager;
 
 private slots:
-	INJEQT_SET void setSoundManager(SoundManager *soundManager);
-
+    INJEQT_SET void setSoundManager(SoundManager *soundManager);
 };

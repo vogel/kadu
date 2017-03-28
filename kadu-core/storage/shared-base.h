@@ -43,26 +43,27 @@
  *
  * Declares operators for SharedBase subclass.
  */
-#define KaduSharedBaseClass(className)\
-public:\
-	operator QVariant () const;\
-\
-	className & operator = (const className &copy);\
-\
-	bool operator == (const className &compare) const\
-	{\
-		return data() == compare.data();\
-	}\
-\
-	bool operator != (const className &compare) const\
-	{\
-		return data() != compare.data();\
-	}\
-\
-	bool operator < (const className &compare) const\
-	{\
-		return data() < compare.data();\
-	}\
+#define KaduSharedBaseClass(className)              \
+public:                                             \
+    operator QVariant() const;                      \
+                                                    \
+    className &operator=(const className &copy);    \
+                                                    \
+    bool operator==(const className &compare) const \
+    {                                               \
+        return data() == compare.data();            \
+    }                                               \
+                                                    \
+    bool operator!=(const className &compare) const \
+    {                                               \
+        return data() != compare.data();            \
+    }                                               \
+                                                    \
+    bool operator<(const className &compare) const  \
+    {                                               \
+        return data() < compare.data();             \
+    }                                               \
+                                                    \
 private:
 
 /**
@@ -72,18 +73,17 @@ private:
  *
  * Defines operators for SharedBase subclass.
  */
-#define KaduSharedBaseClassImpl(className)\
-	className::operator QVariant () const\
-	{\
-		return QVariant::fromValue<className>(*this);\
-	}\
-\
-	className & className::operator = (const className &copy)\
-	{\
-		setData(copy.data());\
-		return *this;\
-	}\
-
+#define KaduSharedBaseClassImpl(className)                 \
+    className::operator QVariant() const                   \
+    {                                                      \
+        return QVariant::fromValue<className>(*this);      \
+    }                                                      \
+                                                           \
+    className &className::operator=(const className &copy) \
+    {                                                      \
+        setData(copy.data());                              \
+        return *this;                                      \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -95,8 +95,7 @@ private:
  * Declares getter for a delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'name'.
  */
-#define KaduSharedBase_PropertyRead(type, name, capitalized_name) \
-	type name() const;
+#define KaduSharedBase_PropertyRead(type, name, capitalized_name) type name() const;
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -108,8 +107,7 @@ private:
  * Declares setter for a delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Setter is named 'set##capitalized_name'.
  */
-#define KaduSharedBase_PropertyWrite(type, name, capitalized_name) \
-	void set##capitalized_name(type name) const;
+#define KaduSharedBase_PropertyWrite(type, name, capitalized_name) void set##capitalized_name(type name) const;
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -122,8 +120,7 @@ private:
  * @link SharedBase @endlink. Getter is named 'name'. Setter is named 'set##capitalized_name'.
  */
 #define KaduSharedBase_Property(type, name, capitalized_name) \
-	KaduSharedBase_PropertyRead(type, name, capitalized_name) \
-	KaduSharedBase_PropertyWrite(type, name, capitalized_name)
+    KaduSharedBase_PropertyRead(type, name, capitalized_name) KaduSharedBase_PropertyWrite(type, name, capitalized_name)
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -137,8 +134,8 @@ private:
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduSharedBase_PropertyCRW(type, name, capitalized_name) \
-	KaduSharedBase_PropertyRead(type, name, capitalized_name) \
-	KaduSharedBase_PropertyWrite(const type &, name, capitalized_name)
+    KaduSharedBase_PropertyRead(type, name, capitalized_name)    \
+        KaduSharedBase_PropertyWrite(const type &, name, capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -148,8 +145,7 @@ private:
  * Declares getter for a boolean delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'is##capitalized_name'.
  */
-#define KaduSharedBase_PropertyBoolRead(capitalized_name) \
-	bool is##capitalized_name() const;
+#define KaduSharedBase_PropertyBoolRead(capitalized_name) bool is##capitalized_name() const;
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -159,8 +155,7 @@ private:
  * Declares setter for a delegated boolean property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Setter is named 'set##capitalized_name'.
  */
-#define KaduSharedBase_PropertyBoolWrite(capitalized_name) \
-	void set##capitalized_name(bool name) const;
+#define KaduSharedBase_PropertyBoolWrite(capitalized_name) void set##capitalized_name(bool name) const;
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -171,8 +166,7 @@ private:
  * @link SharedBase @endlink. Getter is named 'is##capitalized_name'. Setter is named 'set##capitalized_name'.
  */
 #define KaduSharedBase_PropertyBool(capitalized_name) \
-	KaduSharedBase_PropertyBoolRead(capitalized_name) \
-	KaduSharedBase_PropertyBoolWrite(capitalized_name)
+    KaduSharedBase_PropertyBoolRead(capitalized_name) KaduSharedBase_PropertyBoolWrite(capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -186,12 +180,10 @@ private:
  * is returned. Else, value of Shared method 'name' is returned.
  */
 #define KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
-	type class_name::name() const\
-	{\
-		return isNull()\
-			? default\
-			: data()->name();\
-	}
+    type class_name::name() const                                                         \
+    {                                                                                     \
+        return isNull() ? default : data()->name();                                       \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -205,11 +197,11 @@ private:
  * is set.
  */
 #define KaduSharedBase_PropertyWriteDef(class_name, type, name, capitalized_name) \
-	void class_name::set##capitalized_name(type name) const\
-	{\
-		if (!isNull())\
-			data()->set##capitalized_name(name);\
-	}
+    void class_name::set##capitalized_name(type name) const                       \
+    {                                                                             \
+        if (!isNull())                                                            \
+            data()->set##capitalized_name(name);                                  \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -223,8 +215,8 @@ private:
  * (@link KaduSharedBase_PropertyWriteDef @endlink) got given delegated property.
  */
 #define KaduSharedBase_PropertyDef(class_name, type, name, capitalized_name, default) \
-	KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
-	KaduSharedBase_PropertyWriteDef(class_name, type, name, capitalized_name)
+    KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
+        KaduSharedBase_PropertyWriteDef(class_name, type, name, capitalized_name)
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -239,8 +231,8 @@ private:
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduSharedBase_PropertyDefCRW(class_name, type, name, capitalized_name, default) \
-	KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default) \
-	KaduSharedBase_PropertyWriteDef(class_name, const type &, name, capitalized_name)
+    KaduSharedBase_PropertyReadDef(class_name, type, name, capitalized_name, default)    \
+        KaduSharedBase_PropertyWriteDef(class_name, const type &, name, capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -253,12 +245,10 @@ private:
  * is returned. Else, value of Shared method 'is##capitalized_name' is returned.
  */
 #define KaduSharedBase_PropertyBoolReadDef(class_name, capitalized_name, default) \
-	bool class_name::is##capitalized_name() const\
-	{\
-		return isNull()\
-			? default\
-			: data()->is##capitalized_name();\
-	}
+    bool class_name::is##capitalized_name() const                                 \
+    {                                                                             \
+        return isNull() ? default : data()->is##capitalized_name();               \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -271,11 +261,11 @@ private:
  * is set.
  */
 #define KaduSharedBase_PropertyBoolWriteDef(class_name, capitalized_name) \
-	void class_name::set##capitalized_name(bool value) const\
-	{\
-		if (!isNull())\
-			data()->set##capitalized_name(value);\
-	}
+    void class_name::set##capitalized_name(bool value) const              \
+    {                                                                     \
+        if (!isNull())                                                    \
+            data()->set##capitalized_name(value);                         \
+    }
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -288,8 +278,8 @@ private:
  * (@link KaduSharedBase_PropertyBoolWriteDef @endlink) got given delegated property.
  */
 #define KaduSharedBase_PropertyBoolDef(class_name, capitalized_name, default) \
-	KaduSharedBase_PropertyBoolReadDef(class_name, capitalized_name, default) \
-	KaduSharedBase_PropertyBoolWriteDef(class_name, capitalized_name)
+    KaduSharedBase_PropertyBoolReadDef(class_name, capitalized_name, default) \
+        KaduSharedBase_PropertyBoolWriteDef(class_name, capitalized_name)
 
 class ChangeNotifier;
 
@@ -321,255 +311,251 @@ class ChangeNotifier;
  *
  * Both connect will connect to exactly the same signal.
  */
-template<class T>
+template <class T>
 class SharedBase
 {
-	QExplicitlySharedDataPointer<T> Data;
+    QExplicitlySharedDataPointer<T> Data;
 
 protected:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short sets new data for object
-	 * @param data new data for object
-	 *
-	 * Sets new data for this object. All reference counters are updated properly.
-	 */
-	void setData(T *data)
-	{
-		Data = data;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short sets new data for object
+     * @param data new data for object
+     *
+     * Sets new data for this object. All reference counters are updated properly.
+     */
+    void setData(T *data)
+    {
+        Data = data;
+    }
 
 public:
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Contructs empty (null) object.
-	 *
-	 * Contructs empty (null) object. It contains no data.
-	 */
-	SharedBase()
-	{
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Contructs empty (null) object.
+     *
+     * Contructs empty (null) object. It contains no data.
+     */
+    SharedBase()
+    {
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Contructs object with given data.
-	 * @param data data this object will hold
-	 *
-	 * Contructs object with given data. Reference counters of data are updated.
-	 */
-	explicit SharedBase(T *data) :
-			Data(data)
-	{
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Contructs object with given data.
+     * @param data data this object will hold
+     *
+     * Contructs object with given data. Reference counters of data are updated.
+     */
+    explicit SharedBase(T *data) : Data(data)
+    {
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Copies object.
-	 * @param copy object that will be copied
-	 *
-	 * Copies copy object. Source and resulting object will have the same data. Udpate
-	 * in one will result in update with second.
-	 */
-	SharedBase(const SharedBase &copy) :
-			Data(copy.Data)
-	{
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Copies object.
+     * @param copy object that will be copied
+     *
+     * Copies copy object. Source and resulting object will have the same data. Udpate
+     * in one will result in update with second.
+     */
+    SharedBase(const SharedBase &copy) : Data(copy.Data)
+    {
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Destroys object.
-	 *
-	 * Destroys object. Reference counters of data object will be updated. If this object was
-	 * the last one storing given data, the data object will be destroyed as well.
-	 */
-	virtual ~SharedBase()
-	{
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Destroys object.
+     *
+     * Destroys object. Reference counters of data object will be updated. If this object was
+     * the last one storing given data, the data object will be destroyed as well.
+     */
+    virtual ~SharedBase()
+    {
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Cast object to T * variable.
-	 * @return this object as T * variable
-	 *
-	 * Returns data object. Allows for use SharedBase as T * variables.
-	 */
-	operator T * () const
-	{
-		return Data.data();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Cast object to T * variable.
+     * @return this object as T * variable
+     *
+     * Returns data object. Allows for use SharedBase as T * variables.
+     */
+    operator T *() const
+    {
+        return Data.data();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Cast object to boolean variable.
-	 * @return true if object is not null, false, if object is null
-	 *
-	 * Returns true if object is not null (contains data) and false, if object is null
-	 * (does not contains an data).
-	 */
-	explicit operator bool () const // for ! and ifs
-	{
-		return Data;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Cast object to boolean variable.
+     * @return true if object is not null, false, if object is null
+     *
+     * Returns true if object is not null (contains data) and false, if object is null
+     * (does not contains an data).
+     */
+    explicit operator bool() const   // for ! and ifs
+    {
+        return Data;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Returns stored data object.
-	 * @return stored data object
-	 *
-	 * Returns data object.
-	 */
-	T * data() const
-	{
-		return Data.data();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Returns stored data object.
+     * @return stored data object
+     *
+     * Returns data object.
+     */
+    T *data() const
+    {
+        return Data.data();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Check if object contains any data.
-	 * @return true if object is null, false, if object is not null
-	 *
-	 * Returns false if object is not null (contains data) and true, if object is null
-	 * (does not contains an data).
-	 */
-	bool isNull() const
-	{
-		return !Data;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Check if object contains any data.
+     * @return true if object is null, false, if object is not null
+     *
+     * Returns false if object is not null (contains data) and true, if object is null
+     * (does not contains an data).
+     */
+    bool isNull() const
+    {
+        return !Data;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Delegates ensureStored method to Shared object.
-	 *
-	 * @see Shared::ensureStored
-	 */
-	void ensureStored()
-	{
-		if (!isNull())
-			Data->ensureStored();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Delegates ensureStored method to Shared object.
+     *
+     * @see Shared::ensureStored
+     */
+    void ensureStored()
+    {
+        if (!isNull())
+            Data->ensureStored();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @author Bartosz 'beevvy' Brachaczek
-	 * @short Informs the object it is about to be removed.
-	 *
-	 * If object is null, this method does nothing.
-	 * This method calls @link<Shared::aboutToBeRemoved @endlink.
-	 */
-	void aboutToBeRemoved()
-	{
-		if (!isNull())
-			Data->aboutToBeRemoved();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @author Bartosz 'beevvy' Brachaczek
+     * @short Informs the object it is about to be removed.
+     *
+     * If object is null, this method does nothing.
+     * This method calls @link<Shared::aboutToBeRemoved @endlink.
+     */
+    void aboutToBeRemoved()
+    {
+        if (!isNull())
+            Data->aboutToBeRemoved();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Removes object completely.
-	 *
-	 * If object is null, this method does nothing.
-	 * The Data object is removed from storage (it must be StorableObject then).
-	 */
-	void remove()
-	{
-		if (!isNull())
-			Data->removeFromStorage();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Removes object completely.
+     *
+     * If object is null, this method does nothing.
+     * The Data object is removed from storage (it must be StorableObject then).
+     */
+    void remove()
+    {
+        if (!isNull())
+            Data->removeFromStorage();
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return true if given property is available.
-	 * @param name name of property
-	 * @return true if given property is available
-	 */
-	bool hasProperty(const QString &name) const
-	{
-		if (!isNull())
-			return Data->customProperties()->hasProperty(name);
-		else
-			return false;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Return true if given property is available.
+     * @param name name of property
+     * @return true if given property is available
+     */
+    bool hasProperty(const QString &name) const
+    {
+        if (!isNull())
+            return Data->customProperties()->hasProperty(name);
+        else
+            return false;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Add/update property value.
-	 * @param name name of property
-	 * @param value value of property
-	 * @param storability storability parameter of property
-	 *
-	 * If storability is set to @link CustomProperties::Storable @endlink then added property will
-	 * be stored to persistent storage. If not, it will be removed from it.
-	 */
-	void addProperty(const QString &name, const QVariant &value, CustomProperties::Storability storability) const
-	{
-		if (!isNull())
-			Data->customProperties()->addProperty(name, value, storability);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Add/update property value.
+     * @param name name of property
+     * @param value value of property
+     * @param storability storability parameter of property
+     *
+     * If storability is set to @link CustomProperties::Storable @endlink then added property will
+     * be stored to persistent storage. If not, it will be removed from it.
+     */
+    void addProperty(const QString &name, const QVariant &value, CustomProperties::Storability storability) const
+    {
+        if (!isNull())
+            Data->customProperties()->addProperty(name, value, storability);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Remove given property from this object and from persistent storage.
-	 * @param name name of property
-	 */
-	void removeProperty(const QString &name) const
-	{
-		if (!isNull())
-			Data->customProperties()->removeProperty(name);
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Remove given property from this object and from persistent storage.
+     * @param name name of property
+     */
+    void removeProperty(const QString &name) const
+    {
+        if (!isNull())
+            Data->customProperties()->removeProperty(name);
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Read value of property.
-	 * @param name name of property
-	 * @param defaultValue value returned when property is not available
-	 */
-	QVariant property(const QString &name, const QVariant &defaultValue) const
-	{
-		if (!isNull())
-			return Data->customProperties()->property(name, defaultValue);
-		else
-			return defaultValue;
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Read value of property.
+     * @param name name of property
+     * @param defaultValue value returned when property is not available
+     */
+    QVariant property(const QString &name, const QVariant &defaultValue) const
+    {
+        if (!isNull())
+            return Data->customProperties()->property(name, defaultValue);
+        else
+            return defaultValue;
+    }
 
-	/**
-	 * @author Rafal 'Vogel' Malinowski
-	 * @short Return ChangeNotifier instance for this object.
-	 * @return ChangeNotifier instance for this object
-	 *
-	 * Id object is null, this method has undefined behavior.
-	 */
-	ChangeNotifier & changeNotifier() const
-	{
-		return Data->changeNotifier();
-	}
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Return ChangeNotifier instance for this object.
+     * @return ChangeNotifier instance for this object
+     *
+     * Id object is null, this method has undefined behavior.
+     */
+    ChangeNotifier &changeNotifier() const
+    {
+        return Data->changeNotifier();
+    }
 
-	KaduSharedBase_Property(QUuid, uuid, Uuid)
-
+    KaduSharedBase_Property(QUuid, uuid, Uuid)
 };
 
-template<class T>
-KaduSharedBase_PropertyReadDef(SharedBase<T>, QUuid, uuid, Uuid, QUuid())
-template<class T>
+template <class T>
+KaduSharedBase_PropertyReadDef(SharedBase<T>, QUuid, uuid, Uuid, QUuid()) template <class T>
 KaduSharedBase_PropertyWriteDef(SharedBase<T>, QUuid, uuid, Uuid)
 
-/**
- * @author Rafal 'Vogel' Malinowski
- * @short Computes hash for given SharedBase object.
- * @return hash for given SharedBase object
- *
- * Hash is computed by the pointer for data object.
- * Used for QHash objects.
- */
-template<class T>
-uint qHash(const SharedBase<T> &sharedBase)
+    /**
+     * @author Rafal 'Vogel' Malinowski
+     * @short Computes hash for given SharedBase object.
+     * @return hash for given SharedBase object
+     *
+     * Hash is computed by the pointer for data object.
+     * Used for QHash objects.
+     */
+    template <class T>
+    uint qHash(const SharedBase<T> &sharedBase)
 {
-	if (sharedBase.isNull())
-		return 0;
+    if (sharedBase.isNull())
+        return 0;
 
-	return qHash(sharedBase.data());
+    return qHash(sharedBase.data());
 }
 
 /**
  * @}
  */
 
-#endif // SHARED_BASE_H
+#endif   // SHARED_BASE_H

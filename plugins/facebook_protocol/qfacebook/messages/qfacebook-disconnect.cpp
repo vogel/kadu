@@ -23,9 +23,5 @@
 
 QMqttMessage QFacebookDisconnect::encode() const
 {
-	return QMqttMessage{
-		static_cast<uint8_t>(messageType()),
-		uint8_t{0},
-		{}
-	};
+    return QMqttMessage{static_cast<uint8_t>(messageType()), uint8_t{0}, {}};
 }

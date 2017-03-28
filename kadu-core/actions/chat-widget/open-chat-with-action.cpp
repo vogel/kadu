@@ -22,15 +22,15 @@
 #include "actions/action.h"
 #include "windows/open-chat-with/open-chat-with-service.h"
 
-OpenChatWithAction::OpenChatWithAction(QObject *parent) :
-		// using C++ initializers breaks Qt's lupdate
-		ActionDescription(parent)
+OpenChatWithAction::OpenChatWithAction(QObject *parent)
+        :   // using C++ initializers breaks Qt's lupdate
+          ActionDescription(parent)
 {
-	setIcon(KaduIcon{"internet-group-chat"});
-	setName(QStringLiteral("openChatWithAction"));
-	setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
-	setText(tr("Open Chat with..."));
-	setType(ActionDescription::TypeUser);
+    setIcon(KaduIcon{"internet-group-chat"});
+    setName(QStringLiteral("openChatWithAction"));
+    setShortcut("kadu_openchatwith", Qt::ApplicationShortcut);
+    setText(tr("Open Chat with..."));
+    setType(ActionDescription::TypeUser);
 }
 
 OpenChatWithAction::~OpenChatWithAction()
@@ -39,16 +39,16 @@ OpenChatWithAction::~OpenChatWithAction()
 
 void OpenChatWithAction::setOpenChatWithService(OpenChatWithService *openChatWithService)
 {
-	m_openChatWithService = openChatWithService;
+    m_openChatWithService = openChatWithService;
 }
 
 void OpenChatWithAction::actionTriggered(QAction *sender, bool)
 {
-	auto action = qobject_cast<Action *>(sender);
-	if (!action)
-		return;
+    auto action = qobject_cast<Action *>(sender);
+    if (!action)
+        return;
 
-	m_openChatWithService->show();
+    m_openChatWithService->show();
 }
 
 #include "moc_open-chat-with-action.cpp"

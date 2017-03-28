@@ -24,8 +24,7 @@
 #include "plugins/history/history-plugin-object.h"
 #include "plugins/history/history.h"
 
-SqlHistoryPluginObject::SqlHistoryPluginObject(QObject *parent) :
-		QObject{parent}
+SqlHistoryPluginObject::SqlHistoryPluginObject(QObject *parent) : QObject{parent}
 {
 }
 
@@ -35,22 +34,22 @@ SqlHistoryPluginObject::~SqlHistoryPluginObject()
 
 void SqlHistoryPluginObject::setHistorySqlStorage(HistorySqlStorage *historySqlStorage)
 {
-	m_historySqlStorage = historySqlStorage;
+    m_historySqlStorage = historySqlStorage;
 }
 
 void SqlHistoryPluginObject::setHistory(History *history)
 {
-	m_history = history;
+    m_history = history;
 }
 
 void SqlHistoryPluginObject::init()
 {
-	m_history->registerStorage(m_historySqlStorage);
+    m_history->registerStorage(m_historySqlStorage);
 }
 
 void SqlHistoryPluginObject::done()
 {
-	m_history->unregisterStorage(m_historySqlStorage);
+    m_history->unregisterStorage(m_historySqlStorage);
 }
 
 #include "moc_sql-history-plugin-object.cpp"

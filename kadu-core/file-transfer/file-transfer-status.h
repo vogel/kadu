@@ -19,12 +19,13 @@
 
 #pragma once
 
-enum class FileTransferStatus {
-	NotConnected,
-	WaitingForConnection,
-	WaitingForAccept,
-	ReadyToDownload,
-	Transfer,
-	Finished,
-	Rejected
+enum class FileTransferStatus
+{
+    NotConnected,
+    WaitingForConnection,
+    WaitingForAccept,
+    ReadyToDownload,
+    Transfer,
+    Finished,
+    Rejected
 };

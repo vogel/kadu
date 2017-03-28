@@ -37,26 +37,28 @@ class ProtocolMenuManager;
 
 class KADUAPI MenuInventory : public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	Q_INVOKABLE explicit MenuInventory(QObject *parent = nullptr);
+    Q_INVOKABLE explicit MenuInventory(QObject *parent = nullptr);
     virtual ~MenuInventory();
 
-	KaduMenu * menu(const QString &category);
+    KaduMenu *menu(const QString &category);
 
-	void registerProtocolMenuManager(ProtocolMenuManager *manager);
-	void unregisterProtocolMenuManager(ProtocolMenuManager *manager);
+    void registerProtocolMenuManager(ProtocolMenuManager *manager);
+    void unregisterProtocolMenuManager(ProtocolMenuManager *manager);
 
-	QList<ProtocolMenuManager *> & protocolMenuManagers() { return ProtocolMenuManagers; }
+    QList<ProtocolMenuManager *> &protocolMenuManagers()
+    {
+        return ProtocolMenuManagers;
+    }
 
 private:
-	QPointer<InjectedFactory> m_injectedFactory;
+    QPointer<InjectedFactory> m_injectedFactory;
 
-	QMap<QString, KaduMenu *> Menus;
-	QList<ProtocolMenuManager *> ProtocolMenuManagers;
+    QMap<QString, KaduMenu *> Menus;
+    QList<ProtocolMenuManager *> ProtocolMenuManagers;
 
 private slots:
-	INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
-
+    INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 };
