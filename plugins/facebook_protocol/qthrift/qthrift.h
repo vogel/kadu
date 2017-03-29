@@ -22,10 +22,9 @@
 
 #pragma once
 
-#include "libs/boost/variant/get.hpp"
-#include "libs/boost/variant/variant.hpp"
-
 #include <QtCore/QByteArray>
+#include <boost/variant/get.hpp>
+#include <boost/variant/variant.hpp>
 #include <experimental/optional>
 #include <map>
 #include <vector>

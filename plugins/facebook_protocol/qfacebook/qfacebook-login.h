@@ -26,9 +26,8 @@
 #include "qfacebook/qfacebook-device-id.h"
 #include "qfacebook/session/qfacebook-session-token.h"
 
-#include "libs/boost/variant/variant.hpp"
-
 #include <QtCore/QObject>
+#include <boost/variant/variant.hpp>
 #include <functional>
 #include <memory>
 

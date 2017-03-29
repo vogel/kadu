@@ -30,9 +30,8 @@
 
 #include "misc/memory.h"
 
-#include "libs/boost/variant/get.hpp"
-
 #include <QtCore/QString>
+#include <boost/variant/get.hpp>
 #include <cassert>
 
 QFacebookLogin::QFacebookLogin(

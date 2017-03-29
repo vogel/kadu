@@ -22,11 +22,11 @@
 
 #pragma once
 
-#include "libs/boost/variant/variant.hpp"
 #include "qfacebook/qfacebook-json-reader.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QString>
+#include <boost/variant/variant.hpp>
 #include <experimental/optional>
 
 class QFacebookHttpApi;

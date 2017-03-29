@@ -31,7 +31,7 @@
 #include "plugin/plugin-injected-factory.h"
 #include "status/status-container.h"
 
-#include "libs/boost/variant/get.hpp"
+#include <boost/variant/get.hpp>
 
 FacebookProtocol::FacebookProtocol(Account account, ProtocolFactory *factory) : Protocol{account, factory}
 {
