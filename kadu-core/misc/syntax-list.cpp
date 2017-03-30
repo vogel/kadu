@@ -92,7 +92,7 @@ void SyntaxList::reload()
     dir.setNameFilters(QStringList("*.syntax"));
     files = dir.entryList();
 
-    foreach (const QString &file, files)
+    for (auto const &file : files)
     {
         fi.setFile(path + file);
         if (fi.isReadable())
@@ -105,7 +105,7 @@ void SyntaxList::reload()
 
     files = dir.entryList();
 
-    foreach (const QString &file, files)
+    for (auto const &file : files)
     {
         fi.setFile(path + file);
         if (fi.isReadable() && !contains(file))

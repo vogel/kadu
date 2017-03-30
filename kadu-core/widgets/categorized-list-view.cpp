@@ -353,7 +353,7 @@ void CategorizedListViewPrivate::rowsInserted(const QModelIndex &parent, int sta
         QList<Block> blockList = blocks.values();
         qSort(blockList.begin(), blockList.end(), Block::lessThan);
         QList<int> firstIndexesRows;
-        foreach (const Block &block, blockList)
+        for (auto const &block : blockList)
         {
             firstIndexesRows << block.firstIndex.row();
         }
@@ -1654,7 +1654,7 @@ void CategorizedListView::rowsAboutToBeRemoved(const QModelIndex &parent, int st
         QList<CategorizedListViewPrivate::Block> blockList = d->blocks.values();
         qSort(blockList.begin(), blockList.end(), CategorizedListViewPrivate::Block::lessThan);
         QList<int> firstIndexesRows;
-        foreach (const CategorizedListViewPrivate::Block &block, blockList)
+        for (auto const &block : blockList)
         {
             firstIndexesRows << block.firstIndex.row();
         }

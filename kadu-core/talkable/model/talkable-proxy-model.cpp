@@ -195,7 +195,7 @@ bool TalkableProxyModel::lessThan(const QModelIndex &left, const QModelIndex &ri
 
 bool TalkableProxyModel::accept(const Chat &chat) const
 {
-    foreach (TalkableFilter *filter, TalkableFilters)
+    for (auto filter : TalkableFilters)
         switch (filter->filterChat(chat))
         {
         case TalkableFilter::Accepted:
@@ -211,7 +211,7 @@ bool TalkableProxyModel::accept(const Chat &chat) const
 
 bool TalkableProxyModel::accept(const Buddy &buddy) const
 {
-    foreach (TalkableFilter *filter, TalkableFilters)
+    for (auto filter : TalkableFilters)
         switch (filter->filterBuddy(buddy))
         {
         case TalkableFilter::Accepted:
@@ -227,7 +227,7 @@ bool TalkableProxyModel::accept(const Buddy &buddy) const
 
 bool TalkableProxyModel::accept(const Contact &contact) const
 {
-    foreach (TalkableFilter *filter, TalkableFilters)
+    for (auto filter : TalkableFilters)
         switch (filter->filterContact(contact))
         {
         case TalkableFilter::Accepted:

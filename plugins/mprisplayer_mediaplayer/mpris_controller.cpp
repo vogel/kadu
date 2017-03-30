@@ -288,7 +288,7 @@ QList<TrackInfo> MPRISController::getTrackList() const
         return result;
 
     QVariantList trackList = qdbus_cast<QVariantList>(reply.value().variant());
-    foreach (const QVariant &track, trackList)
+    for (auto const &track : trackList)
         result.append(toTrackInfo(qdbus_cast<QVariantMap>(track)));
 
     return result;

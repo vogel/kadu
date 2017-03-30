@@ -90,7 +90,7 @@ void ContactManager::init()
     // needed for QueuedConnection
     qRegisterMetaType<Contact>("Contact");
 
-    foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+    for (auto &message : m_unreadMessageRepository->allUnreadMessages())
         unreadMessageAdded(message);
 
     connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
@@ -106,7 +106,7 @@ void ContactManager::done()
 {
     disconnect(m_unreadMessageRepository, 0, this, 0);
 
-    foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+    for (auto const &message : m_unreadMessageRepository->allUnreadMessages())
         unreadMessageRemoved(message);
 
     m_configurationManager->unregisterStorableObject(this);
@@ -169,7 +169,7 @@ Contact ContactManager::byId(Account account, const QString &id, NotFoundAction 
     if (id.isEmpty() || account.isNull())
         return Contact::null;
 
-    foreach (const Contact &contact, items())
+    for (auto &contact : items())
         if (account == contact.contactAccount() && id == contact.id())
             return contact;
 
@@ -203,7 +203,7 @@ QVector<Contact> ContactManager::contacts(Account account, AnonymousInclusion in
     if (account.isNull())
         return contacts;
 
-    foreach (const Contact &contact, items())
+    for (auto const &contact : items())
         if (account == contact.contactAccount() && ((IncludeAnonymous == inclusion) || !contact.isAnonymous()))
             contacts.append(contact);
 
@@ -225,7 +225,7 @@ void ContactManager::removeDuplicateContacts()
 {
     QMap<QPair<Account, QString>, Contact> uniqueContacts;
 
-    foreach (const Contact &contact, items())
+    for (auto const &contact : items())
     {
         QMap<QPair<Account, QString>, Contact>::iterator it =
             uniqueContacts.find(qMakePair(contact.contactAccount(), contact.id()));

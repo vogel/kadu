@@ -81,7 +81,7 @@ void EmoticonsConfigurationUiHandler::updateEmoticonThemes()
     int iconsNumber = 4;
 
     QList<QIcon> icons;
-    foreach (const Theme &theme, ThemeManager->themes())
+    for (auto const &theme : ThemeManager->themes())
     {
         values.append(theme.name());
         captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));

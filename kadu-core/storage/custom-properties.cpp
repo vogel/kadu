@@ -100,7 +100,7 @@ void CustomProperties::storeTo(const std::shared_ptr<StoragePoint> &storagePoint
     for (unsigned int i = 0; i < customPropertiesCount; i++)
         element.removeChild(customProperties.at(static_cast<int>(i)));
 
-    foreach (const QString &propertyName, StorableProperties)
+    for (auto const &propertyName : StorableProperties)
         storagePoint->storage()->createNamedTextNode(
             storagePoint->point(), "CustomProperty", propertyName, Properties.value(propertyName).toString());
 }

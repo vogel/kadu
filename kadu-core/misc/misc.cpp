@@ -97,7 +97,7 @@ QString pwHash(const QString &text)
 QList<int> stringToIntList(const QString &in)
 {
     QList<int> out;
-    foreach (const QString &it, in.split(';', QString::SkipEmptyParts))
+    for (auto const &it : in.split(';', QString::SkipEmptyParts))
         out.append(it.toInt());
     return out;
 }
@@ -105,7 +105,7 @@ QList<int> stringToIntList(const QString &in)
 QString intListToString(const QList<int> &in)
 {
     QStringList out;
-    foreach (const int &it, in)
+    for (auto const &it : in)
         out.append(QString::number(it));
     return out.join(";");
 }

@@ -97,7 +97,7 @@ void Infos::init()
 
                 Contact contact;
                 // wstawiamy tylko konta, które są na liście kontaktów
-                foreach (Account account, m_accountManager->byProtocolName(protocol))
+                for (auto account : m_accountManager->byProtocolName(protocol))
                 {
                     contact = m_contactManager->byId(account, uin, ActionReturnNull);
                     if (contact.isNull())
@@ -176,7 +176,7 @@ void Infos::contactStatusChanged(Contact contact, Status status)
 
 void Infos::updateTimes()
 {
-    foreach (const Contact &contact, m_contactManager->items())
+    for (auto const &contact : m_contactManager->items())
         if (!contact.currentStatus().isDisconnected())
             lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())] =
                 QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");

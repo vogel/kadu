@@ -64,7 +64,7 @@ void EmoticonExpanderDomVisitorProvider::setConfiguration(const EmoticonConfigur
     if (!m_configuration.emoticonTheme().aliases().isEmpty())
     {
         EmoticonPrefixTreeBuilder builder;
-        foreach (const Emoticon &emoticon, m_configuration.emoticonTheme().aliases())
+        for (auto const &emoticon : m_configuration.emoticonTheme().aliases())
             builder.addEmoticon(emoticon);
 
         m_tree.reset(builder.tree());

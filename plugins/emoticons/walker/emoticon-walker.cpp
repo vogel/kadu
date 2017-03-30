@@ -100,7 +100,7 @@ Emoticon EmoticonWalker::findLongestCandidate() const
     Emoticon result;
     int resultLength = -1;
 
-    foreach (const EmoticonCandidate &candidate, Candidates)
+    for (auto const &candidate : Candidates)
         if (result.isNull() ||
             (!candidate.EmoticonNode->nodeEmoticon().isNull() && resultLength < candidate.EmoticonLength))
         {

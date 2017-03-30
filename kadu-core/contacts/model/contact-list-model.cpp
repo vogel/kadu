@@ -50,10 +50,10 @@ void ContactListModel::setContactList(const QVector<Contact> &contacts)
 {
     beginResetModel();
 
-    foreach (const Contact &contact, m_list)
+    for (auto const &contact : m_list)
         disconnectContact(contact);
     m_list = contacts;
-    foreach (const Contact &contact, m_list)
+    for (auto const &contact : m_list)
         connectContact(contact);
 
     endResetModel();

@@ -354,7 +354,7 @@ void HistoryMessagesTab::clearTalkableHistory()
     if (!dialog->ask())
         return;
 
-    foreach (const QModelIndex &selectedIndex, selectedIndexes)
+    for (auto const &selectedIndex : selectedIndexes)
     {
         Talkable talkable = selectedIndex.data(TalkableRole).value<Talkable>();
         if (!talkable.isEmpty())

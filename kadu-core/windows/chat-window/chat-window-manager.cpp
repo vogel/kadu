@@ -53,7 +53,7 @@ void ChatWindowManager::openStoredChatWindows()
         return;
 
     auto chats = m_chatWindowStorage.data()->loadChats();
-    for (const auto &chat : chats)
+    for (auto const &chat : chats)
         m_chatWidgetManager.data()->openChat(chat, OpenChatActivation::DoNotActivate);
 }
 

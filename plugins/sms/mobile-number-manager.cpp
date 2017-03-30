@@ -62,7 +62,7 @@ void MobileNumberManager::done()
 
 void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 {
-    foreach (MobileNumber *n, Numbers)
+    for (auto n : Numbers)
         if (n->number() == number)
         {
             n->setGatewayId(gatewayId);
@@ -74,7 +74,7 @@ void MobileNumberManager::registerNumber(QString number, QString gatewayId)
 
 void MobileNumberManager::unregisterNumber(QString number)
 {
-    foreach (MobileNumber *n, Numbers)
+    for (auto n : Numbers)
         if (n->number() == number)
         {
             Numbers.removeAll(n);
@@ -106,7 +106,7 @@ void MobileNumberManager::load()
         return;
 
     QVector<QDomElement> mobileNumberNodes = storage()->storage()->getNodes(mobileNumbersNode, "MobileNumber");
-    foreach (QDomElement mobileNumberElement, mobileNumberNodes)
+    for (auto mobileNumberElement : mobileNumberNodes)
     {
         if (mobileNumberElement.isNull())
             continue;
@@ -128,7 +128,7 @@ void MobileNumberManager::store()
 
     StorableObject::store();
 
-    foreach (MobileNumber *number, Numbers)
+    for (auto number : Numbers)
         number->ensureStored();
 }
 
@@ -136,7 +136,7 @@ QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 {
     ensureLoaded();
 
-    foreach (MobileNumber *number, Numbers)
+    for (auto number : Numbers)
         if (number->number() == mobileNumber)
             return number->gatewayId();
 

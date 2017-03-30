@@ -35,7 +35,7 @@ AccountConfigurationWidgetTabAdapter::AccountConfigurationWidgetTabAdapter(
         MyAccountEditWidget, SIGNAL(widgetAdded(AccountConfigurationWidget *)), this,
         SLOT(widgetAdded(AccountConfigurationWidget *)));
 
-    foreach (AccountConfigurationWidget *widget, MyAccountEditWidget->accountConfigurationWidgets())
+    for (auto widget : MyAccountEditWidget->accountConfigurationWidgets())
         widgetAdded(widget);
 }
 

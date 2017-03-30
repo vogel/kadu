@@ -28,9 +28,9 @@ QList<ConfigurationAwareObject *> ConfigurationAwareObject::Objects;
 
 void ConfigurationAwareObject::notifyAll()
 {
-    foreach (ConfigurationHolder *configurationHolder, ConfigurationHolder::instances())
+    for (auto configurationHolder : ConfigurationHolder::instances())
         configurationHolder->configurationUpdated();
-    foreach (ConfigurationAwareObject *object, Objects)
+    for (auto object : Objects)
         object->configurationUpdated();
 }
 

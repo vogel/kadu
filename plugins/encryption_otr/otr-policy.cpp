@@ -31,7 +31,7 @@ QList<OtrPolicy> OtrPolicy::Values = QList<OtrPolicy>() << OtrPolicy::PolicyUnde
 
 OtrPolicy OtrPolicy::fromPolicy(OtrlPolicy otrPolicy)
 {
-    foreach (const OtrPolicy &policy, Values)
+    for (auto const &policy : Values)
         if (otrPolicy == policy.toOtrPolicy())
             return policy;
 
@@ -40,7 +40,7 @@ OtrPolicy OtrPolicy::fromPolicy(OtrlPolicy otrPolicy)
 
 OtrPolicy OtrPolicy::fromString(const QString &policyString)
 {
-    foreach (const OtrPolicy &policy, Values)
+    for (auto const &policy : Values)
         if (policyString == policy.toString())
             return policy;
 

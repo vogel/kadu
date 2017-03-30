@@ -83,7 +83,7 @@ void StatusMenu::init()
 
 void StatusMenu::addStatusActions()
 {
-    foreach (QAction *action, Actions->actions())
+    for (auto action : Actions->actions())
         Menu->addAction(action);
 }
 

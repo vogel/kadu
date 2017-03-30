@@ -145,7 +145,7 @@ void BuddyDeleteWindow::fillAdditionalDataListView()
 QString BuddyDeleteWindow::getBuddiesNames()
 {
     QStringList displays;
-    foreach (const Buddy &buddy, BuddiesToDelete)
+    for (auto const &buddy : BuddiesToDelete)
         displays.append(QString("<b>%1</b>").arg(buddy.display()));
 
     return displays.join(", ");
@@ -171,7 +171,7 @@ void BuddyDeleteWindow::deleteBuddy(Buddy buddy)
     // this set owner buddy on all of the contacts
     m_buddyManager->removeItem(buddy);
 
-    foreach (const Contact &contact, contacts)
+    for (auto const &contact : contacts)
         m_roster->removeContact(contact);
 }
 
@@ -179,7 +179,7 @@ void BuddyDeleteWindow::accept()
 {
     QDialog::accept();
 
-    foreach (const Buddy &buddy, BuddiesToDelete)
+    for (auto const &buddy : BuddiesToDelete)
         deleteBuddy(buddy);
     m_buddyManager->ensureStored();
 }

@@ -133,7 +133,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
 
     QMenu *actions = new QMenu(tr("More Actions..."), menu);
 
-    foreach (MenuItem *menuItem, Items)
+    for (auto menuItem : Items)
     {
         if (!menuItem->actionDescription())
             continue;
@@ -163,7 +163,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
                              1 == actionContext->buddies().begin()->contacts().size();
     if (isContact || isOneContactbuddy)
     {
-        foreach (ProtocolMenuManager *manager, m_menuInventory->protocolMenuManagers())
+        for (auto manager : m_menuInventory->protocolMenuManagers())
         {
             Contact contact = *actionContext->contacts().constBegin();
             if (contact.contactAccount().protocolName() != manager->protocolName())
@@ -172,7 +172,7 @@ void KaduMenu::appendTo(QMenu *menu, ActionContext *context)
             if (!firstItem && !manager->protocolActions().isEmpty())
                 actions->addSeparator();
 
-            foreach (ActionDescription *actionDescription, manager->protocolActions())
+            for (auto actionDescription : manager->protocolActions())
             {
                 if (actionDescription)
                 {

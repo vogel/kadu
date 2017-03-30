@@ -175,7 +175,7 @@ protected:
         QVector<QDomElement> itemElements = storage()->storage()->getNodes(itemsNode, storageNodeItemName());
         Items.reserve(itemElements.count());
 
-        foreach (const QDomElement &itemElement, itemElements)
+        for (auto const &itemElement : itemElements)
         {
             auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), itemElement);
             QUuid uuid = storagePoint->point().attribute("uuid");
@@ -211,7 +211,7 @@ protected:
 
         ensureLoaded();
 
-        foreach (Item item, Items)
+        for (auto item : Items)
             item.ensureStored();
     }
 
@@ -258,7 +258,7 @@ public:
         if (uuid.isNull())
             return Item::null;
 
-        foreach (const Item &item, Items)
+        for (auto const &item : Items)
             if (item.uuid() == uuid)
                 return item;
 

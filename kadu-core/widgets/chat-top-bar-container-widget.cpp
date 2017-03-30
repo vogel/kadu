@@ -50,7 +50,7 @@ void ChatTopBarContainerWidget::init()
         m_chatTopBarWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatTopBarWidgetFactory *)), this,
         SLOT(factoryUnregistered(ChatTopBarWidgetFactory *)));
 
-    foreach (ChatTopBarWidgetFactory *factory, m_chatTopBarWidgetFactoryRepository->factories())
+    for (auto factory : m_chatTopBarWidgetFactoryRepository->factories())
         factoryRegistered(factory);
 }
 

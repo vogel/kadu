@@ -118,7 +118,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTab
 
     auto result = QVector<GroupFilter>();
     auto groupFilterNodes = m_configuration->api()->getNodes(groupTabBarNode, "GroupFilter");
-    foreach (const auto &groupFilterNode, groupFilterNodes)
+    for (auto const &groupFilterNode : groupFilterNodes)
     {
         auto groupFilter = loadGroupFilter(groupFilterNode);
         if (GroupFilterInvalid != groupFilter.filterType())
@@ -153,7 +153,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
     qStableSort(
         groups.begin(), groups.end(), [](const Group &a, const Group &b) { return a.tabPosition() < b.tabPosition(); });
 
-    foreach (const auto &group, groups)
+    for (auto const &group : groups)
         result.append(GroupFilter(group));
 
     result.insert(
@@ -166,7 +166,7 @@ QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool show
 void GroupTabBarConfigurator::storeGroupFilters(const QVector<GroupFilter> &groupFilters)
 {
     auto groupTabBarNode = m_configuration->api()->getNode("GroupTabBar", ConfigurationApi::ModeCreate);
-    foreach (const auto &groupFilter, groupFilters)
+    for (auto const &groupFilter : groupFilters)
         storeGroupFilter(groupTabBarNode, groupFilter);
 }
 

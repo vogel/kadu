@@ -64,7 +64,7 @@ QStringList Themes::getSubDirs(const QString &path, bool validate) const
         return dirs;
 
     QStringList subdirs;
-    foreach (const QString &dir, dirs)
+    for (auto const &dir : dirs)
     {
         QString dirname = path + '/' + dir;
         if (validateDir(dirname))
@@ -85,7 +85,7 @@ bool Themes::validateDir(const QString &path) const
     QStringList subdirs = getSubDirs(path, false);
     if (!subdirs.isEmpty())
     {
-        foreach (const QString &dir, subdirs)
+        for (auto const &dir : subdirs)
         {
             f.setFileName(path + '/' + dir + '/' + ConfigName);
             if (!f.exists())
@@ -137,7 +137,7 @@ void Themes::setPaths(const QStringList &paths)
     ThemesPaths.clear();
     additional.clear();
     QStringList temp = paths + defaultPathsProviderWithThemes();
-    foreach (const QString &it, temp)
+    for (auto const &it : temp)
     {
         if (validateDir(it))
         {
@@ -160,10 +160,10 @@ QStringList Themes::defaultPathsProviderWithThemes() const
     QStringList result;
 
     auto path = QString{m_pathsProvider->dataPath() + QStringLiteral("themes/") + Name};
-    foreach (const QString &it, getSubDirs(path))
+    for (auto const &it : getSubDirs(path))
         result << (path + '/' + it + '/');
 
-    foreach (const QString &it, getSubDirs(m_pathsProvider->profilePath() + Name))
+    for (auto const &it : getSubDirs(m_pathsProvider->profilePath() + Name))
         result << (m_pathsProvider->profilePath() + Name + '/' + it + '/');
 
     return result;
@@ -190,7 +190,7 @@ QString Themes::themePath(const QString &theme) const
         return "Custom";
 
     QRegExp r("(/" + t + "/)$");
-    foreach (const QString &theme, ThemesPaths)
+    for (auto const &theme : ThemesPaths)
         if (-1 != r.indexIn(theme))
             return theme;
 

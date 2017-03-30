@@ -39,7 +39,7 @@ bool BuddyList::operator==(const BuddyList &compare) const
     if (size() != compare.size())
         return false;
 
-    foreach (const Buddy &buddy, compare)
+    for (auto &buddy : compare)
         if (!contains(buddy))
             return false;
     return true;

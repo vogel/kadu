@@ -154,7 +154,7 @@ bool ScreenShot::checkImageSize(long int size)
     Q_UNUSED(size)
 
     ContactSet contacts = MyChatWidget->chat().contacts();
-    foreach (const Contact &contact, contacts)
+    for (auto const &contact : contacts)
         if (contact.maximumImageSize() * 1024 < size)
             return false;
 
@@ -176,7 +176,7 @@ void ScreenShot::checkShotsSize()
     filters << prefix + '*';
     QFileInfoList list = dir.entryInfoList(filters, QDir::Files);
 
-    foreach (const QFileInfo &f, list)
+    for (auto const &f : list)
         size += f.size();
 
     if (size / 1024 >= limit)

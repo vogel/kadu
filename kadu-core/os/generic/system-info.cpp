@@ -48,7 +48,7 @@ QString SystemInfo::lsbRelease(const QStringList &args)
     QStringList path = QString(qgetenv("PATH")).split(':');
     QString found;
 
-    foreach (const QString &dirname, path)
+    for (auto const &dirname : path)
     {
         QDir dir(dirname);
         QFileInfo cand(dir.filePath("lsb_release"));

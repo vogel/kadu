@@ -89,7 +89,7 @@ void StatusActions::createActions()
     StatusTypeGroup currentGroup = StatusTypeGroup::None;
     bool setDescriptionAdded = false;
 
-    foreach (StatusType statusType, MyStatusTypes)
+    for (auto statusType : MyStatusTypes)
     {
         if (StatusType::None == statusType)
             continue;
@@ -151,7 +151,7 @@ QAction *StatusActions::createStatusAction(const StatusTypeData &typeData)
 
 void StatusActions::cleanUpActions()
 {
-    foreach (QAction *action, Actions)
+    for (auto action : Actions)
         if (action != ChangeDescription)
         {
             if (!action->isSeparator())
@@ -180,7 +180,7 @@ void StatusActions::statusUpdated(StatusContainer *container)
     if (!MyStatusContainer->supportedStatusTypes().contains(currentStatusType))
         currentStatusType = MyStatusContainer->status().type();
 
-    foreach (QAction *action, ChangeStatusActionGroup->actions())
+    for (auto action : ChangeStatusActionGroup->actions())
     {
         StatusType statusType = action->data().value<StatusType>();
         if (StatusType::None == statusType)
@@ -202,7 +202,7 @@ void StatusActions::statusUpdated(StatusContainer *container)
 
 void StatusActions::iconThemeChanged()
 {
-    foreach (QAction *action, ChangeStatusActionGroup->actions())
+    for (auto action : ChangeStatusActionGroup->actions())
     {
         StatusType statusType = action->data().value<StatusType>();
         if (StatusType::None == statusType)

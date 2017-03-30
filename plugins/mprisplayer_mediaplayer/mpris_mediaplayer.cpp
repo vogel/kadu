@@ -85,7 +85,7 @@ QStringList MPRISMediaPlayer::getPlayListTitles()
 
     QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
 
-    foreach (const TrackInfo &track, tracks)
+    for (auto const &track : tracks)
         result << track.title();
 
     return result;
@@ -99,7 +99,7 @@ QStringList MPRISMediaPlayer::getPlayListFiles()
 
     QList<TrackInfo> tracks = m_controller ? m_controller->getTrackList() : QList<TrackInfo>();
 
-    foreach (const TrackInfo &track, tracks)
+    for (auto const &track : tracks)
         result << track.file();
 
     return result;

@@ -40,7 +40,7 @@ QStringList ThemeManager::getSubDirs(const QString &dirPath) const
     QStringList subDirs = dir.entryList(QDir::Dirs);
 
     QStringList result;
-    foreach (const QString &subDir, subDirs)
+    for (auto const &subDir : subDirs)
         if (!subDir.startsWith('.'))   // ignore hidden, this, and parent
             result.append(dirPath + '/' + subDir);
 
@@ -52,7 +52,7 @@ void ThemeManager::loadThemes()
     Themes.clear();
 
     QStringList themePaths = defaultThemePaths();
-    foreach (const QString &path, themePaths)
+    for (auto const &path : themePaths)
     {
         if (!isValidThemePath(path))
             continue;

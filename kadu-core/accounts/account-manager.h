@@ -91,7 +91,7 @@ public:
         if (accounts.isEmpty())
             return result;
 
-        foreach (const Account &account, accounts)
+        for (auto const &account : accounts)
             if (account.data())
             {
                 // TODO: hack

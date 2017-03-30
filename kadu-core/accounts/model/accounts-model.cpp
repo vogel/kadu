@@ -118,7 +118,7 @@ QModelIndexList AccountsModel::indexListForValue(const QVariant &value) const
 void AccountsModel::accountUpdated(Account account)
 {
     const QModelIndexList &indexes = indexListForValue(account);
-    foreach (const QModelIndex &index, indexes)
+    for (auto const &index : indexes)
         emit dataChanged(index, index);
 }
 

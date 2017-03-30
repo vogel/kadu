@@ -32,7 +32,7 @@
 QStringList CenzorConfiguration::toStringList(const QList<QRegExp> &list)
 {
     QStringList result;
-    foreach (const QRegExp &regExp, list)
+    for (auto const &regExp : list)
         result.append(regExp.pattern());
     return result;
 }
@@ -40,7 +40,7 @@ QStringList CenzorConfiguration::toStringList(const QList<QRegExp> &list)
 QList<QRegExp> CenzorConfiguration::toRegExpList(const QStringList &list)
 {
     QList<QRegExp> result;
-    foreach (const QString &item, list)
+    for (auto const &item : list)
         result.append(QRegExp(item));
     return result;
 }

@@ -92,7 +92,7 @@ QList<QWidget *> PluginListWidgetDelegateWidgets::findWidgets(
         delegate->setProperty("goya:creatingWidgetForIndex", QVariant());
         allocatedWidgets << result;
         usedWidgets[index] = result;
-        foreach (QWidget *widget, result)
+        for (auto widget : result)
         {
             widgetInIndex[widget] = index;
             widget->setParent(delegate->itemView()->viewport());
@@ -103,17 +103,13 @@ QList<QWidget *> PluginListWidgetDelegateWidgets::findWidgets(
 
     if (updateWidgets == UpdateWidgets)
     {
-        foreach (QWidget *widget, result)
-        {
+        for (auto widget : result)
             widget->setVisible(true);
-        }
 
         delegate->updateItemWidgets(result, option, idx);
 
-        foreach (QWidget *widget, result)
-        {
+        for (auto widget : result)
             widget->move(widget->x() + option.rect.left(), widget->y() + option.rect.top());
-        }
     }
 
     return result;
@@ -122,7 +118,7 @@ QList<QWidget *> PluginListWidgetDelegateWidgets::findWidgets(
 QList<QWidget *> PluginListWidgetDelegateWidgets::invalidIndexesWidgets() const
 {
     QList<QWidget *> result;
-    foreach (QWidget *widget, widgetInIndex.keys())
+    for (auto widget : widgetInIndex.keys())
     {
         const QAbstractProxyModel *proxyModel = qobject_cast<const QAbstractProxyModel *>(delegate->model);
         QModelIndex index;

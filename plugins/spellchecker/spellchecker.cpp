@@ -96,11 +96,11 @@ SpellChecker::~SpellChecker()
     Highlighter::removeAll();
 
 #if defined(HAVE_ASPELL)
-    foreach (AspellSpeller *speller, MyCheckers)
+    for (auto speller : MyCheckers)
         delete_aspell_speller(speller);
     delete_aspell_config(SpellConfig);
 #elif defined(HAVE_ENCHANT)
-    foreach (EnchantDict *dict, MyCheckers)
+    for (auto dict : MyCheckers)
         enchant_broker_free_dict(Broker, dict);
     enchant_broker_free(Broker);
 #endif
@@ -170,10 +170,10 @@ void SpellChecker::configurationUpdated()
 void SpellChecker::buildCheckers()
 {
 #if defined(HAVE_ASPELL)
-    foreach (AspellSpeller *speller, MyCheckers)
+    for (auto speller : MyCheckers)
         delete_aspell_speller(speller);
 #elif defined(HAVE_ENCHANT)
-    foreach (EnchantDict *dict, MyCheckers)
+    for (auto dict : MyCheckers)
         enchant_broker_free_dict(Broker, dict);
 #endif
     MyCheckers.clear();

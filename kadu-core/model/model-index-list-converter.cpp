@@ -86,13 +86,13 @@ Chat ModelIndexListConverter::chat() const
 
 void ModelIndexListConverter::buildRoles()
 {
-    foreach (const QModelIndex &selection, ModelIndexList)
+    for (auto const &selection : ModelIndexList)
         Roles.insert(selection.data(ItemTypeRole).toInt());
 }
 
 void ModelIndexListConverter::buildBuddies()
 {
-    foreach (const QModelIndex &index, ModelIndexList)
+    for (auto const &index : ModelIndexList)
     {
         const Buddy &buddy = index.data(BuddyRole).value<Buddy>();
         if (buddy)
@@ -102,7 +102,7 @@ void ModelIndexListConverter::buildBuddies()
 
 void ModelIndexListConverter::buildContacts()
 {
-    foreach (const QModelIndex &index, ModelIndexList)
+    for (auto const &index : ModelIndexList)
     {
         const Contact &contact = index.data(ContactRole).value<Contact>();
         if (contact)
@@ -135,7 +135,7 @@ Chat ModelIndexListConverter::chatFromIndex(const QModelIndex &index) const
 Chat ModelIndexListConverter::chatFromBuddies() const
 {
     BuddySet buddies;
-    foreach (const QModelIndex &index, ModelIndexList)
+    for (auto const &index : ModelIndexList)
         buddies.insert(index.data(BuddyRole).value<Buddy>());
 
     if (0 == buddies.size())
@@ -156,7 +156,7 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
         return Chat::null;
 
     ContactSet contacts;
-    foreach (const QModelIndex &index, ModelIndexList)
+    for (auto const &index : ModelIndexList)
     {
         Contact contact = contactForAccount(index, account);
         if (!contact)
@@ -174,7 +174,7 @@ Chat ModelIndexListConverter::chatFromContacts(const Account &account) const
 
 Account ModelIndexListConverter::commonAccount() const
 {
-    foreach (const QModelIndex &index, ModelIndexList)
+    for (auto const &index : ModelIndexList)
     {
         if (index.data(ItemTypeRole) == ContactRole)
         {

@@ -86,10 +86,8 @@ void PluginListWidgetDelegate::_k_slotDataChanged(const QModelIndex &topLeft, co
 
 void PluginListWidgetDelegate::_k_slotLayoutChanged()
 {
-    foreach (QWidget *widget, widgetPool->invalidIndexesWidgets())
-    {
+    for (auto widget : widgetPool->invalidIndexesWidgets())
         widget->setVisible(false);
-    }
 
     QTimer::singleShot(0, this, SLOT(initializeModel()));
 }
@@ -120,7 +118,7 @@ void PluginListWidgetDelegate::updateRowRange(const QModelIndex &parent, int sta
             if (isRemoving)
             {
                 widgetPool->allocatedWidgets.removeAll(widgetList);
-                foreach (QWidget *widget, widgetList)
+                for (auto widget : widgetList)
                 {
                     const QModelIndex idx = widgetPool->widgetInIndex[widget];
                     widgetPool->usedWidgets.remove(idx);

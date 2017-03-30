@@ -208,7 +208,7 @@ int ToolBar::indexOf(QAction *action)
         return -1;
 
     int index = 0;
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.action == action)
             return index;
         else
@@ -220,7 +220,7 @@ int ToolBar::indexOf(QAction *action)
 int ToolBar::indexOf(const QString &action)
 {
     int index = 0;
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.actionName == action)
             return index;
         else
@@ -286,7 +286,7 @@ void ToolBar::mouseMoveEvent(QMouseEvent *e)
         QAction *action = actionAt(MouseStart);
         if (!action)
             return;
-        foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+        for (auto const &toolBarAction : ToolBarActions)
         {
             if (toolBarAction.action == action)
             {
@@ -469,7 +469,7 @@ int ToolBar::rowCount()
 {
     int r = 0;
     int lastp = 0;
-    foreach (QAction *action, actions())
+    for (auto action : actions())
     {
         QWidget *w = widgetForAction(action);
         int p = orientationByArea(toolBarArea()) == Qt::Horizontal ? w->x() : w->y();
@@ -497,7 +497,7 @@ QRect ToolBar::rowRect(int row)
 {
     int p = -1;
     int size = 0;
-    foreach (QAction *action, actionsForRow(row))
+    for (auto action : actionsForRow(row))
     {
         QWidget *w = widgetForAction(action);
         int actionp = orientationByArea(toolBarArea()) == Qt::Horizontal ? w->y() : w->x();
@@ -520,7 +520,7 @@ QList<QAction *> ToolBar::actionsForRow(int row)
     QList<QAction *> list;
     int r = 0;
     int lastp = 0;
-    foreach (QAction *action, actions())
+    for (auto action : actions())
     {
         QWidget *w = widgetForAction(action);
         int p = orientationByArea(toolBarArea()) == Qt::Horizontal ? w->x() : w->y();
@@ -583,7 +583,7 @@ void ToolBar::writeToConfig(const QDomElement &parent_element)
     toolbar_elem.setAttribute("x_offset", pos().x());
     toolbar_elem.setAttribute("y_offset", pos().y());
 
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
     {
         QDomElement button_elem = m_configuration->api()->createElement(toolbar_elem, "ToolButton");
         if (toolBarAction.actionName.startsWith(QStringLiteral("__separator")))
@@ -598,7 +598,7 @@ void ToolBar::writeToConfig(const QDomElement &parent_element)
 
 bool ToolBar::hasAction(const QString &action_name)
 {
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.actionName == action_name)
             return true;
     return false;
@@ -707,7 +707,7 @@ QMenu *ToolBar::createContextMenu(QWidget *widget)
             Text = textPositionMenu->addAction(tr("Text alongside icon"), this, SLOT(slotContextTextRight()));
             TextUnder = textPositionMenu->addAction(tr("Text under icon"), this, SLOT(slotContextTextUnder()));
             QActionGroup *textGroup = new QActionGroup(textPositionMenu);
-            foreach (QAction *action, textPositionMenu->actions())
+            for (auto action : textPositionMenu->actions())
             {
                 action->setActionGroup(textGroup);
                 action->setCheckable(true);
@@ -726,7 +726,7 @@ QMenu *ToolBar::createContextMenu(QWidget *widget)
 
         QMenu *actionsMenu = new QMenu(tr("Add new button"), menu);
         QList<QAction *> actions;
-        foreach (ActionDescription *actionDescription, m_actions->values())
+        for (auto actionDescription : m_actions->values())
         {
             bool supportsAction;
             MainWindow *kaduMainWindow = qobject_cast<MainWindow *>(parentWidget());
@@ -750,7 +750,7 @@ QMenu *ToolBar::createContextMenu(QWidget *widget)
         }
 
         qSort(actions.begin(), actions.end(), actionTextLessThan);
-        foreach (QAction *action, actions)
+        for (auto action : actions)
             actionsMenu->addAction(action);
 
         if (actionsMenu->isEmpty())
@@ -841,7 +841,7 @@ void ToolBar::removeButton()
     QToolButton *currentButton = qobject_cast<QToolButton *>(currentWidget);
     if (!currentButton)
         return;
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.widget == currentButton)
         {
             // TODO: again, lame solution
@@ -858,7 +858,7 @@ void ToolBar::removeSeparator()
     ToolBarSeparator *currentSeparator = qobject_cast<ToolBarSeparator *>(currentWidget);
     if (!currentSeparator)
         return;
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.widget == currentSeparator)
         {
             removeAction(toolBarAction.action);
@@ -874,7 +874,7 @@ void ToolBar::removeSpacer()
     ToolBarSpacer *currentSpacer = qobject_cast<ToolBarSpacer *>(currentWidget);
     if (!currentSpacer)
         return;
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.widget == currentSpacer)
         {
             removeAction(toolBarAction.action);
@@ -887,7 +887,7 @@ void ToolBar::removeSpacer()
 
 void ToolBar::deleteAction(const QString &actionName)
 {
-    foreach (const ToolBarAction &toolBarAction, ToolBarActions)
+    for (auto const &toolBarAction : ToolBarActions)
         if (toolBarAction.actionName == actionName)
         {
             removeAction(toolBarAction.action);

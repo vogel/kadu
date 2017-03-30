@@ -27,7 +27,7 @@ QTextCharFormat Highlighter::HighlightFormat;
 
 void Highlighter::rehighlightAll()
 {
-    foreach (Highlighter *highlighter, Highlighters)
+    for (auto highlighter : Highlighters)
         highlighter->rehighlight();
 }
 
@@ -62,7 +62,7 @@ void Highlighter::setHighlightFormat(const QTextCharFormat &format)
 
 void Highlighter::removeAll()
 {
-    foreach (Highlighter *highlighter, Highlighters)
+    for (auto highlighter : Highlighters)
         delete highlighter;
     Q_ASSERT(Highlighters.isEmpty());
 }

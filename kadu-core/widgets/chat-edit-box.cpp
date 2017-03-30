@@ -307,7 +307,7 @@ void ChatEditBox::openInsertImageDialog()
         int tooBigCounter = 0;
         int disconnectedCounter = 0;
 
-        foreach (const Contact &contact, CurrentChat.contacts())
+        for (auto const &contact : CurrentChat.contacts())
         {
             if (contact.currentStatus().isDisconnected())
                 disconnectedCounter++;

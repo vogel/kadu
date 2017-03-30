@@ -63,7 +63,7 @@ Identity IdentityManager::byName(const QString &name, bool create)
     if (name.isEmpty())
         return Identity::null;
 
-    foreach (const Identity &identity, items())
+    for (auto const &identity : items())
     {
         if (name == identity.name())
             return identity;
@@ -83,7 +83,7 @@ Identity IdentityManager::identityForAcccount(Account account)
 {
     QMutexLocker locker(&mutex());
 
-    foreach (const Identity &identity, items())
+    for (auto const &identity : items())
         if (identity.hasAccount(account))
             return identity;
 
@@ -94,11 +94,11 @@ void IdentityManager::removeUnused()
 {
     QList<Identity> unused;
 
-    foreach (const Identity &identity, items())
+    for (auto const &identity : items())
         if (identity.isEmpty() && !identity.isPermanent())
             unused.append(identity);
 
-    foreach (const Identity &identity, unused)
+    for (auto const &identity : unused)
         removeItem(identity);
 }
 

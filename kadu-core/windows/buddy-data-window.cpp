@@ -135,7 +135,7 @@ void BuddyDataWindow::init()
         m_buddyConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(BuddyConfigurationWidgetFactory *)),
         this, SLOT(factoryUnregistered(BuddyConfigurationWidgetFactory *)));
 
-    foreach (BuddyConfigurationWidgetFactory *factory, m_buddyConfigurationWidgetFactoryRepository->factories())
+    for (auto factory : m_buddyConfigurationWidgetFactoryRepository->factories())
         factoryRegistered(factory);
 }
 
@@ -174,7 +174,7 @@ QList<BuddyConfigurationWidget *> BuddyDataWindow::buddyConfigurationWidgets() c
 
 void BuddyDataWindow::applyBuddyConfigurationWidgets()
 {
-    foreach (BuddyConfigurationWidget *widget, BuddyConfigurationWidgets)
+    for (auto widget : BuddyConfigurationWidgets)
         widget->apply();
 }
 

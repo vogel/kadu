@@ -35,7 +35,7 @@ void KaduMergedProxyModel::setKaduModels(QList<KaduAbstractModel *> models)
     QList<QAbstractItemModel *> itemModels;
 
     KaduModels.clear();
-    foreach (KaduAbstractModel *model, models)
+    for (auto model : models)
     {
         KaduModels.append(model);
 
@@ -55,10 +55,10 @@ void KaduMergedProxyModel::setKaduModels(QList<KaduAbstractModel *> models)
 QModelIndexList KaduMergedProxyModel::indexListForValue(const QVariant &value) const
 {
     QModelIndexList result;
-    foreach (KaduAbstractModel *kaduModel, KaduModels)
+    for (auto kaduModel : KaduModels)
     {
         const QModelIndexList &kaduModelIndexes = kaduModel->indexListForValue(value);
-        foreach (const QModelIndex &index, kaduModelIndexes)
+        for (auto &index : kaduModelIndexes)
             result.append(mapFromSource(index));
     }
 

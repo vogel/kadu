@@ -32,12 +32,12 @@ void CompositingAwareObject::compositingStateChanged()
 
     if (CompositingEnabled)
     {
-        foreach (CompositingAwareObject *object, Objects)
+        for (auto object : Objects)
             object->compositingEnabled();
     }
     else
     {
-        foreach (CompositingAwareObject *object, Objects)
+        for (auto object : Objects)
             object->compositingDisabled();
     }
 }

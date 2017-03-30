@@ -94,7 +94,7 @@ void InsertEmoticonAction::setConfiguration(const EmoticonConfiguration &configu
 {
     Configuration = configuration;
 
-    foreach (Action *action, actions())
+    for (auto action : actions())
         updateActionState(action);
 }
 

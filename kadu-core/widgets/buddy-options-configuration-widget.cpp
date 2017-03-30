@@ -122,7 +122,7 @@ void BuddyOptionsConfigurationWidget::updateOfflineTo()
     }
 
     OfflineToCheckBox->setEnabled(false);
-    foreach (const Contact &contact, MyBuddy.contacts())
+    for (auto const &contact : MyBuddy.contacts())
     {
         if (!contact.contactAccount().protocolHandler())
             continue;
@@ -140,7 +140,7 @@ void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
     if (toggled == true)
         return;
 
-    foreach (const Contact &contact, MyBuddy.contacts())
+    for (auto const &contact : MyBuddy.contacts())
     {
         if (!contact.contactAccount().protocolHandler())
             continue;
@@ -156,7 +156,7 @@ void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
                     "\nWould you like to set 'private status' now?",
                     QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes)
             {
-                foreach (const Contact &con, MyBuddy.contacts())
+                for (auto const &con : MyBuddy.contacts())
                     con.contactAccount().setPrivateStatus(true);
             }
 

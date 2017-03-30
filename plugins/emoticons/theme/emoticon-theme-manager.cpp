@@ -80,7 +80,7 @@ bool EmoticonThemeManager::isValidThemePath(const QString &themePath) const
     QDir themeDir(themePath);
     QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
 
-    foreach (const QFileInfo &subDirInfo, subDirs)
+    for (auto const &subDirInfo : subDirs)
     {
         if (!subDirInfo.fileName().startsWith('.'))
             if (containsEmotsTxt(subDirInfo.canonicalFilePath()))

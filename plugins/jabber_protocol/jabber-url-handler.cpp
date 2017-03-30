@@ -132,7 +132,7 @@ void JabberUrlHandler::openUrl(UrlOpener *urlOpener, const QByteArray &url, bool
         QMenu menu;
 
         QStringList ids;
-        foreach (Account account, jabberAccounts)
+        for (auto account : jabberAccounts)
         {
             ids.clear();
             ids.append(account.id());

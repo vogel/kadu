@@ -517,7 +517,7 @@ void AddBuddyWindow::mergeToggled(bool toggled)
 {
     ScopedUpdatesDisabler updatesDisabler{*this};
 
-    foreach (QWidget *widget, NonMergeWidgets)
+    for (auto widget : NonMergeWidgets)
     {
         widget->setVisible(!toggled);
         widget->setEnabled(!toggled);
@@ -527,7 +527,7 @@ void AddBuddyWindow::mergeToggled(bool toggled)
             label->setVisible(!toggled);
     }
 
-    foreach (QWidget *widget, MergeWidgets)
+    for (auto widget : MergeWidgets)
     {
         widget->setVisible(toggled);
         widget->setEnabled(toggled);

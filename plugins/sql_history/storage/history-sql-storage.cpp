@@ -306,7 +306,7 @@ QString HistorySqlStorage::chatIdList(const Chat &chat)
         return QString("(%1)").arg(ChatsMapping->idByChat(chat, false));
 
     QStringList ids;
-    foreach (const Chat &aggregatedChat, buddyChat->chats())
+    for (auto const &aggregatedChat : buddyChat->chats())
         ids.append(QString::number(ChatsMapping->idByChat(aggregatedChat, false)));
 
     return QString("(%1)").arg(ids.join(QStringLiteral(", ")));
@@ -329,7 +329,7 @@ QString HistorySqlStorage::buddyContactsWhere(const Buddy &buddy)
         return QStringLiteral("0");
 
     QStringList ids;
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
         ids.append(QString("%1").arg(ContactsMapping->idByContact(contact, true)));
 
     return QString("contact_id IN (%1)").arg(ids.join(QStringLiteral(", ")));
@@ -546,7 +546,7 @@ void HistorySqlStorage::clearSmsHistory(const Talkable &talkable, const QDate &d
 
 void HistorySqlStorage::deleteHistory(const Talkable &talkable)
 {
-    foreach (const Contact &contact, m_talkableConverter->toBuddy(talkable).contacts())
+    for (auto const &contact : m_talkableConverter->toBuddy(talkable).contacts())
     {
         Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull);
         clearChatHistory(chat, QDate());
@@ -563,7 +563,7 @@ QVector<Talkable> HistorySqlStorage::syncChats()
     QList<Chat> chats = ChatsMapping->mapping().values();
     QVector<Talkable> talkables;
 
-    foreach (const Chat &chat, chats)
+    for (auto const &chat : chats)
         talkables.append(chat);
 
     return talkables;

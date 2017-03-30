@@ -106,7 +106,7 @@ void BuddyManager::itemAdded(Buddy buddy)
 
 void BuddyManager::itemAboutToBeRemoved(Buddy buddy)
 {
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
         contact.setOwnerBuddy(Buddy::null);
 
     emit buddyAboutToBeRemoved(buddy);
@@ -148,7 +148,7 @@ void BuddyManager::mergeBuddies(Buddy destination, Buddy source)
     // i think this is another reason why we should not automate too much
     // we should just manually delete all contacts when buddy is removed
 
-    foreach (const Contact &contact, source.contacts())
+    for (auto const &contact : source.contacts())
         contact.setOwnerBuddy(destination);
 
     removeItem(source);
@@ -169,7 +169,7 @@ Buddy BuddyManager::byDisplay(const QString &display, NotFoundAction action)
     if (display.isEmpty())
         return Buddy::null;
 
-    foreach (const Buddy &buddy, items())
+    for (auto &buddy : items())
     {
         if (display == buddy.display())
             return buddy;
@@ -230,7 +230,7 @@ Buddy BuddyManager::byUuid(const QUuid &uuid)
     if (uuid.isNull())
         return m_buddyStorage->create();
 
-    foreach (const Buddy &buddy, items())
+    for (auto const &buddy : items())
         if (buddy.uuid() == uuid)
             return buddy;
 
@@ -264,7 +264,7 @@ BuddyList BuddyManager::buddies(Account account, bool includeAnonymous)
 
     BuddyList result;
 
-    foreach (const Buddy &buddy, items())
+    for (auto const &buddy : items())
         if (buddy.hasContact(account) && (includeAnonymous || !buddy.isAnonymous()))
             result << buddy;
 

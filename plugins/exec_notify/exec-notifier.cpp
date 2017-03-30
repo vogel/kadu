@@ -206,13 +206,13 @@ void ExecNotifier::notify(const Notification &notification)
         QString sendersString = sendersList.join(",");
 
         Contact contact = *contacts.constBegin();
-        foreach (QString it, s)
+        for (auto it : s)
             result.append(
                 m_parser->parse(
                     it.replace("%ids", sendersString), Talkable(contact), &notification, ParserEscape::HtmlEscape));
     }
     else
-        foreach (const QString &it, s)
+        for (auto const &it : s)
             result.append(m_parser->parse(it, &notification, ParserEscape::HtmlEscape));
 
     run(result);

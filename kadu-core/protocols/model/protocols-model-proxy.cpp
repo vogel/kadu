@@ -77,7 +77,7 @@ bool ProtocolsModelProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sou
     if (!protocol)
         return true;
 
-    foreach (AbstractProtocolFilter *filter, ProtocolFilters)
+    for (auto filter : ProtocolFilters)
         if (!filter->acceptProtocol(protocol))
             return false;
 

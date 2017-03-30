@@ -23,7 +23,7 @@ QList<CrashAwareObject *> CrashAwareObject::Objects;
 
 void CrashAwareObject::notifyCrash()
 {
-    foreach (CrashAwareObject *object, Objects)
+    for (auto object : Objects)
         object->crash();
 }
 

@@ -86,7 +86,7 @@ void ChatsBuddiesSplitter::processChat(const Chat &chat)
     ChatDetailsBuddy *details = qobject_cast<ChatDetailsBuddy *>(buddyChat.details());
     Q_ASSERT(details);
 
-    foreach (const Chat &usedChat, details->chats())
+    for (auto const &usedChat : details->chats())
         UsedChats.insert(usedChat);
     assignChat(buddyChat);
 }

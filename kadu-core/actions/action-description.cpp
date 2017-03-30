@@ -191,7 +191,7 @@ void ActionDescription::configurationUpdated()
 
     if (ShortcutContext != Qt::ApplicationShortcut)
     {
-        foreach (Action *action, MappedActions)
+        for (auto action : MappedActions)
         {
             action->setShortcut(HotKey::shortCutFromFile(m_configuration, "ShortCuts", ShortcutItem));
             action->setShortcutContext(ShortcutContext);
@@ -209,7 +209,7 @@ void ActionDescription::connectNotify(const QMetaMethod &signal)
     QObject::connectNotify(signal);
 
     if (signal == QMetaMethod::fromSignal(&ActionDescription::actionCreated))
-        foreach (Action *action, MappedActions)
+        for (auto action : MappedActions)
             emit actionCreated(action);
 }
 

@@ -530,7 +530,7 @@ void YourAccounts::protocolHandlerChanged(Account account)
 
 void YourAccounts::okClicked()
 {
-    foreach (AccountEditWidget *editWidget, EditWidgets)
+    for (auto editWidget : EditWidgets)
         editWidget->apply();
     close();
 }

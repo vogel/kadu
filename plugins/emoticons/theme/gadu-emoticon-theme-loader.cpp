@@ -55,7 +55,7 @@ void GaduEmoticonThemeLoader::loadEmoticons(const QString &path)
         GaduEmoticonParser parser(dir, emotsTxtStream.readLine());
         if (!parser.emoticon().isNull())
             Emoticons.append(parser.emoticon());
-        foreach (const Emoticon &alias, parser.aliases())
+        for (auto const &alias : parser.aliases())
             if (!alias.isNull())
                 Aliases.append(alias);
     }
@@ -70,7 +70,7 @@ EmoticonTheme GaduEmoticonThemeLoader::loadEmoticonTheme(const QString &path)
     QDir themeDir(path);
     QFileInfoList subDirs = themeDir.entryInfoList(QDir::Dirs);
 
-    foreach (const QFileInfo &subDirInfo, subDirs)
+    for (auto const &subDirInfo : subDirs)
     {
         if (subDirInfo.fileName().startsWith('.'))
             continue;

@@ -147,14 +147,14 @@ void ConfigurationApi::removeChildren(QDomElement parent)
 
 void ConfigurationApi::removeNodes(QDomElement parentNode, const QVector<QDomElement> &elements)
 {
-    foreach (const QDomElement &element, elements)
+    for (auto const &element : elements)
         parentNode.removeChild(element);
 }
 
 void ConfigurationApi::removeNamedNodes(
     QDomElement parentNode, const QVector<QDomElement> &elements, const QString &name)
 {
-    foreach (const QDomElement &element, elements)
+    for (auto const &element : elements)
         if (isElementNamed(element, name))
             parentNode.removeChild(element);
 }
@@ -162,7 +162,7 @@ void ConfigurationApi::removeNamedNodes(
 void ConfigurationApi::removeUuidNodes(
     QDomElement parentNode, const QVector<QDomElement> &elements, const QString &uuid)
 {
-    foreach (const QDomElement &element, elements)
+    for (auto const &element : elements)
         if (isElementUuid(element, uuid))
             parentNode.removeChild(element);
 }
@@ -235,7 +235,7 @@ QDomElement ConfigurationApi::getNamedNode(
         removeNamedNodes(parentNode, nodes, nodeName);
 
     if (ModeGet == getMode || ModeFind == getMode)
-        foreach (const QDomElement &element, nodes)
+        for (auto const &element : nodes)
             if (isElementNamed(element, nodeName))
                 return element;
 
@@ -258,7 +258,7 @@ QDomElement ConfigurationApi::getUuidNode(
         removeUuidNodes(parentNode, nodes, nodeUuid);
 
     if (ModeGet == getMode || ModeFind == getMode)
-        foreach (const QDomElement &element, nodes)
+        for (auto const &element : nodes)
             if (isElementUuid(element, nodeUuid))
                 return element;
 

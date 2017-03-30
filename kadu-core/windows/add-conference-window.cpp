@@ -277,7 +277,7 @@ Chat AddConferenceWindow::computeChat() const
 
     const BuddySet &conferenceBuddies = filterByAccount(account, Model->checkedBuddies());
     ContactSet conferenceContacts;
-    foreach (const Buddy &buddy, conferenceBuddies)
+    for (auto const &buddy : conferenceBuddies)
         conferenceContacts.insert(buddy.contacts(account).first());
 
     return ChatTypeContactSet::findChat(m_chatManager, m_chatStorage, conferenceContacts, ActionCreateAndAdd);
@@ -290,7 +290,7 @@ BuddySet AddConferenceWindow::filterByAccount(const Account &account, const Budd
     if (!account)
         return result;
 
-    foreach (const Buddy &buddy, buddies)
+    for (auto const &buddy : buddies)
         if (buddy.hasContact(account))
             result.insert(buddy);
 

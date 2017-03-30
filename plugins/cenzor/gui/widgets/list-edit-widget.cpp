@@ -63,7 +63,7 @@ void ListEditWidget::createGui()
 void ListEditWidget::setList(const QStringList &list)
 {
     ListWidget->clear();
-    foreach (const QString &item, list)
+    for (auto const &item : list)
         ListWidget->addItem(item);
 }
 

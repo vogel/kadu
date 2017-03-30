@@ -55,7 +55,7 @@ public:
     typename T::object_type transform(const typename T::object_type &object)
     {
         typename T::object_type result = object;
-        foreach (T *transformer, Transformers)
+        for (auto transformer : Transformers)
             result = transformer->transform(result);
         return result;
     }

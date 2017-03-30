@@ -35,7 +35,7 @@ QStringList StringListStorage::load() const
 {
     auto result = QStringList{};
     auto elements = m_storagePoint->storage()->getNodes(m_storagePoint->point(), m_nodeName);
-    for (const auto &element : elements)
+    for (auto const &element : elements)
         result.append(element.text());
     return result;
 }
@@ -44,6 +44,6 @@ void StringListStorage::store(const QStringList &values) const
 {
     m_storagePoint->storage()->removeChildren(m_storagePoint->point());
 
-    for (const auto &value : values)
+    for (auto const &value : values)
         m_storagePoint->storage()->appendTextNode(m_storagePoint->point(), m_nodeName, value);
 }

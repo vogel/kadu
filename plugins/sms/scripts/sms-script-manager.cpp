@@ -92,7 +92,7 @@ void SmsScriptsManager::loadScripts(const QDir &dir)
         return;
 
     QFileInfoList gateways = dir.entryInfoList(QStringList("gateway-*.js"));
-    foreach (const QFileInfo &gatewayFile, gateways)
+    for (auto const &gatewayFile : gateways)
         loadScript(gatewayFile);
 }
 

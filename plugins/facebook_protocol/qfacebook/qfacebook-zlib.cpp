@@ -25,8 +25,8 @@
 #include <QByteArray>
 #include <zlib.h>
 
-constexpr const auto CHUNK_SIZE{32 * 1024};
-constexpr const auto MAX_SIZE{1 << 20};
+constexpr auto const CHUNK_SIZE{32 * 1024};
+constexpr auto const MAX_SIZE{1 << 20};
 
 namespace
 {

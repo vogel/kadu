@@ -124,7 +124,7 @@ void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile()
 
     PlayersMap.clear();
 
-    foreach (const QString &section, userSections)
+    for (auto const &section : userSections)
     {
         QString player = userPlayersSettings.value(section + "/player").toString();
         QString service = userPlayersSettings.value(section + "/service").toString();
@@ -133,7 +133,7 @@ void MPRISPlayerConfigurationUiHandler::loadPlayersListFromFile()
             PlayersMap.insert(player, service);
     }
 
-    foreach (const QString &globalSection, globalSections)
+    for (auto const &globalSection : globalSections)
     {
         if (userSections.contains(globalSection))
             continue;
@@ -216,7 +216,7 @@ void MPRISPlayerConfigurationUiHandler::editPlayer()
     if (!sections.contains(oldPlayer))
         sections = userPlayersSettings.childGroups();
 
-    foreach (const QString &section, sections)
+    for (auto const &section : sections)
     {
         if (section != oldPlayer)
             continue;
@@ -251,7 +251,7 @@ void MPRISPlayerConfigurationUiHandler::delPlayer()
     if (!sections.contains(playerToRemove))
         sections = userPlayersSettings.childGroups();
 
-    foreach (const QString &section, sections)
+    for (auto const &section : sections)
     {
         if (section != playerToRemove)
             continue;

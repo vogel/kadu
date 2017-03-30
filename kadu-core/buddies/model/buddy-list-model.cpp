@@ -204,7 +204,7 @@ void BuddyListModel::contactStatusChanged(const Contact &contact, const Status &
     Q_UNUSED(oldStatus)
 
     const QModelIndexList &indexes = indexListForValue(contact.ownerBuddy());
-    foreach (const QModelIndex &index, indexes)
+    for (auto const &index : indexes)
         if (index.isValid())
             emit dataChanged(index, index);
 }
@@ -297,12 +297,12 @@ void BuddyListModel::setBuddyList(const BuddyList &list)
 {
     beginResetModel();
 
-    foreach (const Buddy &buddy, List)
+    for (auto const buddy : List)
         disconnectBuddy(buddy);
 
     List = list;
 
-    foreach (const Buddy &buddy, List)
+    for (auto const &buddy : List)
         connectBuddy(buddy);
 
     endResetModel();
@@ -543,7 +543,7 @@ QStringList BuddyListModel::mimeTypes() const
 QMimeData *BuddyListModel::mimeData(const QModelIndexList &indexes) const
 {
     BuddyList list;
-    foreach (const QModelIndex &index, indexes)
+    for (auto const &index : indexes)
     {
         Buddy con = index.data(BuddyRole).value<Buddy>();
         if (con.isNull())

@@ -100,10 +100,10 @@ void GroupTabBar::init()
 
 void GroupTabBar::setInitialConfiguration(GroupTabBarConfiguration configuration)
 {
-    foreach (const auto &groupFilter, configuration.groupFilters())
+    for (auto const &groupFilter : configuration.groupFilters())
         insertGroupFilter(count(), groupFilter);
 
-    foreach (const Group &group, m_groupManager->items())
+    for (auto const &group : m_groupManager->items())
         addGroup(group);
 
     setConfiguration(configuration);
@@ -296,9 +296,9 @@ void GroupTabBar::dropEvent(QDropEvent *event)
 
         Group group = m_groupManager->byName(newGroupName);
 
-        foreach (const Buddy &buddy, buddies)
+        for (auto const &buddy : buddies)
             buddy.addToGroup(group);
-        foreach (const Chat &chat, chats)
+        for (auto const &chat : chats)
             chat.addToGroup(group);
 
         QApplication::restoreOverrideCursor();
@@ -384,9 +384,9 @@ void GroupTabBar::addToGroup()
 
     const Group &group = action->data().value<Group>();
 
-    foreach (const Buddy &buddy, DNDBuddies)
+    for (auto const &buddy : DNDBuddies)
         buddy.addToGroup(group);
-    foreach (const Chat &chat, DNDChats)
+    for (auto const &chat : DNDChats)
         chat.addToGroup(group);
 }
 
@@ -399,13 +399,13 @@ void GroupTabBar::moveToGroup()
     const Group &removeFromGroup = m_groupManager->byUuid(tabData(currentIndex()).toString());
     const Group &group = action->data().value<Group>();
 
-    foreach (const Buddy &buddy, DNDBuddies)
+    for (auto const &buddy : DNDBuddies)
     {
         buddy.removeFromGroup(removeFromGroup);
         buddy.addToGroup(group);
     }
 
-    foreach (const Chat &chat, DNDChats)
+    for (auto const &chat : DNDChats)
     {
         chat.removeFromGroup(removeFromGroup);
         chat.addToGroup(group);

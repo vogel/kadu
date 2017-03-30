@@ -447,7 +447,7 @@ void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
     int count = 0;
 
     const QVector<Contact> &contacts = m_contactManager->contacts(account());
-    foreach (const Contact &contact, contacts)
+    for (auto const &contact : contacts)
         if (!contact.isAnonymous() && contact.ownerBuddy().isOfflineTo())
             count++;
 

@@ -49,7 +49,7 @@ void ScreenShotConfigurationUiHandler::mainConfigurationWindowCreated(MainConfig
     QStringList opts;
     QList<QByteArray> byteArrayOpts = QImageWriter::supportedImageFormats();
 
-    foreach (const QByteArray &opt, byteArrayOpts)
+    for (auto const &opt : byteArrayOpts)
         opts.append(QString(opt));
 
     ConfigComboBox *formats =

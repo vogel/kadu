@@ -129,7 +129,7 @@ int AllAccountsStatusContainer::maxDescriptionLength()
 void AllAccountsStatusContainer::setStatus(Status status, StatusChangeSource source)
 {
     LastSetStatus = status;
-    foreach (const Account &account, Accounts)
+    for (auto const &account : Accounts)
         if (account)
             account.statusContainer()->setStatus(status, source);
 }
@@ -145,7 +145,7 @@ Status AllAccountsStatusContainer::loadStatus()
 
 void AllAccountsStatusContainer::storeStatus(Status status)
 {
-    foreach (const Account &account, Accounts)
+    for (auto const &account : Accounts)
         account.statusContainer()->storeStatus(status);
 }
 

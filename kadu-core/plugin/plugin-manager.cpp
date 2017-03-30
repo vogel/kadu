@@ -55,7 +55,7 @@ void PluginManager::setPluginStateService(PluginStateService *pluginStateService
 void PluginManager::activateProtocolPlugins()
 {
     if (m_pluginActivationService)
-        for (const auto &pluginName :
+        for (auto const &pluginName :
              pluginsToActivate([](const PluginMetadata &pluginMetadata) { return pluginMetadata.type == "protocol"; }))
             m_pluginActivationService->activatePluginWithDependencies(pluginName);
 }
@@ -63,7 +63,7 @@ void PluginManager::activateProtocolPlugins()
 void PluginManager::activatePlugins()
 {
     if (m_pluginActivationService)
-        for (const auto &pluginName : pluginsToActivate())
+        for (auto const &pluginName : pluginsToActivate())
         {
             m_pluginActivationService->activatePluginWithDependencies(pluginName);
             m_pluginStateService->setPluginState(

@@ -131,7 +131,7 @@ ChatType *ChatDetailsContactSet::type() const
 QString ChatDetailsContactSet::name() const
 {
     QStringList displays;
-    foreach (const Contact &contact, m_contacts)
+    for (auto const &contact : m_contacts)
         displays.append(contact.display(true));
 
     displays.sort();

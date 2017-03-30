@@ -106,7 +106,7 @@ void AntistringConfigurationUiHandler::updateConditionList()
 {
     ConditionListWidget->clear();
 
-    foreach (const ConditionPair &condition, m_antistringConfiguration->conditions())
+    for (auto const &condition : m_antistringConfiguration->conditions())
         ConditionListWidget->addItem(QString("(%1) %2").arg(condition.second).arg(condition.first));
 }
 

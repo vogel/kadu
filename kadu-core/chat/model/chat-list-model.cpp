@@ -78,13 +78,13 @@ void ChatListModel::setChats(const QVector<Chat> &chats)
 {
     beginResetModel();
 
-    foreach (const Chat &chat, List)
+    for (auto const &chat : List)
         disconnectChat(chat);
 
     List = chats;
 
     // We want all items to be loaded
-    foreach (const Chat &chat, List)
+    for (auto const &chat : List)
     {
         Q_ASSERT(chat.data());
         chat.data()->ensureLoaded();
@@ -360,7 +360,7 @@ QStringList ChatListModel::mimeTypes() const
 QMimeData *ChatListModel::mimeData(const QModelIndexList &indexes) const
 {
     QList<Chat> list;
-    foreach (const QModelIndex &index, indexes)
+    for (auto const &index : indexes)
     {
         Chat chat = index.data(ChatRole).value<Chat>();
         if (chat)

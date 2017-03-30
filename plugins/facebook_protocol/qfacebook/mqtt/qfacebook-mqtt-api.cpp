@@ -47,7 +47,7 @@
 
 #include <QtNetwork/QSslSocket>
 
-constexpr const auto KEEP_ALIVE = uint16_t{60};
+constexpr auto const KEEP_ALIVE = uint16_t{60};
 
 QFacebookMqttApi::QFacebookMqttApi(QFacebookSessionToken session, QFacebookDeviceId deviceId, QObject *parent)
         : QObject{parent}, m_session{std::move(session)}, m_deviceId{std::move(deviceId)},

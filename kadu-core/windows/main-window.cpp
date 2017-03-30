@@ -131,7 +131,7 @@ void MainWindow::loadToolBarsFromConfig()
 {
     // lame, i know
 
-    foreach (QObject *object, children())
+    for (auto object : children())
     {
         QToolBar *toolBar = qobject_cast<QToolBar *>(object);
         if (toolBar)
@@ -190,7 +190,7 @@ void MainWindow::loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::Tool
     if (area == Qt::LeftToolBarArea || area == Qt::RightToolBarArea)
     {
         qSort(toolBars.begin(), toolBars.end(), verticalToolbarComparator);
-        foreach (ToolBar *toolBar, toolBars)
+        for (auto toolBar : toolBars)
         {
             if (toolBar->xOffset() != currentLine)
                 addToolBarBreak(area);
@@ -202,7 +202,7 @@ void MainWindow::loadToolBarsFromConfigNode(QDomElement dockareaConfig, Qt::Tool
     else
     {
         qSort(toolBars.begin(), toolBars.end(), horizontalToolbarComparator);
-        foreach (ToolBar *toolBar, toolBars)
+        for (auto toolBar : toolBars)
         {
             if (toolBar->yOffset() != currentLine)
                 addToolBarBreak(area);
@@ -358,7 +358,7 @@ void MainWindow::writeToolBarsToConfig(Qt::ToolBarArea area)
     m_configuration->api()->removeChildren(dockAreaConfig);
 
     // TODO: laaaaame
-    foreach (QObject *child, children())
+    for (auto child : children())
     {
         ToolBar *toolBar = qobject_cast<ToolBar *>(child);
         if (!toolBar)
@@ -435,7 +435,7 @@ void MainWindow::addRightToolbar()
 
 bool MainWindow::hasAction(const QString &actionName, ToolBar *exclude)
 {
-    foreach (QObject *object, children())
+    for (auto object : children())
     {
         ToolBar *toolBar = qobject_cast<ToolBar *>(object);
         if (toolBar && toolBar != exclude && toolBar->hasAction(actionName))
@@ -471,7 +471,7 @@ void MainWindow::setTransparency(bool enable)
     {
         setAttribute(Qt::WA_TranslucentBackground, true);
 
-        foreach (QObject *object, children())
+        for (auto object : children())
         {
             QToolBar *toolBar = qobject_cast<QToolBar *>(object);
             if (toolBar)
@@ -483,7 +483,7 @@ void MainWindow::setTransparency(bool enable)
     }
     else
     {
-        foreach (QObject *object, children())
+        for (auto object : children())
         {
             QToolBar *toolBar = qobject_cast<QToolBar *>(object);
             if (toolBar)

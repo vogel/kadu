@@ -101,7 +101,7 @@ void UrlHandlerManager::unregisterUrlHandler(UrlHandler *handler)
 
 void UrlHandlerManager::openUrl(const QByteArray &url, bool disableMenu)
 {
-    foreach (UrlHandler *handler, RegisteredHandlers)
+    for (auto handler : RegisteredHandlers)
     {
         if (handler->isUrlValid(url))
         {

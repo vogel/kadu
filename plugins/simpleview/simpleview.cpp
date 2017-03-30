@@ -161,7 +161,7 @@ void SimpleView::simpleViewToggle(bool activate)
             MainWindowHandle->hide();
 
             /* Toolbars */
-            foreach (QObject *object, MainWindowHandle->children())
+            for (auto object : MainWindowHandle->children())
             {
                 QToolBar *toolBar = qobject_cast<QToolBar *>(object);
                 if (toolBar)
@@ -236,7 +236,7 @@ void SimpleView::simpleViewToggle(bool activate)
             KaduWindowHandle->menuBar()->show();
 
             /* Toolbars */
-            foreach (QObject *object, MainWindowHandle->children())
+            for (auto object : MainWindowHandle->children())
             {
                 QToolBar *toolBar = qobject_cast<QToolBar *>(object);
                 if (toolBar)

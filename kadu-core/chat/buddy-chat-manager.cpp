@@ -62,13 +62,13 @@ void BuddyChatManager::init()
     connect(m_chatManager, SIGNAL(chatAdded(Chat)), this, SLOT(chatAdded(Chat)));
     connect(m_chatManager, SIGNAL(chatRemoved(Chat)), this, SLOT(chatRemoved(Chat)));
 
-    foreach (const Chat &chat, m_chatManager->items())
+    for (auto const &chat : m_chatManager->items())
         chatAdded(chat);
 }
 
 void BuddyChatManager::done()
 {
-    foreach (const Chat &chat, m_chatManager->items())
+    for (auto const &chat : m_chatManager->items())
         chatRemoved(chat);
 }
 
@@ -79,7 +79,7 @@ Chat BuddyChatManager::createAndInsertBuddyChat(const Buddy &buddy)
     Q_ASSERT(buddyDetails);
 
     QVector<Chat> chats;
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
     {
         auto contactChat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
         if (contactChat)

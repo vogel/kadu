@@ -82,7 +82,7 @@ const ConfigurationValueStateNotifier *BuddyContactsTableModel::valueStateNotifi
 
 bool BuddyContactsTableModel::isValid() const
 {
-    foreach (BuddyContactsTableItem *item, Contacts)
+    for (auto item : Contacts)
         if (!item->isValid())
             return false;
 
@@ -129,7 +129,7 @@ void BuddyContactsTableModel::contactsFromBuddy()
     }
 
     if (!ModelBuddy.contacts().isEmpty())
-        foreach (const Contact &contact, ModelBuddy.contacts())
+        for (auto const &contact : ModelBuddy.contacts())
             addItem(new BuddyContactsTableItem(m_contactManager, contact, this), false);
 
     endResetModel();
@@ -137,7 +137,7 @@ void BuddyContactsTableModel::contactsFromBuddy()
 
 void BuddyContactsTableModel::buddyFromContacts()
 {
-    foreach (BuddyContactsTableItem *item, Contacts)
+    for (auto item : Contacts)
         performItemAction(item);
 
     ModelBuddy.sortContacts();

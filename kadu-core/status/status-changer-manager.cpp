@@ -83,7 +83,7 @@ void StatusChangerManager::statusChanged(StatusContainer *container, StatusChang
 {
     if (!container)
     {
-        foreach (StatusContainer *statusContainer, m_statusContainerManager->statusContainers())
+        for (auto statusContainer : m_statusContainerManager->statusContainers())
             if (statusContainer)
                 statusChanged(statusContainer, source);
 

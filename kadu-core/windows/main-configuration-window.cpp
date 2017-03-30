@@ -329,7 +329,7 @@ void MainConfigurationWindow::setIconThemes()
 
     QStringList values;
     QStringList captions;
-    foreach (const Theme &theme, m_iconThemeManager->themes())
+    for (auto const &theme : m_iconThemeManager->themes())
     {
         values.append(theme.name());
         captions.append(QCoreApplication::translate("@default", theme.name().toUtf8().constData()));
@@ -345,7 +345,7 @@ void MainConfigurationWindow::setIconThemes()
               << "preferences-other";
 
     QList<QIcon> icons;
-    foreach (const Theme &theme, m_iconThemeManager->themes())
+    for (auto const &theme : m_iconThemeManager->themes())
     {
         QPixmap combinedIcon(iconPaths.count() * 36, 36);
         combinedIcon.fill(Qt::transparent);

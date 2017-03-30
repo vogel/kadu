@@ -51,7 +51,7 @@ DesktopAwareObject::~DesktopAwareObject()
  */
 void DesktopAwareObject::notifyDesktopModified()
 {
-    foreach (DesktopAwareObject *object, Objects)
+    for (auto object : Objects)
         object->desktopModified();
 }
 

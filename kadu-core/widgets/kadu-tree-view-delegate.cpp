@@ -67,7 +67,7 @@ void KaduTreeViewDelegate::updateShowIdentityName()
         return;
 
     int activeIdentitiesCount = 0;
-    foreach (const Identity &identity, m_identityManager->items())
+    for (auto const &identity : m_identityManager->items())
         if (identity.hasAnyLoadedAccount())
             if (++activeIdentitiesCount > 1)
                 break;

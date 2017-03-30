@@ -236,7 +236,7 @@ void StatusWindow::setupStatusSelect()
     if (commonStatusType == StatusType::None)
         StatusSelect->addItem(tr("do not change"), QVariant(static_cast<int>(StatusType::None)));
 
-    foreach (StatusType statusType, Container->supportedStatusTypes())
+    for (auto statusType : Container->supportedStatusTypes())
     {
         if (StatusType::None == statusType)
             continue;
@@ -283,7 +283,7 @@ QSize StatusWindow::sizeHint() const
 StatusType StatusWindow::findCommonStatusType(const QList<StatusContainer *> &containers)
 {
     StatusType commonStatusType = StatusType::None;
-    foreach (StatusContainer *container, containers)
+    for (auto container : containers)
     {
         StatusType statusType = container->status().type();
         if (commonStatusType == StatusType::None)

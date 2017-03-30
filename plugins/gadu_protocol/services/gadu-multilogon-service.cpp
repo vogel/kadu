@@ -93,7 +93,7 @@ gg_multilogon_id_t GaduMultilogonService::toMultilogonId(QByteArray byteArray)
 bool GaduMultilogonService::containsSession(const gg_multilogon_session &session)
 {
     auto sessionId = toByteArray(session.id);
-    for (const auto &multilogonSession : Sessions)
+    for (auto const &multilogonSession : Sessions)
         if (sessionId == multilogonSession.id)
             return true;
 

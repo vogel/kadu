@@ -89,7 +89,7 @@ ContactSet BuddyPreferredManager::preferredContacts(const BuddySet &buddies)
         return ContactSet();
 
     ContactSet contacts;
-    foreach (const Buddy &buddy, buddies)
+    for (auto const &buddy : buddies)
         contacts.insert(preferredContact(buddy, commonAccount));
 
     return contacts;
@@ -100,7 +100,7 @@ Contact BuddyPreferredManager::preferredContactByPriority(const Buddy &buddy, co
     if (account.isNull())
         return buddy.contacts().at(0);
 
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
         if (contact.contactAccount() == account)
             return contact;
 
@@ -121,7 +121,7 @@ Account BuddyPreferredManager::preferredAccount(const Buddy &buddy, bool include
 Contact BuddyPreferredManager::preferredContactByUnreadMessages(const Buddy &buddy, const Account &account)
 {
     Contact result;
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
     {
         if (contact.unreadMessagesCount() > 0)
             result = morePreferredContactByStatus(result, contact, account);
@@ -151,7 +151,7 @@ Contact BuddyPreferredManager::preferredContactByChatWidgets(const Buddy &buddy,
 Contact BuddyPreferredManager::preferredContactByStatus(const Buddy &buddy, const Account &account)
 {
     Contact result;
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
         result = morePreferredContactByStatus(result, contact, account);
     return result;
 }
@@ -178,7 +178,7 @@ BuddyPreferredManager::morePreferredContactByStatus(const Contact &c1, const Con
 
 bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddySet &buddies)
 {
-    foreach (const Buddy &buddy, buddies)
+    for (auto const &buddy : buddies)
         if (buddy.contacts(account).isEmpty())
             return false;
 
@@ -187,7 +187,7 @@ bool BuddyPreferredManager::isAccountCommon(const Account &account, const BuddyS
 
 Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 {
-    foreach (const Account &account, m_accountManager->items())
+    for (auto const &account : m_accountManager->items())
         if (account.protocolHandler() && isAccountCommon(account, buddies))
             return account;
 

@@ -55,7 +55,7 @@ void OpenChatWithRunnerManager::unregisterRunner(OpenChatWithRunner *runner)
 BuddyList OpenChatWithRunnerManager::matchingContacts(const QString &query)
 {
     BuddyList matchingContacts;
-    foreach (OpenChatWithRunner *runner, Runners)
+    for (auto runner : Runners)
         matchingContacts += runner->matchingContacts(query);
 
     return matchingContacts;

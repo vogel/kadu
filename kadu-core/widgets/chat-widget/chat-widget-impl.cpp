@@ -534,7 +534,7 @@ bool ChatWidgetImpl::decodeLocalFiles(QDropEvent *event, QStringList &files)
 
     QList<QUrl> urls = event->mimeData()->urls();
 
-    foreach (const QUrl &url, urls)
+    for (auto const &url : urls)
     {
         QString file = url.toLocalFile();
         if (!file.isEmpty())

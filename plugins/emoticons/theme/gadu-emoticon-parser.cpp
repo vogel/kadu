@@ -75,7 +75,7 @@ void GaduEmoticonParser::parse()
         staticPath = ThemePath + fixFileName(ThemePath, staticPath);
 
     Result = Emoticon(aliases.at(0), staticPath, animatedPath);
-    foreach (const QString &alias, aliases)
+    for (auto const &alias : aliases)
         Aliases.append(Emoticon(alias, staticPath, animatedPath));
 }
 

@@ -176,7 +176,7 @@ UinType *GaduChatService::contactsToUins(const QVector<Contact> &contacts) const
     UinType *uins = new UinType[contacts.count()];
     unsigned int i = 0;
 
-    foreach (const Contact &contact, contacts)
+    for (auto const &contact : contacts)
         uins[i++] = GaduProtocolHelper::uin(contact);
 
     return uins;

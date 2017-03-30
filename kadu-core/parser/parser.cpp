@@ -63,12 +63,12 @@ static void prepareSearchChars(Configuration *configuration, bool forceExecSeach
 {
     QSet<QChar> &chars = *searchChars();
     if (chars.isEmpty())
-        foreach (QChar c, QString(SEARCH_CHARS))
+        for (auto c : QString(SEARCH_CHARS))
             chars.insert(c);
 
     bool allowExec = forceExecSeachChars ||
                      configuration->deprecatedApi()->readBoolEntry("General", "AllowExecutingFromParser", false);
-    foreach (QChar c, QString(EXEC_SEARCH_CHARS))
+    for (auto c : QString(EXEC_SEARCH_CHARS))
         if (allowExec)
             chars.insert(c);
         else
@@ -120,7 +120,7 @@ QString Parser::escape(const QString &string)
     QString escaped;
     escaped.reserve(string.size() * 2);
     QSet<QChar> &chars = *searchChars();
-    foreach (QChar c, string)
+    for (auto c : string)
     {
         if (chars.contains(c))
             escaped.append('\'');
@@ -384,10 +384,10 @@ ParserToken Parser::parsePercentSyntax(const QString &s, int &idx, const Talkabl
 
         QStringList groups;
         if (chat)
-            foreach (const Group &group, chat.groups())
+            for (auto const &group : chat.groups())
                 groups << group.name();
         else
-            foreach (const Group &group, buddy.groups())
+            for (auto const &group : buddy.groups())
                 groups << group.name();
 
         pe.setContent(groups.join(","));
@@ -430,7 +430,7 @@ template <typename ContainerClass>
 QString Parser::joinParserTokens(const ContainerClass &parseStack)
 {
     QString joined;
-    foreach (const ParserToken &elem, parseStack)
+    for (auto const &elem : parseStack)
     {
         switch (elem.type())
         {
@@ -621,7 +621,7 @@ QString Parser::parse(
                     if (pe2.type() == PT_CHECK_FILE_EXISTS || pe2.type() == PT_CHECK_FILE_NOT_EXISTS)
                     {
                         int firstSpaceTokenIdx = 0, spacePos = -1;
-                        foreach (const ParserToken &token, tokens)
+                        for (auto const &token : tokens)
                         {
                             // encoded cannot contain space
                             if (!token.isEncoded())

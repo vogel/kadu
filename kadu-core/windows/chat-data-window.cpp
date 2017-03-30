@@ -116,7 +116,7 @@ void ChatDataWindow::init()
         m_chatConfigurationWidgetFactoryRepository, SIGNAL(factoryUnregistered(ChatConfigurationWidgetFactory *)), this,
         SLOT(factoryUnregistered(ChatConfigurationWidgetFactory *)));
 
-    foreach (ChatConfigurationWidgetFactory *factory, m_chatConfigurationWidgetFactoryRepository->factories())
+    for (auto factory : m_chatConfigurationWidgetFactoryRepository->factories())
         factoryRegistered(factory);
 }
 
@@ -155,7 +155,7 @@ QList<ChatConfigurationWidget *> ChatDataWindow::chatConfigurationWidgets() cons
 
 void ChatDataWindow::applyChatConfigurationWidgets()
 {
-    foreach (ChatConfigurationWidget *widget, ChatConfigurationWidgets)
+    for (auto widget : ChatConfigurationWidgets)
         widget->apply();
 }
 

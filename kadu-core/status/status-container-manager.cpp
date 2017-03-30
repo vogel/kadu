@@ -94,7 +94,7 @@ void StatusContainerManager::updateIdentities()
     if (!m_statusConfigurationHolder->isSetStatusPerIdentity())
         return;
 
-    foreach (const Identity &identity, m_identityManager->items())
+    for (auto const &identity : m_identityManager->items())
         if (StatusContainers.contains(identity.statusContainer()) && !identity.hasAnyLoadedAccount())
             unregisterStatusContainer(identity.statusContainer());
         else if (!StatusContainers.contains(identity.statusContainer()) && identity.hasAnyLoadedAccount())
@@ -155,7 +155,7 @@ void StatusContainerManager::cleanStatusContainers()
 
 void StatusContainerManager::addAllAccounts()
 {
-    foreach (Account account, m_accountManager->items())
+    for (auto account : m_accountManager->items())
         registerStatusContainer(account.statusContainer());
 }
 
@@ -237,7 +237,7 @@ bool StatusContainerManager::allStatusOfType(StatusType type)
     if (StatusType::None == type)
         return false;
 
-    foreach (StatusContainer *container, StatusContainers)
+    for (auto container : StatusContainers)
         if (container->status().type() != type)
             return false;
     return true;
@@ -250,7 +250,7 @@ QString StatusContainerManager::statusContainerName()
 
 void StatusContainerManager::setStatus(Status status, StatusChangeSource source)
 {
-    foreach (StatusContainer *container, StatusContainers)
+    for (auto container : StatusContainers)
         container->setStatus(status, source);
 }
 
@@ -299,7 +299,7 @@ Status StatusContainerManager::loadStatus()
 
 void StatusContainerManager::storeStatus(Status status)
 {
-    foreach (StatusContainer *statusContainer, StatusContainers)
+    for (auto statusContainer : StatusContainers)
         statusContainer->storeStatus(status);
 }
 

@@ -339,7 +339,7 @@ void NotifyConfigurationUiHandler::customSettingsCheckBoxToggled(bool toggled)
 
     notifyTreeWidget->useCustomSettingsChecked(toggled);
 
-    foreach (const NotifierConfigurationGuiItem &guiItem, NotifierGui)
+    for (auto const &guiItem : NotifierGui)
         if (guiItem.ConfigurationGroupBox)
             guiItem.ConfigurationGroupBox->setVisible(toggled);
 }

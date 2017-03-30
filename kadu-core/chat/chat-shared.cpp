@@ -212,7 +212,7 @@ void ChatShared::store()
     if (!Groups.isEmpty())
     {
         QDomElement groupsNode = configurationStorage->getNode(parent, "ChatGroups", ConfigurationApi::ModeCreate);
-        foreach (const Group &group, Groups)
+        for (auto const &group : Groups)
             configurationStorage->appendTextNode(groupsNode, "Group", group.uuid().toString());
     }
     else
@@ -348,11 +348,11 @@ void ChatShared::setGroups(const QSet<Group> &groups)
 
     QSet<Group> groupsToRemove = Groups;
 
-    foreach (const Group &group, groups)
+    for (auto const &group : groups)
         if (!groupsToRemove.remove(group))
             doAddToGroup(group);
 
-    foreach (const Group &group, groupsToRemove)
+    for (auto const &group : groupsToRemove)
         doRemoveFromGroup(group);
 
     changeNotifier().notify();
@@ -369,7 +369,7 @@ bool ChatShared::showInAllGroup()
 {
     ensureLoaded();
 
-    foreach (const Group &group, Groups)
+    for (auto const &group : Groups)
         if (group && !group.showInAllGroup())
             return false;
 

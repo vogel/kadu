@@ -230,7 +230,7 @@ void ChatStyleManager::loadStyles()
 
     AvailableStyles.clear();   // allow reloading of styles
 
-    foreach (const QString &file, files)
+    for (auto const &file : files)
     {
         fi.setFile(path + file);
         if (fi.isReadable() && !AvailableStyles.contains(file))
@@ -253,7 +253,7 @@ void ChatStyleManager::loadStyles()
 
     files = dir.entryList();
 
-    foreach (const QString &file, files)
+    for (auto &file : files)
     {
         fi.setFile(path + file);
         if (fi.isReadable() && !AvailableStyles.contains(file))

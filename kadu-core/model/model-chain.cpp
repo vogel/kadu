@@ -89,7 +89,7 @@ QModelIndexList ModelChain::indexListForValue(const QVariant &value) const
     for (int i = 0; i < size; i++)
     {
         QModelIndex index = indexes.at(i);
-        foreach (QAbstractProxyModel *proxyModel, ProxyModels)
+        for (auto proxyModel : ProxyModels)
             index = proxyModel->mapFromSource(index);
         result.append(index);
     }

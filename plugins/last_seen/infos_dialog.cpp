@@ -103,7 +103,7 @@ void InfosDialog::init()
            << tr("Last time seen on");
     ListView->setHeaderLabels(labels);
 
-    foreach (const Contact &contact, m_contactManager->items())
+    for (auto const &contact : m_contactManager->items())
     {
         if (contact.isAnonymous())
             continue;

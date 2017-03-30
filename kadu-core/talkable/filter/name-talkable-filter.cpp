@@ -43,11 +43,11 @@ bool NameTalkableFilter::matches(const Chat &chat)
     if (chat.display().contains(Name, Qt::CaseInsensitive))
         return true;
 
-    foreach (const Buddy &buddy, chat.contacts().toBuddySet())
+    for (auto const &buddy : chat.contacts().toBuddySet())
         if (matches(buddy))
             return true;
 
-    foreach (const Group &group, chat.groups())
+    for (auto const &group : chat.groups())
         if (group.name().contains(Name, Qt::CaseInsensitive))
             return true;
 
@@ -69,11 +69,11 @@ bool NameTalkableFilter::matches(const Buddy &buddy)
     if (buddy.email().contains(Name, Qt::CaseInsensitive))
         return true;
 
-    foreach (const Contact &contact, buddy.contacts())
+    for (auto const &contact : buddy.contacts())
         if (matches(contact))
             return true;
 
-    foreach (const Group &group, buddy.groups())
+    for (auto const &group : buddy.groups())
         if (group.name().contains(Name, Qt::CaseInsensitive))
             return true;
 

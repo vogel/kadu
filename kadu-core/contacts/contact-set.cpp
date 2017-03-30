@@ -39,7 +39,7 @@ QVector<Contact> ContactSet::toContactVector() const
 {
     QVector<Contact> result;
     result.reserve(size());
-    foreach (const Contact &contact, *this)
+    for (auto const &contact : *this)
         result.append(contact);
 
     return result;
@@ -48,7 +48,7 @@ QVector<Contact> ContactSet::toContactVector() const
 BuddySet ContactSet::toBuddySet() const
 {
     BuddySet buddies;
-    foreach (const Contact &contact, *this)
+    for (auto const &contact : *this)
         if (contact.ownerBuddy())
             buddies.insert(contact.ownerBuddy());
 

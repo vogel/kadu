@@ -57,7 +57,7 @@ void ProtocolsManager::unregisterProtocolFactory(ProtocolFactory *factory)
 
 bool ProtocolsManager::hasProtocolFactory(const QString &name)
 {
-    foreach (ProtocolFactory *factory, Factories)
+    for (auto factory : Factories)
         if (factory->name() == name)
             return true;
 
@@ -66,7 +66,7 @@ bool ProtocolsManager::hasProtocolFactory(const QString &name)
 
 ProtocolFactory *ProtocolsManager::byName(const QString &name)
 {
-    foreach (ProtocolFactory *factory, Factories)
+    for (auto factory : Factories)
         if (factory->name() == name)
             return factory;
 

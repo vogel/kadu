@@ -250,7 +250,7 @@ void SmsDialog::recipientNumberChanged(const QString &number)
         return;
     }
 
-    foreach (const Buddy &buddy, m_buddyManager->items())
+    for (auto const &buddy : m_buddyManager->items())
         if (buddy.mobile() == number)
         {
             RecipientComboBox->setCurrentTalkable(buddy);

@@ -91,7 +91,7 @@ void MPRISPlayer::replacePlugin()
     replaceMap.insert("vlc_mediaplayer", "VLC");
     replaceMap.insert("xmms2_mediaplayer", "XMMS2");
 
-    foreach (const QString &value, replaceMap)
+    for (auto const &value : replaceMap)
     {
         QString key = replaceMap.key(value);
         if (m_pluginStateService->pluginState(key) == PluginState::Enabled)

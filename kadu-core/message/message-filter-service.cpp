@@ -45,7 +45,7 @@ void MessageFilterService::unregisterMessageFilter(MessageFilter *filter)
 
 bool MessageFilterService::acceptMessage(const Message &message)
 {
-    foreach (MessageFilter *filter, MessageFilters)
+    for (auto filter : MessageFilters)
         if (!filter->acceptMessage(message))
             return false;
     return true;

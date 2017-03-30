@@ -61,7 +61,7 @@ ConfigSection::~ConfigSection()
 
     // delete them here, since they manually delete child widgets of our TabWidget
     // qDeleteAll() won't work here because of connection to destroyed() signal
-    foreach (const ConfigTab *ct, ConfigTabs)
+    for (auto const *ct : ConfigTabs)
     {
         disconnect(ct, SIGNAL(destroyed(QObject *)), this, SLOT(configTabDestroyed(QObject *)));
         delete ct;

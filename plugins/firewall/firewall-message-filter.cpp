@@ -278,7 +278,7 @@ bool FirewallMessageFilter::checkConference(const Chat &chat)
     if (chat.contacts().count() < 2)
         return false;
 
-    foreach (const Contact &contact, chat.contacts())
+    for (auto const &contact : chat.contacts())
     {
         if (!contact.isAnonymous() || Passed.contains(contact))
         {
@@ -470,7 +470,7 @@ bool FirewallMessageFilter::checkEmoticons(const QString &message)
           << "]:->";
 
     int occ = 0;
-    foreach (const QString &emot, emots)
+    for (auto const &emot : emots)
         occ += message.count(emot);
 
     return (occ > MaxEmoticons);
@@ -489,7 +489,7 @@ void FirewallMessageFilter::accountConnected()
 
 void FirewallMessageFilter::chatDestroyed(ChatWidget *chatWidget)
 {
-    foreach (const Contact &contact, chatWidget->chat().contacts())
+    for (auto const &contact : chatWidget->chat().contacts())
     {
         if (SecuredTemporaryAllowed.contains(contact.ownerBuddy()))
             SecuredTemporaryAllowed.remove(contact.ownerBuddy());
@@ -498,7 +498,7 @@ void FirewallMessageFilter::chatDestroyed(ChatWidget *chatWidget)
 
 bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
 {
-    foreach (const Contact &contact, message.messageChat().contacts())
+    for (auto const &contact : message.messageChat().contacts())
     {
         Chat chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionReturnNull);
         if (!chat)
@@ -510,7 +510,7 @@ bool FirewallMessageFilter::acceptOutgoingMessage(const Message &message)
 
     if (SafeSending)
     {
-        foreach (const Contact &contact, message.messageChat().contacts())
+        for (auto const &contact : message.messageChat().contacts())
         {
             Buddy buddy = contact.ownerBuddy();
 

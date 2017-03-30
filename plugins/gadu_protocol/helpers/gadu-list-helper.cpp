@@ -76,7 +76,7 @@ QString GaduListHelper::contactToLine70(Contact contact)
     list.append(buddy.mobile());
 
     QStringList groups;
-    foreach (const Group &group, buddy.groups())
+    for (auto const &group : buddy.groups())
         groups.append(group.name());
 
     list.append(groups.join(","));
@@ -376,7 +376,7 @@ Buddy GaduListHelper::line70ToBuddy(Account account, QStringList &sections)
 
     if (!sections[5].isEmpty())
     {
-        foreach (const QString &group, sections[5].split(',', QString::SkipEmptyParts))
+        for (auto const &group : sections[5].split(',', QString::SkipEmptyParts))
             groups.insert(m_groupManager->byName(group));
 
         buddy.setGroups(groups);

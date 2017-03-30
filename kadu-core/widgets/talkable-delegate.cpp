@@ -74,7 +74,7 @@ void TalkableDelegate::contactUpdated(const Contact &contact)
         return;
 
     const QModelIndexList &contactsIndexList = Chain.data()->indexListForValue(contact);
-    foreach (const QModelIndex &contactIndex, contactsIndexList)
+    for (auto const &contactIndex : contactsIndexList)
         emit sizeHintChanged(contactIndex);
 }
 
@@ -84,7 +84,7 @@ void TalkableDelegate::buddyUpdated(const Buddy &buddy)
         return;
 
     const QModelIndexList &buddyIndexList = Chain.data()->indexListForValue(buddy);
-    foreach (const QModelIndex &buddyIndex, buddyIndexList)
+    for (auto const &buddyIndex : buddyIndexList)
         emit sizeHintChanged(buddyIndex);
 }
 

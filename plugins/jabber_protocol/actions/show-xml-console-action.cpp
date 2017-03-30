@@ -90,7 +90,7 @@ void ShowXmlConsoleAction::updateShowXmlConsoleMenu()
 {
     QVector<Account> jabberAccounts = m_accountManager->byProtocolName("jabber");
 
-    foreach (Action *action, actions())
+    for (auto action : actions())
     {
         QMenu *menu = action->menu();
         if (jabberAccounts.isEmpty() || 1 == m_accountManager->items().count())
@@ -120,7 +120,7 @@ void ShowXmlConsoleAction::updateShowXmlConsoleMenu()
                 connect(menu, SIGNAL(triggered(QAction *)), this, SLOT(menuActionTriggered(QAction *)));
             }
 
-            foreach (const Account &account, jabberAccounts)
+            for (auto const &account : jabberAccounts)
             {
                 QAction *menuAction =
                     menu->addAction(QString("%1 (%2)").arg(account.accountIdentity().name(), account.id()));

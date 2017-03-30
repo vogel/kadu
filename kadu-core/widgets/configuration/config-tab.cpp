@@ -58,7 +58,7 @@ ConfigTab::~ConfigTab()
     emit destroyed(this);
 
     // qDeleteAll() won't work here because of connection to destroyed() signal
-    foreach (const ConfigGroupBox *cgb, MyConfigGroupBoxes)
+    for (auto cgb : MyConfigGroupBoxes)
     {
         disconnect(cgb, SIGNAL(destroyed(QObject *)), this, SLOT(configGroupBoxDestroyed(QObject *)));
         delete cgb;

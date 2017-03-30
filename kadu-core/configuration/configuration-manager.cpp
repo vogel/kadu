@@ -67,7 +67,7 @@ void ConfigurationManager::init()
 
 void ConfigurationManager::flush()
 {
-    foreach (StorableObject *object, m_registeredStorableObjects)
+    for (auto object : m_registeredStorableObjects)
         object->ensureStored();
 
     m_configuration->api()->rootElement().setAttribute("uuid", m_uuid.toString());

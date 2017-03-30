@@ -35,7 +35,7 @@ MergedProxyModel::~MergedProxyModel()
 
 void MergedProxyModel::connectModels()
 {
-    foreach (const QAbstractItemModel *model, Models)
+    for (auto model : Models)
     {
         Q_ASSERT(model);
 
@@ -76,7 +76,7 @@ void MergedProxyModel::connectModels()
 
 void MergedProxyModel::disconnectModels()
 {
-    foreach (const QAbstractItemModel *model, Models)
+    for (auto model : Models)
     {
         Q_ASSERT(model);
 
@@ -101,7 +101,7 @@ void MergedProxyModel::updateBoundaries() const
     Boundaries.clear();
 
     int index = 0;
-    foreach (const QAbstractItemModel *model, Models)
+    for (auto model : Models)
     {
         Q_ASSERT(model);
 
@@ -182,7 +182,7 @@ void MergedProxyModel::rowsRemovedSlot(const QModelIndex &parent, int first, int
     Q_ASSERT(model);
     Q_ASSERT(Boundaries.contains(model));
 
-    foreach (const QModelIndex &sourceIndex, IndexesToRemove)
+    for (auto const &sourceIndex : IndexesToRemove)
         removeMapping(sourceIndex);
     IndexesToRemove.clear();
 
@@ -322,7 +322,7 @@ void MergedProxyModel::removeMapping(const QModelIndex &sourceParent) const
         i++;
     }
 
-    foreach (const QModelIndex &index, indexesToRemove)
+    for (auto const &index : indexesToRemove)
         removeMapping(index);
 }
 
@@ -377,7 +377,7 @@ int MergedProxyModel::rowCount(const QModelIndex &parent) const
     }
 
     int count = 0;
-    foreach (const QAbstractItemModel *model, Models)
+    for (auto model : Models)
     {
         Q_ASSERT(model);
         count += model->rowCount();
@@ -406,7 +406,7 @@ QVariant MergedProxyModel::data(const QModelIndex &index, int role) const
 QStringList MergedProxyModel::mimeTypes() const
 {
     QStringList result;
-    foreach (const QAbstractItemModel *model, Models)
+    for (auto model : Models)
         result += model->mimeTypes();
     return result;
 }
@@ -417,7 +417,7 @@ QMimeData *MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) const
         return 0;
 
     QMap<const QAbstractItemModel *, QModelIndexList> sourceIndexes;
-    foreach (const QModelIndex &proxyIndex, proxyIndexes)
+    for (auto const &proxyIndex : proxyIndexes)
     {
         const QModelIndex &sourceIndex = mapToSource(proxyIndex);
         const QAbstractItemModel *sourceModel = sourceIndex.model();
@@ -429,13 +429,13 @@ QMimeData *MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) const
     QMimeData *mergedMimeData = new QMimeData();
 
     QList<const QAbstractItemModel *> sourceModels = sourceIndexes.keys();
-    foreach (const QAbstractItemModel *sourceModel, sourceModels)
+    for (auto sourceModel : sourceModels)
     {
         QMimeData *sourceMimeData = sourceModel->mimeData(sourceIndexes.value(sourceModel));
         if (!sourceMimeData)
             continue;
 
-        foreach (const QString &sourceMimeDataFormat, sourceMimeData->formats())
+        for (auto const &sourceMimeDataFormat : sourceMimeData->formats())
             mergedMimeData->setData(sourceMimeDataFormat, sourceMimeData->data(sourceMimeDataFormat));
 
         delete sourceMimeData;

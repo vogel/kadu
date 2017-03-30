@@ -106,7 +106,7 @@ int AntistringMessageFilter::points(const QString &message)
     if (message.length() > 600)
         result++;
 
-    foreach (const ConditionPair &condition, m_antistringConfiguration->conditions())
+    for (auto const &condition : m_antistringConfiguration->conditions())
         if (message.indexOf(QRegExp(condition.first)) >= 0)
             result += condition.second;
 

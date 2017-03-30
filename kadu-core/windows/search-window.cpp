@@ -207,7 +207,7 @@ void SearchWindow::init()
     else
     {
         // TODO choose proper account
-        foreach (const Account &account, m_accountManager->items())
+        for (auto &account : m_accountManager->items())
             if (account.protocolHandler() && account.protocolHandler()->isConnected() &&
                 account.protocolHandler()->searchService())
             {
@@ -425,7 +425,7 @@ ContactSet SearchWindow::selectedContacts() const
 
 void SearchWindow::addFound()
 {
-    foreach (const Buddy &buddy, selectedContacts().toBuddySet())
+    for (auto const &buddy : selectedContacts().toBuddySet())
         (m_injectedFactory->makeInjected<AddBuddyWindow>(m_kaduWindowService->kaduWindow(), buddy))->show();
 }
 
@@ -571,7 +571,7 @@ void SearchWindow::nextSearch()
 
 void SearchWindow::newSearchResults(const BuddyList &buddies)
 {
-    foreach (const Buddy &buddy, buddies)
+    for (auto const &buddy : buddies)
     {
         QVector<Contact> contacts = buddy.contacts(CurrentAccount);
         Contact contact = contacts.isEmpty() ? Contact::null : contacts.at(0);

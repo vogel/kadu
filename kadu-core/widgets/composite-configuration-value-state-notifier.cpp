@@ -60,7 +60,7 @@ ConfigurationValueState CompositeConfigurationValueStateNotifier::computeState()
 {
     bool anyChanged = false;
 
-    foreach (const ConfigurationValueStateNotifier *const stateNotifier, StateNotifiers)
+    for (auto const stateNotifier : StateNotifiers)
     {
         switch (stateNotifier->state())
         {

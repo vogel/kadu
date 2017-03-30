@@ -76,7 +76,7 @@ bool UnreadMessageRepository::importFromPendingMessages()
         return false;
 
     auto messageElements = m_configuration->api()->getNodes(pendingMessagesNode, "Message");
-    for (const auto &messageElement : messageElements)
+    for (auto const &messageElement : messageElements)
     {
         auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), messageElement);
         auto uuid = QUuid{storagePoint->point().attribute("uuid")};
@@ -114,7 +114,7 @@ void UnreadMessageRepository::load()
     auto itemElements = storage()->storage()->getNodes(itemsNode, "Message");
     m_unreadMessages.reserve(itemElements.count());
 
-    for (const auto &itemElement : itemElements)
+    for (auto const &itemElement : itemElements)
     {
         auto storagePoint = std::make_shared<StoragePoint>(storage()->storage(), itemElement);
         auto uuid = QUuid{storagePoint->point().attribute("uuid")};
@@ -168,7 +168,7 @@ SortedMessages UnreadMessageRepository::unreadMessagesForChat(const Chat &chat) 
     auto chatDetailsBuddy = qobject_cast<ChatDetailsBuddy *>(details);
 
     if (chatDetailsBuddy)
-        for (const auto &ch : chatDetailsBuddy->chats())
+        for (auto const &ch : chatDetailsBuddy->chats())
             chats.insert(ch);
     else
         chats.insert(chat);
@@ -193,7 +193,7 @@ int UnreadMessageRepository::unreadMessagesCount() const
 
 void UnreadMessageRepository::markMessagesAsRead(const SortedMessages &messages)
 {
-    for (const auto &message : messages)
+    for (auto const &message : messages)
         if (m_unreadMessages.removeAll(message) > 0)
         {
             message.data()->removeFromStorage();
@@ -212,7 +212,7 @@ Message UnreadMessageRepository::unreadMessage() const
 Message UnreadMessageRepository::unreadMessageForBuddy(const Buddy &buddy) const
 {
     auto contacts = buddy.contacts();
-    for (const auto &message : m_unreadMessages)
+    for (auto const &message : m_unreadMessages)
         if (contacts.contains(message.messageSender()))
             return message;
 
@@ -221,7 +221,7 @@ Message UnreadMessageRepository::unreadMessageForBuddy(const Buddy &buddy) const
 
 Message UnreadMessageRepository::unreadMessageForContact(const Contact &contact) const
 {
-    for (const auto &message : m_unreadMessages)
+    for (auto const &message : m_unreadMessages)
         if (contact == message.messageSender())
             return message;
 

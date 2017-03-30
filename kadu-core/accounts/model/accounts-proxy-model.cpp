@@ -65,8 +65,7 @@ bool AccountsProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sour
         return true;
 
     Account account = sourceModel()->index(sourceRow, 0).data(AccountRole).value<Account>();
-    ;
-    foreach (AbstractAccountFilter *filter, Filters)
+    for (auto filter : Filters)
         if (!filter->acceptAccount(account))
             return false;
 

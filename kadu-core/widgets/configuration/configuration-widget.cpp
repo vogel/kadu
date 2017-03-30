@@ -99,7 +99,7 @@ ConfigurationWidget::~ConfigurationWidget()
     disconnect(SectionsListWidget, 0, this, 0);
 
     // qDeleteAll() won't work here because of connection to destroyed() signal
-    foreach (const ConfigSection *cs, ConfigSections)
+    for (auto const cs : ConfigSections)
     {
         disconnect(cs, SIGNAL(destroyed(QObject *)), this, SLOT(configSectionDestroyed(QObject *)));
         delete cs;
@@ -144,7 +144,7 @@ QList<ConfigWidget *> ConfigurationWidget::appendUiFile(const QString &fileName,
 {
     QList<ConfigWidget *> widgets = processUiFile(fileName, true);
 
-    foreach (ConfigWidget *widget, widgets)
+    for (auto widget : widgets)
     {
         if (!widget)
             continue;
@@ -393,7 +393,7 @@ void ConfigurationWidget::removeUiElementFromDom(QDomNode uiElementNode, ConfigG
     const QDomElement &uiElement = uiElementNode.toElement();
     const QString &caption = uiElement.attribute("caption");
 
-    foreach (QObject *child, configGroupBox->widget()->children())
+    for (auto child : configGroupBox->widget()->children())
     {
         ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(child);
         if (!configWidget)
@@ -471,7 +471,7 @@ void ConfigurationWidget::loadConfiguration(QObject *object)
         return;
 
     const QObjectList children = object->children();
-    foreach (QObject *child, children)
+    for (auto child : children)
         loadConfiguration(child);
 
     ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(object);
@@ -490,7 +490,7 @@ void ConfigurationWidget::saveConfiguration(QObject *object)
         return;
 
     const QObjectList children = object->children();
-    foreach (QObject *child, children)
+    for (auto child : children)
         saveConfiguration(child);
 
     ConfigWidget *configWidget = dynamic_cast<ConfigWidget *>(object);

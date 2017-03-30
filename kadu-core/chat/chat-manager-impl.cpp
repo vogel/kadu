@@ -58,7 +58,7 @@ void ChatManagerImpl::init()
 {
     m_configurationManager->registerStorableObject(this);
 
-    foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+    for (auto const &message : m_unreadMessageRepository->allUnreadMessages())
         unreadMessageAdded(message);
 
     connect(m_unreadMessageRepository, SIGNAL(unreadMessageAdded(Message)), this, SLOT(unreadMessageAdded(Message)));
@@ -70,7 +70,7 @@ void ChatManagerImpl::done()
 {
     disconnect(m_unreadMessageRepository, 0, this, 0);
 
-    foreach (const Message &message, m_unreadMessageRepository->allUnreadMessages())
+    for (auto const &message : m_unreadMessageRepository->allUnreadMessages())
         unreadMessageRemoved(message);
 
     m_configurationManager->unregisterStorableObject(this);
@@ -108,7 +108,7 @@ QVector<Chat> ChatManagerImpl::chats(const Account &account)
     if (account.isNull())
         return chats;
 
-    foreach (const Chat &chat, items())
+    for (auto const &chat : items())
         if (account == chat.chatAccount())
             chats.append(chat);
 
@@ -124,7 +124,7 @@ Chat ChatManagerImpl::byDisplay(const QString &display)
     if (display.isEmpty())
         return Chat::null;
 
-    foreach (const Chat &chat, items())
+    for (auto const &chat : items())
         if (display == chat.display())
             return chat;
 

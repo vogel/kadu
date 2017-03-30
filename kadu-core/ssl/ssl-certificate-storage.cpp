@@ -54,7 +54,7 @@ QSet<SslCertificate> SslCertificateStorage::loadCertificates() const
 
     auto result = QSet<SslCertificate>{};
     auto elements = storage->storage()->getNodes(storage->point(), QStringLiteral("Certificate"));
-    for (const auto &element : elements)
+    for (auto const &element : elements)
     {
         auto hostName = element.attribute("hostName");
         auto pemHexEncodedCertificate = element.text().toUtf8();
@@ -72,7 +72,7 @@ void SslCertificateStorage::storeCertificates(const QSet<SslCertificate> &certif
 
     storage->storage()->removeChildren(storage->point());
 
-    for (const auto &certificate : certificates)
+    for (auto const &certificate : certificates)
     {
         auto element = storage->storage()->createElement(storage->point(), QStringLiteral("Certificate"));
         auto textNode = element.ownerDocument().createTextNode(certificate.pemHexEncodedCertificate());

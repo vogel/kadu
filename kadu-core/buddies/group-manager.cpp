@@ -90,11 +90,11 @@ void GroupManager::importConfiguration()
         return;
 
     QVector<QDomElement> contactsElements = configurationStorage->getNodes(contactsNode, "Contact");
-    foreach (const QDomElement &contactElement, contactsElements)
-        foreach (const QString &newGroup, contactElement.attribute("groups").split(',', QString::SkipEmptyParts))
+    for (auto const &contactElement : contactsElements)
+        for (auto const newGroup : contactElement.attribute("groups").split(',', QString::SkipEmptyParts))
             groups << newGroup;
 
-    foreach (const QString &groupName, groups)
+    for (auto const &groupName : groups)
         byName(groupName);   // it can do import, too
 }
 
@@ -136,7 +136,7 @@ Group GroupManager::byName(const QString &name, bool create)
 
     ensureLoaded();
 
-    foreach (Group group, items())
+    for (auto group : items())
         if (name == group.name())
             return group;
 

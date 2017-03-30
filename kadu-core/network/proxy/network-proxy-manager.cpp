@@ -101,7 +101,7 @@ const NetworkProxy &NetworkProxyManager::defaultProxy()
 NetworkProxy NetworkProxyManager::byConfiguration(
     const QString &address, int port, const QString &user, const QString &password, NotFoundAction action)
 {
-    foreach (const NetworkProxy &networkProxy, items())
+    for (auto const &networkProxy : items())
     {
         if (networkProxy.address() == address && networkProxy.port() == port && networkProxy.user() == user &&
             networkProxy.password() == password)

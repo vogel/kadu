@@ -36,18 +36,18 @@ Chat ChatTypeContactSet::findChat(
     if (account.isNull())
         return Chat::null;
 
-    foreach (const Contact &contact, contacts)
+    for (auto const &contact : contacts)
         if (account != contact.contactAccount())
             return Chat::null;
 
     // TODO #1694
     // for some users that have self on user list
     // this should not be possible, and prevented on other level (like in ContactManager)
-    foreach (const Contact &contact, contacts)
+    for (auto const &contact : contacts)
         if (contact.id() == account.id())
             return Chat::null;
 
-    foreach (const Chat &chat, chatManager->items())
+    for (auto const &chat : chatManager->items())
         if (chat.type() == QStringLiteral("ContactSet") || chat.type() == QStringLiteral("Conference"))
             if (chat.contacts() == contacts)
             {

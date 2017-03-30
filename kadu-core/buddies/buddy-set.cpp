@@ -38,7 +38,7 @@ BuddySet::BuddySet(Buddy buddy)
 
 bool BuddySet::isAllAnonymous() const
 {
-    foreach (const Buddy &buddy, *this)
+    for (auto const &buddy : *this)
         if (!buddy.isAnonymous())
             return false;
 
@@ -70,8 +70,8 @@ Buddy BuddySet::toBuddy() const
 QVector<Contact> BuddySet::getAllContacts() const
 {
     QVector<Contact> allContacts;
-    foreach (const Buddy &buddy, *this)
-        foreach (const Contact &contact, buddy.contacts())
+    for (auto const &buddy : *this)
+        for (auto const &contact : buddy.contacts())
             allContacts.append(contact);
 
     return allContacts;
@@ -80,7 +80,7 @@ QVector<Contact> BuddySet::getAllContacts() const
 uint qHash(const BuddySet &buddySet)
 {
     uint hash = 0;
-    foreach (const Buddy &buddy, buddySet)
+    for (auto const &buddy : buddySet)
         hash = hash ^ qHash(buddy);
 
     return hash;

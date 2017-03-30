@@ -122,13 +122,13 @@ int ConfigWizardWindow::nextId() const
 
 void ConfigWizardWindow::acceptedSlot()
 {
-    foreach (ConfigWizardPage *page, ConfigWizardPages)
+    for (auto page : ConfigWizardPages)
         page->acceptPage();
 }
 
 void ConfigWizardWindow::rejectedSlot()
 {
-    foreach (ConfigWizardPage *page, ConfigWizardPages)
+    for (auto page : ConfigWizardPages)
         page->rejectPage();
 }
 

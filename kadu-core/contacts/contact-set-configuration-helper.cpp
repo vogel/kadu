@@ -53,7 +53,7 @@ ContactSet ContactSetConfigurationHelper::loadFromConfiguration(
 
     QVector<QDomElement> contactElements = configurationStorage->getNodes(contactSetNode, "Contact");
     result.reserve(contactElements.count());
-    foreach (const QDomElement &contactElement, contactElements)
+    for (auto const &contactElement : contactElements)
     {
         Contact contact = contactManager->byUuid(contactElement.text());
         if (!contact.isNull())
@@ -81,6 +81,6 @@ void ContactSetConfigurationHelper::saveToConfiguration(
     while (!contactSetNode.childNodes().isEmpty())
         contactSetNode.removeChild(contactSetNode.childNodes().at(0));
 
-    foreach (const Contact &c, contactSet)
+    for (auto const &c : contactSet)
         configurationStorage->appendTextNode(contactSetNode, "Contact", c.uuid().toString());
 }

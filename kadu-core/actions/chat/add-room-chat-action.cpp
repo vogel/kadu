@@ -63,13 +63,13 @@ void AddRoomChatAction::updateAddChatMenuItem()
 {
     bool isRoomChatSupported = false;
 
-    foreach (const Account &account, m_accountManager->items())
+    for (auto &account : m_accountManager->items())
     {
         if (account.protocolHandler() && account.protocolName() == "jabber")
             isRoomChatSupported = true;
     }
 
-    foreach (Action *action, actions())
+    for (auto action : actions())
     {
         action->setVisible(isRoomChatSupported);
     }

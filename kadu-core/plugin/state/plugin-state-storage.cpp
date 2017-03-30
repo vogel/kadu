@@ -31,7 +31,7 @@ QMap<QString, PluginState> PluginStateStorage::load(StoragePoint &storagePoint) 
 {
     auto result = QMap<QString, PluginState>();
     auto elements = storagePoint.storage()->getNodes(storagePoint.point(), QStringLiteral("Plugin"));
-    for (const auto &element : elements)
+    for (auto const &element : elements)
     {
         auto name = element.attribute("name");
         auto state = stringToPluginState(storagePoint.storage()->getTextNode(element, QStringLiteral("State")));
@@ -45,7 +45,7 @@ void PluginStateStorage::store(StoragePoint &storagePoint, const QMap<QString, P
 {
     storagePoint.storage()->removeChildren(storagePoint.point());
 
-    for (const auto &name : pluginStates.keys())
+    for (auto const &name : pluginStates.keys())
     {
         auto stateString = pluginStateToString(pluginStates.value(name));
         if (!stateString.isEmpty())

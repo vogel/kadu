@@ -96,13 +96,13 @@ QList<AccountConfigurationWidget *> AccountEditWidget::accountConfigurationWidge
 
 void AccountEditWidget::applyAccountConfigurationWidgets()
 {
-    foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+    for (auto widget : AccountConfigurationWidgets)
         widget->apply();
 }
 
 void AccountEditWidget::cancelAccountConfigurationWidgets()
 {
-    foreach (AccountConfigurationWidget *widget, AccountConfigurationWidgets)
+    for (auto widget : AccountConfigurationWidgets)
         widget->cancel();
 }
 

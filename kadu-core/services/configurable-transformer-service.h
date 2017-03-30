@@ -56,7 +56,7 @@ public:
     transform(const typename T::object_type &object, const typename T::config_type &configurationObject)
     {
         typename T::object_type result = object;
-        foreach (T *transformer, ConfigurableTransformers)
+        for (auto transformer : ConfigurableTransformers)
             result = transformer->transform(result, configurationObject);
         return result;
     }

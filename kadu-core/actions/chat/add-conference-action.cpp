@@ -63,13 +63,13 @@ void AddConferenceAction::updateAddChatMenuItem()
 {
     bool isConferenceSupported = false;
 
-    foreach (const Account &account, m_accountManager->items())
+    for (auto const &account : m_accountManager->items())
     {
         if (account.protocolHandler() && account.protocolName() == "gadu")
             isConferenceSupported = true;
     }
 
-    foreach (Action *action, actions())
+    for (auto action : actions())
     {
         action->setVisible(isConferenceSupported);
     }

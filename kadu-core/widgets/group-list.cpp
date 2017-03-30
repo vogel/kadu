@@ -48,7 +48,7 @@ void GroupList::init()
 void GroupList::setCheckedGroups(const QSet<Group> groups)
 {
     QSet<QString> checkedNames;
-    foreach (const Group &group, groups)
+    for (auto const &group : groups)
         checkedNames.insert(group.name());
 
     const int itemCount = count();
