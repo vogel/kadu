@@ -23,7 +23,6 @@
 
 #include "storage/shared.h"
 
-#include <QtCore/QDateTime>
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtGui/QPixmap>
@@ -55,10 +54,7 @@ public:
     void setPixmap(const QPixmap &pixmap);
     KaduShared_PropertyRead(const QPixmap &, pixmap, Pixmap)
 
-        KaduShared_Property(const QDateTime &, lastUpdated, LastUpdated)
-            KaduShared_Property(const QDateTime &, nextUpdate, NextUpdate)
-
-                signals : void updated();
+        signals : void updated();
     void pixmapUpdated();
 
 protected:
@@ -70,8 +66,6 @@ private:
     QPointer<AvatarManager> m_avatarManager;
     QPointer<PathsProvider> m_pathsProvider;
 
-    QDateTime LastUpdated;
-    QDateTime NextUpdate;
     QString FilePath;
     QString SmallFilePath;
     QPixmap Pixmap;

@@ -30,12 +30,10 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
-class AccountManager;
 class AvatarJobManager;
 class AvatarService;
 class AvatarStorage;
 class Buddy;
-class ContactManager;
 class Contact;
 
 class KADUAPI AvatarManager : public Manager<Avatar>, AccountsAwareObject
@@ -58,14 +56,11 @@ public:
     Avatar byBuddy(Buddy buddy, NotFoundAction action);
     Avatar byContact(Contact contact, NotFoundAction action);
 
-    void updateAvatar(const Contact &contact, bool force = false);
+    void updateAvatar(const Contact &contact);
     void removeAvatar(const Contact &contact);
 
 protected:
     virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
-
-    virtual void accountAdded(Account account) override;
-    virtual void accountRemoved(Account account) override;
 
     virtual void itemAboutToBeAdded(Avatar item) override;
     virtual void itemAdded(Avatar item) override;
@@ -73,25 +68,12 @@ protected:
     virtual void itemRemoved(Avatar item) override;
 
 private:
-    QPointer<AccountManager> m_accountManager;
     QPointer<AvatarJobManager> m_avatarJobManager;
     QPointer<AvatarStorage> m_avatarStorage;
-    QPointer<ContactManager> m_contactManager;
-    QTimer *UpdateTimer;
-
-    bool needUpdate(const Contact &contact);
 
 private slots:
-    INJEQT_SET void setAccountManager(AccountManager *accountManager);
     INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
     INJEQT_SET void setAvatarStorage(AvatarStorage *avatarStorage);
-    INJEQT_SET void setContactManager(ContactManager *contactManager);
-    INJEQT_INIT void init();
-    INJEQT_DONE void done();
 
     void avatarPixmapUpdated();
-
-    void updateAvatars();
-    void updateAccountAvatars();
-    void contactAdded(Contact contact);
 };

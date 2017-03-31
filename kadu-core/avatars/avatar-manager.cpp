@@ -20,7 +20,6 @@
  */
 
 #include <QtCore/QFile>
-#include <QtCore/QTimer>
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -28,26 +27,17 @@
 #include "avatars/avatar-storage.h"
 #include "avatars/avatar.h"
 #include "configuration/configuration-manager.h"
-#include "contacts/contact-manager.h"
-#include "contacts/contact.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
 
 #include "avatar-manager.h"
 
-AvatarManager::AvatarManager(QObject *parent) : Manager<Avatar>{parent}, UpdateTimer{nullptr}
+AvatarManager::AvatarManager(QObject *parent) : Manager<Avatar>{parent}
 {
 }
 
-AvatarManager::~AvatarManager()
-{
-}
-
-void AvatarManager::setAccountManager(AccountManager *accountManager)
-{
-    m_accountManager = accountManager;
-}
+AvatarManager::~AvatarManager() = default;
 
 void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
 {
@@ -57,28 +47,6 @@ void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
 void AvatarManager::setAvatarStorage(AvatarStorage *avatarStorage)
 {
     m_avatarStorage = avatarStorage;
-}
-
-void AvatarManager::setContactManager(ContactManager *contactManager)
-{
-    m_contactManager = contactManager;
-}
-
-void AvatarManager::init()
-{
-    triggerAllAccountsAdded(m_accountManager);
-
-    UpdateTimer = new QTimer(this);
-    UpdateTimer->setInterval(30 * 60 * 1000);   // half an hour
-    connect(UpdateTimer, SIGNAL(timeout()), this, SLOT(updateAvatars()));
-    connect(m_contactManager, SIGNAL(contactAdded(Contact)), this, SLOT(contactAdded(Contact)));
-
-    UpdateTimer->start();
-}
-
-void AvatarManager::done()
-{
-    triggerAllAccountsRemoved(m_accountManager);
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar)
@@ -104,64 +72,9 @@ Avatar AvatarManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &s
     return m_avatarStorage->loadStubFromStorage(storagePoint);
 }
 
-void AvatarManager::accountAdded(Account account)
+void AvatarManager::updateAvatar(const Contact &contact)
 {
     QMutexLocker locker(&mutex());
-
-    connect(account, SIGNAL(connected()), this, SLOT(updateAccountAvatars()));
-}
-
-void AvatarManager::accountRemoved(Account account)
-{
-    QMutexLocker locker(&mutex());
-
-    disconnect(account, 0, this, 0);
-}
-
-void AvatarManager::contactAdded(Contact contact)
-{
-    QMutexLocker locker(&mutex());
-
-    auto protocol = contact.contactAccount().protocolHandler();
-    if (!protocol || !protocol->isConnected() || !protocol->avatarService())
-        return;
-
-    if (protocol->avatarService()->eventBasedUpdates())
-        return;
-
-    updateAvatar(contact, true);
-}
-
-bool AvatarManager::needUpdate(const Contact &contact)
-{
-    QMutexLocker locker(&mutex());
-
-    Protocol *protocol = contact.contactAccount().protocolHandler();
-    if (!protocol || !protocol->isConnected())
-        return false;
-
-    auto avatar = byContact(contact, ActionCreateAndAdd);
-
-    QDateTime lastUpdated = avatar.lastUpdated();
-    if (!lastUpdated.isValid())
-        return true;
-    // one hour passed
-    if (lastUpdated.secsTo(QDateTime::currentDateTime()) > 60 * 60)
-        return true;
-
-    QDateTime nextUpdate = avatar.nextUpdate();
-    if (nextUpdate > QDateTime::currentDateTime())
-        return true;
-
-    return false;
-}
-
-void AvatarManager::updateAvatar(const Contact &contact, bool force)
-{
-    QMutexLocker locker(&mutex());
-
-    if (!force && !needUpdate(contact))
-        return;
 
     m_avatarJobManager->addJob(contact);
 }
@@ -172,43 +85,7 @@ void AvatarManager::removeAvatar(const Contact &contact)
     if (!avatar)
         return;
 
-    avatar.setLastUpdated(QDateTime::currentDateTime());
-    avatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
     avatar.setPixmap(QPixmap{});
-}
-
-void AvatarManager::updateAvatars()
-{
-    QMutexLocker locker(&mutex());
-
-    for (auto &contact : m_contactManager->items())
-        if (!contact.isAnonymous())
-        {
-            auto account = contact.contactAccount();
-            if (!account || !account.protocolHandler() || !account.protocolHandler()->avatarService())
-                continue;
-
-            if (account.protocolHandler()->avatarService()->eventBasedUpdates())
-                continue;
-
-            updateAvatar(contact);
-        }
-}
-
-void AvatarManager::updateAccountAvatars()
-{
-    QMutexLocker locker(&mutex());
-
-    Account account(sender());
-    if (!account || !account.protocolHandler() || !account.protocolHandler()->avatarService())
-        return;
-
-    if (account.protocolHandler()->avatarService()->eventBasedUpdates())
-        return;
-
-    for (auto &contact : m_contactManager->contacts(account))
-        if (!contact.isAnonymous())
-            updateAvatar(contact, true);
 }
 
 void AvatarManager::avatarPixmapUpdated()

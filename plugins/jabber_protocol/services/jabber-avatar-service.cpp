@@ -94,7 +94,7 @@ void JabberAvatarService::presenceReceived(const QXmppPresence &presence)
         m_avatarManager->removeAvatar(contact);
         break;
     case QXmppPresence::VCardUpdateValidPhoto:
-        m_avatarManager->updateAvatar(contact, true);
+        m_avatarManager->updateAvatar(contact);
         break;
     default:
         break;

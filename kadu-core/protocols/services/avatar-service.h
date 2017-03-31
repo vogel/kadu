@@ -86,14 +86,6 @@ public:
      * itself after one use, so next instance should be created in case first upload fails.
      */
     virtual AvatarUploader *createAvatarUploader() = 0;
-
-    /**
-     * @return true, if updates are event-based
-     *
-     * If updates are event based then protocol handler is responsible for updating avatars.
-     * If not, all contacts will be checked for new avatars periodically.
-     **/
-    virtual bool eventBasedUpdates() = 0;
 };
 
 /**

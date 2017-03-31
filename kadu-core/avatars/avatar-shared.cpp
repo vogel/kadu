@@ -109,9 +109,6 @@ void AvatarShared::load()
 
     Shared::load();
 
-    LastUpdated = loadValue<QDateTime>("LastUpdated");
-    NextUpdate = loadValue<QDateTime>("NextUpdate");
-
     QFileInfo avatarFile(filePath());
 
     if (avatarFile.exists() && avatarFile.isReadable() && avatarFile.isFile())
@@ -134,9 +131,6 @@ void AvatarShared::storeAvatar()
         return;
 
     Shared::store();
-
-    storeValue("LastUpdated", LastUpdated);
-    storeValue("NextUpdate", NextUpdate);
 
     QDir avatarsDir(m_pathsProvider->profilePath() + QStringLiteral("avatars"));
     if (!avatarsDir.exists())

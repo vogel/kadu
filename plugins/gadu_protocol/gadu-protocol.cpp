@@ -373,7 +373,7 @@ void GaduProtocol::connectedToServer()
 void GaduProtocol::afterLoggedIn()
 {
     // fetch current avatar after connection
-    m_avatarManager->updateAvatar(account().accountContact(), true);
+    m_avatarManager->updateAvatar(account().accountContact());
 
     auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
     CurrentNotifyService->sendInitialData(contacts);

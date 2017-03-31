@@ -103,7 +103,6 @@ Buddy BuddyDummyFactory::dummy()
     // this is just an example contact, do not add avatar to list
     auto avatar = m_avatarManager->byContact(contact, ActionCreate);
 
-    avatar.setLastUpdated(QDateTime::currentDateTime());
     avatar.setFilePath(m_iconsManager->iconPath(KaduIcon("kadu_icons/buddy0", "96x96")));
 
     example.addContact(contact);

@@ -72,10 +72,6 @@ public:
 
     virtual AvatarDownloader *createAvatarDownloader() override;
     virtual AvatarUploader *createAvatarUploader() override;
-    virtual bool eventBasedUpdates() override
-    {
-        return true;
-    }
 
 private:
     QPointer<AvatarManager> m_avatarManager;

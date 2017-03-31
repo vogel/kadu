@@ -58,8 +58,6 @@ void Avatar::storeAvatar()
 }
 
 KaduSharedBase_PropertyBoolReadDef(Avatar, Empty, true)
-    KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, lastUpdated, LastUpdated, QDateTime())
-        KaduSharedBase_PropertyDefCRW(Avatar, QDateTime, nextUpdate, NextUpdate, QDateTime())
-            KaduSharedBase_PropertyDefCRW(Avatar, QPixmap, pixmap, Pixmap, QPixmap())
-                KaduSharedBase_PropertyReadDef(Avatar, QString, smallFilePath, SmallFilePath, QString())
-                    KaduSharedBase_PropertyDefCRW(Avatar, QString, filePath, FilePath, QString())
+    KaduSharedBase_PropertyDefCRW(Avatar, QPixmap, pixmap, Pixmap, QPixmap())
+        KaduSharedBase_PropertyReadDef(Avatar, QString, smallFilePath, SmallFilePath, QString())
+            KaduSharedBase_PropertyDefCRW(Avatar, QString, filePath, FilePath, QString())

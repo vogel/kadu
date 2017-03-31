@@ -77,8 +77,6 @@ void AvatarJobRunner::avatarDownloaded(bool ok, QImage avatar)
         Timer->stop();
 
     Avatar contactAvatar = m_avatarManager->byContact(MyContact, ActionCreateAndAdd);
-    contactAvatar.setLastUpdated(QDateTime::currentDateTime());
-    contactAvatar.setNextUpdate(QDateTime::fromTime_t(QDateTime::currentDateTime().toTime_t() + 7200));
     contactAvatar.setPixmap(QPixmap::fromImage(avatar));
 
     emit jobFinished(ok);

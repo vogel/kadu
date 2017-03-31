@@ -70,7 +70,7 @@ void GaduUserDataService::handleUserDataItem(const gg_event_user_data_user &user
         if (userDataUser.attrs[i].type == 0 || !ok || timestamp <= 0)
             m_avatarManager->removeAvatar(contact);
 
-        m_avatarManager->updateAvatar(contact, true);
+        m_avatarManager->updateAvatar(contact);
         gotAvatar = true;
     }
 
