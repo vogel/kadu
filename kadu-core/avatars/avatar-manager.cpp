@@ -81,27 +81,22 @@ void AvatarManager::done()
     triggerAllAccountsRemoved(m_accountManager);
 }
 
-void AvatarManager::itemAboutToBeAdded(Avatar item)
+void AvatarManager::itemAboutToBeAdded(Avatar)
 {
-    emit avatarAboutToBeAdded(item);
 }
 
 void AvatarManager::itemAdded(Avatar item)
 {
-    connect(item, SIGNAL(updated()), this, SLOT(avatarDataUpdated()));
     connect(item, SIGNAL(pixmapUpdated()), this, SLOT(avatarPixmapUpdated()));
-    emit avatarAdded(item);
 }
 
 void AvatarManager::itemAboutToBeRemoved(Avatar item)
 {
-    emit avatarAboutToBeRemoved(item);
     disconnect(item, 0, this, 0);
 }
 
-void AvatarManager::itemRemoved(Avatar item)
+void AvatarManager::itemRemoved(Avatar)
 {
-    emit avatarRemoved(item);
 }
 
 Avatar AvatarManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
@@ -214,15 +209,6 @@ void AvatarManager::updateAccountAvatars()
     for (auto &contact : m_contactManager->contacts(account))
         if (!contact.isAnonymous())
             updateAvatar(contact, true);
-}
-
-void AvatarManager::avatarDataUpdated()
-{
-    QMutexLocker locker(&mutex());
-
-    Avatar avatar(sender());
-    if (avatar)
-        emit avatarUpdated(avatar);
 }
 
 void AvatarManager::avatarPixmapUpdated()

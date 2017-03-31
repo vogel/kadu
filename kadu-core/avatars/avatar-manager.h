@@ -61,14 +61,6 @@ public:
     void updateAvatar(const Contact &contact, bool force = false);
     void removeAvatar(const Contact &contact);
 
-signals:
-    void avatarAboutToBeAdded(Avatar avatar);
-    void avatarAdded(Avatar avatar);
-    void avatarAboutToBeRemoved(Avatar avatar);
-    void avatarRemoved(Avatar avatar);
-
-    void avatarUpdated(Avatar avatar);
-
 protected:
     virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
@@ -97,7 +89,6 @@ private slots:
     INJEQT_INIT void init();
     INJEQT_DONE void done();
 
-    void avatarDataUpdated();
     void avatarPixmapUpdated();
 
     void updateAvatars();
