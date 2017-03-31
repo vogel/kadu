@@ -121,6 +121,7 @@ void QFacebookMqttApi::sendConnect()
     auto connect = QFacebookConnect{};
     connect.cid = m_deviceId.clientId;
     connect.uid = m_session.uid();
+    connect.information = "[FBAN/Orca-Android;FBAV/38.0.0.22.155;FBBV/14477681]";
     connect.visible = true;
     connect.did = m_deviceId.deviceId;
     connect.mid = m_deviceId.mqttId;

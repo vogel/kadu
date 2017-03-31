@@ -76,7 +76,7 @@ QFacebookHttpReply *QFacebookHttpApi::threadListQuery(const QByteArray &token)
 {
     auto jsonString = QString{R"({"1": "0"})"};
     auto parameters =
-        std::map<QByteArray, QByteArray>{{"query_id", "10153919752026729"}, {"query_params", jsonString.toUtf8()}};
+        std::map<QByteArray, QByteArray>{{"query_id", "10155268192741729"}, {"query_params", jsonString.toUtf8()}};
     auto usersQueryRequest =
         QFacebookHttpRequest{"https://graph.facebook.com/graphql", token, "get", "ThreadListQuery", parameters};
     return get(usersQueryRequest);
