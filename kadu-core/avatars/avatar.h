@@ -46,9 +46,10 @@ class KADUAPI Avatar : public SharedBase<AvatarShared>
 
     virtual void storeAvatar();
 
-    KaduSharedBase_PropertyBoolRead(Empty) KaduSharedBase_PropertyCRW(QPixmap, pixmap, Pixmap)
-        KaduSharedBase_PropertyRead(QString, smallFilePath, SmallFilePath)
-            KaduSharedBase_PropertyCRW(QString, filePath, FilePath)
+    KaduSharedBase_PropertyBoolRead(Empty);
+    KaduSharedBase_PropertyCRW(QPixmap, pixmap, Pixmap);
+    KaduSharedBase_PropertyRead(QString, smallFilePath, SmallFilePath);
+    KaduSharedBase_PropertyCRW(QString, filePath, FilePath);
 };
 
 Q_DECLARE_METATYPE(Avatar)

@@ -50,18 +50,18 @@ class KADUAPI Account : public SharedBase<AccountShared>
 
     StatusContainer *statusContainer() const;
 
-    KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity)
-        KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
-            KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName)
-                KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler)
-                    KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact)
-                        KaduSharedBase_PropertyCRW(QString, id, Id)
-                            KaduSharedBase_Property(bool, rememberPassword, RememberPassword)
-                                KaduSharedBase_Property(bool, hasPassword, HasPassword)
-                                    KaduSharedBase_PropertyCRW(QString, password, Password)
-                                        KaduSharedBase_Property(bool, useDefaultProxy, UseDefaultProxy)
-                                            KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy)
-                                                KaduSharedBase_Property(bool, privateStatus, PrivateStatus)
+    KaduSharedBase_PropertyCRW(Identity, accountIdentity, AccountIdentity);
+    KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage);
+    KaduSharedBase_PropertyRead(QString, protocolName, ProtocolName);
+    KaduSharedBase_PropertyRead(Protocol *, protocolHandler, ProtocolHandler);
+    KaduSharedBase_PropertyRead(Contact, accountContact, AccountContact);
+    KaduSharedBase_PropertyCRW(QString, id, Id);
+    KaduSharedBase_Property(bool, rememberPassword, RememberPassword);
+    KaduSharedBase_Property(bool, hasPassword, HasPassword);
+    KaduSharedBase_PropertyCRW(QString, password, Password);
+    KaduSharedBase_Property(bool, useDefaultProxy, UseDefaultProxy);
+    KaduSharedBase_PropertyCRW(NetworkProxy, proxy, Proxy);
+    KaduSharedBase_Property(bool, privateStatus, PrivateStatus);
 };
 
 KADUAPI Protocol *protocol(Account account);

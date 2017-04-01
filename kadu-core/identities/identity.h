@@ -50,7 +50,8 @@ class KADUAPI Identity : public SharedBase<IdentityShared>
 
     StatusContainer *statusContainer() const;
 
-    KaduSharedBase_PropertyBool(Permanent) KaduSharedBase_PropertyCRW(QString, name, Name)
+    KaduSharedBase_PropertyBool(Permanent);
+    KaduSharedBase_PropertyCRW(QString, name, Name);
 };
 
 Q_DECLARE_METATYPE(Identity)

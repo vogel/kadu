@@ -58,28 +58,29 @@ class KADUAPI Contact : public SharedBase<ContactShared>
     QString display(bool useBuddyData) const;
     Avatar avatar(bool useBuddyData) const;
 
-    KaduSharedBase_PropertyRead(QUuid, uuid, Uuid)
-        KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage)
-            KaduSharedBase_PropertyCRW(Account, contactAccount, ContactAccount)
-                KaduSharedBase_PropertyCRW(Avatar, contactAvatar, ContactAvatar)
-                    KaduSharedBase_PropertyCRW(Buddy, ownerBuddy, OwnerBuddy)
-                        KaduSharedBase_PropertyCRW(QString, id, Id) KaduSharedBase_Property(int, priority, Priority)
-                            KaduSharedBase_PropertyCRW(Status, currentStatus, CurrentStatus)
-                                KaduSharedBase_PropertyBool(Blocking)
-                                    KaduSharedBase_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
+    KaduSharedBase_PropertyRead(QUuid, uuid, Uuid);
+    KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage);
+    KaduSharedBase_PropertyCRW(Account, contactAccount, ContactAccount);
+    KaduSharedBase_PropertyCRW(Avatar, contactAvatar, ContactAvatar);
+    KaduSharedBase_PropertyCRW(Buddy, ownerBuddy, OwnerBuddy);
+    KaduSharedBase_PropertyCRW(QString, id, Id);
+    KaduSharedBase_Property(int, priority, Priority);
+    KaduSharedBase_PropertyCRW(Status, currentStatus, CurrentStatus);
+    KaduSharedBase_PropertyBool(Blocking);
+    KaduSharedBase_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange);
 
-        /**
-         * @author Rafał 'Vogel' Malinowski
-         * @short Return RosterEntry for this Contact.
-         * @return RosterEntry for this Contact
-         *
-         * This method only returns null value for null contact.
-         */
-        RosterEntry *rosterEntry() const;
+    /**
+     * @author Rafał 'Vogel' Malinowski
+     * @short Return RosterEntry for this Contact.
+     * @return RosterEntry for this Contact
+     *
+     * This method only returns null value for null contact.
+     */
+    RosterEntry *rosterEntry() const;
 
-    KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize)
-        KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
-            KaduSharedBase_PropertyBoolRead(Anonymous)
+    KaduSharedBase_Property(short int, maximumImageSize, MaximumImageSize);
+    KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount);
+    KaduSharedBase_PropertyBoolRead(Anonymous);
 };
 
 Q_DECLARE_METATYPE(Contact)

@@ -93,22 +93,28 @@ public:
 
     QString display() const;
 
-    KaduSharedBase_PropertyCRW(Avatar, buddyAvatar, BuddyAvatar) KaduSharedBase_PropertyWrite(
-        const QString &, display, Display) KaduSharedBase_PropertyCRW(QString, firstName, FirstName)
-        KaduSharedBase_PropertyCRW(QString, lastName, LastName) KaduSharedBase_PropertyCRW(
-            QString, familyName, FamilyName) KaduSharedBase_PropertyCRW(QString, city, City)
-            KaduSharedBase_PropertyCRW(QString, familyCity, FamilyCity) KaduSharedBase_PropertyCRW(
-                QString, nickName, NickName) KaduSharedBase_PropertyCRW(QString, homePhone, HomePhone)
-                KaduSharedBase_PropertyCRW(QString, mobile, Mobile) KaduSharedBase_PropertyCRW(QString, email, Email)
-                    KaduSharedBase_PropertyCRW(QString, website, Website)
-                        KaduSharedBase_Property(unsigned short, birthYear, BirthYear)
-                            KaduSharedBase_Property(BuddyGender, gender, Gender)
-                                KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups)
-                                    KaduSharedBase_Property(bool, preferHigherStatuses, PreferHigherStatuses)
-                                        KaduSharedBase_PropertyBool(Anonymous) KaduSharedBase_PropertyBool(Temporary)
-                                            KaduSharedBase_PropertyBool(Ignored) KaduSharedBase_PropertyBool(Blocked)
-                                                KaduSharedBase_PropertyBool(OfflineTo) KaduSharedBase_PropertyRead(
-                                                    quint16, unreadMessagesCount, UnreadMessagesCount)
+    KaduSharedBase_PropertyCRW(Avatar, buddyAvatar, BuddyAvatar);
+    KaduSharedBase_PropertyWrite(const QString &, display, Display);
+    KaduSharedBase_PropertyCRW(QString, firstName, FirstName);
+    KaduSharedBase_PropertyCRW(QString, lastName, LastName);
+    KaduSharedBase_PropertyCRW(QString, familyName, FamilyName);
+    KaduSharedBase_PropertyCRW(QString, city, City);
+    KaduSharedBase_PropertyCRW(QString, familyCity, FamilyCity);
+    KaduSharedBase_PropertyCRW(QString, nickName, NickName);
+    KaduSharedBase_PropertyCRW(QString, homePhone, HomePhone);
+    KaduSharedBase_PropertyCRW(QString, mobile, Mobile);
+    KaduSharedBase_PropertyCRW(QString, email, Email);
+    KaduSharedBase_PropertyCRW(QString, website, Website);
+    KaduSharedBase_Property(unsigned short, birthYear, BirthYear);
+    KaduSharedBase_Property(BuddyGender, gender, Gender);
+    KaduSharedBase_PropertyCRW(QSet<Group>, groups, Groups);
+    KaduSharedBase_Property(bool, preferHigherStatuses, PreferHigherStatuses);
+    KaduSharedBase_PropertyBool(Anonymous);
+    KaduSharedBase_PropertyBool(Temporary);
+    KaduSharedBase_PropertyBool(Ignored);
+    KaduSharedBase_PropertyBool(Blocked);
+    KaduSharedBase_PropertyBool(OfflineTo);
+    KaduSharedBase_PropertyRead(quint16, unreadMessagesCount, UnreadMessagesCount);
 };
 
 Q_DECLARE_METATYPE(Buddy)

@@ -95,7 +95,7 @@ private:
  * Declares getter for a delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'name'.
  */
-#define KaduSharedBase_PropertyRead(type, name, capitalized_name) type name() const;
+#define KaduSharedBase_PropertyRead(type, name, capitalized_name) type name() const
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -107,7 +107,7 @@ private:
  * Declares setter for a delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Setter is named 'set##capitalized_name'.
  */
-#define KaduSharedBase_PropertyWrite(type, name, capitalized_name) void set##capitalized_name(type name) const;
+#define KaduSharedBase_PropertyWrite(type, name, capitalized_name) void set##capitalized_name(type name) const
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -119,8 +119,9 @@ private:
  * Declares getter and setter for a delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'name'. Setter is named 'set##capitalized_name'.
  */
-#define KaduSharedBase_Property(type, name, capitalized_name) \
-    KaduSharedBase_PropertyRead(type, name, capitalized_name) KaduSharedBase_PropertyWrite(type, name, capitalized_name)
+#define KaduSharedBase_Property(type, name, capitalized_name)  \
+    KaduSharedBase_PropertyRead(type, name, capitalized_name); \
+    KaduSharedBase_PropertyWrite(type, name, capitalized_name)
 
 /**
  * @author Bartosz 'beevvy' Brachaczek
@@ -134,8 +135,8 @@ private:
  * Argument of the setter will be a const reference to 'type'.
  */
 #define KaduSharedBase_PropertyCRW(type, name, capitalized_name) \
-    KaduSharedBase_PropertyRead(type, name, capitalized_name)    \
-        KaduSharedBase_PropertyWrite(const type &, name, capitalized_name)
+    KaduSharedBase_PropertyRead(type, name, capitalized_name);   \
+    KaduSharedBase_PropertyWrite(const type &, name, capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -145,7 +146,7 @@ private:
  * Declares getter for a boolean delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'is##capitalized_name'.
  */
-#define KaduSharedBase_PropertyBoolRead(capitalized_name) bool is##capitalized_name() const;
+#define KaduSharedBase_PropertyBoolRead(capitalized_name) bool is##capitalized_name() const
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -155,7 +156,7 @@ private:
  * Declares setter for a delegated boolean property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Setter is named 'set##capitalized_name'.
  */
-#define KaduSharedBase_PropertyBoolWrite(capitalized_name) void set##capitalized_name(bool name) const;
+#define KaduSharedBase_PropertyBoolWrite(capitalized_name) void set##capitalized_name(bool name) const
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -165,8 +166,9 @@ private:
  * Declares getter for a boolean delegated property of @link Shared @endlink class stored in
  * @link SharedBase @endlink. Getter is named 'is##capitalized_name'. Setter is named 'set##capitalized_name'.
  */
-#define KaduSharedBase_PropertyBool(capitalized_name) \
-    KaduSharedBase_PropertyBoolRead(capitalized_name) KaduSharedBase_PropertyBoolWrite(capitalized_name)
+#define KaduSharedBase_PropertyBool(capitalized_name)  \
+    KaduSharedBase_PropertyBoolRead(capitalized_name); \
+    KaduSharedBase_PropertyBoolWrite(capitalized_name)
 
 /**
  * @author Rafal 'Vogel' Malinowski
@@ -530,7 +532,7 @@ public:
         return Data->changeNotifier();
     }
 
-    KaduSharedBase_Property(QUuid, uuid, Uuid)
+    KaduSharedBase_Property(QUuid, uuid, Uuid);
 };
 
 template <class T>

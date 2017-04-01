@@ -40,12 +40,14 @@ class KADUAPI Group : public SharedBase<GroupShared>
 
     virtual ~Group();
 
-    KaduSharedBase_PropertyCRW(QString, name, Name) KaduSharedBase_PropertyCRW(QString, icon, Icon)
-        KaduSharedBase_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges)
-            KaduSharedBase_Property(bool, showInAllGroup, ShowInAllGroup)
-                KaduSharedBase_Property(bool, offlineToGroup, OfflineToGroup)
-                    KaduSharedBase_Property(bool, showIcon, ShowIcon) KaduSharedBase_Property(bool, showName, ShowName)
-                        KaduSharedBase_Property(int, tabPosition, TabPosition)
+    KaduSharedBase_PropertyCRW(QString, name, Name);
+    KaduSharedBase_PropertyCRW(QString, icon, Icon);
+    KaduSharedBase_Property(bool, notifyAboutStatusChanges, NotifyAboutStatusChanges);
+    KaduSharedBase_Property(bool, showInAllGroup, ShowInAllGroup);
+    KaduSharedBase_Property(bool, offlineToGroup, OfflineToGroup);
+    KaduSharedBase_Property(bool, showIcon, ShowIcon);
+    KaduSharedBase_Property(bool, showName, ShowName);
+    KaduSharedBase_Property(int, tabPosition, TabPosition);
 };
 
 Q_DECLARE_METATYPE(Group)
