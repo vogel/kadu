@@ -70,6 +70,7 @@ set (SOURCES
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-chat-state-service.cpp
+	services/gadu-contact-avatar-service.cpp
 	services/gadu-contact-personal-info-service.cpp
 	services/gadu-file-transfer-service.cpp
 	services/gadu-imtoken-service.cpp

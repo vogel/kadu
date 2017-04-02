@@ -60,6 +60,7 @@ set (SOURCES
 	services/jabber-change-password.cpp
 	services/jabber-chat-service.cpp
 	services/jabber-chat-state-service.cpp
+	services/jabber-contact-avatar-service.cpp
 	services/jabber-contact-personal-info-service.cpp
 	services/jabber-error-service.cpp
 	services/jabber-file-transfer-service.cpp

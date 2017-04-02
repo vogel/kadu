@@ -1,5 +1,7 @@
 set (contacts_SRCS
 	contact.cpp
+	contact-global-id.cpp
+	contact-id.cpp
 	contact-manager.cpp
 	contact-module.cpp
 	contact-parser-tags.cpp

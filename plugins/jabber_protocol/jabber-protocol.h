@@ -38,6 +38,7 @@
 class JabberChangePasswordService;
 class JabberChatService;
 class JabberChatStateService;
+class JabberContactAvatarService;
 class JabberErrorService;
 class JabberOpenChatWithRunner;
 class JabberPresenceService;
@@ -50,6 +51,7 @@ class PluginInjectedFactory;
 class SystemInfo;
 class VersionService;
 
+class AggregatedContactAvatarService;
 class ChatServiceRepository;
 class ChatStateServiceRepository;
 
@@ -115,6 +117,7 @@ protected:
     virtual void changePrivateMode() override;
 
 private:
+    QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
     QPointer<ChatServiceRepository> m_chatServiceRepository;
     QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
     QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
@@ -125,6 +128,7 @@ private:
     JabberChatService *m_chatService;
     JabberChatStateService *m_chatStateService;
     JabberChangePasswordService *m_changePasswordService;
+    JabberContactAvatarService *m_contactAvatarService;
     JabberContactPersonalInfoService *m_contactPersonalInfoService;
     JabberErrorService *m_errorService;
     JabberFileTransferService *m_fileTransferService;
@@ -146,6 +150,7 @@ private:
     bool m_contactsListReadOnly;
 
 private slots:
+    INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
     INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
     INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);

@@ -32,6 +32,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "avatars/aggregated-contact-avatar-service.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
@@ -67,6 +68,7 @@
 #include "helpers/gadu-proxy-helper.h"
 #include "server/gadu-writable-session-token.h"
 #include "services/drive/gadu-drive-service.h"
+#include "services/gadu-contact-avatar-service.h"
 #include "services/gadu-imtoken-service.h"
 #include "services/gadu-notify-service.h"
 #include "services/gadu-roster-service.h"
@@ -88,6 +90,11 @@ GaduProtocol::~GaduProtocol()
     OpenChatRunner = 0;
 
     disconnect(account(), 0, this, 0);
+}
+
+void GaduProtocol::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
+{
+    m_aggregatedContactAvatarService = aggregatedContactAvatarService;
 }
 
 void GaduProtocol::setAvatarManager(AvatarManager *avatarManager)
@@ -169,13 +176,16 @@ void GaduProtocol::init()
     CurrentChatStateService = pluginInjectedFactory()->makeInjected<GaduChatStateService>(account(), this);
     CurrentChatStateService->setConnection(Connection);
 
+    m_gaduContactAvatarService = pluginInjectedFactory()->makeInjected<GaduContactAvatarService>(account(), this);
+
     connect(
         CurrentChatService, SIGNAL(messageReceived(Message)), CurrentChatStateService, SLOT(messageReceived(Message)));
 
     CurrentDriveService = pluginInjectedFactory()->makeInjected<GaduDriveService>(account(), this);
     CurrentDriveService->setGaduIMTokenService(CurrentImTokenService);
 
-    CurrentUserDataService = pluginInjectedFactory()->makeInjected<GaduUserDataService>(account(), this);
+    CurrentUserDataService =
+        pluginInjectedFactory()->makeInjected<GaduUserDataService>(m_gaduContactAvatarService, account(), this);
 
     auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
     auto rosterService = pluginInjectedFactory()->makeInjected<GaduRosterService>(m_gaduListHelper, contacts, this);
@@ -197,6 +207,7 @@ void GaduProtocol::init()
     OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(account());
     OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
+    m_aggregatedContactAvatarService->addContactAvatarService(m_gaduContactAvatarService);
     m_chatServiceRepository->addChatService(CurrentChatService);
     m_chatStateServiceRepository->addChatStateService(CurrentChatStateService);
 }
@@ -205,6 +216,7 @@ void GaduProtocol::done()
 {
     m_chatStateServiceRepository->removeChatStateService(CurrentChatStateService);
     m_chatServiceRepository->removeChatService(CurrentChatService);
+    m_aggregatedContactAvatarService->removeContactAvatarService(m_gaduContactAvatarService);
 }
 
 int GaduProtocol::maxDescriptionLength()

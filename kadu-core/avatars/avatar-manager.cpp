@@ -23,10 +23,13 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "avatars/aggregated-contact-avatar-service.h"
 #include "avatars/avatar-job-manager.h"
 #include "avatars/avatar-storage.h"
 #include "avatars/avatar.h"
 #include "configuration/configuration-manager.h"
+#include "contacts/contact-global-id.h"
+#include "contacts/contact-manager.h"
 #include "misc/misc.h"
 #include "protocols/protocol.h"
 #include "protocols/services/avatar-service.h"
@@ -39,6 +42,11 @@ AvatarManager::AvatarManager(QObject *parent) : Manager<Avatar>{parent}
 
 AvatarManager::~AvatarManager() = default;
 
+void AvatarManager::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
+{
+    m_aggregatedContactAvatarService = aggregatedContactAvatarService;
+}
+
 void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
 {
     m_avatarJobManager = avatarJobManager;
@@ -47,6 +55,34 @@ void AvatarManager::setAvatarJobManager(AvatarJobManager *avatarJobManager)
 void AvatarManager::setAvatarStorage(AvatarStorage *avatarStorage)
 {
     m_avatarStorage = avatarStorage;
+}
+
+void AvatarManager::setContactManager(ContactManager *contactManager)
+{
+    m_contactManager = contactManager;
+}
+
+void AvatarManager::init()
+{
+    connect(
+        m_aggregatedContactAvatarService, &AggregatedContactAvatarService::avatarAvailable, this,
+        &AvatarManager::avatarAvailable);
+}
+
+void AvatarManager::done()
+{
+    disconnect(
+        m_aggregatedContactAvatarService, &AggregatedContactAvatarService::avatarAvailable, this,
+        &AvatarManager::avatarAvailable);
+}
+
+void AvatarManager::avatarAvailable(const ContactGlobalId &contactId, const QByteArray &id)
+{
+    (void)id;
+
+    auto contact = m_contactManager->byId(contactId.account, contactId.id.value, ActionReturnNull);
+    if (contact)
+        updateAvatar(contact);
 }
 
 void AvatarManager::itemAboutToBeAdded(Avatar)

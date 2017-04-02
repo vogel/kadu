@@ -36,6 +36,7 @@
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-chat-service.h"
 #include "services/jabber-chat-state-service.h"
+#include "services/jabber-contact-avatar-service.h"
 #include "services/jabber-error-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-presence-service.h"
@@ -47,6 +48,7 @@
 #include "services/jabber-subscription-service.h"
 #include "services/jabber-vcard-service.h"
 
+#include "avatars/aggregated-contact-avatar-service.h"
 #include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -92,6 +94,11 @@ JabberProtocol::~JabberProtocol()
 void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
     m_chatServiceRepository = chatServiceRepository;
+}
+
+void JabberProtocol::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
+{
+    m_aggregatedContactAvatarService = aggregatedContactAvatarService;
 }
 
 void JabberProtocol::setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository)
@@ -157,7 +164,9 @@ void JabberProtocol::init()
     m_chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
     m_chatStateService->setResourceService(m_resourceService);
 
-    m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(m_client, account(), this);
+    m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(account(), this);
+    m_contactAvatarService =
+        pluginInjectedFactory()->makeInjected<JabberContactAvatarService>(m_client, account(), this);
 
     m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
     m_chatService->setChatStateService(m_chatStateService);
@@ -193,6 +202,7 @@ void JabberProtocol::init()
     m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
     OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
 
+    m_aggregatedContactAvatarService->addContactAvatarService(m_contactAvatarService);
     m_chatServiceRepository->addChatService(m_chatService);
     m_chatStateServiceRepository->addChatStateService(m_chatStateService);
 }
@@ -201,6 +211,7 @@ void JabberProtocol::done()
 {
     m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
     m_chatServiceRepository->removeChatService(m_chatService);
+    m_aggregatedContactAvatarService->removeContactAvatarService(m_contactAvatarService);
 }
 
 void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)

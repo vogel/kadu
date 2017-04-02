@@ -1,4 +1,5 @@
 set (avatars_SRCS
+	aggregated-contact-avatar-service.cpp
 	avatar.cpp
 	avatar-job-manager.cpp
 	avatar-job-runner.cpp
@@ -6,13 +7,7 @@ set (avatars_SRCS
 	avatar-module.cpp
 	avatar-shared.cpp
 	avatar-storage.cpp
+	contact-avatar-service.cpp
 )
 
-set (avatars_MOC_SRCS
-	avatar-job-manager.h
-	avatar-job-runner.h
-	avatar-manager.h
-	avatar-shared.h
-)
-
-kadu_subdirectory (avatars "${avatars_SRCS}" "${avatars_MOC_SRCS}" "")
+kadu_subdirectory (avatars "${avatars_SRCS}" "" "")

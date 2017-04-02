@@ -45,10 +45,12 @@
 
 #include "protocols/protocol.h"
 
+class AggregatedContactAvatarService;
 class AvatarManager;
 class ChatServiceRepository;
 class ChatStateServiceRepository;
 class Configuration;
+class GaduContactAvatarService;
 class GaduContactListHandler;
 class GaduDriveService;
 class GaduIMTokenService;
@@ -87,6 +89,7 @@ public:
     typedef unsigned int UinType;
 
 private:
+    QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
     QPointer<AvatarManager> m_avatarManager;
     QPointer<ChatServiceRepository> m_chatServiceRepository;
     QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
@@ -104,6 +107,7 @@ private:
     GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
     GaduChatImageService *CurrentChatImageService;
     GaduChatService *CurrentChatService;
+    GaduContactAvatarService *m_gaduContactAvatarService;
     GaduContactPersonalInfoService *CurrentContactPersonalInfoService;
     GaduFileTransferService *CurrentFileTransferService;
     GaduPersonalInfoService *CurrentPersonalInfoService;
@@ -148,6 +152,7 @@ private:
     void configureServices();
 
 private slots:
+    INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
     INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);

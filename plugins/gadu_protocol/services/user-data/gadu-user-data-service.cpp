@@ -19,29 +19,19 @@
 
 #include "gadu-user-data-service.h"
 
+#include "services/gadu-contact-avatar-service.h"
 #include "services/user-data/gadu-user-data-type.h"
-
-#include "avatars/avatar-manager.h"
-#include "contacts/contact-manager.h"
 
 #include <libgadu.h>
 
-GaduUserDataService::GaduUserDataService(Account account, QObject *parent) : AccountService{account, parent}
+GaduUserDataService::GaduUserDataService(
+    GaduContactAvatarService *gaduContactAvatarService, Account account, QObject *parent)
+        : AccountService{account, parent}, m_gaduContactAvatarService{gaduContactAvatarService}
 {
 }
 
 GaduUserDataService::~GaduUserDataService()
 {
-}
-
-void GaduUserDataService::setAvatarManager(AvatarManager *avatarManager)
-{
-    m_avatarManager = avatarManager;
-}
-
-void GaduUserDataService::setContactManager(ContactManager *contactManager)
-{
-    m_contactManager = contactManager;
 }
 
 void GaduUserDataService::handleUserDataEvent(const gg_event_user_data &userData)
@@ -53,29 +43,18 @@ void GaduUserDataService::handleUserDataEvent(const gg_event_user_data &userData
 
 void GaduUserDataService::handleUserDataItem(const gg_event_user_data_user &userDataUser, bool update)
 {
-    auto contact = m_contactManager->byId(account(), QString::number(userDataUser.uin), ActionReturnNull);
-    if (!contact)
-        return;
-
-    auto gotAvatar = false;
     for (decltype(userDataUser.attr_count) i = 0; i < userDataUser.attr_count; i++)
     {
         auto key = QString::fromLatin1(userDataUser.attrs[i].key);
-        if (key != "avatar")
-            continue;
-
-        auto ok = false;
-        auto timestamp = QString::fromLatin1(userDataUser.attrs[i].value).toInt(&ok);
-
-        if (userDataUser.attrs[i].type == 0 || !ok || timestamp <= 0)
-            m_avatarManager->removeAvatar(contact);
-
-        m_avatarManager->updateAvatar(contact);
-        gotAvatar = true;
+        if (key == "avatar")
+        {
+            m_gaduContactAvatarService->handleAvatarData(userDataUser.uin, &userDataUser.attrs[i]);
+            return;
+        }
     }
 
-    if (!update && !gotAvatar)
-        m_avatarManager->removeAvatar(contact);
+    if (!update)
+        m_gaduContactAvatarService->handleAvatarData(userDataUser.uin, nullptr);
 }
 
 #include "moc_gadu-user-data-service.cpp"

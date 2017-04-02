@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2015 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -19,26 +19,24 @@
 
 #pragma once
 
+#include "exports.h"
 #include "protocols/services/account-service.h"
 
-struct gg_event_user_data;
-struct gg_event_user_data_user;
+class Account;
+struct ContactId;
 
-class GaduContactAvatarService;
-
-class GaduUserDataService : public AccountService
+class KADUAPI ContactAvatarService : public AccountService
 {
     Q_OBJECT
 
 public:
-    explicit GaduUserDataService(
-        GaduContactAvatarService *gaduContactAvatarService, Account account, QObject *parent = nullptr);
-    virtual ~GaduUserDataService();
+    explicit ContactAvatarService(Account account, QObject *parent = nullptr);
+    virtual ~ContactAvatarService();
 
-    void handleUserDataEvent(const gg_event_user_data &userData);
+    virtual void downloadAvatar(const ContactId &contactId, const QByteArray &id) = 0;
 
-private:
-    GaduContactAvatarService *m_gaduContactAvatarService;
-
-    void handleUserDataItem(const gg_event_user_data_user &userDataUser, bool update);
+signals:
+    void avatarAvailable(const ContactId &contactId, const QByteArray &id);
+    void avatarDownloaded(const ContactId &contactId, const QByteArray &id, const QByteArray &content);
+    void avatarRemoved(const ContactId &contactId);
 };

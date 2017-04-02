@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,21 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatar-module.h"
+#include "contact-avatar-service.h"
+#include "contact-avatar-service.moc"
 
-#include "avatars/aggregated-contact-avatar-service.h"
-#include "avatars/avatar-job-manager.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar-storage.h"
-
-AvatarModule::AvatarModule()
-{
-    add_type<AggregatedContactAvatarService>();
-    add_type<AvatarJobManager>();
-    add_type<AvatarManager>();
-    add_type<AvatarStorage>();
-}
-
-AvatarModule::~AvatarModule()
+ContactAvatarService::ContactAvatarService(Account account, QObject *parent) : AccountService{account, parent}
 {
 }
+
+ContactAvatarService::~ContactAvatarService() = default;

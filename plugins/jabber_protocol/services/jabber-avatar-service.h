@@ -23,15 +23,8 @@
 #include "protocols/services/avatar-service.h"
 
 #include <QtCore/QPointer>
-#include <injeqt/injeqt.h>
 
 class JabberVCardService;
-
-class AvatarManager;
-class ContactManager;
-
-class QXmppClient;
-class QXmppPresence;
 
 /**
  * @addtogroup Jabber
@@ -60,7 +53,7 @@ public:
      * @param account account of service
      * @param parent QObject parent of service
      */
-    explicit JabberAvatarService(QXmppClient *client, Account account, QObject *parent = nullptr);
+    explicit JabberAvatarService(Account account, QObject *parent = nullptr);
     virtual ~JabberAvatarService();
 
     /**
@@ -74,18 +67,7 @@ public:
     virtual AvatarUploader *createAvatarUploader() override;
 
 private:
-    QPointer<AvatarManager> m_avatarManager;
-    QPointer<ContactManager> m_contactManager;
-
-    QPointer<QXmppClient> m_client;
     QPointer<JabberVCardService> VCardService;
-
-private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
-    INJEQT_SET void setContactManager(ContactManager *contactManager);
-
-    void rosterReceived();
-    void presenceReceived(const QXmppPresence &presence);
 };
 
 /**

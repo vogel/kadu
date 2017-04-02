@@ -30,11 +30,14 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class AggregatedContactAvatarService;
 class AvatarJobManager;
 class AvatarService;
 class AvatarStorage;
 class Buddy;
+class ContactManager;
 class Contact;
+struct ContactGlobalId;
 
 class KADUAPI AvatarManager : public Manager<Avatar>, AccountsAwareObject
 {
@@ -68,12 +71,20 @@ protected:
     virtual void itemRemoved(Avatar item) override;
 
 private:
+    QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
     QPointer<AvatarJobManager> m_avatarJobManager;
     QPointer<AvatarStorage> m_avatarStorage;
+    QPointer<ContactManager> m_contactManager;
+
+    void avatarAvailable(const ContactGlobalId &contactId, const QByteArray &id);
 
 private slots:
+    INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
     INJEQT_SET void setAvatarStorage(AvatarStorage *avatarStorage);
+    INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_INIT void init();
+    INJEQT_DONE void done();
 
     void avatarPixmapUpdated();
 };
