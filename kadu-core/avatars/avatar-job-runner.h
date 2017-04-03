@@ -44,9 +44,6 @@ public:
 
     void runJob();
 
-signals:
-    void jobFinished(bool ok);
-
 private:
     QPointer<AvatarManager> m_avatarManager;
 
@@ -57,5 +54,4 @@ private slots:
     INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
 
     void avatarDownloaded(bool ok, QImage avatar);
-    void timeout();
 };

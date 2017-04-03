@@ -20,6 +20,7 @@
  */
 
 #include "avatar-job-manager.h"
+#include "avatar-job-manager.moc"
 
 #include "avatars/avatar-job-runner.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -28,8 +29,10 @@
 
 #include <QtCore/QTimer>
 
-AvatarJobManager::AvatarJobManager(QObject *parent) : QObject{parent}, IsJobRunning{false}
+AvatarJobManager::AvatarJobManager(QObject *parent) : QObject{parent}
 {
+    m_timer.setInterval(500);
+    connect(&m_timer, &QTimer::timeout, this, &AvatarJobManager::runJob);
 }
 
 AvatarJobManager::~AvatarJobManager()
@@ -48,35 +51,22 @@ void AvatarJobManager::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void AvatarJobManager::scheduleJob()
 {
-    if (!IsJobRunning && hasJob())
-        // run it in next even cycle
-        // this is for reccursion prevention, so we save on stack memory
-        QTimer::singleShot(0, this, SLOT(runJob()));
+    if (!m_timer.isActive())
+        m_timer.start();
 }
 
 void AvatarJobManager::runJob()
 {
-    if (IsJobRunning)
+    if (m_jobs.isEmpty())
+    {
+        m_timer.stop();
         return;
-
-    if (!hasJob())
-        return;
+    }
 
     if (!m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowAvatars", true))
         return;
 
-    IsJobRunning = true;
-
-    auto contact = nextJob();
-    auto runner = m_injectedFactory->makeInjected<AvatarJobRunner>(contact, this);
-    connect(runner, SIGNAL(jobFinished(bool)), this, SLOT(jobFinished()));
-    runner->runJob();
-}
-
-void AvatarJobManager::jobFinished()
-{
-    IsJobRunning = false;
-    scheduleJob();
+    m_injectedFactory->makeInjected<AvatarJobRunner>(nextJob(), this)->runJob();
 }
 
 void AvatarJobManager::addJob(const Contact &contact)
@@ -84,24 +74,14 @@ void AvatarJobManager::addJob(const Contact &contact)
     if (!contact)
         return;
 
-    Jobs.insert(contact);
+    m_jobs.insert(contact);
     scheduleJob();
-}
-
-bool AvatarJobManager::hasJob()
-{
-    return !Jobs.isEmpty();
 }
 
 Contact AvatarJobManager::nextJob()
 {
-    if (!hasJob())
-        return Contact::null;
-
-    Contact job = *Jobs.constBegin();
-    Jobs.remove(job);
+    auto job = *m_jobs.constBegin();
+    m_jobs.remove(job);
 
     return job;
 }
-
-#include "moc_avatar-job-manager.cpp"

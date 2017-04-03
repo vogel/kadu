@@ -48,7 +48,6 @@ void AvatarJobRunner::runJob()
     AvatarService *service = AvatarService::fromAccount(MyContact.contactAccount());
     if (!service)
     {
-        emit jobFinished(false);
         deleteLater();
 
         return;
@@ -57,7 +56,6 @@ void AvatarJobRunner::runJob()
     AvatarDownloader *avatarDownloader = service->createAvatarDownloader();
     if (!avatarDownloader)
     {
-        emit jobFinished(false);
         deleteLater();
 
         return;
@@ -67,7 +65,7 @@ void AvatarJobRunner::runJob()
     avatarDownloader->downloadAvatar(MyContact.id());
 
     Timer = new QTimer(this);
-    connect(Timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(Timer, SIGNAL(timeout()), this, SLOT(deleteLater()));
     Timer->start(15000);
 }
 
@@ -79,13 +77,6 @@ void AvatarJobRunner::avatarDownloaded(bool ok, QImage avatar)
     Avatar contactAvatar = m_avatarManager->byContact(MyContact, ActionCreateAndAdd);
     contactAvatar.setPixmap(QPixmap::fromImage(avatar));
 
-    emit jobFinished(ok);
-    deleteLater();
-}
-
-void AvatarJobRunner::timeout()
-{
-    emit jobFinished(false);
     deleteLater();
 }
 

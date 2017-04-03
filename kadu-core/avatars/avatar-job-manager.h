@@ -28,6 +28,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <QtCore/QSet>
+#include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
 
 class Configuration;
@@ -44,19 +45,14 @@ public:
 
     void addJob(const Contact &contact);
 
-    bool hasJob();
     Contact nextJob();
-
-signals:
-    void jobAvailable();
 
 private:
     QPointer<Configuration> m_configuration;
     QPointer<InjectedFactory> m_injectedFactory;
 
-    bool IsJobRunning;
-
-    QSet<Contact> Jobs;
+    QTimer m_timer;
+    QSet<Contact> m_jobs;
 
     void scheduleJob();
 
@@ -65,5 +61,4 @@ private slots:
     INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
 
     void runJob();
-    void jobFinished();
 };
