@@ -54,15 +54,9 @@ private:
     QPointer<Configuration> m_configuration;
     QPointer<InjectedFactory> m_injectedFactory;
 
-    QMutex Mutex;
     bool IsJobRunning;
 
     QSet<Contact> Jobs;
-
-    QMutex &mutex()
-    {
-        return Mutex;
-    }
 
     void scheduleJob();
 

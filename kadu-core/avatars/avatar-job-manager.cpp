@@ -28,7 +28,7 @@
 
 #include <QtCore/QTimer>
 
-AvatarJobManager::AvatarJobManager(QObject *parent) : QObject{parent}, Mutex{QMutex::Recursive}, IsJobRunning{false}
+AvatarJobManager::AvatarJobManager(QObject *parent) : QObject{parent}, IsJobRunning{false}
 {
 }
 
@@ -48,8 +48,6 @@ void AvatarJobManager::setInjectedFactory(InjectedFactory *injectedFactory)
 
 void AvatarJobManager::scheduleJob()
 {
-    QMutexLocker locker(&mutex());
-
     if (!IsJobRunning && hasJob())
         // run it in next even cycle
         // this is for reccursion prevention, so we save on stack memory
@@ -58,8 +56,6 @@ void AvatarJobManager::scheduleJob()
 
 void AvatarJobManager::runJob()
 {
-    QMutexLocker locker(&mutex());
-
     if (IsJobRunning)
         return;
 
@@ -79,16 +75,12 @@ void AvatarJobManager::runJob()
 
 void AvatarJobManager::jobFinished()
 {
-    QMutexLocker locker(&mutex());
-
     IsJobRunning = false;
     scheduleJob();
 }
 
 void AvatarJobManager::addJob(const Contact &contact)
 {
-    QMutexLocker locker(&mutex());
-
     if (!contact)
         return;
 
@@ -98,15 +90,11 @@ void AvatarJobManager::addJob(const Contact &contact)
 
 bool AvatarJobManager::hasJob()
 {
-    QMutexLocker locker(&mutex());
-
     return !Jobs.isEmpty();
 }
 
 Contact AvatarJobManager::nextJob()
 {
-    QMutexLocker locker(&mutex());
-
     if (!hasJob())
         return Contact::null;
 
