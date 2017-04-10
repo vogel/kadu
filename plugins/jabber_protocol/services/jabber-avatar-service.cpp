@@ -39,14 +39,6 @@ void JabberAvatarService::setVCardService(JabberVCardService *vCardService)
     VCardService = vCardService;
 }
 
-AvatarDownloader *JabberAvatarService::createAvatarDownloader()
-{
-    auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());
-    if (!protocol->isConnected())
-        return nullptr;
-    return new JabberAvatarDownloader{VCardService.data(), this};
-}
-
 AvatarUploader *JabberAvatarService::createAvatarUploader()
 {
     auto protocol = qobject_cast<JabberProtocol *>(account().protocolHandler());

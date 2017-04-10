@@ -23,6 +23,7 @@
 #include "protocols/services/account-service.h"
 
 class Account;
+struct ContactAvatarId;
 struct ContactId;
 
 class KADUAPI ContactAvatarService : public AccountService
@@ -33,10 +34,10 @@ public:
     explicit ContactAvatarService(Account account, QObject *parent = nullptr);
     virtual ~ContactAvatarService();
 
-    virtual void downloadAvatar(const ContactId &contactId, const QByteArray &id) = 0;
+    virtual void download(const ContactAvatarId &id) = 0;
 
 signals:
-    void avatarAvailable(const ContactId &contactId, const QByteArray &id);
-    void avatarDownloaded(const ContactId &contactId, const QByteArray &id, const QByteArray &content);
-    void avatarRemoved(const ContactId &contactId);
+    void available(const ContactAvatarId &id);
+    void downloaded(const ContactAvatarId &id, const QByteArray &content);
+    void removed(const ContactId &id);
 };

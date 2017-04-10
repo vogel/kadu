@@ -20,16 +20,16 @@
 #include "avatar-module.h"
 
 #include "avatars/aggregated-contact-avatar-service.h"
-#include "avatars/avatar-job-manager.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar-storage.h"
+#include "avatars/avatars.h"
+#include "avatars/contact-avatar-downloader.h"
+#include "avatars/serial-avatar-downloader.h"
 
 AvatarModule::AvatarModule()
 {
     add_type<AggregatedContactAvatarService>();
-    add_type<AvatarJobManager>();
-    add_type<AvatarManager>();
-    add_type<AvatarStorage>();
+    add_type<Avatars>();
+    add_type<ContactAvatarDownloader>();
+    add_type<SerialAvatarDownloader>();
 }
 
 AvatarModule::~AvatarModule()

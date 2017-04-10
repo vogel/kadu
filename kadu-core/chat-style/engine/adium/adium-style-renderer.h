@@ -25,6 +25,7 @@
 #include <injeqt/injeqt.h>
 
 class AdiumStyle;
+class Avatars;
 class ChatConfigurationHolder;
 class IconsManager;
 class MessageHtmlRendererService;
@@ -47,6 +48,7 @@ public:
     virtual void displayChatImage(const ChatImage &chatImage, const QString &fileName) override;
 
 private:
+    QPointer<Avatars> m_avatars;
     QPointer<ChatConfigurationHolder> m_chatConfigurationHolder;
     QPointer<IconsManager> m_iconsManager;
     QPointer<MessageHtmlRendererService> m_messageHtmlRendererService;
@@ -60,6 +62,7 @@ private:
     QString preprocessStyleBaseHtml(bool useTransparency);
 
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setChatConfigurationHolder(ChatConfigurationHolder *chatConfigurationHolder);
     INJEQT_SET void setIconsManager(IconsManager *iconsManager);
     INJEQT_SET void setMessageHtmlRendererService(MessageHtmlRendererService *messageHtmlRendererService);

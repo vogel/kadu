@@ -46,7 +46,6 @@
 #include "protocols/protocol.h"
 
 class AggregatedContactAvatarService;
-class AvatarManager;
 class ChatServiceRepository;
 class ChatStateServiceRepository;
 class Configuration;
@@ -90,7 +89,6 @@ public:
 
 private:
     QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
-    QPointer<AvatarManager> m_avatarManager;
     QPointer<ChatServiceRepository> m_chatServiceRepository;
     QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
     QPointer<Configuration> m_configuration;
@@ -153,7 +151,6 @@ private:
 
 private slots:
     INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
     INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
     INJEQT_SET void setConfiguration(Configuration *configuration);

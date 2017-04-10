@@ -22,8 +22,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -53,18 +51,12 @@ ContactShared::~ContactShared()
     protocolFactoryUnregistered(m_protocolsManager->byName(ContactAccount->protocolName()));
 
     delete OwnerBuddy;
-    delete ContactAvatar;
     delete ContactAccount;
 }
 
 void ContactShared::setAccountManager(AccountManager *accountManager)
 {
     m_accountManager = accountManager;
-}
-
-void ContactShared::setAvatarManager(AvatarManager *avatarManager)
-{
-    m_avatarManager = avatarManager;
 }
 
 void ContactShared::setBuddyManager(BuddyManager *buddyManager)
@@ -93,7 +85,6 @@ void ContactShared::init()
     connect(&Entry->hasLocalChangesNotifier(), SIGNAL(changed()), this, SIGNAL(updatedLocally()));
 
     ContactAccount = new Account();
-    ContactAvatar = new Avatar();
     OwnerBuddy = new Buddy();
 
     connect(
@@ -146,7 +137,6 @@ void ContactShared::load()
 
     *ContactAccount = m_accountManager->byUuid(loadValue<QString>("Account"));
     doSetOwnerBuddy(m_buddyManager->byUuid(loadValue<QString>("Buddy")));
-    doSetContactAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
 
     protocolFactoryRegistered(m_protocolsManager->byName(ContactAccount->protocolName()));
     addToBuddy();
@@ -155,12 +145,8 @@ void ContactShared::load()
 void ContactShared::aboutToBeRemoved()
 {
     // clean up references
-    *ContactAccount = Account::null;
     removeFromBuddy();
     doSetOwnerBuddy(Buddy::null);
-
-    m_avatarManager->removeItem(*ContactAvatar);
-    doSetContactAvatar(Avatar::null);
 
     changeNotifier().notify();
 }
@@ -183,10 +169,6 @@ void ContactShared::store()
 
     storeValue("Account", ContactAccount->uuid().toString());
     storeValue("Buddy", !isAnonymous() ? OwnerBuddy->uuid().toString() : QString());
-
-    if (*ContactAvatar)
-        storeValue("Avatar", ContactAvatar->uuid().toString());
-
     removeValue("Contact");
 }
 
@@ -322,11 +304,6 @@ RosterEntry *ContactShared::rosterEntry()
  * not be added to roster if remote roster says so, which is probably not what one expects.
  */
 
-void ContactShared::avatarUpdated()
-{
-    changeNotifier().notify();
-}
-
 void ContactShared::changeNotifierChanged()
 {
     emit updated();
@@ -341,29 +318,6 @@ void ContactShared::doSetOwnerBuddy(const Buddy &buddy)
 
     if (*OwnerBuddy)
         connect(*OwnerBuddy, SIGNAL(updated()), this, SIGNAL(buddyUpdated()));
-}
-
-void ContactShared::doSetContactAvatar(const Avatar &contactAvatar)
-{
-    if (*ContactAvatar)
-        disconnect(*ContactAvatar, 0, this, 0);
-
-    *ContactAvatar = contactAvatar;
-
-    if (*ContactAvatar)
-        connect(*ContactAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-}
-
-void ContactShared::setContactAvatar(const Avatar &contactAvatar)
-{
-    ensureLoaded();
-
-    if (*ContactAvatar == contactAvatar)
-        return;
-
-    doSetContactAvatar(contactAvatar);
-
-    changeNotifier().notify();
 }
 
 void ContactShared::setPriority(int priority)
@@ -400,18 +354,7 @@ QString ContactShared::display(bool useBuddyData)
     return OwnerBuddy->display();
 }
 
-Avatar ContactShared::avatar(bool useBuddyData)
-{
-    ensureLoaded();
-
-    if (!useBuddyData || !OwnerBuddy || !(*OwnerBuddy) || OwnerBuddy->buddyAvatar().isEmpty())
-        return ContactAvatar ? *ContactAvatar : Avatar::null;
-
-    return OwnerBuddy->buddyAvatar();
-}
-
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
-    KaduShared_PropertyPtrReadDef(ContactShared, Avatar, contactAvatar, ContactAvatar)
-        KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)
+    KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)
 
 #include "moc_contact-shared.cpp"

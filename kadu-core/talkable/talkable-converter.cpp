@@ -19,7 +19,8 @@
 
 #include "talkable-converter.h"
 
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "chat/buddy-chat-manager.h"
@@ -27,6 +28,7 @@
 #include "chat/chat-storage.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-contact.h"
+#include "contacts/contact-global-id.h"
 #include "contacts/contact-set.h"
 #include "status/status-container.h"
 #include "talkable/talkable.h"
@@ -37,6 +39,11 @@ TalkableConverter::TalkableConverter(QObject *parent) : QObject{parent}
 
 TalkableConverter::~TalkableConverter()
 {
+}
+
+void TalkableConverter::setAvatars(Avatars *avatars)
+{
+    m_avatars = avatars;
 }
 
 void TalkableConverter::setBuddyChatManager(BuddyChatManager *buddyChatManager)
@@ -80,16 +87,16 @@ Account TalkableConverter::toAccount(const Talkable &talkable) const
     }
 }
 
-Avatar TalkableConverter::toAvatar(const Talkable &talkable) const
+QString TalkableConverter::toAvatarPath(const Talkable &talkable) const
 {
-    Avatar avatar;
     if (Talkable::ItemBuddy == talkable.type())
-        avatar = toBuddy(talkable).buddyAvatar();
+        if (m_avatars->contains(avatarId(toBuddy(talkable))))
+            return m_avatars->path(avatarId(toBuddy(talkable)));
 
-    if (!avatar || avatar.pixmap().isNull())
-        avatar = toContact(talkable).avatar(true);
+    if (m_avatars->contains(avatarId(toContact(talkable))))
+        return m_avatars->path(avatarId(toContact(talkable)));
 
-    return avatar;
+    return {};
 }
 
 Buddy TalkableConverter::toBuddy(const Talkable &talkable) const

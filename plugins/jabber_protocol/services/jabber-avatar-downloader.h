@@ -20,53 +20,32 @@
 
 #pragma once
 
-#include <QtCore/QPointer>
-#include <QtGui/QPixmap>
+#include "avatars/contact-avatar-id.h"
 
-#include "protocols/services/avatar-downloader.h"
+#include <QtCore/QPointer>
 
 class JabberVCardService;
 
 class QXmppVCardIq;
 
-/**
- * @addtogroup Jabber
- * @{
- */
-
-/**
- * @class JabberAvatarDownloader
- * @short Class for downloading one avatar for Jabber/XMPP protocol using VCard.
- * @author Rafał 'Vogel' Malinowski
- *
- * This class allows for easy download of avatar for given contact from XMPP server. New instance can be created by
- * constructor that requires JabberVCardService argument.
- */
-class JabberAvatarDownloader : public AvatarDownloader
+class JabberAvatarDownloader : public QObject
 {
     Q_OBJECT
 
-    QPointer<JabberVCardService> VCardService;
+public:
+    explicit JabberAvatarDownloader(ContactAvatarId id, JabberVCardService *vCardService, QObject *parent = nullptr);
+    virtual ~JabberAvatarDownloader();
 
-    void done(QImage avatar);
+signals:
+    void downloaded(const ContactAvatarId &id, const QByteArray &content);
+
+private:
+    ContactAvatarId m_id;
+    QPointer<JabberVCardService> m_vCardService;
+
+    void done(QByteArray avatar);
     void failed();
 
 private slots:
     void vCardDownloaded(bool ok, const QXmppVCardIq &vCard);
-
-public:
-    /**
-     * @short Create new JabberAvatarDownloader instance.
-     * @author Rafał 'Vogel' Malinowski
-     * @param vCardService vCard service to use in this class
-     * @param parent QObject parent
-     */
-    explicit JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent = nullptr);
-    virtual ~JabberAvatarDownloader();
-
-    virtual void downloadAvatar(const QString &id);
 };
-
-/**
- * @}
- */

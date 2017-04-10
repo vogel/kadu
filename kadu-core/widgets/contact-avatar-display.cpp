@@ -18,24 +18,28 @@
  */
 
 #include "contact-avatar-display.h"
+#include "contact-avatar-display.moc"
 
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 
 #include <QtGui/QIcon>
 
 ContactAvatarDisplay::ContactAvatarDisplay(Contact contact, QSize size, QWidget *parent)
-        : QLabel{parent}, m_contact{contact}, m_avatar{m_contact.avatar(true)}, m_size{size}
+        : QLabel{parent}, m_contact{contact}, m_size{size}
 {
     setFixedWidth(m_size.width());
-
-    connect(m_contact, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-    connect(m_avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 }
 
 ContactAvatarDisplay::~ContactAvatarDisplay()
 {
+}
+
+void ContactAvatarDisplay::setAvatars(Avatars *avatars)
+{
+    m_avatars = avatars;
 }
 
 void ContactAvatarDisplay::setIconsManager(IconsManager *iconsManager)
@@ -45,21 +49,19 @@ void ContactAvatarDisplay::setIconsManager(IconsManager *iconsManager)
 
 void ContactAvatarDisplay::init()
 {
+    connect(m_avatars, &Avatars::updated, this, &ContactAvatarDisplay::avatarUpdated);
     displayAvatar();
 }
 
-void ContactAvatarDisplay::avatarUpdated()
+void ContactAvatarDisplay::avatarUpdated(const AvatarId &id)
 {
-    disconnect(m_avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-    m_avatar = m_contact.avatar(true);
-    connect(m_avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-
-    displayAvatar();
+    if (id == avatarId(m_contact) || id == avatarId(m_contact.ownerBuddy()))
+        displayAvatar();
 }
 
 void ContactAvatarDisplay::displayAvatar()
 {
-    auto pixmap = m_avatar.pixmap();
+    auto pixmap = m_avatars->pixmap(avatarIds(m_contact));
     if (pixmap.isNull())
         pixmap = m_iconsManager->iconByPath(KaduIcon{"kadu_icons/buddy0"}).pixmap(m_size);
     if (!pixmap.isNull())
@@ -67,5 +69,3 @@ void ContactAvatarDisplay::displayAvatar()
 
     setPixmap(pixmap);
 }
-
-#include "moc_contact-avatar-display.cpp"

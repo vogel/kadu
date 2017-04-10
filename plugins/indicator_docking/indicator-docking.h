@@ -23,6 +23,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Avatars;
 class ChatManager;
 class ChatWidgetManager;
 class Message;
@@ -41,6 +42,7 @@ public:
     virtual ~IndicatorDocking();
 
 private:
+    QPointer<Avatars> m_avatars;
     QPointer<ChatManager> m_chatManager;
     QPointer<ChatWidgetManager> m_chatWidgetManager;
     QPointer<StatusContainerManager> m_statusContainerManager;
@@ -49,6 +51,7 @@ private:
     QMessagingMenuApp *m_messagingMenuApp;
 
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setChatManager(ChatManager *chatManager);
     INJEQT_SET void setChatWidgetManager(ChatWidgetManager *chatWidgetManager);
     INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);

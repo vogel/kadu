@@ -17,39 +17,35 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_AVATAR_DOWNLOADER_H
-#define GADU_AVATAR_DOWNLOADER_H
+#pragma once
 
-#include <QtGui/QImage>
+#include "avatars/contact-avatar-id.h"
+#include "misc/memory.h"
 
-#include "protocols/services/avatar-downloader.h"
+#include <QtCore/QObject>
 
 class QNetworkAccessManager;
 class QNetworkReply;
 
-/**
- * @addtogroup Gadu
- * @{
- */
-
-/**
- * @class GaduAvatarDownloader
- * @short Class for downloading one avatar for Gadu Gadu protocol.
- * @author Rafał 'Vogel' Malinowski
- *
- * Downloading avatars in Gadu Gadu protocol requires sending one HTTP request. No authorization is required. This
- * class supports up to 5 redirects from accessed url. After that it is assumed that avatar is not available
- * and avatarDownloaded() is emitted with failure flag.
- */
-class GaduAvatarDownloader : public AvatarDownloader
+class GaduAvatarDownloader : public QObject
 {
     Q_OBJECT
 
-    QNetworkAccessManager *NetworkAccessManager;
-    QNetworkReply *Reply;
-    int RedirectCount;
+public:
+    explicit GaduAvatarDownloader(ContactAvatarId id, QObject *parent = nullptr);
+    virtual ~GaduAvatarDownloader();
 
-    void done(QImage avatar);
+signals:
+    void downloaded(const ContactAvatarId &id, const QByteArray &content);
+
+private:
+    owned_qptr<QNetworkAccessManager> m_nam;
+    owned_qptr<QNetworkReply> m_reply;
+    int m_redirectCount;
+
+    ContactAvatarId m_id;
+
+    void done(QByteArray avatar);
     void failed();
 
     void fetch(const QString &url);
@@ -57,21 +53,4 @@ class GaduAvatarDownloader : public AvatarDownloader
 
 private slots:
     void requestFinished();
-
-public:
-    /**
-     * @short Create new GaduAvatarDownloader instance.
-     * @author Rafał 'Vogel' Malinowski
-     * @param parent QObject parent
-     */
-    explicit GaduAvatarDownloader(QObject *parent = nullptr);
-    virtual ~GaduAvatarDownloader();
-
-    virtual void downloadAvatar(const QString &id);
 };
-
-/**
- * @}
- */
-
-#endif   // GADU_AVATAR_DOWNLOADER_H

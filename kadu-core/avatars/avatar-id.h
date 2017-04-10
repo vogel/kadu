@@ -19,28 +19,36 @@
 
 #pragma once
 
-#include "avatars/contact-avatar-service.h"
+#include "exports.h"
 
-class JabberVCardService;
+#include <QtCore/QString>
+#include <vector>
 
-class QXmppClient;
-class QXmppPresence;
+class Buddy;
+class Contact;
+struct ContactGlobalId;
 
-class JabberContactAvatarService : public ContactAvatarService
+struct KADUAPI AvatarId
 {
-    Q_OBJECT
-
-public:
-    explicit JabberContactAvatarService(
-        QXmppClient *client, JabberVCardService *vCardService, Account account, QObject *parent = nullptr);
-    virtual ~JabberContactAvatarService();
-
-    virtual void download(const ContactAvatarId &id) override;
-
-private:
-    QXmppClient *m_client;
-    JabberVCardService *m_vCardService;
-
-    void rosterReceived();
-    void presenceReceived(const QXmppPresence &presence);
+    QString value;
 };
+
+KADUAPI inline bool operator==(const AvatarId &x, const AvatarId &y)
+{
+    return x.value == y.value;
+}
+
+KADUAPI inline bool operator!=(const AvatarId &x, const AvatarId &y)
+{
+    return !(x == y);
+}
+
+KADUAPI inline bool operator<(const AvatarId &x, const AvatarId &y)
+{
+    return x.value < y.value;
+}
+
+KADUAPI AvatarId avatarId(const Buddy &buddy);
+KADUAPI AvatarId avatarId(const Contact &contact);
+KADUAPI AvatarId avatarId(const ContactGlobalId &contact);
+KADUAPI std::vector<AvatarId> avatarIds(const Contact &contact);

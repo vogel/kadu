@@ -17,30 +17,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include "avatars/contact-avatar-service.h"
-
-class JabberVCardService;
-
-class QXmppClient;
-class QXmppPresence;
-
-class JabberContactAvatarService : public ContactAvatarService
-{
-    Q_OBJECT
-
-public:
-    explicit JabberContactAvatarService(
-        QXmppClient *client, JabberVCardService *vCardService, Account account, QObject *parent = nullptr);
-    virtual ~JabberContactAvatarService();
-
-    virtual void download(const ContactAvatarId &id) override;
-
-private:
-    QXmppClient *m_client;
-    JabberVCardService *m_vCardService;
-
-    void rosterReceived();
-    void presenceReceived(const QXmppPresence &presence);
-};
+#include "contact-avatar-id.h"

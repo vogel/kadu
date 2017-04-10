@@ -21,14 +21,18 @@
 #include "jabber-contact-avatar-service.moc"
 
 #include "jid.h"
+#include "services/jabber-avatar-downloader.h"
 
+#include "avatars/contact-avatar-id.h"
 #include "contacts/contact-id.h"
+#include "misc/memory.h"
 
 #include <qxmpp/QXmppClient.h>
 #include <qxmpp/QXmppRosterManager.h>
 
-JabberContactAvatarService::JabberContactAvatarService(QXmppClient *client, Account account, QObject *parent)
-        : ContactAvatarService{account, parent}, m_client{client}
+JabberContactAvatarService::JabberContactAvatarService(
+    QXmppClient *client, JabberVCardService *vCardService, Account account, QObject *parent)
+        : ContactAvatarService{account, parent}, m_client{client}, m_vCardService{vCardService}
 {
     connect(
         &m_client->rosterManager(), &QXmppRosterManager::rosterReceived, this,
@@ -38,10 +42,10 @@ JabberContactAvatarService::JabberContactAvatarService(QXmppClient *client, Acco
 
 JabberContactAvatarService::~JabberContactAvatarService() = default;
 
-void JabberContactAvatarService::downloadAvatar(const ContactId &contactId, const QByteArray &id)
+void JabberContactAvatarService::download(const ContactAvatarId &id)
 {
-    (void)contactId;
-    (void)id;
+    auto avatarDownloader = make_owned<JabberAvatarDownloader>(id, m_vCardService, this);
+    connect(avatarDownloader, &JabberAvatarDownloader::downloaded, this, &JabberContactAvatarService::downloaded);
 }
 
 void JabberContactAvatarService::rosterReceived()
@@ -59,10 +63,10 @@ void JabberContactAvatarService::presenceReceived(const QXmppPresence &presence)
     switch (presence.vCardUpdateType())
     {
     case QXmppPresence::VCardUpdateNoPhoto:
-        emit avatarRemoved(contactId);
+        emit removed(contactId);
         break;
     case QXmppPresence::VCardUpdateValidPhoto:
-        emit avatarAvailable(contactId, presence.photoHash());
+        emit available({contactId, presence.photoHash()});
         break;
     default:
         break;

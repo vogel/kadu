@@ -24,7 +24,6 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
@@ -69,14 +68,6 @@ QString Contact::display(bool useBuddyData) const
     return QString();
 }
 
-Avatar Contact::avatar(bool useBuddyData) const
-{
-    if (data())
-        return data()->avatar(useBuddyData);
-
-    return Avatar::null;
-}
-
 Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 {
     if (!c1)
@@ -89,15 +80,14 @@ Contact Contact::contactWithHigherStatus(const Contact &c1, const Contact &c2)
 KaduSharedBase_PropertyReadDef(Contact, QUuid, uuid, Uuid, QUuid()) KaduSharedBase_PropertyReadDef(
     Contact, std::shared_ptr<StoragePoint>, storage, Storage, std::shared_ptr<StoragePoint>())
     KaduSharedBase_PropertyDefCRW(Contact, Account, contactAccount, ContactAccount, Account::null)
-        KaduSharedBase_PropertyDefCRW(Contact, Avatar, contactAvatar, ContactAvatar, Avatar::null)
-            KaduSharedBase_PropertyDefCRW(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
-                KaduSharedBase_PropertyDefCRW(Contact, QString, id, Id, QString())
-                    KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
-                        KaduSharedBase_PropertyDefCRW(Contact, Status, currentStatus, CurrentStatus, Status())
-                            KaduSharedBase_PropertyBoolDef(Contact, Blocking, false) KaduSharedBase_PropertyDef(
-                                Contact, bool, ignoreNextStatusChange, IgnoreNextStatusChange, false)
+        KaduSharedBase_PropertyDefCRW(Contact, Buddy, ownerBuddy, OwnerBuddy, Buddy::null)
+            KaduSharedBase_PropertyDefCRW(Contact, QString, id, Id, QString())
+                KaduSharedBase_PropertyDef(Contact, int, priority, Priority, -1)
+                    KaduSharedBase_PropertyDefCRW(Contact, Status, currentStatus, CurrentStatus, Status())
+                        KaduSharedBase_PropertyBoolDef(Contact, Blocking, false) KaduSharedBase_PropertyDef(
+                            Contact, bool, ignoreNextStatusChange, IgnoreNextStatusChange, false)
 
-                                RosterEntry *Contact::rosterEntry() const
+                            RosterEntry *Contact::rosterEntry() const
 {
     if (isNull())
         return 0;

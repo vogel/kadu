@@ -155,10 +155,6 @@ void MainConfigurationWindow::init()
 
     widget()->appendUiFile(m_pathsProvider->dataPath() + QStringLiteral("configuration/dialog.ui"));
 
-#ifndef DEBUG_ENABLED
-    widget()->widgetById("debug")->hide();
-#endif
-
 #ifndef Q_OS_WIN
     widget()->widgetById("startup")->hide();
     widget()->widgetById("hideMainWindowFromTaskbar")->hide();

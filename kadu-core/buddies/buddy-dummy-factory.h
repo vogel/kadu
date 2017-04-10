@@ -27,7 +27,6 @@
 #include <memory>
 
 class AccountStorage;
-class AvatarManager;
 class BuddyStorage;
 class Buddy;
 class ContactStorage;
@@ -48,7 +47,6 @@ public:
 
 private:
     QPointer<AccountStorage> m_accountStorage;
-    QPointer<AvatarManager> m_avatarManager;
     QPointer<BuddyStorage> m_buddyStorage;
     QPointer<ContactStorage> m_contactStorage;
     QPointer<IconsManager> m_iconsManager;
@@ -57,7 +55,6 @@ private:
 
 private slots:
     INJEQT_SET void setAccountStorage(AccountStorage *accountStorage);
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
     INJEQT_SET void setBuddyStorage(BuddyStorage *buddyStorage);
     INJEQT_SET void setContactStorage(ContactStorage *contactStorage);
     INJEQT_SET void setIconsManager(IconsManager *iconsManager);

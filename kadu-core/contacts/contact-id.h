@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2017, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -25,3 +25,5 @@ struct ContactId
 {
     QByteArray value;
 };
+
+bool operator<(const ContactId &x, const ContactId &y);

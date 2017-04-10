@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatars/avatar.h"
 #include "buddies/buddy-set.h"
 #include "chat/model/chat-data-extractor.h"
 #include "chat/type/chat-type-contact.h"

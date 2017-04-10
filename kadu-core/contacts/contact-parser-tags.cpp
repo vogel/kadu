@@ -23,7 +23,6 @@
 #include "contact-parser-tags.h"
 
 #include "accounts/account.h"
-#include "avatars/avatar.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "misc/paths-provider.h"
@@ -69,11 +68,11 @@ void ContactParserTags::setTalkableConverter(TalkableConverter *talkableConverte
 void ContactParserTags::init()
 {
     m_parser->registerTag("avatarPath", [this](Talkable talkable) {
-        auto avatar = m_talkableConverter->toAvatar(talkable);
-        if (avatar.pixmap().isNull())
+        auto avatarPath = m_talkableConverter->toAvatarPath(talkable);
+        if (avatarPath.isEmpty())
             return QString{};
         else
-            return PathsProvider::webKitPath(avatar.filePath());
+            return PathsProvider::webKitPath(avatarPath);
     });
     m_parser->registerTag("statusIconPath", [this](Talkable talkable) {
         if (m_talkableConverter->toBuddy(talkable).isBlocked())

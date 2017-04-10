@@ -33,11 +33,6 @@ GaduAvatarService::~GaduAvatarService()
 {
 }
 
-AvatarDownloader *GaduAvatarService::createAvatarDownloader()
-{
-    return new GaduAvatarDownloader(this);
-}
-
 AvatarUploader *GaduAvatarService::createAvatarUploader()
 {
     return new GaduAvatarUploader(this);

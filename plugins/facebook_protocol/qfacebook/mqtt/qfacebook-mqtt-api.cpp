@@ -134,7 +134,8 @@ void QFacebookMqttApi::sendConnect()
 
 void QFacebookMqttApi::sendDisconnect()
 {
-    m_facebookMqttConnection->send(QFacebookDisconnect{});
+    if (m_facebookMqttConnection)
+        m_facebookMqttConnection->send(QFacebookDisconnect{});
 }
 
 void QFacebookMqttApi::connectAckReceived(const QFacebookConnectAck &connectAck)

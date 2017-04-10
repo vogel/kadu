@@ -22,9 +22,10 @@
  */
 
 #include "buddy-avatar-widget.h"
+#include "buddy-avatar-widget.moc"
 
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-preferred-manager.h"
 
 #include <QtGui/QImageReader>
@@ -37,9 +38,9 @@ BuddyAvatarWidget::BuddyAvatarWidget(Buddy buddy, QWidget *parent) : QWidget(par
 {
 }
 
-void BuddyAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
+void BuddyAvatarWidget::setAvatars(Avatars *avatars)
 {
-    m_avatarManager = avatarManager;
+    m_avatars = avatars;
 }
 
 void BuddyAvatarWidget::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
@@ -54,7 +55,7 @@ void BuddyAvatarWidget::init()
 
 void BuddyAvatarWidget::showAvatar()
 {
-    if (MyBuddy.buddyAvatar().pixmap().isNull())
+    if (m_avatars->pixmap(avatarId(MyBuddy)).isNull())
         showContactAvatar();
     else
         showBuddyAvatar();
@@ -63,24 +64,21 @@ void BuddyAvatarWidget::showAvatar()
 void BuddyAvatarWidget::showAvatar(QPixmap pixmap)
 {
     if (!pixmap.isNull())
-    {
-        if (pixmap.width() > 128 || pixmap.height() > 128)
-            pixmap = pixmap.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
-    }
+        pixmap = pixmap.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     AvatarLabel->setPixmap(pixmap);
 }
 
 void BuddyAvatarWidget::showBuddyAvatar()
 {
-    showAvatar(MyBuddy.buddyAvatar().pixmap());
+    showAvatar(m_avatars->pixmap(avatarId(MyBuddy)));
     BuddyAvatar = true;
 }
 
 void BuddyAvatarWidget::showContactAvatar()
 {
     auto preferredContact = m_buddyPreferredManager->preferredContact(MyBuddy);
-    showAvatar(m_avatarManager->byContact(preferredContact, ActionCreateAndAdd).pixmap());
+    showAvatar(m_avatars->pixmap(avatarId(preferredContact)));
     BuddyAvatar = false;
 }
 
@@ -150,5 +148,3 @@ const QPixmap BuddyAvatarWidget::avatarPixmap()
 
     return QPixmap();
 }
-
-#include "moc_buddy-avatar-widget.cpp"

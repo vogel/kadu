@@ -18,42 +18,40 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gadu-avatar-downloader.h"
+#include "gadu-avatar-downloader.moc"
+
+#include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-#include "gadu-avatar-downloader.h"
-
-GaduAvatarDownloader::GaduAvatarDownloader(QObject *parent) : AvatarDownloader{parent}, Reply{}, RedirectCount{0}
+GaduAvatarDownloader::GaduAvatarDownloader(ContactAvatarId id, QObject *parent)
+        : QObject{parent}, m_reply{}, m_redirectCount{0}, m_id{std::move(id)}
 {
-    NetworkAccessManager = new QNetworkAccessManager(this);
+    m_nam = make_owned<QNetworkAccessManager>(this);
+    fetch(QString{"http://avatars.gg.pl/%1/s,big"}.arg(QString::fromUtf8(m_id.contact.value)));
 }
 
 GaduAvatarDownloader::~GaduAvatarDownloader()
 {
 }
 
-void GaduAvatarDownloader::done(QImage avatar)
+void GaduAvatarDownloader::done(QByteArray avatar)
 {
-    emit avatarDownloaded(true, avatar);
+    emit downloaded(m_id, std::move(avatar));
     deleteLater();
 }
 
 void GaduAvatarDownloader::failed()
 {
-    emit avatarDownloaded(false, QImage());
     deleteLater();
-}
-
-void GaduAvatarDownloader::downloadAvatar(const QString &id)
-{
-    fetch(QString("http://avatars.gg.pl/%1/s,big").arg(id));
 }
 
 void GaduAvatarDownloader::requestFinished()
 {
-    QVariant redirect = Reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
-    Reply->deleteLater();
+    auto redirect = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
+    m_reply->deleteLater();
 
     if (redirect.isNull())
     {
@@ -61,13 +59,13 @@ void GaduAvatarDownloader::requestFinished()
         return;
     }
 
-    if (RedirectCount > 5)
+    if (m_redirectCount > 5)
     {
         failed();
         return;
     }
 
-    RedirectCount++;
+    m_redirectCount++;
 
     fetch(redirect.toString());
 }
@@ -77,18 +75,11 @@ void GaduAvatarDownloader::fetch(const QString &url)
     QNetworkRequest request;
     request.setUrl(url);
 
-    Reply = NetworkAccessManager->get(request);
-    connect(Reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    m_reply = m_nam->get(request);
+    connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
 void GaduAvatarDownloader::parseReply()
 {
-    QByteArray data = Reply->readAll();
-
-    if (!data.isEmpty())
-        done(QImage::fromData(data));
-    else
-        done(QImage());
+    done(m_reply->readAll());
 }
-
-#include "moc_gadu-avatar-downloader.cpp"

@@ -25,6 +25,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Avatars;
 class BuddyPreferredManager;
 class Buddy;
 class IconsManager;
@@ -43,10 +44,12 @@ public:
     QVariant data(const Buddy &buddy, int role);
 
 private:
+    QPointer<Avatars> m_avatars;
     QPointer<BuddyPreferredManager> m_buddyPreferredManager;
     QPointer<IconsManager> m_iconsManager;
 
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
     INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

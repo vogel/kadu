@@ -20,9 +20,10 @@
  */
 
 #include "account-avatar-widget.h"
+#include "account-avatar-widget.moc"
 
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
+#include "avatars/avatars.h"
+#include "avatars/avatar-id.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"
@@ -46,9 +47,9 @@ AccountAvatarWidget::~AccountAvatarWidget()
 {
 }
 
-void AccountAvatarWidget::setAvatarManager(AvatarManager *avatarManager)
+void AccountAvatarWidget::setAvatars(Avatars *avatars)
 {
-    m_avatarManager = avatarManager;
+    m_avatars = avatars;
 }
 
 void AccountAvatarWidget::setIconsManager(IconsManager *iconsManager)
@@ -76,6 +77,8 @@ void AccountAvatarWidget::init()
 
     for (auto factory : m_protocolsManager->protocolFactories())
         protocolRegistered(factory);
+
+    connect(m_avatars, &Avatars::updated, this, &AccountAvatarWidget::avatarUpdated);
 }
 
 void AccountAvatarWidget::serviceDestroyed()
@@ -100,15 +103,13 @@ void AccountAvatarWidget::createGui()
 
     layout->addWidget(ChangePhotoButton, 0, Qt::AlignHCenter);
 
-    auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
-    connect(avatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
-    avatarUpdated();
+    avatarUpdated(avatarId(MyAccount.accountContact()));
 }
 
 void AccountAvatarWidget::setupMode()
 {
-    auto avatar = m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd);
-    if (MyAccount.protocolHandler()->protocolFactory()->canRemoveAvatar() && !avatar.isEmpty())
+    auto avatar = m_avatars->pixmap(avatarId(MyAccount.accountContact()));
+    if (MyAccount.protocolHandler()->protocolFactory()->canRemoveAvatar() && !avatar.isNull())
         Mode = ModeRemove;
     else
         Mode = ModeChange;
@@ -142,12 +143,15 @@ void AccountAvatarWidget::protocolUnregistered(ProtocolFactory *protocolFactory)
     protocolRegistered(protocolFactory);
 }
 
-void AccountAvatarWidget::avatarUpdated()
+void AccountAvatarWidget::avatarUpdated(const AvatarId &id)
 {
+    if (id != avatarId(MyAccount.accountContact()))
+        return;
+
     WaitMovie->stop();
     AvatarLabel->setMovie(0);
-    QPixmap avatar = MyAccount.accountContact().contactAvatar().pixmap();
 
+    auto avatar = m_avatars->pixmap(avatarId(MyAccount.accountContact()));
     if (avatar.width() > 128 || avatar.height() > 128)
         avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     AvatarLabel->setPixmap(avatar);
@@ -204,10 +208,8 @@ void AccountAvatarWidget::removeAvatar()
 void AccountAvatarWidget::avatarUploaded(bool ok, QImage image)
 {
     if (ok)
-        m_avatarManager->byContact(MyAccount.accountContact(), ActionCreateAndAdd).setPixmap(QPixmap::fromImage(image));
+        m_avatars->update(avatarId(MyAccount.accountContact()), QPixmap::fromImage(image));
 
-    avatarUpdated();
+    avatarUpdated(avatarId(MyAccount.accountContact()));
     ChangePhotoButton->setEnabled(true);
 }
-
-#include "moc_account-avatar-widget.cpp"

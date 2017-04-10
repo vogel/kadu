@@ -56,7 +56,6 @@ public:
     explicit GaduAvatarService(Account account, QObject *parent = nullptr);
     virtual ~GaduAvatarService();
 
-    virtual AvatarDownloader *createAvatarDownloader() override;
     virtual AvatarUploader *createAvatarUploader() override;
 };
 

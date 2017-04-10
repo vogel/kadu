@@ -25,8 +25,8 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
 #include "contacts/contact.h"
@@ -64,9 +64,9 @@ BuddyGeneralConfigurationWidget::~BuddyGeneralConfigurationWidget()
 {
 }
 
-void BuddyGeneralConfigurationWidget::setAvatarManager(AvatarManager *avatarManager)
+void BuddyGeneralConfigurationWidget::setAvatars(Avatars *avatars)
 {
-    m_avatarManager = avatarManager;
+    m_avatars = avatars;
 }
 
 void BuddyGeneralConfigurationWidget::setBuddyManager(BuddyManager *buddyManager)
@@ -198,19 +198,12 @@ void BuddyGeneralConfigurationWidget::save()
 
 void BuddyGeneralConfigurationWidget::removeBuddyAvatar()
 {
-    auto buddyAvatar = MyBuddy.buddyAvatar();
-    if (buddyAvatar.isNull())
-        return;
-
-    buddyAvatar.setPixmap(QPixmap());
-    m_avatarManager->removeItem(buddyAvatar);
-    MyBuddy.setBuddyAvatar(Avatar::null);
+    m_avatars->remove(avatarId(MyBuddy));
 }
 
 void BuddyGeneralConfigurationWidget::setBuddyAvatar(const QPixmap &avatar)
 {
-    auto buddyAvatar = m_avatarManager->byBuddy(MyBuddy, ActionCreateAndAdd);
-    buddyAvatar.setPixmap(avatar);
+    m_avatars->update(avatarId(MyBuddy), avatar);
 }
 
 #include "moc_buddy-general-configuration-widget.cpp"

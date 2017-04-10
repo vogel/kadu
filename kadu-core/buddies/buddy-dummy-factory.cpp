@@ -21,7 +21,6 @@
 
 #include "accounts/account-storage.h"
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
 #include "buddies/buddy-storage.h"
 #include "buddies/buddy.h"
 #include "contacts/contact-storage.h"
@@ -45,11 +44,6 @@ BuddyDummyFactory::~BuddyDummyFactory()
 void BuddyDummyFactory::setAccountStorage(AccountStorage *accountStorage)
 {
     m_accountStorage = accountStorage;
-}
-
-void BuddyDummyFactory::setAvatarManager(AvatarManager *avatarManager)
-{
-    m_avatarManager = avatarManager;
 }
 
 void BuddyDummyFactory::setBuddyStorage(BuddyStorage *buddyStorage)
@@ -99,11 +93,6 @@ Buddy BuddyDummyFactory::dummy()
     contact.setOwnerBuddy(example);
     contact.setId("999999");
     contact.setCurrentStatus(Status(StatusType::Away, QApplication::translate("Buddy", "Example description")));
-
-    // this is just an example contact, do not add avatar to list
-    auto avatar = m_avatarManager->byContact(contact, ActionCreate);
-
-    avatar.setFilePath(m_iconsManager->iconPath(KaduIcon("kadu_icons/buddy0", "96x96")));
 
     example.addContact(contact);
     example.setAnonymous(false);

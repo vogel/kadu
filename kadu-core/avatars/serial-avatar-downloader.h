@@ -1,7 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011 Piotr Galiszewski (piotr.galiszewski@kadu.im)
- * Copyright 2010, 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2011, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2010, 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -20,38 +20,34 @@
 
 #pragma once
 
-#include "contacts/contact.h"
 #include "exports.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-#include <QtGui/QPixmap>
+#include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
 
-class Account;
-class AvatarManager;
-class AvatarService;
+class AggregatedContactAvatarService;
+struct ContactAvatarGlobalId;
 
-class QTimer;
-
-class KADUAPI AvatarJobRunner : public QObject
+class KADUAPI SerialAvatarDownloader : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit AvatarJobRunner(const Contact &contact, QObject *parent);
-    virtual ~AvatarJobRunner();
+    Q_INVOKABLE explicit SerialAvatarDownloader(QObject *parent = nullptr);
+    virtual ~SerialAvatarDownloader();
 
-    void runJob();
+    void downloadAvatar(const ContactAvatarGlobalId &id);
 
 private:
-    QPointer<AvatarManager> m_avatarManager;
+    QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
 
-    Contact MyContact;
-    QTimer *Timer;
+    std::vector<ContactAvatarGlobalId> m_avatarsToDownload;
+    QTimer m_timer;
 
 private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
 
-    void avatarDownloaded(bool ok, QImage avatar);
+    void downloadNextAvatar();
 };

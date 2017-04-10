@@ -22,6 +22,7 @@
  */
 
 #include "jabber-avatar-downloader.h"
+#include "jabber-avatar-downloader.moc"
 
 #include "jabber-protocol.h"
 #include "services/jabber-vcard-downloader.h"
@@ -29,56 +30,39 @@
 
 #include <qxmpp/QXmppVCardIq.h>
 
-JabberAvatarDownloader::JabberAvatarDownloader(JabberVCardService *vCardService, QObject *parent)
-        : AvatarDownloader(parent), VCardService(vCardService)
+JabberAvatarDownloader::JabberAvatarDownloader(ContactAvatarId id, JabberVCardService *vCardService, QObject *parent)
+        : QObject{parent}, m_id{std::move(id)}, m_vCardService{vCardService}
 {
-}
-
-JabberAvatarDownloader::~JabberAvatarDownloader()
-{
-}
-
-void JabberAvatarDownloader::done(QImage avatar)
-{
-    emit avatarDownloaded(true, avatar);
-    deleteLater();
-}
-
-void JabberAvatarDownloader::failed()
-{
-    emit avatarDownloaded(false, QImage());
-    deleteLater();
-}
-
-void JabberAvatarDownloader::downloadAvatar(const QString &id)
-{
-    if (!VCardService || id.isEmpty())
-    {
-        failed();
-        return;
-    }
-
-    JabberVCardDownloader *vCardDownloader = VCardService.data()->createVCardDownloader();
+    auto vCardDownloader = m_vCardService.data()->createVCardDownloader();
     if (!vCardDownloader)
     {
         failed();
         return;
     }
 
-    connect(
-        vCardDownloader, SIGNAL(vCardDownloaded(bool, QXmppVCardIq)), this, SLOT(vCardDownloaded(bool, QXmppVCardIq)));
-    vCardDownloader->downloadVCard(id);
+    connect(vCardDownloader, &JabberVCardDownloader::vCardDownloaded, this, &JabberAvatarDownloader::vCardDownloaded);
+    vCardDownloader->downloadVCard(m_id.contact.value);
+}
+
+JabberAvatarDownloader::~JabberAvatarDownloader()
+{
+}
+
+void JabberAvatarDownloader::done(QByteArray avatar)
+{
+    emit downloaded(m_id, std::move(avatar));
+    deleteLater();
+}
+
+void JabberAvatarDownloader::failed()
+{
+    deleteLater();
 }
 
 void JabberAvatarDownloader::vCardDownloaded(bool ok, const QXmppVCardIq &vCard)
 {
-    if (!ok)
-    {
+    if (ok)
+        done(vCard.photo());
+    else
         failed();
-        return;
-    }
-
-    done(QImage::fromData(vCard.photo()));
 }
-
-#include "moc_jabber-avatar-downloader.cpp"

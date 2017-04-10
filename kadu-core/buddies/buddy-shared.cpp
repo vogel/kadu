@@ -24,8 +24,6 @@
 #include "buddy-shared.h"
 
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
@@ -52,13 +50,6 @@ BuddyShared::BuddyShared(const QUuid &uuid)
 BuddyShared::~BuddyShared()
 {
     ref.ref();
-    delete BuddyAvatar;
-    BuddyAvatar = 0;
-}
-
-void BuddyShared::setAvatarManager(AvatarManager *avatarManager)
-{
-    m_avatarManager = avatarManager;
 }
 
 void BuddyShared::setBuddyManager(BuddyManager *buddyManager)
@@ -78,8 +69,6 @@ void BuddyShared::setMyself(Myself *myself)
 
 void BuddyShared::init()
 {
-    BuddyAvatar = new Avatar();
-
     connect(&changeNotifier(), SIGNAL(changed()), this, SIGNAL(updated()));
 }
 
@@ -203,7 +192,6 @@ void BuddyShared::load()
         }
     }
 
-    setBuddyAvatar(m_avatarManager->byUuid(loadValue<QString>("Avatar")));
     Display = loadValue<QString>("Display");
     FirstName = loadValue<QString>("FirstName");
     LastName = loadValue<QString>("LastName");
@@ -239,11 +227,6 @@ void BuddyShared::store()
     for (QMap<QString, QString>::const_iterator it = CustomData.constBegin(), end = CustomData.constEnd(); it != end;
          ++it)
         configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", it.key(), it.value());
-
-    if (!BuddyAvatar->uuid().isNull())
-        storeValue("Avatar", BuddyAvatar->uuid().toString());
-    else
-        removeValue("Avatar");
 
     // should not happen, but who knows...
     if (Display.isEmpty())
@@ -290,9 +273,6 @@ void BuddyShared::aboutToBeRemoved()
 
     Contacts.clear();
     Groups.clear();
-
-    m_avatarManager->removeItem(*BuddyAvatar);
-    setBuddyAvatar(Avatar::null);
 }
 
 int BuddyShared::priorityForNewContact()
@@ -389,26 +369,6 @@ void BuddyShared::normalizePriorities()
     int priority = 0;
     for (auto &&contact : Contacts)
         contact.setPriority(priority++);
-}
-
-void BuddyShared::avatarUpdated()
-{
-    changeNotifier().notify();
-}
-
-void BuddyShared::setBuddyAvatar(const Avatar &buddyAvatar)
-{
-    if (*BuddyAvatar == buddyAvatar)
-        return;
-
-    if (*BuddyAvatar)
-        disconnect(*BuddyAvatar, 0, this, 0);
-
-    *BuddyAvatar = buddyAvatar;
-    changeNotifier().notify();
-
-    if (*BuddyAvatar)
-        connect(*BuddyAvatar, SIGNAL(updated()), this, SLOT(avatarUpdated()));
 }
 
 void BuddyShared::setDisplay(const QString &display)
@@ -552,7 +512,5 @@ std::shared_ptr<StoragePoint> BuddyShared::createStoragePoint()
     else
         return Shared::createStoragePoint();
 }
-
-KaduShared_PropertyPtrReadDef(BuddyShared, Avatar, buddyAvatar, BuddyAvatar)
 
 #include "moc_buddy-shared.cpp"

@@ -23,8 +23,6 @@
 
 #include "accounts/account-storage.h"
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group.h"
 #include "configuration/configuration-api.h"
@@ -201,13 +199,12 @@ QString Buddy::display() const
     return result;
 }
 
-KaduSharedBase_PropertyDefCRW(Buddy, Avatar, buddyAvatar, BuddyAvatar, Avatar::null) KaduSharedBase_PropertyWriteDef(
-    Buddy, const QString &, display,
-    Display) KaduSharedBase_PropertyDefCRW(Buddy, QString, firstName, FirstName, QString())
-    KaduSharedBase_PropertyDefCRW(Buddy, QString, lastName, LastName, QString()) KaduSharedBase_PropertyDefCRW(
-        Buddy, QString, familyName, FamilyName,
-        QString()) KaduSharedBase_PropertyDefCRW(Buddy, QString, city, City, QString())
-        KaduSharedBase_PropertyDefCRW(Buddy, QString, familyCity, FamilyCity, QString())
+KaduSharedBase_PropertyWriteDef(Buddy, const QString &, display, Display) KaduSharedBase_PropertyDefCRW(
+    Buddy, QString, firstName, FirstName,
+    QString()) KaduSharedBase_PropertyDefCRW(Buddy, QString, lastName, LastName, QString())
+    KaduSharedBase_PropertyDefCRW(Buddy, QString, familyName, FamilyName, QString())
+        KaduSharedBase_PropertyDefCRW(Buddy, QString, city, City, QString()) KaduSharedBase_PropertyDefCRW(
+            Buddy, QString, familyCity, FamilyCity, QString())
             KaduSharedBase_PropertyDefCRW(Buddy, QString, nickName, NickName, QString())
                 KaduSharedBase_PropertyDefCRW(Buddy, QString, homePhone, HomePhone, QString())
                     KaduSharedBase_PropertyDefCRW(Buddy, QString, mobile, Mobile, QString())

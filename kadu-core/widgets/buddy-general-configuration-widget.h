@@ -35,7 +35,7 @@
 class QCheckBox;
 class QLineEdit;
 
-class AvatarManager;
+class Avatars;
 class BuddyAvatarWidget;
 class BuddyContactsTable;
 class BuddyManager;
@@ -59,7 +59,7 @@ public:
     void save();
 
 private:
-    QPointer<AvatarManager> m_avatarManager;
+    QPointer<Avatars> m_avatars;
     QPointer<BuddyManager> m_buddyManager;
     QPointer<InjectedFactory> m_injectedFactory;
 
@@ -86,7 +86,7 @@ private:
     bool isValid() const;
 
 private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setAvatars(Avatars *Avatars);
     INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
     INJEQT_SET void setInjectedFactory(InjectedFactory *injectedFactory);
     INJEQT_INIT void init();

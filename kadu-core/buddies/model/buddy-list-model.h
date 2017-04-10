@@ -34,6 +34,8 @@
 #include <injeqt/injeqt.h>
 
 class AccountManager;
+class Avatars;
+class AvatarId;
 class BuddyDataExtractor;
 class BuddyListMimeDataService;
 class BuddyPreferredManager;
@@ -340,8 +342,11 @@ private:
      */
     void disconnectBuddy(const Buddy &buddy);
 
+    void avatarUpdated(const AvatarId &id);
+
 private slots:
     INJEQT_SET void setAccountManager(AccountManager *accountManager);
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setBuddyDataExtractor(BuddyDataExtractor *buddyDataExtractor);
     INJEQT_SET void setBuddyListMimeDataService(BuddyListMimeDataService *buddyListMimeDataService);
     INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);

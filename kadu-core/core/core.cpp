@@ -32,7 +32,6 @@
 
 #include "actions/actions.h"
 #include "activate.h"
-#include "avatars/avatar-manager.h"
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat/chat-manager.h"
 #include "configuration/configuration-manager.h"
@@ -358,9 +357,6 @@ void Core::init()
     QApplication::setWindowIcon(m_injector.get<IconsManager>()->iconByPath(KaduIcon("kadu_icons/kadu")));
     connect(m_injector.get<IconsManager>(), SIGNAL(themeChanged()), this, SLOT(updateIcon()));
     QTimer::singleShot(15000, this, SLOT(deleteOldConfigurationFiles()));
-
-    // TODO: add some life-cycle management
-    m_injector.instantiate<AvatarManager>();
 }
 
 void Core::deleteOldConfigurationFiles()

@@ -22,6 +22,8 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 
+#include "avatars/avatars.h"
+#include "avatars/avatar-id.h"
 #include "buddies/buddy-list-mime-data-service.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
@@ -52,6 +54,11 @@ BuddyListModel::~BuddyListModel()
 void BuddyListModel::setAccountManager(AccountManager *accountManager)
 {
     m_accountManager = accountManager;
+}
+
+void BuddyListModel::setAvatars(Avatars *avatars)
+{
+    connect(avatars, &Avatars::updated, this, &BuddyListModel::avatarUpdated);
 }
 
 void BuddyListModel::setBuddyDataExtractor(BuddyDataExtractor *buddyDataExtractor)
@@ -96,6 +103,26 @@ void BuddyListModel::init()
 
     connect(
         m_contactManager, SIGNAL(contactUpdated(Contact)), this, SLOT(contactUpdated(Contact)), Qt::DirectConnection);
+}
+
+void BuddyListModel::avatarUpdated(const AvatarId &id)
+{
+    auto it = std::find_if(std::begin(List), std::end(List), [&id](const Buddy &b){
+        if (avatarId(b) == id)
+            return true;
+        auto contacts = b.contacts();
+        auto it = std::find_if(std::begin(contacts), std::end(contacts), [&id](const Contact &c){
+            return avatarId(c) == id;
+        });
+        return it != std::end(contacts);
+    });
+
+    if (it != std::end(List))
+    {
+        auto row = std::distance(std::begin(List), it);
+        auto const &buddyIndex = index(row, 0);
+        emit dataChanged(buddyIndex, buddyIndex);
+    }
 }
 
 Buddy BuddyListModel::buddyFromVariant(const QVariant &variant) const

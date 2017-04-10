@@ -31,8 +31,6 @@
 
 class AccountManager;
 class Account;
-class AvatarManager;
-class Avatar;
 class BuddyManager;
 class Buddy;
 class Configuration;
@@ -47,7 +45,6 @@ class KADUAPI ContactShared : public Shared
     Q_DISABLE_COPY(ContactShared)
 
     QPointer<AccountManager> m_accountManager;
-    QPointer<AvatarManager> m_avatarManager;
     QPointer<BuddyManager> m_buddyManager;
     QPointer<Configuration> m_configuration;
     QPointer<ContactManager> m_contactManager;
@@ -56,7 +53,6 @@ class KADUAPI ContactShared : public Shared
     RosterEntry *Entry;
 
     Account *ContactAccount;
-    Avatar *ContactAvatar;
     Buddy *OwnerBuddy;
     QString Id;
     int Priority;
@@ -71,11 +67,9 @@ class KADUAPI ContactShared : public Shared
     void removeFromBuddy();
 
     void doSetOwnerBuddy(const Buddy &buddy);
-    void doSetContactAvatar(const Avatar &contactAvatar);
 
 private slots:
     INJEQT_SET void setAccountManager(AccountManager *accountManager);
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
     INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
     INJEQT_SET void setConfiguration(Configuration *configuration);
     INJEQT_SET void setContactManager(ContactManager *contactManager);
@@ -85,7 +79,6 @@ private slots:
     void protocolFactoryRegistered(ProtocolFactory *protocolFactory);
     void protocolFactoryUnregistered(ProtocolFactory *protocolFactory);
 
-    void avatarUpdated();
     void changeNotifierChanged();
 
 protected:
@@ -114,12 +107,9 @@ public:
     RosterEntry *rosterEntry();
 
     KaduShared_PropertyDeclCRW(Account, contactAccount, ContactAccount)
+        KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
 
-        KaduShared_PropertyReadDecl(Avatar, contactAvatar) void setContactAvatar(const Avatar &contactAvatar);
-
-    KaduShared_PropertyDeclCRW(Buddy, ownerBuddy, OwnerBuddy)
-
-        KaduShared_PropertyRead(int, priority, Priority) void setPriority(int priority);
+            KaduShared_PropertyRead(int, priority, Priority) void setPriority(int priority);
 
     KaduShared_Property(const Status &, currentStatus, CurrentStatus) KaduShared_PropertyBool(Blocking)
         KaduShared_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange)
@@ -128,7 +118,6 @@ public:
 
                     bool isAnonymous();
     QString display(bool useBuddyData);
-    Avatar avatar(bool useBuddyData);
 
 signals:
     void updated();

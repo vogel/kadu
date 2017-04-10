@@ -36,7 +36,6 @@
 
 #include "exports.h"
 
-class Avatar;
 class ContactDetails;
 class ContactShared;
 class ConfigurationApi;
@@ -56,12 +55,10 @@ class KADUAPI Contact : public SharedBase<ContactShared>
     virtual ~Contact();
 
     QString display(bool useBuddyData) const;
-    Avatar avatar(bool useBuddyData) const;
 
     KaduSharedBase_PropertyRead(QUuid, uuid, Uuid);
     KaduSharedBase_PropertyRead(std::shared_ptr<StoragePoint>, storage, Storage);
     KaduSharedBase_PropertyCRW(Account, contactAccount, ContactAccount);
-    KaduSharedBase_PropertyCRW(Avatar, contactAvatar, ContactAvatar);
     KaduSharedBase_PropertyCRW(Buddy, ownerBuddy, OwnerBuddy);
     KaduSharedBase_PropertyCRW(QString, id, Id);
     KaduSharedBase_Property(int, priority, Priority);

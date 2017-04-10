@@ -33,7 +33,7 @@ public:
     explicit GaduContactAvatarService(Account account, QObject *parent = nullptr);
     virtual ~GaduContactAvatarService();
 
-    virtual void downloadAvatar(const ContactId &contactId, const QByteArray &id) override;
+    virtual void download(const ContactAvatarId &id) override;
 
     void handleAvatarData(const uin_t uin, const struct gg_event_user_data_attr *const avatarData);
 };

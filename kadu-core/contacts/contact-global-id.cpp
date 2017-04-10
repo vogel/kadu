@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2017, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -18,3 +18,15 @@
  */
 
 #include "contact-global-id.h"
+
+#include "accounts/account.h"
+#include "contacts/contact-id.h"
+
+bool operator<(const ContactGlobalId &x, const ContactGlobalId &y)
+{
+    if (x.account < y.account)
+        return true;
+    if (x.account > y.account)
+        return false;
+    return x.id < y.id;
+}

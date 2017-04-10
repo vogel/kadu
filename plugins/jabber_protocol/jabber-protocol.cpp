@@ -49,7 +49,6 @@
 #include "services/jabber-vcard-service.h"
 
 #include "avatars/aggregated-contact-avatar-service.h"
-#include "avatars/avatar-manager.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "chat/chat-manager.h"
@@ -165,8 +164,6 @@ void JabberProtocol::init()
     m_chatStateService->setResourceService(m_resourceService);
 
     m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(account(), this);
-    m_contactAvatarService =
-        pluginInjectedFactory()->makeInjected<JabberContactAvatarService>(m_client, account(), this);
 
     m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
     m_chatService->setChatStateService(m_chatStateService);
@@ -183,6 +180,8 @@ void JabberProtocol::init()
     m_fileTransferService->setResourceService(m_resourceService);
 
     m_vcardService = new JabberVCardService{&m_client->vCardManager(), this};
+    m_contactAvatarService =
+        pluginInjectedFactory()->makeInjected<JabberContactAvatarService>(m_client, m_vcardService, account(), this);
 
     m_avatarService->setVCardService(m_vcardService);
     m_contactPersonalInfoService->setVCardService(m_vcardService);

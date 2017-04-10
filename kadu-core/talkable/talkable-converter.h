@@ -26,7 +26,7 @@
 #include <injeqt/injeqt.h>
 
 class Account;
-class Avatar;
+class Avatars;
 class BuddyChatManager;
 class BuddyManager;
 class BuddyPreferredManager;
@@ -60,13 +60,13 @@ public:
 
     /**
      * @author Rafał 'Vogel' Malinowski
-     * @short Returns avatar assigned to this Talkable.
+     * @short Returns avatar path assigned to this Talkable.
      * @return avatar assigned to this Talkable
      *
      * If current Talkable instance is of type ItemBuddy and Buddy instance contains non-empty avatar, then it is used.
      * If not, avatar of contact returned by toContact() is used and returned.
      */
-    Avatar toAvatar(const Talkable &talkable) const;
+    QString toAvatarPath(const Talkable &talkable) const;
 
     /**
      * @author Rafał 'Vogel' Malinowski
@@ -121,6 +121,7 @@ public:
     Status toStatus(const Talkable &talkable) const;
 
 private:
+    QPointer<Avatars> m_avatars;
     QPointer<BuddyChatManager> m_buddyChatManager;
     QPointer<BuddyManager> m_buddyManager;
     QPointer<BuddyPreferredManager> m_buddyPreferredManager;
@@ -129,6 +130,7 @@ private:
     QPointer<ChatStorage> m_chatStorage;
 
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setBuddyChatManager(BuddyChatManager *buddyChatManager);
     INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
     INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);

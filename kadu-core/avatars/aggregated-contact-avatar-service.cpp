@@ -20,11 +20,22 @@
 #include "aggregated-contact-avatar-service.h"
 #include "aggregated-contact-avatar-service.moc"
 
+#include "avatars/contact-avatar-global-id.h"
+#include "avatars/contact-avatar-id.h"
 #include "avatars/contact-avatar-service.h"
 #include "contacts/contact-global-id.h"
 #include "contacts/contact-id.h"
 
 #include <cassert>
+
+void AggregatedContactAvatarService::download(const ContactAvatarGlobalId &id) const
+{
+    auto service = m_contactAvatarServices.find(id.contact.account);
+    if (service == std::end(m_contactAvatarServices))
+        return;
+
+    service->second->download({id.contact.id, id.id});
+}
 
 void AggregatedContactAvatarService::addContactAvatarService(ContactAvatarService *contactAvatarService)
 {
@@ -32,14 +43,10 @@ void AggregatedContactAvatarService::addContactAvatarService(ContactAvatarServic
 
     m_contactAvatarServices.insert(std::make_pair(contactAvatarService->account(), contactAvatarService));
     connect(
-        contactAvatarService, &ContactAvatarService::avatarAvailable, this,
-        &AggregatedContactAvatarService::avatarAvailableTranslator);
+        contactAvatarService, &ContactAvatarService::available, this, &AggregatedContactAvatarService::subAvailable);
     connect(
-        contactAvatarService, &ContactAvatarService::avatarDownloaded, this,
-        &AggregatedContactAvatarService::avatarDownloadedTranslator);
-    connect(
-        contactAvatarService, &ContactAvatarService::avatarRemoved, this,
-        &AggregatedContactAvatarService::avatarRemovedTranslator);
+        contactAvatarService, &ContactAvatarService::downloaded, this, &AggregatedContactAvatarService::subDownloaded);
+    connect(contactAvatarService, &ContactAvatarService::removed, this, &AggregatedContactAvatarService::subRemoved);
 }
 
 void AggregatedContactAvatarService::removeContactAvatarService(ContactAvatarService *contactAvatarService)
@@ -48,33 +55,28 @@ void AggregatedContactAvatarService::removeContactAvatarService(ContactAvatarSer
     assert(it != std::end(m_contactAvatarServices));
 
     disconnect(
-        contactAvatarService, &ContactAvatarService::avatarAvailable, this,
-        &AggregatedContactAvatarService::avatarAvailableTranslator);
+        contactAvatarService, &ContactAvatarService::available, this, &AggregatedContactAvatarService::subAvailable);
     disconnect(
-        contactAvatarService, &ContactAvatarService::avatarDownloaded, this,
-        &AggregatedContactAvatarService::avatarDownloadedTranslator);
-    disconnect(
-        contactAvatarService, &ContactAvatarService::avatarRemoved, this,
-        &AggregatedContactAvatarService::avatarRemovedTranslator);
+        contactAvatarService, &ContactAvatarService::downloaded, this, &AggregatedContactAvatarService::subDownloaded);
+    disconnect(contactAvatarService, &ContactAvatarService::removed, this, &AggregatedContactAvatarService::subRemoved);
 
     m_contactAvatarServices.erase(it);
 }
 
-void AggregatedContactAvatarService::avatarAvailableTranslator(const ContactId &contactId, const QByteArray &id)
+void AggregatedContactAvatarService::subAvailable(const ContactAvatarId &id)
 {
     auto account = static_cast<ContactAvatarService *>(sender())->account();
-    emit avatarAvailable({account, contactId}, id);
+    emit available({{account, id.contact}, id.id});
 }
 
-void AggregatedContactAvatarService::avatarDownloadedTranslator(
-    const ContactId &contactId, const QByteArray &id, const QByteArray &content)
+void AggregatedContactAvatarService::subDownloaded(const ContactAvatarId &id, const QByteArray &content)
 {
     auto account = static_cast<ContactAvatarService *>(sender())->account();
-    emit avatarDownloaded({account, contactId}, id, content);
+    emit downloaded({{account, id.contact}, id.id}, content);
 }
 
-void AggregatedContactAvatarService::avatarRemovedTranslator(const ContactId &contactId)
+void AggregatedContactAvatarService::subRemoved(const ContactId &id)
 {
     auto account = static_cast<ContactAvatarService *>(sender())->account();
-    emit avatarRemoved({account, contactId});
+    emit removed({account, id});
 }

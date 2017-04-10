@@ -63,7 +63,6 @@ public:
      */
     void setVCardService(JabberVCardService *vCardService);
 
-    virtual AvatarDownloader *createAvatarDownloader() override;
     virtual AvatarUploader *createAvatarUploader() override;
 
 private:

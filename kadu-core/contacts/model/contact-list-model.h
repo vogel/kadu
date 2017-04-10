@@ -29,7 +29,9 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Avatars;
 class ContactDataExtractor;
+struct AvatarId;
 
 /**
  * @addtogroup Contact
@@ -157,6 +159,8 @@ private:
 
     QVector<Contact> m_list;
 
+    void avatarUpdated(const AvatarId &id);
+
     /**
      * @author Rafał 'Vogel' Malinowski
      * @short Connect given contact to this object's slots.
@@ -176,6 +180,7 @@ private:
     void disconnectContact(const Contact &contact);
 
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
 
     /**

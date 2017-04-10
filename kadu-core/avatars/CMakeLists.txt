@@ -1,13 +1,13 @@
 set (avatars_SRCS
 	aggregated-contact-avatar-service.cpp
-	avatar.cpp
-	avatar-job-manager.cpp
-	avatar-job-runner.cpp
-	avatar-manager.cpp
+	avatars.cpp
+	avatar-id.cpp
 	avatar-module.cpp
-	avatar-shared.cpp
-	avatar-storage.cpp
+	contact-avatar-downloader.cpp
+	contact-avatar-global-id.cpp
+	contact-avatar-id.cpp
 	contact-avatar-service.cpp
+	serial-avatar-downloader.cpp
 )
 
 kadu_subdirectory (avatars "${avatars_SRCS}" "" "")

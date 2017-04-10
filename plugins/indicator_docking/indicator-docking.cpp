@@ -19,7 +19,8 @@
 
 #include "indicator-docking.h"
 
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "chat/chat-manager.h"
 #include "contacts/contact-set.h"
 #include "message/message.h"
@@ -52,6 +53,11 @@ IndicatorDocking::~IndicatorDocking()
         unreadMessageRemoved(message);
 
     m_messagingMenuApp->unregisterMenu();
+}
+
+void IndicatorDocking::setAvatars(Avatars *avatars)
+{
+    m_avatars = avatars;
 }
 
 void IndicatorDocking::setChatManager(ChatManager *chatManager)
@@ -91,8 +97,8 @@ void IndicatorDocking::unreadMessageAdded(const Message &message)
     auto id = message.messageChat().uuid().toString();
     auto label = title(message.messageChat());
     auto count = message.messageChat().unreadMessagesCount();
-    auto avatar = message.messageChat().contacts().toContact().avatar(true);
-    auto source = m_messagingMenuApp->addSource(id, label, avatar.filePath(), count);
+    auto avatar = m_avatars->path(avatarIds(message.messageChat().contacts().toContact()));
+    auto source = m_messagingMenuApp->addSource(id, label, avatar, count);
     source->drawAttention();
 }
 

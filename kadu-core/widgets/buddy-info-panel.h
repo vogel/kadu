@@ -29,18 +29,19 @@
 
 #include <injeqt/injeqt.h>
 
-class AvatarManager;
+class Avatars;
 class BuddyPreferredManager;
 class DomProcessorService;
 class Parser;
 class PathsProvider;
 class TalkableConverter;
+struct AvatarId;
 
 class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
 {
     Q_OBJECT
 
-    QPointer<AvatarManager> m_avatarManager;
+    QPointer<Avatars> m_avatars;
     QPointer<BuddyPreferredManager> m_buddyPreferredManager;
     QPointer<DomProcessorService> m_domProcessorService;
     QPointer<Parser> m_parser;
@@ -52,11 +53,13 @@ class BuddyInfoPanel : public KaduWebView, private ConfigurationAwareObject
     QString Syntax;
     QString BackgroundColor;
 
+    void avatarUpdated(const AvatarId &id);
+
     void connectItem();
     void disconnectItem();
 
 private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
     INJEQT_SET void setDomProcessorService(DomProcessorService *domProcessorService);
     INJEQT_SET void setParser(Parser *parser);

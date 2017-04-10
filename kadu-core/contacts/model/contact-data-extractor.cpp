@@ -23,7 +23,9 @@
 #include "contact-data-extractor.h"
 
 #include "accounts/account.h"
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
+#include "contacts/contact-global-id.h"
 #include "contacts/contact.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -41,6 +43,11 @@ ContactDataExtractor::ContactDataExtractor(QObject *parent) : QObject{parent}
 
 ContactDataExtractor::~ContactDataExtractor()
 {
+}
+
+void ContactDataExtractor::setAvatars(Avatars *avatars)
+{
+    m_avatars = avatars;
 }
 
 void ContactDataExtractor::setIconsManager(IconsManager *iconsManager)
@@ -99,16 +106,16 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
     case AccountRole:
         return QVariant::fromValue(contact.contactAccount());
     case AvatarRole:
-        return contact.avatar(useBuddyData).pixmap();
-    case AvatarPathRole:
-    {
-        QFileInfo avatarInfo(contact.avatar(useBuddyData).filePath());
-
-        if (avatarInfo.exists() && avatarInfo.isReadable() && avatarInfo.isFile())
-            return avatarInfo.filePath();
+        if (useBuddyData)
+            return m_avatars->pixmap(avatarIds(contact));
         else
-            return QString();
-    }
+            return m_avatars->pixmap(avatarId(contact));
+    case AvatarPathRole:
+        if (useBuddyData)
+            return m_avatars->path(avatarIds(contact));
+        if (m_avatars->contains(avatarId(contact)))
+            return m_avatars->path(avatarId(contact));
+        return {};
     case ItemTypeRole:
         return ContactRole;
     case TalkableRole:

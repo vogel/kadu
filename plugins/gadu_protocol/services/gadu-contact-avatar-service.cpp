@@ -20,7 +20,10 @@
 #include "gadu-contact-avatar-service.h"
 #include "gadu-contact-avatar-service.moc"
 
-#include "contacts/contact-id.h"
+#include "server/gadu-avatar-downloader.h"
+
+#include "avatars/contact-avatar-id.h"
+#include "misc/memory.h"
 
 GaduContactAvatarService::GaduContactAvatarService(Account account, QObject *parent)
         : ContactAvatarService{account, parent}
@@ -29,10 +32,10 @@ GaduContactAvatarService::GaduContactAvatarService(Account account, QObject *par
 
 GaduContactAvatarService::~GaduContactAvatarService() = default;
 
-void GaduContactAvatarService::downloadAvatar(const ContactId &contactId, const QByteArray &id)
+void GaduContactAvatarService::download(const ContactAvatarId &id)
 {
-    (void)contactId;
-    (void)id;
+    auto avatarDownloader = make_owned<GaduAvatarDownloader>(id, this);
+    connect(avatarDownloader, &GaduAvatarDownloader::downloaded, this, &GaduContactAvatarService::downloaded);
 }
 
 void GaduContactAvatarService::handleAvatarData(const uin_t uin, const struct gg_event_user_data_attr *const avatarData)
@@ -40,7 +43,7 @@ void GaduContactAvatarService::handleAvatarData(const uin_t uin, const struct gg
     auto contactId = ContactId{QByteArray::number(uin)};
     if (!avatarData || avatarData->type == 0)
     {
-        emit avatarRemoved(contactId);
+        emit removed(contactId);
         return;
     }
 
@@ -49,9 +52,9 @@ void GaduContactAvatarService::handleAvatarData(const uin_t uin, const struct gg
 
     if (!ok || timestamp <= 0)
     {
-        emit avatarRemoved(contactId);
+        emit removed(contactId);
         return;
     }
 
-    emit avatarAvailable(contactId, avatarData->value);
+    emit available({contactId, avatarData->value});
 }

@@ -21,70 +21,55 @@
 
 #pragma once
 
-#include "accounts/accounts-aware-object.h"
-#include "avatars/avatar.h"
+#include "configuration/configuration-aware-object.h"
 #include "exports.h"
-#include "storage/manager.h"
+#include "injeqt-type-roles.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class AggregatedContactAvatarService;
-class AvatarJobManager;
-class AvatarService;
-class AvatarStorage;
-class Buddy;
+class Avatars;
+class Configuration;
 class ContactManager;
 class Contact;
+class SerialAvatarDownloader;
+struct AvatarId;
+struct ContactAvatarGlobalId;
 struct ContactGlobalId;
 
-class KADUAPI AvatarManager : public Manager<Avatar>, AccountsAwareObject
+class KADUAPI ContactAvatarDownloader : public QObject, ConfigurationAwareObject
 {
     Q_OBJECT
+    INJEQT_TYPE_ROLE(SERVICE)
 
 public:
-    Q_INVOKABLE explicit AvatarManager(QObject *parent = nullptr);
-    virtual ~AvatarManager();
-
-    virtual QString storageNodeName() override
-    {
-        return QStringLiteral("Avatars");
-    }
-    virtual QString storageNodeItemName() override
-    {
-        return QStringLiteral("Avatar");
-    }
-
-    Avatar byBuddy(Buddy buddy, NotFoundAction action);
-    Avatar byContact(Contact contact, NotFoundAction action);
-
-    void updateAvatar(const Contact &contact);
-    void removeAvatar(const Contact &contact);
+    Q_INVOKABLE explicit ContactAvatarDownloader(QObject *parent = nullptr);
+    virtual ~ContactAvatarDownloader();
 
 protected:
-    virtual Avatar loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
-
-    virtual void itemAboutToBeAdded(Avatar item) override;
-    virtual void itemAdded(Avatar item) override;
-    virtual void itemAboutToBeRemoved(Avatar item) override;
-    virtual void itemRemoved(Avatar item) override;
+    virtual void configurationUpdated() override;
 
 private:
     QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
-    QPointer<AvatarJobManager> m_avatarJobManager;
-    QPointer<AvatarStorage> m_avatarStorage;
+    QPointer<Avatars> m_avatars;
+    QPointer<Configuration> m_configuration;
     QPointer<ContactManager> m_contactManager;
+    QPointer<SerialAvatarDownloader> m_serialAvatarDownloader;
+    bool m_downloadAvatars{false};
 
-    void avatarAvailable(const ContactGlobalId &contactId, const QByteArray &id);
+    void downloadIfNeeded(const ContactAvatarGlobalId &id) const;
+    bool downloadRequired(const ContactAvatarGlobalId &id) const;
+    void store(const ContactAvatarGlobalId &id, const QByteArray &content);
+    void remove(const ContactGlobalId &id);
+    void removeFor(const Contact &contact);
 
 private slots:
     INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
-    INJEQT_SET void setAvatarJobManager(AvatarJobManager *avatarJobManager);
-    INJEQT_SET void setAvatarStorage(AvatarStorage *avatarStorage);
+    INJEQT_SET void setAvatars(Avatars *avatars);
+    INJEQT_SET void setConfiguration(Configuration *configuration);
     INJEQT_SET void setContactManager(ContactManager *contactManager);
+    INJEQT_SET void setSerialAvatarDownloader(SerialAvatarDownloader *serialAvatarDownloader);
     INJEQT_INIT void init();
-    INJEQT_DONE void done();
-
-    void avatarPixmapUpdated();
 };

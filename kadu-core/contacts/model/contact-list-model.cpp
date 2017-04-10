@@ -19,9 +19,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "contacts/model/contact-data-extractor.h"
-
 #include "contact-list-model.h"
+#include "contact-list-model.moc"
+
+#include "avatars/avatars.h"
+#include "avatars/avatar-id.h"
+#include "contacts/model/contact-data-extractor.h"
 
 ContactListModel::ContactListModel(QObject *parent) : QAbstractItemModel(parent)
 {
@@ -31,9 +34,27 @@ ContactListModel::~ContactListModel()
 {
 }
 
+void ContactListModel::setAvatars(Avatars *avatars)
+{
+    connect(avatars, &Avatars::updated, this, &ContactListModel::avatarUpdated);
+}
+
 void ContactListModel::setContactDataExtractor(ContactDataExtractor *contactDataExtractor)
 {
     m_contactDataExtractor = contactDataExtractor;
+}
+
+void ContactListModel::avatarUpdated(const AvatarId &id)
+{
+    auto it = std::find_if(std::begin(m_list), std::end(m_list), [&id](const Contact &c){
+        return avatarId(c) == id;
+    });
+    if (it != std::end(m_list))
+    {
+        auto row = std::distance(std::begin(m_list), it);
+        auto const &contactIndex = index(row, 0);
+        emit dataChanged(contactIndex, contactIndex);
+    }
 }
 
 void ContactListModel::connectContact(const Contact &contact)
@@ -151,5 +172,3 @@ QModelIndexList ContactListModel::indexListForValue(const QVariant &value) const
 
     return result;
 }
-
-#include "moc_contact-list-model.cpp"

@@ -26,6 +26,8 @@
 #include <map>
 
 class ContactAvatarService;
+struct ContactAvatarGlobalId;
+struct ContactAvatarId;
 struct ContactGlobalId;
 struct ContactId;
 
@@ -39,19 +41,21 @@ public:
     }
     virtual ~AggregatedContactAvatarService() = default;
 
+    void download(const ContactAvatarGlobalId &id) const;
+
 public slots:
     void addContactAvatarService(ContactAvatarService *contactAvatarService);
     void removeContactAvatarService(ContactAvatarService *contactAvatarService);
 
 signals:
-    void avatarAvailable(const ContactGlobalId &contactId, const QByteArray &id);
-    void avatarDownloaded(const ContactGlobalId &contactId, const QByteArray &id, const QByteArray &content);
-    void avatarRemoved(const ContactGlobalId &contactId);
+    void available(const ContactAvatarGlobalId &id);
+    void downloaded(const ContactAvatarGlobalId &id, const QByteArray &content);
+    void removed(const ContactGlobalId &id);
 
 private:
     std::map<Account, ContactAvatarService *> m_contactAvatarServices;
 
-    void avatarAvailableTranslator(const ContactId &contactId, const QByteArray &id);
-    void avatarDownloadedTranslator(const ContactId &contactId, const QByteArray &id, const QByteArray &content);
-    void avatarRemovedTranslator(const ContactId &contactId);
+    void subAvailable(const ContactAvatarId &id);
+    void subDownloaded(const ContactAvatarId &, const QByteArray &content);
+    void subRemoved(const ContactId &id);
 };

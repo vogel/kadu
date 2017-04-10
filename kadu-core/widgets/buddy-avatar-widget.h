@@ -27,7 +27,7 @@
 #include <QtWidgets/QWidget>
 #include <injeqt/injeqt.h>
 
-class AvatarManager;
+class Avatars;
 class BuddyPreferredManager;
 
 class QLabel;
@@ -47,7 +47,7 @@ public:
     }
 
 private:
-    QPointer<AvatarManager> m_avatarManager;
+    QPointer<Avatars> m_avatars;
     QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 
     Buddy MyBuddy;
@@ -71,7 +71,7 @@ private:
     void removeAvatar();
 
 private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager);
     INJEQT_INIT void init();
 

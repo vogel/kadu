@@ -21,11 +21,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtWebKitWidgets/QWebFrame>
+#include "buddy-info-panel.h"
+#include "buddy-info-panel.moc"
 
 #include "accounts/account.h"
-#include "avatars/avatar-manager.h"
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "configuration/configuration.h"
@@ -38,7 +39,7 @@
 #include "talkable/talkable-converter.h"
 #include "url-handlers/url-handler-manager.h"
 
-#include "buddy-info-panel.h"
+#include <QtWebKitWidgets/QWebFrame>
 
 BuddyInfoPanel::BuddyInfoPanel(QWidget *parent) : KaduWebView(parent)
 {
@@ -49,9 +50,9 @@ BuddyInfoPanel::~BuddyInfoPanel()
     disconnect(m_buddyPreferredManager, 0, this, 0);
 }
 
-void BuddyInfoPanel::setAvatarManager(AvatarManager *avatarManager)
+void BuddyInfoPanel::setAvatars(Avatars *avatars)
 {
-    m_avatarManager = avatarManager;
+    m_avatars = avatars;
 }
 
 void BuddyInfoPanel::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
@@ -90,6 +91,7 @@ void BuddyInfoPanel::init()
         "XMLHttpRequest.prototype.open = function() { return false; };"
         "XMLHttpRequest.prototype.send = function() { return false; };");
 
+    connect(m_avatars, &Avatars::updated, this, &BuddyInfoPanel::avatarUpdated);
     connect(m_buddyPreferredManager, SIGNAL(buddyUpdated(Buddy)), this, SLOT(buddyUpdated(Buddy)));
 
     configurationUpdated();
@@ -186,44 +188,34 @@ void BuddyInfoPanel::update()
         page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
 }
 
+void BuddyInfoPanel::avatarUpdated(const AvatarId &id)
+{
+    auto buddy = m_talkableConverter->toBuddy(Item);
+    auto contact = m_talkableConverter->toContact(Item);
+    if (id == avatarId(buddy) || id == avatarId(contact))
+        update();
+}
+
 void BuddyInfoPanel::connectItem()
 {
     Buddy buddy = m_talkableConverter->toBuddy(Item);
     if (buddy)
-    {
         connect(buddy, SIGNAL(updated()), this, SLOT(update()));
-        if (buddy.buddyAvatar())
-            connect(buddy.buddyAvatar(), SIGNAL(updated()), this, SLOT(update()));
-    }
 
     Contact contact = m_talkableConverter->toContact(Item);
     if (contact)
-    {
         connect(contact, SIGNAL(updated()), this, SLOT(update()));
-        auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
-        if (avatar)
-            connect(avatar, SIGNAL(updated()), this, SLOT(update()));
-    }
 }
 
 void BuddyInfoPanel::disconnectItem()
 {
     Buddy buddy = m_talkableConverter->toBuddy(Item);
     if (buddy)
-    {
         disconnect(buddy, 0, this, 0);
-        if (buddy.buddyAvatar())
-            disconnect(buddy.buddyAvatar(), 0, this, 0);
-    }
 
     Contact contact = m_talkableConverter->toContact(Item);
     if (contact)
-    {
         disconnect(contact, 0, this, 0);
-        auto avatar = m_avatarManager->byContact(contact, ActionReturnNull);
-        if (avatar)
-            disconnect(avatar, 0, this, 0);
-    }
 }
 
 void BuddyInfoPanel::displayItem(Talkable item)
@@ -256,5 +248,3 @@ void BuddyInfoPanel::styleFixup(QString &syntax)
 {
     syntax = Template.arg(syntax);
 }
-
-#include "moc_buddy-info-panel.cpp"

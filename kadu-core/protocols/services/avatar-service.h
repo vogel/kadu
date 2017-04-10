@@ -62,19 +62,6 @@ public:
     static AvatarService *fromAccount(Account account);
 
     /**
-     * @short Get AvatarDownloader for this service.
-     * @author Rafał 'Vogel' Malinowski
-     * @return AvatarDownloader for this service
-     *
-     * This method will create and return AvatarDownloader class that can be used to download avatar for a contact.
-     * This method can return null if it is impossible to download an avatar.
-     *
-     * Returned instance should be used immediately and should not be stored for future use. Returned object will delete
-     * itself after one use, so next instance should be created in case first upload fails.
-     */
-    virtual AvatarDownloader *createAvatarDownloader() = 0;
-
-    /**
      * @short Get AvatarUploader for this service.
      * @author Rafał 'Vogel' Malinowski
      * @return AvatarUploader for this service

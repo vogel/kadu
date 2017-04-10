@@ -28,6 +28,7 @@
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
+class Avatars;
 class Contact;
 class IconsManager;
 
@@ -44,8 +45,10 @@ public:
     QVariant data(const Contact &contact, int role, bool useBuddyData);
 
 private:
+    QPointer<Avatars> m_avatars;
     QPointer<IconsManager> m_iconsManager;
 
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setIconsManager(IconsManager *iconsManager);
 };

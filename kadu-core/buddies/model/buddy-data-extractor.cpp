@@ -21,7 +21,8 @@
 
 #include "buddy-data-extractor.h"
 
-#include "avatars/avatar.h"
+#include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
 #include "icons/icons-manager.h"
@@ -38,6 +39,11 @@ BuddyDataExtractor::BuddyDataExtractor(QObject *parent) : QObject{parent}
 
 BuddyDataExtractor::~BuddyDataExtractor()
 {
+}
+
+void BuddyDataExtractor::setAvatars(Avatars *avatars)
+{
+    m_avatars = avatars;
 }
 
 void BuddyDataExtractor::setBuddyPreferredManager(BuddyPreferredManager *buddyPreferredManager)
@@ -71,7 +77,7 @@ QVariant BuddyDataExtractor::data(const Buddy &buddy, int role)
     case BuddyRole:
         return QVariant::fromValue(buddy);
     case AvatarRole:
-        return buddy.buddyAvatar().pixmap();
+        return m_avatars->pixmap(avatarId(buddy));
     case StatusRole:
         return QVariant::fromValue(m_buddyPreferredManager->preferredContact(buddy, false).currentStatus());
     case ItemTypeRole:

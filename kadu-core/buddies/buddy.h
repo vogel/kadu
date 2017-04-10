@@ -36,7 +36,6 @@
 #include "storage/shared-base.h"
 
 class Account;
-class Avatar;
 class BuddyShared;
 class Contact;
 class ContactShared;
@@ -93,7 +92,6 @@ public:
 
     QString display() const;
 
-    KaduSharedBase_PropertyCRW(Avatar, buddyAvatar, BuddyAvatar);
     KaduSharedBase_PropertyWrite(const QString &, display, Display);
     KaduSharedBase_PropertyCRW(QString, firstName, FirstName);
     KaduSharedBase_PropertyCRW(QString, lastName, LastName);

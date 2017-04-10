@@ -93,8 +93,6 @@
     BuddyShared_PropertySubscriptionRead(capitalized_name) BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name)
 
 class Account;
-class AvatarManager;
-class Avatar;
 class BuddyManager;
 class ConfigurationApi;
 class Contact;
@@ -106,7 +104,6 @@ class KADUAPI BuddyShared : public Shared
 {
     Q_OBJECT
 
-    QPointer<AvatarManager> m_avatarManager;
     QPointer<BuddyManager> m_buddyManager;
     QPointer<GroupManager> m_groupManager;
     QPointer<Myself> m_myself;
@@ -116,7 +113,6 @@ class KADUAPI BuddyShared : public Shared
     QMap<QString, QString> CustomData;
     QList<Contact> Contacts;
 
-    Avatar *BuddyAvatar;
     QString Display;
     QString FirstName;
     QString LastName;
@@ -144,13 +140,11 @@ class KADUAPI BuddyShared : public Shared
     int priorityForNewContact();
 
 private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
     INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
     INJEQT_SET void setGroupManager(GroupManager *groupManager);
     INJEQT_SET void setMyself(Myself *myself);
     INJEQT_INIT void init();
 
-    void avatarUpdated();
     void groupAboutToBeRemoved();
     void markContactsDirty();
 
@@ -197,8 +191,6 @@ public:
     bool isInGroup(const Group &group);
     void addToGroup(const Group &group);
     void removeFromGroup(const Group &group);
-
-    KaduShared_PropertyReadDecl(Avatar, buddyAvatar) void setBuddyAvatar(const Avatar &buddyAvatar);
 
     KaduShared_PropertyRead(const QString &, display, Display) void setDisplay(const QString &display);
 

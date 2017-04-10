@@ -19,28 +19,10 @@
 
 #pragma once
 
-#include "avatars/contact-avatar-service.h"
+#include "contacts/contact-id.h"
 
-class JabberVCardService;
-
-class QXmppClient;
-class QXmppPresence;
-
-class JabberContactAvatarService : public ContactAvatarService
+struct ContactAvatarId
 {
-    Q_OBJECT
-
-public:
-    explicit JabberContactAvatarService(
-        QXmppClient *client, JabberVCardService *vCardService, Account account, QObject *parent = nullptr);
-    virtual ~JabberContactAvatarService();
-
-    virtual void download(const ContactAvatarId &id) override;
-
-private:
-    QXmppClient *m_client;
-    JabberVCardService *m_vCardService;
-
-    void rosterReceived();
-    void presenceReceived(const QXmppPresence &presence);
+    ContactId contact;
+    QByteArray id;
 };

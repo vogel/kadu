@@ -32,10 +32,11 @@
 class QLabel;
 class QPushButton;
 
-class AvatarManager;
+class Avatars;
 class AvatarService;
 class IconsManager;
 class ProtocolsManager;
+struct AvatarId;
 
 class KADUAPI AccountAvatarWidget : public QWidget
 {
@@ -52,7 +53,7 @@ public:
     virtual ~AccountAvatarWidget();
 
 private:
-    QPointer<AvatarManager> m_avatarManager;
+    QPointer<Avatars> m_avatars;
     QPointer<IconsManager> m_iconsManager;
     QPointer<ProtocolsManager> m_protocolsManager;
 
@@ -71,12 +72,12 @@ private:
     void removeAvatar();
 
 private slots:
-    INJEQT_SET void setAvatarManager(AvatarManager *avatarManager);
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setIconsManager(IconsManager *iconsManager);
     INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
     INJEQT_INIT void init();
 
-    void avatarUpdated();
+    void avatarUpdated(const AvatarId &id);
 
     void changeButtonClicked();
     void avatarUploaded(bool ok, QImage image);

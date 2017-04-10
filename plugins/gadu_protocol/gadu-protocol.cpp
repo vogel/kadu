@@ -33,7 +33,7 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 #include "avatars/aggregated-contact-avatar-service.h"
-#include "avatars/avatar-manager.h"
+#include "avatars/contact-avatar-id.h"
 #include "buddies/buddy-manager.h"
 #include "chat/chat-manager.h"
 #include "chat/chat-service-repository.h"
@@ -95,11 +95,6 @@ GaduProtocol::~GaduProtocol()
 void GaduProtocol::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
 {
     m_aggregatedContactAvatarService = aggregatedContactAvatarService;
-}
-
-void GaduProtocol::setAvatarManager(AvatarManager *avatarManager)
-{
-    m_avatarManager = avatarManager;
 }
 
 void GaduProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
@@ -384,8 +379,7 @@ void GaduProtocol::connectedToServer()
 
 void GaduProtocol::afterLoggedIn()
 {
-    // fetch current avatar after connection
-    m_avatarManager->updateAvatar(account().accountContact());
+    m_gaduContactAvatarService->download(ContactAvatarId{account().accountContact().id().toUtf8(), {}});
 
     auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
     CurrentNotifyService->sendInitialData(contacts);
