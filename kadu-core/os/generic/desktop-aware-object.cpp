@@ -43,7 +43,6 @@ DesktopAwareObject::~DesktopAwareObject()
 }
 
 /**
- * @author Piotr 'ultr' Dąbrowski
  * @short Call this method to call resolutionChanged in each DesktopAwareObject object.
  *
  * Calling this method results in calling resolutionChanged in each DesktopAwareObject
@@ -56,7 +55,6 @@ void DesktopAwareObject::notifyDesktopModified()
 }
 
 /**
- * @author Piotr 'ultr' Dąbrowski
  * @short Default implementation.
  *
  * Default implementation moves the window to the closest available desktop.

@@ -34,7 +34,6 @@
  */
 /**
  * @class UuidStorableObject
- * @author Rafal 'Vogel' Malinowski
  * @short Object that can load itself from XML file and store data there. Object is identified by UUID.
  *
  * Many objects of this class can be stored under one master XML node in storage.
@@ -52,7 +51,6 @@ public:
     UuidStorableObject(QObject *parent = nullptr);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns unique identifier of this object.
      * @return unique identifier of this object
      *
@@ -65,7 +63,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Updates value of unique identifier of this object.
      * @return unique identifier of this object
      *

@@ -37,7 +37,6 @@ class QAbstractProxyModel;
 
 /**
  * @class ModelChain
- * @author Rafał 'Vogel' Malinowski
  * @short Chain build from one normal model and list of proxy models.
  *
  * This class bundles model and list of proxy models into one object that allows to easily
@@ -57,7 +56,6 @@ class KADUAPI ModelChain : public QObject, public KaduAbstractModel
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new chain with given base model.
      * @param parent parent of chain
      *
@@ -67,7 +65,6 @@ public:
     virtual ~ModelChain();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets different base model for given chain.
      * @param model new base model
      *
@@ -76,7 +73,6 @@ public:
     void setBaseModel(QAbstractItemModel *model);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add new proxy model at the end of chain.
      * @param proxyModel new proxy model
      *
@@ -85,7 +81,6 @@ public:
     void addProxyModel(QAbstractProxyModel *proxyModel);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns base model of chain.
      * @return base model of chain
      *
@@ -94,7 +89,6 @@ public:
     QAbstractItemModel *firstModel() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns last chain model.
      * @return last chain model
      *
@@ -104,7 +98,6 @@ public:
     QAbstractItemModel *lastModel() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of indexes of given value in last proxy model.
      * @return index of given value in last proxy model
      *

@@ -37,7 +37,6 @@ class Chat;
 /**
  * @class MessageTransformerService
  * @short Service for handling transformations of messages.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service is used to handle transformations of messages. It is possible to register MessageTransformer instances
  * as outgoing or incoming transformers. Calling transformOutgoingMessage() or transformIncomingMessage() will call
@@ -50,7 +49,6 @@ class KADUAPI MessageTransformerService : public QObject, public TransformerServ
 public:
     /**
      * @short Create new instance of MessageTransformerService.
-     * @author Rafał 'Vogel' Malinowski
      * @param parent QObject parent
      */
     Q_INVOKABLE explicit MessageTransformerService(QObject *parent = nullptr);

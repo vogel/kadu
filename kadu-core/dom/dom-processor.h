@@ -35,7 +35,6 @@ class DomVisitor;
 /**
  * @class DomProcessor
  * @short Helper class for processing DOM documents.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class can be used to process DOM documents using visitor pattern.
  * Visitor object is allowed to modify DOM tree in any way.
@@ -45,14 +44,12 @@ class KADUAPI DomProcessor
 public:
     /**
      * @short Create new instance of DomProcessor.
-     * @author Rafał 'Vogel' Malinowski
      * @param domDocument DOM document to process
      */
     DomProcessor(QDomDocument &domDocument);
 
     /**
      * @short Accept a visitor.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitor to accept
      *
      * Processing is not read-only, so domDocument can be changed after calling this method.
@@ -61,7 +58,6 @@ public:
 
     /**
      * @short Accept set of visitors.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitor to accept
      *
      * Processing is not read-only, so domDocument can be changed after calling this method.

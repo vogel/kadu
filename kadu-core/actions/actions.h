@@ -42,7 +42,6 @@ class SessionService;
 
 /**
  * @class Actions
- * @author Rafał 'Vogel' Malinowski
  * @short Manager of all ActionDescription and Action instances.
  *
  * This singleton manager all instanced of ActionDescription inside Kadu. It emits actionCreated signal
@@ -58,7 +57,6 @@ public:
     virtual ~Actions();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new QAction instance for kadu main window.
      * @param name name of action to create
      * @param context context of action
@@ -70,7 +68,6 @@ public:
     QAction *createAction(const QString &name, ActionContext *context, QObject *parent);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Blocks actionLoaded and actionUnloaded signals.
      *
      * No more actionLoaded and actionUnloaded signals will be emited, until unblockSignals is called.
@@ -81,7 +78,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Unblocks actionLoaded and actionUnloaded signals.
      *
      * Signals actionLoaded and actionUnloaded can now be emited again.
@@ -93,7 +89,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited after an action for main kadu window was created.
      * @param action newly created action
      *
@@ -102,7 +97,6 @@ signals:
     void actionCreated(Action *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited after an action type was registerd.
      * @param action registered action.
      *
@@ -112,7 +106,6 @@ signals:
     void actionLoaded(ActionDescription *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited after an action type was unregisterd.
      * @param action unregistered action.
      *
@@ -123,7 +116,6 @@ signals:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Registers ActionDescription class.
      * @param action registered action
      *
@@ -133,7 +125,6 @@ public:
     bool insert(ActionDescription *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Unregisters an ActionDescription class.
      * @param action unregistered action
      *

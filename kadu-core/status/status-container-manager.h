@@ -42,7 +42,6 @@ class StatusTypeManager;
 
 /**
  * @class StatusContainerManager
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for managing list of active status container.
  * @see StatusContainer
  * @see StatusContainerAwareObject
@@ -79,7 +78,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
     StatusContainer *DefaultStatusContainer;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Unregister all status containers.
      *
      * This method unregister all status containers. After that, default status container is null.
@@ -87,7 +85,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
     void cleanStatusContainers();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Adds all active accounts as status containers.
      *
      * This method adds all active accounts as status containers.
@@ -95,7 +92,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
     void addAllAccounts();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Adds all active identities that have at least one account as status containers.
      *
      * This method adds all active identities that have at least one account as status containers. Work is done
@@ -104,7 +100,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
     void addAllIdentities();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets new default status container.
      * @param defaultStatusContainer new default status container
      *
@@ -113,7 +108,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
     void setDefaultStatusContainer(StatusContainer *defaultStatusContainer);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Registers new status container.
      * @param statusContainer new status container
      *
@@ -125,7 +119,6 @@ class KADUAPI StatusContainerManager : public StatusContainer,
     void registerStatusContainer(StatusContainer *statusContainer);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Unregisters status container.
      * @param statusContainer status container to unregister
      *
@@ -149,7 +142,6 @@ private slots:
     INJEQT_DONE void done();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called when identity data needs update.
      *
      * This method is called every time identity data has changed - new identity is registered, old one is registered,
@@ -161,7 +153,6 @@ private slots:
     void updateIdentities();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when mode of StatusContainerManager is changed.
      *
      * This method is called every time StatusContainerManager mode is called. Three modes are available:
@@ -179,7 +170,6 @@ private slots:
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when new account is registered.
      * @param account registed account
      *
@@ -190,7 +180,6 @@ protected:
     virtual void accountAdded(Account account) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when account is unregistered.
      * @param account unregisted account
      *
@@ -201,7 +190,6 @@ protected:
     virtual void accountRemoved(Account account) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when new identity is registered.
      * @param identity registed identity
      *
@@ -211,7 +199,6 @@ protected:
     virtual void identityAdded(Identity identity) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when identity is unregistered.
      * @param identity unregisted identity
      *
@@ -225,7 +212,6 @@ public:
     virtual ~StatusContainerManager();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of active status contianers.
      * @return list of active status contianers
      *
@@ -237,7 +223,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if statuses of all acvite status containers are of given type.
      * @return true if statuses of all acvite status containers are of given type
      *
@@ -248,7 +233,6 @@ public:
     // StatusContainer Implementation
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns "All" string.
      * @return "All" string
      *
@@ -257,7 +241,6 @@ public:
     virtual QString statusContainerName() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets new status on all active status containers.
      * @param status new status
      * @param source source of status change
@@ -267,7 +250,6 @@ public:
     virtual void setStatus(Status status, StatusChangeSource source) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns status of default status container.
      * @return status of default status container
      *
@@ -277,7 +259,6 @@ public:
     virtual Status status() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns "is status setting in progress" property of default status container.
      * @return "is status setting in progress" property of default status container
      *
@@ -287,7 +268,6 @@ public:
     virtual bool isStatusSettingInProgress() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns generic icon of status of default status container.
      * @return generic icon of status of default status container
      *
@@ -298,7 +278,6 @@ public:
     virtual KaduIcon statusIcon() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns generic icon of given status.
      * @param status status to get icon for
      * @return generic icon of given status
@@ -308,7 +287,6 @@ public:
     virtual KaduIcon statusIcon(const Status &status) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of default status container supported status types.
      * @return list of default status container supported status types
      *
@@ -318,7 +296,6 @@ public:
     virtual QList<StatusType> supportedStatusTypes() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns maximum description length of default status container.
      * @return maximum description length of default status container
      *
@@ -328,7 +305,6 @@ public:
     virtual int maxDescriptionLength() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns "All " string.
      * @return "All " string
      *
@@ -337,7 +313,6 @@ public:
     virtual QString statusNamePrefix() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns stored status of default status container.
      * @return stored status of default status container
      *
@@ -347,7 +322,6 @@ public:
     virtual Status loadStatus() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Stores given status in all active status containers.
      * @param status status to store
      *
@@ -356,7 +330,6 @@ public:
     virtual void storeStatus(Status status) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of sub status containers.
      * @return list of sub status containers
      *
@@ -366,7 +339,6 @@ public:
     virtual QList<StatusContainer *> subStatusContainers() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return status container for given account.
      * @param account account to check
      *
@@ -377,7 +349,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited just before new status container is registered.
      * @param statusContainer new status container
      *
@@ -386,7 +357,6 @@ signals:
     void statusContainerAboutToBeRegistered(StatusContainer *statusContainer);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited just after new status container is registered.
      * @param statusContainer new status container
      *
@@ -395,7 +365,6 @@ signals:
     void statusContainerRegistered(StatusContainer *statusContainer);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited just before status container is unregistered.
      * @param statusContainer unregistered status container
      *
@@ -404,7 +373,6 @@ signals:
     void statusContainerAboutToBeUnregistered(StatusContainer *statusContainer);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited just after status container is unregistered.
      * @param statusContainer unregistered status container
      *

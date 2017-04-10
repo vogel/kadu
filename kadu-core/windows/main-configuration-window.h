@@ -29,11 +29,6 @@ class MainConfigurationWindow;
 
 class ConfigurationUiHandler;
 
-/**
-        @class MainConfigurationWindow
-        @author Vogel
-        @short G��wne okno konfiguracyjne.
- **/
 class KADUAPI MainConfigurationWindow : public ConfigurationWindow, CompositingAwareObject
 {
     Q_OBJECT

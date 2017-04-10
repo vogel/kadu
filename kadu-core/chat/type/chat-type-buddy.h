@@ -37,7 +37,6 @@ class InjectedFactory;
 
 /**
  * @class ChatTypeBuddy
- * @author Rafal 'Vogel' Malinowski
  * @short Representation of chat type that contains other chats.
  *
  * Representation of chat type that contains other chats.

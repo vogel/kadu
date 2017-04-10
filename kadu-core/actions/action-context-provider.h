@@ -30,7 +30,6 @@ class ActionContext;
 
 /**
  * @class ActionContextProvider
- * @author Rafał 'Vogel' Malinowski
  * @short Interface used by classes that have access to ActionContext instances.
  *
  * This inteface is implemented by all classes/widgets that have access to ActionContext instances.

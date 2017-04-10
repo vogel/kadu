@@ -37,7 +37,6 @@ class StatusContainer;
 
 /**
  * @class StatusContainerAwareObject
- * @author Rafał 'Vogel' Malinowski
  * @short Class used for receiving notifications about registered and unregistered status containers.
  * @see StatusContainer
  * @see StatusContainerManager
@@ -51,7 +50,6 @@ class KADUAPI StatusContainerAwareObject
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called when new status container is registered in StatusContainerManager singleton.
      * @param statusContainer registered status container
      *
@@ -61,7 +59,6 @@ protected:
     virtual void statusContainerRegistered(StatusContainer *statusContainer) = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called when status container is unregistered from StatusContainerManager singleton.
      * @param statusContainer unregistered status container
      *
@@ -72,7 +69,6 @@ protected:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Call this method to call statusContainerRegistered for every StatusContainerAwareObject instance.
      * @param statusContainer registered status container
      *
@@ -81,7 +77,6 @@ public:
     static void notifyStatusContainerRegistered(StatusContainer *statusContainer);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Call this method to call statusContainerUnregistered for every StatusContainerAwareObject instance.
      * @param statusContainer runregistered status container
      *
@@ -93,7 +88,6 @@ public:
     virtual ~StatusContainerAwareObject();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Call this method on instance of StatusContainerAwareObject to call statusContainerRegistered for every
      * registered status contaner.
      * @param statusContainer registered status container
@@ -104,7 +98,6 @@ public:
     void triggerAllStatusContainerRegistered(StatusContainerManager *statusContainerManager);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Call this method on instance of StatusContainerAwareObject to call statusContainerUnregistered for every
      * registered status contaner.
      * @param statusContainer registered status container

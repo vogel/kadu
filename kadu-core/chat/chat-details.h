@@ -39,7 +39,6 @@ class ContactSet;
 
 /**
  * @class ChatDetails
- * @author Rafal 'Vogel' Malinowski
  * @short Chat data specyfic to given chat type.
  *
  * Objects derivered from this class contains chat data that is specific to
@@ -54,7 +53,6 @@ class KADUAPI ChatDetails : public Details<ChatShared>
 
 public:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @param mainData ChatShared object described by this object
      * @short Default contructor.
      *
@@ -65,7 +63,6 @@ public:
     virtual ~ChatDetails();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @return chat type of this object
      * @short Returns chat type of this object.
      *
@@ -74,7 +71,6 @@ public:
     virtual ChatType *type() const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @return list of contacts with this chat
      * @short Returns list of contacts with this chat.
      *
@@ -83,7 +79,6 @@ public:
     virtual ContactSet contacts() const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @return name of this chat
      * @short Returns name of this chat.
      *
@@ -93,7 +88,6 @@ public:
     virtual QString name() const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return true when chat is connected.
      * @return true when chat is connected
      *
@@ -106,7 +100,6 @@ public:
 
 signals:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has connected.
      *
      * Chat messages can only be send to/received from connected chat.
@@ -114,7 +107,6 @@ signals:
     void connected();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has disconnected.
      *
      * Chat messages can only be send to/received from connected chat.
@@ -122,28 +114,24 @@ signals:
     void disconnected();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited before a new contact is added to @link Chat @endlink represented by these details.
      * @param contact added contact
      */
     void contactAboutToBeAdded(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when a new contact was added to @link Chat @endlink represented by these details.
      * @param contact just added contact
      */
     void contactAdded(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited before a contact is removed from @link Chat @endlink represented by these details.
      * @param contact just removed contact
      */
     void contactAboutToBeRemoved(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when a contact was removed from @link Chat @endlink represented by these details.
      * @param contact just removed contact
      */

@@ -31,7 +31,6 @@
 
 /**
  * @class NameTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that accepts only items matching given name.
  *
  * This filter matches items due to following rules:
@@ -55,7 +54,6 @@ class KADUAPI NameTalkableFilter : public TalkableFilter
 public:
     /**
      * @enum NameFilterMatchingMode
-     * @author Rafał 'Vogel' Malinowski
      * @short This enum controls value returned when given item matches name.
      */
     enum NameFilterMatchingMode
@@ -75,7 +73,6 @@ private:
     QString Name;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if given chat matches name.
      * @param chat chat to match
      * @return true if given chat matches name
@@ -83,7 +80,6 @@ private:
     bool matches(const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if given buddy matches name.
      * @param buddy buddy to match
      * @return true if given buddy matches name
@@ -91,7 +87,6 @@ private:
     bool matches(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if given contact matches name.
      * @param contact contact to match
      * @return true if given contact matches name
@@ -99,7 +94,6 @@ private:
     bool matches(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compute FilterResult for given matched value.
      * @param matched true, if given item matched name, false otherwise
      * @return FilterResult for given matched value
@@ -108,7 +102,6 @@ private:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of NameTalkableFilter with given parent.
      * @param mode mode controlling return value when given item matches name
      * @param parent QObject parent of new object
@@ -122,7 +115,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set new name to match items against.
      * @param name new name to match items against
      *

@@ -30,7 +30,6 @@
 
 /**
  * @class KaduMergedProxyModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model that merges other models into one and allows for calling indexListForValue method.
  *
  * This model merges other models into one. KaduMergedProxyModel accepts all ModelChain  objects and
@@ -46,7 +45,6 @@ class KaduMergedProxyModel : public MergedProxyModel, public KaduAbstractModel
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new instance of KaduMergedProxyModel.
      * @param parent QObject parent of new KaduMergedProxyModel.
      *
@@ -56,7 +54,6 @@ public:
     virtual ~KaduMergedProxyModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets list of models to merge.
      * @param models list of models to merge
      *
@@ -66,7 +63,6 @@ public:
     void setKaduModels(QList<KaduAbstractModel *> models);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return list of indexes that holds given object.
      * @return list of indexes that holds given object
      * @param value object to find

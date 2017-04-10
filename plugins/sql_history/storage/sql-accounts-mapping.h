@@ -37,7 +37,6 @@ class AccountManager;
 
 /**
  * @class SqlAccountsMapping
- * @author Rafał 'Vogel' Malinowski
  * @short This class is responsible for mapping IM accounts to database entries in kadu_accounts table.
  *
  * This class is responsible for mapping IM accounts to database entries in kadu_accounts table of database
@@ -61,7 +60,6 @@ class SqlAccountsMapping : public QObject, AccountsAwareObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of SqlAccountsMapping class.
      * @param database database with kadu_accounts table
      * @param parent QObject parent of new SqlAccountsMapping object
@@ -74,7 +72,6 @@ public:
     virtual ~SqlAccountsMapping();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return Account matched with given id from database.
      * @param sqlId id from database
      *
@@ -84,7 +81,6 @@ public:
     Account accountById(int sqlId) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return sql id matched with given account.
      * @param account account to match to sql id
      *
@@ -94,7 +90,6 @@ public:
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add new kadu_accounts entry for new account.
      * @param account added account
      *
@@ -105,7 +100,6 @@ protected:
     virtual void accountAdded(Account account) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Clear kadu_accounts entry for removed account.
      * @param account added account
      *
@@ -123,7 +117,6 @@ private:
     QMap<int, Account> AccountMapping;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add mapping of given id to given account.
      * @param id id to map
      * @param account account to map
@@ -134,7 +127,6 @@ private:
     void addMapping(int id, const Account &account);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Load mapping from database.
      *
      * This method loads mapping from database. All database entries from kadu_accounts table are matched
@@ -147,7 +139,6 @@ private slots:
     INJEQT_INIT void init();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Update kadu_accounts entry to new account's data.
      * @param account updated account
      *

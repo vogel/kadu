@@ -34,7 +34,6 @@ class BuddyPreferredManager;
 
 /**
  * @class HideWithoutDescriptionTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are not available and have no description.
  *
  * This filter removes items that have no description. Contact items that have empty description are rejected.
@@ -49,7 +48,6 @@ class HideWithoutDescriptionTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of HideWithoutDescriptionTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */
@@ -59,7 +57,6 @@ public:
     virtual FilterResult filterBuddy(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Enable or disalbe filter.
      * @param enabled new value of enabled property
      */

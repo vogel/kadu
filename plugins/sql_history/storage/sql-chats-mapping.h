@@ -40,7 +40,6 @@ class SqlContactsMapping;
 
 /**
  * @class SqlChatsMapping
- * @author Rafał 'Vogel' Malinowski
  * @short This class is responsible for mapping IM chats to database entries in kadu_chats table.
  *
  * This class is responsible for mapping IM chats to database entries in kadu_chats table of database
@@ -74,7 +73,6 @@ class SqlChatsMapping : public QObject
     QMap<int, Chat> ChatMapping;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add mapping of given id to given contact.
      * @param id id to map
      * @param contact contact to map
@@ -85,7 +83,6 @@ class SqlChatsMapping : public QObject
     void addMapping(int id, const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Load mapping from database.
      *
      * This method loads mapping from database. All database entries from kadu_chats table are matched
@@ -99,7 +96,6 @@ private slots:
     INJEQT_INIT void init();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Update SQL mapping of changed chat.
      * @param chat changes chat
      *
@@ -109,7 +105,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of SqlChatsMapping class.
      * @param database database with kadu_chats table
      * @param accountsMapping object providing account to database mapping, must be not null
@@ -126,7 +121,6 @@ public:
     virtual ~SqlChatsMapping();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return Chat matched with given id from database.
      * @param sqlId id from database
      *
@@ -136,7 +130,6 @@ public:
     Chat chatById(int sqlId) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return sql id matched with given chat.
      * @param chat chat to match to sql id
      * @param create if true then valid id will be created if not already available
@@ -148,7 +141,6 @@ public:
     int idByChat(const Chat &chat, bool create);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Remove chat from mapping.
      * @param chat chat to remove
      *
@@ -157,14 +149,12 @@ public:
     void removeChat(const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return current mappings.
      * @param return current mappings
      */
     const QMap<int, Chat> &mapping() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Converts chat to string that can be stored in database.
      * @param chat chat to convert
      * @return String representation of given chat.
@@ -176,7 +166,6 @@ public:
     QString chatToString(const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Converts string from database to chat.
      * @param account account of converted chat
      * @param string string  to convert

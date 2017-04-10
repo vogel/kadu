@@ -30,7 +30,6 @@ NetworkManager::~NetworkManager()
 }
 
 /**
- * @author Piotr 'ultr' Dąbrowski
  * @short Implementations should call this method each time network state changes.
  * @param isOnline new network state
  *

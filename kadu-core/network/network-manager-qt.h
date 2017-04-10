@@ -34,8 +34,6 @@ class QNetworkConfigurationManager;
 
 /**
  * @class NetworkManagerQt
- * @author Rafał 'Vogel' Malinowski
- * @author Piotr 'ultr' Dąbrowski
  * @short Class responsible for network online-offline notifications using QNetworkConfigurationManager.
  * @see NetworkAwareObject
  *

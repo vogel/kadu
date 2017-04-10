@@ -39,7 +39,6 @@ class Talkable;
 
 /**
  * @class HistoryQueryResultsModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model used to represent vector of HistoryQueryResult items.
  *
  * This model can hold a vector of HistoryQueryResult. Four columns are available - talkable
@@ -64,7 +63,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new model.
      * @param parent QObject parent of new model.
      */
@@ -78,7 +76,6 @@ public:
     virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set title of first column.
      * @param talkableHeader new title for first column
      *
@@ -87,7 +84,6 @@ public:
     void setTalkableHeader(const QString &talkableHeader);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set title of third column.
      * @param lengthHeader new title for third column
      *
@@ -96,7 +92,6 @@ public:
     void setLengthHeader(const QString &lengthHeader);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set vector of HistoryQueryResult items.
      * @param results new vector of HistoryQueryResult items
      */

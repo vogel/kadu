@@ -98,7 +98,6 @@ public:
     KaduShared_PropertyRead(const QString &, id, Id) void setId(const QString &id);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return RosterEntry for this Contact.
      * @return RosterEntry for this Contact
      *

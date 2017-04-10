@@ -35,7 +35,6 @@
 
 /**
  * @class StatusTypeData
- * @author Rafał 'Vogel' Malinowski
  * @short Extendend information about StatusType enum values.
  * @see StatusType
  * @see StatusTypeManager
@@ -66,7 +65,6 @@ public:
     StatusTypeData(const StatusTypeData &copyMe);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns StatusType enum value associated with this object.
      * @return StatusType enum value associated with this object
      *
@@ -78,7 +76,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns name of status type associated with this object.
      * @return name of status type associated with this object
      *
@@ -92,7 +89,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns display name of status type associated with this object.
      * @return display name of status type associated with this object
      *
@@ -104,7 +100,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns icon name associated with this status type.
      * @return icon name associated with this status type
      *
@@ -116,7 +111,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns StatusTypeGroup enum value associated with this status type.
      * @return StatusTypeGroup enum value associated with this status type
      *

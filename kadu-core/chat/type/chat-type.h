@@ -42,7 +42,6 @@ class KaduIcon;
 
 /**
  * @class ChatType
- * @author Rafal 'Vogel' Malinowski
  * @short Representation of logical chat type.
  *
  * Abstract representation of logical chat type (single chat, conference chat, irc room chat...).
@@ -60,7 +59,6 @@ public:
     virtual ~ChatType();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Internal name of chat type.
      * @return internal name of chat type
      *
@@ -70,7 +68,6 @@ public:
     virtual QString name() const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Internal aliases of chat type.
      * @return internal aliases of chat type
      *
@@ -80,7 +77,6 @@ public:
     virtual QStringList aliases() const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Icon of chat type.
      * @return icon of chat type
      *
@@ -89,7 +85,6 @@ public:
     virtual KaduIcon icon() const = 0;
 
     /**
-     * @author Piotr 'ultr' Dąbrowski
      * @short Window role for this chat type.
      * @return window role for this chat type.
      *
@@ -98,7 +93,6 @@ public:
     virtual QString windowRole() const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Creates new ChatDetails object for given chat type.
      * @return new ChatDetails object for given chat type
      *
@@ -108,7 +102,6 @@ public:
     virtual ChatDetails *createChatDetails(ChatShared *chatData) const = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Create new ChatEditWidget for editing given chat.
      * @param chat chat to edit
      * @param parent QWidget parent of new edit widget

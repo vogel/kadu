@@ -34,8 +34,6 @@
 
 /**
  * @class NetworkManagerNTrack
- * @author Rafał 'Vogel' Malinowski
- * @author Piotr 'ultr' Dąbrowski
  * @short Class responsible for network online-offline notifications using NTrack library.
  * @see NetworkAwareObject
  *

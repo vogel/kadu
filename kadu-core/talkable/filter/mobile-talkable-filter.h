@@ -31,7 +31,6 @@
 
 /**
  * @class MobileTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that rejects buddies without mobile number.
  *
  * This filter rejects contacts, chats and buddies without mobile number. Buddies
@@ -43,7 +42,6 @@ class KADUAPI MobileTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of MobileTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */

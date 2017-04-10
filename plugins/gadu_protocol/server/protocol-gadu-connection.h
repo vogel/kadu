@@ -35,7 +35,6 @@ class GaduProtocol;
 /**
  * @class ProtocolGaduConnection
  * @short Connection to Gadu Gadu server based on GaduProtocol instance.
- * @author Rafał 'Vogel' Malinowski
  *
  * This implementation of GaduConnection interface uses GaduProtocol for access to libgadu session
  * and to allow writing to it.
@@ -54,7 +53,6 @@ protected:
 public:
     /**
      * @short Create new instance of ProtocolGaduConnection class.
-     * @author Rafał 'Vogel' Malinowski
      * @param parent QObject parent
      */
     explicit ProtocolGaduConnection(QObject *parent = nullptr);
@@ -62,7 +60,6 @@ public:
 
     /**
      * @short Set GaduProtocol to use by this object.
-     * @author Rafał 'Vogel' Malinowski
      * @param protocol GaduProtocol to use by this object
      */
     void setConnectionProtocol(GaduProtocol *protocol);

@@ -32,7 +32,6 @@ class ChatListModel;
 
 /**
  * @class ChatManagerAdapter
- * @author Rafał 'Vogel' Malinowski
  * @short Adapter that makes ChatListModel to use copy of buddies from ChatManager.
  *
  * This adapter created with a @link ChatListModel @endlink as parent replicates list of chats from
@@ -45,7 +44,6 @@ class ChatManagerAdapter : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
      * @param model model to adapt @link BuddiesManager @endlink to
      *
@@ -61,7 +59,6 @@ private:
 
 private slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called after a chat is added to @link ChatManager @endlink singleton.
      * @param chat added chat
      *
@@ -70,7 +67,6 @@ private slots:
     void chatAdded(const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called after a chat is removed from @link ChatManager @endlink singleton.
      * @param chat removed chat
      *

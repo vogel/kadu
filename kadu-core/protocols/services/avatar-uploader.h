@@ -34,7 +34,6 @@
 /**
  * @class AvatarUploader
  * @short Class for uploading avatars.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for uploading avatar. To do that attach slot to avatarUploaded() signal and call uploadAvatar()
  * method. After avatar is downloaded avatarUploaded() signal is emitted and this object deletes itself.
@@ -54,7 +53,6 @@ protected:
 public:
     /**
      * @short Uploads avatar with given authentication data.
-     * @author Rafał 'Vogel' Malinowski
      * @param id id of contact to upload avatar for
      * @param password password of contact to upload avatar for
      * @param avatar avatar to upload
@@ -68,7 +66,6 @@ public:
 signals:
     /**
      * @short Signal emitted when job of this class is done.
-     * @author Rafał 'Vogel' Malinowski
      * @param ok success flag
      * @param avatar uploaded avatar
      *

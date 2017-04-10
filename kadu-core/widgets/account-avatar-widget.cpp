@@ -22,8 +22,8 @@
 #include "account-avatar-widget.h"
 #include "account-avatar-widget.moc"
 
-#include "avatars/avatars.h"
 #include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
 #include "protocols/protocol-factory.h"

@@ -38,7 +38,6 @@ class RosterServiceTasks;
 
 /**
  * @class RosterService
- * @author Rafał 'Vogel' Malinowski
  * @short Roster protocol service allows adding, removing and updating contacts on remote roster.
  *
  * This service allows adding, removing and updating contacts on remote roster. Every added contact is watched
@@ -55,7 +54,6 @@ class KADUAPI RosterService : public ProtocolService
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of RosterService bound to given Account.
      * @param protocol to bound this service to
      * @param contacts initial list of account contacts that should be stored in Roster

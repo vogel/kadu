@@ -31,7 +31,6 @@
 /**
  * @class TransformerService
  * @short Template for services that registers list of Transformer instances.
- * @author Rafał 'Vogel' Malinowski
  */
 template <typename T>
 class TransformerService

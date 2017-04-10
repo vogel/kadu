@@ -32,7 +32,6 @@
 
 /**
  * @class ChangeNotifier
- * @author Rafał 'Vogel' Malinowski
  * @short Notify about change in object properties.
  *
  * This class can be used to notify about changes in other object's properties. Each time a property in given object
@@ -59,7 +58,6 @@ public:
     virtual ~ChangeNotifier();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Block emitting of changed() signal.
      *
      * This method can be called multiple times. After that unblock() must be called the same amount of times to allow
@@ -69,7 +67,6 @@ public:
     void block();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Unblock emitting of changed() signal and emit the changed() signal if a change happened when the object
      * was blocked.
      *
@@ -81,7 +78,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Notify about change.
      *
      * Changed object should call this method after every change. After that, changed() signal is emitted if not
@@ -91,7 +87,6 @@ public slots:
     void notify();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Forget about all changes.
      *
      * Forget about all changes. Call this method between block() and unblock() to forget about all changes made up to
@@ -102,7 +97,6 @@ public slots:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emitted after every change.
      *
      * Signal emitted after each change. If blocking is used then it will be emitted only once after last change, after

@@ -33,8 +33,6 @@
 
 /**
  * @class NetworkManager
- * @author Rafał 'Vogel' Malinowski
- * @author Piotr 'ultr' Dąbrowski
  * @short Class responsible for network online-offline notifications.
  * @see NetworkAwareObject
  *
@@ -56,8 +54,6 @@ public:
     virtual ~NetworkManager();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
-     * @author Piotr 'ultr' Dąbrowski
      * @short This method returns true if netwok is online.
      * @return true if netwok is online
      *
@@ -69,7 +65,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Force online status on network.
      *
      * If implementation of network manager is broken (as in ntrack) call this method if you are sure that network is
@@ -79,7 +74,6 @@ public slots:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when network changes state from offline to online.
      *
      * This signal is emited when network changes state from offline to online. On some systems that do not provide
@@ -89,7 +83,6 @@ signals:
     void online();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when network changes state from online to offline.
      *
      * This signal is emited when network changes state from online to offline. On some systems that do not provide

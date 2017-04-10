@@ -35,7 +35,6 @@ class Protocol;
 
 /**
  * @class ProtocolStateMachine
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for managing protocol connection and login state.
  *
  * This class is responsible for managing protocol connection and login life-cycle. State machine is aware
@@ -235,7 +234,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when logging out state is entered.
      *
      * Signal emited when logging out state is entered. Protocol implementations should use it
@@ -244,7 +242,6 @@ signals:
     void loggingOutStateEntered();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when logged out, online state is entered.
      *
      * Signal emited when logged out, online state is entered. Protocol implementations should use it
@@ -253,7 +250,6 @@ signals:
     void loggedOutOnlineStateEntered();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when logged out, offline state is entered.
      *
      * Signal emited when logged out, offline state is entered. Protocol implementations should use it
@@ -262,7 +258,6 @@ signals:
     void loggedOutOfflineStateEntered();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when want to log in state is entered.
      *
      * Signal emited when want to log in state is entered. Protocol implementations should use it
@@ -271,7 +266,6 @@ signals:
     void wantToLogInStateEntered();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when logging in state is entered.
      *
      * Signal emited when logging in state is entered. Protocol implementations should use it
@@ -280,7 +274,6 @@ signals:
     void loggingInStateEntered();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when logged in state is entered.
      *
      * Signal emited when logged in state is entered. Protocol implementations should use it
@@ -289,7 +282,6 @@ signals:
     void loggedInStateEntered();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when password required state is entered.
      *
      * Signal emited when logging password required is entered. Protocol implementations should use it

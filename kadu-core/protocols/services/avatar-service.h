@@ -39,7 +39,6 @@ class AvatarUploader;
 /**
  * @class AvatarService
  * @short Service for downloading and uploading avatars.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service can return AvatarDownloader and AvatarUploader instances that can be used to download and upload
  * avatars. If for some reason these operations are not available, null values will be returned.
@@ -55,7 +54,6 @@ protected:
 public:
     /**
      * @short Return avatar service for given account.
-     * @author Rafał 'Vogel' Malinowski
      * @param account account to get avatar service from
      * @return avatar service for given account
      */
@@ -63,7 +61,6 @@ public:
 
     /**
      * @short Get AvatarUploader for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @return AvatarUploader for this service
      *
      * This method will create and return AvatarUploader class that can be used to upload new avatar for account owner.

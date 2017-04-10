@@ -30,7 +30,6 @@
 /**
  * @class ChatImageRequestServiceConfiguration
  * @short Configuration class for ChatImageRequestService.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class is used to configure ChatImageRequestService.
  *
@@ -58,42 +57,36 @@ public:
 
     /**
      * @short Set value of limitImageSize property.
-     * @author Rafał 'Vogel' Malinowski
      * @param limitImageSize new value of limitImageSize property
      */
     void setLimitImageSize(quint32 limitImageSize);
 
     /**
      * @short Return value of limitImageSize property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of limitImageSize property
      */
     quint32 limitImageSize() const;
 
     /**
      * @short Set value of maximumImageSizeInKiloBytes property.
-     * @author Rafał 'Vogel' Malinowski
      * @param maximumImageSizeInKiloBytes new value of maximumImageSizeInKiloBytes property
      */
     void setMaximumImageSizeInKiloBytes(quint32 maximumImageSizeInKiloBytes);
 
     /**
      * @short Return value of maximumImageSizeInKiloBytes property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of maximumImageSizeInKiloBytes property
      */
     quint32 maximumImageSizeInKiloBytes() const;
 
     /**
      * @short Set value of allowBiggerImagesAfterAsking property.
-     * @author Rafał 'Vogel' Malinowski
      * @param allowBiggerImagesAfterAsking new value of allowBiggerImagesAfterAsking property
      */
     void setAllowBiggerImagesAfterAsking(bool allowBiggerImagesAfterAsking);
 
     /**
      * @short Return value of allowBiggerImagesAfterAsking property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of allowBiggerImagesAfterAsking property
      */
     bool allowBiggerImagesAfterAsking() const;

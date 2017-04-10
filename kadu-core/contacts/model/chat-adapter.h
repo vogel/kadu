@@ -34,7 +34,6 @@ class ContactListModel;
 
 /**
  * @class ChatAdapter
- * @author Rafał 'Vogel' Malinowski
  * @short Adapter that makes ContactListModel to use copy of buddies from given Chat.
  *
  * This adapter created with a @link ContactListModel @endlink as parent replicates list of buddies from
@@ -48,7 +47,6 @@ class ChatAdapter : public QObject
 
 private slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called after a contact is added to @link Chat @endlink.
      * @param contact added contact
      *
@@ -57,7 +55,6 @@ private slots:
     void contactAdded(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called after a contact is removed from @link Chat @endlink.
      * @param contact removed contact
      *
@@ -67,7 +64,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new ChatAdapter on given @link ContactListModel @endlink for given @link Chat @endlink.
      * @param model model to adapt @link Chat @endlink to
      *

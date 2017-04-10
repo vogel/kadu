@@ -36,7 +36,6 @@ class StandardUrlExpander;
 /**
  * @class StandardUrlExpanderConfigurator
  * @short Standard configuration setter for StandardUrlExpander.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class listens to changed in global configuration. After change is detected it updated configuration of given
  * StandardUrlExpander with newly created StandardUrlExpanderConfiguration instance.
@@ -56,7 +55,6 @@ public:
 
     /**
      * @short Sets StandardUrlExpander to configure.
-     * @author Rafał 'Vogel' Malinowski
      * @param standardUrlExpander standardUrlExpander to configured
      */
     void setStandardUrlExpander(StandardUrlExpander *standardUrlExpander);

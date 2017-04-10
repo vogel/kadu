@@ -29,7 +29,6 @@
 
 /**
  * @class HideAnonymousTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are anonymous.
  *
  * This filter removes items that are anonymous. Anonymous Chat items have empty display() value.
@@ -43,7 +42,6 @@ class HideAnonymousTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of HideAnonymousTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */

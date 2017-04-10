@@ -34,7 +34,6 @@ class QLineEdit;
 
 /**
  * @class TokenWindow
- * @author Rafał 'Vogel' Malinowski
  * @short Window with picture and text field to enter text from picture.
  *
  * This window displays a picture and text field to enter text from picture. When user enters texts or closes window
@@ -51,7 +50,6 @@ class KADUAPI TokenWindow : public QDialog
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new window with given picture.
      * @param tokenPixmap pixmap to present to user
      */
@@ -64,7 +62,6 @@ public slots:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when user enters text from picture or closes window.
      * @param tokenValue value entered by user
      *

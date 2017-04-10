@@ -28,7 +28,6 @@
 #include "protocols/protocol.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates empty ChatDetailsRoom object.
  * @param chatData Chat object that will be decribed by this object
  *
@@ -52,7 +51,6 @@ ChatDetailsRoom::~ChatDetailsRoom()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Loads ChatDetailsRoom object from storage.
  *
  * Loads ChatDetailsRoom object from the same storage assigned Chat object is
@@ -72,7 +70,6 @@ void ChatDetailsRoom::load()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Stores ChatDetailsRoom object to storage.
  *
  * Stores ChatDetailsRoom object to the same storage assigned Chat object is
@@ -92,7 +89,6 @@ void ChatDetailsRoom::store()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns true if room name is not empty.
  * @return true if room name is not empty
  *
@@ -106,7 +102,6 @@ bool ChatDetailsRoom::shouldStore()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns type of this chat - 'Room'.
  * @return 'Room' ChatType object
  *
@@ -174,7 +169,6 @@ bool ChatDetailsRoom::stayInRoomAfterClosingWindow() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns name of this chat.
  * @return name of this chat
  *

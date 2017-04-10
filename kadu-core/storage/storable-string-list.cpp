@@ -26,7 +26,6 @@
 #include "storage/string-list-storage.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Contructs empty object.
  *
  * Contructs empty object with state @link<StorableObject::StateNew StateNew @endlink.
@@ -36,7 +35,6 @@ StorableStringList::StorableStringList(QObject *parent) : StorableObject{parent}
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Load string list from storagePoint XML node.
  *
  * Load string list from storagePoint XML node. Each item is loaded from subnode
@@ -56,7 +54,6 @@ void StorableStringList::load()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Store string list to storagePoint XML node.
  *
  * Store string list to storagePoint XML node. Each item is stored to subnode
@@ -72,7 +69,6 @@ void StorableStringList::store()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns sontent of this string list.
  * @return Content of this string list
  *

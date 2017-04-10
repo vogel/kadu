@@ -31,7 +31,6 @@
 
 /**
  * @class BlockedTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes buddies and contacts that are blocked.
  *
  * This filter removes buddies and contacts that are blocked. Non-blocked buddies and contacts and all chats
@@ -45,7 +44,6 @@ class BlockedTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of BlockedTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */

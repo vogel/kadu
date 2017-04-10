@@ -39,7 +39,6 @@ class QXmppVCardIq;
 /**
  * @class JabberAvatarUploader
  * @short Uploads avatar to XMPP server using VCard.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for easy upload of avatar to XMPP server. New instance can be created by constructor that requires
  * JabberVCardService argument.
@@ -49,7 +48,6 @@ class JabberAvatarUploader : public AvatarUploader
     Q_OBJECT
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return image data as PNG byte array.
      * @param avatar avatar image to convert
      * @return image data as PNG byte array
@@ -69,7 +67,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create instance attached to given JabberVCardService.
      * @param vcardService instance of JabberVCardService
      * @param parent QObject parent

@@ -37,7 +37,6 @@
  */
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares standard interface for SharedBase class. Use this macro in each SharedBase subclass declaration.
  * @param className name of defined class
  *
@@ -67,7 +66,6 @@ public:                                             \
 private:
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines standard interface for SharedBase class. Use this macro in each SharedBase subclass definition file.
  * @param className name of defined class
  *
@@ -86,7 +84,6 @@ private:
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares getter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -98,7 +95,6 @@ private:
 #define KaduSharedBase_PropertyRead(type, name, capitalized_name) type name() const
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares setter for given property of StorableObject.
  * @param type type of property
  * @param name name of value parameter
@@ -110,7 +106,6 @@ private:
 #define KaduSharedBase_PropertyWrite(type, name, capitalized_name) void set##capitalized_name(type name) const
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares getter and setter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -124,7 +119,6 @@ private:
     KaduSharedBase_PropertyWrite(type, name, capitalized_name)
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Declares getter and setter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -139,7 +133,6 @@ private:
     KaduSharedBase_PropertyWrite(const type &, name, capitalized_name)
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares getter for given boolean property of SharedBase's Shared class.
  * @param capitalized_name name of property
  *
@@ -149,7 +142,6 @@ private:
 #define KaduSharedBase_PropertyBoolRead(capitalized_name) bool is##capitalized_name() const
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares setter for given boolean property of StorableObject.
  * @param capitalized_name name of property (setter will be called set##capitalized_name)
  *
@@ -159,7 +151,6 @@ private:
 #define KaduSharedBase_PropertyBoolWrite(capitalized_name) void set##capitalized_name(bool name) const
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Declares getter and setter for given boolean property of SharedBase's Shared class.
  * @param capitalized_name name of property
  *
@@ -171,7 +162,6 @@ private:
     KaduSharedBase_PropertyBoolWrite(capitalized_name)
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -188,7 +178,6 @@ private:
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines setter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -206,7 +195,6 @@ private:
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter and setter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -221,7 +209,6 @@ private:
         KaduSharedBase_PropertyWriteDef(class_name, type, name, capitalized_name)
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Defines getter and setter for given property of SharedBase's Shared class.
  * @param type type of property
  * @param name name of getter
@@ -237,7 +224,6 @@ private:
         KaduSharedBase_PropertyWriteDef(class_name, const type &, name, capitalized_name)
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter for given boolean property of SharedBase's Shared class.
  * @param name name of getter
  * @param capitalized_name name of property
@@ -253,7 +239,6 @@ private:
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines setter for given boolean property of SharedBase's Shared class.
  * @param name name of getter
  * @param capitalized_name name of property
@@ -270,7 +255,6 @@ private:
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter and setter for given boolean property of SharedBase's Shared class.
  * @param name name of getter
  * @param capitalized_name name of property
@@ -287,7 +271,6 @@ class ChangeNotifier;
 
 /**
  * @class SharedBase
- * @author Rafal 'Vogel' Malinowski
  * @short Class that can contain instance of Shared class that holds this class' data.
  * @param T class derivered from Shared type, it holds data for this SharedBase
  *
@@ -320,7 +303,6 @@ class SharedBase
 
 protected:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short sets new data for object
      * @param data new data for object
      *
@@ -333,7 +315,6 @@ protected:
 
 public:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Contructs empty (null) object.
      *
      * Contructs empty (null) object. It contains no data.
@@ -343,7 +324,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Contructs object with given data.
      * @param data data this object will hold
      *
@@ -354,7 +334,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Copies object.
      * @param copy object that will be copied
      *
@@ -366,7 +345,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Destroys object.
      *
      * Destroys object. Reference counters of data object will be updated. If this object was
@@ -377,7 +355,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Cast object to T * variable.
      * @return this object as T * variable
      *
@@ -389,7 +366,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Cast object to boolean variable.
      * @return true if object is not null, false, if object is null
      *
@@ -402,7 +378,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns stored data object.
      * @return stored data object
      *
@@ -414,7 +389,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Check if object contains any data.
      * @return true if object is null, false, if object is not null
      *
@@ -427,7 +401,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Delegates ensureStored method to Shared object.
      *
      * @see Shared::ensureStored
@@ -439,8 +412,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Informs the object it is about to be removed.
      *
      * If object is null, this method does nothing.
@@ -453,7 +424,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removes object completely.
      *
      * If object is null, this method does nothing.
@@ -466,7 +436,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return true if given property is available.
      * @param name name of property
      * @return true if given property is available
@@ -480,7 +449,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Add/update property value.
      * @param name name of property
      * @param value value of property
@@ -496,7 +464,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Remove given property from this object and from persistent storage.
      * @param name name of property
      */
@@ -507,7 +474,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Read value of property.
      * @param name name of property
      * @param defaultValue value returned when property is not available
@@ -521,7 +487,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return ChangeNotifier instance for this object.
      * @return ChangeNotifier instance for this object
      *
@@ -540,7 +505,6 @@ KaduSharedBase_PropertyReadDef(SharedBase<T>, QUuid, uuid, Uuid, QUuid()) templa
 KaduSharedBase_PropertyWriteDef(SharedBase<T>, QUuid, uuid, Uuid)
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Computes hash for given SharedBase object.
      * @return hash for given SharedBase object
      *

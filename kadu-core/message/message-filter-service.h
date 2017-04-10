@@ -36,7 +36,6 @@ class MessageFilter;
 /**
  * @class MessageFilterService
  * @short Service for handling filtering of messages.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service is used to handle filtering of messages. Calling acceptMessage() to check all installed
  * filters - true will be returned only if all filters accepts given message.
@@ -50,7 +49,6 @@ class KADUAPI MessageFilterService : public QObject
 public:
     /**
      * @short Create new instance of MessageFilterService.
-     * @author Rafał 'Vogel' Malinowski
      * @param parent QObject parent
      */
     Q_INVOKABLE explicit MessageFilterService(QObject *parent = nullptr);
@@ -58,7 +56,6 @@ public:
 
     /**
      * @short Register new filter.
-     * @author Rafał 'Vogel' Malinowski
      * @param filter filter to register
      *
      * This method adds given filter to list of filters that will be executed on acceptMessage() call.
@@ -68,7 +65,6 @@ public:
 
     /**
      * @short Unregister filter.
-     * @author Rafał 'Vogel' Malinowski
      * @param filter filter to unregister
      *
      * This method removes given filter from list of filters that will be executed on acceptMessage() call.
@@ -78,7 +74,6 @@ public:
 
     /**
      * @short Execute all registered filters on given message.
-     * @author Rafał 'Vogel' Malinowski
      * @param message message to filter
      * @return true if all registered filters accepts given message
      *

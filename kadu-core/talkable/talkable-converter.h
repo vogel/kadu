@@ -48,7 +48,6 @@ public:
     virtual ~TalkableConverter();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns account assigned to this Talkable instance.
      * @return account assigned to this Talkable instance
      *
@@ -59,7 +58,6 @@ public:
     Account toAccount(const Talkable &talkable) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns avatar path assigned to this Talkable.
      * @return avatar assigned to this Talkable
      *
@@ -69,7 +67,6 @@ public:
     QString toAvatarPath(const Talkable &talkable) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns Buddy instance from this Talkable instance.
      * @return Buddy instance from this Talkable instance
      *
@@ -83,7 +80,6 @@ public:
     Buddy toBuddy(const Talkable &talkable) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns Contact instance from this Talkable instance.
      * @return Contact instance from this Talkable instance
      *
@@ -96,7 +92,6 @@ public:
     Contact toContact(const Talkable &talkable) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns Contact instance from this Talkable instance.
      * @return Contact instance from this Talkable instance
      *
@@ -107,14 +102,12 @@ public:
     Chat toChat(const Talkable &talkable) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns display value of this Talkable instance.
      * @return display value of this Talkable instance
      */
     QString toDisplay(const Talkable &talkable) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns current status of Contact returnd by toContact().
      * @return current status of Contact returnd by toContact()
      */

@@ -49,7 +49,6 @@ class Group;
 
 /**
  * @class ChatShared
- * @author Rafal 'Vogel' Malinowski
  * @short Chat data describing object.
  *
  * This class contains standard data that are common to all chat types used in application.
@@ -118,7 +117,6 @@ public:
     void removeFromGroup(const Group &group);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Account of this chat.
      *
      * Every chat is assigned to account. All contacts in every chat must
@@ -129,7 +127,6 @@ public:
         KaduShared_Property(const QString &, display, Display)
 
         /**
-         * @author Rafal 'Vogel' Malinowski
          * @short Name of chat type.
          *
          * Name of chat type. @link ChatType @endlink object with the same name must be loaded
@@ -146,7 +143,6 @@ public:
             KaduShared_Property(quint16, unreadMessagesCount, UnreadMessagesCount)
 
         /**
-         * @author Rafal 'Vogel' Malinowski
          * @short Return true when chat is connected.
          * @return true when chat is connected
          *
@@ -159,7 +155,6 @@ public:
         bool isConnected() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Get value of Open property.
      * @return true when chat is open
      *
@@ -168,7 +163,6 @@ public:
     bool isOpen() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Set value of open property.
      * @param open new value of Open property
      *
@@ -179,7 +173,6 @@ public:
 
 signals:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has connected.
      *
      * Chat messages can only be send to/received from connected chat.
@@ -187,7 +180,6 @@ signals:
     void connected();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has disconnected.
      *
      * Chat messages can only be send to/received from connected chat.
@@ -195,40 +187,34 @@ signals:
     void disconnected();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has been opened.
      */
     void opened();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has been closed.
      */
     void closed();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited just before a new contact is added to this Chat.
      * @param contact added contact
      */
     void contactAboutToBeAdded(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when a new contact was added to this Chat.
      * @param contact just added contact
      */
     void contactAdded(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited just before a contact is removed from this Chat.
      * @param contact removed contact
      */
     void contactAboutToBeRemoved(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when a contact was removed from this Chat.
      * @param contact just removed contact
      */

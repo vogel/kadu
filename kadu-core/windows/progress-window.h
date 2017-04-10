@@ -42,7 +42,6 @@ class QProgressBar;
 
 /**
  * @class ProgressWindow
- * @author Rafał 'Vogel' Malinowski
  * @short Window used to show progress of an action to user.
  *
  * This window can be used to show progres of any action to user. Window consists of label, progress
@@ -86,7 +85,6 @@ protected:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new progress window with given label.
      * @param label label of progress window
      * @param parent parent QWidget of progress window
@@ -95,7 +93,6 @@ public:
     virtual ~ProgressWindow();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set value of Cancellable property.
      * @param setCancellable new value of Cancellable property
      *
@@ -106,7 +103,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add new progress entry to progress list widget.
      * @param entryIcon name of KaduIcon that will be displayed next to progress message
      * @param entryMessage message to add at bottom of progress list
@@ -114,7 +110,6 @@ public slots:
     void addProgressEntry(const QString &entryIcon, const QString &entryMessage);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set value of progress bar.
      * @param value new value of progress bar
      * @param maximum new maximum value of progress bar
@@ -124,7 +119,6 @@ public slots:
     void setProgressValue(int value, int maximum);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add new progress entry to progress list widget and enable closing of this window.
      * @param ok true if action was successfull
      * @param entryIcon
@@ -139,7 +133,6 @@ public slots:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Emited when window is closed before finishing its task.
      */
     void canceled();

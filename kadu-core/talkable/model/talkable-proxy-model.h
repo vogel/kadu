@@ -44,7 +44,6 @@ class TalkableFilter;
 
 /**
  * @class TalkableProxyModel
- * @author Rafał 'Vogel' Malinowski
  * @short Proxy model that can sort and filter items of Chat, Buddy or Contact type.
  *
  * This proxy model can be used to filter and sort models that contains only items of Chat, Buddy or Contact type.
@@ -67,7 +66,6 @@ class KADUAPI TalkableProxyModel : public QSortFilterProxyModel
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of TalkableProxyModel with given parent.
      * @param parent QObject parent of new object
      */
@@ -75,7 +73,6 @@ public:
     virtual ~TalkableProxyModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Adds new filter to this object.
      * @param filter new filter to add
      *
@@ -85,7 +82,6 @@ public:
     void addFilter(TalkableFilter *filter);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Remove filter from this object.
      * @param filter filter to remove
      *
@@ -95,7 +91,6 @@ public:
     void removeFilter(TalkableFilter *filter);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Enable or disable sorting by status and unread messages.
      * @param sortByStatusAndUnreadMessages if true, sorting by status and unread messages will be enabled
      *
@@ -108,14 +103,12 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited after filtering or sorting was changed.
      */
     void invalidated();
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compares two indexes.
      * @param left QModelIndex to compare
      * @param right QModelIndex to compare
@@ -129,7 +122,6 @@ protected:
     virtual bool lessThan(const QModelIndex &left, const QModelIndex &right) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Decide if given item should be displayed.
      * @param sourceRow row of item in source model
      * @param sourceParent parent of item in source model
@@ -152,7 +144,6 @@ private:
     bool lessThan(const QString &left, const QString &right) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compares two Chats instances.
      * @param left Chat to compare
      * @param right Chat to compare
@@ -163,7 +154,6 @@ private:
     bool lessThan(const Chat &left, const Chat &right) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compares two Buddy instances.
      * @param left Buddy to compare
      * @param right Buddy to compare
@@ -182,7 +172,6 @@ private:
     bool lessThan(const Buddy &left, const Buddy &right) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Decide if given Chat object should be displayed.
      * @param chat Chat object to make decision of
      *
@@ -195,7 +184,6 @@ private:
     bool accept(const Chat &chat) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Decide if given Buddy object should be displayed.
      * @param chat Buddy object to make decision of
      *
@@ -208,7 +196,6 @@ private:
     bool accept(const Buddy &buddy) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Decide if given Contact object should be displayed.
      * @param chat Contact object to make decision of
      *

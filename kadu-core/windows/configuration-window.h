@@ -47,7 +47,6 @@ class QDialogButtonBox;
 
 /**
         @class ConfigurationWindow
-        @author Vogel
         @short Widget okna konfigruacyjnego.
 
         Okno konfiguracyjne tego typu zawiera widgety konfiuracyjne podzielone wg. 3 stopnioej hierarchii.

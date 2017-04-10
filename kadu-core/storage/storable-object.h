@@ -55,7 +55,6 @@ class StoragePointFactory;
 
 /**
  * @class StorableObject
- * @author Rafal 'Vogel' Malinowski
  * @short Object that can load itself from XML file and store data there.
  *
  * Any class that derives from StorableObject can easily store and load objects
@@ -115,7 +114,6 @@ class KADUAPI StorableObject : public QObject
 public:
     /**
      * @enum StorableObjectState
-     * @author Rafal 'Vogel' Malinowski
      *
      * This enum controls how the object behaves when loading/storing data.
      */
@@ -154,7 +152,6 @@ protected:
     StoragePointFactory *storagePointFactory() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Creates default storage point for object.
      *
      * Constructs storage point: XML node that is child of storage point of object
@@ -172,7 +169,6 @@ protected:
     virtual std::shared_ptr<StoragePoint> createStoragePoint();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads data from storage point. Sets state to StateLoaded.
      *
      * This is base implementation of load method, that is called by ensureLoaded method.
@@ -183,7 +179,6 @@ protected:
     virtual void load();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores object data in XML node.
      *
      * Stores object data in XML node. Also all storable custom properties are stored.
@@ -191,7 +186,6 @@ protected:
     virtual void store();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Determines if object is worth to be stored.
      * @return true if object should be stored, defaults to true
      *
@@ -207,7 +201,6 @@ protected:
 
 public:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Contructs object with StateNew state and null storage point.
      *
      * Constructs object with @link<StorableObject::StateNew state @endlink and null
@@ -217,7 +210,6 @@ public:
     virtual ~StorableObject();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns object that holds parent storage point for this object.
      *
      * Reimplementations of this method in derivered classes should return object
@@ -228,7 +220,6 @@ public:
     virtual StorableObject *storageParent() = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns node name of XML storage of this object.
      * @return node name of XML storage of this object
      *
@@ -238,7 +229,6 @@ public:
     virtual QString storageNodeName() = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns storage point for this object.
      * @return storage point for this object
      *
@@ -248,7 +238,6 @@ public:
     const std::shared_ptr<StoragePoint> &storage();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns current object state.
      * @return current object state
      *
@@ -260,7 +249,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Sets new state of object.
      * @param state object's new state
      *
@@ -272,7 +260,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Ensures that this object data has been loaded.
      *
      * This method loads data (by calling load method) only when current state of object
@@ -282,7 +269,6 @@ public:
     void ensureLoaded();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores or removes data from storage, depends on shouldStore result.
      *
      * If shouldStore method returns true this method stores object in storage file.
@@ -291,7 +277,6 @@ public:
     void ensureStored();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removed object from storage.
      *
      * Removes current object from storage (it will not be possible to load it anymore).
@@ -301,7 +286,6 @@ public:
     void removeFromStorage();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Sets arbitrary storage for this object. Sets state to StateNotLoaded.
      * @param storage new storage point
      *
@@ -313,7 +297,6 @@ public:
     void setStorage(const std::shared_ptr<StoragePoint> &storage);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns true if storage point is valid.
      * @return true if storage point is valid
      *
@@ -322,7 +305,6 @@ public:
     bool isValidStorage();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as an attribute).
      * @param T type of returned value
      * @param name name of attribute that will be loaded
@@ -337,7 +319,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as subnode).
      * @param T type of returned value
      * @param name name of subnode that will be loaded
@@ -352,7 +333,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Check if value is available in XML node (as subnode).
      * @param name name of subnode that will be checked
      * @return true, if subnode is available
@@ -365,7 +345,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as an attribute).
      * @param T type of returned value
      * @param name name of attribute that will be loaded
@@ -382,7 +361,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as subnode).
      * @param T type of returned value
      * @param name name of subnode that will be loaded
@@ -399,7 +377,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores value into XML node (as a subnode).
      * @param name name of subnode that will store this value
      * @param value value to be stored
@@ -410,7 +387,6 @@ public:
     void storeValue(const QString &name, const QVariant value);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores value into XML node (as an attribute).
      * @param name name of attribute that will store this value
      * @param value value to be stored
@@ -421,7 +397,6 @@ public:
     void storeAttribute(const QString &name, const QVariant value);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removes value (a subnode) from XML node.
      * @param name name of subnode that will be removed
      *
@@ -430,7 +405,6 @@ public:
     void removeValue(const QString &name);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removes value (an attribute) from XML node.
      * @param name name of attribute that will be removed
      *
@@ -439,7 +413,6 @@ public:
     void removeAttribute(const QString &name);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return CustomProperties instance for this object.
      * @return CustomProperties instance for this objects
      *

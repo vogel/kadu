@@ -37,7 +37,6 @@ class BuddyManager;
 
 /**
  * @class BuddyManagerAdapter
- * @author Rafał 'Vogel' Malinowski
  * @short Adapter that makes BuddyListModel to use copy of buddies from BuddiesManager.
  *
  * This adapter created with a @link BuddyListModel @endlink as parent replicates list of buddies from
@@ -50,7 +49,6 @@ class KADUAPI BuddyManagerAdapter : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new BuddyManagerAdapter on given @link BuddyListModel @endlink.
      * @param model model to adapt @link BuddiesManager @endlink to
      *
@@ -71,7 +69,6 @@ private slots:
     INJEQT_INIT void init();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called after a buddy is added to @link BuddiesManager @endlink singleton.
      * @param buddy added buddy
      *
@@ -80,7 +77,6 @@ private slots:
     void buddyAdded(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called after a buddy is removed from @link BuddiesManager @endlink singleton.
      * @param buddy removed buddy
      *

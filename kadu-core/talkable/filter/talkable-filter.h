@@ -36,7 +36,6 @@ class Contact;
 
 /**
  * @class TalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Class filtering values of Chat, Buddy or Contact.
  *
  * This class can filter values of Chat, Buddy or Contact. Each filtering action can have
@@ -54,7 +53,6 @@ class KADUAPI TalkableFilter : public QObject
 public:
     /**
      * @enum FilterResult
-     * @author Rafał 'Vogel' Malinowski
      * @short Result of filtering operation.
      */
     enum FilterResult
@@ -74,7 +72,6 @@ public:
     };
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of TalkableFilter with given parent.
      * @param parent QObject parent of new object
      */
@@ -82,7 +79,6 @@ public:
     virtual ~TalkableFilter();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Filter Chat object.
      * @param chat Chat obejct to filter.
      *
@@ -91,7 +87,6 @@ public:
     virtual FilterResult filterChat(const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Filter Buddy object.
      * @param buddy Buddy obejct to filter.
      *
@@ -100,7 +95,6 @@ public:
     virtual FilterResult filterBuddy(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Filter Contact object.
      * @param contact Contact obejct to filter.
      *
@@ -110,7 +104,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when filter configuration has been changed.
      */
     void filterChanged();

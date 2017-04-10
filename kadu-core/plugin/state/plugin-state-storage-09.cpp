@@ -27,7 +27,6 @@
 #include <QtCore/QSet>
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Import 0.9.x configuration.
  *
  * This method loads old configuration from depreceated configuration entries: General/EverLaoded,

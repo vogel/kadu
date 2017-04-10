@@ -38,7 +38,6 @@ class QNetworkReply;
  * @class GaduAvatarUploader
  * @short Class for uploading avatar for Gadu Gadu protocol.
  * @see AvatarUploader
- * @author Rafał 'Vogel' Malinowski
  *
  * Uploading avatar in Gadu Gadu protocol is done by sending seriees of HTTP requests that are authenticated with
  * OAuth protocol. User id and password are required to do this operation.
@@ -60,7 +59,6 @@ private slots:
 public:
     /**
      * @short Create new GaduAvatarUploader instance.
-     * @author Rafał 'Vogel' Malinowski
      * @param parent QObject parent
      */
     explicit GaduAvatarUploader(QObject *parent = nullptr);

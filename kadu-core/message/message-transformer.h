@@ -33,7 +33,6 @@
 /**
  * @class MessageTransformer
  * @short Interface to transform messages.
- * @author Rafał 'Vogel' Malinowski
  *
  * This interface allows arbitraty tranformations of messages. It can be used to cenzor them, change language to 1337,
  * remove formatting or anything else.

@@ -73,7 +73,6 @@ class UnreadMessageRepository;
 
 /**
  * @class ChatManager
- * @author Rafal 'Vogel' Malinowski
  * @short Manager for all chats used in application.
  *
  * This class manages all chats used in application. It derives from @link Manager @endlink class.
@@ -96,7 +95,6 @@ public:
     virtual ~ChatManager();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return list of chats assigned to given account.
      * @param account account of returned chats
      *
@@ -114,7 +112,6 @@ protected:
 
 signals:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Emitted just before chat with full data is added to manager.
      * @param chat added chat
      *
@@ -125,7 +122,6 @@ signals:
     void chatAboutToBeAdded(Chat chat);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Emitted just after chat with full data is added to manager.
      * @param chat added chat
      *
@@ -136,7 +132,6 @@ signals:
     void chatAdded(Chat chat);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Emitted just before chat with full data is removed from manager.
      * @param chat removed chat
      *
@@ -147,7 +142,6 @@ signals:
     void chatAboutToBeRemoved(Chat chat);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Emitted just after chat with full data is removed from manager.
      * @param chat removed chat
      *
@@ -158,21 +152,18 @@ signals:
     void chatRemoved(Chat chat);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Emitted when data of given chat has changed.
      * @param chat updated chat
      */
     void chatUpdated(const Chat &chat);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has been opened.
      * @param chat opened chat
      */
     void chatOpened(const Chat &chat);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Signal emited when given chat has been closed.
      * @param chat closed chat
      */

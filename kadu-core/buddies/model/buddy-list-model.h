@@ -51,7 +51,6 @@ class TalkableConverter;
 
 /**
  * @class BuddyListModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model that list buddies with their contacts.
  *
  * This model lists buddies with their contacts. Buddies can be added or removed. Model automatically updates
@@ -63,7 +62,6 @@ class KADUAPI BuddyListModel : public QAbstractItemModel, public KaduAbstractMod
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new BuddyListModel.
      * @param parent QObject parent of new BuddyListModel
      *
@@ -74,7 +72,6 @@ public:
     virtual ~BuddyListModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set list of buddies that this model will represent.
      * @param list new list of buddies
      *
@@ -84,7 +81,6 @@ public:
     void setBuddyList(const BuddyList &list);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add new buddy to list.
      * @param buddy new buddy to add
      *
@@ -93,7 +89,6 @@ public:
     void addBuddy(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Remove buddy from list.
      * @param buddy buddy to remove
      *
@@ -102,7 +97,6 @@ public:
     void removeBuddy(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo Remove after Qt 4.8 is required
      * @short Set if the list should be checkable.
      * @param checkable new value of checkable property
@@ -114,7 +108,6 @@ public:
     void setCheckable(bool checkable);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return index for given row, column and parent index.
      * @param row row of index
      * @param column column of index
@@ -127,7 +120,6 @@ public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return parent index for given index.
      * @param child child to get parent of
      * @return parent index for given index
@@ -139,7 +131,6 @@ public:
     virtual QModelIndex parent(const QModelIndex &child) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return column count for given index.
      * @param parent parent index
      * @return column count
@@ -149,7 +140,6 @@ public:
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return row count for given index.
      * @param parent parent index
      * @return row count
@@ -160,7 +150,6 @@ public:
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return flags for given index.
      * @param index model index
      * @return flags for given index
@@ -171,7 +160,6 @@ public:
     virtual QFlags<Qt::ItemFlag> flags(const QModelIndex &index) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return data for given index and role.
      * @param index model index
      * @param role role of data to return
@@ -187,7 +175,6 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo Remove after Qt 4.8 is required
      * @short Set Checked property on given buddy.
      * @param index model index
@@ -200,7 +187,6 @@ public:
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return list of mime types supported by this model.
      * @return list of mime types supported by this model
      *
@@ -209,7 +195,6 @@ public:
     virtual QStringList mimeTypes() const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return mime data for given indexes.
      * @param indexes list of indexes to convert to QMimeData
      * @return mime data for given indexes
@@ -219,7 +204,6 @@ public:
     virtual QMimeData *mimeData(const QModelIndexList &indexes) const override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo Remove after Qt 4.8 is required
      * @short Return set of checked buddies.
      * @return set of checked buddies
@@ -229,7 +213,6 @@ public:
     BuddySet checkedBuddies() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return list of indexes for given value.
      * @param value value to search in model
      * @return list of indexes for given value
@@ -243,7 +226,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo Remove after Qt 4.8 is required
      * @short Signal emited when set of checked buddies changed.
      * @param checkedBuddies new set of checke buddies
@@ -252,7 +234,6 @@ signals:
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called every time a new account is registerd.
      * @param account just registered account
      *
@@ -261,7 +242,6 @@ protected:
     virtual void accountAdded(Account account) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called every time an account is unregisterd.
      * @param account just unregistered account
      *
@@ -283,7 +263,6 @@ private:
     BuddySet CheckedBuddies;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Converts variant to Buddy.
      * @param variant variant to convert
      * @return Buddy from given variant.
@@ -293,7 +272,6 @@ private:
     Buddy buddyFromVariant(const QVariant &variant) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Converts variant to Contact.
      * @param variant variant to convert
      * @return Contact from given variant.
@@ -303,7 +281,6 @@ private:
     Contact contactFromVariant(const QVariant &variant) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo Remove after Qt 4.8 is required
      * @short Return true if given index is checkable.
      * @param index index to check
@@ -314,7 +291,6 @@ private:
     bool isCheckableIndex(const QModelIndex &index) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return contact with given contactIndex from buddy holded at given index.
      * @param index model index of buddy
      * @param contactIndex index of contact in given buddy
@@ -325,7 +301,6 @@ private:
     Contact buddyContact(const QModelIndex &index, int contactIndex) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Connect given buddy to this object's slots.
      * @param buddy buddy to connect
      *
@@ -334,7 +309,6 @@ private:
     void connectBuddy(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Disonnect given buddy from this object's slots.
      * @param buddy buddy to disconnect
      *
@@ -356,7 +330,6 @@ private slots:
     INJEQT_INIT void init();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a buddy's data changes.
      *
      * This slot is connected to every buddy in list. Updated buddy is read from QObject::sender() method.
@@ -364,7 +337,6 @@ private slots:
     void buddyUpdated();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact's data changes.
      * @param contact updated Contact
      *
@@ -374,7 +346,6 @@ private slots:
     void contactUpdated(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact's status changes.
      * @param contact updated Contact
      * @param oldStatus old status of updated Contact
@@ -385,7 +356,6 @@ private slots:
     void contactStatusChanged(const Contact &contact, const Status &oldStatus);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact is about to be added to known buddy.
      * @param contact about-to-be-added contact
      *
@@ -394,7 +364,6 @@ private slots:
     void contactAboutToBeAdded(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact is added to known buddy.
      * @param contact newly added contact
      *
@@ -403,7 +372,6 @@ private slots:
     void contactAdded(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact is about to be removed from known buddy.
      * @param contact about-to-be-removed contact
      *
@@ -412,7 +380,6 @@ private slots:
     void contactAboutToBeRemoved(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact is removed from known buddy.
      * @param contact just removed contact
      *

@@ -40,7 +40,6 @@ class ImageStorageService;
 /**
  * @class ChatImageRequestService
  * @short Service for responding to received image keys.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service listens on all ChatImageService that are available through given AccountManager. It responds on
  * chatImageKeyReceived() signals from these services by either requesting full image data or ignoring it, depending
@@ -68,7 +67,6 @@ class ChatImageRequestService : public QObject
 private slots:
     /**
      * @short Sets account manager to use by this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param accountManager account manager to use by this service
      *
      * This service will listen on registering/unregistering accounts to connect to ChatImageService instances
@@ -78,7 +76,6 @@ private slots:
 
     /**
      * @short Sets contact manager to use by this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param contactManager contact manager to use by this service
      *
      * This service will use this manager to resolve names of contacts that ids are provided by ChatImageService
@@ -101,7 +98,6 @@ private slots:
 public:
     /**
      * @short Create new instance of ChatImageRequestService.
-     * @author Rafał 'Vogel' Malinowski
      * @param parent QObject parent
      */
     Q_INVOKABLE explicit ChatImageRequestService(QObject *parent = nullptr);
@@ -109,7 +105,6 @@ public:
 
     /**
      * @short Sets configuration to use by this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param configuration configuration to use by this service
      */
     void setConfiguration(ChatImageRequestServiceConfiguration configuration);
@@ -117,7 +112,6 @@ public:
 signals:
     /**
      * @short Signal emitted when chat image was received and stored as file.
-     * @author Rafał 'Vogel' Malinowski
      * @param imageKey key of stored image
      * @param fullFilePath full file path of stored image
      */

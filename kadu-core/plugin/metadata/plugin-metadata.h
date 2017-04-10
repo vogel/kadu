@@ -32,7 +32,6 @@
 
 /**
  * @class PluginMetadata
- * @author Rafał 'Vogel' Malinowski
  * @short Information about plugin loaded from .desc files.
  * @todo Rewrite to use .desktop files
  *

@@ -35,7 +35,6 @@ class JabberVCardService;
  * @class JabberAvatarService
  * @short Service for downloading and uploading avatars for XMPP/Jabber protocol.
  * @see AvatarService
- * @author Rafał 'Vogel' Malinowski
  *
  * See documentation of AvatarService to get general information about this service.
  *
@@ -49,7 +48,6 @@ class JabberAvatarService : public AvatarService
 public:
     /**
      * @short Create service instance.
-     * @author Rafał 'Vogel' Malinowski
      * @param account account of service
      * @param parent QObject parent of service
      */
@@ -58,7 +56,6 @@ public:
 
     /**
      * @short Set VCard service object to use in this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param vCardService VCard service object to use
      */
     void setVCardService(JabberVCardService *vCardService);

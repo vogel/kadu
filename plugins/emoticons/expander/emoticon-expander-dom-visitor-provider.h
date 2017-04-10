@@ -37,7 +37,6 @@ class IgnoreLinksDomVisitor;
 /**
  * @class EmoticonExpanderDomVisitorProvider
  * @short This DomVisitorProvider provides instance of EmoticonExpander with up-to-date configuration.
- * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonExpanderDomVisitorProvider : public QObject, public DomVisitorProvider
 {
@@ -51,7 +50,6 @@ public:
 
     /**
      * @short Update configuration of provided EmoticonExpander.
-     * @author Rafał 'Vogel' Malinowski
      * @param configuration new configuration for provided EmoticonExpander
      */
     void setConfiguration(const EmoticonConfiguration &configuration);
@@ -63,7 +61,6 @@ private:
 
     /**
      * @short Create new EmoticonExpander with updated EmoticonConfiguration.
-     * @author Rafał 'Vogel' Malinowski
      */
     void rebuildExpander();
 };

@@ -30,7 +30,6 @@
 
 /**
  * @class KaduTextEdit
- * @author Rafał 'Vogel' Malinowski
  * @short Improved QTextEdit widget.
  *
  * This widget is an improved version of QTextEdit.
@@ -46,7 +45,6 @@ class KaduTextEdit : public QTextEdit
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new KaduTextEdit.
      * @param parent QWidget parent of KaduTextEdit
      */
@@ -54,7 +52,6 @@ public:
     virtual ~KaduTextEdit();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set preferred number of lines for this widgte.
      * @param preferredLines preferred number of lines
      *

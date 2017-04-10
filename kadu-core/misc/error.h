@@ -34,7 +34,6 @@
 /**
  * @class Error
  * @short Simple class describing an error.
- * @author Rafał 'Vogel' Malinowski
  *
  * Erro contains severity info and error message string.
  */
@@ -46,7 +45,6 @@ class KADUAPI Error
 public:
     /**
      * @short Create new Error class.
-     * @author Rafał 'Vogel' Malinowski
      * @param severity this error severity
      * @param message this error message
      */
@@ -54,14 +52,12 @@ public:
 
     /**
      * @short Copy Error object.
-     * @author Rafał 'Vogel' Malinowski
      * @param copyMe Error object to copy
      */
     Error(const Error &copyMe);
 
     /**
      * @short Copy Error object and return this object.
-     * @author Rafał 'Vogel' Malinowski
      * @param copyMe Error object to copy
      * @return this object
      */
@@ -69,14 +65,12 @@ public:
 
     /**
      * @short Return severity of this object.
-     * @author Rafał 'Vogel' Malinowski
      * @return severity of this object
      */
     ErrorSeverity severity() const;
 
     /**
      * @short Return message of this object.
-     * @author Rafał 'Vogel' Malinowski
      * @return message of this object
      */
     QString message() const;

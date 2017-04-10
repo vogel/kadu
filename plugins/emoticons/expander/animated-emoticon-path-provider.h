@@ -30,7 +30,6 @@
 /**
  * @class AnimatedEmoticonPathProvider
  * @short EmoticonPathProvider that returns path to animated version of emoticon.
- * @author Rafał 'Vogel' Malinowski
  */
 class AnimatedEmoticonPathProvider : public EmoticonPathProvider
 {
@@ -39,7 +38,6 @@ public:
 
     /**
      * @short Return path to animated version of emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @param emoticon emoticon to get path for
      * @return path to animated file of emoticon
      */

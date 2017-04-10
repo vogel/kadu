@@ -36,7 +36,6 @@
 /**
  * @class CustomPropertiesVariantWrapper
  * @short Class implementing a single CustomProperties entry access with VariantWrapper interface.
- * @author Bartosz 'beevvy' Brachaczek
  *
  * This class uses CustomProperties::property() as VariantWrapper::get() implementation
  * and CustomProperties::addProperty() as VariantWrapper::set() implementation.
@@ -50,7 +49,6 @@ class KADUAPI CustomPropertiesVariantWrapper : public VariantWrapper
 public:
     /**
      * @short Constructs object wrapping a single CustomProperties entry.
-     * @author Bartosz 'beevvy' Brachaczek
      * @param customProperties pointer to a CustomProperties object
      * @param name name of CustomProperties property which will be wrapped
      * @param storability CustomProperties::Storability parameter which will be passed to

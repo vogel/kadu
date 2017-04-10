@@ -31,7 +31,6 @@ class Theme;
 /**
  * @class EmoticonThemeLoader
  * @short Interface for loading emoticon themes from local disc.
- * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonThemeLoader
 {
@@ -42,7 +41,6 @@ public:
 
     /**
      * @short Load emoticon theme from given path.
-     * @author Rafał 'Vogel' Malinowski
      * @param path path of file or directory to load emoticon theme from
      * @return loaded emoticon theme
      */

@@ -48,7 +48,6 @@ class ConfigurationApi;
 
 /**
  * @class StoragePoint
- * @author Rafal 'Vogel' Malinowski
  * @short Unique place that can store any data.
  *
  * StoragePoint provides unique place that can store any data
@@ -74,7 +73,6 @@ public:
     QDomElement point() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as an attribute).
      * @param T type of returned value
      * @param name name of attribute that will be loaded
@@ -90,7 +88,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as subnode).
      * @param T type of returned value
      * @param name name of subnode that will be loaded
@@ -110,7 +107,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Check if value is available in XML node (as subnode).
      * @param name name of subnode that will be checked
      * @return true, if subnode is available
@@ -123,7 +119,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as an attribute).
      * @param T type of returned value
      * @param name name of attribute that will be loaded
@@ -146,7 +141,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads value from XML node (as subnode).
      * @param T type of returned value
      * @param name name of subnode that will be loaded
@@ -169,7 +163,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores value into XML node (as a subnode).
      * @param name name of subnode that will store this value
      * @param value value to be stored
@@ -180,7 +173,6 @@ public:
     void storeValue(const QString &name, const QVariant value);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores value into XML node (as an attribute).
      * @param name name of attribute that will store this value
      * @param value value to be stored
@@ -191,7 +183,6 @@ public:
     void storeAttribute(const QString &name, const QVariant value);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removes value (a subnode) from XML node.
      * @param name name of subnode that will be removed
      *
@@ -200,7 +191,6 @@ public:
     void removeValue(const QString &name);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removes value (an attribute) from XML node.
      * @param name name of attribute that will be removed
      *

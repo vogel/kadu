@@ -40,7 +40,6 @@ class StatusContainer;
 
 /**
  * @class StatusChangerManager
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for managing list of StatusChanger instnaces.
  *
  * Every Status in Kadu can be modified by plugins that registers instances of StatusChanger class in
@@ -73,7 +72,6 @@ private slots:
     INJEQT_SET void setStatusContainerManager(StatusContainerManager *statusContainerManager);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when any of registered StatusChanger changes way it modifies status.
      * @param container change is touching this status container's status
      * @param source source of given status change
@@ -95,7 +93,6 @@ public:
     virtual ~StatusChangerManager();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Registers new StatusChanger object.
      * @param statusChanger new statusChanger to register.
      *
@@ -105,7 +102,6 @@ public:
     void registerStatusChanger(StatusChanger *statusChanger);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Unregisters StatusChanger object.
      * @param statusChanger statusChanger to unregister.
      *
@@ -114,7 +110,6 @@ public:
     void unregisterStatusChanger(StatusChanger *statusChanger);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets status on given status container with modifications.
      * @param statusContainer StatusContainer to set status on.
      * @param status status to be modified and then set on statusContainer
@@ -126,7 +121,6 @@ public:
     void setStatusManually(StatusContainer *statusContainer, Status status);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns manually (unchanged) status from given StatusContainer.
      * @param statusContainer StatusContainer to get status from.
      *

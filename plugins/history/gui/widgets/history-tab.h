@@ -30,7 +30,6 @@
 
 /**
  * @class HistoryTab
- * @author Rafał 'Vogel' Malinowski
  * @short Widget that provides tab content for history window.
  *
  * Each HistoryTab widget can display different view of history - like chat, status or smses history,
@@ -45,7 +44,6 @@ class HistoryTab : public QWidget
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new HistoryTab widget.
      * @param parent parent widget
      */
@@ -53,7 +51,6 @@ public:
     virtual ~HistoryTab();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns sizes of subwidgets.
      * @return sizes of subwidgets
      *
@@ -64,7 +61,6 @@ public:
     virtual QList<int> sizes() const = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets sizes of subwidgets.
      * @param newSizes new sizes of subwidgets
      *

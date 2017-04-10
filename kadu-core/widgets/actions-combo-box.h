@@ -37,8 +37,6 @@ class ModelChain;
 
 /**
  * @class ActionsComboBox
- * @author Bartosz 'beevvy' Brachaczek
- * @author Rafał 'Vogel' Malinowski
  * @short QComboBox with support for actions and QVariant data.
  *
  * This class is an extension to QComboBox that uses MergedProxyModel to add two models with actions before and
@@ -81,8 +79,6 @@ private:
 
 private slots:
     /**
-     * @author Bartosz 'beevvy' Brachaczek
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called after user changed selected item.
      * @param index activated index
      *
@@ -93,8 +89,6 @@ private slots:
     void activatedSlot(int index);
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called after selected index has changed.
      * @param index new selected index index
      *
@@ -106,9 +100,7 @@ private slots:
 
 protected:
     /**
-     * @author Bartosz 'beevvy' Brachaczek
-     * @author Rafal 'Vogel' Malinowski
-     * @short Sets up model for combo box.
+         * @short Sets up model for combo box.
      * @param dataRole role used to get data from model
      * @param modelChain chain of models to use as data source
      *
@@ -118,9 +110,7 @@ protected:
     void setUpModel(int dataRole, ModelChain *modelChain);
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
-     * @author Rafal 'Vogel' Malinowski
-     * @short Sets current value to the value in argument.
+         * @short Sets current value to the value in argument.
      * @param value value to be set
      *
      * Sets current value to the value in argument.
@@ -128,9 +118,7 @@ protected:
     void setCurrentValue(const QVariant &value);
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
-     * @author Rafal 'Vogel' Malinowski
-     * @short Returns current value.
+         * @short Returns current value.
      * @return current value
      *
      * Returns current value.
@@ -142,8 +130,7 @@ public:
     virtual ~ActionsComboBox();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
-     * @short Add new action before real values in combo box.
+         * @short Add new action before real values in combo box.
      * @param action action to add
      * @param visibility action visibility of new action
      *
@@ -154,8 +141,7 @@ public:
     void addBeforeAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
-     * @short Add new action after real values in combo box.
+         * @short Add new action after real values in combo box.
      * @param action action to add
      * @param visibility action visibility of new action
      *
@@ -166,8 +152,7 @@ public:
     void addAfterAction(QAction *action, ActionVisibility visibility = AlwaysVisible);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
-     * @short Returns currently selected action.
+         * @short Returns currently selected action.
      * @return currently selected action
      *
      * Returns currently selected action.

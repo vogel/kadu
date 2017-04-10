@@ -32,7 +32,6 @@
 
 /**
  * @class AccountService
- * @author Rafał 'Vogel' Malinowski
  * @short Generic account service.
  *
  * All account services should derive from this class.
@@ -44,7 +43,6 @@ class KADUAPI AccountService : public QObject
 public:
     /**
      * @short Returns account bounded with this service.
-     * @author Rafał 'Vogel' Malinowski
      * @return account bounded with this service
      */
     Account account() const;

@@ -49,7 +49,6 @@ class StatusContainer;
 
 /**
  * @class Action
- * @author Rafał 'Vogel' Malinowski
  * @short QAction extension for Kadu.
  *
  * This class is a QAction extendsion for Kadu. It contains additional methods for reveiving data about
@@ -62,7 +61,6 @@ class KADUAPI Action : public QAction
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new Action instance based on ActionDescription with given ActionContext.
      * @param description description of this action
      * @param context data source of this action
@@ -80,7 +78,6 @@ public:
     virtual ~Action();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns ActionContext instance for current invocation.
      *
      * Returns ActionContext instance for current invocation. Never returns null.
@@ -89,7 +86,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
      *
      * Calls updateActionState method from ActionDescription to check if this action should be enabled or not.
@@ -97,7 +93,6 @@ public slots:
     void checkState();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Resets icon from ActionDescription.
      *
      * Resets icon from ActionDescription. Call this slot when icon set was updated.
@@ -105,7 +100,6 @@ public slots:
     void updateIcon();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets new icon for this instance of Action.
      * @param icon new icon
      *
@@ -115,7 +109,6 @@ public slots:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Emited from destructor.
      *
      * Emited from destructor. Use with great care.
@@ -123,7 +116,6 @@ signals:
     void aboutToBeDestroyed(Action *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Emited every time action has changed (status, title, icon).
      * @param QAction this instance
      *
@@ -132,7 +124,6 @@ signals:
     void changed(QAction *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Emited every time action is hovered.
      * @param QAction this instance
      *
@@ -141,7 +132,6 @@ signals:
     void hovered(QAction *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Emited every time action is toggled.
      * @param QAction this instance
      * @param checked true if action is toggled
@@ -151,7 +141,6 @@ signals:
     void toggled(QAction *action, bool checked);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Emited every time action is triggered.
      * @param QAction this instance
      * @param checked true if action is toggled

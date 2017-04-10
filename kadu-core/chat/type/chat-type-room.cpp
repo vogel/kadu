@@ -80,7 +80,6 @@ void ChatTypeRoom::setInjectedFactory(InjectedFactory *injectedFactory)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal name of chat type.
  * @return internal name of chat type
  *
@@ -95,7 +94,6 @@ QString ChatTypeRoom::name() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal aliases of chat type.
  * @return internal aliases of chat type
  *
@@ -109,7 +107,6 @@ QStringList ChatTypeRoom::aliases() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Icon of chat type.
  * @return icon of chat type
  *
@@ -123,7 +120,6 @@ KaduIcon ChatTypeRoom::icon() const
 }
 
 /**
- * @author Piotr 'ultr' Dąbrowski
  * @short Window role for this chat type.
  * @return window role for this chat type.
  *
@@ -136,7 +132,6 @@ QString ChatTypeRoom::windowRole() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates new ChatDetailsRoom object for given chat type.
  * @return new ChatDetailsRoom object for given chat type
  *

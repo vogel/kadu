@@ -36,7 +36,6 @@ class StatusContainer;
 
 /**
  * @class StatusChanger
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for changing status.
  * @see StatusChangerManager
  *
@@ -58,7 +57,6 @@ class KADUAPI StatusChanger : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new instance of StatusChanger.
      * @param priority priority of given StatusChanger
      * @param parent parent of given StatusChanger
@@ -70,7 +68,6 @@ public:
     virtual ~StatusChanger();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns priority of this StatusChanger.
      * @return priority of this StatusChanger
      *
@@ -80,7 +77,6 @@ public:
     int priority();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called to change given status.
      * @param statusContainer status container of given status
      * @param status status to change
@@ -91,7 +87,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when status for given status container needs recalculation.
      * @param statusContainer container that requires status recalculation
      *

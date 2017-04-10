@@ -38,7 +38,6 @@ class QSqlDatabase;
 
 /**
  * @class SqlImport
- * @author Rafał 'Vogel' Malinowski
  * @short Class with ability to import Sqlite3 from one of old schemes to newest one.
  *
  * This class is used to initialize database schema (create table or indexes) or to import data
@@ -50,7 +49,6 @@ class SqlImport : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Read schema version from database.
      * @param database database to read schema version from
      * @return schema version of given database
@@ -58,7 +56,6 @@ public:
     static quint16 databaseSchemaVersion(QSqlDatabase &database);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Check if database needs import to new version of schema.
      * @param database database to check
      *
@@ -71,7 +68,6 @@ public:
     virtual ~SqlImport();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Perform import from old schema version.
      * @param database database to import
      *

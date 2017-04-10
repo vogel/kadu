@@ -35,7 +35,6 @@ class WebkitMessagesView;
 
 /**
  * @class WebViewHighlighter
- * @author Rafał 'Vogel' Malinowski
  * @short This class is a highlighter for given WebkitMessagesView instance.
  *
  * This class is a highlighter for given WebkitMessagesView instance. It is able to highlight any instance
@@ -54,7 +53,6 @@ class KADUAPI WebViewHighlighter : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new WebViewHighlighter on given WebkitMessagesView.
      * @param parent WebkitMessagesView parent of new highlighter
      *
@@ -65,7 +63,6 @@ public:
     virtual ~WebViewHighlighter();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set auto update value for highlighting.
      * @param autoUpdate new auto update value for highlighting
      *
@@ -76,7 +73,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets new text to highlight.
      * @param highlightString new text to highlight
      *
@@ -86,7 +82,6 @@ public slots:
     void setHighlight(const QString &highlightString);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Updates highlighting on WebkitMessagesView.
      *
      * When auto udpate is set to true this method is called automatically when content size of parent
@@ -95,7 +90,6 @@ public slots:
     void updateHighlighting();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Clears highlighting on WebkitMessagesView.
      *
      * Temporary removes highlighting from web view. If auto update is set to true then any change in
@@ -105,7 +99,6 @@ public slots:
     void clearHighlighting();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Select next found text in WebkitMessagesView.
      * @param select text to select
      *
@@ -115,7 +108,6 @@ public slots:
     void selectNext(const QString &select);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Select previous found text in WebkitMessagesView.
      * @param select text to select
      *
@@ -125,7 +117,6 @@ public slots:
     void selectPrevious(const QString &select);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Clears found text in WebkitMessagesView.
      *
      * This method clears selection in web view.

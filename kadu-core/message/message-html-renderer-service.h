@@ -37,7 +37,6 @@ class Message;
 /**
  * @class MessageHtmlRendererService
  * @short Service for rendering messages into HTML.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service is used to render Message into HTML fragment.
  */
@@ -51,7 +50,6 @@ public:
 
     /**
      * @short Render Message into HTML fragment,
-     * @author Rafał 'Vogel' Malinowski
      * @param message to render
      * @return HTML representation of Message
      */
@@ -63,7 +61,6 @@ private:
 private slots:
     /**
      * @short Set domProcessorService,
-     * @author Rafał 'Vogel' Malinowski
      * @param domProcessorService domProcessorService
      *
      * This service will be used to process DOM representation of HTML version of messages.

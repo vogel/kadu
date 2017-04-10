@@ -34,7 +34,6 @@
 /**
  * @class FormattedStringImageKeyReceivedVisitor
  * @short Visitor that emits chatImageKeyReceived() signal each time it visits FormattedStringImageBlock instance.
- * @author Rafał 'Vogel' Malinowski
  *
  * This visitor emits chatImageKeyReceived() signal each time it visits FormattedStringImageBlock instance.
  * Use this visitor to inform ChatImageService instances about received image keys.
@@ -49,7 +48,6 @@ class FormattedStringImageKeyReceivedVisitor : public QObject, public FormattedS
 public:
     /**
      * @short Create new instance of FormattedStringImageKeyReceivedVisitor.
-     * @author Rafał 'Vogel' Malinowski
      * @param id id that will be emitted in chatImageKeyReceived() signal
      * @param parent QObject parent
      */
@@ -64,7 +62,6 @@ public:
 signals:
     /**
      * @short Signal emitted each time this object visits FormattedStringImageBlock instance.
-     * @author Rafał 'Vogel' Malinowski
      * @param id id passed in constructor
      * @param chatImage chatImage from visited FormattedStringImageBlock
      */

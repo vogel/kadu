@@ -37,7 +37,6 @@ class Configuration;
 /**
  * @class ConfigFileVariantWrapper
  * @short Class implementing a single ConfigFile entry access with VariantWrapper interface.
- * @author Bartosz 'beevvy' Brachaczek
  *
  * This class uses ConfigFile::readEntry() as VariantWrapper::get() implementation
  * and ConfigFile::writeEntry() as VariantWrapper::set() implementation.
@@ -52,7 +51,6 @@ class KADUAPI ConfigFileVariantWrapper : public VariantWrapper
 public:
     /**
      * @short Constructs object wrapping a single ConfigFile entry.
-     * @author Bartosz 'beevvy' Brachaczek
      * @param group name of ConfigFile group
      * @param name name of ConfigFile field in @p group
      */

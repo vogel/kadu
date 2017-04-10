@@ -39,7 +39,6 @@ class VariantWrapper;
 /**
  * @class WindowGeometryManager
  * @short Class for initializing and book-keeping of a window's geometry data.
- * @author Bartosz 'beevvy' Brachaczek
  *
  * Objects of this class keep always up-to-date (with 100 ms delay, to be precise)
  * information about a window's geometry data. The information is set and accessed
@@ -83,7 +82,6 @@ private slots:
 public:
     /**
      * @short Constructs object book-keeping the window's geometry and sets its initial geometry.
-     * @author Bartosz 'beevvy' Brachaczek
      * @param variantWrapper an object implementing VariantWrapper interface
      * @param defaultGeometry default initial geometry of the window, if no is provided by variantWrapper
      * @param window the window whose geometry will be managed

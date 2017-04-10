@@ -36,7 +36,6 @@ class StatusConfigurationHolder;
 
 /**
  * @class AllAccountsStatusContainer
- * @author Rafał 'Vogel' Malinowski
  * @short Grouping status container for all accounts.
  * @see StatusContainerManager
  *
@@ -49,7 +48,6 @@ class KADUAPI AllAccountsStatusContainer : public StatusContainer, public Accoun
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called when new account is registered.
      *
      * This method is called every time new account is registered. New account is added to list of
@@ -59,7 +57,6 @@ protected:
     virtual void accountAdded(Account account) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called when account is unregistered.
      *
      * This method is called every time new account is unregistered. This account is removed from list of
@@ -73,7 +70,6 @@ public:
     virtual ~AllAccountsStatusContainer();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns empty string as this container name.
      * @return empty string as this container name
      *
@@ -85,7 +81,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets status on all registered accounts.
      * @param status status to set
      * @param source source of change
@@ -95,7 +90,6 @@ public:
     virtual void setStatus(Status status, StatusChangeSource source) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return best account status.
      * @return best account status
      *
@@ -105,7 +99,6 @@ public:
     virtual Status status() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return true if best account status setting is in progress.
      * @return true if best account status setting is in progress
      *
@@ -115,7 +108,6 @@ public:
     virtual bool isStatusSettingInProgress() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return maximum length of description on best account.
      * @return maximum length of description on best account
      *
@@ -125,7 +117,6 @@ public:
     virtual int maxDescriptionLength() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return status icon of best account.
      * @return status icon of best accountt
      *
@@ -135,7 +126,6 @@ public:
     virtual KaduIcon statusIcon() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return status icon of given status using best account icons.
      * @param status to get icon for
      * @return status icon of given status using best account icons
@@ -146,7 +136,6 @@ public:
     virtual KaduIcon statusIcon(const Status &status) override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return list of supported status types for best account.
      * @return list of supported status types for best account
      *
@@ -156,7 +145,6 @@ public:
     virtual QList<StatusType> supportedStatusTypes() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return best account stored status.
      * @return best account stored status
      *
@@ -166,7 +154,6 @@ public:
     virtual Status loadStatus() override;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Stores given status in all accounts.
      * @param status status to store
      *

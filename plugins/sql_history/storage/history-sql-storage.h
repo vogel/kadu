@@ -51,11 +51,6 @@ class SqlAccountsMapping;
 class SqlChatsMapping;
 class SqlContactsMapping;
 
-/**
-        @class HistorySqlStorage
-        @author Juzef, Adrian
-**/
-
 class HistorySqlStorage : public HistoryStorage
 {
     Q_OBJECT

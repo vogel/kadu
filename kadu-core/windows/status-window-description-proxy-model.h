@@ -26,7 +26,6 @@
 
 /**
  * @class StatusWindowDescriptionProxyModel
- * @author Piotr 'ultr' Dąbrowski
  * @short Proxy model for descriptions.
  *
  * Proxy model for descriptions. Displays every description in a single line with new line characters replaced with a

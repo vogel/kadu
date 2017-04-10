@@ -32,7 +32,6 @@
 
 /**
  * @class GroupTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that do not belong to specific group.
  *
  * This filter removes items that do not belong to specific group. All contacts are passed
@@ -53,7 +52,6 @@ class GroupTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of GroupTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */
@@ -64,7 +62,6 @@ public:
     virtual FilterResult filterBuddy(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Change AllGroupShown paremeter value.
      * @param shown new value of AllGroupShown parameter
      *
@@ -78,7 +75,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Change current group filter
      * @param group new group filter
      *

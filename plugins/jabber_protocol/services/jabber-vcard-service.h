@@ -35,7 +35,6 @@ class QXmppVCardManager;
 /**
  * @class JabberVCardService
  * @short Service for downloading and uploading VCard data.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service allows downloading and uploading VCard data. For each operation call createVCardDownloader() or
  * createVCardUploader() and use returned object to do its job. Each returner object can be used only once. Service
@@ -49,7 +48,6 @@ class JabberVCardService : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of JabberVCardService.
      * @param parent QObject parent
      */
@@ -58,7 +56,6 @@ public:
 
     /**
      * @short Get JabberVCardDownloader for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @return JabberVCardDownloader for this service
      *
      * This method will create and return JabberVCardDownloader class that can be used to download VCard for any
@@ -72,7 +69,6 @@ public:
 
     /**
      * @short Get JabberVCardUploader for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @return JabberVCardUploader for this service
      *
      * This method will create and return JabberVCardUploader class that can be used to upload new VCard for account

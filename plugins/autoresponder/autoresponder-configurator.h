@@ -39,7 +39,6 @@ class Configuration;
 /**
  * @class AutoresponderConfigurator
  * @short Standard configuration setter for AutoresponderMessageFilter.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class listens to changed in global configuration. After change is detected it updated configuration of given
  * AutoresponderMessageFilter with newly created AutoresponderConfiguration instance.

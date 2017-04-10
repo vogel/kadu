@@ -33,7 +33,6 @@
 
 /**
  * @class NamedStorableObject
- * @author Rafal 'Vogel' Malinowski
  * @short Object that can load itself from XML file and store data there. Object is identified by string name.
  *
  * Many objects of this class can be stored under one master XML node in storage.
@@ -48,7 +47,6 @@ public:
     NamedStorableObject();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns name of this object.
      * @return name of this object
      *

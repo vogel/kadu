@@ -30,7 +30,6 @@
 
 /**
  * @class ProtocolService
- * @author Rafał 'Vogel' Malinowski
  * @short Generic protocol service.
  *
  * All protocol services should derive from this class.
@@ -42,7 +41,6 @@ class KADUAPI ProtocolService : public AccountService
 public:
     /**
      * @short Returns protocol bounded with this service.
-     * @author Rafał 'Vogel' Malinowski
      * @return protocol bounded with this service
      */
     Protocol *protocol() const;

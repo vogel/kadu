@@ -30,8 +30,6 @@
 /**
  * @class Adapter
  * @short Interface for adapting one type to another.
- * @author Rafał 'Vogel' Malinowski
- * @author Piotr Dąbrowski
  * @param T_dest type of result class
  * @param T_src type of class to adapt
  */
@@ -45,8 +43,6 @@ public:
 
     /**
      * @short Adapt instance of class from one type to another.
-     * @author Rafał 'Vogel' Malinowski
-     * @author Piotr Dąbrowski
      * @param object object to adapt
      * @return object adapted to type T_dest
      */

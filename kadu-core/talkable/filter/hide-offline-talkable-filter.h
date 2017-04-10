@@ -36,7 +36,6 @@ class ContactManager;
 
 /**
  * @class HideOfflineTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are not available.
  *
  * This filter removes items that are not available. Contact items that have offline status are rejected.
@@ -51,7 +50,6 @@ class HideOfflineTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of HideOfflineTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */
@@ -62,7 +60,6 @@ public:
     virtual FilterResult filterContact(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Enable or disalbe filter.
      * @param enabled new value of enabled property
      */

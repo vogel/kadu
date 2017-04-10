@@ -41,7 +41,6 @@ class SortedMessages;
 
 /**
  * @class HistoryMessagesStorage
- * @author Rafał 'Vogel' Malinowski
  * @short Interface that provides read and delete access to a message storage.
  * @todo Think about adding writing here.
  *
@@ -60,7 +59,6 @@ class HISTORYAPI HistoryMessagesStorage : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new HistoryMessagesStorage instance.
      * @param parent QObject parent of new HistoryMessagesStorage instance
      */
@@ -68,7 +66,6 @@ public:
     virtual ~HistoryMessagesStorage();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of available talkables.
      * @return list of available talkables
      *
@@ -78,7 +75,6 @@ public:
     virtual QFuture<QVector<Talkable>> talkables() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of available dates for given query.
      * @param historyQuery query to get list of dates for
      * @return list of available dates for given query
@@ -89,7 +85,6 @@ public:
     virtual QFuture<QVector<HistoryQueryResult>> dates(const HistoryQuery &historyQuery) = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of messages for given talkable and data.
      * @param historyQuery query to get list of messages for
      * @return list of messages for given query
@@ -103,7 +98,6 @@ public:
     virtual QFuture<SortedMessages> messages(const HistoryQuery &historyQuery) = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Delete all messages for given talkable and data.
      * @param talkable talkable to delete list of messages for
      * @param date date to delete list of messages for

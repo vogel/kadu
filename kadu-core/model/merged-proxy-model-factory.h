@@ -34,7 +34,6 @@ class KaduAbstractModel;
 
 /**
  * @class MergedProxyModelFactory
- * @author Rafał 'Vogel' Malinowski
  * @short Factory that provides instances of model that merges other models into one.
  *
  * Factory that provides instances of model that merges other models into one.
@@ -42,7 +41,6 @@ class KaduAbstractModel;
 namespace MergedProxyModelFactory
 {
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Creates new instance of model that merges other models into one.
  * @param models list of models to merge
  * @param parent qobject parent of new model
@@ -51,7 +49,6 @@ namespace MergedProxyModelFactory
 KADUAPI QAbstractItemModel *createInstance(QList<QAbstractItemModel *> models, QObject *parent = nullptr);
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Creates new instance of model that merges other models into one.
  * @param models list of models to merge
  * @param parent qobject parent of new model

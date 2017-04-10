@@ -34,7 +34,6 @@
 /**
  * @class IgnoreLinksDomVisitor
  * @short Proxy visitor that hides all content inside A elements.
- * @author Rafał 'Vogel' Malinowski
  *
  * This visitor acts like proxy on top of other visitor. It hides content of A elements before proxied visitor.
  * It also takes care of deleting proxied visitor.
@@ -44,7 +43,6 @@ class KADUAPI IgnoreLinksDomVisitor : public DomVisitor
 public:
     /**
      * @short Create new IgnoreLinksDomVisitor over visitor.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitor this visitor will get all data about processed DOM document with exception of content of A
      * elements
      *

@@ -35,7 +35,6 @@ class EmoticonPrefixTree;
 /**
  * @class EmoticonExpander
  * @short This DomVisitor expands emoticons in all text nodes in processed DOM document.
- * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonExpander : public DomVisitor
 {
@@ -44,7 +43,6 @@ class EmoticonExpander : public DomVisitor
 
     /**
      * @short Insertes emoticon img element at index.
-     * @author Rafał 'Vogel' Malinowski
      * @param textNode text node to insert emoticon into
      * @param emoticon emoticon to insert
      * @param index index of first charater of emoticon in textNode text content
@@ -59,7 +57,6 @@ class EmoticonExpander : public DomVisitor
 
     /**
      * @short Expands first found emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @param textNode text node to expand first emoticon in
      * @return new text node created with text after first emoticon
      *
@@ -75,7 +72,6 @@ class EmoticonExpander : public DomVisitor
 public:
     /**
      * @short Create new EmoticonExpander instance.
-     * @author Rafał 'Vogel' Malinowski
      * @param tree emoticon prefix tree used to expand emoticons
      * @param pathProvider provider that changed emoticon instances into paths to emoticon files
      *
@@ -87,7 +83,6 @@ public:
 
     /**
      * @short Expands emoticons in given text node.
-     * @author Rafał 'Vogel' Malinowski
      * @param textNode text node to expand emoticons in
      *
      * This method expands emoticons in given text node. After that new text nodes and elements with img tag names will

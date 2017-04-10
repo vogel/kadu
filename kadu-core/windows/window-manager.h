@@ -30,7 +30,6 @@ class QPoint;
 
 /**
  * @class WindowManager
- * @author Rafał 'Vogel' Malinowski
  * @short Helper class to manage windows.
  *
  * This helper singleton is designed to help manager windows sizes and positions.
@@ -44,14 +43,12 @@ public:
     virtual ~WindowManager();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Move window to workspace center.
      * @param window window to move
      */
     void moveToWorkspaceCenter(QWidget *window);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Move window to specific position.
      * @param window window to move
      * @param position desctination position for given window's top-left corner
@@ -61,7 +58,6 @@ public:
     void moveToPosition(QWidget *window, const QPoint &position);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Ensure that whole window is visible on screen.
      * @param window window
      *

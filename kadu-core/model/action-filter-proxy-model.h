@@ -32,7 +32,6 @@ class QAction;
 
 /**
  * @class ActionFilterProxyModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model that allows for filtering out action based on size of given model.
  *
  * This model can be used to hide actions when some other model is empty or have only one item.
@@ -67,7 +66,6 @@ protected:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of ActionFilterProxyModel
      * @param parent QObject parent of new model
      */
@@ -75,7 +73,6 @@ public:
     virtual ~ActionFilterProxyModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets data model for filtering.
      * @param model data model for filtering
      *
@@ -87,14 +84,12 @@ public:
     void setModel(QAbstractItemModel *model);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Adds new action to filter out when main model is empty.
      * @param action new action to filter out when main model is empty
      */
     void addHideWhenModelEmpty(QAction *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Adds new action to filter out when main model is empty or contains only one item.
      * @param action new action to filter out when main model is empty or contains only one item
      */

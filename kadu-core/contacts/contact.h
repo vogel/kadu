@@ -67,7 +67,6 @@ class KADUAPI Contact : public SharedBase<ContactShared>
     KaduSharedBase_Property(bool, ignoreNextStatusChange, IgnoreNextStatusChange);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return RosterEntry for this Contact.
      * @return RosterEntry for this Contact
      *

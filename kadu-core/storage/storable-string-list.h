@@ -35,7 +35,6 @@
 
 /**
  * @class StorableStringList
- * @author Rafal 'Vogel' Malinowski
  * @short QStringList that can load itself from XML file and store data there.
  *
  * This class is QStringList extended to have the possibility of loading and storing
@@ -53,7 +52,6 @@ public:
     StorableStringList(QObject *parent = nullptr);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns name of subnodes that stores strings.
      * @return name of subnodes that stores strings
      *

@@ -21,7 +21,6 @@
 #include "chat-type.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates empty ChatType object.
  * @param parent parent QObject
  *

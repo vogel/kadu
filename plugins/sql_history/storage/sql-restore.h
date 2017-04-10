@@ -35,7 +35,6 @@ class QSqlDatabase;
 
 /**
  * @class SqlRestore
- * @author Rafał 'Vogel' Malinowski
  * @short Class with ability to restore corrupted Sqlite3 database.
  *
  * This class can be used to restored corrupted Sqlite3 database to a valid state.
@@ -53,7 +52,6 @@ class SqlRestore : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Restore process error.
      */
     enum RestoreError
@@ -94,7 +92,6 @@ public:
     };
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Check if database is corrupted.
      * @param database database to check
      * @return true, if database is corrupted
@@ -112,7 +109,6 @@ public:
     static bool isCorrupted(const QSqlDatabase &database);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Translate error enum to human-readable string.
      * @param error error number
      * @return human-readable string describing given error
@@ -123,7 +119,6 @@ public:
     virtual ~SqlRestore();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Try to restore database file.
      * @param databaseFilePath path to database file
      * @return error value of recovery process

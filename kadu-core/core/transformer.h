@@ -29,7 +29,6 @@
 /**
  * @class Transformer
  * @short Interface for transforming instances of one type.
- * @author Rafał 'Vogel' Malinowski
  * @param T type to transform
  *
  * Implementations of this interface are used to transform object - like updating data or removing some items from list.
@@ -46,7 +45,6 @@ public:
 
     /**
      * @short Transform instance of class.
-     * @author Rafał 'Vogel' Malinowski
      * @param object object to transform
      * @return transformed object
      *

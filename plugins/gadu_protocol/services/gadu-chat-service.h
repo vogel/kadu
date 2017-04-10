@@ -54,7 +54,6 @@ class RawMessage;
  * @class GaduChatService
  * @todo Refactor
  * @short Service for sending and receiving messages in Gadu-Gadu protocol.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service implements sending and receiving messages in Gadu-Gadu protocol.
  */
@@ -108,7 +107,6 @@ public:
 
     /**
      * @short Set gadu chat image service for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param gaduChatImageService chat image service for this service
      */
     void setGaduChatImageService(GaduChatImageService *gaduChatImageService);
@@ -117,7 +115,6 @@ public:
 
     /**
      * @short Set connection for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param connection connection for this service
      */
     void setConnection(GaduConnection *connection);

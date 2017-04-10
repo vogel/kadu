@@ -24,7 +24,6 @@
 #include "shared.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @param uuid objects uuid
  * @short Contructs empty object with given (or generated) uuid.
  *
@@ -37,8 +36,6 @@ Shared::Shared(const QUuid &uuid, QObject *parent) : UuidStorableObject{parent}
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
- * @author Bartosz 'beevvy' Brachaczek
  * @short Destroys object.
  *
  * Destroys object.
@@ -59,7 +56,6 @@ Shared::~Shared()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Loads object from storage.
  *
  * Loads the object from storage. Loads uuid from uuid attribute. Superclass method
@@ -79,7 +75,6 @@ void Shared::load()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Loads object from storage.
  *
  * Loads obejct from storage. Loads only uuid from uuid attribute. Superclass method
@@ -96,7 +91,6 @@ void Shared::loadStub()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Stores object to storage.
  *
  * Storeas obejct to storage. Stored uuid to uuid attribute.
@@ -113,7 +107,6 @@ void Shared::store()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Method called just before this obejct is removed from storage.
  *
  * Method is called just before this obejct is removed from storage.

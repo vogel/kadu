@@ -41,7 +41,6 @@
 
 /**
  * @class Manager
- * @author Rafal 'Vogel' Malinowski
  * @param Item class type of manager items, must be derivered from UuidStorableObject.
  * @short Object that manages instances of given Item type (including storing and loading from XML file).
  *
@@ -81,7 +80,6 @@ protected:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns storage parent of this object.
      * @return storage parent of this object
      *
@@ -94,7 +92,6 @@ protected:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns node name for items stored in this class.
      * @return node name for items stored in this class
      *
@@ -103,7 +100,6 @@ protected:
     virtual QString storageNodeItemName() = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Method called just before item is added to manager.
      *
      * This method is called just before item is added to manager.
@@ -115,7 +111,6 @@ protected:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Method called just after item is added to manager.
      *
      * This method is called just after item is added to manager.
@@ -127,7 +122,6 @@ protected:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Method called just before item is removed from manager.
      *
      * This method is called just before item is removed from manager.
@@ -139,7 +133,6 @@ protected:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Method called just after item is removed from manager.
      *
      * This method is called just after item is removed from manager.
@@ -151,7 +144,6 @@ protected:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Loads all items from configuration file.
      *
      * Loads all items from configuration file. Uses @link storageNodeItemName @endlink
@@ -198,7 +190,6 @@ protected:
     virtual Item loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores all items to configuration file.
      *
      * Stores all items to configuration file. Items are stored by their
@@ -217,7 +208,6 @@ protected:
 
 public:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns item by index.
      * @param index index of item to return
      * @return item with given index
@@ -241,7 +231,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns item by uuid.
      * @param uuid uuid of item to return
      * @return item with given uuid
@@ -266,7 +255,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns index of given item.
      * @param item item to find index
      * @return index of given item
@@ -285,7 +273,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns number of loaded items.
      * @return number of loaded items
      *
@@ -300,7 +287,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns list of items.
      * @return list of items
      *
@@ -315,7 +301,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Adds new item to list.
      * @param item new item to be added
      *
@@ -338,7 +323,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Removed item from list.
      * @param item item to be removed
      *

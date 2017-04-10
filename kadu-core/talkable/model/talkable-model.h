@@ -39,7 +39,6 @@ class Myself;
 
 /**
  * @class TalkableModel
- * @author Rafał 'Vogel' Malinowski
  * @short Proxy model than merges BuddyListModel and ChatListModel with Manager adapters.
  *
  * This proxy model merges BuddyListModel and ChatListModel and displays registered instances of Buddy and Chat classes.
@@ -51,7 +50,6 @@ class TalkableModel : public KaduMergedProxyModel
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of TalkableModel with given parent.
      * @param parent QObject parent of new object
      */
@@ -59,7 +57,6 @@ public:
     virtual ~TalkableModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Change value of includeMyself property.
      * @param includeMyself new value of includeMyself property
      *
@@ -69,7 +66,6 @@ public:
     void setIncludeMyself(bool includeMyself);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return value of includeMyself property.
      * @return value of includeMyself property
      *

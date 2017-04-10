@@ -32,7 +32,6 @@
 /**
  * @class ClipboardHtmlTransformer
  * @short Transformer for fixing HTML code that is pasted into clipboard.
- * @author Rafał 'Vogel' Malinowski
  *
  * Implement this tranformer to fix HTML code that is pasted into clipboard. Fixing can include: replacing emoticon
  * images

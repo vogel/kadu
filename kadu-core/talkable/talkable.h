@@ -31,7 +31,6 @@
 
 /**
  * @class Talkable
- * @author Rafał 'Vogel' Malinowski
  * @short Class representing a talkable entity in Kadu - Chat, Buddy or Contact.
  *
  * Objects of this class can contain instance of one of talkable types - Chat, Buddy or Contact.
@@ -47,7 +46,6 @@ class KADUAPI Talkable
 public:
     /**
      * @enum ItemType
-     * @author Rafał 'Vogel' Malinowski
      * @short Enum describing content of Talkable object.
      */
     enum ItemType
@@ -78,41 +76,35 @@ private:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates empty Talkable object.
      */
     Talkable();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates Talkable object that contains Buddy instance.
      * @param buddy this Buddy instance will be hold by new Talkable object
      */
     Talkable(const Buddy &buddy);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates Talkable object that contains Contact instance.
      * @param contact this Contact instance will be hold by new Talkable object
      */
     Talkable(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates Talkable object that contains Chat instance.
      * @param chat this Chat instance will be hold by new Talkable object
      */
     Talkable(const Chat &chat);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Copy construtor.
      * @param copyMe Talkable instance to copy
      */
     Talkable(const Talkable &copyMe);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Assignment operator.
      * @param copyMe Talkable instance to copy
      *
@@ -121,7 +113,6 @@ public:
     Talkable &operator=(const Talkable &copyMe);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Equality operator.
      * @param compareTo Talkable instance to compare
      *
@@ -130,7 +121,6 @@ public:
     bool operator==(const Talkable &compareTo) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Non-equality operator.
      * @param compareTo Talkable instance to compare
      *
@@ -140,7 +130,6 @@ public:
     bool operator!=(const Talkable &compareTo) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns type of Talkable instance.
      * @return type of Talkable instance
      */
@@ -150,7 +139,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if this Talkable instance does not contains non-null object.
      * @return true if this Talkable instance does not contains non-null object
      *
@@ -165,21 +153,18 @@ public:
     Contact contact() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if Talkable is not-null Chat.
      * @return true if current item is not-null Chat
      */
     bool isValidChat() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if Talkable is not-null Buddy.
      * @return true if current item is not-null Buddy
      */
     bool isValidBuddy() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if Talkable is not-null Contact.
      * @return true if current item is not-null Contact
      */

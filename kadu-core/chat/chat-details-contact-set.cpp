@@ -28,7 +28,6 @@
 #include "protocols/protocol.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates empty ChatDetailsContactSet object.
  * @param chatData Chat object that will be decribed by this object
  *
@@ -60,7 +59,6 @@ void ChatDetailsContactSet::setContactManager(ContactManager *contactManager)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Loads ChatDetailsContactSet object from storage.
  *
  * Loads ChatDetailsContactSet object from the same storage assigned Chat object is
@@ -77,7 +75,6 @@ void ChatDetailsContactSet::load()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Stores ChatDetailsContactSet object to storage.
  *
  * Stores ChatDetailsContactSet object to the same storage assigned Chat object is
@@ -94,7 +91,6 @@ void ChatDetailsContactSet::store()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns true if assigned set of contact is valid.
  * @return true if assigned set of contact is valid
  *
@@ -109,7 +105,6 @@ bool ChatDetailsContactSet::shouldStore()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns type of this chat - 'ContactSet'.
  * @return 'ContactSet' ChatType object
  *
@@ -121,7 +116,6 @@ ChatType *ChatDetailsContactSet::type() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns name of this chat.
  * @return name of this chat
  *
@@ -144,7 +138,6 @@ bool ChatDetailsContactSet::isConnected() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Assigns contact set to this chat.
  * @param contacts contact set to assign
  *

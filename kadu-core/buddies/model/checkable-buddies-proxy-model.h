@@ -31,7 +31,6 @@
 
 /**
  * @class CheckableBuddiesProxyModel
- * @author Rafał 'Vogel' Malinowski
  * @short Proxy models that adds check capabilities to any model with buddies.
  *
  * Use this proxy model to add check capabilities to any model with buddies. Use will be able to use checkboxed
@@ -56,7 +55,6 @@ public:
     virtual bool setData(const QModelIndex &index, const QVariant &value, int role);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns set of checked buddies.
      * @return set of checked buddies
      */
@@ -64,7 +62,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when set of checked buddies changes.
      */
     void checkedBuddiesChanged(const BuddySet &checkedBuddies);

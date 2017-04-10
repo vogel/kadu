@@ -33,7 +33,6 @@
 KaduSharedBaseClassImpl(Chat)
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Null Chat object.
      *
      * Null Chat object (without @link ChatShared @endlink attached).
@@ -45,7 +44,6 @@ Chat::Chat()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns new access object for given ChatShared instance.
  * @return new access object for given ChatShared instance
  *
@@ -56,7 +54,6 @@ Chat::Chat(ChatShared *data) : SharedBase<ChatShared>(data)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Casts QObject * to Chat class.
  * @param data QObject * instance that could be casted to Chat object
  * @return Chat object from given data object or Chat::null if data cannot be cast to Chat.
@@ -72,7 +69,6 @@ Chat::Chat(QObject *data)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Copy contructor for other Chat object.
  * @param copy Chat object to copy
  * @return Chat object that will be access object for the same data as copy object.

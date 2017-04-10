@@ -31,7 +31,6 @@
 
 /**
  * @class AccountTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes values that do not belong to specified account.
  *
  * This filter removes values that do not belong to specified account. Chat and Contacts are removed
@@ -46,7 +45,6 @@ class AccountTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of TalkableFilter with given parent.
      * @param parent QObject parent of new object
      *
@@ -61,7 +59,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets account to filter objects by.
      * @param filterAccount account to filter objects by
      *

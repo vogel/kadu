@@ -43,7 +43,6 @@ class StatusTypeData;
 
 /**
  * @class StatusTypeManager
- * @author Rafał 'Vogel' Malinowski
  * @short Manager containing StatusTypeData instances for each StatusType enum value.
  * @see StatusType
  * @see StatusTypeData
@@ -59,7 +58,6 @@ public:
     virtual ~StatusTypeManager();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns StatusType enum value with given name.
      * @param name of StatusType enum to search for
      * @return StatusType enum value with given name
@@ -70,7 +68,6 @@ public:
     StatusType fromName(const QString &name);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns StatusTypeData instance for given StatusType enum value.
      * @param statusType StatusType enum value
      * @return StatusTypeData instance for given StatusType enum value
@@ -81,7 +78,6 @@ public:
     const StatusTypeData statusTypeData(const StatusType statusType);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns icon for given status in given protocol.
      * @param protocol protocol name
      * @param status status

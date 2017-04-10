@@ -41,7 +41,6 @@ enum class PluginState;
 
 /**
  * @class PluginManager
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for loading and unloading plugins.
  *
  * This class manages all Kadu plugins, allows for loading and unloading and manages dependencies and
@@ -93,7 +92,6 @@ public:
     void activateReplacementPlugins();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Activate all plugins that are enabled.
      *
      * This method deactivated all active plugins. First iteration of deactivation check Plugin::usageCounter() value
@@ -114,7 +112,6 @@ private:
     }) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if this plugin should be activated.
      * @return true if this plugin should be activated
      *

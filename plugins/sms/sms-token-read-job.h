@@ -32,7 +32,6 @@ class QNetworkReply;
 
 /**
  * @class SmsTokenReadJob
- * @author Rafał 'Vogel' Malinowski
  * @short This job is responsible for fetchng token image from URL, presenting it to user and call a javascript
  * function.
  *
@@ -57,7 +56,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new SmsTokenReadJob instance.
      * @param parent QObject parent of new object
      */
@@ -65,7 +63,6 @@ public:
     virtual ~SmsTokenReadJob();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set callback object and method for this job.
      * @param callbackObject javascript object that will receive callback after token is read
      * @param callbackMethod javascript method that will be called on callbackObject after token is read
@@ -73,14 +70,12 @@ public:
     void setCallback(const QScriptValue &callbackObject, const QScriptValue &callbackMethod);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set token image URL for this job.
      * @param tokenImageUrl URL of token image to read
      */
     void setTokenImageUrl(const QString &tokenImageUrl);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Execute this job.
      *
      * If any of requires parameters is empty this method will immediately emit finished(false) signal.
@@ -88,7 +83,6 @@ public:
     virtual void exec();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Cancels this job.
      *
      * Canceled job deletes itself and does not emits any signals.
@@ -97,7 +91,6 @@ public:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short A progress was done in doing this job.
      * @param entryIcon icon for progress message
      * @param entryMessage message for progress item
@@ -105,7 +98,6 @@ signals:
     void progress(const QString &entryIcon, const QString &entryMessage);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Job has finished.
      * @param ok true, if job was finished successfully
      * @param entryIcon icon for finish message

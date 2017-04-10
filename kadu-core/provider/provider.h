@@ -28,7 +28,6 @@
 
 /**
  * @class Provider
- * @author Rafał 'Vogel' Malinowski
  * @short Interface used to get instance of given type.
  * @param T type of value to provide
  *
@@ -39,7 +38,6 @@ class Provider
 {
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Provide value of given type.
      */
     virtual T provide() const = 0;

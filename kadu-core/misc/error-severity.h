@@ -28,25 +28,21 @@
 /**
  * @enum ErrorSeverity
  * @short Error severity enum.
- * @author Rafał 'Vogel' Malinowski
  */
 enum ErrorSeverity
 {
     /**
      * @short No error - everything is fine.
-     * @author Rafał 'Vogel' Malinowski
      */
     NoError,
 
     /**
      * @short Low severity error - can be ignored.
-     * @author Rafał 'Vogel' Malinowski
      */
     ErrorLow,
 
     /**
      * @short High severity error - should not be ignored.
-     * @author Rafał 'Vogel' Malinowski
      */
     ErrorHigh
 };

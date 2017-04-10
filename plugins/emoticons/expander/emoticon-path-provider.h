@@ -32,7 +32,6 @@
 /**
  * @class EmoticonPathProvider
  * @short Interface to get path of emoticon file from Emoticon instance.
- * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonPathProvider
 {
@@ -43,7 +42,6 @@ public:
 
     /**
      * @short Return path of emoticon file for given emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @param emoticon emoticon to get path for
      * @return path to file of emoticon
      */

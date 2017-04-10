@@ -40,7 +40,6 @@ class Error;
 /**
  * @class ChatImageService
  * @short Service for handling images in chat window.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service supports handling images in chat window.
  *
@@ -65,7 +64,6 @@ protected:
 public:
     /**
      * @short Check if image with given size can be sent.
-     * @author Rafał 'Vogel' Malinowski
      * @param size size of image to send (in bytes)
      * @return information about if image with given size can be sent
      *
@@ -79,7 +77,6 @@ public:
 
     /**
      * @short Prepare image to be sent and create ChatImage for it.
-     * @author Rafał 'Vogel' Malinowski
      * @param imageData content of image to be sent
      * @return ChatImage corresponding to given imageData
      *
@@ -89,7 +86,6 @@ public:
 
     /**
      * @short Request chat image from peer.
-     * @author Rafał 'Vogel' Malinowski
      * @param id id of peer to request image from
      * @param imageKey key of requested image
      *
@@ -101,7 +97,6 @@ public:
 signals:
     /**
      * @short Signal emitted when image key was received from a peer.
-     * @author Rafał 'Vogel' Malinowski
      * @param id sender id
      * @param chatImage received key
      *
@@ -113,7 +108,6 @@ signals:
 
     /**
      * @short Signal emitted when image with given key was received and saved on disc.
-     * @author Rafał 'Vogel' Malinowski
      * @param chatImage key of received image
      * @param imageData data of received image
      */

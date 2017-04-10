@@ -35,8 +35,6 @@ class QIcon;
 
 /**
  * @class KaduIcon
- * @author Bartosz 'beevvy' Brachaczek
- * @author Rafał 'Vogel' Malinowski
  * @short Object that stores Kadu-specific information about icon and allows to retrieve the icon itself.
  *
  * Objects of this class store Kadu-specific information about icons and allow to retrieve the icons
@@ -59,7 +57,6 @@ class KADUAPI KaduIcon
 
 public:
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Creates null KaduIcon object.
      *
      * Creates null KaduIcon object. isNull() will return true.
@@ -69,7 +66,6 @@ public:
     }
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Creates KaduIcon object.
      * @param path path to this icon
      * @param size requested size as string formatted as "WIDTHxHEIGHT" or "svg"
@@ -81,7 +77,6 @@ public:
     }
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Returns true if this object is null.
      * @return true if this object is null, false otherwise
      *
@@ -93,7 +88,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return theme path of this icon.
      * @return theme path of this icon
      *
@@ -105,7 +99,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set theme path of this icon.
      * @param themePath new theme path of this icon
      *
@@ -117,7 +110,6 @@ public:
     }
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Returns path to this icon.
      * @return path to this icon
      *
@@ -129,7 +121,6 @@ public:
     }
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Sets path to this icon and resets all other data.
      * @param path path to this icon
      *
@@ -141,7 +132,6 @@ public:
     }
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Returns requested size of file pointed by fullPath() and webKitPath(), if set.
      * @return size as string formatted like "WIDTHxHEIGHT"
      *
@@ -153,7 +143,6 @@ public:
     }
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Sets the requested size of icon file.
      * @param size requested size as string formatted as "WIDTHxHEIGHT" or "svg"
      *

@@ -22,8 +22,8 @@
 #include "contact-list-model.h"
 #include "contact-list-model.moc"
 
-#include "avatars/avatars.h"
 #include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "contacts/model/contact-data-extractor.h"
 
 ContactListModel::ContactListModel(QObject *parent) : QAbstractItemModel(parent)
@@ -46,9 +46,7 @@ void ContactListModel::setContactDataExtractor(ContactDataExtractor *contactData
 
 void ContactListModel::avatarUpdated(const AvatarId &id)
 {
-    auto it = std::find_if(std::begin(m_list), std::end(m_list), [&id](const Contact &c){
-        return avatarId(c) == id;
-    });
+    auto it = std::find_if(std::begin(m_list), std::end(m_list), [&id](const Contact &c) { return avatarId(c) == id; });
     if (it != std::end(m_list))
     {
         auto row = std::distance(std::begin(m_list), it);

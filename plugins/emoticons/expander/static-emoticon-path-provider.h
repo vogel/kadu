@@ -30,7 +30,6 @@
 /**
  * @class StaticEmoticonPathProvider
  * @short EmoticonPathProvider that returns path to static version of emoticon.
- * @author Rafał 'Vogel' Malinowski
  */
 class StaticEmoticonPathProvider : public EmoticonPathProvider
 {
@@ -39,7 +38,6 @@ public:
 
     /**
      * @short Return path to static version of emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @param emoticon emoticon to get path for
      * @return path to static file of emoticon
      */

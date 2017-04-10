@@ -43,7 +43,6 @@ public:
 
     /**
      * @short Register new DomVisitorProvider with given priority.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitorProvider visitor provider to register
      * @param priority priority of new provider, smaller priorities are called first
      *
@@ -53,7 +52,6 @@ public:
 
     /**
      * @short Unegister new DomVisitorProvider with given priority.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitorProvider visitor provider to unregister
      *
      * If given DomVisitorProvider is not registered, nothing will happen.

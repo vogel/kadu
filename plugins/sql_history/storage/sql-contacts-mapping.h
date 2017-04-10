@@ -38,7 +38,6 @@ class SqlAccountsMapping;
 
 /**
  * @class SqlContactsMapping
- * @author Rafał 'Vogel' Malinowski
  * @short This class is responsible for mapping IM contacts to database entries in kadu_contacts table.
  *
  * This class is responsible for mapping IM contacts to database entries in kadu_contacts table of database
@@ -70,7 +69,6 @@ class SqlContactsMapping : public QObject
     QMap<int, Contact> ContactMapping;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add mapping of given id to given contact.
      * @param id id to map
      * @param contact contact to map
@@ -81,7 +79,6 @@ class SqlContactsMapping : public QObject
     void addMapping(int id, const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Load mapping from database.
      *
      * This method loads mapping from database. All database entries from kadu_contacts table are matched
@@ -94,7 +91,6 @@ private slots:
     INJEQT_INIT void init();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Update kadu_contacts entry to new contact's data.
      * @param contact updated contact
      *
@@ -105,7 +101,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of SqlContactsMapping class.
      * @param database database with kadu_contact table
      * @param accountsMapping object providing account to database mapping, must be not null
@@ -120,7 +115,6 @@ public:
     virtual ~SqlContactsMapping();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return Contact matched with given id from database.
      * @param sqlId id from database
      *
@@ -130,7 +124,6 @@ public:
     Contact contactById(int sqlId) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return sql id matched with given contact.
      * @param contact contact to match to sql id
      * @param create if true then valid id will be created if not already available
@@ -142,7 +135,6 @@ public:
     int idByContact(const Contact &contact, bool create);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return current mappings.
      * @param return current mappings
      */

@@ -34,7 +34,6 @@ class BuddyPreferredManager;
 
 /**
  * @class HideOfflineWithoutDescriptionTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are not available and have no description.
  *
  * This filter removes items that not available and have no description. Contact items that have offline
@@ -49,7 +48,6 @@ class HideOfflineWithoutDescriptionTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of HideOfflineWithoutDescriptionTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */
@@ -60,7 +58,6 @@ public:
     virtual FilterResult filterContact(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Enable or disalbe filter.
      * @param enabled new value of enabled property
      */

@@ -34,7 +34,6 @@
 /**
  * @class ClipboardHtmlTransformerService
  * @short Service for fixing HTML code that is pasted into clipboard.
- * @author Rafał 'Vogel' Malinowski
  *
  * Use this service to fix HTML code that is pasted into clipboard. Fixing can include: replacing emoticon images
  * with emoticon text triggers, expanding URLs, removing unneeded message parts.

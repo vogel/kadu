@@ -39,7 +39,6 @@ class FormattedString;
 /**
  * @class FormattedStringCloneVisitor
  * @short This visitor creates new FormattedString identical to visited FormattedString.
- * @author Rafał 'Vogel' Malinowski
  *
  * After being accepted by a FormattedString this visitor returns new FormattedString view identical to visited
  * FormattedString.
@@ -64,7 +63,6 @@ public:
 
     /**
     * @short Returns new FormattedString instance identical to visited one.
-    * @author Rafał 'Vogel' Malinowski
     * @return new FormattedString instance identical to visited one
     *
     * Caller gains ownership of the returned object. This method can only be called once.

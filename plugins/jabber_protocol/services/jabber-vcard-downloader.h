@@ -33,7 +33,6 @@ class QXmppVCardManager;
 /**
  * @class JabberVCardDownaloder
  * @short Class for downloading VCard.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for downloading VCard. To do that attach slot to vCardDownloaded() signal and call downloadVCard()
  * method. After VCard is downloaded vCardDownloaded() signal is emitted and this object deletes itself.
@@ -44,7 +43,6 @@ class JabberVCardDownloader : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create instance attached to given Client.
      * @param client instance of Client
      * @param parent QObject parent
@@ -54,7 +52,6 @@ public:
 
     /**
      * @short Downloads VCard for given id.
-     * @author Rafał 'Vogel' Malinowski
      * @param id id of contact to download VCard for
      *
      * Before calling this method attach to vCardDownloaded() signal to get informed about result. Please
@@ -66,7 +63,6 @@ public:
 signals:
     /**
      * @short Signal emitted when job of this class is done.
-     * @author Rafał 'Vogel' Malinowski
      * @param ok success flag
      * @param vCard downloaded VCard
      *

@@ -33,7 +33,6 @@ class QVariant;
 /**
  * @class VariantWrapper
  * @short Interface class for getting and setting a single QVariant value.
- * @author Bartosz 'beevvy' Brachaczek
  */
 class KADUAPI VariantWrapper
 {
@@ -44,7 +43,6 @@ public:
 
     /**
      * @short Returns value stored by the underlying resource.
-     * @author Bartosz 'beevvy' Brachaczek
      * @param defaultValue value which will returned if no value has been ever set on the underlying resource
      * @return value stored by the underlying resource or @p defaultValue
      *
@@ -55,7 +53,6 @@ public:
 
     /**
      * @short Sets passed value on the underlying resource.
-     * @author Bartosz 'beevvy' Brachaczek
      * @param value value which will be set on the underlying resource
      */
     virtual void set(const QVariant &value) = 0;

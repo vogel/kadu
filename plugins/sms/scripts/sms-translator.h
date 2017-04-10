@@ -32,7 +32,6 @@
 
 /**
  * @class SmsTranslator
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for providing SMS scripts a translated version of messages.
  */
 class SmsTranslator : public QObject
@@ -41,7 +40,6 @@ class SmsTranslator : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of SmsTranslator.
      * @param parent QObject parent of new instance of SmsTranslator
      */
@@ -50,7 +48,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Translate given text for script.
      * @param text text to translate
      * @return translated version of given text

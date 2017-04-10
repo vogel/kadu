@@ -27,7 +27,6 @@
 
 /**
         @class NotifierConfigurationWidget
-        @author Vogel
         @short Widget konfiguracyjny dla Notifiera.
 
         Widget jest tworzony i dodawany w odpowiednim miejscu w oknie konfiguracyjnym.

@@ -33,7 +33,6 @@ class FormattedStringVisitor;
 /**
  * @class FormattedString
  * @short Generic FormattedString item.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class contains FormattedString item. It can be either formatted text block, image, item composed of other items.
  */
@@ -50,14 +49,12 @@ public:
 
     /**
      * @short Accept given visitor on current item.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitor visitor to accept
      */
     virtual void accept(FormattedStringVisitor *visitor) const = 0;
 
     /**
      * @short Return true if item is empty.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if item is empty
      */
     virtual bool isEmpty() const = 0;

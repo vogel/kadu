@@ -44,7 +44,6 @@ class QString;
 
 /**
  * @class Chat
- * @author Rafal 'Vogel' Malinowski
  * @short Access object for chat data.
  *
  * This class allows to access to chat data defined in @link ChatShared @endlink class.
@@ -71,7 +70,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
     KaduSharedBase_PropertyRead(QString, name, Name);
 
     /**
-    * @author Rafal 'Vogel' Malinowski
     * @short Details object for this chat.
     *
     * When ChatType for this chat is loaded and registered in ChatTypeManager
@@ -81,7 +79,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
     KaduSharedBase_PropertyRead(ChatDetails *, details, Details);
 
     /**
-    * @author Rafal 'Vogel' Malinowski
     * @short Account of this chat.
     *
     * Every chat is assigned to account. All contacts in every chat must
@@ -90,7 +87,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
     KaduSharedBase_PropertyCRW(Account, chatAccount, ChatAccount);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Name of chat type.
      *
      * Name of chat type. @link ChatType @endlink object with the same name must be loaded
@@ -107,7 +103,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
     KaduSharedBase_Property(quint16, unreadMessagesCount, UnreadMessagesCount);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return true when chat is connected.
      * @return true when chat is connected
      *
@@ -120,7 +115,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
     bool isConnected() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Get value of Open property.
      * @return true when chat is open
      *
@@ -129,7 +123,6 @@ class KADUAPI Chat : public SharedBase<ChatShared>
     bool isOpen() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Set value of open property.
      * @param open new value of Open property
      *

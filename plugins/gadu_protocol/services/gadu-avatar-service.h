@@ -32,7 +32,6 @@
  * @class GaduAvatarService
  * @short Service for downloading and uploading avatars for Gadu-Gadu protocol.
  * @see AvatarService
- * @author Rafał 'Vogel' Malinowski
  *
  * See documentation of AvatarService to get general information about this service.
  *
@@ -49,7 +48,6 @@ class GaduAvatarService : public AvatarService
 public:
     /**
      * @short Create service instance.
-     * @author Rafał 'Vogel' Malinowski
      * @param account account of service
      * @param parent QObject parent of service
      */

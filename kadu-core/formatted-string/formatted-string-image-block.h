@@ -36,7 +36,6 @@
 /**
  * @class FormattedStringImageBlock
  * @short FormattedString subclass that contains information about one image.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class contains information about one image that can be a part of FormattedString.
  */
@@ -55,14 +54,12 @@ public:
 
     /**
      * @short Create FormattedStringImageBlock with image with given path.
-     * @author Rafał 'Vogel' Malinowski
      * @param imagePath path to image
      */
     explicit FormattedStringImageBlock(QString imagePath);
 
     /**
      * @short Create FormattedStringImageBlock with image with given chat image key.
-     * @author Rafał 'Vogel' Malinowski
      * @param chatImageKey chat image get of image
      *
      * Relative path of image will be generatted automatically from toString() method of passed ChatImage instance. This
@@ -79,14 +76,12 @@ public:
 
     /**
      * @short Return true if neither image path nor image key are provided.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if neither image path nor image key are provided
      */
     virtual bool isEmpty() const;
 
     /**
      * @short Return provided image path.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided image path
      *
      * If image path was not provided at construction time then it will be constructed from available chat image key.
@@ -95,7 +90,6 @@ public:
 
     /**
      * @short Return provided chat image key.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided chat image key
      *
      * If chat image key was not provided at construction time then empty chat image key will be returned.

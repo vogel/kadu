@@ -33,7 +33,6 @@ class QDomText;
 /**
  * @class DomVisitor
  * @short Visitor for processing DOM nodes.
- * @author Rafał 'Vogel' Malinowski
  *
  * Accept this visitor in DomProcessor class to process DOM document.
  */
@@ -46,7 +45,6 @@ public:
 
     /**
      * @short Visit current text node.
-     * @author Rafał 'Vogel' Malinowski
      * @param textNode text node to process
      * @return new version of visited node
      *
@@ -57,7 +55,6 @@ public:
 
     /**
      * @short Visit current element before visiting all its subnodes.
-     * @author Rafał 'Vogel' Malinowski
      * @param elementNode element node to process
      * @return new version of visited node
      *
@@ -68,7 +65,6 @@ public:
 
     /**
      * @short Visit current element after visiting all its subnodes.
-     * @author Rafał 'Vogel' Malinowski
      * @param elementNode element node to process
      * @return new version of visited node
      *

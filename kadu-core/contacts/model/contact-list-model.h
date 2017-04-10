@@ -40,7 +40,6 @@ struct AvatarId;
 
 /**
  * @class ContactListModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model that list contacts.
  *
  * This model lists contacts. Contacts can be added or removed. Model automatically updates itself when a contact is
@@ -52,7 +51,6 @@ class ContactListModel : public QAbstractItemModel, public KaduAbstractModel
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new BuddyListModel.
      * @param parent QObject parent of new ContactListModel
      */
@@ -60,7 +58,6 @@ public:
     virtual ~ContactListModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set list of contacts that this model will represent.
      * @param contacts new list of contacts
      *
@@ -70,7 +67,6 @@ public:
     void setContactList(const QVector<Contact> &contacts);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Add new contact to list.
      * @param contact new contact to add
      *
@@ -79,7 +75,6 @@ public:
     void addContact(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Remove contact from list.
      * @param contact contact to remove
      *
@@ -88,7 +83,6 @@ public:
     void removeContact(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return index for given row, column and parent index.
      * @param row row of index
      * @param column column of index
@@ -101,7 +95,6 @@ public:
     virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return parent index for given index.
      * @param child child to get parent of
      * @return parent index for given index
@@ -111,7 +104,6 @@ public:
     virtual QModelIndex parent(const QModelIndex &child) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return column count for given index.
      * @param parent parent index
      * @return column count
@@ -121,7 +113,6 @@ public:
     virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return row count for given index.
      * @param parent parent index
      * @return row count
@@ -131,7 +122,6 @@ public:
     virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return data for given index and role.
      * @param index model index
      * @param role role of data to return
@@ -143,7 +133,6 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo Find out why it does not return anything for Contact values.
      * @short Return list of indexes for given value.
      * @param value value to search in model
@@ -162,7 +151,6 @@ private:
     void avatarUpdated(const AvatarId &id);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Connect given contact to this object's slots.
      * @param contact contact to connect
      *
@@ -171,7 +159,6 @@ private:
     void connectContact(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Disonnect given contact from this object's slots.
      * @param contact contact to disconnect
      *
@@ -184,7 +171,6 @@ private slots:
     INJEQT_SET void setContactDataExtractor(ContactDataExtractor *contactDataExtractor);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called every time a contact's data changes.
      *
      * This slot is connected to every contact in list. Updated contact is read from QObject::sender() method.

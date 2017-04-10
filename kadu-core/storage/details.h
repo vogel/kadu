@@ -31,7 +31,6 @@
 
 /**
  * @class Details
- * @author Rafal 'Vogel' Malinowski
  * @param T class type, derivered from @link<StorableObject> StorableObject @endlink
  * @short Object that can extend any other object by protocol data.
  *
@@ -53,7 +52,6 @@ class Details : public StorableObject
 
 public:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Construct new object with cloned StoragePoint and state 'StateNotLoaded'.
      * @param mainData @link<StorableObject> StorableObject to clone storagePoint from
      *
@@ -66,7 +64,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Empty destructor.
      *
      * Empty destructor.
@@ -76,7 +73,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns main data object for this Details.
      * @return main data object for this Details
      *
@@ -88,7 +84,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns storage parent of main data object for this Details.
      * @return storage parent of main data object for this Details
      *
@@ -100,7 +95,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns storage node name of main data object for this Details.
      * @return storage node name of main data object for this Details
      *

@@ -36,7 +36,6 @@ class StatusContainer;
 
 /**
  * @class ActionContext
- * @author Rafał 'Vogel' Malinowski
  * @short Interface responsible for storing data required for proper Action behavior.
  *
  * This inteface is used by all actions classes to get information required for proper Action behavior.
@@ -53,13 +52,11 @@ class ActionContext : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns widget for given action data source.
      */
     virtual QWidget *widget() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns contact set for given action data source.
      *
      * Returns contact set for given action data source. May return empty contact set.
@@ -67,7 +64,6 @@ public:
     virtual ContactSet contacts() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns buddy set for given action data source.
      *
      * Returns buddy set for given action data source. May return empty buddy set.
@@ -75,7 +71,6 @@ public:
     virtual BuddySet buddies() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns chat for given action data source.
      *
      * Returns chat given action data source. May return empty chat.
@@ -83,7 +78,6 @@ public:
     virtual Chat chat() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns status container for given action data source.
      *
      * Returns status container for given action data source. May return null.

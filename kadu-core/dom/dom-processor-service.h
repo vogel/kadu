@@ -37,7 +37,6 @@ class DomVisitor;
 /**
  * @class DomProcessorService
  * @short Service for processing DOM documents.
- * @author Rafał 'Vogel' Malinowski
  *
  * Use this service to process DOM documents that are about to be displayed - like messages.
  * Plugins like emoticons or imagelink can register it this class to allow for processing emoticons, urls and other
@@ -53,7 +52,6 @@ class KADUAPI DomProcessorService : public QObject
 public:
     /**
      * @short Create new instance of DomProcessorService.
-     * @author Rafał 'Vogel' Malinowski
      * @param parent QObject parent of new instance
      */
     explicit DomProcessorService(QObject *parent = nullptr);
@@ -61,7 +59,6 @@ public:
 
     /**
      * @short Process xml with all available DomVisitor instances.
-     * @author Rafał 'Vogel' Malinowski
      * @param domDocument to process
      * @todo remove
      *

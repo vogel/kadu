@@ -36,7 +36,6 @@ class QModelIndex;
 
 /**
  * @class ActionListModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model that contains list of QAction * items.
  *
  * This model can contain list of QAction * items. It implements KaduAbstractModel so it is possible
@@ -50,7 +49,6 @@ class KADUAPI ActionListModel : public QAbstractItemModel, public KaduAbstractMo
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of object with given parent.
      * @param parent QObject parent of new model
      */
@@ -58,21 +56,18 @@ public:
     virtual ~ActionListModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets list of actions to this model.
      * @param actionList list of actions for this model
      */
     void setActionList(const QList<QAction *> &actionList);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Appends new action at the end of list.
      * @param action action to append at the end of list
      */
     void appendAction(QAction *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Inserts new action at given position.
      * @param index position of new action
      * @param action action to insert at given position
@@ -84,7 +79,6 @@ public:
     void insertAction(int index, QAction *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Removes given action.
      * @param action action to remove
      *

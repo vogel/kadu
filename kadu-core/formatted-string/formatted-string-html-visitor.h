@@ -36,7 +36,6 @@ class HtmlString;
 /**
  * @class FormattedStringHtmlVisitor
  * @short This visitor creates HTML view of visited FormattedString.
- * @author Rafał 'Vogel' Malinowski
  *
  * After being accepted by a FormattedString this visitor returns HTML view of this FormattedString as result() getter.
  */
@@ -54,10 +53,9 @@ public:
     virtual void visit(const FormattedStringTextBlock *const formattedStringTextBlock) override;
 
     /**
-    * @short Returns HTML view of visited FormattedString.
-    * @author Rafał 'Vogel' Malinowski
-    * @return HTML view of visited FormattedString
-    */
+     * @short Returns HTML view of visited FormattedString.
+     * @return HTML view of visited FormattedString
+     */
     HtmlString result() const;
 
 protected:

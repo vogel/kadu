@@ -39,7 +39,6 @@ class QUrl;
 /**
  * @class ImageStorageService
  * @short Service for handling independent image storage.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service handles independent image storage. Kadu needs to store some images under profile directory to make it
  * available even after moving profile to another computer or another drive. This service allows storing images in this
@@ -55,14 +54,12 @@ public:
 
     /**
      * @short Returns full path to image storage directory.
-     * @author Rafał 'Vogel' Malinowski
      * @return full path to image storage directory
      */
     virtual QString storagePath() const = 0;
 
     /**
      * @short Returns full path to given image.
-     * @author Rafał 'Vogel' Malinowski
      * @param imageFilePath image to get full path
      * @return full path to given image
      *
@@ -75,7 +72,6 @@ public:
     /**
      * @short Store image under given path to image storage and return new file path relative to image storage
      * directory.
-     * @author Rafał 'Vogel' Malinowski
      * @param imageFilePath image to save under image storage
      * @return relative path to new image
      *
@@ -88,7 +84,6 @@ public:
     /**
      * @short Store image under given path to image storage and return new file path relative to image storage
      * directory.
-     * @author Rafał 'Vogel' Malinowski
      * @param imageFileName name of file to create
      * @param content content of file to create
      * @return relative path to new image
@@ -101,7 +96,6 @@ public:
 
     /**
      * @short Return QUrl with file:// scheme for given kaduimg:// QUrl.
-     * @author Rafał 'Vogel' Malinowski
      * @param url url to convert
      * @return converted url
      *

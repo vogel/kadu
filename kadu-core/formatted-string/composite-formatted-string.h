@@ -36,7 +36,6 @@
 /**
  * @class CompositeFormattedString
  * @short This class represents FormattedString that is composed of other FormattedString instances.
- * @author Rafał 'Vogel' Malinowski
  */
 class KADUAPI CompositeFormattedString : public FormattedString
 {
@@ -47,7 +46,6 @@ class KADUAPI CompositeFormattedString : public FormattedString
 public:
     /**
      * @short Create new instance of CompositeFormattedString.
-     * @author Rafał 'Vogel' Malinowski
      * @param items items of composite FormattedString
      */
     explicit CompositeFormattedString(std::vector<std::unique_ptr<FormattedString>> &&items);
@@ -57,7 +55,6 @@ public:
 
     /**
      * @short Accept a visitor.
-     * @author Rafał 'Vogel' Malinowski
      * @param visitor visitor to accept
      *
      * This method executes visit() method of passed visitor on itself and then on all items.
@@ -66,14 +63,12 @@ public:
 
     /**
      * @short Return true if his FormattedString is empty or consists only of empty items.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if his FormattedString is empty or consists only of empty items
      */
     virtual bool isEmpty() const;
 
     /**
      * @short Return all items that compose this CompositeFormattedString.
-     * @author Rafał 'Vogel' Malinowski
      * @return all items that compose this CompositeFormattedString
      */
     const std::vector<std::unique_ptr<FormattedString>> &items() const;

@@ -56,7 +56,6 @@ void ChatTypeManager::setChatTypeRoom(ChatTypeRoom *chatTypeRoom)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns chat type with given internal alias.
  * @param name internal alias of chat type to return.
  * @return chat type with given internal alias

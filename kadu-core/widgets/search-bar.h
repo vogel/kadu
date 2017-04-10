@@ -37,7 +37,6 @@ class QLineEdit;
 
 /**
  * @class SearchBar
- * @author Rafał 'Vogel' Malinowski
  * @short Firefox-like search bar for web views.
  *
  * This widget is Firefox-like search bar for web views. It has 3 buttons: Close, Previous and Next as well as Find line
@@ -73,7 +72,6 @@ protected:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new empty SearchBar.
      *
      * SearchBar is hidden by default. Use show() to make it visible or set up search widget to allow use show it by
@@ -84,7 +82,6 @@ public:
     virtual ~SearchBar();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set auto visibility property.
      * @param autoVisibility new value of auto visibility property
      *
@@ -96,7 +93,6 @@ public:
     void setAutoVisibility(bool autoVisibility);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set search widget for this search bar.
      * @param widget new search widget for this search bar
      *
@@ -108,7 +104,6 @@ public:
 
 public slots:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set text visible in find line edit.
      * @param search text visible in find line edit
      *
@@ -122,21 +117,18 @@ public slots:
 
 signals:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when previous button is clicked and search string is not empty.
      * @param search search string entered in Find line edit.
      */
     void searchPrevious(const QString &search);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when next button is clicked and search string is not empty.
      * @param search search string entered in Find line edit.
      */
     void searchNext(const QString &search);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emited when widget is being closed.
      *
      * Widget can be closed by Close button or by Esc key.

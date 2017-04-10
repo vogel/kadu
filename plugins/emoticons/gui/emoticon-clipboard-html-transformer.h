@@ -33,7 +33,6 @@
  * @class EmoticonClipboardHtmlTransformer
  * @short Transformer for replacing emoticon images with emoticon text triggers in HTML code that is pasted into
  * clipboard.
- * @author Rafał 'Vogel' Malinowski
  */
 class EmoticonClipboardHtmlTransformer : public QObject, public ClipboardHtmlTransformer
 {

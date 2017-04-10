@@ -40,7 +40,6 @@ class Status;
 
 /**
  * @class StatusSetter
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for setting modified status to StatusContainers.
  * @see StatusChangerManager
  *
@@ -58,7 +57,6 @@ public:
     virtual ~StatusSetter();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets status on given status container with modifications.
      * @param statusContainer StatusContainer to set status on.
      * @param status status to be modified and then set on statusContainer
@@ -70,7 +68,6 @@ public:
     void setStatusManually(StatusContainer *statusContainer, Status status);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns manually (unchanged) status from given StatusContainer.
      * @param statusContainer StatusContainer to get status from.
      *
@@ -83,7 +80,6 @@ protected:
     void configurationUpdated();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Called on registration of new container, sets default status.
      * @param statusContainer new status container
      *
@@ -108,7 +104,6 @@ private:
     bool OfflineToInvisible;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Private method called by Core.
      *
      * This method is called by Core when all internals have been initialized. It allows StatusSetter
@@ -117,7 +112,6 @@ private:
     void coreInitialized();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets default status on given container.
      * @param statusContainer container to set default status on
      *

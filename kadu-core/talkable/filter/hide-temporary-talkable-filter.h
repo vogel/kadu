@@ -33,7 +33,6 @@
 
 /**
  * @class HideTemporaryTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes temporary items.
  *
  * This filter removes temporary items. An example of temporary item is Contat or Buddy from XMPP MUC chat.
@@ -46,7 +45,6 @@ class KADUAPI HideTemporaryTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of HideTemporaryTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */
@@ -57,7 +55,6 @@ public:
     virtual FilterResult filterContact(const Contact &contact);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Enable or disalbe filter.
      * @param enabled new value of enabled property
      */

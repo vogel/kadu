@@ -24,7 +24,6 @@
 #include "uuid-storable-object.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Contructs object with StateNew state and null storage point.
  *
  * Constructs object with @link<StorableObject::StateNew state @endlink and null
@@ -35,7 +34,6 @@ UuidStorableObject::UuidStorableObject(QObject *parent) : StorableObject{parent}
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates default storage point for object.
  *
  * Constructs storage point: XML node that is child of storage point of object
@@ -74,7 +72,6 @@ std::shared_ptr<StoragePoint> UuidStorableObject::createStoragePoint()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Determines if object is worth to be stored.
  * @return true if object should be stored, defaults to true
  * @todo this method is used only in managers, in 0.10 it should be used in every place

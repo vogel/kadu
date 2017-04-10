@@ -30,7 +30,6 @@
 /**
  * @class StandardUrlExpanderConfiguration
  * @short Configuration class for StandardUrlExpanderConfiguration.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class is used to configure StandardUrlExpanderConfiguration.
  *
@@ -53,28 +52,24 @@ public:
 
     /**
      * @short Set value of foldLink property.
-     * @author Rafał 'Vogel' Malinowski
      * @param autoRespondText new value of foldLink property
      */
     void setFoldLink(bool foldLink);
 
     /**
      * @short Return value of foldLink property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of foldLink property
      */
     bool foldLink() const;
 
     /**
      * @short Set value of foldLinkThreshold property.
-     * @author Rafał 'Vogel' Malinowski
      * @param foldLinkThreshold new value of foldLinkThreshold property
      */
     void setFoldLinkThreshold(int foldLinkThreshold);
 
     /**
      * @short Return value of foldLinkThreshold property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of foldLinkThreshold property
      */
     int foldLinkThreshold() const;

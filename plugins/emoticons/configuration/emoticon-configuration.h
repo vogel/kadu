@@ -32,7 +32,6 @@
 /**
  * @class EmoticonConfiguration
  * @short Configuration class for emoticons plugin.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class is used to configure emoticons.
  *
@@ -57,42 +56,36 @@ public:
 
     /**
      * @short Set value of enabled property.
-     * @author Rafał 'Vogel' Malinowski
      * @param enabled new value of enabled property
      */
     void setEnabled(bool enabled);
 
     /**
      * @short Return value of enabled property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of enabled property
      */
     bool enabled() const;
 
     /**
      * @short Set value of animate property.
-     * @author Rafał 'Vogel' Malinowski
      * @param animate new value of animate property
      */
     void setAnimate(bool animate);
 
     /**
      * @short Return value of animate property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of animate property
      */
     bool animate() const;
 
     /**
      * @short Set value of emoticonTheme property.
-     * @author Rafał 'Vogel' Malinowski
      * @param emoticonTheme new value of emoticonTheme property
      */
     void setEmoticonTheme(const EmoticonTheme &emoticonTheme);
 
     /**
      * @short Return value of emoticonTheme property.
-     * @author Rafał 'Vogel' Malinowski
      * @return value of emoticonTheme property
      */
     EmoticonTheme emoticonTheme() const;

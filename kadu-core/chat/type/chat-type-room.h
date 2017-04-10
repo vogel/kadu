@@ -42,7 +42,6 @@ class InjectedFactory;
 
 /**
  * @class ChatTypeRoom
- * @author Rafal 'Vogel' Malinowski
  * @short Representation of chat type with room instead of list of contacts.
  *
  * Representation of chat type with room instead of list of contacts.

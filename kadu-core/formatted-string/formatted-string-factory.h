@@ -46,7 +46,6 @@ class QTextImageFormat;
 /**
  * @class FormattedStringFactory
  * @short Class for creating FormattedString instances from different sources.
- * @author Rafał 'Vogel' Malinowski
  */
 class KADUAPI FormattedStringFactory : public QObject
 {
@@ -66,7 +65,6 @@ public:
 
     /**
      * @short Create FormattedString instance from plain text.
-     * @author Rafał 'Vogel' Malinowski
      * @param plainText plain content of new FormattedString
      *
      * This method will create empty FormattedString if plainText is empty. If plainText is not empty then returned
@@ -79,7 +77,6 @@ public:
 
     /**
      * @short Create FormattedString instance from HTML.
-     * @author Rafał 'Vogel' Malinowski
      * @param html HTML content of new FormattedString
      *
      * Thie method will extract basic information about formatting from HTML content and create instance of
@@ -93,7 +90,6 @@ public:
 
     /**
      * @short Create FormattedString instance from text document.
-     * @author Rafał 'Vogel' Malinowski
      * @param textDocument text document to be converted to FormattedString
      *
      * This method will create empty FormattedString if text document is empty.
@@ -104,7 +100,6 @@ public:
 
     /**
      * @short Create FormattedString instance from HTML or plain text.
-     * @author Rafał 'Vogel' Malinowski
      * @param text HTML or plain text to be converted to FormattedString
      *
      * This method will create empty FormattedString if text is empty. If text contains '<' character then it is assumed
@@ -117,7 +112,6 @@ public:
 
     /**
      * @short Check if given text is in HTML format.
-     * @author Rafał 'Vogel' Malinowski
      * @param text text to check
      */
     bool isHtml(const QString &text) const;
@@ -128,7 +122,6 @@ private:
 private slots:
     /**
      * @short Set ImageStorageService to use by this factory.
-     * @author Rafał 'Vogel' Malinowski
      * @param imageStorageService ImageStorageService to use by this factory
      *
      * ImageStorageService will be used to store images and change path to them to make FormattedString working even

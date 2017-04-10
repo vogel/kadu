@@ -68,7 +68,6 @@ signals:
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return true if local update can be processed.
      * @return true if local update can be processed
      *
@@ -78,7 +77,6 @@ protected:
     bool canPerformLocalUpdate() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return true if remote update for given contact can be processed.
      * @param contact contact to check
      * @return true if remote update can be processed
@@ -110,7 +108,6 @@ private:
     void ensureContactHasBuddyWithDisplay(const Contact &contact, const QString &display);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Mark all contacts of given account to deletion.
      *
      * Assume that all synchronized contacts were removed from roster. During roster download all still existing
@@ -120,7 +117,6 @@ private:
     void markContactsForDeletion();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Delete all contacts marked for deletion.
      *
      * All contacts that after synchronization with remote roster are still marked for deletion are deleted from local
@@ -129,7 +125,6 @@ private:
     void deleteMarkedContacts();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Check if user is intrested in seeing given roster item data.
      * @param item roster item to check
      * @return true, if user is intrested in seeing given roster item data
@@ -157,7 +152,6 @@ private slots:
     INJEQT_INIT void init();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Slot called when protocol disconencted.
      *
      * Roster state is reset to StateNonInitialized.

@@ -35,7 +35,6 @@
 /**
  * @class FormattedStringTextBlock
  * @short FormattedString subclass that contains information about block of text with one formatting settings.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class contains information about block of text with one formatting settings.
  */
@@ -50,7 +49,6 @@ class KADUAPI FormattedStringTextBlock : public FormattedString
 public:
     /**
      * @short Create new instance of FormattedStringTextBlock with given content and formatting settings.
-     * @author Rafał 'Vogel' Malinowski
      * @param content content of text block
      * @param bold bold flag
      * @param italic italic flag
@@ -66,42 +64,36 @@ public:
 
     /**
      * @short Return true if content is empty.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if content is empty
      */
     virtual bool isEmpty() const;
 
     /**
      * @short Return provided content.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided content
      */
     QString content() const;
 
     /**
      * @short Return provided bold flag.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided bold flag
      */
     bool bold() const;
 
     /**
      * @short Return provided italic flag.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided italic flag
      */
     bool italic() const;
 
     /**
      * @short Return provided underline flag.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided underline flag
      */
     bool underline() const;
 
     /**
      * @short Return provided color.
-     * @author Rafał 'Vogel' Malinowski
      * @return provided color
      */
     QColor color() const;

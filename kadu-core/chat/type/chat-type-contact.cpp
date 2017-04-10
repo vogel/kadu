@@ -82,7 +82,6 @@ void ChatTypeContact::setInjectedFactory(InjectedFactory *injectedFactory)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal name of chat type.
  * @return internal name of chat type
  *
@@ -97,7 +96,6 @@ QString ChatTypeContact::name() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal aliases of chat type.
  * @return internal aliases of chat type
  *
@@ -111,7 +109,6 @@ QStringList ChatTypeContact::aliases() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Icon of chat type.
  * @return icon of chat type
  *
@@ -125,7 +122,6 @@ KaduIcon ChatTypeContact::icon() const
 }
 
 /**
- * @author Piotr 'ultr' Dąbrowski
  * @short Window role for this chat type.
  * @return window role for this chat type.
  *
@@ -138,7 +134,6 @@ QString ChatTypeContact::windowRole() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates new ChatDetailsContact object for given chat type.
  * @return new ChatDetailsContact object for given chat type
  *

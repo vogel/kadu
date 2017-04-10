@@ -62,7 +62,6 @@ public:
     virtual ~PluginActivationErrorHandler();
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Shows activation error to the user.
      * @param pluginName name of plugin that caused error
      * @param errorMessage error message that will be displayer to the user
@@ -84,7 +83,6 @@ private slots:
     INJEQT_SET void setPluginStateService(PluginStateService *pluginStateService);
 
     /**
-     * @author Bartosz 'beevvy' Brachaczek
      * @short Sets state enablement of plugin if it is inactive.
      *
      * If this plugin is active or its state is PluginState::New, this method does nothing.

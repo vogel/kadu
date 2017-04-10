@@ -37,7 +37,6 @@ class QLabel;
 
 /**
  * @class WaitOverlay
- * @author Rafał 'Vogel' Malinowski
  * @short Widget that shows wait animation over any other widget.
  *
  * This widget is a gray overlay with wait animation over any other widget.
@@ -53,7 +52,6 @@ class KADUAPI WaitOverlay : public QLabel
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new WaitOverlay widget.
      * @param parent parent widget
      *

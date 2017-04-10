@@ -31,7 +31,6 @@
 /**
  * @class ConfigurableTransformerService
  * @short Template for services that registers list of ConfigurableTransformer instances.
- * @author Rafał 'Vogel' Malinowski
  */
 template <typename T>
 class ConfigurableTransformerService

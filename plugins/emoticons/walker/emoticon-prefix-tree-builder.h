@@ -34,7 +34,6 @@ class QChar;
 /**
  * @class EmoticonPrefixTreeBuilder
  * @short This class takes any number of Emoticon and build an EmoticonPrefixTree from them.
- * @author Rafał 'Vogel' Malinowski
  *
  * Note that tree() method of this class can only be called once.
  */
@@ -53,7 +52,6 @@ public:
 
     /**
      * @short Return created prefix tree.
-     * @author Rafał 'Vogel' Malinowski
      * @return created prefix tree.
      *
      * Not that this method can only be called once.

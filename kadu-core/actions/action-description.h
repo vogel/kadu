@@ -48,7 +48,6 @@ class InjectedFactory;
 
 /**
  * @class ActionDescription
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for describing and creating actions for windows.
  *
  * This class is used to describe actions that can be created and inserted into menus and
@@ -121,7 +120,6 @@ protected:
     InjectedFactory *injectedFactory() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new instance of ActionDescription with given parent.
      * @param parent QObject parent of ActionDescription.
      *
@@ -136,7 +134,6 @@ protected:
     void setShortcut(QString configItem, Qt::ShortcutContext context = Qt::WindowShortcut);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo rename to actionCreated after actionCreated slot is removed
      * @short Called when new instance of Action is created.
      * @param action newly created action
@@ -152,7 +149,6 @@ protected:
     virtual void actionInstanceCreated(Action *action);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo make abstract when actions are moved to new API
      * @short Called when instance of Action is triggered.
      * @param sender instance of QAction that was triggered
@@ -172,7 +168,6 @@ protected:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @todo make abstract when actions are moved to new API
      * @short Called when instance of Action is triggered.
      * @param widget parent widget of triggered action
@@ -194,7 +189,6 @@ protected:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Updates enabled/disabled state of given action.
      * @param action action to update state for
      *
@@ -205,7 +199,6 @@ protected:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates menu for given new instance of Action.
      * @param action action to create menu for
      *
@@ -225,7 +218,6 @@ public:
     virtual ~ActionDescription();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates instance of Action for given ActionContext.
      * @param context context of new Action instance
      * @param parent parent of new Action instance
@@ -238,7 +230,6 @@ public:
     Action *createAction(ActionContext *context, QObject *parent);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of all Actions created from this ActionDescription.
      *
      * Returns list of all Actions created from this ActionDescription.
@@ -246,7 +237,6 @@ public:
     QList<Action *> actions();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns Action instance connected with given ActionContext.
      * @param context ActionContext to search Action for
      *
@@ -279,7 +269,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns QToolButton::ToolButtonPopupMode for given action.
      *
      * Returns QToolButton::ToolButtonPopupMode for given action. This allows actions with menu that

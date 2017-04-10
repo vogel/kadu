@@ -36,7 +36,6 @@ class WebkitMessagesView;
 
 /**
  * @class HistoryMessagesPrepender
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for prepending history messages to chat messages view.
  *
  * This class is used for asynchronous prepending history messages to chat messages view. It takes care of
@@ -48,7 +47,6 @@ class HistoryMessagesPrepender : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new instance of HistoryMessagesPrepender and starts prepending.
      * @param messages future list of messages to prepend
      * @param chatMessagesView messages view to display prepended messages

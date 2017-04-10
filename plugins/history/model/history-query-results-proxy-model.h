@@ -30,7 +30,6 @@
 
 /**
  * @class HistoryQueryResultsProxyModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model used to filter columns from HistoryQueryResultsModel model.
  *
  * This proxy model is used to hide unneccessary columns from HistoryQueryResultsModel.
@@ -49,7 +48,6 @@ protected:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new proxy model.
      * @param parent QObject parent of new proxy model.
      */
@@ -57,14 +55,12 @@ public:
     virtual ~HistoryQueryResultsProxyModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set visibility of first (talkable) column.
      * @param talkableVisible new value of visibility  of first (talkable) column
      */
     void setTalkableVisible(const bool talkableVisible);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set visibility of fourth (title) column.
      * @param titleVisible new value of visibility of fourth (title) column
      */

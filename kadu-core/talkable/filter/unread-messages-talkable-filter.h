@@ -29,7 +29,6 @@
 
 /**
  * @class UnreadMessagesTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that accepts all item that have unread messages.
  *
  * This filter accepts all item that have unread messages. Items withoud unread messages are passed to
@@ -41,7 +40,6 @@ class UnreadMessagesTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of UnreadMessagesTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */

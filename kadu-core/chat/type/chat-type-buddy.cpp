@@ -41,7 +41,6 @@ void ChatTypeBuddy::setInjectedFactory(InjectedFactory *injectedFactory)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal name of chat type.
  * @return internal name of chat type
  *
@@ -56,7 +55,6 @@ QString ChatTypeBuddy::name() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Internal aliases of chat type.
  * @return internal aliases of chat type
  *
@@ -70,7 +68,6 @@ QStringList ChatTypeBuddy::aliases() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Icon of chat type.
  * @return icon of chat type
  *
@@ -84,7 +81,6 @@ KaduIcon ChatTypeBuddy::icon() const
 }
 
 /**
- * @author Piotr 'ultr' Dąbrowski
  * @short Window role for this chat type.
  * @return window role for this chat type.
  *
@@ -97,7 +93,6 @@ QString ChatTypeBuddy::windowRole() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates new ChatDetailsBuddy object for given chat type.
  * @return new ChatDetailsBuddy object for given chat type
  *

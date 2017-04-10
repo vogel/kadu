@@ -22,8 +22,8 @@
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
 
-#include "avatars/avatars.h"
 #include "avatars/avatar-id.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-list-mime-data-service.h"
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
@@ -107,13 +107,12 @@ void BuddyListModel::init()
 
 void BuddyListModel::avatarUpdated(const AvatarId &id)
 {
-    auto it = std::find_if(std::begin(List), std::end(List), [&id](const Buddy &b){
+    auto it = std::find_if(std::begin(List), std::end(List), [&id](const Buddy &b) {
         if (avatarId(b) == id)
             return true;
         auto contacts = b.contacts();
-        auto it = std::find_if(std::begin(contacts), std::end(contacts), [&id](const Contact &c){
-            return avatarId(c) == id;
-        });
+        auto it = std::find_if(
+            std::begin(contacts), std::end(contacts), [&id](const Contact &c) { return avatarId(c) == id; });
         return it != std::end(contacts);
     });
 

@@ -26,7 +26,6 @@
 #include "protocol-state-machine.h"
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Creates new ProtocolStateMachine associated with given protocol handler.
  * @param protocol protocol handler to connect this object to
  *
@@ -160,7 +159,6 @@ void ProtocolStateMachine::init()
 }
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Helper method printing current machine configuration to debug output.
  */
 void ProtocolStateMachine::printConfiguration()
@@ -188,7 +186,6 @@ void ProtocolStateMachine::printConfiguration()
 }
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Returns true is machine is currently in logged in state.
  * @return true is machine is currently in logged in state
  *
@@ -200,7 +197,6 @@ bool ProtocolStateMachine::isLoggedIn()
 }
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Returns true is machine is currently in logging in state.
  * @return true is machine is currently in logging in state
  *
@@ -212,7 +208,6 @@ bool ProtocolStateMachine::isLoggingIn()
 }
 
 /**
- * @author Rafał 'Vogel' Malinowski
  * @short Returns true is machine is currently in logging out state.
  * @return true is machine is currently in logging out state
  *

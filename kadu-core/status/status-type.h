@@ -32,7 +32,6 @@
 
 /**
  * @enum StatusType
- * @author Rafał 'Vogel' Malinowski
  * @short Status type enum.
  * @see StatusTypeGroup
  *

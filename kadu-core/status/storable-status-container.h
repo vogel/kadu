@@ -36,7 +36,6 @@ class StorableObject;
 
 /**
  * @class StorableStatusContainer
- * @author Rafał 'Vogel' Malinowski
  * @short Status container that can store and load status from storable object.
  * @see StorableObject
  * @see StatusSetter
@@ -49,7 +48,6 @@ class KADUAPI StorableStatusContainer : public StatusContainer
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new StorableStatusContainer instance.
      * @param storableObject storable object to store status in
      *
@@ -60,7 +58,6 @@ public:
     virtual ~StorableStatusContainer();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return status stored in storable object.
      * @return stored status.
      *
@@ -69,7 +66,6 @@ public:
     virtual Status loadStatus();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Stores given status in storable object.
      * @param status status to store
      *

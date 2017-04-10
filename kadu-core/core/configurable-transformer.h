@@ -29,7 +29,6 @@
 /**
  * @class ConfigurableTransformer
  * @short Interface for transforming instances of one type.
- * @author Rafał 'Vogel' Malinowski
  * @param T type to transform
  * @param T_config type of configuration object
  *
@@ -48,7 +47,6 @@ public:
 
     /**
      * @short Transform instance of class.
-     * @author Rafał 'Vogel' Malinowski
      * @param object object to transform
      * @param configurationObject object use to configure transformation parameters
      * @return transformed object

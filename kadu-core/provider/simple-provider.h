@@ -30,7 +30,6 @@
 
 /**
  * @class SimpleProvider
- * @author Rafał 'Vogel' Malinowski
  * @short Simple implementation of Provider interface that just holds a value of given type.
  * @param T type of value to provide
  *
@@ -43,7 +42,6 @@ class SimpleProvider : public Provider<T>
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create instance of SimpleProvider with default value to provide.
      * @param value value that will be provided
      */
@@ -52,7 +50,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Update provded value.
      * @param value value that will be provided
      */
@@ -62,7 +59,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return value set in constructor or in provideValue method.
      */
     virtual T provide() const

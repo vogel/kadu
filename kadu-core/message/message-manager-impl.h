@@ -53,7 +53,6 @@ private:
 
     /**
      * @short Create outoing message for given chat and given content.
-     * @author Rafał 'Vogel' Malinowski
      * @param chat chat of outgoing message
      * @param content content of outgoing message
      */
@@ -67,7 +66,6 @@ private slots:
 
     /**
      * @short Set message filter service for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param messageFilterService message filter service for this service
      */
     INJEQT_SET void setMessageFilterService(MessageFilterService *messageFilterService);
@@ -75,7 +73,6 @@ private slots:
 
     /**
      * @short Set message transformer service for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param messageTransformerService message transformer service for this service
      */
     INJEQT_SET void setMessageTransformerService(MessageTransformerService *messageTransformerService);
@@ -85,7 +82,6 @@ private slots:
 
     /**
      * @short Slot called every time a new message was received from any of registered accounts.
-     * @author Rafał 'Vogel' Malinowski
      * @param message received message
      *
      * This slot is called every time a new message was received from any of registered accounts.

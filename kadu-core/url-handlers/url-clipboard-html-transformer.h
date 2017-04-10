@@ -32,7 +32,6 @@
 /**
  * @class UrlClipboardHtmlTransformer
  * @short Transformer for expanding URLS from short to full version in HTML code that is pasted into clipboard.
- * @author Rafał 'Vogel' Malinowski
  */
 class UrlClipboardHtmlTransformer : public ClipboardHtmlTransformer
 {

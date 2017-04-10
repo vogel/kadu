@@ -27,7 +27,6 @@
 
 /**
  * @enum StatusChangeSource
- * @author Rafał 'Vogel' Malinowski
  * @short Describe source of given status change.
  * @see StatatusChanger
  */

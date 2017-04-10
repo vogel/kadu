@@ -31,7 +31,6 @@
 
 /**
  * @class MergedProxyModel
- * @author Rafał 'Vogel' Malinowski
  * @short Model that merges other models into one.
  *
  * Model that merges other models into one. This class merges models one after another, by rows.
@@ -47,7 +46,6 @@ class MergedProxyModel : public QAbstractItemModel
     Q_OBJECT
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Mapping between source indexes and Mapping instances with these indexes.
      *
      * This type maps QModelIndex to pointer that contain this index. It is used
@@ -59,7 +57,6 @@ class MergedProxyModel : public QAbstractItemModel
     typedef QHash<QModelIndex, QModelIndex *> IndexMapping;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Mapping between source models and their boundaries in merged model.
      *
      * This type maps QModelIndex source models and their boundaries in merged model.
@@ -80,7 +77,6 @@ class MergedProxyModel : public QAbstractItemModel
     QModelIndexList IndexesToRemove;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Maps proxy index to source index at root level.
      * @param proxyIndex proxy index at root level
      * @return source index corresponding to proxyIndex
@@ -92,7 +88,6 @@ class MergedProxyModel : public QAbstractItemModel
     QModelIndex mapFirstLevelToSource(const QModelIndex &proxyIndex) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Maps source index to proxy index at root level.
      * @param sourceIndex source index at root level
      * @return proxy index corresponding to sourceIndex
@@ -103,7 +98,6 @@ class MergedProxyModel : public QAbstractItemModel
     QModelIndex mapFirstLevelFromSource(const QModelIndex &sourceIndex) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new mapping for given index or returns existing one.
      * @param sourceParent source index to create mapping for
      * @return new or existing mapping for given index
@@ -115,7 +109,6 @@ class MergedProxyModel : public QAbstractItemModel
     QModelIndex *createMapping(const QModelIndex &sourceParent) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Removes mapping for given index and all of its subindexes.
      * @param sourceParent source index to remove mapping
      *
@@ -124,7 +117,6 @@ class MergedProxyModel : public QAbstractItemModel
     void removeMapping(const QModelIndex &sourceParent) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns source parent of given proxy index from mapping.
      * @param proxyIndex index to find source parent from
      * @return source parent index for given proxy index
@@ -135,7 +127,6 @@ class MergedProxyModel : public QAbstractItemModel
     QModelIndex mappedSourceParent(const QModelIndex &proxyIndex) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Updates boundaries of all submodels of this model.
      *
      * Updates boundaries of all submodels of this model. This method must be called when count of rows
@@ -144,7 +135,6 @@ class MergedProxyModel : public QAbstractItemModel
     void updateBoundaries() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Helper method to return row offset of given submodel.
      * @param model model to return offset for.
      *
@@ -175,7 +165,6 @@ private slots:
 
 protected:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Maps proxy index to source index.
      * @param proxyIndex proxy index
      * @return source index corresponding to proxyIndex
@@ -187,7 +176,6 @@ protected:
     QModelIndex mapToSource(const QModelIndex &proxyIndex) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Maps source index to proxy index.
      * @param sourceIndex source index
      * @return proxy index corresponding to sourceIndex
@@ -200,7 +188,6 @@ protected:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new instance of MergedProxyModel.
      * @param parent QObject parent of new MergedProxyModel.
      *
@@ -210,7 +197,6 @@ public:
     virtual ~MergedProxyModel();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets list of models to merge.
      * @param models list of models to merge
      *

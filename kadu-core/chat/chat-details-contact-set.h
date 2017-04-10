@@ -37,7 +37,6 @@ class ContactManager;
 
 /**
  * @class ChatDetailsContactSet
- * @author Rafal 'Vogel' Malinowski
  * @short Chat data specyfic to 'ContactSet' chat type.
  *
  * Class contains set of Contact objects. Chat name is set to this Contacts'

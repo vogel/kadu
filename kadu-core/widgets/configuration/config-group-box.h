@@ -35,7 +35,6 @@ class QLayout;
 
 /**
         @class ConfigGroupBox
-        @author Vogel
         @short GroupBox w oknie konfiguracji
 
         GroupBox w oknie konfiguracji definiowany jest przez następujący tag:

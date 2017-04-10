@@ -37,7 +37,6 @@ class KaduIcon;
 
 /**
  * @class StatusContainer
- * @author Rafał 'Vogel' Malinowski
  * @short Class responsible for managing status of account or group of accounts.
  * @see StatusContainerManager
  *
@@ -61,7 +60,6 @@ public:
     virtual ~StatusContainer();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns display name of status container.
      * @return display name of status container
      *
@@ -70,7 +68,6 @@ public:
     virtual QString statusContainerName() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets status for this status container.
      * @param status status to set
      * @param source source of status change
@@ -86,7 +83,6 @@ public:
     virtual void setStatus(Status status, StatusChangeSource source) = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return current status of this status container.
      * @return current status of this status container
      * @see StatusSetter
@@ -103,7 +99,6 @@ public:
     virtual Status status() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if status is currently being set.
      * @return true if status is currently being set
      *
@@ -114,7 +109,6 @@ public:
     virtual bool isStatusSettingInProgress() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns icon for this container status.
      * @return icon for this container status
      *
@@ -123,7 +117,6 @@ public:
     virtual KaduIcon statusIcon() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns icon for given status
      * @param status status to get icon for
      * @return icon for given status
@@ -135,7 +128,6 @@ public:
     virtual KaduIcon statusIcon(const Status &status) = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of supported status types.
      * @return list of supported status types
      *
@@ -148,7 +140,6 @@ public:
     virtual QList<StatusType> supportedStatusTypes() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns maximum length of description.
      * @return maximum length of description
      *
@@ -159,7 +150,6 @@ public:
     virtual int maxDescriptionLength() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns prefix used in status menus.
      * @return prefix used in status menus
      *
@@ -171,7 +161,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return stored status.
      * @return stored status.
      *
@@ -180,7 +169,6 @@ public:
     virtual Status loadStatus() = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Stores given status.
      * @param status status to store
      *
@@ -189,7 +177,6 @@ public:
     virtual void storeStatus(Status status) = 0;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns list of sub status containers.
      * @return list of sub status containers
      *

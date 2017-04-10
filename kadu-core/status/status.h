@@ -38,7 +38,6 @@
 
 /**
  * @class Status
- * @author Rafał 'Vogel' Malinowski
  * @short Class representing current status of user.
  * @see StatusType
  * @see StatusTypeGroup
@@ -53,7 +52,6 @@ class KADUAPI Status
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new status with given type and description.
      * @param statusType type of new status
      * @param description description of new status.
@@ -65,7 +63,6 @@ public:
     ~Status();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns this status type.
      * @return this status type
      *
@@ -77,7 +74,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Updates this status type.
      * @param type new status type
      *
@@ -86,7 +82,6 @@ public:
     void setType(StatusType type);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns this status description.
      * @return this status description
      *
@@ -98,7 +93,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Updates this status description.
      * @param escription new status description
      *
@@ -110,7 +104,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if this status description is not empty.
      * @return true if this status description is not empty
      *
@@ -119,7 +112,6 @@ public:
     bool hasDescription() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns true if this status if not connected (offline).
      * @return true if this status if not connected (offline)
      *
@@ -128,7 +120,6 @@ public:
     bool isDisconnected() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compares two statuses.
      * @return true if left status is more available than right one
      *
@@ -138,7 +129,6 @@ public:
     bool operator<(const Status &compare) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compares two statuses.
      * @return true if both statuses are equal
      *
@@ -147,7 +137,6 @@ public:
     bool operator==(const Status &compare) const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Compares two statuses.
      * @return true if statuses are not equal
      *

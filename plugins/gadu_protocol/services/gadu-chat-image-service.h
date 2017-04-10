@@ -39,7 +39,6 @@ class GaduConnection;
 /**
  * @class GaduChatImageService
  * @short Service for downloading and uploading avatars in Gadu-Gadu protocol.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service requries proper GaduConnection instance to work. Set it using setConnection() method.
  *
@@ -71,7 +70,6 @@ private slots:
 public:
     /**
      * @short Create new instance of GaduChatImageService.
-     * @author Rafał 'Vogel' Malinowski
      * @param account account bounded to this service
      * @param parent QObject parent
      */
@@ -80,14 +78,12 @@ public:
 
     /**
      * @short Set connection for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param connection connection for this service
      */
     void setConnection(GaduConnection *connection);
 
     /**
      * @short Set chat service for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param gaduChatService chat service for this service
      *
      * This service is used to get information about received image keys.
@@ -96,7 +92,6 @@ public:
 
     /**
      * @short Enable or disable receiving images.
-     * @author Rafał 'Vogel' Malinowski
      * @param receiveImages new value of receiveImages property
      *
      * Default value of receiveImages is false. Set it to true to receive images.

@@ -37,7 +37,6 @@ class QDomNode;
 /**
  * @class DomTextRegexpVisitor
  * @short Visitor that splits text nodes by given regexp and inserts new node in place of matched strings.
- * @author Rafał 'Vogel' Malinowski
  *
  * This visitor is used to find regexp matches in text nodes and insert new nodes in place of them.
  * Override matchToDomNodes() to get each regexp match and create DOM node for it.
@@ -53,7 +52,6 @@ class KADUAPI DomTextRegexpVisitor : public DomVisitor
 public:
     /**
      * @short Create new DomTextRegexpVisitor that splits text nodes on matches of regExp.
-     * @author Rafał 'Vogel' Malinowski
      * @param regExp regular expression to match on text nodes
      */
     explicit DomTextRegexpVisitor(QRegExp regExp);

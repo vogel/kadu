@@ -29,7 +29,6 @@
 
 /**
  * @class HideContactChatsTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes items that are chats with only one contact.
  *
  * This filter removes items that are chats with only one contact. This allows removing double items
@@ -41,7 +40,6 @@ class HideContactChatsTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of HideContactChatsTalkableFilter with given parent.
      * @param parent QObject parent of new object
      */

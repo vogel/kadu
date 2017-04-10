@@ -29,7 +29,6 @@
 #include "protocols/protocol.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates empty ChatDetailsContact object.
  * @param chatData Chat object that will be decribed by this object
  *
@@ -66,7 +65,6 @@ void ChatDetailsContact::setContactManager(ContactManager *contactManager)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Loads ChatDetailsContact object from storage.
  *
  * Loads ChatDetailsContact object from the same storage assigned Chat object is
@@ -96,7 +94,6 @@ void ChatDetailsContact::load()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Stores ChatDetailsContact object to storage.
  *
  * Stores ChatDetailsContact object to the same storage assigned Chat object is
@@ -114,7 +111,6 @@ void ChatDetailsContact::store()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns true if assigned contact is valid.
  * @return true if assigned contact is valid
  *
@@ -129,7 +125,6 @@ bool ChatDetailsContact::shouldStore()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns type of this chat - 'Contact'.
  * @return 'Contact' ChatType object
  *
@@ -141,7 +136,6 @@ ChatType *ChatDetailsContact::type() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns set of contacts of this chat (just assigned contact).
  * @return set of contacts of this chat (just assigned contact)
  *
@@ -156,7 +150,6 @@ ContactSet ChatDetailsContact::contacts() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns name of this chat.
  * @return name of this chat
  *
@@ -173,7 +166,6 @@ bool ChatDetailsContact::isConnected() const
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Assigns contact to this chat.
  * @param contact assigned contact
  *

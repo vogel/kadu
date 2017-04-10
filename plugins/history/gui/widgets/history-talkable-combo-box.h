@@ -38,7 +38,6 @@ class PluginInjectedFactory;
 
 /**
  * @class HistoryTalkableComboBox
- * @author Rafał 'Vogel' Malinowski
  * @short Version of talkable combo box with support for "All talkables" and future item list.
  *
  * This widgets can be used to select one of talkable with list or "All talkables" item.
@@ -67,7 +66,6 @@ private slots:
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new HistoryTalkableComboBox.
      * @param parent parent widget
      */
@@ -75,7 +73,6 @@ public:
     virtual ~HistoryTalkableComboBox();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set label for "All talkables" item.
      * @param allLabel new label for "All talkables" item
      *
@@ -84,7 +81,6 @@ public:
     void setAllLabel(const QString &allLabel);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set list of talkables to display below "All talkables" item.
      * @param talkables list of talkables to display below "All talkables" item
      *
@@ -94,7 +90,6 @@ public:
     void setTalkables(const QVector<Talkable> &talkables);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Set list of future talkables to display below "All talkables" item.
      * @param talkables list of future talkables to display below "All talkables" item
      *

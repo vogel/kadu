@@ -33,7 +33,6 @@
 
 /**
  * @class DefaultProvider
- * @author Rafał 'Vogel' Malinowski
  * @short Implementation of Provider interface that wraps one or two other Providers.
  * @param T type of value to provide
  *
@@ -55,7 +54,6 @@ class DefaultProvider : public Provider<T>
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create instance of DefaultProvider with given Default Provider.
      * @param defaultProvider Default Provider value
      *
@@ -67,7 +65,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Install Custom Provider.
      * @param custom Custom Provider to install
      * @return true if installation was successfull
@@ -85,7 +82,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Remove Custom Provider.
      * @param custom Custom Provider to remove
      * @return true if removing was successfull
@@ -103,7 +99,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return value.
      *
      * This method will return value provided by Default Provider if no Custom Provider is installed and

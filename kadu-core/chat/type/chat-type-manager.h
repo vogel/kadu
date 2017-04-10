@@ -40,7 +40,6 @@ class ChatTypeRoom;
 
 /**
  * @class ChatTypeManager
- * @author Rafal 'Vogel' Malinowski
  * @short Manager of registered chat types.
  *
  * This class holds information about all @link ChatType @endlink objects registered in

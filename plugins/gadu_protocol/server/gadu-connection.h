@@ -33,7 +33,6 @@ class GaduWritableSessionToken;
 /**
  * @class GaduConnection
  * @short Interface descibing connection to Gadu Gadu server.
- * @author Rafał 'Vogel' Malinowski
  *
  * This interface allows for access to raw libgadu session. It also contains two methods that must be called
  * before and after each write using this session.
@@ -47,21 +46,18 @@ class GaduConnection : public QObject
 protected:
     /**
      * @short Return current libgadu session.
-     * @author Rafał 'Vogel' Malinowski
      * @return libgadu session
      */
     virtual gg_session *rawSession() = 0;
 
     /**
      * @short Call before writing to connection session.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if write can be performed
      */
     virtual bool beginWrite() = 0;
 
     /**
      * @short Call after writing to connection session.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if operation succeeded
      */
     virtual bool endWrite() = 0;
@@ -72,14 +68,12 @@ public:
 
     /**
      * @short Return true if connection is valid and has session.
-     * @author Rafał 'Vogel' Malinowski
      * @return true if connection is valid and has session
      */
     virtual bool hasSession() = 0;
 
     /**
      * @short Return instance of writable session.
-     * @author Rafał 'Vogel' Malinowski
      * @return libgadu session
      *
      * It is safe to send any message to session until object is valid. Sockets will be

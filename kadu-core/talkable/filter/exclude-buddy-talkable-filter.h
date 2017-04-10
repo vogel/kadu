@@ -31,7 +31,6 @@
 
 /**
  * @class ExcludeBuddyTalkableFilter
- * @author Rafał 'Vogel' Malinowski
  * @short Filter that removes given Buddy from list.
  *
  * This filter removes given Buddy from list. All other items are passed to next filters.
@@ -44,7 +43,6 @@ class ExcludeBuddyTalkableFilter : public TalkableFilter
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create new instance of ExcludeBuddyTalkableFilter with given parent.
      * @param excludedBuddy buddy parameter of filter
      * @param parent QObject parent of new object

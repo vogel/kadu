@@ -38,7 +38,6 @@ class ChatTypeManager;
 
 /**
  * @class ChatDetailsRoom
- * @author Rafal 'Vogel' Malinowski
  * @short Chat data specyfic to 'Room' chat type.
  *
  * Class contains dynamic set of Contact objects and a room's name. Chat name is set to this room's name.
@@ -64,7 +63,6 @@ public:
     virtual QString name() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Set value of Connected property.
      * @param newConnected new value of Connected property
      *
@@ -77,7 +75,6 @@ public:
     virtual bool isConnected() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Set room for this chat.
      * @param room new room for this chat
      *
@@ -87,35 +84,30 @@ public:
     void setRoom(const QString &room);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Get current room for this chat.
      * @return current room for this chat
      */
     QString room() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Set nick for this chat.
      * @param nick new nick for this chat
      */
     void setNick(const QString &nick);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Get current nick for this chat.
      * @return current nick for this chat
      */
     QString nick() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Set password for this chat.
      * @param password new password for this chat
      */
     void setPassword(const QString &password);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Get current password for this chat.
      * @return current password for this chat
      */
@@ -125,7 +117,6 @@ public:
     bool stayInRoomAfterClosingWindow() const;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Add new contact to this chat.
      * @param contact contact to add
      *
@@ -135,7 +126,6 @@ public:
     void addContact(const Contact &contact);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Remove contact from this chat.
      * @param contact contact to remove
      *
@@ -159,7 +149,6 @@ private slots:
     INJEQT_SET void setChatTypeManager(ChatTypeManager *chatTypeManager);
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Slot called when a protocol's connection state changes.
      *
      * This slot is called when a protocol's connection state changes. If protocol is disconnected then value of

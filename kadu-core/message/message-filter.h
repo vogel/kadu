@@ -33,7 +33,6 @@ class Message;
 /**
  * @class MessageFilter
  * @short Interface to filter message.
- * @author Rafał 'Vogel' Malinowski
  *
  * This interface allows filtering messages.
  */
@@ -46,7 +45,6 @@ public:
 
     /**
      * @short Filter message.
-     * @author Rafał 'Vogel' Malinowski
      * @param message message to accept (or not)
      * @return true if message can be accepted, false otherwise
      */

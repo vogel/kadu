@@ -44,7 +44,6 @@ void ChatDetailsBuddy::setChatTypeManager(ChatTypeManager *chatTypeManager)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Return false, this class should never be stored.
  * @return false, this class should never be stored
  *

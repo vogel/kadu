@@ -32,7 +32,6 @@ class DomVisitor;
 /**
  * @class DomVisitorProvider
  * @short Provider that returns DomVisitor instances.
- * @author Rafał 'Vogel' Malinowski
  *
  * Register DomVisitorProvider in DomProcessorService to make them accessible everywhere.
  */
@@ -44,7 +43,6 @@ public:
     }
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Provide DomVisitor.
      *
      * This method can return null value.

@@ -43,7 +43,6 @@ class InjectedFactory;
 
 /**
  * @class ChatTypeContactSet
- * @author Rafal 'Vogel' Malinowski
  * @short Representation of chat type with many buddies.
  *
  * Representation of chat type with many buddies.

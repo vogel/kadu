@@ -34,7 +34,6 @@
 /**
  * @class Emoticon
  * @short Emoticon representation.
- * @author Rafał 'Vogel' Malinowski
  */
 class EMOTICONSAPI_TESTS Emoticon
 {
@@ -45,13 +44,11 @@ class EMOTICONSAPI_TESTS Emoticon
 public:
     /**
      * @short Create null emoticon.
-     * @author Rafał 'Vogel' Malinowski
      */
     Emoticon();
 
     /**
      * @short Create emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @param triggerText text that triggers this emoticon to display
      * @param staticFilePath file path of not-animated version of emoticon
      * @param animatedFilePath file path of animated version of emoticon
@@ -60,7 +57,6 @@ public:
 
     /**
      * @short Create copy of emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @param copyMe emoticon to copy
      */
     Emoticon(const Emoticon &copyMe);
@@ -69,28 +65,24 @@ public:
 
     /**
      * @short Check if emoticon is null.
-     * @author Rafał 'Vogel' Malinowski
      * @return true, if emoticon is null
      */
     bool isNull() const;
 
     /**
      * @short Return text that triggers this emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @return text that triggers this emoticon
      */
     QString triggerText() const;
 
     /**
      * @short Return file path of not-animated version of emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @return file path of not-animated version of emoticon
      */
     QString staticFilePath() const;
 
     /**
      * @short Return file path of animated version of emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @return file path of animated version of emoticon
      */
     QString animatedFilePath() const;

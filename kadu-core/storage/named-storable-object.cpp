@@ -22,7 +22,6 @@
 #include "named-storable-object.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Contructs object with StateNew state and null storage point.
  *
  * Constructs object with @link<StorableObject::StateNew state @endlink and null
@@ -33,7 +32,6 @@ NamedStorableObject::NamedStorableObject()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates default storage point for object.
  *
  * Constructs storage point: XML node that is child of storage point of object

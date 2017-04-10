@@ -35,7 +35,6 @@ class RawMessage;
 /**
  * @class RawMessageTransformer
  * @short Interface to transform raw content of messages.
- * @author Rafał 'Vogel' Malinowski
  *
  * This interface allows arbitraty tranformations of raw content of messages - the one that is directly sent or
  * received.

@@ -30,7 +30,6 @@ class DesktopAwareObjectHelper;
 
 /**
  * @class DesktopAwareObject
- * @author Piotr 'ultr' Dąbrowski
  * @short Class that gets informed about desktop resolution and screen number changes.
  *
  * Each class that inherits from DesktopAwareObject has to implement method
@@ -50,12 +49,11 @@ private:
 
 protected:
     /**
-    * @author Piotr 'ultr' Dąbrowski
-    * @short Method is called when resolution changes
-    *
-    * Method is called when resolution changes.
-    * The default implementation moves the window to the closest available desktop.
-    */
+     * @short Method is called when resolution changes
+     *
+     * Method is called when resolution changes.
+     * The default implementation moves the window to the closest available desktop.
+     */
     virtual void desktopModified();
 
 public:

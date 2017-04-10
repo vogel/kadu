@@ -32,7 +32,6 @@
 /**
  * @class FormattedStringIsPlainTextVisitor
  * @short This visitor check if formatted string is plain text number of items.
- * @author Rafał 'Vogel' Malinowski
  */
 class KADUAPI FormattedStringIsPlainTextVisitor : public FormattedStringVisitor
 {

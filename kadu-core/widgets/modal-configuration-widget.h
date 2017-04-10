@@ -35,7 +35,6 @@
 
 /**
  * @class ModalConfigurationWidget
- * @author Rafal 'Vogel' Malinowski
  * @short Widget that should not be hidden when it contains modified data.
  *
  * This widget allows to edit some data. When data is modified and not saved
@@ -51,7 +50,6 @@ class KADUAPI ModalConfigurationWidget : public QWidget
 
 public:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Creates new ModalConfigurationWidget.
      * @param parent parent widget
      *
@@ -61,7 +59,6 @@ public:
     virtual ~ModalConfigurationWidget();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns configuration state notifier for this widget.
      * @return configuration state notifier for this widget
      *
@@ -71,7 +68,6 @@ public:
 
 public slots:
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Stores widget data.
      *
      * This method have to be overloaded in derivered widgets. It stores
@@ -80,7 +76,6 @@ public slots:
     virtual void apply() = 0;
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Resets widget data to oryginal state.
      *
      * This method have to be overloaded in derivered widgets. It resets

@@ -36,7 +36,6 @@ class Configuration;
 /**
  * @class ChatImageRequestServiceConfigurator
  * @short Standard configuration setter for ChatImageRequestService.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class listens to changed in global configuration. After change is detected it updated configuration of given
  * ChatImageRequestService with newly created ChatImageRequestServiceConfiguration instance.
@@ -54,7 +53,6 @@ public:
 
     /**
      * @short Sets ChatImageRequestService to configure.
-     * @author Rafał 'Vogel' Malinowski
      * @param service service to configured
      */
     void setChatImageRequestService(ChatImageRequestService *service);

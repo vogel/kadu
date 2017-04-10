@@ -33,7 +33,6 @@ class QXmppVCardManager;
 /**
  * @class JabberVCardUploader
  * @short Class for uploading VCard.
- * @author Rafał 'Vogel' Malinowski
  *
  * This class allows for uploading VCard. To do that attach slot to vCardUploaded() signal and call uploadVCard()
  * method. After VCard is uploaded vCardUploaded() signal is emitted and this object deletes itself.
@@ -44,7 +43,6 @@ class JabberVCardUploader : public QObject
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create instance attached to given Client.
      * @param client instance of Client
      * @param parent QObject parent
@@ -54,7 +52,6 @@ public:
 
     /**
      * @short Uploads VCard for current client.
-     * @author Rafał 'Vogel' Malinowski
      * @param vCard VCard to upload
      *
      * Before calling this method attach to vCardUploaded() signal to get informed about result. Please

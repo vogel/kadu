@@ -57,7 +57,6 @@ class WaitOverlay;
 
 /**
  * @class HistoryMessagesTab
- * @author Rafał 'Vogel' Malinowski
  * @short Widget that provides tab content for history window.
  *
  * This widgets provides tab content for history window - it can be chat, statuses, sms history
@@ -127,7 +126,6 @@ protected:
     virtual void keyPressEvent(QKeyEvent *event);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets list of talkables to display in tree view.
      * @param talkables talkables to display in tree view
      *
@@ -136,7 +134,6 @@ protected:
     void setTalkables(const QVector<Talkable> &talkables);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets future list of talkables to display in tree view.
      * @param futureTalkables future talkables to display in tree view
      *
@@ -146,47 +143,40 @@ protected:
     void setFutureTalkables(const QFuture<QVector<Talkable>> &futureTalkables);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns FilteredTreeView widget used in this tab.
      * @return FilteredTreeView widget used in this tab
      */
     FilteredTreeView *filteredView() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns TalkableTreeView widget used in this tab.
      * @return TalkableTreeView widget used in this tab
      */
     TalkableTreeView *talkableTree() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns ModelChain widget used in this tab's tree view.
      * @return ModelChain widget used in this tab's tree view
      */
     ModelChain *modelChain() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Show wait overlay over tab.
      */
     void showTabWaitOverlay();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Hide wait overlay over tab.
      */
     void hideTabWaitOverlay();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Method called after talkables are received from future objects.
      */
     virtual void talkablesAvailable();
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Creates new HistoryTab widget.
      * @param parent parent widget
      *
@@ -196,21 +186,18 @@ public:
     virtual ~HistoryMessagesTab();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns timeline view widget.
      * @return timeline view widget
      */
     TimelineChatMessagesView *timelineView() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Allows to change title of "Delete history" menu item.
      * @param clearHistoryMenuItemTitle new title of "Delete history" menu item.
      */
     void setClearHistoryMenuItemTitle(const QString &clearHistoryMenuItemTitle);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Updates data in given chat.
      *
      * This method updates data in given chat. List of items in item list widget is updated with
@@ -220,7 +207,6 @@ public:
     virtual void updateData();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns sizes of subwidgets.
      * @return sizes of subwidgets
      *
@@ -231,7 +217,6 @@ public:
     QList<int> sizes() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets sizes of subwidgets.
      * @param newSizes new sizes of subwidgets
      *
@@ -242,14 +227,12 @@ public:
     void setSizes(const QList<int> &newSizes);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets HistoryMessagesStorage to use by this tab.
      * @param storage new storage to use
      */
     void setHistoryMessagesStorage(HistoryMessagesStorage *storage);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Returns HistoryMessagesStorage used by this tab.
      * @return HistoryMessagesStorage used by this tab
      */

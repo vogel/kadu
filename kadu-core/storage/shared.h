@@ -55,7 +55,6 @@
 #define KaduShared_Property_M(type, name, capitalized_name) \
     KaduShared_PropertyRead_M(type, name) KaduShared_PropertyWrite_M(type, name, capitalized_name)
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter for given property of StorableObject.
  * @param type type of property
  * @param name name of getter
@@ -73,7 +72,6 @@
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines setter for given property of StorableObject.
  * @param type type of property
  * @param name name of value parameter
@@ -96,7 +94,6 @@
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter and setter for given property of StorableObject.
  * @param type type of property
  * @param name name of value parameter
@@ -111,7 +108,6 @@
     KaduShared_PropertyRead(type, name, capitalized_name) KaduShared_PropertyWrite(type, name, capitalized_name)
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter for given boolean property of StorableObject.
  * @param capitalized_name name of property
  *
@@ -127,7 +123,6 @@
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines setter for given boolean property of StorableObject.
  * @param capitalized_name name of property (setter will be called set##capitalized_name)
  *
@@ -148,7 +143,6 @@
     }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Defines getter and setter for given boolean property of StorableObject.
  * @param capitalized_name name of property.
  *
@@ -162,7 +156,6 @@
     KaduShared_PropertyBoolRead(capitalized_name) KaduShared_PropertyBoolWrite(capitalized_name)
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Declares getter for given property of StorableObject.
  * @param type type of property
  * @param name name of getter
@@ -172,7 +165,6 @@
 #define KaduShared_PropertyReadDecl(type, name) type name();
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Declares setter for given property of StorableObject.
  * @param type type of property
  * @param name name of value parameter
@@ -183,7 +175,6 @@
 #define KaduShared_PropertyWriteDecl(type, name, capitalized_name) void set##capitalized_name(type name);
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Declares getter and setter for given property of StorableObject.
  * @param type type of property
  * @param name name of value parameter
@@ -197,7 +188,6 @@
     KaduShared_PropertyReadDecl(type, name) KaduShared_PropertyWriteDecl(const type &, name, capitalized_name)
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Defines getter for given pointed property of StorableObject.
  * @param class_name class name
  * @param type type of property
@@ -216,7 +206,6 @@
     }
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Defines setter for given pointed property of StorableObject.
  * @param class_name class name
  * @param type type of property
@@ -240,7 +229,6 @@
     }
 
 /**
- * @author Bartosz 'beevvy' Brachaczek
  * @short Defines getter and setter for given pointed property of StorableObject.
  * @param class_name class name
  * @param type type of property
@@ -280,7 +268,6 @@
         KaduShared_PropertyPtrWriteDef_M(class_name, const type &, name, capitalized_name)
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @class Shared
  * @short UuidStorableObject that acts like QSharedData - can be used as data for many SharedBase object.
  *
@@ -316,7 +303,6 @@ public:
     virtual void aboutToBeRemoved();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Return ChangeNotifier for this object.
      * @return ChangeNotifier instance for this object
      *

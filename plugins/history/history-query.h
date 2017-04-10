@@ -35,7 +35,6 @@
 
 /**
  * @class HistoryQuery
- * @author Rafał 'Vogel' Malinowski
  * @short This class represents query for messages in history.
  *
  * This class represents query for messages in history. Each query can contain a talkable,
@@ -57,27 +56,23 @@ class HISTORYAPI HistoryQuery
 
 public:
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create empty query.
      */
     HistoryQuery();
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Create copy of existing query.
      * @param copyMe existing query to copy
      */
     HistoryQuery(const HistoryQuery &copyMe);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Copy existing query into this query.
      * @param copyMe existing query to copy
      */
     HistoryQuery &operator=(const HistoryQuery &copyMe);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets talkable filter.
      * @param talkable talkable to filter
      *
@@ -86,14 +81,12 @@ public:
     void setTalkable(const Talkable &talkable);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return talkable filter.
      * @return talkable filter
      */
     Talkable talkable() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets query string filter.
      * @param string query string to filter
      *
@@ -102,14 +95,12 @@ public:
     void setString(const QString &string);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return query string filter.
      * @return query string filter
      */
     QString string() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets from date filter.
      * @param fromDate from date filter
      *
@@ -118,14 +109,12 @@ public:
     void setFromDate(const QDate &fromDate);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return from date filter.
      * @return from date filter
      */
     QDate fromDate() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets to date filter.
      * @param toDate to date filter
      *
@@ -134,14 +123,12 @@ public:
     void setToDate(const QDate &toDate);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return to date filter.
      * @return to date filter
      */
     QDate toDate() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets from date filter.
      * @param fromDateTime from date filter
      *
@@ -150,14 +137,12 @@ public:
     void setFromDateTime(const QDateTime &fromDateTime);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return from date filter.
      * @return from date filter
      */
     QDateTime fromDateTime() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets to date filter.
      * @param toDateTime to date filter
      *
@@ -166,14 +151,12 @@ public:
     void setToDateTime(const QDateTime &toDateTime);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return to date filter.
      * @return to date filter
      */
     QDateTime toDateTime() const;
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Sets limit.
      * @param limit limit
      *
@@ -182,7 +165,6 @@ public:
     void setLimit(int limit);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Return limit.
      * @return limit
      */

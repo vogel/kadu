@@ -35,7 +35,6 @@ class NormalizedHtmlString;
 /**
  * @class MessageManager
  * @short Manager of messages used in Kadu.
- * @author Rafał 'Vogel' Malinowski
  *
  * This singleton class manages messages that go trought Kadu. It also stores all pending messages in permanent storage.
  * Pending message is an incoming message that have not ever been displayed to user.
@@ -77,7 +76,6 @@ public:
 signals:
     /**
      * @short Signal emited every time a message is received from one of registered acocunts.
-     * @author Rafał 'Vogel' Malinowski
      * @param message received message
      *
      * This signal is emited every time a message is received from one of registered acocunts. It is not emited
@@ -87,7 +85,6 @@ signals:
 
     /**
      * @short Signal emited every time a message is sent trought one of registered acocunts.
-     * @author Rafał 'Vogel' Malinowski
      * @param message sent message
      *
      * This signal is emited every time a message is sent trought one of registered acocunts.

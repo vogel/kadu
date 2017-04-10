@@ -102,7 +102,6 @@ public:
     virtual ~ChatManagerImpl();
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns node name for storage of all chat data.
      * @return node name for storage of all chat data
      *
@@ -114,7 +113,6 @@ public:
     }
 
     /**
-     * @author Rafal 'Vogel' Malinowski
      * @short Returns node name for storage of given chat data.
      * @return node name for storage of given chat data
      *

@@ -41,7 +41,6 @@
 #include "chat-shared.h"
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Creates new ChatShared object.
  * @param uuid unique id of object
  *
@@ -56,7 +55,6 @@ ChatShared::ChatShared(const QUuid &uuid)
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Destroys ChatShared object.
  *
  * Destroys object of ChatShared type. It also destros all details
@@ -104,7 +102,6 @@ void ChatShared::init()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns parent storage node for this object - ChatManager node.
  * @return parent storage node for this object - @link ChatManager @endlink node
  *
@@ -116,7 +113,6 @@ StorableObject *ChatShared::storageParent()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns storage node name for this object - 'Chat'.
  * @return storage node name for this object - 'Chat'
  *
@@ -128,7 +124,6 @@ QString ChatShared::storageNodeName()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Loads chat data from storage.
  *
  * This method is called when object is used at first time. It loads data from object's
@@ -182,7 +177,6 @@ void ChatShared::load()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Stored chat data to storage.
  *
  * Stores all chat data to storage. If details class is loaded it is stored too.
@@ -223,7 +217,6 @@ void ChatShared::store()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns true if object should be stored.
  * @return true if object should be stored
  *
@@ -248,7 +241,6 @@ bool ChatShared::shouldStore()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Called before chat data is removed from storage.
  *
  * Method is called before chat data is removed from storage. It clears all references (to chat account)
@@ -292,7 +284,6 @@ void ChatShared::loadDetails()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns set of contacts from this chat.
  * @return set of contacts from this chat
  *
@@ -307,7 +298,6 @@ ContactSet ChatShared::contacts()
 }
 
 /**
- * @author Rafal 'Vogel' Malinowski
  * @short Returns chat name.
  * @return chat name
  *

@@ -33,7 +33,6 @@
 /**
  * @class GaduEmoticonParser
  * @short This class parses one line from Gadu Gadu emoticon theme file: emots.txt.
- * @author Rafał 'Vogel' Malinowski
  *
  * Use this class to parse one line  from Gadu Gadu emoticon theme file. If this line is valid, emoticon and all of
  * its aliases will be returned by this class.
@@ -59,7 +58,6 @@ class GaduEmoticonParser
 public:
     /**
      * @short Parse one line from Gadu Gadu emoticon theme file.
-     * @author Rafał 'Vogel' Malinowski
      * @param themePath path of theme, used to construct absolute file paths of emoticons
      * @param emoticonLine one line in Gadu Gadu emoticon format
      */
@@ -67,7 +65,6 @@ public:
 
     /**
      * @short Return parsed emoticon.
-     * @author Rafał 'Vogel' Malinowski
      * @return parsed emoticon
      *
      * Returned emoticon can be null if line was in invalid format.
@@ -76,7 +73,6 @@ public:
 
     /**
      * @short Return parsed aliases.
-     * @author Rafał 'Vogel' Malinowski
      * @return parsed aliases
      *
      * Returned aliases can be empty if line was in invalid format.

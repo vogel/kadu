@@ -45,7 +45,6 @@ class RawMessageTransformerService;
 /**
  * @class ChatService
  * @short Chat service allows sending and receiving messages.
- * @author Rafał 'Vogel' Malinowski
  *
  * This service allows sending and receiving messages. Each message can be modified before sending or after
  * receiving to allow protocol-independent encryption and filtering.
@@ -63,14 +62,12 @@ protected:
 public:
     /**
      * @short Return raw message transformer service of this service.
-     * @author Rafał 'Vogel' Malinowski
      * @return raw message transformer service of this service
      */
     RawMessageTransformerService *rawMessageTransformerService() const;
 
     /**
      * @short Return max message length for this implementation.
-     * @author Rafał 'Vogel' Malinowski
      * @return max message length for this implementation
      */
     virtual int maxMessageLength() const = 0;
@@ -117,7 +114,6 @@ signals:
     void sentMessageStatusChanged(const Message &message);
 
     /**
-     * @author Rafał 'Vogel' Malinowski
      * @short Signal emitted when message was sent.
      * @param message sent message
      *
@@ -139,7 +135,6 @@ private:
 private slots:
     /**
      * @short Set raw message transformer service for this service.
-     * @author Rafał 'Vogel' Malinowski
      * @param rawMessageTransformerService raw message transformer service for this service
      */
     INJEQT_SET void setRawMessageTransformerService(RawMessageTransformerService *rawMessageTransformerService);
