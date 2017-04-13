@@ -79,9 +79,15 @@ void AccountAvatarWidget::createGui()
 
     m_avatarLabel = make_owned<QLabel>(this);
     m_avatarLabel->setAlignment(Qt::AlignCenter);
-    m_avatarLabel->setFixedWidth(128);
+    m_avatarLabel->setAutoFillBackground(true);
+    m_avatarLabel->setBackgroundRole(QPalette::Base);
+    m_avatarLabel->setLineWidth(1);
+    m_avatarLabel->setFrameShape(static_cast<QFrame::Shape>(QFrame::StyledPanel | QFrame::Sunken));
+    m_avatarLabel->setFixedWidth(AVATAR_SIZE + 8);
+    m_avatarLabel->setFixedHeight(AVATAR_SIZE + 8);
+    m_avatarLabel->setScaledContents(false);
 
-    layout->addWidget(m_avatarLabel);
+    layout->addWidget(m_avatarLabel, 0, Qt::AlignTop | Qt::AlignRight);
 
     m_changePhotoButton = make_owned<QPushButton>(this);
     connect(m_changePhotoButton, SIGNAL(clicked(bool)), this, SLOT(changeButtonClicked()));
@@ -112,9 +118,9 @@ void AccountAvatarWidget::serviceAvailabilityChanged()
     }
 
     if (ModeRemove == Mode)
-        m_changePhotoButton->setText(tr("Remove Photo..."));
+        m_changePhotoButton->setText(tr("Remove"));
     else
-        m_changePhotoButton->setText(tr("Change Photo..."));
+        m_changePhotoButton->setText(tr("Change"));
 }
 
 void AccountAvatarWidget::avatarUpdated(const AvatarId &id)
@@ -123,11 +129,10 @@ void AccountAvatarWidget::avatarUpdated(const AvatarId &id)
         return;
 
     m_waitMovie->stop();
-    m_avatarLabel->setMovie(0);
+    m_avatarLabel->setMovie(nullptr);
 
     auto avatar = m_avatars->pixmap(avatarId(m_account.accountContact()));
-    if (avatar.width() > 128 || avatar.height() > 128)
-        avatar = avatar.scaled(QSize(128, 128), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    avatar = avatar.scaled(QSize(AVATAR_SIZE, AVATAR_SIZE), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_avatarLabel->setPixmap(avatar);
 
     serviceAvailabilityChanged();
@@ -143,7 +148,6 @@ void AccountAvatarWidget::changeButtonClicked()
 
 void AccountAvatarWidget::uploadAvatar()
 {
-    m_avatarLabel->setScaledContents(false);
     m_avatarLabel->setMovie(m_waitMovie);
     m_waitMovie->start();
 
