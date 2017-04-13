@@ -99,10 +99,13 @@ void ConfigurationManager::unregisterStorableObject(StorableObject *object)
 
 void ConfigurationManager::importConfiguration()
 {
-    QDomElement root = m_configuration->api()->rootElement();
-    QDomElement general = m_configuration->api()->findElementByProperty(
+    auto root = m_configuration->api()->rootElement();
+    auto avatars = root.firstChildElement("Avatars");
+    root.removeChild(avatars);
+
+    auto general = m_configuration->api()->findElementByProperty(
         root.firstChild().firstChild().toElement(), "Group", "name", "General");
-    QDomElement mainConfiguration =
+    auto mainConfiguration =
         m_configuration->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
 
     if (!mainConfiguration.isNull())
