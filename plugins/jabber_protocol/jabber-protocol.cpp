@@ -48,6 +48,7 @@
 #include "services/jabber-subscription-service.h"
 #include "services/jabber-vcard-service.h"
 
+#include "avatars/aggregated-account-avatar-service.h"
 #include "avatars/aggregated-contact-avatar-service.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -77,7 +78,7 @@
 #include <qxmpp/QXmppVersionManager.h>
 
 JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory)
-        : Protocol{account, factory}, m_contactsListReadOnly(false)
+        : Protocol{account, factory}
 {
 }
 
@@ -93,6 +94,11 @@ JabberProtocol::~JabberProtocol()
 void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
 {
     m_chatServiceRepository = chatServiceRepository;
+}
+
+void JabberProtocol::setAggregatedAccountAvatarService(AggregatedAccountAvatarService *aggregatedAccountAvatarService)
+{
+    m_aggregatedAccountAvatarService = aggregatedAccountAvatarService;
 }
 
 void JabberProtocol::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
@@ -123,10 +129,6 @@ void JabberProtocol::setVersionService(VersionService *versionService)
 void JabberProtocol::init()
 {
     connect(account(), SIGNAL(updated()), this, SLOT(updatePresence()), Qt::UniqueConnection);
-
-    // TODO: remove after 01.05.2015
-    if (account().id().endsWith(QStringLiteral("@chat.facebook.com")))
-        setContactsListReadOnly(true);
 
     m_presenceService = pluginInjectedFactory()->makeInjected<JabberPresenceService>(this);
     m_errorService = new JabberErrorService{this};
@@ -163,7 +165,7 @@ void JabberProtocol::init()
     m_chatStateService = pluginInjectedFactory()->makeInjected<JabberChatStateService>(m_client, account(), this);
     m_chatStateService->setResourceService(m_resourceService);
 
-    m_avatarService = pluginInjectedFactory()->makeInjected<JabberAvatarService>(account(), this);
+    m_accountAvatarService = pluginInjectedFactory()->makeInjected<JabberAccountAvatarService>(account(), this);
 
     m_chatService = pluginInjectedFactory()->makeInjected<JabberChatService>(m_client, account(), this);
     m_chatService->setChatStateService(m_chatStateService);
@@ -183,7 +185,7 @@ void JabberProtocol::init()
     m_contactAvatarService =
         pluginInjectedFactory()->makeInjected<JabberContactAvatarService>(m_client, m_vcardService, account(), this);
 
-    m_avatarService->setVCardService(m_vcardService);
+    m_accountAvatarService->setVCardService(m_vcardService);
     m_contactPersonalInfoService->setVCardService(m_vcardService);
     m_personalInfoService->setVCardService(m_vcardService);
 
@@ -201,7 +203,8 @@ void JabberProtocol::init()
     m_jabberOpenChatWithRunner = m_pluginInjectedFactory->makeInjected<JabberOpenChatWithRunner>(account());
     OpenChatWithRunnerManager::instance()->registerRunner(m_jabberOpenChatWithRunner);
 
-    m_aggregatedContactAvatarService->addContactAvatarService(m_contactAvatarService);
+    m_aggregatedAccountAvatarService->add(m_accountAvatarService);
+    m_aggregatedContactAvatarService->add(m_contactAvatarService);
     m_chatServiceRepository->addChatService(m_chatService);
     m_chatStateServiceRepository->addChatStateService(m_chatStateService);
 }
@@ -210,12 +213,8 @@ void JabberProtocol::done()
 {
     m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
     m_chatServiceRepository->removeChatService(m_chatService);
-    m_aggregatedContactAvatarService->removeContactAvatarService(m_contactAvatarService);
-}
-
-void JabberProtocol::setContactsListReadOnly(bool contactsListReadOnly)
-{
-    m_contactsListReadOnly = contactsListReadOnly;
+    m_aggregatedContactAvatarService->remove(m_contactAvatarService);
+    m_aggregatedAccountAvatarService->remove(m_accountAvatarService);
 }
 
 void JabberProtocol::rosterReady()

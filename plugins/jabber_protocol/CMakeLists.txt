@@ -53,9 +53,8 @@ set (SOURCES
 	qxmpp/jabber-roster-extension.cpp
 	qxmpp/jabber-ssl-handler.cpp
 
+	services/jabber-account-avatar-service.cpp
 	services/jabber-avatar-downloader.cpp
-	services/jabber-avatar-service.cpp
-	services/jabber-avatar-uploader.cpp
 	services/jabber-change-password-service.cpp
 	services/jabber-change-password.cpp
 	services/jabber-chat-service.cpp

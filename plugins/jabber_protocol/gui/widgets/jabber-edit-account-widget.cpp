@@ -26,6 +26,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "avatars/account-avatar-service.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -33,7 +34,6 @@
 #include "identities/identity-manager.h"
 #include "os/generic/system-info.h"
 #include "plugin/plugin-injected-factory.h"
-#include "protocols/services/avatar-service.h"
 #include "widgets/account-avatar-widget.h"
 #include "widgets/account-buddy-list-widget.h"
 #include "widgets/account-configuration-widget-tab-adapter.h"

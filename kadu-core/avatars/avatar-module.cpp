@@ -19,6 +19,7 @@
 
 #include "avatar-module.h"
 
+#include "avatars/aggregated-account-avatar-service.h"
 #include "avatars/aggregated-contact-avatar-service.h"
 #include "avatars/avatars.h"
 #include "avatars/contact-avatar-downloader.h"
@@ -26,6 +27,7 @@
 
 AvatarModule::AvatarModule()
 {
+    add_type<AggregatedAccountAvatarService>();
     add_type<AggregatedContactAvatarService>();
     add_type<Avatars>();
     add_type<ContactAvatarDownloader>();

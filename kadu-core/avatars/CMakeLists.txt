@@ -1,4 +1,6 @@
 set (avatars_SRCS
+	account-avatar-service.cpp
+	aggregated-account-avatar-service.cpp
 	aggregated-contact-avatar-service.cpp
 	avatars.cpp
 	avatar-id.cpp

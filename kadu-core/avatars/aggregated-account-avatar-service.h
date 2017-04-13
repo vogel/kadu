@@ -25,35 +25,37 @@
 #include <QtCore/QObject>
 #include <map>
 
-class ContactAvatarService;
-struct ContactAvatarGlobalId;
-struct ContactAvatarId;
-struct ContactGlobalId;
-struct ContactId;
+class AccountAvatarService;
 
-class KADUAPI AggregatedContactAvatarService : public QObject
+class KADUAPI AggregatedAccountAvatarService : public QObject
 {
     Q_OBJECT
 
 public:
-    Q_INVOKABLE explicit AggregatedContactAvatarService(QObject *parent = nullptr) : QObject{parent}
+    enum class Availability
+    {
+        None,
+        UploadOnly,
+        Full
+    };
+
+    Q_INVOKABLE explicit AggregatedAccountAvatarService(QObject *parent = nullptr) : QObject{parent}
     {
     }
-    virtual ~AggregatedContactAvatarService() = default;
+    virtual ~AggregatedAccountAvatarService() = default;
 
-    void add(ContactAvatarService *service);
-    void remove(ContactAvatarService *service);
-    void download(const ContactAvatarGlobalId &id) const;
+    void add(AccountAvatarService *service);
+    void remove(AccountAvatarService *service);
+    Availability availability(const Account &account) const;
+
+    void upload(const Account &account, QPixmap avatar) const;
 
 signals:
-    void available(const ContactAvatarGlobalId &id);
-    void downloaded(const ContactAvatarGlobalId &id, const QByteArray &content);
-    void removed(const ContactGlobalId &id);
+    void availabilityChanged();
+    void finished(const Account &account, bool ok) const;
 
 private:
-    std::map<Account, ContactAvatarService *> m_services;
+    std::map<Account, AccountAvatarService *> m_services;
 
-    void subAvailable(const ContactAvatarId &id);
-    void subDownloaded(const ContactAvatarId &, const QByteArray &content);
-    void subRemoved(const ContactId &id);
+    void subFinished(bool ok);
 };

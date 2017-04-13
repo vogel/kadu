@@ -23,7 +23,7 @@
 #pragma once
 
 #include "jabber-account-data.h"
-#include "services/jabber-avatar-service.h"
+#include "services/jabber-account-avatar-service.h"
 #include "services/jabber-contact-personal-info-service.h"
 #include "services/jabber-file-transfer-service.h"
 #include "services/jabber-personal-info-service.h"
@@ -51,6 +51,7 @@ class PluginInjectedFactory;
 class SystemInfo;
 class VersionService;
 
+class AggregatedAccountAvatarService;
 class AggregatedContactAvatarService;
 class ChatServiceRepository;
 class ChatStateServiceRepository;
@@ -67,18 +68,9 @@ public:
     explicit JabberProtocol(Account account, ProtocolFactory *factory);
     virtual ~JabberProtocol();
 
-    void setContactsListReadOnly(bool contactsListReadOnly);
-    virtual bool contactsListReadOnly() override
-    {
-        return m_contactsListReadOnly;
-    }
-
     virtual QString statusPixmapPath() override;
+    virtual bool contactsListReadOnly() override { return false; }
 
-    virtual AvatarService *avatarService() override
-    {
-        return m_avatarService;
-    }
     virtual ContactPersonalInfoService *contactPersonalInfoService() override
     {
         return m_contactPersonalInfoService;
@@ -117,6 +109,7 @@ protected:
     virtual void changePrivateMode() override;
 
 private:
+    QPointer<AggregatedAccountAvatarService> m_aggregatedAccountAvatarService;
     QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
     QPointer<ChatServiceRepository> m_chatServiceRepository;
     QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
@@ -124,7 +117,7 @@ private:
     QPointer<SystemInfo> m_systemInfo;
     QPointer<VersionService> m_versionService;
 
-    JabberAvatarService *m_avatarService;
+    JabberAccountAvatarService *m_accountAvatarService;
     JabberChatService *m_chatService;
     JabberChatStateService *m_chatStateService;
     JabberChangePasswordService *m_changePasswordService;
@@ -150,6 +143,7 @@ private:
     bool m_contactsListReadOnly;
 
 private slots:
+    INJEQT_SET void setAggregatedAccountAvatarService(AggregatedAccountAvatarService *aggregatedAccountAvatarService);
     INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
     INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);

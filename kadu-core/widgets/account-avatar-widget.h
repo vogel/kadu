@@ -24,6 +24,7 @@
 
 #include "accounts/account.h"
 #include "exports.h"
+#include "misc/memory.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -32,10 +33,9 @@
 class QLabel;
 class QPushButton;
 
+class AggregatedAccountAvatarService;
 class Avatars;
-class AvatarService;
 class IconsManager;
-class ProtocolsManager;
 struct AvatarId;
 
 class KADUAPI AccountAvatarWidget : public QWidget
@@ -50,39 +50,37 @@ class KADUAPI AccountAvatarWidget : public QWidget
 
 public:
     explicit AccountAvatarWidget(Account account, QWidget *parent = nullptr);
-    virtual ~AccountAvatarWidget();
+    virtual ~AccountAvatarWidget() = default;
 
 private:
+    QPointer<AggregatedAccountAvatarService> m_aggregatedAccountAvatarService;
     QPointer<Avatars> m_avatars;
     QPointer<IconsManager> m_iconsManager;
-    QPointer<ProtocolsManager> m_protocolsManager;
 
-    Account MyAccount;
-    AvatarService *Service;
+    Account m_account;
+    QPixmap m_avatar;
 
-    QLabel *AvatarLabel;
-    QMovie *WaitMovie;
-    QPushButton *ChangePhotoButton;
+    owned_qptr<QLabel> m_avatarLabel;
+    owned_qptr<QMovie> m_waitMovie;
+    owned_qptr<QPushButton> m_changePhotoButton;
 
     void createGui();
     void setupMode();
 
-    void uploadAvatar(QImage avatar);
+    void uploadAvatar();
     void changeAvatar();
     void removeAvatar();
 
+    void serviceAvailabilityChanged();
+
 private slots:
+    INJEQT_SET void setAggregatedAccountAvatarService(AggregatedAccountAvatarService *aggregatedAccountAvatarService);
     INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setIconsManager(IconsManager *iconsManager);
-    INJEQT_SET void setProtocolsManager(ProtocolsManager *protocolsManager);
     INJEQT_INIT void init();
 
     void avatarUpdated(const AvatarId &id);
+    void uploadFinished(const Account &account, bool ok);
 
     void changeButtonClicked();
-    void avatarUploaded(bool ok, QImage image);
-    void serviceDestroyed();
-
-    void protocolRegistered(ProtocolFactory *protocolFactory);
-    void protocolUnregistered(ProtocolFactory *protocolFactory);
 };

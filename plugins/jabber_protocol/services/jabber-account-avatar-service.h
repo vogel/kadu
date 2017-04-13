@@ -20,11 +20,13 @@
 
 #pragma once
 
-#include "protocols/services/avatar-service.h"
+#include "avatars/account-avatar-service.h"
 
 #include <QtCore/QPointer>
+#include <QtGui/QPixmap>
 
 class JabberVCardService;
+class QXmppVCardIq;
 
 /**
  * @addtogroup Jabber
@@ -32,16 +34,16 @@ class JabberVCardService;
  */
 
 /**
- * @class JabberAvatarService
+ * @class JabberAccountAvatarService
  * @short Service for downloading and uploading avatars for XMPP/Jabber protocol.
- * @see AvatarService
+ * @see JabberAccountAvatarService
  *
- * See documentation of AvatarService to get general information about this service.
+ * See documentation of JabberAccountAvatarService to get general information about this service.
  *
- * JabberAvatarService uses JabberVCardService to create AvatarDownloader and
+ * JabberAccountAvatarService uses JabberVCardService to create AvatarDownloader and
  * AvatarUploader instances. Use setVCardService() to set this service.
  */
-class JabberAvatarService : public AvatarService
+class JabberAccountAvatarService : public AccountAvatarService
 {
     Q_OBJECT
 
@@ -51,8 +53,11 @@ public:
      * @param account account of service
      * @param parent QObject parent of service
      */
-    explicit JabberAvatarService(Account account, QObject *parent = nullptr);
-    virtual ~JabberAvatarService();
+    explicit JabberAccountAvatarService(Account account, QObject *parent = nullptr);
+    virtual ~JabberAccountAvatarService();
+
+    virtual void upload(const QPixmap &avatar) override;
+    virtual bool canRemove() override { return true; }
 
     /**
      * @short Set VCard service object to use in this service.
@@ -60,10 +65,12 @@ public:
      */
     void setVCardService(JabberVCardService *vCardService);
 
-    virtual AvatarUploader *createAvatarUploader() override;
-
 private:
-    QPointer<JabberVCardService> VCardService;
+    QPointer<JabberVCardService> m_vCardService;
+    QPixmap m_avatar;
+
+    void vCardDownloaded(bool ok, const QXmppVCardIq &vcard);
+    void vCardUploaded(bool ok);
 };
 
 /**

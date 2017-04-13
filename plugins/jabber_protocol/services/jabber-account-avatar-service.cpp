@@ -3,7 +3,6 @@
  * Copyright 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
  * Copyright 2011, 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
- * Copyright 2010 Wojciech Treter (juzefwt@gmail.com)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,20 +18,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "jabber-avatar-uploader.h"
+#include "jabber-account-avatar-service.h"
+#include "jabber-account-avatar-service.moc"
 
 #include "jabber-protocol.h"
-#include "services/jabber-avatar-uploader.h"
 #include "services/jabber-vcard-downloader.h"
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
 
 #include <QtCore/QBuffer>
-#include <qxmpp/QXmppVCardIq.h>
+#include <QXmppVCardIq.h>
 
-#define MAX_AVATAR_DIMENSION 96
+namespace
+{
 
-QByteArray JabberAvatarUploader::avatarData(QImage avatar)
+auto const MAX_AVATAR_DIMENSION = 96;
+
+QByteArray avatarData(QPixmap avatar)
 {
     if (avatar.height() > MAX_AVATAR_DIMENSION || avatar.width() > MAX_AVATAR_DIMENSION)
         avatar =
@@ -47,79 +49,68 @@ QByteArray JabberAvatarUploader::avatarData(QImage avatar)
     return data;
 }
 
-JabberAvatarUploader::JabberAvatarUploader(JabberVCardService *vcardService, QObject *parent)
-        : AvatarUploader(parent), VCardService(vcardService)
+}
+
+JabberAccountAvatarService::JabberAccountAvatarService(Account account, QObject *parent)
+        : AccountAvatarService{account, parent}
 {
 }
 
-JabberAvatarUploader::~JabberAvatarUploader()
+JabberAccountAvatarService::~JabberAccountAvatarService()
 {
 }
 
-void JabberAvatarUploader::done()
+void JabberAccountAvatarService::setVCardService(JabberVCardService *vCardService)
 {
-    emit avatarUploaded(true, UploadedAvatar);
-    deleteLater();
+    m_vCardService = vCardService;
 }
 
-void JabberAvatarUploader::failed()
+void JabberAccountAvatarService::upload(const QPixmap &avatar)
 {
-    emit avatarUploaded(false, UploadedAvatar);
-    deleteLater();
-}
-
-void JabberAvatarUploader::uploadAvatar(const QString &id, const QString &password, QImage avatar)
-{
-    Q_UNUSED(password);
-
-    UploadedAvatar = avatar;
-
-    if (!VCardService)
+    if (!m_vCardService)
     {
-        failed();
+        emit finished(false);
         return;
     }
 
-    auto vCardDownloader = VCardService.data()->createVCardDownloader();
+    auto vCardDownloader = m_vCardService.data()->createVCardDownloader();
     if (!vCardDownloader)
     {
-        failed();
+        emit finished(false);
         return;
     }
 
+    m_avatar = avatar;
     connect(
-        vCardDownloader, SIGNAL(vCardDownloaded(bool, QXmppVCardIq)), this, SLOT(vCardDownloaded(bool, QXmppVCardIq)));
-    vCardDownloader->downloadVCard(id);
+        vCardDownloader, &JabberVCardDownloader::vCardDownloaded, this, &JabberAccountAvatarService::vCardDownloaded);
+    vCardDownloader->downloadVCard(account().id());
 }
 
-void JabberAvatarUploader::vCardDownloaded(bool ok, const QXmppVCardIq &vcard)
+void JabberAccountAvatarService::vCardDownloaded(bool ok, const QXmppVCardIq &vcard)
 {
-    if (!ok || !VCardService)
+    if (!ok || !m_vCardService)
     {
-        failed();
+        emit finished(false);
         return;
     }
 
     auto updatedVCard = vcard;
-    updatedVCard.setPhoto(JabberAvatarUploader::avatarData(UploadedAvatar));
+    updatedVCard.setPhoto(avatarData(m_avatar));
 
-    auto vCardUploader = VCardService.data()->createVCardUploader();
+    auto vCardUploader = m_vCardService.data()->createVCardUploader();
     if (!vCardUploader)
     {
-        failed();
+        emit finished(false);
         return;
     }
 
-    connect(vCardUploader, SIGNAL(vCardUploaded(bool)), this, SLOT(vCardUploaded(bool)));
+    connect(
+        vCardUploader, &JabberVCardUploader::vCardUploaded, this, &JabberAccountAvatarService::vCardUploaded);
     vCardUploader->uploadVCard(updatedVCard);
 }
 
-void JabberAvatarUploader::vCardUploaded(bool ok)
+void JabberAccountAvatarService::vCardUploaded(bool ok)
 {
-    if (ok)
-        done();
-    else
-        failed();
+    emit finished(ok);
 }
 
-#include "moc_jabber-avatar-uploader.cpp"

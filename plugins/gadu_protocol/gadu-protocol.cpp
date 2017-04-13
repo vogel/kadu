@@ -32,6 +32,7 @@
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
+#include "avatars/aggregated-account-avatar-service.h"
 #include "avatars/aggregated-contact-avatar-service.h"
 #include "avatars/contact-avatar-id.h"
 #include "buddies/buddy-manager.h"
@@ -92,6 +93,11 @@ GaduProtocol::~GaduProtocol()
     disconnect(account(), 0, this, 0);
 }
 
+void GaduProtocol::setAggregatedAccountAvatarService(AggregatedAccountAvatarService *aggregatedAccountAvatarService)
+{
+    m_aggregatedAccountAvatarService = aggregatedAccountAvatarService;
+}
+
 void GaduProtocol::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
 {
     m_aggregatedContactAvatarService = aggregatedContactAvatarService;
@@ -137,7 +143,7 @@ void GaduProtocol::init()
     Connection = new ProtocolGaduConnection(this);
     Connection->setConnectionProtocol(this);
 
-    CurrentAvatarService = new GaduAvatarService(account(), this);
+    m_gaduAccountAvatarService = new GaduAccountAvatarService(account(), this);
 
     CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{m_gaduListHelper, account(), this};
 
@@ -202,7 +208,8 @@ void GaduProtocol::init()
     OpenChatRunner = m_pluginInjectedFactory->makeInjected<GaduOpenChatWithRunner>(account());
     OpenChatWithRunnerManager::instance()->registerRunner(OpenChatRunner);
 
-    m_aggregatedContactAvatarService->addContactAvatarService(m_gaduContactAvatarService);
+    m_aggregatedAccountAvatarService->add(m_gaduAccountAvatarService);
+    m_aggregatedContactAvatarService->add(m_gaduContactAvatarService);
     m_chatServiceRepository->addChatService(CurrentChatService);
     m_chatStateServiceRepository->addChatStateService(CurrentChatStateService);
 }
@@ -211,7 +218,8 @@ void GaduProtocol::done()
 {
     m_chatStateServiceRepository->removeChatStateService(CurrentChatStateService);
     m_chatServiceRepository->removeChatService(CurrentChatService);
-    m_aggregatedContactAvatarService->removeContactAvatarService(m_gaduContactAvatarService);
+    m_aggregatedContactAvatarService->remove(m_gaduContactAvatarService);
+    m_aggregatedAccountAvatarService->remove(m_gaduAccountAvatarService);
 }
 
 int GaduProtocol::maxDescriptionLength()

@@ -18,10 +18,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GADU_AVATAR_SERVICE_H
-#define GADU_AVATAR_SERVICE_H
+#pragma once
 
-#include "protocols/services/avatar-service.h"
+#include "avatars/account-avatar-service.h"
+#include "misc/memory.h"
+
+#include <QtGui/QPixmap>
+
+class OAuthManager;
+class OAuthToken;
+
+class QNetworkAccessManager;
 
 /**
  * @addtogroup Gadu
@@ -29,19 +36,14 @@
  */
 
 /**
- * @class GaduAvatarService
+ * @class GaduAccountAvatarService
  * @short Service for downloading and uploading avatars for Gadu-Gadu protocol.
- * @see AvatarService
+ * @see AccountAvatarService
  *
- * See documentation of AvatarService to get general information about this service.
- *
- * GaduAvatarService does not require any protocol data or session as it uses HTTP communication channel instead
- * of Gadu Gadu one. Downloading avatars is possible without any authorization. Uploading avatar is done with
- * OAuth authorization on http://avatars.nowe.gg/upload webservice.
- *
- * Both AvatarDownloader and AvatarUploader instances are available at any time.
+ * GaduAccountAvatarService does not require any protocol data or session as it uses HTTP communication channel instead
+ * of Gadu Gadu one. Uploading avatar is done with OAuth authorization on http://avatars.nowe.gg/upload webservice.
  */
-class GaduAvatarService : public AvatarService
+class GaduAccountAvatarService : public AccountAvatarService
 {
     Q_OBJECT
 
@@ -51,14 +53,20 @@ public:
      * @param account account of service
      * @param parent QObject parent of service
      */
-    explicit GaduAvatarService(Account account, QObject *parent = nullptr);
-    virtual ~GaduAvatarService();
+    explicit GaduAccountAvatarService(Account account, QObject *parent = nullptr);
 
-    virtual AvatarUploader *createAvatarUploader() override;
+    virtual void upload(const QPixmap &avatar);
+    virtual bool canRemove() override { return false; }
+
+private:
+    owned_qptr<OAuthManager> m_oauth;
+    owned_qptr<QNetworkAccessManager> m_network;
+    QPixmap m_avatar;
+
+    void authorized(OAuthToken token);
+    void transferFinished();
 };
 
 /**
  * @}
  */
-
-#endif   // GADU_AVATAR_SERVICE_H

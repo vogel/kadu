@@ -27,7 +27,7 @@
 
 #include <libgadu.h>
 
-#include "services/gadu-avatar-service.h"
+#include "services/gadu-account-avatar-service.h"
 #include "services/gadu-buddy-list-serialization-service.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
@@ -45,6 +45,7 @@
 
 #include "protocols/protocol.h"
 
+class AggregatedAccountAvatarService;
 class AggregatedContactAvatarService;
 class ChatServiceRepository;
 class ChatStateServiceRepository;
@@ -88,6 +89,7 @@ public:
     typedef unsigned int UinType;
 
 private:
+    QPointer<AggregatedAccountAvatarService> m_aggregatedAccountAvatarService;
     QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
     QPointer<ChatServiceRepository> m_chatServiceRepository;
     QPointer<ChatStateServiceRepository> m_chatStateServiceRepository;
@@ -101,7 +103,7 @@ private:
     ProtocolGaduConnection *Connection;
     GaduOpenChatWithRunner *OpenChatRunner;
 
-    GaduAvatarService *CurrentAvatarService;
+    GaduAccountAvatarService *m_gaduAccountAvatarService;
     GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
     GaduChatImageService *CurrentChatImageService;
     GaduChatService *CurrentChatService;
@@ -150,6 +152,7 @@ private:
     void configureServices();
 
 private slots:
+    INJEQT_SET void setAggregatedAccountAvatarService(AggregatedAccountAvatarService *aggregatedAccountAvatarService);
     INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
     INJEQT_SET void setChatStateServiceRepository(ChatStateServiceRepository *chatStateServiceRepository);
@@ -180,10 +183,6 @@ public:
         ProtocolFactory *factory);
     virtual ~GaduProtocol();
 
-    virtual AvatarService *avatarService()
-    {
-        return CurrentAvatarService;
-    }
     virtual BuddyListSerializationService *buddyListSerializationService()
     {
         return CurrentBuddyListSerializationService;

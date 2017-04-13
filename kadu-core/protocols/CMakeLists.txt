@@ -5,7 +5,6 @@ set (protocols_SRCS
 	model/protocols-model-proxy.cpp
 
 	services/account-service.cpp
-	services/avatar-service.cpp
 	services/buddy-list-serialization-service.cpp
 	services/chat-image.cpp
 	services/chat-image-service.cpp
@@ -27,8 +26,6 @@ set (protocols_MOC_SRCS
 	model/protocols-model-proxy.h
 
 	services/account-service.h
-	services/avatar-service.h
-	services/avatar-uploader.h
 	services/chat-image-service.h
 	services/chat-service.h
 	services/chat-state-service.h

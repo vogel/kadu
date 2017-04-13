@@ -40,7 +40,6 @@ typedef quint32 UinType;
 class QPixmap;
 
 class AccountShared;
-class AvatarService;
 class BuddyListSerializationService;
 class ChatImageService;
 class ContactManager;
@@ -78,10 +77,6 @@ public:
         return CurrentAccount;
     }
 
-    virtual AvatarService *avatarService()
-    {
-        return 0;
-    }
     virtual BuddyListSerializationService *buddyListSerializationService()
     {
         return nullptr;

@@ -30,37 +30,33 @@
 
 void AggregatedContactAvatarService::download(const ContactAvatarGlobalId &id) const
 {
-    auto service = m_contactAvatarServices.find(id.contact.account);
-    if (service == std::end(m_contactAvatarServices))
+    auto service = m_services.find(id.contact.account);
+    if (service == std::end(m_services))
         return;
 
     service->second->download({id.contact.id, id.id});
 }
 
-void AggregatedContactAvatarService::addContactAvatarService(ContactAvatarService *contactAvatarService)
+void AggregatedContactAvatarService::add(ContactAvatarService *service)
 {
-    assert(m_contactAvatarServices.find(contactAvatarService->account()) == std::end(m_contactAvatarServices));
+    assert(m_services.find(service->account()) == std::end(m_services));
 
-    m_contactAvatarServices.insert(std::make_pair(contactAvatarService->account(), contactAvatarService));
-    connect(
-        contactAvatarService, &ContactAvatarService::available, this, &AggregatedContactAvatarService::subAvailable);
-    connect(
-        contactAvatarService, &ContactAvatarService::downloaded, this, &AggregatedContactAvatarService::subDownloaded);
-    connect(contactAvatarService, &ContactAvatarService::removed, this, &AggregatedContactAvatarService::subRemoved);
+    m_services.insert(std::make_pair(service->account(), service));
+    connect(service, &ContactAvatarService::available, this, &AggregatedContactAvatarService::subAvailable);
+    connect(service, &ContactAvatarService::downloaded, this, &AggregatedContactAvatarService::subDownloaded);
+    connect(service, &ContactAvatarService::removed, this, &AggregatedContactAvatarService::subRemoved);
 }
 
-void AggregatedContactAvatarService::removeContactAvatarService(ContactAvatarService *contactAvatarService)
+void AggregatedContactAvatarService::remove(ContactAvatarService *service)
 {
-    auto it = m_contactAvatarServices.find(contactAvatarService->account());
-    assert(it != std::end(m_contactAvatarServices));
+    auto it = m_services.find(service->account());
+    assert(it != std::end(m_services));
 
-    disconnect(
-        contactAvatarService, &ContactAvatarService::available, this, &AggregatedContactAvatarService::subAvailable);
-    disconnect(
-        contactAvatarService, &ContactAvatarService::downloaded, this, &AggregatedContactAvatarService::subDownloaded);
-    disconnect(contactAvatarService, &ContactAvatarService::removed, this, &AggregatedContactAvatarService::subRemoved);
+    disconnect(service, &ContactAvatarService::available, this, &AggregatedContactAvatarService::subAvailable);
+    disconnect(service, &ContactAvatarService::downloaded, this, &AggregatedContactAvatarService::subDownloaded);
+    disconnect(service, &ContactAvatarService::removed, this, &AggregatedContactAvatarService::subRemoved);
 
-    m_contactAvatarServices.erase(it);
+    m_services.erase(it);
 }
 
 void AggregatedContactAvatarService::subAvailable(const ContactAvatarId &id)

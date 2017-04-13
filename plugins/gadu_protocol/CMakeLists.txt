@@ -47,7 +47,6 @@ set (SOURCES
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
 	server/gadu-avatar-downloader.cpp
-	server/gadu-avatar-uploader.cpp
 	server/gadu-connection.cpp
 	server/gadu-servers-manager.cpp
 	server/gadu-writable-session-token.cpp
@@ -65,7 +64,7 @@ set (SOURCES
 
 	services/user-data/gadu-user-data-service.cpp
 
-	services/gadu-avatar-service.cpp
+	services/gadu-account-avatar-service.cpp
 	services/gadu-buddy-list-serialization-service.cpp
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
