@@ -190,7 +190,7 @@ void BuddyGeneralConfigurationWidget::save()
     MyBuddy.setPreferHigherStatuses(PreferHigherStatusCheck->isChecked());
 
     QPixmap avatar = AvatarWidget->avatarPixmap();
-    if (!AvatarWidget->buddyAvatar() || avatar.isNull())
+    if (!AvatarWidget->avatarSet() || avatar.isNull())
         removeBuddyAvatar();
     else
         setBuddyAvatar(avatar);

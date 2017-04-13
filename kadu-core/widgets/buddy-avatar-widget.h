@@ -22,6 +22,7 @@
 #pragma once
 
 #include "buddies/buddy.h"
+#include "misc/memory.h"
 
 #include <QtCore/QPointer>
 #include <QtWidgets/QWidget>
@@ -41,23 +42,21 @@ public:
     explicit BuddyAvatarWidget(Buddy buddy, QWidget *parent = nullptr);
 
     const QPixmap avatarPixmap();
-    bool buddyAvatar() const
+    bool avatarSet() const
     {
-        return BuddyAvatar;
+        return m_avatarSet;
     }
 
 private:
     QPointer<Avatars> m_avatars;
     QPointer<BuddyPreferredManager> m_buddyPreferredManager;
 
-    Buddy MyBuddy;
+    Buddy m_buddy;
+    bool m_avatarSet;
+    QPixmap m_avatar;
 
-    bool BuddyAvatar;
-
-    QPixmap BuddyAvatarPixmap;
-
-    QLabel *AvatarLabel;
-    QPushButton *ChangePhotoButton;
+    owned_qptr<QLabel> m_avatarLabel;
+    owned_qptr<QPushButton> m_changeAvatarButton;
 
     void createGui();
     void setupChangeButton();
