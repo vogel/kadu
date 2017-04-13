@@ -52,6 +52,9 @@ public:
     void update(const AvatarId &id, QPixmap avatar);
     void remove(const AvatarId &id);
 
+    using Import = std::pair<QString, QString>;
+    void import(const Import &i);
+
 signals:
     void updated(const AvatarId &id);
 
@@ -61,8 +64,14 @@ private:
     QDir m_dir;
     std::map<AvatarId, QPixmap> m_avatars;
 
+    bool m_canImport {false};
+    std::vector<Import> m_toImport;
+
     bool ensureDirExists() const;
     QPixmap load(const AvatarId &id) const;
+
+    void importAll();
+    void importOne(const Import &id);
 
 private slots:
     INJEQT_SET void setPathsProvider(PathsProvider *pathsProvider);

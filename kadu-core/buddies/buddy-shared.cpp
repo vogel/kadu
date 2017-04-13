@@ -24,6 +24,7 @@
 #include "buddy-shared.h"
 
 #include "accounts/account.h"
+#include "avatars/avatars.h"
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
@@ -50,6 +51,11 @@ BuddyShared::BuddyShared(const QUuid &uuid)
 BuddyShared::~BuddyShared()
 {
     ref.ref();
+}
+
+void BuddyShared::setAvatars(Avatars *avatars)
+{
+    m_avatars = avatars;
 }
 
 void BuddyShared::setBuddyManager(BuddyManager *buddyManager)
@@ -209,6 +215,18 @@ void BuddyShared::load()
     // after using open-chat-with. We must not treat them as not anonymous (i.e., present on contact list) buddies,
     // hence this workaround.
     Anonymous = Display.isEmpty();
+
+    import_4_0_avatar();
+}
+
+void BuddyShared::import_4_0_avatar()
+{
+    auto avatarId = loadValue<QString>("Avatar");
+    if (avatarId.isEmpty())
+        return;
+
+    m_avatars->import(std::make_pair(avatarId, uuid().toString()));
+    removeValue("Avatar");
 }
 
 void BuddyShared::store()

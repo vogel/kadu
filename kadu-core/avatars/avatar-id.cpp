@@ -25,10 +25,7 @@
 
 AvatarId avatarId(const Buddy &buddy)
 {
-    if (buddy.hasProperty("avatar:path"))
-        return AvatarId{buddy.property("avatar:path", QString{}).toString()};
-    else
-        return AvatarId{buddy.uuid().toString()};
+    return AvatarId{buddy.uuid().toString()};
 }
 
 AvatarId avatarId(const Contact &contact)

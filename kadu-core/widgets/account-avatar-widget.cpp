@@ -132,7 +132,8 @@ void AccountAvatarWidget::avatarUpdated(const AvatarId &id)
     m_avatarLabel->setMovie(nullptr);
 
     auto avatar = m_avatars->pixmap(avatarId(m_account.accountContact()));
-    avatar = avatar.scaled(QSize(AVATAR_SIZE, AVATAR_SIZE), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (!avatar.isNull())
+        avatar = avatar.scaled(QSize(AVATAR_SIZE, AVATAR_SIZE), Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_avatarLabel->setPixmap(avatar);
 
     serviceAvailabilityChanged();

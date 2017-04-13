@@ -35,6 +35,9 @@ namespace
 {
 QByteArray avatarData(QPixmap avatar)
 {
+    if (avatar.isNull())
+        return {};
+
     avatar = avatar.scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     QByteArray data;

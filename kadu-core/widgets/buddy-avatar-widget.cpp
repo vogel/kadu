@@ -63,7 +63,8 @@ void BuddyAvatarWidget::showAvatar()
 
 void BuddyAvatarWidget::showAvatar(QPixmap pixmap)
 {
-    pixmap = pixmap.scaled(QSize{AVATAR_SIZE, AVATAR_SIZE}, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (!pixmap.isNull())
+        pixmap = pixmap.scaled(QSize{AVATAR_SIZE, AVATAR_SIZE}, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     m_avatarLabel->setPixmap(pixmap);
 }
 

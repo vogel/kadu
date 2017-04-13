@@ -40,6 +40,8 @@ void Avatars::setPathsProvider(PathsProvider *pathsProvider)
 void Avatars::init()
 {
     m_dir = QDir{m_pathsProvider->profilePath() + QStringLiteral("avatars")};
+    m_canImport = true;
+    importAll();
 }
 
 bool Avatars::ensureDirExists() const
@@ -124,4 +126,37 @@ void Avatars::remove(const AvatarId &id)
     m_avatars.erase(id);
     QFile::remove(path(id));
     emit updated(id);
+}
+
+void Avatars::import(const Import &i)
+{
+    if (m_canImport)
+        importOne(i);
+    else
+        m_toImport.push_back(i);
+}
+
+void Avatars::importAll()
+{
+    for (auto const &i : m_toImport)
+        importOne(i);
+    m_toImport.resize(0);
+}
+
+void Avatars::importOne(const Import &i)
+{
+    auto oldBig = QString{"%1/%2"}.arg(m_dir.absolutePath()).arg(i.first);
+    auto newBig = QString{"%1/%2.png"}.arg(m_dir.absolutePath()).arg(i.second);
+    auto oldSmall = QString{"%1/%2-small"}.arg(m_dir.absolutePath()).arg(i.first);
+
+    auto avatar = QPixmap{};
+    printf("old big is: %s\n", qPrintable(oldBig));
+    avatar.load(oldBig);
+    if (!avatar.isNull())
+        avatar = avatar.scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    if (ensureDirExists())
+        avatar.save(newBig, "PNG");
+
+    QFile::remove(oldBig);
+    QFile::remove(oldSmall);
 }

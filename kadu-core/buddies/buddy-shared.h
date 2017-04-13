@@ -93,6 +93,7 @@
     BuddyShared_PropertySubscriptionRead(capitalized_name) BuddyShared_PropertySubscriptionDirtyWrite(capitalized_name)
 
 class Account;
+class Avatars;
 class BuddyManager;
 class ConfigurationApi;
 class Contact;
@@ -104,6 +105,7 @@ class KADUAPI BuddyShared : public Shared
 {
     Q_OBJECT
 
+    QPointer<Avatars> m_avatars;
     QPointer<BuddyManager> m_buddyManager;
     QPointer<GroupManager> m_groupManager;
     QPointer<Myself> m_myself;
@@ -139,7 +141,10 @@ class KADUAPI BuddyShared : public Shared
 
     int priorityForNewContact();
 
+    void import_4_0_avatar();
+
 private slots:
+    INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setBuddyManager(BuddyManager *buddyManager);
     INJEQT_SET void setGroupManager(GroupManager *groupManager);
     INJEQT_SET void setMyself(Myself *myself);
