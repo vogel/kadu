@@ -77,8 +77,7 @@
 #include <qxmpp/QXmppVCardManager.h>
 #include <qxmpp/QXmppVersionManager.h>
 
-JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory)
-        : Protocol{account, factory}
+JabberProtocol::JabberProtocol(Account account, ProtocolFactory *factory) : Protocol{account, factory}
 {
 }
 

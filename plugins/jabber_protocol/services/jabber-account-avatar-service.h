@@ -57,7 +57,10 @@ public:
     virtual ~JabberAccountAvatarService();
 
     virtual void upload(const QPixmap &avatar) override;
-    virtual bool canRemove() override { return true; }
+    virtual bool canRemove() override
+    {
+        return true;
+    }
 
     /**
      * @short Set VCard service object to use in this service.

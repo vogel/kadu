@@ -56,7 +56,10 @@ public:
     explicit GaduAccountAvatarService(Account account, QObject *parent = nullptr);
 
     virtual void upload(const QPixmap &avatar);
-    virtual bool canRemove() override { return false; }
+    virtual bool canRemove() override
+    {
+        return false;
+    }
 
 private:
     owned_qptr<OAuthManager> m_oauth;

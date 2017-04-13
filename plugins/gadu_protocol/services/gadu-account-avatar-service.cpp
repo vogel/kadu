@@ -29,7 +29,8 @@
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-GaduAccountAvatarService::GaduAccountAvatarService(Account account, QObject *parent) : AccountAvatarService{account, parent}
+GaduAccountAvatarService::GaduAccountAvatarService(Account account, QObject *parent)
+        : AccountAvatarService{account, parent}
 {
     m_oauth = make_owned<OAuthManager>(this);
     m_network = make_owned<QNetworkAccessManager>(this);

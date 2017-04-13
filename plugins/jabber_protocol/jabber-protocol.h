@@ -69,7 +69,10 @@ public:
     virtual ~JabberProtocol();
 
     virtual QString statusPixmapPath() override;
-    virtual bool contactsListReadOnly() override { return false; }
+    virtual bool contactsListReadOnly() override
+    {
+        return false;
+    }
 
     virtual ContactPersonalInfoService *contactPersonalInfoService() override
     {

@@ -28,12 +28,11 @@
 
 #include "avatars/avatars.h"
 
-#include <QtCore/QBuffer>
 #include <QXmppVCardIq.h>
+#include <QtCore/QBuffer>
 
 namespace
 {
-
 QByteArray avatarData(QPixmap avatar)
 {
     avatar = avatar.scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
@@ -46,7 +45,6 @@ QByteArray avatarData(QPixmap avatar)
 
     return data;
 }
-
 }
 
 JabberAccountAvatarService::JabberAccountAvatarService(Account account, QObject *parent)
@@ -102,8 +100,7 @@ void JabberAccountAvatarService::vCardDownloaded(bool ok, const QXmppVCardIq &vc
         return;
     }
 
-    connect(
-        vCardUploader, &JabberVCardUploader::vCardUploaded, this, &JabberAccountAvatarService::vCardUploaded);
+    connect(vCardUploader, &JabberVCardUploader::vCardUploaded, this, &JabberAccountAvatarService::vCardUploaded);
     vCardUploader->uploadVCard(updatedVCard);
 }
 
@@ -111,4 +108,3 @@ void JabberAccountAvatarService::vCardUploaded(bool ok)
 {
     emit finished(ok);
 }
-

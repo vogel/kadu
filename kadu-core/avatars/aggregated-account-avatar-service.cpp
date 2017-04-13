@@ -59,8 +59,7 @@ void AggregatedAccountAvatarService::remove(AccountAvatarService *service)
     emit availabilityChanged();
 }
 
-AggregatedAccountAvatarService::Availability
-AggregatedAccountAvatarService::availability(const Account &account) const
+AggregatedAccountAvatarService::Availability AggregatedAccountAvatarService::availability(const Account &account) const
 {
     auto it = m_services.find(account);
     if (it == std::end(m_services))
