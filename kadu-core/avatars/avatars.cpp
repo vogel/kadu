@@ -112,7 +112,7 @@ void Avatars::update(const AvatarId &id, QPixmap avatar)
         return;
     }
 
-    avatar = avatar.scaled(256, 256, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    avatar = avatar.scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     if (ensureDirExists())
         avatar.save(path(id), "PNG");
     m_avatars[id] = std::move(avatar);

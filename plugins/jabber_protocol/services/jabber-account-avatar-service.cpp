@@ -26,19 +26,17 @@
 #include "services/jabber-vcard-service.h"
 #include "services/jabber-vcard-uploader.h"
 
+#include "avatars/avatars.h"
+
 #include <QtCore/QBuffer>
 #include <QXmppVCardIq.h>
 
 namespace
 {
 
-auto const MAX_AVATAR_DIMENSION = 96;
-
 QByteArray avatarData(QPixmap avatar)
 {
-    if (avatar.height() > MAX_AVATAR_DIMENSION || avatar.width() > MAX_AVATAR_DIMENSION)
-        avatar =
-            avatar.scaled(MAX_AVATAR_DIMENSION, MAX_AVATAR_DIMENSION, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    avatar = avatar.scaled(AVATAR_SIZE, AVATAR_SIZE, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
     QByteArray data;
     QBuffer buffer(&data);

@@ -31,6 +31,8 @@ struct AvatarId;
 
 class QPixmap;
 
+const auto AVATAR_SIZE = 96;
+
 class KADUAPI Avatars : public QObject
 {
     Q_OBJECT
