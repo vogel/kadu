@@ -169,6 +169,7 @@ void ContactShared::store()
 
     storeValue("Account", ContactAccount->uuid().toString());
     storeValue("Buddy", !isAnonymous() ? OwnerBuddy->uuid().toString() : QString());
+    removeValue("Avatar");
     removeValue("Contact");
 }
 
