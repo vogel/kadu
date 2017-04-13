@@ -21,6 +21,7 @@
 #include "core/injected-factory.h"
 
 #include "chat-data-window-repository.h"
+#include "chat-data-window-repository.moc"
 
 ChatDataWindowRepository::ChatDataWindowRepository(QObject *parent) : QObject(parent)
 {

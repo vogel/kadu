@@ -52,41 +52,8 @@ set (windows_SRCS
 	open-chat-with/open-chat-with.cpp
 )
 
-set (windows_MOC_SRCS
-	about.h
-	add-buddy-window.h
-	add-conference-window.h
-	add-room-chat-window.h
-	buddy-data-window.h
-	buddy-data-window-repository.h
-	buddy-delete-window.h
-	chat-data-window.h
-	chat-data-window-repository.h
-	configuration-window.h
-	kadu-dialog.h
-	kadu-window.h
-	kadu-window-actions.h
-	main-configuration-window.h
-	main-window.h
-	message-dialog.h
-	multilogon-window.h
-	progress-window.h
-	proxy-action-context.h
-	proxy-edit-window.h
-	search-window.h
-	status-window.h
-	status-window-description-proxy-model.h
-	subscription-window.h
-	token-window.h
-	updates-dialog.h
-	your-accounts.h
-
-	open-chat-with/open-chat-with.h
-	open-chat-with/open-chat-with-runner-manager.h
-)
-
 if (MINGW)
 	set_property (SOURCE open-chat-with/open-chat-with.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -fno-strict-aliasing")
 endif ()
 
-kadu_subdirectory (windows "${windows_SRCS}" "${windows_MOC_SRCS}" "")
+kadu_subdirectory (windows "${windows_SRCS}" "" "")

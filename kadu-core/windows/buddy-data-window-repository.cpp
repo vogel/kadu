@@ -22,6 +22,7 @@
 #include "core/myself.h"
 
 #include "buddy-data-window-repository.h"
+#include "buddy-data-window-repository.moc"
 
 BuddyDataWindowRepository::BuddyDataWindowRepository(QObject *parent) : QObject(parent)
 {

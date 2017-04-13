@@ -18,6 +18,7 @@
  */
 
 #include "main-configuration-window-service.h"
+#include "main-configuration-window-service.moc"
 
 #include "configuration/config-file-data-manager.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"

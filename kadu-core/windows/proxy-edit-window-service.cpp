@@ -18,6 +18,7 @@
  */
 
 #include "proxy-edit-window-service.h"
+#include "proxy-edit-window-service.moc"
 
 #include "activate.h"
 #include "configuration/configuration.h"
