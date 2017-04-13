@@ -122,39 +122,6 @@ QString BuddyShared::storageNodeName()
     return QStringLiteral("Buddy");
 }
 
-#define ImportProperty(name, old_name)      \
-    set##name(CustomData.value(#old_name)); \
-    CustomData.remove(#old_name);
-
-void BuddyShared::importConfiguration(const QDomElement &parent)
-{
-    QDomNamedNodeMap attributes = parent.attributes();
-    int count = attributes.count();
-
-    for (int i = 0; i < count; i++)
-    {
-        QDomAttr attribute = attributes.item(i).toAttr();
-        CustomData.insert(attribute.name(), attribute.value());
-    }
-
-    Anonymous = false;
-
-    importConfiguration();
-}
-
-void BuddyShared::importConfiguration()
-{
-    QStringList groups = CustomData["groups"].split(',', QString::SkipEmptyParts);
-    for (auto &&group : groups)
-        doAddToGroup(m_groupManager->byName(group));
-
-    CustomData.remove("groups");
-
-    ImportProperty(Display, altnick) ImportProperty(FirstName, first_name) ImportProperty(LastName, last_name)
-        ImportProperty(NickName, nick_name) ImportProperty(HomePhone, home_phone) ImportProperty(Mobile, mobile)
-            ImportProperty(Email, email)
-}
-
 void BuddyShared::load()
 {
     if (!isValidStorage())
@@ -164,23 +131,7 @@ void BuddyShared::load()
 
     ConfigurationApi *configurationStorage = storage()->storage();
     QDomElement parent = storage()->point();
-
-    QDomElement customDataValues =
-        configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeFind);
-    QDomNodeList customDataValuesList = customDataValues.elementsByTagName("CustomDataValue");
-
-    int count = customDataValuesList.count();
-    for (int i = 0; i < count; i++)
-    {
-        QDomNode customDataNode = customDataValuesList.at(i);
-        QDomElement customDataElement = customDataNode.toElement();
-        if (customDataElement.isNull())
-            continue;
-
-        QString name = customDataElement.attribute("name");
-        if (!name.isEmpty())
-            CustomData[name] = customDataElement.text();
-    }
+    configurationStorage->removeNode(parent, "CustomDataValues");
 
     Groups.clear();
     QDomElement groupsNode = configurationStorage->getNode(parent, "ContactGroups", ConfigurationApi::ModeFind);
@@ -188,7 +139,7 @@ void BuddyShared::load()
     {
         QDomNodeList groupsList = groupsNode.elementsByTagName("Group");
 
-        count = groupsList.count();
+        auto count = groupsList.count();
         for (int i = 0; i < count; i++)
         {
             QDomElement groupElement = groupsList.at(i).toElement();
@@ -236,16 +187,6 @@ void BuddyShared::store()
 
     Shared::store();
 
-    ConfigurationApi *configurationStorage = storage()->storage();
-    QDomElement parent = storage()->point();
-
-    QDomElement customDataValues =
-        configurationStorage->getNode(parent, "CustomDataValues", ConfigurationApi::ModeCreate);
-
-    for (QMap<QString, QString>::const_iterator it = CustomData.constBegin(), end = CustomData.constEnd(); it != end;
-         ++it)
-        configurationStorage->createNamedTextNode(customDataValues, "CustomDataValue", it.key(), it.value());
-
     // should not happen, but who knows...
     if (Display.isEmpty())
         Display = uuid().toString();
@@ -267,6 +208,9 @@ void BuddyShared::store()
     // we need to store Anonymous=false, otherwise we will break downgrade to Kadu <0.11.0.
     // TODO when we change configuration format (or just file name): remove it
     storeValue("Anonymous", false);
+
+    ConfigurationApi *configurationStorage = storage()->storage();
+    QDomElement parent = storage()->point();
 
     if (!Groups.isEmpty())
     {

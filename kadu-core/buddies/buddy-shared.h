@@ -112,7 +112,6 @@ class KADUAPI BuddyShared : public Shared
 
     bool CollectingGarbage;
 
-    QMap<QString, QString> CustomData;
     QList<Contact> Contacts;
 
     QString Display;
@@ -175,11 +174,6 @@ public:
     virtual void aboutToBeRemoved();
 
     QString id(const Account &account);
-
-    QMap<QString, QString> &customData()
-    {
-        return CustomData;
-    }
 
     void addContact(const Contact &contact);
     void removeContact(const Contact &contact);

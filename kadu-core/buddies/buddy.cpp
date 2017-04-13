@@ -68,35 +68,6 @@ Buddy::~Buddy()
         data()->collectGarbage();
 }
 
-void Buddy::importConfiguration(const QDomElement &parent)
-{
-    if (data())
-        data()->importConfiguration(parent);
-}
-
-void Buddy::importConfiguration()
-{
-    if (data())
-        data()->importConfiguration();
-}
-
-QString Buddy::customData(const QString &key) const
-{
-    return isNull() ? QString() : data()->customData()[key];
-}
-
-void Buddy::setCustomData(const QString &key, const QString &value)
-{
-    if (!isNull())
-        data()->customData().insert(key, value);
-}
-
-void Buddy::removeCustomData(const QString &key)
-{
-    if (!isNull())
-        data()->customData().remove(key);
-}
-
 void Buddy::sortContacts()
 {
     if (!isNull())

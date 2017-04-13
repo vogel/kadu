@@ -64,13 +64,6 @@ public:
 
     void mergeWith(Buddy buddy);   // TODO: 0.10 refactor
 
-    void importConfiguration(const QDomElement &parent);
-    void importConfiguration();   // import configuration from customDataValues
-
-    QString customData(const QString &key) const;
-    void setCustomData(const QString &key, const QString &value);
-    void removeCustomData(const QString &key);
-
     void sortContacts();
     void normalizePriorities();
 
