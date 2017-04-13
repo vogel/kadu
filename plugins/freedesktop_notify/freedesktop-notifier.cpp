@@ -117,7 +117,6 @@ void FreedesktopNotifier::init()
         NotificationsInterface->service(), NotificationsInterface->path(), NotificationsInterface->interface(),
         "NotificationClosed", this, SLOT(notificationClosed(unsigned int, unsigned int)));
 
-    import_0_9_0_Configuration();
     createDefaultConfiguration();
 
     configurationUpdated();
@@ -302,25 +301,6 @@ void FreedesktopNotifier::configurationUpdated()
     Timeout = m_configuration->deprecatedApi()->readNumEntry("FreedesktopNotifier", "Timeout");
     ShowContentMessage = m_configuration->deprecatedApi()->readBoolEntry("FreedesktopNotifier", "ShowContentMessage");
     CiteSign = m_configuration->deprecatedApi()->readNumEntry("FreedesktopNotifier", "CiteSign");
-}
-
-void FreedesktopNotifier::import_0_9_0_Configuration()
-{
-    m_configuration->deprecatedApi()->addVariable(
-        "FreedesktopNotifier", "Timeout", m_configuration->deprecatedApi()->readEntry("KDENotify", "Timeout"));
-    m_configuration->deprecatedApi()->addVariable(
-        "FreedesktopNotifier", "ShowContentMessage",
-        m_configuration->deprecatedApi()->readEntry("KDENotify", "ShowContentMessage"));
-    m_configuration->deprecatedApi()->addVariable(
-        "FreedesktopNotifier", "CiteSign", m_configuration->deprecatedApi()->readEntry("KDENotify", "CiteSign"));
-    if (!m_configuration->deprecatedApi()->readEntry("KDENotify", "Timeout").isEmpty() ||
-        !m_configuration->deprecatedApi()->readEntry("FreedesktopNotifier", "Timeout").isEmpty())
-        m_configuration->deprecatedApi()->addVariable("FreedesktopNotifier", "CustomTimeout", true);
-
-    for (auto &&event : m_notificationEventRepository->notificationEvents())
-        m_configuration->deprecatedApi()->addVariable(
-            "Notify", event.name() + "_FreedesktopNotifier",
-            m_configuration->deprecatedApi()->readEntry("Notify", event.name() + "_KNotify"));
 }
 
 void FreedesktopNotifier::createDefaultConfiguration()

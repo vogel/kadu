@@ -79,7 +79,6 @@ signals:
     void contactUpdated(const Contact &contact);
 
 protected:
-    virtual void loaded() override;
     virtual Contact loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint) override;
 
     virtual void itemAboutToBeAdded(Contact item) override;
@@ -106,8 +105,6 @@ private slots:
     INJEQT_SET void setUnreadMessageRepository(UnreadMessageRepository *unreadMessageRepository);
     INJEQT_INIT void init();
     INJEQT_DONE void done();
-
-    void removeDuplicateContacts();
 
     void contactDataUpdated();
 

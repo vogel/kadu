@@ -92,7 +92,7 @@ GroupTabBarConfiguration GroupTabBarConfigurator::loadConfiguration() const
     configuration.setAlwaysShowGroupTabUngroupped(
         m_configuration->deprecatedApi()->readBoolEntry("Look", "AlwaysShowGroupTabUngroupped", true));
     configuration.setCurrentGroupTab(m_configuration->deprecatedApi()->readNumEntry("Look", "CurrentGroupTab", 0));
-    configuration.setGroupFilters(loadGroupFilters(configuration.showGroupTabEverybody()));
+    configuration.setGroupFilters(loadGroupFilters());
 
     return configuration;
 }
@@ -110,12 +110,9 @@ void GroupTabBarConfigurator::storeConfiguration()
     m_application->flushConfiguration();   // TODO: fix whole configuration system
 }
 
-QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters(bool showGroupTabEverybody) const
+QVector<GroupFilter> GroupTabBarConfigurator::loadGroupFilters() const
 {
     auto groupTabBarNode = m_configuration->api()->getNode("GroupTabBar", ConfigurationApi::ModeGet);
-    if (groupTabBarNode.isNull())
-        return import_0_12_groupFilters(showGroupTabEverybody);
-
     auto result = QVector<GroupFilter>();
     auto groupFilterNodes = m_configuration->api()->getNodes(groupTabBarNode, "GroupFilter");
     for (auto const &groupFilterNode : groupFilterNodes)
@@ -140,27 +137,6 @@ GroupFilter GroupTabBarConfigurator::loadGroupFilter(QDomElement element) const
     if (type == "Ungroupped")
         return GroupFilter(GroupFilterUngroupped);
     return GroupFilter();
-}
-
-QVector<GroupFilter> GroupTabBarConfigurator::import_0_12_groupFilters(bool showGroupTabEverybody) const
-{
-    auto result = QVector<GroupFilter>();
-    auto position = showGroupTabEverybody
-                        ? m_configuration->deprecatedApi()->readNumEntry("Look", "AllGroupTabPosition", 0)
-                        : m_configuration->deprecatedApi()->readNumEntry("Look", "UngroupedGroupTabPosition", 0);
-
-    auto groups = m_groupManager->items().toList();
-    qStableSort(
-        groups.begin(), groups.end(), [](const Group &a, const Group &b) { return a.tabPosition() < b.tabPosition(); });
-
-    for (auto const &group : groups)
-        result.append(GroupFilter(group));
-
-    result.insert(
-        qBound(0, position, result.size()),
-        GroupFilter(showGroupTabEverybody ? GroupFilterEverybody : GroupFilterUngroupped));
-
-    return result;
 }
 
 void GroupTabBarConfigurator::storeGroupFilters(const QVector<GroupFilter> &groupFilters)

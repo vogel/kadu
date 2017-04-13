@@ -88,7 +88,6 @@ private:
 
     QString DesktopEntry;
 
-    void import_0_9_0_Configuration();
     void createDefaultConfiguration();
 
     void checkServerCapabilities();

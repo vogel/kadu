@@ -45,25 +45,25 @@ QString ConfigurationPathProvider::configurationDirectoryPath() const
 QStringList ConfigurationPathProvider::possibleConfigurationFilePaths() const
 {
     auto profilePath = m_pathsProvider->profilePath();
+    auto backups_5 = QDir{profilePath, "kadu-5.conf.xml.backup.*", QDir::Name, QDir::Files};
     auto backups_4 = QDir{profilePath, "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files};
     auto backups_0_12 = QDir{profilePath, "kadu-0.12.conf.xml.backup.*", QDir::Name, QDir::Files};
-    auto backups_0_6_6 = QDir{profilePath, "kadu-0.6.6.conf.xml.backup.*", QDir::Name, QDir::Files};
 
     auto files = QStringList{};
 
+    files += "kadu-5.conf.xml";
+    files += backups_5.entryList();
     files += "kadu-4.conf.xml";
     files += backups_4.entryList();
     files += "kadu-0.12.conf.xml";
     files += backups_0_12.entryList();
-    files += "kadu-0.6.6.conf.xml";
-    files += backups_0_6_6.entryList();
 
     return files;
 }
 
 QString ConfigurationPathProvider::configurationFilePath() const
 {
-    return m_pathsProvider->profilePath() + QStringLiteral("/kadu-4.conf.xml");
+    return m_pathsProvider->profilePath() + QStringLiteral("/kadu-5.conf.xml");
 }
 
 QString ConfigurationPathProvider::backupFilePath() const

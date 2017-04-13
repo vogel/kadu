@@ -88,8 +88,6 @@ class KADUAPI AccountShared : public Shared
     void doSetAccountIdentity(const Identity &accountIdentity);
     void doSetId(const QString &id);
 
-    void importNetworkProxy();
-
     QVector<RosterTask> loadRosterTasks();
     void storeRosterTasks(const QVector<RosterTask> &tasks);
 

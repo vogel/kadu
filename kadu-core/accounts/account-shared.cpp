@@ -144,37 +144,6 @@ QString AccountShared::storageNodeName()
     return QStringLiteral("Account");
 }
 
-void AccountShared::importNetworkProxy()
-{
-    QString address = loadValue<QString>("ProxyHost");
-
-    int port = loadValue<int>("ProxyPort");
-    bool requiresAuthentication = loadValue<bool>("ProxyRequiresAuthentication");
-    QString user = loadValue<QString>("ProxyUser");
-    QString password = loadValue<QString>("ProxyPassword");
-
-    if (!requiresAuthentication)
-    {
-        user.clear();
-        password.clear();
-    }
-
-    NetworkProxy importedProxy;
-
-    if (!address.isEmpty())
-        importedProxy = m_networkProxyManager->byConfiguration(address, port, user, password, ActionCreateAndAdd);
-
-    if (loadValue<bool>("UseProxy"))
-        Proxy = importedProxy;
-
-    removeValue("UseProxy");
-    removeValue("ProxyHost");
-    removeValue("ProxyPort");
-    removeValue("ProxyRequiresAuthentication");
-    removeValue("ProxyUser");
-    removeValue("ProxyPassword");
-}
-
 QVector<RosterTask> AccountShared::loadRosterTasks()
 {
     if (!isValidStorage())
@@ -205,17 +174,9 @@ void AccountShared::load()
     if (RememberPassword)
         Password = pwHash(loadValue<QString>("Password"));
 
-    if (hasValue("UseProxy"))
-    {
-        UseDefaultProxy = false;
-        importNetworkProxy();
-    }
-    else
-    {
-        UseDefaultProxy = loadValue<bool>("UseDefaultProxy", true);
-        if (!UseDefaultProxy)
-            Proxy = m_networkProxyManager->byUuid(loadValue<QString>("Proxy"));
-    }
+    UseDefaultProxy = loadValue<bool>("UseDefaultProxy", true);
+    if (!UseDefaultProxy)
+        Proxy = m_networkProxyManager->byUuid(loadValue<QString>("Proxy"));
 
     PrivateStatus = loadValue<bool>("PrivateStatus", true);
 

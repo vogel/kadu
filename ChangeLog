@@ -1,3 +1,7 @@
++++ version 5.0-alpha2:
+* configuration: remove support for importing configurations from Kadu 0.9 and earlier (Vogel)
+* configuration: update configuration file format (Vogel)
+
 +++ version 5.0-alpha1:
 * plugins: #2796 fixed: do not bother user with idle plugin (Vogel)
 * facebook_protocol: re-added support for Facebook Chat (Vogel)

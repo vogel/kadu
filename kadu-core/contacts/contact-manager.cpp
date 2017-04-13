@@ -219,46 +219,6 @@ void ContactManager::contactDataUpdated()
         emit contactUpdated(contact);
 }
 
-// This is needed to fix up configurations broken by bug #2222 (present in 0.9.x).
-// It can be removed when we will stop supporting upgrades from 0.9.x.
-void ContactManager::removeDuplicateContacts()
-{
-    QMap<QPair<Account, QString>, Contact> uniqueContacts;
-
-    for (auto const &contact : items())
-    {
-        QMap<QPair<Account, QString>, Contact>::iterator it =
-            uniqueContacts.find(qMakePair(contact.contactAccount(), contact.id()));
-        if (it != uniqueContacts.end())
-        {
-            if (it->isAnonymous())
-            {
-                removeItem(*it);
-                it->setUuid(contact.uuid());
-                *it = contact;
-            }
-            else
-            {
-                removeItem(contact);
-                contact.setUuid(it->uuid());
-            }
-        }
-        else
-            uniqueContacts.insert(qMakePair(contact.contactAccount(), contact.id()), contact);
-    }
-
-    m_configuration->deprecatedApi()->writeEntry("General", "ContactsImportedFrom0_9", true);
-}
-
-void ContactManager::loaded()
-{
-    Manager<Contact>::loaded();
-
-    if (!m_configuration->deprecatedApi()->readBoolEntry("General", "ContactsImportedFrom0_9", false))
-        // delay it so that everything needed will be loaded when we call this method
-        QTimer::singleShot(0, this, SLOT(removeDuplicateContacts()));
-}
-
 Contact ContactManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> &storagePoint)
 {
     return m_contactStorage->loadStubFromStorage(storagePoint);
