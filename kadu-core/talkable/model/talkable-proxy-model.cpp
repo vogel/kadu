@@ -24,6 +24,7 @@
  */
 
 #include "talkable-proxy-model.h"
+#include "talkable-proxy-model.moc"
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
@@ -286,5 +287,3 @@ void TalkableProxyModel::removeFilter(TalkableFilter *filter)
 
     emit invalidated();
 }
-
-#include "moc_talkable-proxy-model.cpp"

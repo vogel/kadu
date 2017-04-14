@@ -23,6 +23,7 @@
 #include "contacts/model/contact-list-model.h"
 
 #include "chat-adapter.h"
+#include "chat-adapter.moc"
 
 ChatAdapter::ChatAdapter(ContactListModel *model, const Chat &chat) : QObject(model), Model(model)
 {
@@ -45,5 +46,3 @@ void ChatAdapter::contactRemoved(const Contact &contact)
 {
     Model->removeContact(contact);
 }
-
-#include "moc_chat-adapter.cpp"

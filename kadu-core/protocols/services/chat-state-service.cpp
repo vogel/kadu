@@ -19,6 +19,7 @@
  */
 
 #include "chat-state-service.h"
+#include "chat-state-service.moc"
 
 ChatStateService::ChatStateService(Account account, QObject *parent) : AccountService(account, parent)
 {
@@ -27,5 +28,3 @@ ChatStateService::ChatStateService(Account account, QObject *parent) : AccountSe
 ChatStateService::~ChatStateService()
 {
 }
-
-#include "moc_chat-state-service.cpp"

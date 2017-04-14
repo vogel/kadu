@@ -21,6 +21,7 @@
 #include "buddies/buddy-additional-data-delete-handler.h"
 
 #include "buddy-additional-data-delete-handler-manager.h"
+#include "buddy-additional-data-delete-handler-manager.moc"
 
 BuddyAdditionalDataDeleteHandlerManager::BuddyAdditionalDataDeleteHandlerManager(QObject *parent) : QObject(parent)
 {
@@ -52,5 +53,3 @@ void BuddyAdditionalDataDeleteHandlerManager::unregisterAdditionalDataDeleteHand
     m_items.removeAll(handler);
     emit additionalDataDeleteHandlerUnregistered(handler);
 }
-
-#include "moc_buddy-additional-data-delete-handler-manager.cpp"

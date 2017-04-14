@@ -18,11 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtCore/QVariant>
-
 #include "custom-properties.h"
-#include "storage-point.h"
-#include <configuration/configuration-api.h>
+#include "custom-properties.moc"
+
+#include "configuration/configuration-api.h"
+#include "storage/storage-point.h"
+
+#include <QtCore/QVariant>
 
 CustomProperties::CustomProperties(QObject *parent) : QObject(parent)
 {
@@ -139,5 +141,3 @@ QVariant CustomProperties::property(const QString &name, const QVariant &default
     else
         return defaultValue;
 }
-
-#include "moc_custom-properties.cpp"

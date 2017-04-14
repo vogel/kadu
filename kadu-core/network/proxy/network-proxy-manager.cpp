@@ -28,6 +28,7 @@
 #include "storage/storage-point.h"
 
 #include "network-proxy-manager.h"
+#include "network-proxy-manager.moc"
 
 NetworkProxyManager::NetworkProxyManager(QObject *parent) : Manager<NetworkProxy>{parent}
 {
@@ -151,5 +152,3 @@ void NetworkProxyManager::itemRemoved(NetworkProxy item)
     disconnect(item, 0, this, 0);
     emit networkProxyRemoved(item);
 }
-
-#include "moc_network-proxy-manager.cpp"

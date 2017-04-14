@@ -21,6 +21,7 @@
  */
 
 #include "groups-model.h"
+#include "groups-model.moc"
 
 #include "buddies/group-manager.h"
 #include "buddies/group.h"
@@ -124,5 +125,3 @@ void GroupsModel::groupRemoved(Group group)
 
     endRemoveRows();
 }
-
-#include "moc_groups-model.cpp"

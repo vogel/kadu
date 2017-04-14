@@ -387,7 +387,7 @@ void GaduProtocol::connectedToServer()
 
 void GaduProtocol::afterLoggedIn()
 {
-    m_gaduContactAvatarService->download(ContactAvatarId{account().accountContact().id().toUtf8(), {}});
+    m_gaduContactAvatarService->download(ContactAvatarId{{account().accountContact().id().toUtf8()}, {}});
 
     auto contacts = contactManager()->contacts(account(), ContactManager::ExcludeAnonymous);
     CurrentNotifyService->sendInitialData(contacts);

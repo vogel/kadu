@@ -21,6 +21,7 @@
 #include "misc/misc.h"
 
 #include "compositing-aware-object.h"
+#include "compositing-aware-object.moc"
 
 QList<CompositingAwareObject *> CompositingAwareObject::Objects;
 

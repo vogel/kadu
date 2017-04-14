@@ -18,6 +18,7 @@
  */
 
 #include "scoped-updates-disabler.h"
+#include "scoped-updates-disabler.moc"
 
 #include <QtWidgets/QWidget>
 

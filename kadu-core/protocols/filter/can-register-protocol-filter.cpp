@@ -23,6 +23,7 @@
 #include "protocols/protocol-factory.h"
 
 #include "can-register-protocol-filter.h"
+#include "can-register-protocol-filter.moc"
 
 CanRegisterProtocolFilter::CanRegisterProtocolFilter(QObject *parent) : AbstractProtocolFilter(parent), Enabled(false)
 {
@@ -44,5 +45,3 @@ bool CanRegisterProtocolFilter::acceptProtocol(ProtocolFactory *factory)
 
     return factory->canRegister();
 }
-
-#include "moc_can-register-protocol-filter.cpp"

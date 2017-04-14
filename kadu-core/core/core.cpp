@@ -29,6 +29,7 @@
  */
 
 #include "core.h"
+#include "core.moc"
 
 #include "actions/actions.h"
 #include "activate.h"
@@ -558,5 +559,3 @@ void Core::executeRemoteCommand(const QString &remoteCommand)
         m_injector.get<ChatWidgetManager>()->openChat(chat, OpenChatActivation::Activate);
     }
 }
-
-#include "moc_core.cpp"

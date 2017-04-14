@@ -20,6 +20,7 @@
   */
 
 #include "categorized-sort-filter-proxy-model.h"
+#include "categorized-sort-filter-proxy-model.moc"
 
 #include <limits.h>
 

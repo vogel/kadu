@@ -16,13 +16,4 @@ set (contacts_SRCS
 	model/contact-list-model.cpp
 )
 
-set (contacts_MOC_SRCS
-	contact-manager.h
-	contact-shared.h
-
-	model/buddy-contact-model.h
-	model/chat-adapter.h
-	model/contact-list-model.h
-)
-
-kadu_subdirectory (contacts "${contacts_SRCS}" "${contacts_MOC_SRCS}" "")
+kadu_subdirectory (contacts "${contacts_SRCS}" "" "")

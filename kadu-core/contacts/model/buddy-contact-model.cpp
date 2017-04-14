@@ -32,6 +32,7 @@
 #include "protocols/protocol.h"
 
 #include "buddy-contact-model.h"
+#include "buddy-contact-model.moc"
 
 BuddyContactModel::BuddyContactModel(Buddy buddy, QObject *parent)
         : QAbstractListModel(parent), SourceBuddy(buddy), IncludeIdentityInDisplay(false)
@@ -150,5 +151,3 @@ void BuddyContactModel::setIncludeIdentityInDisplay(bool includeIdentityInDispla
     IncludeIdentityInDisplay = includeIdentityInDisplay;
     emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
-
-#include "moc_buddy-contact-model.cpp"

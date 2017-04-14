@@ -25,6 +25,7 @@
 #include "misc/change-notifier.h"
 
 #include "group-shared.h"
+#include "group-shared.moc"
 
 GroupShared::GroupShared(const QUuid &uuid)
         : Shared(uuid), NotifyAboutStatusChanges(true), ShowInAllGroup(true), OfflineToGroup(false), ShowIcon(false),
@@ -122,5 +123,3 @@ void GroupShared::setName(const QString &name)
         emit nameChanged();
     }
 }
-
-#include "moc_group-shared.cpp"

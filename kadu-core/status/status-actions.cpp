@@ -22,6 +22,7 @@
  */
 
 #include "status-actions.h"
+#include "status-actions.moc"
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration.h"
@@ -211,5 +212,3 @@ void StatusActions::iconThemeChanged()
         action->setIcon(m_iconsManager->iconByPath(MyStatusContainer->statusIcon(Status{statusType})));
     }
 }
-
-#include "moc_status-actions.cpp"

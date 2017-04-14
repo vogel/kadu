@@ -19,6 +19,7 @@
  */
 
 #include "exclude-buddy-talkable-filter.h"
+#include "exclude-buddy-talkable-filter.moc"
 
 ExcludeBuddyTalkableFilter::ExcludeBuddyTalkableFilter(const Buddy &excludedBuddy, QObject *parent)
         : TalkableFilter(parent), ExcludedBuddy(excludedBuddy)
@@ -37,5 +38,3 @@ TalkableFilter::FilterResult ExcludeBuddyTalkableFilter::filterBuddy(const Buddy
     else
         return Undecided;
 }
-
-#include "moc_exclude-buddy-talkable-filter.cpp"

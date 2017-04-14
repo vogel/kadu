@@ -24,6 +24,7 @@
 #include "network/proxy/network-proxy-manager.h"
 
 #include "network-proxy-shared.h"
+#include "network-proxy-shared.moc"
 
 NetworkProxyShared::NetworkProxyShared(const QUuid &uuid) : Shared(uuid), Port(0)
 {
@@ -94,5 +95,3 @@ QString NetworkProxyShared::displayName()
     else
         return User + "@" + Address + ":" + QString::number(Port);
 }
-
-#include "moc_network-proxy-shared.cpp"

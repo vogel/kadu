@@ -25,6 +25,7 @@
 #include "services/raw-message-transformer-service.h"
 
 #include "chat-service.h"
+#include "chat-service.moc"
 
 ChatService::ChatService(Account account, QObject *parent) : AccountService(account, parent)
 {
@@ -43,5 +44,3 @@ RawMessageTransformerService *ChatService::rawMessageTransformerService() const
 {
     return m_rawMessageTransformerService.data();
 }
-
-#include "moc_chat-service.cpp"

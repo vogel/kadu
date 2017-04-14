@@ -12,8 +12,4 @@ set (url-handlers_SRCS
 	url-handler-manager.cpp
 )
 
-set (url-handlers_MOC_SRCS
-	standard-url-expander.h
-)
-
-kadu_subdirectory (url-handlers "${url-handlers_SRCS}" "${url-handlers_MOC_SRCS}" "")
+kadu_subdirectory (url-handlers "${url-handlers_SRCS}" "" "")

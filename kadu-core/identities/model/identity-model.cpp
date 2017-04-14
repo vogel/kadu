@@ -20,6 +20,7 @@
  */
 
 #include "identity-model.h"
+#include "identity-model.moc"
 
 #include "identities/identity-manager.h"
 #include "model/roles.h"
@@ -132,5 +133,3 @@ void IdentityModel::identityRemoved(Identity identity)
 
     endRemoveRows();
 }
-
-#include "moc_identity-model.cpp"

@@ -23,6 +23,7 @@
 #include "status/description-manager.h"
 
 #include "description-model.h"
+#include "description-model.moc"
 
 DescriptionModel::DescriptionModel(DescriptionManager *manager) : Manager(manager)
 {
@@ -108,5 +109,3 @@ void DescriptionModel::descriptionRemoved(const QString &description)
 
     endRemoveRows();
 }
-
-#include "moc_description-model.cpp"

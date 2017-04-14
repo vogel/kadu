@@ -13,8 +13,4 @@ set (storage_SRCS
 	uuid-storable-object.cpp
 )
 
-set (storage_MOC_SRCS
-	custom-properties.h
-)
-
-kadu_subdirectory (storage "${storage_SRCS}" "${storage_MOC_SRCS}" "")
+kadu_subdirectory (storage "${storage_SRCS}" "" "")

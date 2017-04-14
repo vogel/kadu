@@ -24,6 +24,7 @@
 #include "status/status-container.h"
 
 #include "status-icon.h"
+#include "status-icon.moc"
 
 StatusIcon::StatusIcon(StatusContainer *statusContainer, QObject *parent)
         : QObject(parent), MyStatusContainer(statusContainer), BlinkTimer(0), BlinkOffline(true)
@@ -102,5 +103,3 @@ void StatusIcon::setIcon(const KaduIcon &icon)
     Icon = icon;
     emit iconUpdated(Icon);
 }
-
-#include "moc_status-icon.cpp"

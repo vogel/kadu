@@ -22,6 +22,7 @@
 #include "buddies/model/buddy-list-model.h"
 
 #include "buddy-manager-adapter.h"
+#include "buddy-manager-adapter.moc"
 
 BuddyManagerAdapter::BuddyManagerAdapter(BuddyListModel *model) : QObject(model), Model(model)
 {
@@ -55,5 +56,3 @@ void BuddyManagerAdapter::buddyRemoved(const Buddy &buddy)
 {
     Model->removeBuddy(buddy);
 }
-
-#include "moc_buddy-manager-adapter.cpp"

@@ -40,6 +40,7 @@
 #include "windows/kadu-dialog.h"
 
 #include "account-manager.h"
+#include "account-manager.moc"
 
 AccountManager::AccountManager(QObject *parent) : Manager<Account>{parent}
 {
@@ -274,5 +275,3 @@ void AccountManager::loaded()
     for (auto const &account : items())
         account.accountContact().setOwnerBuddy(m_myself->buddy());
 }
-
-#include "moc_account-manager.cpp"

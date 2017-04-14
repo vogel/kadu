@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ABSTRACT_ACCOUNT_FILTER
-#define ABSTRACT_ACCOUNT_FILTER
+#pragma once
 
 #include <QtCore/QObject>
 
@@ -38,5 +37,3 @@ public:
 signals:
     void filterChanged();
 };
-
-#endif   // ABSTRACT_ACCOUNT_FILTER

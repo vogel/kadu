@@ -23,6 +23,7 @@
  */
 
 #include "protocol.h"
+#include "protocol.moc"
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
@@ -343,5 +344,3 @@ bool Protocol::isDisconnecting() const
 {
     return Machine->isLoggingOut();
 }
-
-#include "moc_protocol.cpp"

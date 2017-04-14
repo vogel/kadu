@@ -21,6 +21,7 @@
 #include "model/roles.h"
 
 #include "checkable-buddies-proxy-model.h"
+#include "checkable-buddies-proxy-model.moc"
 
 CheckableBuddiesProxyModel::CheckableBuddiesProxyModel(QObject *parent) : QIdentityProxyModel(parent)
 {
@@ -90,5 +91,3 @@ BuddySet CheckableBuddiesProxyModel::checkedBuddies() const
 {
     return CheckedBuddies;
 }
-
-#include "moc_checkable-buddies-proxy-model.cpp"

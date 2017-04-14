@@ -23,6 +23,7 @@
 #include "network/proxy/model/network-proxy-model.h"
 
 #include "network-proxy-proxy-model.h"
+#include "network-proxy-proxy-model.moc"
 
 NetworkProxyProxyModel::NetworkProxyProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -56,5 +57,3 @@ bool NetworkProxyProxyModel::lessThan(const QModelIndex &left, const QModelIndex
     int displayCompare = compareNames(leftNetworkProxy.address(), rightNetworkProxy.address());
     return displayCompare < 0;
 }
-
-#include "moc_network-proxy-proxy-model.cpp"

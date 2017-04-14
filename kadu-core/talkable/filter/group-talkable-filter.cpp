@@ -23,6 +23,7 @@
 #include "chat/chat.h"
 
 #include "group-talkable-filter.h"
+#include "group-talkable-filter.moc"
 
 GroupTalkableFilter::GroupTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
@@ -73,5 +74,3 @@ void GroupTalkableFilter::setGroupFilter(const GroupFilter &groupFilter)
     CurrentGroupFilter = groupFilter;
     emit filterChanged();
 }
-
-#include "moc_group-talkable-filter.cpp"

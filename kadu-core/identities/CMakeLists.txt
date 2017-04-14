@@ -9,10 +9,4 @@ set (identities_SRCS
 	identity.cpp
 )
 
-set (identities_MOC_SRCS
-	model/identity-model.h
-	identity-manager.h
-	identity-shared.h
-)
-
-kadu_subdirectory (identities "${identities_SRCS}" "${identities_MOC_SRCS}" "")
+kadu_subdirectory (identities "${identities_SRCS}" "" "")

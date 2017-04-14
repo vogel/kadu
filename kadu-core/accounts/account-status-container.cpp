@@ -26,6 +26,7 @@
 #include "protocols/protocol.h"
 
 #include "account-status-container.h"
+#include "account-status-container.moc"
 
 AccountStatusContainer::AccountStatusContainer(AccountShared *account)
         : StorableStatusContainer(account), Account(account)
@@ -99,5 +100,3 @@ void AccountStatusContainer::triggerStatusUpdated()
 {
     emit statusUpdated(this);
 }
-
-#include "moc_account-status-container.cpp"

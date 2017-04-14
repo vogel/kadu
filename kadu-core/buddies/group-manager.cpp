@@ -35,6 +35,7 @@
 #include "windows/message-dialog.h"
 
 #include "group-manager.h"
+#include "group-manager.moc"
 
 GroupManager::GroupManager(QObject *parent) : Manager<Group>{parent}
 {
@@ -257,5 +258,3 @@ void GroupManager::itemRemoved(Group item)
     disconnect(item, 0, this, 0);
     emit groupRemoved(item);
 }
-
-#include "moc_group-manager.cpp"

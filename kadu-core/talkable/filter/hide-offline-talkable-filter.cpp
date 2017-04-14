@@ -19,6 +19,7 @@
  */
 
 #include "hide-offline-talkable-filter.h"
+#include "hide-offline-talkable-filter.moc"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-preferred-manager.h"
@@ -96,5 +97,3 @@ void HideOfflineTalkableFilter::setEnabled(bool enabled)
         disconnect(m_contactManager, SIGNAL(contactUpdated(Contact)), this, SIGNAL(filterChanged()));
     }
 }
-
-#include "moc_hide-offline-talkable-filter.cpp"

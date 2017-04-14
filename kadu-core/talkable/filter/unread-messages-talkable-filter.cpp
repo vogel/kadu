@@ -23,6 +23,7 @@
 #include "contacts/contact.h"
 
 #include "unread-messages-talkable-filter.h"
+#include "unread-messages-talkable-filter.moc"
 
 UnreadMessagesTalkableFilter::UnreadMessagesTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
@@ -55,5 +56,3 @@ TalkableFilter::FilterResult UnreadMessagesTalkableFilter::filterContact(const C
     else
         return Undecided;
 }
-
-#include "moc_unread-messages-talkable-filter.cpp"

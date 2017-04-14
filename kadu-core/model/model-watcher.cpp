@@ -21,6 +21,7 @@
 #include <stdio.h>
 
 #include "model-watcher.h"
+#include "model-watcher.moc"
 
 ModelWatcher::ModelWatcher(const QString &name, QAbstractItemModel *model) : QObject(model), Name(name)
 {
@@ -235,5 +236,3 @@ void ModelWatcher::rowsRemoved(const QModelIndex &parent, int start, int end)
         "rowsRemoved: %s\n",
         qPrintable(QString("%1 - %2 - %3 - %4").arg(Name).arg(indexToString(parent).arg(start).arg(end))));
 }
-
-#include "moc_model-watcher.cpp"

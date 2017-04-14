@@ -26,6 +26,7 @@
 #include "protocols/protocol-factory.h"
 
 #include "protocols-manager.h"
+#include "protocols-manager.moc"
 
 ProtocolsManager::ProtocolsManager(QObject *parent) : QObject{parent}
 {
@@ -80,5 +81,3 @@ ProtocolFactory *ProtocolsManager::byIndex(int index)
 
     return Factories.at(index);
 }
-
-#include "moc_protocols-manager.cpp"

@@ -21,6 +21,7 @@
  */
 
 #include "protocols-model.h"
+#include "protocols-model.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -135,5 +136,3 @@ void ProtocolsModel::protocolFactoryUnregistered(ProtocolFactory *protocolFactor
 
     endRemoveRows();
 }
-
-#include "moc_protocols-model.cpp"

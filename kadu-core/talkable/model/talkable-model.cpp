@@ -27,6 +27,7 @@
 #include "core/myself.h"
 
 #include "talkable-model.h"
+#include "talkable-model.moc"
 
 TalkableModel::TalkableModel(QObject *parent) : KaduMergedProxyModel{parent}, m_includeMyself{false}
 {
@@ -80,5 +81,3 @@ bool TalkableModel::includeMyself() const
 {
     return m_includeMyself;
 }
-
-#include "moc_talkable-model.cpp"

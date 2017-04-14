@@ -33,6 +33,7 @@
 #include "status/status-type.h"
 
 #include "identity-shared.h"
+#include "identity-shared.moc"
 
 IdentityShared::IdentityShared(const QUuid &uuid, QObject *parent) : Shared(uuid, parent), Permanent(false)
 {
@@ -156,5 +157,3 @@ StatusContainer *IdentityShared::statusContainer() const
 {
     return m_identityStatusContainer.get();
 }
-
-#include "moc_identity-shared.cpp"

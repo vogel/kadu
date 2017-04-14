@@ -23,6 +23,7 @@
 #include "model/roles.h"
 
 #include "action-filter-proxy-model.h"
+#include "action-filter-proxy-model.moc"
 
 ActionFilterProxyModel::ActionFilterProxyModel(QObject *parent) : QSortFilterProxyModel(parent), Size(0), Model(0)
 {
@@ -94,5 +95,3 @@ bool ActionFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &
 
     return true;
 }
-
-#include "moc_action-filter-proxy-model.cpp"
