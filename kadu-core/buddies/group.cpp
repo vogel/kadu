@@ -28,9 +28,9 @@
 
 #include "group.h"
 
-KaduSharedBaseClassImpl(Group)
+KaduSharedBaseClassImpl(Group);
 
-    Group Group::null;
+Group Group::null;
 
 Group::Group()
 {
@@ -55,11 +55,11 @@ Group::~Group()
 {
 }
 
-KaduSharedBase_PropertyDefCRW(Group, QString, name, Name, QString())
-    KaduSharedBase_PropertyDefCRW(Group, QString, icon, Icon, QString())
-        KaduSharedBase_PropertyDef(Group, bool, notifyAboutStatusChanges, NotifyAboutStatusChanges, false)
-            KaduSharedBase_PropertyDef(Group, bool, showInAllGroup, ShowInAllGroup, false)
-                KaduSharedBase_PropertyDef(Group, bool, offlineToGroup, OfflineToGroup, false)
-                    KaduSharedBase_PropertyDef(Group, bool, showIcon, ShowIcon, false)
-                        KaduSharedBase_PropertyDef(Group, bool, showName, ShowName, false)
-                            KaduSharedBase_PropertyDef(Group, int, tabPosition, TabPosition, -1)
+KaduSharedBase_PropertyDefCRW(Group, QString, name, Name, QString());
+KaduSharedBase_PropertyDefCRW(Group, QString, icon, Icon, QString());
+KaduSharedBase_PropertyDef(Group, bool, notifyAboutStatusChanges, NotifyAboutStatusChanges, false);
+KaduSharedBase_PropertyDef(Group, bool, showInAllGroup, ShowInAllGroup, false);
+KaduSharedBase_PropertyDef(Group, bool, offlineToGroup, OfflineToGroup, false);
+KaduSharedBase_PropertyDef(Group, bool, showIcon, ShowIcon, false);
+KaduSharedBase_PropertyDef(Group, bool, showName, ShowName, false);
+KaduSharedBase_PropertyDef(Group, int, tabPosition, TabPosition, -1);

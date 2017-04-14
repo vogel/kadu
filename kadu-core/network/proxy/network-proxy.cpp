@@ -28,9 +28,9 @@
 
 #include <QtNetwork/QNetworkProxy>
 
-KaduSharedBaseClassImpl(NetworkProxy)
+KaduSharedBaseClassImpl(NetworkProxy);
 
-    NetworkProxy NetworkProxy::null;
+NetworkProxy NetworkProxy::null;
 
 NetworkProxy::NetworkProxy()
 {
@@ -55,15 +55,15 @@ NetworkProxy::~NetworkProxy()
 {
 }
 
-KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, type, Type, QString("http"))
-    KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, address, Address, QString())
-        KaduSharedBase_PropertyDef(NetworkProxy, int, port, Port, 0)
-            KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString())
-                KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, password, Password, QString())
-                    KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, pollingUrl, PollingUrl, QString())
-                        KaduSharedBase_PropertyReadDef(NetworkProxy, QString, displayName, DisplayName, QString())
+KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, type, Type, QString("http"));
+KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, address, Address, QString());
+KaduSharedBase_PropertyDef(NetworkProxy, int, port, Port, 0);
+KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, user, User, QString());
+KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, password, Password, QString());
+KaduSharedBase_PropertyDefCRW(NetworkProxy, QString, pollingUrl, PollingUrl, QString());
+KaduSharedBase_PropertyReadDef(NetworkProxy, QString, displayName, DisplayName, QString());
 
-                            QNetworkProxy toQNetworkProxy(const NetworkProxy &networkProxy)
+QNetworkProxy toQNetworkProxy(const NetworkProxy &networkProxy)
 {
     if (!networkProxy)
         return {};

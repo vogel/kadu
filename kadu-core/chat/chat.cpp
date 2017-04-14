@@ -30,14 +30,14 @@
 
 #include "chat.h"
 
-KaduSharedBaseClassImpl(Chat)
+KaduSharedBaseClassImpl(Chat);
 
-    /**
-     * @short Null Chat object.
-     *
-     * Null Chat object (without @link ChatShared @endlink attached).
-     */
-    Chat Chat::null;
+/**
+ * @short Null Chat object.
+ *
+ * Null Chat object (without @link ChatShared @endlink attached).
+ */
+Chat Chat::null;
 
 Chat::Chat()
 {
@@ -104,17 +104,17 @@ void Chat::removeFromGroup(Group group) const
         data()->removeFromGroup(group);
 }
 
-KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet())
-    KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString())
-        KaduSharedBase_PropertyReadDef(Chat, ChatDetails *, details, Details, 0)
-            KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::null)
-                KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString())
-                    KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString())
-                        KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false)
-                            KaduSharedBase_PropertyDefCRW(Chat, QSet<Group>, groups, Groups, QSet<Group>())
-                                KaduSharedBase_PropertyDef(Chat, quint16, unreadMessagesCount, UnreadMessagesCount, 0)
+KaduSharedBase_PropertyReadDef(Chat, ContactSet, contacts, Contacts, ContactSet());
+KaduSharedBase_PropertyReadDef(Chat, QString, name, Name, QString());
+KaduSharedBase_PropertyReadDef(Chat, ChatDetails *, details, Details, 0);
+KaduSharedBase_PropertyDefCRW(Chat, Account, chatAccount, ChatAccount, Account::null);
+KaduSharedBase_PropertyDefCRW(Chat, QString, type, Type, QString());
+KaduSharedBase_PropertyDefCRW(Chat, QString, display, Display, QString());
+KaduSharedBase_PropertyBoolDef(Chat, IgnoreAllMessages, false);
+KaduSharedBase_PropertyDefCRW(Chat, QSet<Group>, groups, Groups, QSet<Group>());
+KaduSharedBase_PropertyDef(Chat, quint16, unreadMessagesCount, UnreadMessagesCount, 0);
 
-                                    bool Chat::isConnected() const
+bool Chat::isConnected() const
 {
     if (!isNull())
         return data()->isConnected();

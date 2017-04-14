@@ -39,9 +39,9 @@
 #include "buddy.h"
 #include <QtWidgets/qapplication.h>
 
-KaduSharedBaseClassImpl(Buddy)
+KaduSharedBaseClassImpl(Buddy);
 
-    Buddy Buddy::null;
+Buddy Buddy::null;
 
 Buddy::Buddy()
 {
@@ -170,26 +170,23 @@ QString Buddy::display() const
     return result;
 }
 
-KaduSharedBase_PropertyWriteDef(Buddy, const QString &, display, Display) KaduSharedBase_PropertyDefCRW(
-    Buddy, QString, firstName, FirstName,
-    QString()) KaduSharedBase_PropertyDefCRW(Buddy, QString, lastName, LastName, QString())
-    KaduSharedBase_PropertyDefCRW(Buddy, QString, familyName, FamilyName, QString())
-        KaduSharedBase_PropertyDefCRW(Buddy, QString, city, City, QString()) KaduSharedBase_PropertyDefCRW(
-            Buddy, QString, familyCity, FamilyCity, QString())
-            KaduSharedBase_PropertyDefCRW(Buddy, QString, nickName, NickName, QString())
-                KaduSharedBase_PropertyDefCRW(Buddy, QString, homePhone, HomePhone, QString())
-                    KaduSharedBase_PropertyDefCRW(Buddy, QString, mobile, Mobile, QString())
-                        KaduSharedBase_PropertyDefCRW(Buddy, QString, email, Email, QString())
-                            KaduSharedBase_PropertyDefCRW(Buddy, QString, website, Website, QString())
-                                KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0)
-                                    KaduSharedBase_PropertyDef(Buddy, BuddyGender, gender, Gender, GenderUnknown)
-                                        KaduSharedBase_PropertyDefCRW(Buddy, QSet<Group>, groups, Groups, QSet<Group>())
-                                            KaduSharedBase_PropertyDef(
-                                                Buddy, bool, preferHigherStatuses, PreferHigherStatuses, true)
-                                                KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, true)
-                                                    KaduSharedBase_PropertyBoolDef(Buddy, Temporary, false)
-                                                        KaduSharedBase_PropertyBoolDef(Buddy, Blocked, false)
-                                                            KaduSharedBase_PropertyBoolDef(Buddy, OfflineTo, false)
-                                                                KaduSharedBase_PropertyReadDef(
-                                                                    Buddy, quint16, unreadMessagesCount,
-                                                                    UnreadMessagesCount, 0)
+KaduSharedBase_PropertyWriteDef(Buddy, const QString &, display, Display);
+KaduSharedBase_PropertyDefCRW(Buddy, QString, firstName, FirstName, QString())
+    KaduSharedBase_PropertyDefCRW(Buddy, QString, lastName, LastName, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, familyName, FamilyName, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, city, City, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, familyCity, FamilyCity, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, nickName, NickName, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, homePhone, HomePhone, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, mobile, Mobile, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, email, Email, QString());
+KaduSharedBase_PropertyDefCRW(Buddy, QString, website, Website, QString());
+KaduSharedBase_PropertyDef(Buddy, unsigned short, birthYear, BirthYear, 0);
+KaduSharedBase_PropertyDef(Buddy, BuddyGender, gender, Gender, GenderUnknown);
+KaduSharedBase_PropertyDefCRW(Buddy, QSet<Group>, groups, Groups, QSet<Group>());
+KaduSharedBase_PropertyDef(Buddy, bool, preferHigherStatuses, PreferHigherStatuses, true);
+KaduSharedBase_PropertyBoolDef(Buddy, Anonymous, true);
+KaduSharedBase_PropertyBoolDef(Buddy, Temporary, false);
+KaduSharedBase_PropertyBoolDef(Buddy, Blocked, false);
+KaduSharedBase_PropertyBoolDef(Buddy, OfflineTo, false);
+KaduSharedBase_PropertyReadDef(Buddy, quint16, unreadMessagesCount, UnreadMessagesCount, 0);

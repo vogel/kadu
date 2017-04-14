@@ -25,9 +25,9 @@
 
 #include "message.h"
 
-KaduSharedBaseClassImpl(Message)
+KaduSharedBaseClassImpl(Message);
 
-    Message Message::null;
+Message Message::null;
 
 Message::Message()
 {
@@ -52,11 +52,11 @@ Message::~Message()
 {
 }
 
-KaduSharedBase_PropertyDefCRW(Message, Chat, messageChat, MessageChat, Chat::null)
-    KaduSharedBase_PropertyDefCRW(Message, Contact, messageSender, MessageSender, Contact::null)
-        KaduSharedBase_PropertyDefCRW(Message, NormalizedHtmlString, content, Content, NormalizedHtmlString())
-            KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDateTime())
-                KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime())
-                    KaduSharedBase_PropertyDef(Message, MessageStatus, status, Status, MessageStatusUnknown)
-                        KaduSharedBase_PropertyDef(Message, MessageType, type, Type, MessageTypeUnknown)
-                            KaduSharedBase_PropertyDefCRW(Message, QString, id, Id, QString())
+KaduSharedBase_PropertyDefCRW(Message, Chat, messageChat, MessageChat, Chat::null);
+KaduSharedBase_PropertyDefCRW(Message, Contact, messageSender, MessageSender, Contact::null);
+KaduSharedBase_PropertyDefCRW(Message, NormalizedHtmlString, content, Content, NormalizedHtmlString());
+KaduSharedBase_PropertyDefCRW(Message, QDateTime, receiveDate, ReceiveDate, QDateTime());
+KaduSharedBase_PropertyDefCRW(Message, QDateTime, sendDate, SendDate, QDateTime());
+KaduSharedBase_PropertyDef(Message, MessageStatus, status, Status, MessageStatusUnknown);
+KaduSharedBase_PropertyDef(Message, MessageType, type, Type, MessageTypeUnknown);
+KaduSharedBase_PropertyDefCRW(Message, QString, id, Id, QString());
