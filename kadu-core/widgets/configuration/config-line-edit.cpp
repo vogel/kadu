@@ -25,6 +25,7 @@
 
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-edit.h"
+#include "widgets/configuration/config-line-edit.moc"
 
 ConfigLineEdit::ConfigLineEdit(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,

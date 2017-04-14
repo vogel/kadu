@@ -18,6 +18,7 @@
  */
 
 #include "chat-configuration-widget-group-boxes-adapter.h"
+#include "chat-configuration-widget-group-boxes-adapter.moc"
 
 #include "widgets/chat-configuration-widget.h"
 #include "windows/chat-data-window.h"
@@ -61,5 +62,3 @@ void ChatConfigurationWidgetGroupBoxesAdapter::widgetAdded(ChatConfigurationWidg
     if (layout)
         layout->insertWidget(layout->count() - 1, groupBox);
 }
-
-#include "moc_chat-configuration-widget-group-boxes-adapter.cpp"

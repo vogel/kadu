@@ -25,6 +25,7 @@
 #include "model/roles.h"
 
 #include "accounts-proxy-model.h"
+#include "accounts-proxy-model.moc"
 
 AccountsProxyModel::AccountsProxyModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -96,5 +97,3 @@ void AccountsProxyModel::filterChangedSlot()
     invalidateFilter();
     emit filterChanged();
 }
-
-#include "moc_accounts-proxy-model.cpp"

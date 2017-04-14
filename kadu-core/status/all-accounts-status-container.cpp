@@ -26,6 +26,7 @@
 #include "status/status-configuration-holder.h"
 
 #include "all-accounts-status-container.h"
+#include "all-accounts-status-container.moc"
 
 AllAccountsStatusContainer::AllAccountsStatusContainer(QObject *parent) : StatusContainer(parent)
 {
@@ -148,5 +149,3 @@ void AllAccountsStatusContainer::storeStatus(Status status)
     for (auto const &account : Accounts)
         account.statusContainer()->storeStatus(status);
 }
-
-#include "moc_all-accounts-status-container.cpp"

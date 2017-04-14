@@ -9,4 +9,4 @@ set (ssl_SRCS
 	ssl-module.cpp
 )
 
-kadu_subdirectory (ssl "${ssl_SRCS}" "" "")
+kadu_subdirectory (ssl "${ssl_SRCS}")

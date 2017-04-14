@@ -20,6 +20,7 @@
  */
 
 #include "identities-combo-box.h"
+#include "identities-combo-box.moc"
 
 #include "core/injected-factory.h"
 #include "identities/identity-manager.h"
@@ -94,5 +95,3 @@ void IdentitiesComboBox::createNewIdentity()
     if (newIdentity)
         setCurrentIdentity(newIdentity);
 }
-
-#include "moc_identities-combo-box.cpp"

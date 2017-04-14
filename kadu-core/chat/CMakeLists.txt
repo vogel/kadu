@@ -36,4 +36,4 @@ kadu_add_test (open-chat-service)
 kadu_add_test (recent-chat-repository)
 kadu_add_test (recent-chat-service)
 
-kadu_subdirectory (chat "${chat_SRCS}" "" "")
+kadu_subdirectory (chat "${chat_SRCS}")

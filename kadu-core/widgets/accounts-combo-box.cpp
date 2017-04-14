@@ -31,6 +31,7 @@
 #include "model/roles.h"
 
 #include "accounts-combo-box.h"
+#include "accounts-combo-box.moc"
 
 AccountsComboBox::AccountsComboBox(bool includeSelectAccount, ActionVisibility visibility, QWidget *parent)
         : ActionsComboBox(parent)

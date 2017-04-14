@@ -19,6 +19,7 @@
  */
 
 #include "account-service.h"
+#include "account-service.moc"
 
 AccountService::AccountService(Account account, QObject *parent) : QObject{parent}, m_account{account}
 {
@@ -33,5 +34,3 @@ Account AccountService::account() const
 {
     return m_account;
 }
-
-#include "moc_account-service.cpp"

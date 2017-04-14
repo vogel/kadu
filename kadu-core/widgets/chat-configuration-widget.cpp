@@ -18,6 +18,7 @@
  */
 
 #include "chat-configuration-widget.h"
+#include "chat-configuration-widget.moc"
 
 ChatConfigurationWidget::ChatConfigurationWidget(const Chat &chat, QWidget *parent)
         : ModalConfigurationWidget(parent), MyChat(chat)
@@ -32,5 +33,3 @@ Chat ChatConfigurationWidget::chat() const
 {
     return MyChat;
 }
-
-#include "moc_chat-configuration-widget.cpp"

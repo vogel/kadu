@@ -19,6 +19,7 @@
  */
 
 #include "clipboard-html-transformer-service.h"
+#include "clipboard-html-transformer-service.moc"
 
 ClipboardHtmlTransformerService::ClipboardHtmlTransformerService(QObject *parent) : QObject(parent)
 {
@@ -27,5 +28,3 @@ ClipboardHtmlTransformerService::ClipboardHtmlTransformerService(QObject *parent
 ClipboardHtmlTransformerService::~ClipboardHtmlTransformerService()
 {
 }
-
-#include "moc_clipboard-html-transformer-service.cpp"

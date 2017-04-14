@@ -30,6 +30,7 @@
 #include "misc/misc.h"
 
 #include "select-file.h"
+#include "select-file.moc"
 
 SelectFile::SelectFile(const QString &type, QWidget *parent) : QWidget(parent), Type(type)
 {
@@ -134,5 +135,3 @@ void SelectFile::fileEdited()
     if (LineEdit->isModified())
         emit fileChanged();
 }
-
-#include "moc_select-file.cpp"

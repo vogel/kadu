@@ -23,6 +23,7 @@
 #include <QtCore/QStringList>
 
 #include "merged-proxy-model.h"
+#include "merged-proxy-model.moc"
 
 MergedProxyModel::MergedProxyModel(QObject *parent) : QAbstractItemModel(parent)
 {
@@ -443,5 +444,3 @@ QMimeData *MergedProxyModel::mimeData(const QModelIndexList &proxyIndexes) const
 
     return mergedMimeData;
 }
-
-#include "moc_merged-proxy-model.cpp"

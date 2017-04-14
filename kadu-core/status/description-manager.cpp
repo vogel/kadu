@@ -21,6 +21,7 @@
  */
 
 #include "description-manager.h"
+#include "description-manager.moc"
 
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
@@ -144,5 +145,3 @@ void DescriptionManager::clearDescriptions()
 {
     StringList.clear();
 }
-
-#include "moc_description-manager.cpp"

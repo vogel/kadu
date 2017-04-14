@@ -25,7 +25,9 @@
 #include <QtXml/QDomElement>
 
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-syntax-editor.h"
+#include "widgets/configuration/config-syntax-editor.moc"
 
 ConfigSyntaxEditor::ConfigSyntaxEditor(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,

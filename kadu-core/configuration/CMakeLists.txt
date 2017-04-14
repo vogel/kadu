@@ -16,4 +16,4 @@ set (configuration_SRCS
 	deprecated-configuration-api.cpp
 )
 
-kadu_subdirectory (configuration "${configuration_SRCS}" "" "")
+kadu_subdirectory (configuration "${configuration_SRCS}")

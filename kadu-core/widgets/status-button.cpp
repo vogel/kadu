@@ -41,6 +41,7 @@
 #include "widgets/status-menu.h"
 
 #include "status-button.h"
+#include "status-button.moc"
 
 StatusButton::StatusButton(StatusContainer *statusContainer, QWidget *parent)
         : QToolButton(parent), MyStatusContainer(statusContainer), DisplayStatusName(false), MenuTitleAction{nullptr}
@@ -215,5 +216,3 @@ QString StatusButton::prepareDescription(const QString &description) const
 
     return html;
 }
-
-#include "moc_status-button.cpp"

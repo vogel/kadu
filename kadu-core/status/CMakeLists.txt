@@ -19,16 +19,4 @@ set (status_SRCS
 	storable-status-container.cpp
 )
 
-set (status_MOC_SRCS
-	all-accounts-status-container.h
-	description-manager.h
-	description-model.h
-	status-actions.h
-	status-changer.h
-	status-changer-manager.h
-	status-container.h
-	status-container-manager.h
-	storable-status-container.h
-)
-
-kadu_subdirectory (status "${status_SRCS}" "${status_MOC_SRCS}" "")
+kadu_subdirectory (status "${status_SRCS}")

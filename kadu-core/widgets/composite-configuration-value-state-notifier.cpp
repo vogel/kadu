@@ -18,6 +18,7 @@
  */
 
 #include "composite-configuration-value-state-notifier.h"
+#include "composite-configuration-value-state-notifier.moc"
 
 CompositeConfigurationValueStateNotifier::CompositeConfigurationValueStateNotifier(QObject *parent)
         : ConfigurationValueStateNotifier(parent), CurrentState(StateNotChanged)

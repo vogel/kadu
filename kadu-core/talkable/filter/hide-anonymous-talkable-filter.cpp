@@ -23,6 +23,7 @@
 #include "contacts/contact.h"
 
 #include "hide-anonymous-talkable-filter.h"
+#include "hide-anonymous-talkable-filter.moc"
 
 HideAnonymousTalkableFilter::HideAnonymousTalkableFilter(QObject *parent) : TalkableFilter(parent), Enabled(true)
 {
@@ -73,5 +74,3 @@ TalkableFilter::FilterResult HideAnonymousTalkableFilter::filterContact(const Co
     else
         return Undecided;
 }
-
-#include "moc_hide-anonymous-talkable-filter.cpp"

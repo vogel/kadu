@@ -21,6 +21,7 @@
 #include "model/model-chain.h"
 
 #include "kadu-merged-proxy-model.h"
+#include "kadu-merged-proxy-model.moc"
 
 KaduMergedProxyModel::KaduMergedProxyModel(QObject *parent) : MergedProxyModel(parent)
 {
@@ -64,5 +65,3 @@ QModelIndexList KaduMergedProxyModel::indexListForValue(const QVariant &value) c
 
     return result;
 }
-
-#include "moc_kadu-merged-proxy-model.cpp"

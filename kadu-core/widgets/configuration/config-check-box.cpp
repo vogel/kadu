@@ -25,6 +25,8 @@
 #include <QtWidgets/QListWidget>
 
 #include "widgets/configuration/config-check-box.h"
+#include "widgets/configuration/config-check-box.moc"
+
 #include "widgets/configuration/config-group-box.h"
 
 ConfigCheckBox::ConfigCheckBox(

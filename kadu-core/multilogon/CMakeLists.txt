@@ -5,4 +5,4 @@ set (multilogon_SRCS
 	multilogon-session.cpp
 )
 
-kadu_subdirectory (multilogon "${multilogon_SRCS}" "" "")
+kadu_subdirectory (multilogon "${multilogon_SRCS}")

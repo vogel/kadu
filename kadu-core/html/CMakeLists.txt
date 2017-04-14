@@ -6,4 +6,4 @@ set (html_SRCS
 
 kadu_add_test (html-conversion)
 
-kadu_subdirectory (html "${html_SRCS}" "" "")
+kadu_subdirectory (html "${html_SRCS}")

@@ -21,6 +21,7 @@
  */
 
 #include "buddy-contacts-table-model.h"
+#include "buddy-contacts-table-model.moc"
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
@@ -451,5 +452,3 @@ bool BuddyContactsTableModel::setData(const QModelIndex &index, const QVariant &
 
     return true;
 }
-
-#include "moc_buddy-contacts-table-model.cpp"

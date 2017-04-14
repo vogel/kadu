@@ -22,6 +22,7 @@
 #include "contacts/contact.h"
 
 #include "hide-temporary-talkable-filter.h"
+#include "hide-temporary-talkable-filter.moc"
 
 HideTemporaryTalkableFilter::HideTemporaryTalkableFilter(QObject *parent) : TalkableFilter(parent), Enabled(true)
 {
@@ -61,5 +62,3 @@ void HideTemporaryTalkableFilter::setEnabled(bool enabled)
     Enabled = enabled;
     emit filterChanged();
 }
-
-#include "moc_hide-temporary-talkable-filter.cpp"

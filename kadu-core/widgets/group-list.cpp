@@ -20,6 +20,7 @@
  */
 
 #include "group-list.h"
+#include "group-list.moc"
 
 #include "buddies/group-manager.h"
 
@@ -76,5 +77,3 @@ QSet<Group> GroupList::checkedGroups()
 
     return result;
 }
-
-#include "moc_group-list.cpp"

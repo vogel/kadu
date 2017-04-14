@@ -23,6 +23,7 @@
 
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-line-separator.h"
+#include "widgets/configuration/config-line-separator.moc"
 
 ConfigLineSeparator::ConfigLineSeparator(
     ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)

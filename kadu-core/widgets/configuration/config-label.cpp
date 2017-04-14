@@ -25,6 +25,7 @@
 
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-label.h"
+#include "widgets/configuration/config-label.moc"
 
 ConfigLabel::ConfigLabel(
     const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,

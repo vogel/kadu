@@ -20,6 +20,7 @@
  */
 
 #include "buddy-contacts-table-item.h"
+#include "buddy-contacts-table-item.moc"
 
 #include "contacts/contact-manager.h"
 #include "protocols/protocol-factory.h"
@@ -156,5 +157,3 @@ bool BuddyContactsTableItem::isEditValid() const
 
     return true;
 }
-
-#include "moc_buddy-contacts-table-item.cpp"

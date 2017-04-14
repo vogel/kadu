@@ -21,6 +21,7 @@
 #include "chat/chat.h"
 
 #include "hide-contact-chats-talkable-filter.h"
+#include "hide-contact-chats-talkable-filter.moc"
 
 HideContactChatsTalkableFilter::HideContactChatsTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {
@@ -37,5 +38,3 @@ TalkableFilter::FilterResult HideContactChatsTalkableFilter::filterChat(const Ch
     else
         return Undecided;
 }
-
-#include "moc_hide-contact-chats-talkable-filter.cpp"

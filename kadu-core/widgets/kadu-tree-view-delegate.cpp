@@ -28,6 +28,7 @@
 #include "widgets/talkable-tree-view.h"
 
 #include "kadu-tree-view-delegate.h"
+#include "kadu-tree-view-delegate.moc"
 
 KaduTreeViewDelegate::KaduTreeViewDelegate(TalkableTreeView *parent) : QItemDelegate(parent)
 {
@@ -133,5 +134,3 @@ void KaduTreeViewDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     TalkablePainter talkablePainter(Configuration, options, index);
     talkablePainter.paint(painter);
 }
-
-#include "moc_kadu-tree-view-delegate.cpp"

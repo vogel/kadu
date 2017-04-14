@@ -31,6 +31,7 @@
 #include "protocols/protocol.h"
 
 #include "buddy-options-configuration-widget.h"
+#include "buddy-options-configuration-widget.moc"
 
 BuddyOptionsConfigurationWidget::BuddyOptionsConfigurationWidget(const Buddy &buddy, QWidget *parent)
         : QWidget(parent), MyBuddy(buddy)
@@ -164,5 +165,3 @@ void BuddyOptionsConfigurationWidget::offlineToToggled(bool toggled)
         }
     }
 }
-
-#include "moc_buddy-options-configuration-widget.cpp"

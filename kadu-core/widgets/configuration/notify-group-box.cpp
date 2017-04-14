@@ -20,6 +20,7 @@
  */
 
 #include "notify-group-box.h"
+#include "notify-group-box.moc"
 
 #include "icons/icons-manager.h"
 
@@ -73,5 +74,3 @@ void NotifyGroupBox::iconThemeChanged()
 {
     m_notifierCheckBox->setIcon(m_iconsManager->iconByPath(m_notificator->icon()));
 }
-
-#include "moc_notify-group-box.cpp"

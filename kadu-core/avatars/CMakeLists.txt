@@ -12,4 +12,4 @@ set (avatars_SRCS
 	serial-avatar-downloader.cpp
 )
 
-kadu_subdirectory (avatars "${avatars_SRCS}" "" "")
+kadu_subdirectory (avatars "${avatars_SRCS}")

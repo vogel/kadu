@@ -28,6 +28,7 @@
 #include "protocols/protocol.h"
 
 #include "protocols-model-proxy.h"
+#include "protocols-model-proxy.moc"
 #include "protocols-model.h"
 
 ProtocolsModelProxy::ProtocolsModelProxy(QObject *parent) : QSortFilterProxyModel(parent)
@@ -102,5 +103,3 @@ void ProtocolsModelProxy::removeFilter(AbstractProtocolFilter *filter)
     invalidateFilter();
     disconnect(filter, 0, this, 0);
 }
-
-#include "moc_protocols-model-proxy.cpp"

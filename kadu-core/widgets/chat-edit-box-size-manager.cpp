@@ -19,6 +19,7 @@
  */
 
 #include "chat-edit-box-size-manager.h"
+#include "chat-edit-box-size-manager.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -61,5 +62,3 @@ bool ChatEditBoxSizeManager::initialized()
 {
     return 0 != CommonHeight;
 }
-
-#include "moc_chat-edit-box-size-manager.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "tool-tip-widget.h"
+#include "tool-tip-widget.moc"
 
 #include "parser/parser.h"
 

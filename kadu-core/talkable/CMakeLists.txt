@@ -23,24 +23,4 @@ set (talkable_SRCS
 	talkable.cpp
 )
 
-set (talkable_MOC_SRCS
-	filter/account-talkable-filter.h
-	filter/blocked-talkable-filter.h
-	filter/exclude-buddy-talkable-filter.h
-	filter/group-talkable-filter.h
-	filter/hide-anonymous-talkable-filter.h
-	filter/hide-contact-chats-talkable-filter.h
-	filter/hide-offline-talkable-filter.h
-	filter/hide-offline-without-description-talkable-filter.h
-	filter/hide-without-description-talkable-filter.h
-	filter/hide-temporary-talkable-filter.h
-	filter/mobile-talkable-filter.h
-	filter/name-talkable-filter.h
-	filter/talkable-filter.h
-	filter/unread-messages-talkable-filter.h
-
-	model/talkable-model.h
-	model/talkable-proxy-model.h
-)
-
-kadu_subdirectory (talkable "${talkable_SRCS}" "${talkable_MOC_SRCS}" "")
+kadu_subdirectory (talkable "${talkable_SRCS}")

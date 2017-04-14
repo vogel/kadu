@@ -18,6 +18,7 @@
  */
 
 #include "simple-configuration-value-state-notifier.h"
+#include "simple-configuration-value-state-notifier.moc"
 
 SimpleConfigurationValueStateNotifier::SimpleConfigurationValueStateNotifier(QObject *parent)
         : ConfigurationValueStateNotifier(parent), CurrentState(StateNotChanged)

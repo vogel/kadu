@@ -19,6 +19,7 @@
  */
 
 #include "talkable-delegate-configuration.h"
+#include "talkable-delegate-configuration.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -78,5 +79,3 @@ void TalkableDelegateConfiguration::configurationUpdated()
 
     ListView->scheduleDelayedItemsLayout();
 }
-
-#include "moc_talkable-delegate-configuration.cpp"

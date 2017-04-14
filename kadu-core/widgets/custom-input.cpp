@@ -46,6 +46,7 @@
 
 #include "custom-input-menu-manager.h"
 #include "custom-input.h"
+#include "custom-input.moc"
 
 CustomInput::CustomInput(Chat chat, QWidget *parent)
         : QTextEdit(parent), CurrentChat(chat), CopyPossible(false), autosend_enabled(true)
@@ -333,5 +334,3 @@ void CustomInput::insertFromMimeData(const QMimeData *source)
 {
     acceptPasteData(source, this);
 }
-
-#include "moc_custom-input.cpp"

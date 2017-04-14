@@ -25,6 +25,7 @@
 #include <QtCore/QStringList>
 
 #include "theme-manager.h"
+#include "theme-manager.moc"
 
 ThemeManager::ThemeManager(QObject *parent) : QObject(parent)
 {
@@ -89,5 +90,3 @@ Theme ThemeManager::currentTheme() const
 {
     return Themes.value(CurrentThemeName);
 }
-
-#include "moc_theme-manager.cpp"

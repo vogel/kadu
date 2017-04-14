@@ -22,6 +22,7 @@
  */
 
 #include "preview.h"
+#include "preview.moc"
 
 #include "buddies/buddy-dummy-factory.h"
 #include "parser/parser.h"
@@ -76,5 +77,3 @@ void Preview::syntaxChanged(const QString &content)
 
     m_webView->setHtml(text);
 }
-
-#include "moc_preview.cpp"

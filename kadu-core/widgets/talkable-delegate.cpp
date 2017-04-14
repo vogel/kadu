@@ -19,6 +19,7 @@
  */
 
 #include "talkable-delegate.h"
+#include "talkable-delegate.moc"
 
 #include "accounts/account.h"
 #include "buddies/buddy-preferred-manager.h"
@@ -151,5 +152,3 @@ bool TalkableDelegate::editorEvent(
 
     return model->setData(index, state, Qt::CheckStateRole);
 }
-
-#include "moc_talkable-delegate.cpp"

@@ -23,6 +23,7 @@
 #include <QtWidgets/QColorDialog>
 
 #include "color-button.h"
+#include "color-button.moc"
 
 ColorButton::ColorButton(QWidget *parent) : QPushButton(parent)
 {
@@ -52,5 +53,3 @@ bool ColorButton::setColor(const QColor &color)
 
     return true;
 }
-
-#include "moc_color-button.cpp"

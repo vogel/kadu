@@ -46,6 +46,7 @@
 #include "windows/message-dialog.h"
 
 #include "toolbar.h"
+#include "toolbar.moc"
 
 class DisabledActionsWatcher : public QObject
 {
@@ -1194,5 +1195,3 @@ int ToolBarSpacer::token()
     ++Token;
     return Token;
 }
-
-#include "moc_toolbar.cpp"

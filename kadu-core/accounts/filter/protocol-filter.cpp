@@ -23,6 +23,7 @@
 #include "protocols/protocol-factory.h"
 
 #include "protocol-filter.h"
+#include "protocol-filter.moc"
 
 ProtocolFilter::ProtocolFilter(QObject *parent) : AbstractAccountFilter(parent)
 {
@@ -45,5 +46,3 @@ bool ProtocolFilter::acceptAccount(Account account)
 {
     return (ProtocolName.isEmpty() || ProtocolName == account.protocolName());
 }
-
-#include "moc_protocol-filter.cpp"

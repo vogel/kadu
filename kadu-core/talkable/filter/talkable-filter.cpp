@@ -19,6 +19,7 @@
  */
 
 #include "talkable-filter.h"
+#include "talkable-filter.moc"
 
 #include "buddies/buddy.h"
 #include "chat/chat.h"
@@ -52,5 +53,3 @@ TalkableFilter::FilterResult TalkableFilter::filterContact(const Contact &contac
 
     return Undecided;
 }
-
-#include "moc_talkable-filter.cpp"

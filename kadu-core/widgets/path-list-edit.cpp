@@ -35,6 +35,7 @@
 #include "os/generic/window-geometry-manager.h"
 
 #include "path-list-edit.h"
+#include "path-list-edit.moc"
 
 PathListEdit::PathListEdit(QWidget *parent) : QPushButton(tr("Select"), parent)
 {
@@ -234,5 +235,3 @@ void PathListEditWindow::keyPressEvent(QKeyEvent *e)
     else
         QWidget::keyPressEvent(e);
 }
-
-#include "moc_path-list-edit.cpp"

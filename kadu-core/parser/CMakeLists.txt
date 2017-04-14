@@ -4,4 +4,4 @@ set (parser_SRCS
 	parser-token.cpp
 )
 
-kadu_subdirectory (parser "${parser_SRCS}" "" "")
+kadu_subdirectory (parser "${parser_SRCS}")

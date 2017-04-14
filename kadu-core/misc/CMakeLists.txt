@@ -18,4 +18,4 @@ kadu_add_test (find-overlaping-region)
 kadu_add_test (sorted-unique-vector)
 kadu_add_test (string-utils)
 
-kadu_subdirectory (misc "${misc_SRCS}" "" "")
+kadu_subdirectory (misc "${misc_SRCS}")

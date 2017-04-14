@@ -24,7 +24,9 @@
 #include <QtWidgets/QLabel>
 
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-select-font.h"
+#include "widgets/configuration/config-select-font.moc"
 
 ConfigSelectFont::ConfigSelectFont(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -81,5 +83,3 @@ void ConfigSelectFont::setVisible(bool visible)
     label->setVisible(visible);
     SelectFont::setVisible(visible);
 }
-
-#include "moc_config-select-font.cpp"

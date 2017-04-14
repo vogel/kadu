@@ -19,6 +19,7 @@
  */
 
 #include "status-container.h"
+#include "status-container.moc"
 
 StatusContainer::StatusContainer(QObject *parent) : QObject(parent)
 {
@@ -34,5 +35,3 @@ QList<StatusContainer *> StatusContainer::subStatusContainers()
     list.append(this);
     return list;
 }
-
-#include "moc_status-container.cpp"

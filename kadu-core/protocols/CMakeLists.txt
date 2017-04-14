@@ -1,4 +1,5 @@
 set (protocols_SRCS
+	filter/abstract-protocol-filter.cpp
 	filter/can-register-protocol-filter.cpp
 
 	model/protocols-model.cpp
@@ -10,35 +11,18 @@ set (protocols_SRCS
 	services/chat-image-service.cpp
 	services/chat-service.cpp
 	services/chat-state-service.cpp
+	services/contact-personal-info-service.cpp
+	services/file-transfer-service.cpp
 	services/multilogon-service.cpp
+	services/personal-info-service.cpp
 	services/protocol-service.cpp
+	services/search-service.cpp
+	services/subscription-service.cpp
 
 	protocol.cpp
+	protocol-factory.cpp
 	protocols-manager.cpp
 	protocol-state-machine.cpp
 )
 
-set (protocols_MOC_SRCS
-	filter/abstract-protocol-filter.h
-	filter/can-register-protocol-filter.h
-
-	model/protocols-model.h
-	model/protocols-model-proxy.h
-
-	services/account-service.h
-	services/chat-image-service.h
-	services/chat-service.h
-	services/chat-state-service.h
-	services/contact-personal-info-service.h
-	services/file-transfer-service.h
-	services/personal-info-service.h
-	services/search-service.h
-	services/subscription-service.h
-
-	protocol.h
-	protocol-factory.h
-	protocols-manager.h
-	protocol-state-machine.h
-)
-
-kadu_subdirectory (protocols "${protocols_SRCS}" "${protocols_MOC_SRCS}" "")
+kadu_subdirectory (protocols "${protocols_SRCS}")

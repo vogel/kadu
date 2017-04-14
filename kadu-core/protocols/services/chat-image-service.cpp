@@ -21,6 +21,7 @@
  */
 
 #include "chat-image-service.h"
+#include "chat-image-service.moc"
 
 ChatImageService::ChatImageService(Account account, QObject *parent) : AccountService(account, parent)
 {
@@ -29,5 +30,3 @@ ChatImageService::ChatImageService(Account account, QObject *parent) : AccountSe
 ChatImageService::~ChatImageService()
 {
 }
-
-#include "moc_chat-image-service.cpp"

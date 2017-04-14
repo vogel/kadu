@@ -56,4 +56,4 @@ if (MINGW)
 	set_property (SOURCE open-chat-with/open-chat-with.cpp APPEND_STRING PROPERTY COMPILE_FLAGS " -fno-strict-aliasing")
 endif ()
 
-kadu_subdirectory (windows "${windows_SRCS}" "" "")
+kadu_subdirectory (windows "${windows_SRCS}")

@@ -26,6 +26,7 @@
 #include "services/image-storage-service.h"
 
 #include "chat-view-network-access-manager.h"
+#include "chat-view-network-access-manager.moc"
 
 ChatViewNetworkAccessManager::ChatViewNetworkAccessManager(QNetworkAccessManager *manager, QObject *parent)
         : QNetworkAccessManager(parent)
@@ -59,5 +60,3 @@ QNetworkReply *ChatViewNetworkAccessManager::createRequest(
 
     return QNetworkAccessManager::createRequest(operation, newRequest, device);
 }
-
-#include "moc_chat-view-network-access-manager.cpp"

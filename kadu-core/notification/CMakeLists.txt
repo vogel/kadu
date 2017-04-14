@@ -29,4 +29,4 @@ elseif (UNIX AND NOT APPLE)
     list (APPEND notification_SRCS "x11-screen-mode-checker.cpp")
 endif ()
 
-kadu_subdirectory (notification "${notification_SRCS}" "" "")
+kadu_subdirectory (notification "${notification_SRCS}")

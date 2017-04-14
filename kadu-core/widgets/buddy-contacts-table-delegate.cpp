@@ -21,6 +21,7 @@
  */
 
 #include "buddy-contacts-table-delegate.h"
+#include "buddy-contacts-table-delegate.moc"
 
 #include "accounts/account.h"
 #include "core/injected-factory.h"
@@ -112,5 +113,3 @@ bool BuddyContactsTableDelegate::eventFilter(QObject *editor, QEvent *event)
 
     return handled;
 }
-
-#include "moc_buddy-contacts-table-delegate.cpp"

@@ -20,6 +20,7 @@
 #include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "chat-edit-widget.h"
+#include "chat-edit-widget.moc"
 
 ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent)
         : ModalConfigurationWidget{parent}, m_stateNotifier{make_owned<SimpleConfigurationValueStateNotifier>(this)},

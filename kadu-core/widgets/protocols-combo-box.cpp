@@ -21,6 +21,7 @@
  */
 
 #include "protocols-combo-box.h"
+#include "protocols-combo-box.moc"
 
 #include "core/injected-factory.h"
 #include "model/model-chain.h"
@@ -79,5 +80,3 @@ void ProtocolsComboBox::removeFilter(AbstractProtocolFilter *filter)
 {
     m_proxyModel->removeFilter(filter);
 }
-
-#include "moc_protocols-combo-box.cpp"

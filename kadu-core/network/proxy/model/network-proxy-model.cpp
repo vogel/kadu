@@ -19,6 +19,7 @@
  */
 
 #include "network-proxy-model.h"
+#include "network-proxy-model.moc"
 
 #include "model/roles.h"
 #include "network/proxy/network-proxy-manager.h"
@@ -155,5 +156,3 @@ void NetworkProxyModel::networkProxyRemoved(NetworkProxy networkProxy)
 
     endRemoveRows();
 }
-
-#include "moc_network-proxy-model.cpp"

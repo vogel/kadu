@@ -47,4 +47,4 @@ kadu_add_test (state/plugin-state)
 kadu_add_test (plugin-conflict-resolver)
 kadu_add_test (plugin-dependency-handler)
 
-kadu_subdirectory (plugin "${plugin_SRCS}" "" "")
+kadu_subdirectory (plugin "${plugin_SRCS}")

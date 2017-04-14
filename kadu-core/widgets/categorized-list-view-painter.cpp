@@ -26,6 +26,7 @@
 #include "widgets/categorized-list-view.h"
 
 #include "categorized-list-view-painter.h"
+#include "categorized-list-view-painter.moc"
 
 #define HORIZONTAL_HINT 3
 
@@ -209,5 +210,3 @@ void CategorizedListViewPainter::mouseButtonDoubleClicked(const QModelIndex &, c
 void CategorizedListViewPainter::mouseLeft(const QModelIndex &, const QRect &)
 {
 }
-
-#include "moc_categorized-list-view-painter.cpp"

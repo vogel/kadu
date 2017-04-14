@@ -20,6 +20,7 @@
  */
 
 #include "buddy-groups-configuration-widget.h"
+#include "buddy-groups-configuration-widget.moc"
 
 #include "buddies/group.h"
 #include "contacts/contact.h"
@@ -73,5 +74,3 @@ void BuddyGroupsConfigurationWidget::save()
 {
     m_buddy.setGroups(m_groupList->checkedGroups());
 }
-
-#include "moc_buddy-groups-configuration-widget.cpp"

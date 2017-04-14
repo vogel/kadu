@@ -8,4 +8,4 @@ set (services_SRCS
 	raw-message-transformer-service.cpp
 )
 
-kadu_subdirectory (services "${services_SRCS}" "" "")
+kadu_subdirectory (services "${services_SRCS}")

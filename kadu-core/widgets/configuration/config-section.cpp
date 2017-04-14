@@ -22,6 +22,7 @@
  */
 
 #include "config-section.h"
+#include "config-section.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -163,5 +164,3 @@ void ConfigSection::addFullPageWidget(const QString &name, QWidget *widget)
 {
     TabWidget->addTab(widget, name);
 }
-
-#include "moc_config-section.cpp"

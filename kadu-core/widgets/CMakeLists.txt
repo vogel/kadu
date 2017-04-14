@@ -26,6 +26,7 @@ set (widgets_SRCS
 	account-avatar-widget.cpp
 	account-buddy-list-widget.cpp
 	account-configuration-widget.cpp
+	account-configuration-widget-factory.cpp
 	account-configuration-widget-factory-repository.cpp
 	account-configuration-widget-tab-adapter.cpp
 	account-create-widget.cpp
@@ -35,6 +36,7 @@ set (widgets_SRCS
 	avatar-painter.cpp
 	buddy-avatar-widget.cpp
 	buddy-configuration-widget.cpp
+	buddy-configuration-widget-factory.cpp
 	buddy-configuration-widget-factory-repository.cpp
 	buddy-configuration-widget-group-boxes-adapter.cpp
 	buddy-contacts-table-delegate.cpp
@@ -50,6 +52,7 @@ set (widgets_SRCS
 	categorized-list-view.cpp
 	categorized-list-view-painter.cpp
 	chat-configuration-widget.cpp
+	chat-configuration-widget-factory.cpp
 	chat-configuration-widget-factory-repository.cpp
 	chat-configuration-widget-group-boxes-adapter.cpp
 	chat-edit-box.cpp
@@ -59,6 +62,7 @@ set (widgets_SRCS
 	chat-room-edit-widget.cpp
 	chat-style-preview.cpp
 	chat-top-bar-container-widget.cpp
+	chat-top-bar-widget-factory.cpp
 	chat-top-bar-widget-factory-repository.cpp
 	chat-view-network-access-manager.cpp
 	color-button.cpp
@@ -140,122 +144,18 @@ set (widgets_SRCS
 	configuration/config-section.cpp
 	configuration/config-group-box.cpp
 	configuration/config-tab.cpp
+	configuration/kadu-scroll-area.cpp
+	configuration/kadu-tab-widget.cpp
 	configuration/notifier-configuration-widget.cpp
 	configuration/notify-group-box.cpp
 	configuration/notify-tree-widget.cpp
 
+	dialog/dialog-widget.cpp
 	dialog/merge-buddies-dialog-widget.cpp
 	dialog/password-dialog-widget.cpp
 	dialog/title-widget.cpp
 )
 
-set (widgets_MOC_SRCS
-	account-add-widget.h
-	account-avatar-widget.h
-	account-buddy-list-widget.h
-	account-configuration-widget.h
-	account-configuration-widget-factory-repository.h
-	account-configuration-widget-tab-adapter.h
-	account-create-widget.h
-	account-edit-widget.h
-	accounts-combo-box.h
-	actions-combo-box.h
-	buddy-avatar-widget.h
-	buddy-configuration-widget.h
-	buddy-configuration-widget-factory-repository.h
-	buddy-contacts-table-delegate.h
-	buddy-contacts-table-item.h
-	buddy-contacts-table-model.h
-	buddy-contacts-table-model-proxy.h
-	buddy-contacts-table.h
-	buddy-general-configuration-widget.h
-	buddy-groups-configuration-widget.h
-	buddy-personal-info-configuration-widget.h
-	buddy-options-configuration-widget.h
-	buddy-info-panel.h
-	categorized-list-view.h
-	categorized-list-view-painter.h
-	chat-configuration-widget.h
-	chat-configuration-widget-factory-repository.h
-	chat-edit-box.h
-	chat-edit-box-size-manager.h
-	chat-edit-widget.h
-	chat-room-edit-widget.h
-	chat-view-network-access-manager.h
-	color-button.h
-	composite-configuration-value-state-notifier.h
-	configuration-value-state-notifier.h
-	custom-input.h
-	custom-input-menu-manager.h
-	filter-widget.h
-	filtered-tree-view.h
-	group-list.h
-	groups-combo-box.h
-	identities-combo-box.h
-	kadu-text-edit.h
-	kadu-tree-view.h
-	kadu-tree-view-delegate.h
-	kadu-web-view.h
-	line-edit-clear-button.h
-	line-edit-with-clear-button.h
-	modal-configuration-widget.h
-	path-list-edit.h
-	preview.h
-	proxy-combo-box.h
-	protocols-combo-box.h
-	recent-chats-menu.h
-	roster-widget.h
-	search-bar.h
-	select-file.h
-	select-font.h
-	select-talkable-combo-box.h
-	select-talkable-popup.h
-	simple-configuration-value-state-notifier.h
-	status-button.h
-	status-buttons.h
-	status-menu.h
-	syntax-editor.h
-	talkable-delegate.h
-	talkable-tree-view.h
-	toolbar.h
-	wait-overlay.h
-
-	configuration/buddy-list-background-colors-widget.h
-	configuration/config-action-button.h
-	configuration/config-check-box.h
-	#configuration/config-widget-value.h
-	configuration/configuration-widget.h
-	configuration/config-label.h
-	configuration/config-color-button.h
-	configuration/config-combo-box.h
-	configuration/config-gg-password-edit.h
-	configuration/config-group-box.h
-	configuration/config-hot-key-edit.h
-	configuration/config-line-edit.h
-	configuration/config-line-separator.h
-	configuration/config-list-widget.h
-	configuration/config-path-list-edit.h
-	configuration/config-preview.h
-	configuration/config-radio-button.h
-	configuration/config-section.h
-	configuration/config-select-file.h
-	configuration/config-select-font.h
-	configuration/config-slider.h
-	configuration/config-spin-box.h
-	configuration/config-syntax-editor.h
-	configuration/config-tab.h
-	configuration/kadu-scroll-area.h
-	configuration/kadu-tab-widget.h
-	configuration/notify-tree-widget.h
-	configuration/notifier-configuration-widget.h
-	configuration/notify-group-box.h
-
-	dialog/dialog-widget.h
-	dialog/merge-buddies-dialog-widget.h
-	dialog/password-dialog-widget.h
-	dialog/title-widget.h
-)
-
 kadu_add_test (paste-acceptor)
 
-kadu_subdirectory (widgets "${widgets_SRCS}" "${widgets_MOC_SRCS}" "")
+kadu_subdirectory (widgets "${widgets_SRCS}")

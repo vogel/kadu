@@ -37,6 +37,7 @@
 #include "widgets/talkable-tree-view.h"
 
 #include "filter-widget.h"
+#include "filter-widget.moc"
 
 QString FilterWidget::filterText() const
 {
@@ -168,5 +169,3 @@ void FilterWidget::keyPressEvent(QKeyEvent *event)
 
     QWidget::keyPressEvent(event);
 }
-
-#include "moc_filter-widget.cpp"

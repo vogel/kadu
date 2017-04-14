@@ -32,6 +32,7 @@
 #include "widgets/chat-widget/chat-widget.h"
 
 #include "buddies/buddy-preferred-manager.h"
+#include "buddies/buddy-preferred-manager.moc"
 
 BuddyPreferredManager::BuddyPreferredManager(QObject *parent) : QObject{parent}
 {
@@ -193,5 +194,3 @@ Account BuddyPreferredManager::getCommonAccount(const BuddySet &buddies)
 
     return Account::null;
 }
-
-#include "moc_buddy-preferred-manager.cpp"

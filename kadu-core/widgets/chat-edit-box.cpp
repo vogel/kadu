@@ -59,6 +59,7 @@
 #include "windows/message-dialog.h"
 
 #include "chat-edit-box.h"
+#include "chat-edit-box.moc"
 
 QList<ChatEditBox *> chatEditBoxes;
 
@@ -400,5 +401,3 @@ void ChatEditBox::insertPlainText(const QString &plainText)
 {
     InputBox->insertPlainText(plainText);
 }
-
-#include "moc_chat-edit-box.cpp"

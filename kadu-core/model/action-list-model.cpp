@@ -23,6 +23,7 @@
 #include "model/roles.h"
 
 #include "action-list-model.h"
+#include "action-list-model.moc"
 
 ActionListModel::ActionListModel(QObject *parent) : QAbstractItemModel(parent)
 {
@@ -151,5 +152,3 @@ QModelIndexList ActionListModel::indexListForValue(const QVariant &value) const
 
     return result;
 }
-
-#include "moc_action-list-model.cpp"

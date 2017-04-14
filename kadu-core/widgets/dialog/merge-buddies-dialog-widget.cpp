@@ -20,6 +20,7 @@
  */
 
 #include "merge-buddies-dialog-widget.h"
+#include "merge-buddies-dialog-widget.moc"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/model/buddy-list-model.h"
@@ -118,5 +119,3 @@ void MergeBuddiesDialogWidget::dialogAccepted()
 void MergeBuddiesDialogWidget::dialogRejected()
 {
 }
-
-#include "moc_merge-buddies-dialog-widget.cpp"

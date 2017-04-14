@@ -30,6 +30,7 @@
 #include "misc/misc.h"
 
 #include "config-gg-password-edit.h"
+#include "config-gg-password-edit.moc"
 
 ConfigGGPasswordEdit::ConfigGGPasswordEdit(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,

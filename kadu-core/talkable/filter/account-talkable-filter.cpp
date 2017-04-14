@@ -23,6 +23,7 @@
 #include "contacts/contact.h"
 
 #include "account-talkable-filter.h"
+#include "account-talkable-filter.moc"
 
 AccountTalkableFilter::AccountTalkableFilter(QObject *parent) : TalkableFilter(parent)
 {

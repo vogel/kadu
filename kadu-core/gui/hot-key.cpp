@@ -25,6 +25,7 @@
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "hot-key.h"
+#include "hot-key.moc"
 
 QKeySequence HotKey::shortCutFromFile(Configuration *configuration, const QString &groupname, const QString &name)
 {
@@ -102,5 +103,3 @@ void HotKeyEdit::keyReleaseEvent(QKeyEvent *)
     if (text().at(text().length() - 1) == '+')
         clear();
 }
-
-#include "moc_hot-key.cpp"

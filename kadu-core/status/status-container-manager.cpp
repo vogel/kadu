@@ -34,6 +34,7 @@
 #include "status/status-type.h"
 
 #include "status-container-manager.h"
+#include "status-container-manager.moc"
 
 StatusContainerManager::StatusContainerManager(QObject *parent) : StatusContainer(parent), DefaultStatusContainer(0)
 {
@@ -316,5 +317,3 @@ StatusContainer *StatusContainerManager::statusContainerForAccount(Account accou
         return account.accountIdentity().statusContainer();
     return m_allAccountsStatusContainer;
 }
-
-#include "moc_status-container-manager.cpp"

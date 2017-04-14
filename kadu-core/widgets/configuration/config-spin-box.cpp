@@ -25,7 +25,9 @@
 #include <QtXml/QDomElement>
 
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-spin-box.h"
+#include "widgets/configuration/config-spin-box.moc"
 
 ConfigSpinBox::ConfigSpinBox(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -131,5 +133,3 @@ void ConfigSpinBox::onValueChanged(int i)
     }
     setSuffix(suffix);
 }
-
-#include "moc_config-spin-box.cpp"

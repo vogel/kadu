@@ -24,6 +24,7 @@
 #include "model/kadu-abstract-model.h"
 
 #include "model-chain.h"
+#include "model-chain.moc"
 
 ModelChain::ModelChain(QObject *parent) : QObject(parent), Model(0), KaduModel(0)
 {
@@ -96,5 +97,3 @@ QModelIndexList ModelChain::indexListForValue(const QVariant &value) const
 
     return result;
 }
-
-#include "moc_model-chain.cpp"

@@ -25,6 +25,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "title-widget.h"
+#include "title-widget.moc"
 
 TitleWidget::TitleWidget(QWidget *parent) : QWidget(parent)
 {
@@ -81,5 +82,3 @@ void TitleWidget::setComment(const QString &comment)
     commentLabel->setText(comment);
     show();
 }
-
-#include "moc_title-widget.cpp"

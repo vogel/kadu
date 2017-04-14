@@ -23,6 +23,7 @@
 #pragma once
 
 #include <QtCore/QByteArray>
+#include <boost/type_traits/remove_cv.hpp>
 #include <boost/variant/get.hpp>
 #include <boost/variant/variant.hpp>
 #include <experimental/optional>

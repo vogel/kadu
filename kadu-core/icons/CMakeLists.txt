@@ -4,4 +4,4 @@ set (icons_SRCS
 	kadu-icon.cpp
 )
 
-kadu_subdirectory (icons "${icons_SRCS}" "" "")
+kadu_subdirectory (icons "${icons_SRCS}")

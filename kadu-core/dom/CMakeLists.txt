@@ -10,4 +10,4 @@ set (dom_SRCS
 
 kadu_add_test (dom-visitor-provider-repository)
 
-kadu_subdirectory (dom "${dom_SRCS}" "" "")
+kadu_subdirectory (dom "${dom_SRCS}")

@@ -20,6 +20,7 @@
  */
 
 #include "long-validator.h"
+#include "long-validator.moc"
 
 LongValidator::LongValidator(qlonglong bottom, qlonglong top, QObject *parent)
         : QValidator(parent), Bottom(bottom), Top(top)
@@ -61,5 +62,3 @@ void LongValidator::fixup(QString &input) const
 
     input = result;
 }
-
-#include "moc_long-validator.cpp"

@@ -17,4 +17,4 @@ set (file-transfer_SRCS
 	url-incoming-file-transfer-handler.cpp
 )
 
-kadu_subdirectory (file-transfer "${file-transfer_SRCS}" "" "")
+kadu_subdirectory (file-transfer "${file-transfer_SRCS}")

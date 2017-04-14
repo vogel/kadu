@@ -17,8 +17,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef WRITEABLE_CONTACTS_LIST_FILTER_H
-#define WRITEABLE_CONTACTS_LIST_FILTER_H
+#pragma once
 
 #include "accounts/filter/abstract-account-filter.h"
 
@@ -33,5 +32,3 @@ public:
     explicit WriteableContactsListFilter(QObject *parent = nullptr);
     virtual ~WriteableContactsListFilter();
 };
-
-#endif   // WRITEABLE_CONTACTS_LIST_FILTER_H

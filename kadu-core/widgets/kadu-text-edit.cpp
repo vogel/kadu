@@ -19,6 +19,7 @@
  */
 
 #include "kadu-text-edit.h"
+#include "kadu-text-edit.moc"
 
 KaduTextEdit::KaduTextEdit(QWidget *parent) : QTextEdit(parent), PreferredLines(5)
 {
@@ -38,5 +39,3 @@ QSize KaduTextEdit::sizeHint() const
     QFontMetrics fontMetrics(font());
     return QSize(256, PreferredLines * fontMetrics.lineSpacing());
 }
-
-#include "moc_kadu-text-edit.cpp"

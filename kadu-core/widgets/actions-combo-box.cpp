@@ -27,6 +27,7 @@
 #include "model/roles.h"
 
 #include "actions-combo-box.h"
+#include "actions-combo-box.moc"
 
 ActionsComboBox::ActionsComboBox(QWidget *parent) : QComboBox(parent), KaduModel(0), DataRole(0), LastIndex(-1)
 {
@@ -162,5 +163,3 @@ QAction *ActionsComboBox::currentAction()
 {
     return model()->index(currentIndex(), modelColumn()).data(ActionRole).value<QAction *>();
 }
-
-#include "moc_actions-combo-box.cpp"

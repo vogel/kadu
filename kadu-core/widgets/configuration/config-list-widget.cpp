@@ -25,7 +25,9 @@
 
 #include "configuration/configuration-window-data-manager.h"
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-list-widget.h"
+#include "widgets/configuration/config-list-widget.moc"
 
 ConfigListWidget::ConfigListWidget(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -138,5 +140,3 @@ bool ConfigListWidget::fromDomElement(QDomElement domElement)
 
     return ConfigWidgetValue::fromDomElement(domElement);
 }
-
-#include "moc_config-list-widget.cpp"

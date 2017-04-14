@@ -4,4 +4,4 @@ set (menu_SRCS
 	menu-item.cpp
 )
 
-kadu_subdirectory (menu "${menu_SRCS}" "" "")
+kadu_subdirectory (menu "${menu_SRCS}")

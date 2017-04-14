@@ -29,6 +29,7 @@
 #include "widgets/chat-widget/chat-widget.h"
 
 #include "recent-chats-menu.h"
+#include "recent-chats-menu.moc"
 
 RecentChatsMenu::RecentChatsMenu(QWidget *parent) : QMenu(parent)
 {
@@ -125,5 +126,3 @@ void RecentChatsMenu::iconThemeChanged()
 {
     setIcon(m_iconsManager->iconByPath(KaduIcon("internet-group-chat")));
 }
-
-#include "moc_recent-chats-menu.cpp"

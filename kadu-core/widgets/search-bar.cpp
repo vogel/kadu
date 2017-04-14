@@ -28,6 +28,7 @@
 #include <QtWidgets/QToolButton>
 
 #include "search-bar.h"
+#include "search-bar.moc"
 
 SearchBar::SearchBar(QWidget *parent) : QToolBar(parent), AutoVisibility(true)
 {
@@ -196,5 +197,3 @@ void SearchBar::somethingFound(bool found)
 
     FindEdit->setStyleSheet(style);
 }
-
-#include "moc_search-bar.cpp"

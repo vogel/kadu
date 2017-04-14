@@ -37,6 +37,7 @@
 
 #include "buddy-data-extractor.h"
 #include "buddy-list-model.h"
+#include "buddy-list-model.moc"
 
 #include <QtCore/QMimeData>
 
@@ -589,5 +590,3 @@ void BuddyListModel::accountRemoved(Account account)
 {
     disconnect(account, 0, this, 0);
 }
-
-#include "moc_buddy-list-model.cpp"

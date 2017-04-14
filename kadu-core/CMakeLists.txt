@@ -129,12 +129,11 @@ if (APPLE)
 	list (APPEND ADDITIONAL_LIBKADU_LIBRARIES "-framework carbon")
 endif ()
 
-macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
+macro (kadu_subdirectory SUBDIR SRCS)
 	if (FAST_LINKING)
 		add_library (${SUBDIR}
 			STATIC
 			${SRCS}
-			${MOC_SRCS}
 		)
 		kadu_set_flags (${SUBDIR})
 		set_property (TARGET ${SUBDIR} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
@@ -145,14 +144,7 @@ macro (kadu_subdirectory SUBDIR SRCS MOC_SRCS ADDITIONAL_INCLUDES)
 			list (APPEND tmp "${SUBDIR}/${SRC}")
 		endforeach ()
 
-		set (tmp_moc "")
-		foreach (MOC_SRC ${MOC_SRCS})
-			list (APPEND tmp_moc "${SUBDIR}/${MOC_SRC}")
-		endforeach ()
-
 		set (${SUBDIR}_SRCS "${tmp}" PARENT_SCOPE)
-		set (${SUBDIR}_MOC_SRCS "${tmp_moc}" PARENT_SCOPE)
-		set (${SUBDIR}_INCLUDES "${ADDITIONAL_INCLUDES}" PARENT_SCOPE)
 	endif ()
 endmacro ()
 

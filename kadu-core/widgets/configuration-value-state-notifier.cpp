@@ -18,6 +18,7 @@
  */
 
 #include "configuration-value-state-notifier.h"
+#include "configuration-value-state-notifier.moc"
 
 ConfigurationValueStateNotifier::ConfigurationValueStateNotifier(QObject *parent) : QObject(parent)
 {

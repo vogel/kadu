@@ -24,6 +24,7 @@
 #include "widgets/chat-top-bar-widget-factory.h"
 
 #include "chat-top-bar-container-widget.h"
+#include "chat-top-bar-container-widget.moc"
 
 ChatTopBarContainerWidget::ChatTopBarContainerWidget(const Chat &chat, QWidget *parent) : QWidget(parent), MyChat(chat)
 {

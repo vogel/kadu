@@ -35,6 +35,7 @@
 #include "roster/roster-entry.h"
 
 #include "contact-shared.h"
+#include "contact-shared.moc"
 
 ContactShared::ContactShared(const QUuid &uuid)
         : Shared(uuid), Priority(-1), MaximumImageSize(0), UnreadMessagesCount(0), Blocking(false),
@@ -357,5 +358,3 @@ QString ContactShared::display(bool useBuddyData)
 
 KaduShared_PropertyPtrReadDef(ContactShared, Account, contactAccount, ContactAccount)
     KaduShared_PropertyPtrReadDef(ContactShared, Buddy, ownerBuddy, OwnerBuddy)
-
-#include "moc_contact-shared.cpp"

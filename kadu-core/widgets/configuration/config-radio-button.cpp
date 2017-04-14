@@ -24,8 +24,10 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 
-#include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-radio-button.h"
+#include "widgets/configuration/config-radio-button.moc"
+
+#include "widgets/configuration/config-group-box.h"
 
 ConfigRadioButton::ConfigRadioButton(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -66,5 +68,3 @@ void ConfigRadioButton::saveConfiguration()
 
     dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
-
-#include "moc_config-radio-button.cpp"

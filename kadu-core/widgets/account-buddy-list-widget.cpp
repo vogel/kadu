@@ -49,6 +49,7 @@
 #include "roster/roster.h"
 
 #include "account-buddy-list-widget.h"
+#include "account-buddy-list-widget.moc"
 
 AccountBuddyListWidget::AccountBuddyListWidget(Account account, QWidget *parent)
         : QWidget(parent), CurrentAccount(account)
@@ -207,5 +208,3 @@ void AccountBuddyListWidget::storeToFile()
         file.close();
     }
 }
-
-#include "moc_account-buddy-list-widget.cpp"

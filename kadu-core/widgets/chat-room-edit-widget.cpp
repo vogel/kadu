@@ -19,6 +19,7 @@
  */
 
 #include "chat-room-edit-widget.h"
+#include "chat-room-edit-widget.moc"
 
 #include "accounts/filter/protocol-filter.h"
 #include "chat/chat-details-room.h"
@@ -165,5 +166,3 @@ void ChatRoomEditWidget::cancel()
 
     simpleStateNotifier()->setState(StateNotChanged);
 }
-
-#include "moc_chat-room-edit-widget.cpp"

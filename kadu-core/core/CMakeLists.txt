@@ -11,8 +11,4 @@ set (core_SRCS
 	version-service.cpp
 )
 
-set (core_MOC_SRCS
-	core.h
-)
-
-kadu_subdirectory (core "${core_SRCS}" "${core_MOC_SRCS}" "")
+kadu_subdirectory (core "${core_SRCS}")

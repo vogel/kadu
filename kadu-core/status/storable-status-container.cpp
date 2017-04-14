@@ -19,6 +19,7 @@
  */
 
 #include "storable-status-container.h"
+#include "storable-status-container.moc"
 
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
@@ -81,5 +82,3 @@ void StorableStatusContainer::storeStatus(Status status)
 
     m_configurationManager->flush();
 }
-
-#include "moc_storable-status-container.cpp"

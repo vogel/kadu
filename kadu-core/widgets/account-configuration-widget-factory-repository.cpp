@@ -18,6 +18,7 @@
  */
 
 #include "account-configuration-widget-factory-repository.h"
+#include "account-configuration-widget-factory-repository.moc"
 
 AccountConfigurationWidgetFactoryRepository::AccountConfigurationWidgetFactoryRepository(QObject *parent)
         : QObject(parent)

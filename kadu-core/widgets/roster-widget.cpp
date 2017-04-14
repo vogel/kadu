@@ -20,6 +20,7 @@
  */
 
 #include "roster-widget.h"
+#include "roster-widget.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -258,5 +259,3 @@ void RosterWidget::clearFilter()
 {
     TalkableWidget->filterWidget()->setFilter(QString());
 }
-
-#include "moc_roster-widget.cpp"

@@ -70,4 +70,4 @@ set (actions_SRCS
 	injector-registered-actions.cpp
 )
 
-kadu_subdirectory (actions "${actions_SRCS}" "" "")
+kadu_subdirectory (actions "${actions_SRCS}")

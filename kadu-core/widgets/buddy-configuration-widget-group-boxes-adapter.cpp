@@ -18,6 +18,7 @@
  */
 
 #include "buddy-configuration-widget-group-boxes-adapter.h"
+#include "buddy-configuration-widget-group-boxes-adapter.moc"
 
 #include "widgets/buddy-configuration-widget.h"
 #include "windows/buddy-data-window.h"
@@ -61,5 +62,3 @@ void BuddyConfigurationWidgetGroupBoxesAdapter::widgetAdded(BuddyConfigurationWi
     if (layout)
         layout->insertWidget(layout->count() - 1, groupBox);
 }
-
-#include "moc_buddy-configuration-widget-group-boxes-adapter.cpp"

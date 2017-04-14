@@ -25,6 +25,7 @@
 
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-hot-key-edit.h"
+#include "widgets/configuration/config-hot-key-edit.moc"
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,

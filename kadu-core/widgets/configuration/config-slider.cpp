@@ -25,7 +25,9 @@
 #include <QtXml/QDomElement>
 
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-slider.h"
+#include "widgets/configuration/config-slider.moc"
 
 ConfigSlider::ConfigSlider(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip, int minValue,
@@ -107,5 +109,3 @@ bool ConfigSlider::fromDomElement(QDomElement domElement)
 
     return ConfigWidgetValue::fromDomElement(domElement);
 }
-
-#include "moc_config-slider.cpp"

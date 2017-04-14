@@ -19,6 +19,7 @@
  */
 
 #include "wait-overlay.h"
+#include "wait-overlay.moc"
 
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -78,5 +79,3 @@ bool WaitOverlay::eventFilter(QObject *object, QEvent *event)
 
     return QWidget::eventFilter(object, event);
 }
-
-#include "moc_wait-overlay.cpp"

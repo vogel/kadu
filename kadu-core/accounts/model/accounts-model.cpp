@@ -31,6 +31,7 @@
 #include "protocols/protocol.h"
 
 #include "accounts-model.h"
+#include "accounts-model.moc"
 
 AccountsModel::AccountsModel(AccountManager *accountManager, QObject *parent)
         : QAbstractListModel{parent}, m_accountManager{accountManager}, m_includeIdInDisplay{}
@@ -158,5 +159,3 @@ void AccountsModel::setIncludeIdInDisplay(bool includeIdInDisplay)
     m_includeIdInDisplay = includeIdInDisplay;
     emit dataChanged(index(0, 0), index(rowCount() - 1, 0));
 }
-
-#include "moc_accounts-model.cpp"

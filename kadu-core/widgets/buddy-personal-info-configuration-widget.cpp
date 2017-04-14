@@ -39,6 +39,7 @@
 #include "protocols/services/contact-personal-info-service.h"
 
 #include "buddy-personal-info-configuration-widget.h"
+#include "buddy-personal-info-configuration-widget.moc"
 
 BuddyPersonalInfoConfigurationWidget::BuddyPersonalInfoConfigurationWidget(const Buddy &buddy, QWidget *parent)
         : QWidget(parent), MyBuddy(buddy), InfoWidget(0)
@@ -100,5 +101,3 @@ void BuddyPersonalInfoConfigurationWidget::accountSelectionChanged(int index)
     InfoWidget = c.contactAccount().protocolHandler()->protocolFactory()->newContactPersonalInfoWidget(c, this);
     Layout->insertWidget(1, InfoWidget);
 }
-
-#include "moc_buddy-personal-info-configuration-widget.cpp"

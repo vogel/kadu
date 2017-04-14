@@ -22,6 +22,7 @@
 #include "protocols/protocol.h"
 
 #include "writeable-contacts-list-filter.h"
+#include "writeable-contacts-list-filter.moc"
 
 WriteableContactsListFilter::WriteableContactsListFilter(QObject *parent) : AbstractAccountFilter(parent)
 {
@@ -39,5 +40,3 @@ bool WriteableContactsListFilter::acceptAccount(Account account)
 
     return !protocol->contactsListReadOnly();
 }
-
-#include "moc_writeable-contacts-list-filter.cpp"

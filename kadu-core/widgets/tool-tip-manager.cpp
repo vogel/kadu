@@ -19,6 +19,7 @@
  */
 
 #include "tool-tip-manager.h"
+#include "tool-tip-manager.moc"
 
 #include "core/injected-factory.h"
 #include "talkable/talkable.h"
@@ -60,5 +61,3 @@ void ToolTipManager::hideToolTip()
 {
     m_toolTipWidget.reset();
 }
-
-#include "moc_tool-tip-manager.cpp"

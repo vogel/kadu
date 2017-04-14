@@ -28,6 +28,7 @@
 #include "status/status-container-manager.h"
 
 #include "status-buttons.h"
+#include "status-buttons.moc"
 
 StatusButtons::StatusButtons(QWidget *parent) : QToolBar(parent)   //, Layout(0), HasStretch(0)
 {
@@ -96,5 +97,3 @@ void StatusButtons::statusContainerUnregistered(StatusContainer *statusContainer
         enableStatusName();
     }
 }
-
-#include "moc_status-buttons.cpp"

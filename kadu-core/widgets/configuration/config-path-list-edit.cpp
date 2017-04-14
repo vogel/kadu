@@ -25,7 +25,9 @@
 
 #include "configuration/configuration-window-data-manager.h"
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-path-list-edit.h"
+#include "widgets/configuration/config-path-list-edit.moc"
 
 ConfigPathListEdit::ConfigPathListEdit(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -81,5 +83,3 @@ void ConfigPathListEdit::setVisible(bool visible)
     label->setVisible(visible);
     PathListEdit::setVisible(visible);
 }
-
-#include "moc_config-path-list-edit.cpp"

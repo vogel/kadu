@@ -58,8 +58,10 @@
 #include "widgets/configuration/config-spin-box.h"
 #include "widgets/configuration/config-syntax-editor.h"
 #include "widgets/configuration/config-widget.h"
-#include "widgets/configuration/configuration-widget.h"
 #include "windows/configuration-window.h"
+
+#include "widgets/configuration/configuration-widget.h"
+#include "widgets/configuration/configuration-widget.moc"
 
 ConfigurationWidget::ConfigurationWidget(ConfigurationWindowDataManager *dataManager, QWidget *parent)
         : QWidget(parent), DataManager(dataManager), CurrentSection(0)
@@ -534,5 +536,3 @@ void ConfigurationWidget::configSectionDestroyed(QObject *obj)
     if (CurrentSection == obj)
         CurrentSection = 0;
 }
-
-#include "moc_configuration-widget.cpp"

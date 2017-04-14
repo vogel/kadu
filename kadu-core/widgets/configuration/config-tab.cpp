@@ -27,8 +27,10 @@
 
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-section.h"
-#include "widgets/configuration/config-tab.h"
 #include "widgets/configuration/kadu-scroll-area.h"
+
+#include "widgets/configuration/config-tab.h"
+#include "widgets/configuration/config-tab.moc"
 
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget)
         : QObject(configSection), MyName(name)

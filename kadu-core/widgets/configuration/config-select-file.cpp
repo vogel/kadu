@@ -25,7 +25,9 @@
 #include <QtXml/QDomElement>
 
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-select-file.h"
+#include "widgets/configuration/config-select-file.moc"
 
 ConfigSelectFile::ConfigSelectFile(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -91,5 +93,3 @@ bool ConfigSelectFile::fromDomElement(QDomElement domElement)
 
     return ConfigWidgetValue::fromDomElement(domElement);
 }
-
-#include "moc_config-select-file.cpp"

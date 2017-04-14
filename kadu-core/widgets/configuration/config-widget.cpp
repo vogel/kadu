@@ -25,8 +25,10 @@
 #include <QtXml/QDomElement>
 
 #include "widgets/configuration/config-group-box.h"
-#include "widgets/configuration/config-widget.h"
 #include "widgets/configuration/configuration-widget.h"
+
+#include "widgets/configuration/config-widget.h"
+#include "widgets/configuration/config-widget.moc"
 
 ConfigWidget::ConfigWidget(ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
         : parentConfigGroupBox(parentConfigGroupBox), dataManager(dataManager)

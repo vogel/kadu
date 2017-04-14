@@ -10,14 +10,4 @@ set (model_SRCS
 	model-watcher.cpp
 )
 
-set (model_MOC_SRCS
-	action-filter-proxy-model.h
-	action-list-model.h
-	categorized-sort-filter-proxy-model.h
-	kadu-merged-proxy-model.h
-	merged-proxy-model.h
-	model-chain.h
-	model-watcher.h
-)
-
-kadu_subdirectory (model "${model_SRCS}" "${model_MOC_SRCS}" "")
+kadu_subdirectory (model "${model_SRCS}")

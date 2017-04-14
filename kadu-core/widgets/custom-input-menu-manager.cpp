@@ -29,6 +29,7 @@
 #include "actions/action.h"
 
 #include "custom-input-menu-manager.h"
+#include "custom-input-menu-manager.moc"
 
 CustomInputMenuManager::CustomInputMenuManager(QObject *parent) : QObject{parent}, InputContextMenuSorted{true}
 {
@@ -117,5 +118,3 @@ QMenu *CustomInputMenuManager::menu(QWidget *parent)
 
     return menu;
 }
-
-#include "moc_custom-input-menu-manager.cpp"

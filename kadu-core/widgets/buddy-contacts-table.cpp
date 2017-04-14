@@ -38,6 +38,7 @@
 #include "windows/message-dialog.h"
 
 #include "buddy-contacts-table.h"
+#include "buddy-contacts-table.moc"
 
 BuddyContactsTable::BuddyContactsTable(Buddy buddy, QWidget *parent) : QWidget(parent), MyBuddy(buddy)
 {
@@ -235,5 +236,3 @@ void BuddyContactsTable::removeClicked()
     if (dialog->ask())
         item->setAction(BuddyContactsTableItem::ItemRemove);
 }
-
-#include "moc_buddy-contacts-table.cpp"

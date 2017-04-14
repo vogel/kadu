@@ -18,4 +18,4 @@ set (message_SRCS
 
 kadu_add_test (message-html-renderer-service)
 
-kadu_subdirectory (message "${message_SRCS}" "" "")
+kadu_subdirectory (message "${message_SRCS}")

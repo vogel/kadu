@@ -22,6 +22,7 @@
  */
 
 #include "contact-manager.h"
+#include "contact-manager.moc"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy-storage.h"
@@ -223,5 +224,3 @@ Contact ContactManager::loadStubFromStorage(const std::shared_ptr<StoragePoint> 
 {
     return m_contactStorage->loadStubFromStorage(storagePoint);
 }
-
-#include "moc_contact-manager.cpp"

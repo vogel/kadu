@@ -18,6 +18,7 @@
  */
 
 #include "chat-style-preview.h"
+#include "chat-style-preview.moc"
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy-storage.h"
@@ -145,5 +146,3 @@ void ChatStylePreview::configurationUpdated()
     m_view->setUserFont(
         m_chatConfigurationHolder->chatFont().toString(), m_chatConfigurationHolder->forceCustomChatFont());
 }
-
-#include "moc_chat-style-preview.cpp"

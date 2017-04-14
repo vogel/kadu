@@ -26,6 +26,7 @@
 #include "widgets/filter-widget.h"
 
 #include "filtered-tree-view.h"
+#include "filtered-tree-view.moc"
 
 bool FilteredTreeView::shouldEventGoToFilter(QKeyEvent *event)
 {
@@ -112,5 +113,3 @@ void FilteredTreeView::keyPressEvent(QKeyEvent *event)
 
     QWidget::keyPressEvent(event);
 }
-
-#include "moc_filtered-tree-view.cpp"

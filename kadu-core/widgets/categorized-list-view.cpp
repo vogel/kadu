@@ -30,6 +30,7 @@
   */
 
 #include "categorized-list-view.h"
+#include "categorized-list-view.moc"
 
 #include <math.h>   // trunc on C99 compliant systems
 
@@ -1883,7 +1884,3 @@ void CategorizedListView::slotLayoutChanged()
 }
 
 // END: Public part
-
-// #include "kcategorizedview.moc"
-
-#include "moc_categorized-list-view.cpp"

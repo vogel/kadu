@@ -29,6 +29,7 @@
 #include "widgets/select-talkable-popup.h"
 
 #include "select-talkable-combo-box.h"
+#include "select-talkable-combo-box.moc"
 
 SelectTalkableComboBox::SelectTalkableComboBox(QWidget *parent) : ActionsComboBox(parent)
 {
@@ -112,5 +113,3 @@ void SelectTalkableComboBox::removeFilter(TalkableFilter *filter)
     ProxyModel->removeFilter(filter);
     Popup->removeFilter(filter);
 }
-
-#include "moc_select-talkable-combo-box.cpp"

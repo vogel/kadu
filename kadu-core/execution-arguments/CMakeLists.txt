@@ -6,4 +6,4 @@ set (execution-arguments_SRCS
 
 kadu_add_test (execution-arguments-parser)
 
-kadu_subdirectory (execution-arguments "${execution-arguments_SRCS}" "" "")
+kadu_subdirectory (execution-arguments "${execution-arguments_SRCS}")

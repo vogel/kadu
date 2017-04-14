@@ -32,6 +32,7 @@
 #include "model/roles.h"
 
 #include "groups-combo-box.h"
+#include "groups-combo-box.moc"
 
 GroupsComboBox::GroupsComboBox(QWidget *parent) : ActionsComboBox(parent)
 {
@@ -97,5 +98,3 @@ void GroupsComboBox::createNewGroup()
     if (newGroup)
         setCurrentGroup(newGroup);
 }
-
-#include "moc_groups-combo-box.cpp"

@@ -38,6 +38,7 @@
 #include "notification/notify-configuration-ui-handler.h"
 
 #include "notify-tree-widget.h"
+#include "notify-tree-widget.moc"
 
 #define OFFSET 30
 
@@ -270,5 +271,3 @@ void NotifyTreeWidgetItem::parentNotifierChecked()
 
     setData(1, Qt::UserRole, QVariant(dynamic_cast<NotifyTreeWidgetItem *>(parent())->activeNotifiers()));
 }
-
-#include "moc_notify-tree-widget.cpp"

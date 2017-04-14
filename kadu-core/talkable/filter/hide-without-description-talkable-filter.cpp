@@ -19,6 +19,7 @@
  */
 
 #include "hide-without-description-talkable-filter.h"
+#include "hide-without-description-talkable-filter.moc"
 
 #include "buddies/buddy-preferred-manager.h"
 #include "buddies/buddy.h"
@@ -61,5 +62,3 @@ void HideWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
     m_enabled = enabled;
     emit filterChanged();
 }
-
-#include "moc_hide-without-description-talkable-filter.cpp"

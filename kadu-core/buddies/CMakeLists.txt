@@ -25,19 +25,4 @@ set (buddies_SRCS
 	model/groups-model.cpp
 )
 
-set (buddies_MOC_SRCS
-	buddy-additional-data-delete-handler-manager.h
-	buddy-shared.h
-	buddy-manager.h
-	group-manager.h
-	buddy-preferred-manager.h
-	group-shared.h
-
-	model/buddy-list-model.h
-	model/buddy-manager-adapter.h
-	# will be used when Qt 4.8 .is required
-	# model/checkable-buddies-proxy-model.h
-	model/groups-model.h
-)
-
-kadu_subdirectory (buddies "${buddies_SRCS}" "${buddies_MOC_SRCS}" "")
+kadu_subdirectory (buddies "${buddies_SRCS}")

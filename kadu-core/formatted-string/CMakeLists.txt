@@ -15,4 +15,4 @@ set (formatted-string_SRCS
 kadu_add_test (force-space-dom-visitor)
 kadu_add_test (formatted-string-factory)
 
-kadu_subdirectory (formatted-string "${formatted-string_SRCS}" "" "")
+kadu_subdirectory (formatted-string "${formatted-string_SRCS}")

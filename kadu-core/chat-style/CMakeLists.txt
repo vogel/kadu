@@ -21,4 +21,4 @@ set (chat-style_SRCS
 	engine/configured-chat-style-renderer-factory-provider.cpp
 )
 
-kadu_subdirectory (chat-style "${chat-style_SRCS}" "" "")
+kadu_subdirectory (chat-style "${chat-style_SRCS}")

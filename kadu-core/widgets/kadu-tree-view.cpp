@@ -31,6 +31,7 @@
 #include "widgets/filtered-tree-view.h"
 
 #include "kadu-tree-view.h"
+#include "kadu-tree-view.moc"
 
 KaduTreeView::KaduTreeView(QWidget *parent)
         : QTreeView(parent), BackgroundImageMode(BackgroundNone), BackgroundTemporaryFile(0)
@@ -209,5 +210,3 @@ void KaduTreeView::startDrag(Qt::DropActions supportedActions)
 
     drag->exec(supportedActions, Qt::LinkAction);
 }
-
-#include "moc_kadu-tree-view.cpp"

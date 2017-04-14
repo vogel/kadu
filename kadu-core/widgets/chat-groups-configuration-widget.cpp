@@ -20,6 +20,7 @@
  */
 
 #include "chat-groups-configuration-widget.h"
+#include "chat-groups-configuration-widget.moc"
 
 #include "buddies/group.h"
 #include "contacts/contact.h"
@@ -73,5 +74,3 @@ void ChatGroupsConfigurationWidget::save()
 {
     m_chat.setGroups(m_groupList->checkedGroups());
 }
-
-#include "moc_chat-groups-configuration-widget.cpp"

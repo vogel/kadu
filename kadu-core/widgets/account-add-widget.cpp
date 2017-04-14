@@ -17,9 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "widgets/simple-configuration-value-state-notifier.h"
-
 #include "account-add-widget.h"
+#include "account-add-widget.moc"
+
+#include "widgets/simple-configuration-value-state-notifier.h"
 
 AccountAddWidget::AccountAddWidget(QWidget *parent)
         : ModalConfigurationWidget(parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))

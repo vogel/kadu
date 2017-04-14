@@ -31,6 +31,7 @@
 #include "windows/main-configuration-window.h"
 
 #include "buddy-list-background-colors-widget.h"
+#include "buddy-list-background-colors-widget.moc"
 
 BuddyListBackgroundColorsWidget::BuddyListBackgroundColorsWidget(MainConfigurationWindow *mainWindow)
         : m_mainWindow{mainWindow}
@@ -75,5 +76,3 @@ void BuddyListBackgroundColorsWidget::configurationApplied()
     m_mainWindow->dataManager()->writeEntry(
         "Look", "UserboxAlternateBgColor", QVariant(alternateColorButton->color().name()));
 }
-
-#include "moc_buddy-list-background-colors-widget.cpp"

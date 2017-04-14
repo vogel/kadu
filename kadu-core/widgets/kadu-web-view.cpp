@@ -64,6 +64,7 @@
 #include "windows/message-dialog.h"
 
 #include "kadu-web-view.h"
+#include "kadu-web-view.moc"
 
 KaduWebView::KaduWebView(QWidget *parent)
         : QWebView(parent), DraggingPossible(false), IsLoading(false), RefreshTimer(new QTimer(this))
@@ -421,5 +422,3 @@ QString KaduWebView::userFontStyle(const QFont &font, bool force)
         style += QString(" font-size:%1pt;").arg(font.pointSize());
     return style;
 }
-
-#include "moc_kadu-web-view.cpp"

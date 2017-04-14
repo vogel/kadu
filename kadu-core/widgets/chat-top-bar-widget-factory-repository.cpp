@@ -18,6 +18,7 @@
  */
 
 #include "chat-top-bar-widget-factory-repository.h"
+#include "chat-top-bar-widget-factory-repository.moc"
 
 ChatTopBarWidgetFactoryRepository::ChatTopBarWidgetFactoryRepository(QObject *parent) : QObject(parent)
 {
@@ -49,5 +50,3 @@ QList<ChatTopBarWidgetFactory *> ChatTopBarWidgetFactoryRepository::factories() 
 {
     return Factories;
 }
-
-#include "moc_chat-top-bar-widget-factory-repository.cpp"

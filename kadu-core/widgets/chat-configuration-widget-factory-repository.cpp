@@ -18,6 +18,7 @@
  */
 
 #include "chat-configuration-widget-factory-repository.h"
+#include "chat-configuration-widget-factory-repository.moc"
 
 ChatConfigurationWidgetFactoryRepository::ChatConfigurationWidgetFactoryRepository(QObject *parent) : QObject(parent)
 {

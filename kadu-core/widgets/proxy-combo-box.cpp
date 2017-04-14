@@ -19,6 +19,7 @@
  */
 
 #include "proxy-combo-box.h"
+#include "proxy-combo-box.moc"
 
 #include "core/injected-factory.h"
 #include "model/model-chain.h"
@@ -104,5 +105,3 @@ void ProxyComboBox::editProxy()
 {
     m_proxyEditWindowService->show();
 }
-
-#include "moc_proxy-combo-box.cpp"

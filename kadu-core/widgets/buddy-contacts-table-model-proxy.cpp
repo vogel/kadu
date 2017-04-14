@@ -24,6 +24,7 @@
 #include "widgets/buddy-contacts-table-item.h"
 
 #include "buddy-contacts-table-model-proxy.h"
+#include "buddy-contacts-table-model-proxy.moc"
 
 BuddyContactsTableModelProxy::BuddyContactsTableModelProxy(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -63,5 +64,3 @@ bool BuddyContactsTableModelProxy::lessThan(const QModelIndex &left, const QMode
 
     return leftItem->itemContactPriority() < rightItem->itemContactPriority();
 }
-
-#include "moc_buddy-contacts-table-model-proxy.cpp"

@@ -20,6 +20,7 @@
 #include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "account-create-widget.h"
+#include "account-create-widget.moc"
 
 AccountCreateWidget::AccountCreateWidget(QWidget *parent)
         : ModalConfigurationWidget(parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))

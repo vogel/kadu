@@ -25,7 +25,9 @@
 #include <QtXml/QDomElement>
 
 #include "widgets/configuration/config-group-box.h"
+
 #include "widgets/configuration/config-preview.h"
+#include "widgets/configuration/config-preview.moc"
 
 ConfigPreview::ConfigPreview(
     const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
@@ -70,5 +72,3 @@ bool ConfigPreview::fromDomElement(QDomElement domElement)
         setFixedHeight(newheight);
     return ConfigWidget::fromDomElement(domElement);
 }
-
-#include "moc_config-preview.cpp"

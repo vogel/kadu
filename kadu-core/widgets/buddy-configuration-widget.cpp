@@ -18,6 +18,7 @@
  */
 
 #include "buddy-configuration-widget.h"
+#include "buddy-configuration-widget.moc"
 
 BuddyConfigurationWidget::BuddyConfigurationWidget(const Buddy &buddy, QWidget *parent)
         : ModalConfigurationWidget(parent), MyBuddy(buddy)
@@ -32,5 +33,3 @@ Buddy BuddyConfigurationWidget::buddy() const
 {
     return MyBuddy;
 }
-
-#include "moc_buddy-configuration-widget.cpp"

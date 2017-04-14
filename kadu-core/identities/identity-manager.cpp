@@ -27,6 +27,7 @@
 #include "identities/identity-storage.h"
 
 #include "identity-manager.h"
+#include "identity-manager.moc"
 
 IdentityManager::IdentityManager(QObject *parent) : Manager<Identity>{parent}
 {
@@ -163,5 +164,3 @@ Identity IdentityManager::loadStubFromStorage(const std::shared_ptr<StoragePoint
 {
     return m_identityStorage->loadStubFromStorage(storagePoint);
 }
-
-#include "moc_identity-manager.cpp"

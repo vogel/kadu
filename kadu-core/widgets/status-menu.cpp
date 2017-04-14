@@ -37,6 +37,7 @@
 #include "windows/window-manager.h"
 
 #include "status-menu.h"
+#include "status-menu.moc"
 
 StatusMenu::StatusMenu(StatusContainer *statusContainer, bool includePrefix, QMenu *menu)
         : QObject(menu), Menu(menu), Container(statusContainer), m_includePrefix{includePrefix}
@@ -111,5 +112,3 @@ void StatusMenu::changeDescription()
     auto statusWindow = m_statusWindowService->showDialog(Container, Menu);
     m_windowManager->moveToPosition(statusWindow, MousePositionBeforeMenuHide);
 }
-
-#include "moc_status-menu.cpp"

@@ -25,6 +25,8 @@
 #include <QtWidgets/QListWidget>
 
 #include "widgets/configuration/config-action-button.h"
+#include "widgets/configuration/config-action-button.moc"
+
 #include "widgets/configuration/config-group-box.h"
 
 ConfigActionButton::ConfigActionButton(

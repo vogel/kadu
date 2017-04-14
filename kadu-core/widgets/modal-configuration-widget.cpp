@@ -19,6 +19,7 @@
  */
 
 #include "modal-configuration-widget.h"
+#include "modal-configuration-widget.moc"
 
 ModalConfigurationWidget::ModalConfigurationWidget(QWidget *parent) : QWidget(parent)
 {
@@ -27,5 +28,3 @@ ModalConfigurationWidget::ModalConfigurationWidget(QWidget *parent) : QWidget(pa
 ModalConfigurationWidget::~ModalConfigurationWidget()
 {
 }
-
-#include "moc_modal-configuration-widget.cpp"

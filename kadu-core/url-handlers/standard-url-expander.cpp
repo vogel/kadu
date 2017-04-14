@@ -21,6 +21,7 @@
 #include <QtXml/QDomDocument>
 
 #include "standard-url-expander.h"
+#include "standard-url-expander.moc"
 
 StandardUrlExpander::StandardUrlExpander(QRegExp regExp) : DomTextRegexpVisitor(regExp)
 {
@@ -72,5 +73,3 @@ QList<QDomNode> StandardUrlExpander::matchToDomNodes(QDomDocument document, QReg
     linkElement.appendChild(document.createTextNode(display));
     return QList<QDomNode>() << linkElement;
 }
-
-#include "moc_standard-url-expander.cpp"

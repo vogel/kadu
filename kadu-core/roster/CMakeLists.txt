@@ -10,4 +10,4 @@ set (roster_SRCS
 	roster-task-collection-storage.cpp
 )
 
-kadu_subdirectory (roster "${roster_SRCS}" "" "")
+kadu_subdirectory (roster "${roster_SRCS}")

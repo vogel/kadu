@@ -29,6 +29,7 @@
 #include "icons/kadu-icon.h"
 
 #include "password-dialog-widget.h"
+#include "password-dialog-widget.moc"
 
 PasswordDialogWidget::PasswordDialogWidget(const QString &message, QVariant data, QWidget *parent)
         : DialogWidget(tr("Incorrect password"), message, QPixmap(), parent), Data(data)
@@ -85,5 +86,3 @@ void PasswordDialogWidget::passwordTextChanged(const QString &text)
 {
     emit valid(!text.isEmpty());
 }
-
-#include "moc_password-dialog-widget.cpp"

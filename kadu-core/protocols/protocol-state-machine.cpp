@@ -24,6 +24,7 @@
 #include "protocols/protocol.h"
 
 #include "protocol-state-machine.h"
+#include "protocol-state-machine.moc"
 
 /**
  * @short Creates new ProtocolStateMachine associated with given protocol handler.
@@ -217,5 +218,3 @@ bool ProtocolStateMachine::isLoggingOut()
 {
     return configuration().contains(LoggingOutState);
 }
-
-#include "moc_protocol-state-machine.cpp"
