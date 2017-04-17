@@ -27,6 +27,7 @@
 #include "otr-policy.h"
 
 #include "otr-chat-top-bar-widget.h"
+#include "otr-chat-top-bar-widget.moc"
 
 OtrChatTopBarWidget::OtrChatTopBarWidget(const Contact &contact, QWidget *parent) : QWidget(parent), MyContact(contact)
 {
@@ -147,5 +148,3 @@ void OtrChatTopBarWidget::verifyPeerIdentity()
 {
     emit verifyPeerIdentity(MyContact);
 }
-
-#include "moc_otr-chat-top-bar-widget.cpp"

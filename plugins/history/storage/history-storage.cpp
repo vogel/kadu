@@ -18,7 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "moc_history-storage.cpp"
+#include "history-storage.h"
+#include "history-storage.moc"
 
 HistoryStorage::HistoryStorage(QObject *parent) : QObject{parent}
 {

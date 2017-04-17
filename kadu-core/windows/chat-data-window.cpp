@@ -49,6 +49,7 @@
 #include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "chat-data-window.h"
+#include "chat-data-window.moc"
 
 ChatDataWindow::ChatDataWindow(const Chat &chat)
         : QWidget(0, Qt::Dialog), ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this)),
@@ -313,5 +314,3 @@ void ChatDataWindow::stateChangedSlot(ConfigurationValueState state)
     OkButton->setEnabled(state != StateChangedDataInvalid);
     ApplyButton->setEnabled(state != StateChangedDataInvalid);
 }
-
-#include "moc_chat-data-window.cpp"

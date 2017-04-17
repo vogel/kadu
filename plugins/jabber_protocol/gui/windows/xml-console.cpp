@@ -26,6 +26,7 @@
 #include "services/jabber-stream-debug-service.h"
 
 #include "xml-console.h"
+#include "xml-console.moc"
 
 XmlConsole::XmlConsole(Account account)
         :   // using C++ initializers breaks Qt's lupdate
@@ -75,5 +76,3 @@ void XmlConsole::xmlOutgoingSlot(const QString &str)
     Viewer->setTextColor(Qt::red);
     Viewer->append(str + '\n');
 }
-
-#include "moc_xml-console.cpp"

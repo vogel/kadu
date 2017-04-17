@@ -12,6 +12,7 @@
 
 #include "plugins/mediaplayer/mediaplayer.h"
 #include "winamp.h"
+#include "winamp.moc"
 
 #include "wa_ipc.h"
 
@@ -415,5 +416,3 @@ void WinampMediaPlayer::decrVolume()
     if (hWinamp)
         SendMessage(hWinamp, WM_COMMAND, WINAMP_CMD_LOWER_VOLUME, 1);
 }
-
-#include "moc_winamp.cpp"

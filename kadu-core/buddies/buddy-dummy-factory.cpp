@@ -18,6 +18,7 @@
  */
 
 #include "buddy-dummy-factory.h"
+#include "buddy-dummy-factory.moc"
 
 #include "accounts/account-storage.h"
 #include "accounts/account.h"
@@ -99,5 +100,3 @@ Buddy BuddyDummyFactory::dummy()
 
     return example;
 }
-
-#include "moc_buddy-dummy-factory.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "open-buddy-email-action.h"
+#include "open-buddy-email-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -77,5 +78,3 @@ void OpenBuddyEmailAction::updateActionState(Action *action)
 
     action->setEnabled(hasMail);
 }
-
-#include "moc_open-buddy-email-action.cpp"

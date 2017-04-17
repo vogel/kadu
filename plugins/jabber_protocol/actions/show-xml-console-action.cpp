@@ -20,6 +20,7 @@
  */
 
 #include "show-xml-console-action.h"
+#include "show-xml-console-action.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -141,5 +142,3 @@ void ShowXmlConsoleAction::menuActionTriggered(QAction *action)
 
     (new XmlConsole(account))->show();
 }
-
-#include "moc_show-xml-console-action.cpp"

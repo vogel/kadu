@@ -35,6 +35,7 @@
 #include "gui/emoticon-selector-button-popup.h"
 
 #include "emoticon-selector-button.h"
+#include "emoticon-selector-button.moc"
 
 EmoticonSelectorButton::EmoticonSelectorButton(
     const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent)
@@ -59,5 +60,3 @@ void EmoticonSelectorButton::mouseMoveEvent(QMouseEvent *e)
     connect(popup, SIGNAL(clicked(Emoticon)), this, SIGNAL(clicked(Emoticon)));
     popup->show();
 }
-
-#include "moc_emoticon-selector-button.cpp"

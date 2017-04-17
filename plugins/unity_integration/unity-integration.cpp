@@ -18,6 +18,7 @@
  */
 
 #include "unity-integration.h"
+#include "unity-integration.moc"
 
 #include "libqunity/qunity.h"
 
@@ -59,5 +60,3 @@ void UnityIntegration::unreadMessagesChanged()
 {
     m_unity->updateCount(m_unreadMessageRepository->allUnreadMessages().count());
 }
-
-#include "moc_unity-integration.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "gadu-drive-service.h"
+#include "gadu-drive-service.moc"
 
 #include "services/drive/gadu-drive-authorization.h"
 #include "services/drive/gadu-drive-get-transfer.h"
@@ -101,5 +102,3 @@ void GaduDriveService::imTokenChanged(QByteArray)
 {
     m_sessionToken = {};
 }
-
-#include "moc_gadu-drive-service.cpp"

@@ -22,6 +22,7 @@
  */
 
 #include "plugin-list-widget.h"
+#include "plugin-list-widget.moc"
 
 #include "core/injected-factory.h"
 #include "misc/change-notifier-lock.h"
@@ -324,5 +325,3 @@ void PluginListWidget::setAllChecked(const QVector<QString> &plugins, bool check
             m_model->setData(index, checked, Qt::CheckStateRole);
     }
 }
-
-#include "moc_plugin-list-widget.cpp"

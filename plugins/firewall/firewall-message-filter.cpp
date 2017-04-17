@@ -40,6 +40,8 @@ Nowa funkcjonalnosc - Dorregaray
 #include <QtWidgets/QMessageBox>
 
 #include "firewall-message-filter.h"
+#include "firewall-message-filter.moc"
+
 #include "firewall-notification-service.h"
 
 #include "plugins/history/history-plugin-object.h"
@@ -635,5 +637,3 @@ void FirewallMessageFilter::createDefaultConfiguration()
     m_configuration->deprecatedApi()->addVariable(
         "Firewall", "logFile", m_pathsProvider->profilePath() + QStringLiteral("firewall.log"));
 }
-
-#include "moc_firewall-message-filter.cpp"

@@ -47,6 +47,7 @@
 #include "os/generic/window-geometry-manager.h"
 
 #include "proxy-edit-window.h"
+#include "proxy-edit-window.moc"
 
 ProxyEditWindow::ProxyEditWindow(QWidget *parent) : QWidget(parent), ForceProxyChange(false)
 {
@@ -419,5 +420,3 @@ void ProxyEditWindow::proxySelectionChanged(const QItemSelection &selected, cons
     ProxyView->selectionModel()->select(deselected, QItemSelectionModel::ClearAndSelect);
     ForceProxyChange = false;
 }
-
-#include "moc_proxy-edit-window.cpp"

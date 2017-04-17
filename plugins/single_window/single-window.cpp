@@ -39,6 +39,7 @@
 #include "windows/main-window-repository.h"
 
 #include "single-window.h"
+#include "single-window.moc"
 
 SingleWindowManager::SingleWindowManager(QObject *parent)
         : QObject(parent), m_windowProvider(new SimpleProvider<QWidget *>(0))
@@ -492,5 +493,3 @@ void SingleWindow::closeChat()
     if (chat)
         chat->deleteLater();
 }
-
-#include "moc_single-window.cpp"

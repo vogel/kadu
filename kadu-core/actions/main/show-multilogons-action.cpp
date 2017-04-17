@@ -18,6 +18,7 @@
  */
 
 #include "show-multilogons-action.h"
+#include "show-multilogons-action.moc"
 
 #include "accounts/account-manager.h"
 #include "actions/action.h"
@@ -66,5 +67,3 @@ void ShowMultilogonsAction::updateActionState(Action *action)
 
     action->setVisible(hasMultilogonAccount);
 }
-
-#include "moc_show-multilogons-action.cpp"

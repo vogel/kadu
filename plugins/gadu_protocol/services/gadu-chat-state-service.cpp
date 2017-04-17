@@ -26,6 +26,7 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "gadu-chat-state-service.h"
+#include "gadu-chat-state-service.moc"
 
 GaduChatStateService::GaduChatStateService(Account account, QObject *parent)
         : ChatStateService(account, parent), SendTypingNotifications(false)
@@ -92,5 +93,3 @@ void GaduChatStateService::sendState(const Contact &contact, ChatState state)
         break;
     }
 }
-
-#include "moc_gadu-chat-state-service.cpp"

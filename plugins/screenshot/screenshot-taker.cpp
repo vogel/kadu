@@ -36,6 +36,7 @@
 #include "widgets/chat-widget/chat-widget.h"
 
 #include "screenshot-taker.h"
+#include "screenshot-taker.moc"
 
 ScreenshotTaker::ScreenshotTaker(ChatWidget *chatWidget)
         : QWidget(chatWidget->window(), Qt::Window), CurrentChatWidget(chatWidget), Dragging(false)
@@ -166,7 +167,3 @@ void ScreenshotTaker::takeShot()
 
     emit screenshotTaken(pixmap, true);
 }
-
-#undef Bool
-
-#include "moc_screenshot-taker.cpp"

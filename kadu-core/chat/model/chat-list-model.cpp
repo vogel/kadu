@@ -19,6 +19,7 @@
  */
 
 #include "chat-list-model.h"
+#include "chat-list-model.moc"
 
 #include "chat/chat-list-mime-data-service.h"
 #include "chat/model/chat-data-extractor.h"
@@ -369,5 +370,3 @@ QMimeData *ChatListModel::mimeData(const QModelIndexList &indexes) const
 
     return m_chatListMimeDataService->toMimeData(list).release();
 }
-
-#include "moc_chat-list-model.cpp"

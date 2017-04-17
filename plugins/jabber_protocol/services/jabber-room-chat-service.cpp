@@ -18,6 +18,7 @@
  */
 
 #include "jabber-room-chat-service.h"
+#include "jabber-room-chat-service.moc"
 
 #include "jabber-protocol.h"
 #include "jabber-room-chat.h"
@@ -196,5 +197,3 @@ Message JabberRoomChatService::handleReceivedMessage(const QXmppMessage &xmppMes
 
     return result;
 }
-
-#include "moc_jabber-room-chat-service.cpp"

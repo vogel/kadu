@@ -18,6 +18,7 @@
  */
 
 #include "auto-hide-configuration-ui-handler.h"
+#include "auto-hide-configuration-ui-handler.moc"
 
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
@@ -48,5 +49,3 @@ void AutoHideConfigurationUiHandler::mainConfigurationWindowDestroyed()
 void AutoHideConfigurationUiHandler::mainConfigurationWindowApplied()
 {
 }
-
-#include "moc_auto-hide-configuration-ui-handler.cpp"

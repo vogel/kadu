@@ -21,6 +21,7 @@
  */
 
 #include "jabber-protocol.h"
+#include "jabber-protocol.moc"
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
@@ -436,5 +437,3 @@ JabberChangePasswordService *JabberProtocol::changePasswordService() const
 {
     return m_changePasswordService;
 }
-
-#include "moc_jabber-protocol.cpp"

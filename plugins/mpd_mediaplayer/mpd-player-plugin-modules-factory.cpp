@@ -18,6 +18,7 @@
  */
 
 #include "mpd-player-plugin-modules-factory.h"
+#include "mpd-player-plugin-modules-factory.moc"
 
 #include "mpd-player-module.h"
 
@@ -43,5 +44,3 @@ QString MpdPlayerPluginModulesFactory::parentInjectorName() const
 {
     return "mediaplayer";
 }
-
-#include "moc_mpd-player-plugin-modules-factory.cpp"

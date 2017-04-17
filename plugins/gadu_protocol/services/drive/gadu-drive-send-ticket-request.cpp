@@ -18,6 +18,7 @@
  */
 
 #include "gadu-drive-send-ticket-request.h"
+#include "gadu-drive-send-ticket-request.moc"
 
 #include "services/drive/gadu-drive-send-ticket-parser.h"
 #include "services/drive/gadu-drive-session-token.h"
@@ -89,5 +90,3 @@ void GaduDriveSendTicketRequest::requestFinished()
     emit sendTickedReceived(ticket);
     deleteLater();
 }
-
-#include "moc_gadu-drive-send-ticket-request.cpp"

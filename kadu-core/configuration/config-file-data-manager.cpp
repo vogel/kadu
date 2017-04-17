@@ -24,6 +24,7 @@
 #include "core/core.h"
 
 #include "config-file-data-manager.h"
+#include "config-file-data-manager.moc"
 
 void ConfigFileDataManager::setConfiguration(Configuration *configuration)
 {
@@ -45,5 +46,3 @@ QVariant ConfigFileDataManager::readEntry(const QString &section, const QString 
 
     return QVariant(m_configuration->deprecatedApi()->readEntry(section, name));
 }
-
-#include "moc_config-file-data-manager.cpp"

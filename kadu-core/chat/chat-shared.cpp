@@ -39,6 +39,7 @@
 #include "parser/parser.h"
 
 #include "chat-shared.h"
+#include "chat-shared.moc"
 
 /**
  * @short Creates new ChatShared object.
@@ -436,5 +437,3 @@ void ChatShared::setOpen(bool open)
     else
         emit closed();
 }
-
-#include "moc_chat-shared.cpp"

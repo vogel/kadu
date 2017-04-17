@@ -18,6 +18,7 @@
  */
 
 #include "status-notifier-item-attention-animator.h"
+#include "status-notifier-item-attention-animator.moc"
 
 #include <QtGui/QMovie>
 #include <QtWidgets/QSystemTrayIcon>
@@ -40,5 +41,3 @@ void StatusNotifierItemAttentionAnimator::frameChanged()
 {
     m_systemTrayIcon->setIcon(m_movie->currentPixmap());
 }
-
-#include "moc_status-notifier-item-attention-animator.cpp"

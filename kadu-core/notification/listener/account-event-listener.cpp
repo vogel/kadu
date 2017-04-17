@@ -34,6 +34,7 @@
 #include "status/status-type-manager.h"
 
 #include "account-event-listener.h"
+#include "account-event-listener.moc"
 
 AccountEventListener::AccountEventListener(QObject *parent) : QObject(parent)
 {
@@ -148,5 +149,3 @@ void AccountEventListener::accountConnected()
             QStringLiteral("notify:notify-account-connected"), QDateTime::currentDateTime().addSecs(10),
             CustomProperties::NonStorable);
 }
-
-#include "moc_account-event-listener.cpp"

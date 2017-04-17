@@ -18,6 +18,7 @@
  */
 
 #include "chat-list-mime-data-service.h"
+#include "chat-list-mime-data-service.moc"
 
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
@@ -75,5 +76,3 @@ QList<Chat> ChatListMimeDataService::fromMimeData(const QMimeData *mimeData)
 
     return result;
 }
-
-#include "moc_chat-list-mime-data-service.cpp"

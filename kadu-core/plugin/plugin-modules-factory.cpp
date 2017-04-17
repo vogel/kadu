@@ -18,6 +18,7 @@
  */
 
 #include "plugin-modules-factory.h"
+#include "plugin-modules-factory.moc"
 
 PluginModulesFactory::PluginModulesFactory(QObject *parent) : QObject{parent}
 {
@@ -31,5 +32,3 @@ QString PluginModulesFactory::parentInjectorName() const
 {
     return {};
 }
-
-#include "moc_plugin-modules-factory.cpp"

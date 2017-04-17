@@ -19,6 +19,7 @@
  */
 
 #include "antistring-message-filter.h"
+#include "antistring-message-filter.moc"
 
 #include "antistring-configuration.h"
 #include "antistring-notification-service.h"
@@ -112,5 +113,3 @@ int AntistringMessageFilter::points(const QString &message)
 
     return result;
 }
-
-#include "moc_antistring-message-filter.cpp"

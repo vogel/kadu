@@ -18,6 +18,7 @@
  */
 
 #include "attention-service.h"
+#include "attention-service.moc"
 
 #include "message/unread-message-repository.h"
 
@@ -45,5 +46,3 @@ void AttentionService::unreadMessageCountChanged()
 {
     emit needAttentionChanged(needAttention());
 }
-
-#include "moc_attention-service.cpp"

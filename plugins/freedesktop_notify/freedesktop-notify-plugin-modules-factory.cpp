@@ -18,6 +18,7 @@
  */
 
 #include "freedesktop-notify-plugin-modules-factory.h"
+#include "freedesktop-notify-plugin-modules-factory.moc"
 
 #include "freedesktop-notify-module.h"
 
@@ -39,5 +40,3 @@ std::vector<std::unique_ptr<injeqt::module>> FreedesktopNotifyPluginModulesFacto
 
     return modules;
 }
-
-#include "moc_freedesktop-notify-plugin-modules-factory.cpp"

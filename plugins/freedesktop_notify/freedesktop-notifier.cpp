@@ -42,6 +42,7 @@
 #include "url-handlers/url-handler-manager.h"
 
 #include "freedesktop-notifier.h"
+#include "freedesktop-notifier.moc"
 
 FreedesktopNotifier::FreedesktopNotifier(QObject *parent)
         : QObject{parent}, Notifier(
@@ -331,5 +332,3 @@ void FreedesktopNotifier::createDefaultConfiguration()
     m_configuration->deprecatedApi()->addVariable("FreedesktopNotifier", "ShowContentMessage", true);
     m_configuration->deprecatedApi()->addVariable("FreedesktopNotifier", "CiteSign", 100);
 }
-
-#include "moc_freedesktop-notifier.cpp"

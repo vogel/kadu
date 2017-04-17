@@ -19,6 +19,7 @@
  */
 
 #include "base-action-context.h"
+#include "base-action-context.moc"
 
 BaseActionContext::BaseActionContext(QWidget *widget) : Widget{widget}, CurrentStatusContainer{nullptr}
 {
@@ -108,5 +109,3 @@ void BaseActionContext::setRoles(const RoleSet &roles)
         MyChangeNotifier.notify();
     }
 }
-
-#include "moc_base-action-context.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "sound-plugin-modules-factory.h"
+#include "sound-plugin-modules-factory.moc"
 
 #include "sound-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> SoundPluginModulesFactory::createPl
 
     return modules;
 }
-
-#include "moc_sound-plugin-modules-factory.cpp"

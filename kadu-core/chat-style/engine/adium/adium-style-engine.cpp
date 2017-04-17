@@ -18,6 +18,7 @@
  */
 
 #include "adium-style-engine.h"
+#include "adium-style-engine.moc"
 
 #include "chat-style/chat-style.h"
 #include "chat-style/engine/adium/adium-style-renderer-factory.h"
@@ -83,5 +84,3 @@ std::unique_ptr<ChatStyleRendererFactory> AdiumStyleEngine::createRendererFactor
 
     return m_injectedFactory->makeUnique<AdiumStyleRendererFactory>(style);
 }
-
-#include "moc_adium-style-engine.cpp"

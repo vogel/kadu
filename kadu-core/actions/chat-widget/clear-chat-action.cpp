@@ -18,6 +18,7 @@
  */
 
 #include "clear-chat-action.h"
+#include "clear-chat-action.moc"
 
 #include "actions/action.h"
 #include "widgets/chat-edit-box.h"
@@ -71,5 +72,3 @@ void ClearChatAction::updateActionState(Action *action)
 
     action->setEnabled(0 != chatEditBox->chatWidget()->chatMessagesView()->countMessages());
 }
-
-#include "moc_clear-chat-action.cpp"

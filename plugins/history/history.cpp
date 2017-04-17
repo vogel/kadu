@@ -59,6 +59,7 @@
 #include "history-save-thread.h"
 
 #include "history.h"
+#include "history.moc"
 
 History::History(QObject *parent) : QObject{parent}, SyncEnabled(true), SaveThread(0), CurrentStorage(0)
 {
@@ -373,5 +374,3 @@ void History::setSyncEnabled(bool syncEnabled)
     if (SaveThread)
         SaveThread->setEnabled(syncEnabled);
 }
-
-#include "moc_history.cpp"

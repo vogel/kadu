@@ -19,6 +19,7 @@
  */
 
 #include "history-tab.h"
+#include "history-tab.moc"
 
 HistoryTab::HistoryTab(QWidget *parent) : QWidget(parent)
 {
@@ -27,5 +28,3 @@ HistoryTab::HistoryTab(QWidget *parent) : QWidget(parent)
 HistoryTab::~HistoryTab()
 {
 }
-
-#include "moc_history-tab.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "screenshot-plugin-modules-factory.h"
+#include "screenshot-plugin-modules-factory.moc"
 
 #include "screenshot-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> ScreenshotPluginModulesFactory::cre
 
     return modules;
 }
-
-#include "moc_screenshot-plugin-modules-factory.cpp"

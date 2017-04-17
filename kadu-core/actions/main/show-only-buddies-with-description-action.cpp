@@ -18,6 +18,7 @@
  */
 
 #include "show-only-buddies-with-description-action.h"
+#include "show-only-buddies-with-description-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -96,5 +97,3 @@ void ShowOnlyBuddiesWithDescriptionAction::configurationUpdated()
             m_configuration->deprecatedApi()->readBoolEntry("General", "ShowWithoutDescription"))
         action(context)->trigger();
 }
-
-#include "moc_show-only-buddies-with-description-action.cpp"

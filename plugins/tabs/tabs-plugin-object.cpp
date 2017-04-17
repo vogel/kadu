@@ -18,6 +18,7 @@
  */
 
 #include "tabs-plugin-object.h"
+#include "tabs-plugin-object.moc"
 
 #include "tabs-chat-widget-container-handler.h"
 
@@ -54,5 +55,3 @@ void TabsPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/tabs.ui"));
 }
-
-#include "moc_tabs-plugin-object.cpp"

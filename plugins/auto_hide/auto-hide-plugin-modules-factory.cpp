@@ -18,6 +18,7 @@
  */
 
 #include "auto-hide-plugin-modules-factory.h"
+#include "auto-hide-plugin-modules-factory.moc"
 
 #include "auto-hide-module.h"
 
@@ -43,5 +44,3 @@ QString AutoHidePluginModulesFactory::parentInjectorName() const
 {
     return "idle";
 }
-
-#include "moc_auto-hide-plugin-modules-factory.cpp"

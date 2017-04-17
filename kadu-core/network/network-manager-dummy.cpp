@@ -19,6 +19,7 @@
  */
 
 #include "network-manager-dummy.h"
+#include "network-manager-dummy.moc"
 
 NetworkManagerDummy::NetworkManagerDummy(QObject *parent) : QObject{parent}
 {
@@ -36,5 +37,3 @@ bool NetworkManagerDummy::isOnline()
 void NetworkManagerDummy::forceOnline()
 {
 }
-
-#include "moc_network-manager-dummy.cpp"

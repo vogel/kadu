@@ -19,6 +19,7 @@
  */
 
 #include "history-messages-prepender.h"
+#include "history-messages-prepender.moc"
 
 #include "message/sorted-messages.h"
 #include "widgets/webkit-messages-view/webkit-messages-view.h"
@@ -53,5 +54,3 @@ void HistoryMessagesPrepender::messagesAvailable()
     m_messagesView = nullptr;
     deleteLater();
 }
-
-#include "moc_history-messages-prepender.cpp"

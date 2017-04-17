@@ -22,6 +22,7 @@
 #include <QtCore/QCoreApplication>
 
 #include "network-manager-ntrack.h"
+#include "network-manager-ntrack.moc"
 
 NetworkManagerNTrack::NetworkManagerNTrack(QObject *parent) : QObject{parent}
 {
@@ -61,5 +62,3 @@ void NetworkManagerNTrack::stateChanged(QNTrackState oldState, QNTrackState newS
     if (wasOnline != nowOnline)
         onlineStateChanged(nowOnline);
 }
-
-#include "moc_network-manager-ntrack.cpp"

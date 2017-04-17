@@ -19,6 +19,7 @@
  */
 
 #include "jabber-vcard-uploader.h"
+#include "jabber-vcard-uploader.moc"
 
 #include <qxmpp/QXmppVCardManager.h>
 
@@ -37,5 +38,3 @@ void JabberVCardUploader::uploadVCard(const QXmppVCardIq &vcard)
     emit vCardUploaded(true);
     deleteLater();
 }
-
-#include "moc_jabber-vcard-uploader.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "jabber-change-password.h"
+#include "jabber-change-password.moc"
 
 #include "jid.h"
 #include "qxmpp/jabber-register-extension.h"
@@ -78,5 +79,3 @@ void JabberChangePassword::registerIqReceived(const QXmppRegisterIq &registerIq)
 
     deleteLater();
 }
-
-#include "moc_jabber-change-password.cpp"

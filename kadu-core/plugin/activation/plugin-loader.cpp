@@ -19,6 +19,7 @@
  */
 
 #include "plugin-loader.h"
+#include "plugin-loader.moc"
 
 #include "actions/actions.h"
 #include "injeqt-type-roles.h"
@@ -101,5 +102,3 @@ PluginLoader::createPluginInjector(const QString &pluginName, PluginInjectorProv
             tr("Creating plugin injector for %1 failed.\n%2: %3").arg(pluginName).arg(typeid(e).name()).arg(e.what())};
     }
 }
-
-#include "moc_plugin-loader.cpp"

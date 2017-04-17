@@ -21,6 +21,7 @@
  */
 
 #include "contact-data-extractor.h"
+#include "contact-data-extractor.moc"
 
 #include "accounts/account.h"
 #include "avatars/avatar-id.h"
@@ -124,5 +125,3 @@ QVariant ContactDataExtractor::data(const Contact &contact, int role, bool useBu
         return QVariant();
     }
 }
-
-#include "moc_contact-data-extractor.cpp"

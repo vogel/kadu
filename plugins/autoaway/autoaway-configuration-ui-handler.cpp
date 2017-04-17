@@ -18,6 +18,7 @@
  */
 
 #include "autoaway-configuration-ui-handler.h"
+#include "autoaway-configuration-ui-handler.moc"
 
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
@@ -105,5 +106,3 @@ void AutoawayConfigurationUiHandler::descriptionChangeChanged(int index)
     m_descriptionTextLineEdit->setEnabled(index != 0);
     m_autoRefreshSpinBox->setEnabled(index != 0);
 }
-
-#include "moc_autoaway-configuration-ui-handler.cpp"

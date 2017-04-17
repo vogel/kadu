@@ -18,6 +18,7 @@
  */
 
 #include "open-search-action.h"
+#include "open-search-action.moc"
 
 #include "accounts/account-manager.h"
 #include "core/injected-factory.h"
@@ -65,5 +66,3 @@ void OpenSearchAction::updateActionState(Action *action)
         [](auto const &account) { return account.protocolHandler() && account.protocolHandler()->searchService(); });
     action->setVisible(hasSearchServiceAccount);
 }
-
-#include "moc_open-search-action.cpp"

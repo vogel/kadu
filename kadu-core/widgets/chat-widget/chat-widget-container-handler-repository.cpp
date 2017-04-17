@@ -18,6 +18,7 @@
  */
 
 #include "chat-widget-container-handler-repository.h"
+#include "chat-widget-container-handler-repository.moc"
 
 ChatWidgetContainerHandlerRepository::ChatWidgetContainerHandlerRepository(QObject *parent) : QObject(parent)
 {
@@ -55,5 +56,3 @@ QList<ChatWidgetContainerHandler *> ChatWidgetContainerHandlerRepository::chatWi
 {
     return m_chatWidgetContainerHandlers;
 }
-
-#include "moc_chat-widget-container-handler-repository.cpp"

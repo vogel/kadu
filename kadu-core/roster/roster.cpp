@@ -18,6 +18,7 @@
  */
 
 #include "roster.h"
+#include "roster.moc"
 
 #include "accounts/account.h"
 #include "protocols/protocol.h"
@@ -71,5 +72,3 @@ void Roster::removeContact(const Contact &contact) const
         service->removeContact(contact);
     }
 }
-
-#include "moc_roster.cpp"

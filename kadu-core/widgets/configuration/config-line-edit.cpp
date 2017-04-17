@@ -24,8 +24,9 @@
 #include <QtWidgets/QLabel>
 
 #include "widgets/configuration/config-group-box.h"
-#include "widgets/configuration/config-line-edit.h"
-#include "widgets/configuration/config-line-edit.moc"
+
+#include "config-line-edit.h"
+#include "config-line-edit.moc"
 
 ConfigLineEdit::ConfigLineEdit(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -83,5 +84,3 @@ void ConfigLineEdit::setVisible(bool visible)
     label->setVisible(visible);
     LineEditWithClearButton::setVisible(visible);
 }
-
-#include "moc_config-line-edit.cpp"

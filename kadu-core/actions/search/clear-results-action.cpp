@@ -18,6 +18,7 @@
  */
 
 #include "clear-results-action.h"
+#include "clear-results-action.moc"
 
 #include "windows/search-window.h"
 
@@ -50,5 +51,3 @@ void ClearResultsAction::actionTriggered(QAction *sender, bool)
     if (search)
         search->clearResults();
 }
-
-#include "moc_clear-results-action.cpp"

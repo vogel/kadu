@@ -20,6 +20,7 @@
  */
 
 #include "mediaplayer-configuration-ui-handler.h"
+#include "mediaplayer-configuration-ui-handler.moc"
 
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
@@ -66,5 +67,3 @@ void MediaplayerConfigurationUiHandler::mainConfigurationWindowDestroyed()
 void MediaplayerConfigurationUiHandler::mainConfigurationWindowApplied()
 {
 }
-
-#include "moc_mediaplayer-configuration-ui-handler.cpp"

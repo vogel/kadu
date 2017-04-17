@@ -18,6 +18,7 @@
  */
 
 #include "jabber-room-chat.h"
+#include "jabber-room-chat.moc"
 
 #include "jid.h"
 #include "services/jabber-presence-service.h"
@@ -140,5 +141,3 @@ QString JabberRoomChat::nick() const
 {
     return m_room->nickName();
 }
-
-#include "moc_jabber-room-chat.cpp"

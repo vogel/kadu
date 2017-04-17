@@ -18,6 +18,7 @@
  */
 
 #include "next-action.h"
+#include "next-action.moc"
 
 #include "mediaplayer.h"
 
@@ -44,5 +45,3 @@ void NextAction::actionTriggered(QAction *, bool)
 {
     m_mediaPlayer->nextTrack();
 }
-
-#include "moc_next-action.cpp"

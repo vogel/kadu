@@ -21,6 +21,7 @@
  */
 
 #include "spellchecker-configuration.h"
+#include "spellchecker-configuration.moc"
 
 #include "spellchecker.h"
 
@@ -101,5 +102,3 @@ void SpellcheckerConfiguration::setChecked(const QStringList &checked)
     else
         m_configuration->deprecatedApi()->writeEntry("ASpell", "Checked", checked.join(","));
 }
-
-#include "moc_spellchecker-configuration.cpp"

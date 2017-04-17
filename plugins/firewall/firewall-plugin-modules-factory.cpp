@@ -18,6 +18,7 @@
  */
 
 #include "firewall-plugin-modules-factory.h"
+#include "firewall-plugin-modules-factory.moc"
 
 #include "firewall-module.h"
 
@@ -43,5 +44,3 @@ QString FirewallPluginModulesFactory::parentInjectorName() const
 {
     return "history";
 }
-
-#include "moc_firewall-plugin-modules-factory.cpp"

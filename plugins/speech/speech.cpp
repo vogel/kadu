@@ -34,6 +34,7 @@
 #include "speech-configuration-widget.h"
 
 #include "speech.h"
+#include "speech.moc"
 
 /**
  * @ingroup speech
@@ -173,5 +174,3 @@ NotifierConfigurationWidget *Speech::createConfigurationWidget(QWidget *parent)
 }
 
 /** @} */
-
-#include "moc_speech.cpp"

@@ -18,9 +18,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugins/mediaplayer/mediaplayer.h"
-
 #include "mpd-mediaplayer.h"
+#include "mpd-mediaplayer.moc"
+
+#include "plugins/mediaplayer/mediaplayer.h"
 
 #include "configuration/configuration.h"
 
@@ -410,5 +411,3 @@ void MPDMediaPlayer::decrVolume()
     }
     mpd_connection_free(con);
 }
-
-#include "moc_mpd-mediaplayer.cpp"

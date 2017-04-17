@@ -26,6 +26,7 @@
 #include "otr-peer-identity-verification-state.h"
 
 #include "otr-peer-identity-verification-progress-page.h"
+#include "otr-peer-identity-verification-progress-page.moc"
 
 OtrPeerIdentityVerificationProgressPage::OtrPeerIdentityVerificationProgressPage(
     const Contact &contact, QWidget *parent)
@@ -114,5 +115,3 @@ bool OtrPeerIdentityVerificationProgressPage::validatePage()
 
     return State.isFinished();
 }
-
-#include "moc_otr-peer-identity-verification-progress-page.cpp"

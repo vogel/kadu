@@ -35,6 +35,7 @@
 #include "expander/emoticon-path-provider.h"
 
 #include "emoticon-selector-button-popup.h"
+#include "emoticon-selector-button-popup.moc"
 
 EmoticonSelectorButtonPopup::EmoticonSelectorButtonPopup(
     const Emoticon &emoticon, EmoticonPathProvider *pathProvider, QWidget *parent)
@@ -81,5 +82,3 @@ void EmoticonSelectorButtonPopup::mouseReleaseEvent(QMouseEvent *e)
     QLabel::mouseReleaseEvent(e);
     emit clicked(DisplayEmoticon);
 }
-
-#include "moc_emoticon-selector-button-popup.cpp"

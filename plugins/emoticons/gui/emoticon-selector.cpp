@@ -42,6 +42,7 @@
 #include "gui/emoticon-selector-button.h"
 
 #include "emoticon-selector.h"
+#include "emoticon-selector.moc"
 
 EmoticonSelector::EmoticonSelector(
     const QVector<Emoticon> &emoticons, EmoticonPathProvider *pathProvider, QWidget *parent)
@@ -210,5 +211,3 @@ void EmoticonSelector::keyPressEvent(QKeyEvent *e)
     }
     QAbstractScrollArea::keyPressEvent(e);
 }
-
-#include "moc_emoticon-selector.cpp"

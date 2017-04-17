@@ -18,6 +18,7 @@
  */
 
 #include "notification-callback-repository.h"
+#include "notification-callback-repository.moc"
 
 #include "notification/notification-callback.h"
 
@@ -62,5 +63,3 @@ NotificationCallback NotificationCallbackRepository::callback(const QString &nam
     else
         return NotificationCallback{};
 }
-
-#include "moc_notification-callback-repository.cpp"

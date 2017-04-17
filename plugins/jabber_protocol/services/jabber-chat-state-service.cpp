@@ -19,6 +19,7 @@
  */
 
 #include "jabber-chat-state-service.h"
+#include "jabber-chat-state-service.moc"
 
 #include "jabber-protocol.h"
 #include "jid.h"
@@ -180,5 +181,3 @@ void JabberChatStateService::sendState(const Contact &contact, ChatState state)
     // have this condition
     contact.addProperty("jabber:sent-chat-state", static_cast<int>(xmppState), CustomProperties::NonStorable);
 }
-
-#include "moc_jabber-chat-state-service.cpp"

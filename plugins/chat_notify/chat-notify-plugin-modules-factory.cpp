@@ -18,6 +18,7 @@
  */
 
 #include "chat-notify-plugin-modules-factory.h"
+#include "chat-notify-plugin-modules-factory.moc"
 
 #include "chat-notify-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> ChatNotifyPluginModulesFactory::cre
 
     return modules;
 }
-
-#include "moc_chat-notify-plugin-modules-factory.cpp"

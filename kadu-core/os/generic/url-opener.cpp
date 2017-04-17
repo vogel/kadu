@@ -20,6 +20,7 @@
  */
 
 #include "url-opener.h"
+#include "url-opener.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -114,5 +115,3 @@ void UrlOpener::openEmail(const QByteArray &email)
             QCoreApplication::translate(
                 "@default", QT_TR_NOOP("Could not spawn Mail client process. Check if the Mail client is functional")));
 }
-
-#include "moc_url-opener.cpp"

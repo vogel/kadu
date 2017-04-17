@@ -18,6 +18,7 @@
  */
 
 #include "filedesc-plugin-modules-factory.h"
+#include "filedesc-plugin-modules-factory.moc"
 
 #include "filedesc-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> FiledescPluginModulesFactory::creat
 
     return modules;
 }
-
-#include "moc_filedesc-plugin-modules-factory.cpp"

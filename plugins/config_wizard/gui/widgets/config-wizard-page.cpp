@@ -23,6 +23,7 @@
 #include <QtWidgets/QTextBrowser>
 
 #include "config-wizard-page.h"
+#include "config-wizard-page.moc"
 
 ConfigWizardPage::ConfigWizardPage(QWidget *parent) : QWizardPage(parent)
 {
@@ -60,5 +61,3 @@ void ConfigWizardPage::setDescription(const QString &description)
 {
     DescriptionPane->setText(description);
 }
-
-#include "moc_config-wizard-page.cpp"

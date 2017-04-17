@@ -18,6 +18,7 @@
  */
 
 #include "history-plugin-modules-factory.h"
+#include "history-plugin-modules-factory.moc"
 
 #include "history-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> HistoryPluginModulesFactory::create
 
     return modules;
 }
-
-#include "moc_history-plugin-modules-factory.cpp"

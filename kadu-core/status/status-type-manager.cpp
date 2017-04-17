@@ -23,6 +23,7 @@
  */
 
 #include "status-type-manager.h"
+#include "status-type-manager.moc"
 
 #include "icons/kadu-icon.h"
 #include "status/status-type-data.h"
@@ -100,5 +101,3 @@ KaduIcon StatusTypeManager::statusIcon(const QString &protocol, const Status &st
 
     return KaduIcon(iconName, "16x16");
 }
-
-#include "moc_status-type-manager.cpp"

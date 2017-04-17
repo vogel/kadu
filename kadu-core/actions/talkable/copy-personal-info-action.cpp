@@ -18,6 +18,7 @@
  */
 
 #include "copy-personal-info-action.h"
+#include "copy-personal-info-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -77,5 +78,3 @@ void CopyPersonalInfoAction::actionTriggered(QAction *sender, bool)
     QApplication::clipboard()->setText(info, QClipboard::Selection);
     QApplication::clipboard()->setText(info, QClipboard::Clipboard);
 }
-
-#include "moc_copy-personal-info-action.cpp"

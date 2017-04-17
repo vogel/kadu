@@ -18,6 +18,7 @@
  */
 
 #include "buddy-storage.h"
+#include "buddy-storage.moc"
 
 #include "buddies/buddy-shared.h"
 #include "buddies/buddy.h"
@@ -59,5 +60,3 @@ Buddy BuddyStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storage
 
     return result;
 }
-
-#include "moc_buddy-storage.cpp"

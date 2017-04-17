@@ -29,6 +29,7 @@
 #include "otr-fingerprint-service.h"
 
 #include "otr-peer-identity-verification-fingerprint-exchange-page.h"
+#include "otr-peer-identity-verification-fingerprint-exchange-page.moc"
 
 OtrPeerIdentityVerificationFingerprintExchangePage::OtrPeerIdentityVerificationFingerprintExchangePage(
     const Contact &contact, QWidget *parent)
@@ -120,5 +121,3 @@ bool OtrPeerIdentityVerificationFingerprintExchangePage::validatePage()
 
     return true;
 }
-
-#include "moc_otr-peer-identity-verification-fingerprint-exchange-page.cpp"

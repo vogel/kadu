@@ -32,6 +32,7 @@ extern "C" {
 #include "otr-user-state-service.h"
 
 #include "otr-fingerprint-service.h"
+#include "otr-fingerprint-service.moc"
 
 void OtrFingerprintService::wrapperOtrWriteFingerprints(void *data)
 {
@@ -142,5 +143,3 @@ QString OtrFingerprintService::extractContactFingerprint(const Contact &contact)
     fingerprint[OTRL_PRIVKEY_FPRINT_HUMAN_LEN - 1] = 0;
     return QString::fromLatin1(fingerprint);
 }
-
-#include "moc_otr-fingerprint-service.cpp"

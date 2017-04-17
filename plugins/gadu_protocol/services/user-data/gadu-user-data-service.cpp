@@ -18,6 +18,7 @@
  */
 
 #include "gadu-user-data-service.h"
+#include "gadu-user-data-service.moc"
 
 #include "services/gadu-contact-avatar-service.h"
 #include "services/user-data/gadu-user-data-type.h"
@@ -56,5 +57,3 @@ void GaduUserDataService::handleUserDataItem(const gg_event_user_data_user &user
     if (!update)
         m_gaduContactAvatarService->handleAvatarData(userDataUser.uin, nullptr);
 }
-
-#include "moc_gadu-user-data-service.cpp"

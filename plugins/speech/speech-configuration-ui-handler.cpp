@@ -38,6 +38,7 @@
 #include "windows/main-configuration-window.h"
 
 #include "speech-configuration-ui-handler.h"
+#include "speech-configuration-ui-handler.moc"
 
 SpeechConfigurationUiHandler::SpeechConfigurationUiHandler(QObject *parent)
         : QObject{parent}, frequencySlider{}, tempoSlider{}, baseFrequencySlider{}, dspDeviceLineEdit{},
@@ -131,5 +132,3 @@ void SpeechConfigurationUiHandler::testSpeech()
         text.contains("%1") ? text.arg("Test") : QString("Test"), program, klatt, mel, sound_system, device, frequency,
         tempo, baseFrequency);
 }
-
-#include "moc_speech-configuration-ui-handler.cpp"

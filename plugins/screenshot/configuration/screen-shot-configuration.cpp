@@ -20,6 +20,7 @@
  */
 
 #include "screen-shot-configuration.h"
+#include "screen-shot-configuration.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -85,5 +86,3 @@ QString ScreenShotConfiguration::screenshotFileNameExtension()
 
     return extension;
 }
-
-#include "moc_screen-shot-configuration.cpp"

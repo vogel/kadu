@@ -31,6 +31,7 @@
 #include "misc/change-notifier.h"
 
 #include "message-shared.h"
+#include "message-shared.moc"
 
 MessageShared::MessageShared(const QUuid &uuid) : Shared(uuid), Status(MessageStatusUnknown), Type(MessageTypeUnknown)
 {
@@ -131,5 +132,3 @@ void MessageShared::setStatus(MessageStatus status)
 
 KaduShared_PropertyPtrDefCRW(MessageShared, Chat, messageChat, MessageChat)
     KaduShared_PropertyPtrDefCRW(MessageShared, Contact, messageSender, MessageSender)
-
-#include "moc_message-shared.cpp"

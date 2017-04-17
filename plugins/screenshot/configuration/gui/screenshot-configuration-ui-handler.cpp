@@ -31,6 +31,7 @@
 #include "windows/main-configuration-window.h"
 
 #include "screenshot-configuration-ui-handler.h"
+#include "screenshot-configuration-ui-handler.moc"
 
 ScreenShotConfigurationUiHandler::ScreenShotConfigurationUiHandler(QObject *parent) : QObject{parent}
 {
@@ -65,5 +66,3 @@ void ScreenShotConfigurationUiHandler::mainConfigurationWindowDestroyed()
 void ScreenShotConfigurationUiHandler::mainConfigurationWindowApplied()
 {
 }
-
-#include "moc_screenshot-configuration-ui-handler.cpp"

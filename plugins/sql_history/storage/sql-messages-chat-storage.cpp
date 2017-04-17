@@ -22,6 +22,7 @@
 #include "storage/history-sql-storage.h"
 
 #include "sql-messages-chat-storage.h"
+#include "sql-messages-chat-storage.moc"
 
 SqlMessagesChatStorage::SqlMessagesChatStorage(HistorySqlStorage *sqlStorage)
         : HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
@@ -52,5 +53,3 @@ void SqlMessagesChatStorage::deleteMessages(const Talkable &talkable, const QDat
 {
     SqlStorage->clearChatHistory(talkable, date);
 }
-
-#include "moc_sql-messages-chat-storage.cpp"

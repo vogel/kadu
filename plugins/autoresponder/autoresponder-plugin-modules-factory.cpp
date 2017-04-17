@@ -18,6 +18,7 @@
  */
 
 #include "autoresponder-plugin-modules-factory.h"
+#include "autoresponder-plugin-modules-factory.moc"
 
 #include "autoresponder-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> AutoresponderPluginModulesFactory::
 
     return modules;
 }
-
-#include "moc_autoresponder-plugin-modules-factory.cpp"

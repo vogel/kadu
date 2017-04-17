@@ -18,6 +18,7 @@
  */
 
 #include "chat-details.h"
+#include "chat-details.moc"
 
 #include "misc/change-notifier.h"
 
@@ -35,5 +36,3 @@ void ChatDetails::notifyChanged()
 {
     m_changeNotifier->notify();
 }
-
-#include "moc_chat-details.cpp"

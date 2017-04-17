@@ -18,6 +18,7 @@
  */
 
 #include "file-transfer-widget.h"
+#include "file-transfer-widget.moc"
 
 #include "buddies/buddy.h"
 #include "contacts/contact.h"
@@ -489,5 +490,3 @@ void FileTransferWidget::updateTransferData()
         m_lastTransferredSize = m_transfer.transferredSize();
     }
 }
-
-#include "moc_file-transfer-widget.cpp"

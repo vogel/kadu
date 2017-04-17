@@ -24,8 +24,8 @@
 #include <QtWidgets/QLabel>
 #include <QtXml/QDomElement>
 
-#include "widgets/configuration/config-combo-box.h"
-#include "widgets/configuration/config-combo-box.moc"
+#include "config-combo-box.h"
+#include "config-combo-box.moc"
 
 #include "widgets/configuration/config-group-box.h"
 
@@ -156,5 +156,3 @@ bool ConfigComboBox::fromDomElement(QDomElement domElement)
 
     return ConfigWidgetValue::fromDomElement(domElement);
 }
-
-#include "moc_config-combo-box.cpp"

@@ -35,6 +35,7 @@
 #include "suggest-action.h"
 
 #include "suggester.h"
+#include "suggester.moc"
 
 Suggester::Suggester(QObject *parent) : QObject{parent}
 {
@@ -144,5 +145,3 @@ void Suggester::replaceWith(QString word)
 
     CurrentTextSelection.insertText(word);
 }
-
-#include "moc_suggester.cpp"

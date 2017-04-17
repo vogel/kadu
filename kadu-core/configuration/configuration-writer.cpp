@@ -18,6 +18,7 @@
  */
 
 #include "configuration-writer.h"
+#include "configuration-writer.moc"
 
 #include "configuration/configuration-path-provider.h"
 #include "configuration/configuration.h"
@@ -67,5 +68,3 @@ void ConfigurationWriter::write(const QString &fileName) const
     {
     }
 }
-
-#include "moc_configuration-writer.cpp"

@@ -20,6 +20,7 @@
  */
 
 #include "file-transfer-shared.h"
+#include "file-transfer-shared.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -159,5 +160,3 @@ void FileTransferShared::handlerDestroyed()
 }
 
 KaduShared_PropertyPtrDefCRW_M(FileTransferShared, Contact, peer, Peer)
-
-#include "moc_file-transfer-shared.cpp"

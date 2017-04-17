@@ -40,6 +40,7 @@ extern "C" {
 #include "otr-user-state-service.h"
 
 #include "otr-session-service.h"
+#include "otr-session-service.moc"
 
 void OtrSessionService::wrapperOtrGoneSecure(void *data, ConnContext *context)
 {
@@ -149,5 +150,3 @@ void OtrSessionService::endSession(const Contact &contact)
 
     emit goneInsecure(contact);
 }
-
-#include "moc_otr-session-service.cpp"

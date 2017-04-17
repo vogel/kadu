@@ -19,6 +19,7 @@
  */
 
 #include "history-query-results-proxy-model.h"
+#include "history-query-results-proxy-model.moc"
 
 HistoryQueryResultsProxyModel::HistoryQueryResultsProxyModel(QObject *parent)
         : QSortFilterProxyModel(parent), TalkableVisible(true), TitleVisible(true)
@@ -58,5 +59,3 @@ void HistoryQueryResultsProxyModel::setTitleVisible(const bool titleVisible)
     TitleVisible = titleVisible;
     invalidateFilter();
 }
-
-#include "moc_history-query-results-proxy-model.cpp"

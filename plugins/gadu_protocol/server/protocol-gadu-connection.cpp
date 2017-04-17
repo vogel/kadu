@@ -22,6 +22,7 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "protocol-gadu-connection.h"
+#include "protocol-gadu-connection.moc"
 
 ProtocolGaduConnection::ProtocolGaduConnection(QObject *parent) : GaduConnection(parent)
 {
@@ -74,5 +75,3 @@ GaduWritableSessionToken ProtocolGaduConnection::writableSessionToken()
 {
     return {this};
 }
-
-#include "moc_protocol-gadu-connection.cpp"

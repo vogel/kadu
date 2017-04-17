@@ -18,6 +18,7 @@
  */
 
 #include "config-wizard-plugin-object.h"
+#include "config-wizard-plugin-object.moc"
 
 #include "config-wizard-actions.h"
 #include "show-config-wizard-action.h"
@@ -60,5 +61,3 @@ void ConfigWizardPluginObject::done()
 {
     m_configWizardActions->unregisterActions();
 }
-
-#include "moc_config-wizard-plugin-object.cpp"

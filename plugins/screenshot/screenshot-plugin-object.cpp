@@ -18,6 +18,7 @@
  */
 
 #include "screenshot-plugin-object.h"
+#include "screenshot-plugin-object.moc"
 
 #include "configuration/gui/screenshot-configuration-ui-handler.h"
 #include "configuration/screen-shot-configuration.h"
@@ -82,5 +83,3 @@ void ScreenshotPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/screenshot.ui"));
 }
-
-#include "moc_screenshot-plugin-object.cpp"

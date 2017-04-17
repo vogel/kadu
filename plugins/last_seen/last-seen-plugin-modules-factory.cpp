@@ -18,6 +18,7 @@
  */
 
 #include "last-seen-plugin-modules-factory.h"
+#include "last-seen-plugin-modules-factory.moc"
 
 #include "last-seen-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> LastSeenPluginModulesFactory::creat
 
     return modules;
 }
-
-#include "moc_last-seen-plugin-modules-factory.cpp"

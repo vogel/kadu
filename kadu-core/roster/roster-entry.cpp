@@ -21,6 +21,7 @@
 #include "roster/roster-entry-state.h"
 
 #include "roster-entry.h"
+#include "roster-entry.moc"
 
 RosterEntry::RosterEntry(QObject *parent) : QObject{parent}, m_state{RosterEntryState::Unknown}
 {
@@ -95,5 +96,3 @@ bool RosterEntry::requiresSynchronization() const
         return true;
     return false;
 }
-
-#include "moc_roster-entry.cpp"

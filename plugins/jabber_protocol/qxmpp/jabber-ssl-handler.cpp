@@ -18,6 +18,7 @@
  */
 
 #include "jabber-ssl-handler.h"
+#include "jabber-ssl-handler.moc"
 
 #include "ssl/ssl-certificate-manager.h"
 
@@ -52,5 +53,3 @@ void JabberSslHandler::sslErrors(const QList<QSslError> &errors)
         m_sslCertificateManager->askForCertificateAcceptance(
             client->configuration().domain(), errors.first().certificate(), errors, m_onAccepted, m_onRejected);
 }
-
-#include "moc_jabber-ssl-handler.cpp"

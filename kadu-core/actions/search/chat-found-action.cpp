@@ -18,6 +18,7 @@
  */
 
 #include "chat-found-action.h"
+#include "chat-found-action.moc"
 
 #include "windows/search-window.h"
 
@@ -50,5 +51,3 @@ void ChatFoundAction::actionTriggered(QAction *sender, bool)
     if (search)
         search->chatFound();
 }
-
-#include "moc_chat-found-action.cpp"

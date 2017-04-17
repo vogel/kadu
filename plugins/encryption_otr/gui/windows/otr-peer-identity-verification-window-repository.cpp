@@ -21,6 +21,7 @@
 #include "gui/windows/otr-peer-identity-verification-window-factory.h"
 
 #include "otr-peer-identity-verification-window-repository.h"
+#include "otr-peer-identity-verification-window-repository.moc"
 
 OtrPeerIdentityVerificationWindowRepository::OtrPeerIdentityVerificationWindowRepository()
 {
@@ -86,5 +87,3 @@ void OtrPeerIdentityVerificationWindowRepository::showVerificationWindow(const C
         window->raise();
     }
 }
-
-#include "moc_otr-peer-identity-verification-window-repository.cpp"

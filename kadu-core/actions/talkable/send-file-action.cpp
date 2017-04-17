@@ -18,6 +18,7 @@
  */
 
 #include "send-file-action.h"
+#include "send-file-action.moc"
 
 #include "accounts/account.h"
 #include "actions/action-context.h"
@@ -157,5 +158,3 @@ QStringList SendFileAction::selectFilesToSend() const
         nullptr, tr("Select file location"),
         configuration()->deprecatedApi()->readEntry("Network", "LastUploadDirectory"));
 }
-
-#include "moc_send-file-action.cpp"

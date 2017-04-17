@@ -46,6 +46,7 @@
 
 #include "simpleview-config-ui.h"
 #include "simpleview.h"
+#include "simpleview.moc"
 
 SimpleView::SimpleView(QObject *parent) : QObject{parent}, SimpleViewActive(false)
 {
@@ -270,5 +271,3 @@ void SimpleView::configurationUpdated()
     NoScrollBar = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewNoScrollBar", true);
     Borderless = m_configuration->deprecatedApi()->readBoolEntry("Look", "SimpleViewBorderless", true);
 }
-
-#include "moc_simpleview.cpp"

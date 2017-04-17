@@ -18,6 +18,7 @@
  */
 
 #include "show-descriptions-action.h"
+#include "show-descriptions-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -54,5 +55,3 @@ void ShowDescriptionsAction::actionTriggered(QAction *, bool toggled)
     m_configuration->deprecatedApi()->writeEntry("Look", "ShowDesc", toggled);
     ConfigurationAwareObject::notifyAll();
 }
-
-#include "moc_show-descriptions-action.cpp"

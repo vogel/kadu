@@ -19,10 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "icons/kadu-icon.h"
-#include "misc/misc.h"
-#include "plugin/plugin-injected-factory.h"
-#include "status/status-type.h"
+#include "jabber-protocol-factory.h"
+#include "jabber-protocol-factory.moc"
 
 #include "actions/jabber-protocol-menu-manager.h"
 #include "facebook-depreceated-message.h"
@@ -31,9 +29,13 @@
 #include "gui/widgets/jabber-create-account-widget.h"
 #include "gui/widgets/jabber-edit-account-widget.h"
 #include "jabber-id-validator.h"
-#include "jabber-protocol-factory.h"
 #include "jabber-protocol.h"
 #include "services/jabber-servers-service.h"
+
+#include "icons/kadu-icon.h"
+#include "misc/misc.h"
+#include "plugin/plugin-injected-factory.h"
+#include "status/status-type.h"
 
 JabberProtocolFactory::JabberProtocolFactory(QObject *parent) : ProtocolFactory{}
 {
@@ -144,5 +146,3 @@ ProtocolMenuManager *JabberProtocolFactory::protocolMenuManager()
 {
     return m_jabberProtocolMenuManager;
 }
-
-#include "moc_jabber-protocol-factory.cpp"

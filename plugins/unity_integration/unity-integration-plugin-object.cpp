@@ -18,6 +18,7 @@
  */
 
 #include "unity-integration-plugin-object.h"
+#include "unity-integration-plugin-object.moc"
 
 #include "unity-integration.h"
 
@@ -41,5 +42,3 @@ void UnityIntegrationPluginObject::init()
 void UnityIntegrationPluginObject::done()
 {
 }
-
-#include "moc_unity-integration-plugin-object.cpp"

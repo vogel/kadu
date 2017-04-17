@@ -18,6 +18,7 @@
  */
 
 #include "docking-menu-action-repository.h"
+#include "docking-menu-action-repository.moc"
 
 #include <QtWidgets/QAction>
 
@@ -57,5 +58,3 @@ void DockingMenuActionRepository::actionDestroyed(QObject *action)
 {
     removeAction(static_cast<QAction *>(action));
 }
-
-#include "moc_docking-menu-action-repository.cpp"

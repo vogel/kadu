@@ -29,8 +29,8 @@
 #include "widgets/configuration/config-section.h"
 #include "widgets/configuration/kadu-scroll-area.h"
 
-#include "widgets/configuration/config-tab.h"
-#include "widgets/configuration/config-tab.moc"
+#include "config-tab.h"
+#include "config-tab.moc"
 
 ConfigTab::ConfigTab(const QString &name, ConfigSection *configSection, QWidget *mainWidget)
         : QObject(configSection), MyName(name)
@@ -108,5 +108,3 @@ QWidget *ConfigTab::widget() const
 {
     return MyScrollArea;
 }
-
-#include "moc_config-tab.cpp"

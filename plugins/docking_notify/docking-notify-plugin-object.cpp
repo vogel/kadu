@@ -18,6 +18,7 @@
  */
 
 #include "docking-notify-plugin-object.h"
+#include "docking-notify-plugin-object.moc"
 
 #include "docking-notifier.h"
 
@@ -50,5 +51,3 @@ void DockingNotifyPluginObject::done()
 {
     m_notifierRepository->unregisterNotifier(m_dockingNotifier);
 }
-
-#include "moc_docking-notify-plugin-object.cpp"

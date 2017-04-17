@@ -31,6 +31,7 @@
 #include "languages-manager.h"
 
 #include "config-wizard-profile-page.h"
+#include "config-wizard-profile-page.moc"
 
 ConfigWizardProfilePage::ConfigWizardProfilePage(QWidget *parent) : ConfigWizardPage(parent)
 {
@@ -116,5 +117,3 @@ void ConfigWizardProfilePage::acceptPage()
     // TODO: check if needed
     m_myself->buddy().setDisplay(NickNameEdit->text());
 }
-
-#include "moc_config-wizard-profile-page.cpp"

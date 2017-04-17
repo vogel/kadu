@@ -39,6 +39,7 @@
 #include "history.h"
 
 #include "history-window.h"
+#include "history-window.moc"
 
 HistoryWindow::HistoryWindow(QWidget *parent) : QWidget(parent), CurrentTab(-1)
 {
@@ -193,5 +194,3 @@ void HistoryWindow::currentTabChanged(int newTabIndex)
 
     currentTab->setSizes(previousTab->sizes());
 }
-
-#include "moc_history-window.cpp"

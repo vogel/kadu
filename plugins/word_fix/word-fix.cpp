@@ -53,6 +53,7 @@
 #include "word-fix-formatted-string-visitor.h"
 
 #include "word-fix.h"
+#include "word-fix.moc"
 
 WordFix::WordFix(QObject *parent) : QObject{parent}
 {
@@ -153,5 +154,3 @@ void WordFix::sendRequest(ChatWidget *chat)
 
     chat->edit()->setHtml(htmlVisitor.result().string());
 }
-
-#include "moc_word-fix.cpp"

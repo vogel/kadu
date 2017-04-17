@@ -18,6 +18,7 @@
  */
 
 #include "history-buddy-configuration-widget-factory.h"
+#include "history-buddy-configuration-widget-factory.moc"
 
 #include "gui/widgets/history-buddy-configuration-widget.h"
 #include "plugin/plugin-injected-factory.h"
@@ -39,5 +40,3 @@ BuddyConfigurationWidget *HistoryBuddyConfigurationWidgetFactory::createWidget(c
 {
     return m_pluginInjectedFactory->makeInjected<HistoryBuddyConfigurationWidget>(buddy, parent);
 }
-
-#include "moc_history-buddy-configuration-widget-factory.cpp"

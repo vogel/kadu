@@ -18,6 +18,7 @@
  */
 
 #include "firewall-notification-service.h"
+#include "firewall-notification-service.moc"
 
 #include "accounts/account.h"
 #include "chat/chat.h"
@@ -91,5 +92,3 @@ void FirewallNotificationService::notifyBlockedMessage(const Chat &chat, const C
 
     m_notificationService->notify(notification);
 }
-
-#include "moc_firewall-notification-service.cpp"

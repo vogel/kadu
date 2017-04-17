@@ -92,6 +92,7 @@
 #include "icons/kadu-icon.h"
 
 #include "kadu-window.h"
+#include "kadu-window.moc"
 
 KaduWindow::KaduWindow() : MainWindow(nullptr, QString(), 0), Docked(false), WindowParent(0), CompositingEnabled(false)
 {
@@ -644,5 +645,3 @@ void KaduWindow::setDocked(bool docked)
 {
     Docked = docked;
 }
-
-#include "moc_kadu-window.cpp"

@@ -20,6 +20,7 @@
  */
 
 #include "storable-object.h"
+#include "storable-object.moc"
 
 #include "storage/custom-properties.h"
 #include "storage/storage-point-factory.h"
@@ -137,5 +138,3 @@ CustomProperties *StorableObject::customProperties() const
 {
     return Properties;
 }
-
-#include "moc_storable-object.cpp"

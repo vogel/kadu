@@ -19,6 +19,7 @@
  */
 
 #include "jabber-id-validator.h"
+#include "jabber-id-validator.moc"
 
 #include "jid.h"
 
@@ -47,5 +48,3 @@ QValidator::State JabberIdValidator::validate(QString &input, int &pos) const
 
     return QValidator::Acceptable;
 }
-
-#include "moc_jabber-id-validator.cpp"

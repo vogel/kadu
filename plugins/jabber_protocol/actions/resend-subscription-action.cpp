@@ -18,6 +18,7 @@
  */
 
 #include "resend-subscription-action.h"
+#include "resend-subscription-action.moc"
 
 #include "protocols/services/subscription-service.h"
 
@@ -36,5 +37,3 @@ void ResendSubscriptionAction::execute(SubscriptionService *subscriptionService,
 {
     subscriptionService->resendSubscription(contact);
 }
-
-#include "moc_resend-subscription-action.cpp"

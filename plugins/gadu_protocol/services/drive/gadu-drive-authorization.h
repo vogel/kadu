@@ -19,12 +19,12 @@
 
 #pragma once
 
+#include "services/drive/gadu-drive-session-token.h"
+
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
-
-class GaduDriveSessionToken;
 
 class QNetworkAccessManager;
 class QNetworkReply;

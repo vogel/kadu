@@ -38,6 +38,7 @@
 #include "theme/gadu-emoticon-theme-loader.h"
 
 #include "emoticons-configuration-ui-handler.h"
+#include "emoticons-configuration-ui-handler.moc"
 
 EmoticonsConfigurationUiHandler::EmoticonsConfigurationUiHandler(QObject *parent) : QObject(parent)
 {
@@ -151,5 +152,3 @@ void EmoticonsConfigurationUiHandler::installEmoticonTheme()
             tr(extractor.message().toLocal8Bit().data()), QMessageBox::Ok, Widget.data());
     }
 }
-
-#include "moc_emoticons-configuration-ui-handler.cpp"

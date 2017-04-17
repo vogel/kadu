@@ -26,6 +26,7 @@
 #include "windows/token-window.h"
 
 #include "sms-token-read-job.h"
+#include "sms-token-read-job.moc"
 
 SmsTokenReadJob::SmsTokenReadJob(QObject *parent) : QObject{parent}, TokenNetworkReply{}
 {
@@ -115,5 +116,3 @@ void SmsTokenReadJob::tokenValueEntered(const QString &tokenValue)
 
     deleteLater();
 }
-
-#include "moc_sms-token-read-job.cpp"

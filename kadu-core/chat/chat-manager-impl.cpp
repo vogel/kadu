@@ -30,6 +30,7 @@
 #include "message/unread-message-repository.h"
 
 #include "chat-manager-impl.h"
+#include "chat-manager-impl.moc"
 
 ChatManagerImpl::ChatManagerImpl(QObject *parent) : ChatManager{parent}
 {
@@ -165,5 +166,3 @@ void ChatManagerImpl::unreadMessageRemoved(const Message &message)
     if (unreadMessagesCount > 0)
         chat.setUnreadMessagesCount(unreadMessagesCount - 1);
 }
-
-#include "moc_chat-manager-impl.cpp"

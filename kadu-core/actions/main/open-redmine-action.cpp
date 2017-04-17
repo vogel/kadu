@@ -18,6 +18,7 @@
  */
 
 #include "open-redmine-action.h"
+#include "open-redmine-action.moc"
 
 #include "os/generic/url-opener.h"
 
@@ -44,5 +45,3 @@ void OpenRedmineAction::actionTriggered(QAction *, bool)
 {
     m_urlOpener->openUrl("http://www.kadu.im/redmine/projects/kadu");
 }
-
-#include "moc_open-redmine-action.cpp"

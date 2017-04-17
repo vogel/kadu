@@ -19,6 +19,7 @@
  */
 
 #include "config-wizard-set-up-account-page.h"
+#include "config-wizard-set-up-account-page.moc"
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration-manager.h"
@@ -141,5 +142,3 @@ void ConfigWizardSetUpAccountPage::accountCreated(Account account)
 
     m_configurationManager->flush();
 }
-
-#include "moc_config-wizard-set-up-account-page.cpp"

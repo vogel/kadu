@@ -27,6 +27,7 @@
 #include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "history-buddy-configuration-widget.h"
+#include "history-buddy-configuration-widget.moc"
 
 HistoryBuddyConfigurationWidget::HistoryBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent)
         : BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
@@ -101,5 +102,3 @@ void HistoryBuddyConfigurationWidget::cancel()
 {
     loadValues();
 }
-
-#include "moc_history-buddy-configuration-widget.cpp"

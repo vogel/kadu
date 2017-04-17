@@ -18,6 +18,7 @@
  */
 
 #include "emoticons-plugin-modules-factory.h"
+#include "emoticons-plugin-modules-factory.moc"
 
 #include "emoticons-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> EmoticonsPluginModulesFactory::crea
 
     return modules;
 }
-
-#include "moc_emoticons-plugin-modules-factory.cpp"

@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "ext-sound-plugin-object.h"
+#include "ext-sound-plugin-object.moc"
 
 #include "external-player.h"
 
@@ -70,5 +71,3 @@ void ExtSoundPluginObject::done()
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/ext_sound.ui"));
     m_soundManager->setPlayer(nullptr);
 }
-
-#include "moc_ext-sound-plugin-object.cpp"

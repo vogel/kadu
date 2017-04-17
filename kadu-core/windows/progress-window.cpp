@@ -36,6 +36,7 @@
 #include "windows/message-dialog.h"
 
 #include "progress-window.h"
+#include "progress-window.moc"
 
 ProgressWindow::ProgressWindow(const QString &label, QWidget *parent)
         : QDialog(parent), Label(label), Finished(false), Cancellable(false)
@@ -187,5 +188,3 @@ void ProgressWindow::progressFinished(bool ok, const QString &entryIcon, const Q
     if (!ok && !entryMessage.isEmpty())
         MessageDialog::show(m_iconsManager->iconByPath(KaduIcon(entryIcon)), Label, entryMessage);
 }
-
-#include "moc_progress-window.cpp"

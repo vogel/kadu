@@ -70,6 +70,7 @@
 #include "icons/icons-manager.h"
 
 #include "buddy-data-window.h"
+#include "buddy-data-window.moc"
 
 BuddyDataWindow::BuddyDataWindow(const Buddy &buddy)
         : QWidget(0, Qt::Dialog), MyBuddy(buddy), ValueStateNotifier(new CompositeConfigurationValueStateNotifier(this))
@@ -300,5 +301,3 @@ void BuddyDataWindow::stateChangedSlot(ConfigurationValueState state)
     ApplyButton->setEnabled(state == StateChangedDataValid);
     CancelButton->setEnabled(state != StateNotChanged);
 }
-
-#include "moc_buddy-data-window.cpp"

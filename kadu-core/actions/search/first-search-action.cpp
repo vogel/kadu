@@ -18,6 +18,7 @@
  */
 
 #include "first-search-action.h"
+#include "first-search-action.moc"
 
 #include "windows/search-window.h"
 
@@ -54,5 +55,3 @@ void FirstSearchAction::actionTriggered(QAction *sender, bool)
     if (search)
         search->firstSearch();
 }
-
-#include "moc_first-search-action.cpp"

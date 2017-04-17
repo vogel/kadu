@@ -18,6 +18,7 @@
  */
 
 #include "jabber-resource-service.h"
+#include "jabber-resource-service.moc"
 
 #include "chat/chat-details-room.h"
 #include "chat/chat.h"
@@ -118,5 +119,3 @@ Jid JabberResourceService::bestContactJid(const Contact &contact) const
         resource = bestResource(contact.id()).jid().resource();
     return Jid::parse(contact.id()).withResource(resource);
 }
-
-#include "moc_jabber-resource-service.cpp"

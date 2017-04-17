@@ -18,6 +18,7 @@
  */
 
 #include "stop-action.h"
+#include "stop-action.moc"
 
 #include "mediaplayer.h"
 
@@ -46,5 +47,3 @@ void StopAction::actionTriggered(QAction *, bool)
 {
     m_mediaPlayer->stop();
 }
-
-#include "moc_stop-action.cpp"

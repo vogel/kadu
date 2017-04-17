@@ -18,6 +18,7 @@
  */
 
 #include "toggle-silent-mode-action.h"
+#include "toggle-silent-mode-action.moc"
 
 #include "actions/action.h"
 #include "notification/silent-mode-service.h"
@@ -51,5 +52,3 @@ void ToggleSilentModeAction::actionTriggered(QAction *, bool toggled)
 {
     m_silentModeService->setSilent(toggled);
 }
-
-#include "moc_toggle-silent-mode-action.cpp"

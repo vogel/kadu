@@ -21,6 +21,7 @@
  */
 
 #include "contact-parser-tags.h"
+#include "contact-parser-tags.moc"
 
 #include "accounts/account.h"
 #include "icons/icons-manager.h"
@@ -97,5 +98,3 @@ void ContactParserTags::done()
     m_parser->unregisterTag("avatarPath");
     m_parser->unregisterTag("statusIconPath");
 }
-
-#include "moc_contact-parser-tags.cpp"

@@ -24,6 +24,7 @@
 #include "status/status-container-manager.h"
 
 #include "proxy-action-context.h"
+#include "proxy-action-context.moc"
 
 ProxyActionContext::ProxyActionContext(StatusContainer *statusContainer)
         : m_statusContainer{statusContainer}, ForwardActionContext(0)
@@ -76,5 +77,3 @@ RoleSet ProxyActionContext::roles()
 {
     return ForwardActionContext ? ForwardActionContext->roles() : RoleSet();
 }
-
-#include "moc_proxy-action-context.cpp"

@@ -19,6 +19,7 @@
  */
 
 #include "chat-details-contact-set.h"
+#include "chat-details-contact-set.moc"
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
@@ -149,5 +150,3 @@ void ChatDetailsContactSet::setContacts(const ContactSet &contacts)
 
     m_contacts = contacts;
 }
-
-#include "moc_chat-details-contact-set.cpp"

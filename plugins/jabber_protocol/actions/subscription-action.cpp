@@ -18,6 +18,7 @@
  */
 
 #include "subscription-action.h"
+#include "subscription-action.moc"
 
 #include "jabber-protocol.h"
 
@@ -97,5 +98,3 @@ void SubscriptionAction::updateActionState(Action *action)
 
     action->setEnabled(true);
 }
-
-#include "moc_subscription-action.cpp"

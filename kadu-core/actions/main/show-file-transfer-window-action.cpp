@@ -18,6 +18,7 @@
  */
 
 #include "show-file-transfer-window-action.h"
+#include "show-file-transfer-window-action.moc"
 
 #include "file-transfer/file-transfer-manager.h"
 
@@ -48,5 +49,3 @@ void ShowFileTransferWindowAction::triggered(QWidget *widget, ActionContext *con
 
     m_fileTransferManager->showFileTransferWindow();
 }
-
-#include "moc_show-file-transfer-window-action.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "show-offline-buddies-action.h"
+#include "show-offline-buddies-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -95,5 +96,3 @@ void ShowOfflineBuddiesAction::configurationUpdated()
         action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOffline"))
         action(context)->trigger();
 }
-
-#include "moc_show-offline-buddies-action.cpp"

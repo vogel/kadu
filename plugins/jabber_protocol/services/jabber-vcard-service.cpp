@@ -22,6 +22,7 @@
 #include "services/jabber-vcard-uploader.h"
 
 #include "jabber-vcard-service.h"
+#include "jabber-vcard-service.moc"
 
 #include <qxmpp/QXmppVCardManager.h>
 
@@ -43,5 +44,3 @@ JabberVCardUploader *JabberVCardService::createVCardUploader()
 {
     return new JabberVCardUploader(m_vcardManager, this);
 }
-
-#include "moc_jabber-vcard-service.cpp"

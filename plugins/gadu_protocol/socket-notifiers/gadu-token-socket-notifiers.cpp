@@ -25,6 +25,7 @@
 #include "misc/misc.h"
 
 #include "gadu-token-socket-notifiers.h"
+#include "gadu-token-socket-notifiers.moc"
 
 void GaduTokenSocketNotifiers::watchFor(struct gg_http *h)
 {
@@ -108,5 +109,3 @@ void GaduTokenSocketNotifiers::connectionTimeout()
 {
     finished(QString(), QPixmap());
 }
-
-#include "moc_gadu-token-socket-notifiers.cpp"

@@ -20,6 +20,7 @@
  */
 
 #include "configuration-holder.h"
+#include "configuration-holder.moc"
 
 QList<ConfigurationHolder *> ConfigurationHolder::Instances;
 
@@ -32,5 +33,3 @@ ConfigurationHolder::~ConfigurationHolder()
 {
     Instances.removeOne(this);
 }
-
-#include "moc_configuration-holder.cpp"

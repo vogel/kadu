@@ -24,6 +24,7 @@
 #include "sms-gateway.h"
 
 #include "sms-gateway-manager.h"
+#include "sms-gateway-manager.moc"
 
 SmsGatewayManager::SmsGatewayManager(QObject *parent) : QObject{parent}
 {
@@ -69,5 +70,3 @@ SmsGateway SmsGatewayManager::byId(const QString &id) const
 
     return SmsGateway();
 }
-
-#include "moc_sms-gateway-manager.cpp"

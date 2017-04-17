@@ -18,6 +18,7 @@
  */
 
 #include "hints-configuration.h"
+#include "hints-configuration.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -113,5 +114,3 @@ bool HintsConfiguration::showContentMessage() const
 {
     return m_showContentMessage;
 }
-
-#include "moc_hints-configuration.cpp"

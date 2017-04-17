@@ -34,6 +34,7 @@
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "mpris-player.h"
+#include "mpris-player.moc"
 
 const QString MPRISPlayer::UserPlayersListFile = "mprisplayer-players.data";
 const QString MPRISPlayer::GlobalPlayersListFile =
@@ -141,5 +142,3 @@ void MPRISPlayer::configurationApplied()
     else
         m_mediaPlayer->setInterval(0);
 }
-
-#include "moc_mpris-player.cpp"

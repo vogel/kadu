@@ -18,6 +18,7 @@
  */
 
 #include "send-action.h"
+#include "send-action.moc"
 
 #include "actions/action.h"
 #include "widgets/chat-edit-box.h"
@@ -72,5 +73,3 @@ void SendAction::updateActionState(Action *action)
     action->setEnabled(
         chatEditBox->chatWidget()->chat().isConnected() && !chatEditBox->inputBox()->toPlainText().isEmpty());
 }
-
-#include "moc_send-action.cpp"

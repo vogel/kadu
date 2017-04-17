@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "single-window-plugin-object.h"
+#include "single-window-plugin-object.moc"
 
 #include "single-window.h"
 
@@ -65,5 +66,3 @@ void SingleWindowPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/single_window.ui"));
 }
-
-#include "moc_single-window-plugin-object.cpp"

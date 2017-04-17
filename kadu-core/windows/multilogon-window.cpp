@@ -42,6 +42,7 @@
 #include "widgets/accounts-combo-box.h"
 
 #include "multilogon-window.h"
+#include "multilogon-window.moc"
 
 MultilogonWindow::MultilogonWindow(QWidget *parent) : QWidget(parent), DesktopAwareObject(this)
 {
@@ -180,5 +181,3 @@ void MultilogonWindow::killSession()
 
     service->killSession(multilogonSession());
 }
-
-#include "moc_multilogon-window.cpp"

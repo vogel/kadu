@@ -18,6 +18,7 @@
  */
 
 #include "configuration-window-data-manager.h"
+#include "configuration-window-data-manager.moc"
 
 ConfigurationWindowDataManager::ConfigurationWindowDataManager(QObject *parent) : QObject{parent}
 {
@@ -26,5 +27,3 @@ ConfigurationWindowDataManager::ConfigurationWindowDataManager(QObject *parent) 
 ConfigurationWindowDataManager::~ConfigurationWindowDataManager()
 {
 }
-
-#include "moc_configuration-window-data-manager.cpp"

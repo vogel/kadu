@@ -18,6 +18,7 @@
  */
 
 #include "sound-configuration-ui-handler.h"
+#include "sound-configuration-ui-handler.moc"
 
 #include "gui/sound-configuration-widget.h"
 #include "sound-manager.h"
@@ -134,5 +135,3 @@ void SoundConfigurationUiHandler::soundFileEdited()
     if (m_themesComboBox->currentIndex() != 0)
         m_themesComboBox->setCurrentIndex(0);
 }
-
-#include "moc_sound-configuration-ui-handler.cpp"

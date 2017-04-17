@@ -19,6 +19,7 @@
  */
 
 #include "auto-hide.h"
+#include "auto-hide.moc"
 
 #include "plugins/idle/idle-plugin-object.h"
 #include "plugins/idle/idle.h"
@@ -81,5 +82,3 @@ void AutoHide::configurationUpdated()
     else if (!m_enabled && m_timer.isActive())
         m_timer.stop();
 }
-
-#include "moc_auto-hide.cpp"

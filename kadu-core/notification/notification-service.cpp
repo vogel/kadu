@@ -36,6 +36,7 @@
 #include "widgets/chat-widget/chat-widget-manager.h"
 
 #include "notification-service.h"
+#include "notification-service.moc"
 
 NotificationService::NotificationService(QObject *parent) : QObject{parent}
 {
@@ -158,7 +159,3 @@ void NotificationService::discardNotification(const Notification &notification)
     if (!notification.discardCallback.isEmpty())
         m_notificationCallbackRepository->callback(notification.discardCallback).call(notification);
 }
-
-#undef Bool
-
-#include "moc_notification-service.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "chat-widget-repository-impl.h"
+#include "chat-widget-repository-impl.moc"
 
 #include "widgets/chat-widget/chat-widget.h"
 
@@ -83,5 +84,3 @@ ChatWidget *ChatWidgetRepositoryImpl::widgetForChat(const Chat &chat)
     auto it = m_widgets.find(chat);
     return it != m_widgets.end() ? it->second : nullptr;
 }
-
-#include "moc_chat-widget-repository-impl.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "autoaway-plugin-modules-factory.h"
+#include "autoaway-plugin-modules-factory.moc"
 
 #include "autoaway-module.h"
 
@@ -43,5 +44,3 @@ QString AutoawayPluginModulesFactory::parentInjectorName() const
 {
     return "idle";
 }
-
-#include "moc_autoaway-plugin-modules-factory.cpp"

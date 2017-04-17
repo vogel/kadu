@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "indicator-docking-plugin-object.h"
+#include "indicator-docking-plugin-object.moc"
 
 #include "indicator-docking.h"
 
@@ -41,5 +42,3 @@ void IndicatorDockingPluginObject::init()
 void IndicatorDockingPluginObject::done()
 {
 }
-
-#include "moc_indicator-docking-plugin-object.cpp"

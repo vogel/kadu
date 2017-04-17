@@ -18,6 +18,7 @@
  */
 
 #include "freedesktop-notify-plugin-object.h"
+#include "freedesktop-notify-plugin-object.moc"
 
 #include "freedesktop-notifier.h"
 
@@ -68,5 +69,3 @@ void FreedesktopNotifyPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/freedesktop_notify.ui"));
 }
-
-#include "moc_freedesktop-notify-plugin-object.cpp"

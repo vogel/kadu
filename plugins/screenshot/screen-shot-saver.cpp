@@ -27,6 +27,7 @@
 #include "windows/message-dialog.h"
 
 #include "screen-shot-saver.h"
+#include "screen-shot-saver.moc"
 
 ScreenShotSaver::ScreenShotSaver(
     IconsManager *iconsManager, ScreenShotConfiguration *screenShotConfiguration, QObject *parent)
@@ -89,5 +90,3 @@ QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)
 
     return path;
 }
-
-#include "moc_screen-shot-saver.cpp"

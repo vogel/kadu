@@ -19,6 +19,7 @@
  */
 
 #include "image-storage-service-impl.h"
+#include "image-storage-service-impl.moc"
 
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -124,5 +125,3 @@ QUrl ImageStorageServiceImpl::toFileUrl(const QUrl &url)
 
     return result;
 }
-
-#include "moc_image-storage-service.cpp"

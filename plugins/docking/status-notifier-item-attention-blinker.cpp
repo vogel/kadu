@@ -18,6 +18,7 @@
  */
 
 #include "status-notifier-item-attention-blinker.h"
+#include "status-notifier-item-attention-blinker.moc"
 
 #include <QtCore/QTimer>
 #include <QtWidgets/QSystemTrayIcon>
@@ -42,5 +43,3 @@ void StatusNotifierItemAttentionBlinker::timeout()
     m_blink = !m_blink;
     m_systemTrayIcon->setIcon(m_blink ? m_blinkIcon : m_normalIcon);
 }
-
-#include "moc_status-notifier-item-attention-blinker.cpp"

@@ -18,6 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "gtalk-protocol-factory.h"
+#include "gtalk-protocol-factory.moc"
+
 #include "icons/kadu-icon.h"
 #include "misc/misc.h"
 #include "plugin/plugin-injected-factory.h"
@@ -25,7 +28,6 @@
 
 #include "actions/jabber-protocol-menu-manager.h"
 #include "facebook-depreceated-message.h"
-#include "gtalk-protocol-factory.h"
 #include "gui/widgets/jabber-add-account-widget.h"
 #include "gui/widgets/jabber-contact-personal-info-widget.h"
 #include "gui/widgets/jabber-create-account-widget.h"
@@ -144,5 +146,3 @@ ProtocolMenuManager *GTalkProtocolFactory::protocolMenuManager()
 {
     return m_jabberProtocolMenuManager;
 }
-
-#include "moc_gtalk-protocol-factory.cpp"

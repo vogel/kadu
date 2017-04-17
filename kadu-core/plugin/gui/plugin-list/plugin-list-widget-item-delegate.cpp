@@ -22,6 +22,7 @@
  */
 
 #include "plugin-list-widget-item-delegate.h"
+#include "plugin-list-widget-item-delegate.moc"
 
 #include "configuration/configuration-manager.h"
 #include "core/core.h"
@@ -236,5 +237,3 @@ QFont PluginListWidgetItemDelegate::subtitleFont(const QFont &baseFont) const
 
     return retFont;
 }
-
-#include "moc_plugin-list-widget-item-delegate.cpp"

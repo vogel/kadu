@@ -19,6 +19,7 @@
  */
 
 #include "video-expander-dom-visitor-provider.h"
+#include "video-expander-dom-visitor-provider.moc"
 
 #include "video-expander.h"
 
@@ -42,5 +43,3 @@ void VideoExpanderDomVisitorProvider::setConfiguration(const ImageLinkConfigurat
 {
     m_configuration = configuration;
 }
-
-#include "moc_video-expander-dom-visitor-provider.cpp"

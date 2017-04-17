@@ -18,6 +18,7 @@
  */
 
 #include "contact-storage.h"
+#include "contact-storage.moc"
 
 #include "contacts/contact-shared.h"
 #include "contacts/contact.h"
@@ -59,5 +60,3 @@ Contact ContactStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &sto
 
     return result;
 }
-
-#include "moc_contact-storage.cpp"

@@ -24,8 +24,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 
-#include "widgets/configuration/config-action-button.h"
-#include "widgets/configuration/config-action-button.moc"
+#include "config-action-button.h"
+#include "config-action-button.moc"
 
 #include "widgets/configuration/config-group-box.h"
 
@@ -52,5 +52,3 @@ void ConfigActionButton::createWidgets()
     if (!ConfigWidget::toolTip.isEmpty())
         setToolTip(QCoreApplication::translate("@default", ConfigWidget::toolTip.toUtf8().constData()));
 }
-
-#include "moc_config-action-button.cpp"

@@ -20,6 +20,7 @@
  */
 
 #include "leave-chat-action.h"
+#include "leave-chat-action.moc"
 
 #include "actions/action-context.h"
 #include "chat/chat-service-repository.h"
@@ -86,5 +87,3 @@ void LeaveChatAction::triggered(QWidget *widget, ActionContext *context, bool to
     if (chatWidget)
         chatWidget->requestClose();
 }
-
-#include "moc_leave-chat-action.cpp"

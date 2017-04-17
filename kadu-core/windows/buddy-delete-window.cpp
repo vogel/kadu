@@ -21,6 +21,7 @@
  */
 
 #include "buddy-delete-window.h"
+#include "buddy-delete-window.moc"
 
 #include "buddies/buddy-additional-data-delete-handler-manager.h"
 #include "buddies/buddy-additional-data-delete-handler.h"
@@ -207,5 +208,3 @@ void BuddyDeleteWindow::additionalDataListViewItemClicked(QListWidgetItem *item)
 
     item->setCheckState(ItemState);
 }
-
-#include "moc_buddy-delete-window.cpp"

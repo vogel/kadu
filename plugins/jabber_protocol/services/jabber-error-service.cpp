@@ -18,6 +18,7 @@
  */
 
 #include "jabber-error-service.h"
+#include "jabber-error-service.moc"
 
 #include <qxmpp/QXmppIq.h>
 #include <qxmpp/QXmppStanza.h>
@@ -115,5 +116,3 @@ QString JabberErrorService::conditionToString(QXmppStanza::Error::Condition cond
         return QString{};
     }
 }
-
-#include "moc_jabber-error-service.cpp"

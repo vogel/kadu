@@ -18,6 +18,7 @@
  */
 
 #include "status-window-service.h"
+#include "status-window-service.moc"
 
 #include "activate.h"
 #include "configuration/configuration.h"
@@ -72,5 +73,3 @@ void StatusWindowService::statusWindowClosed(StatusContainer *statusContainer)
 {
     m_dialogs.remove(statusContainer);
 }
-
-#include "moc_status-window-service.cpp"

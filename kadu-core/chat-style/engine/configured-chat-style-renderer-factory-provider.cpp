@@ -18,6 +18,7 @@
  */
 
 #include "configured-chat-style-renderer-factory-provider.h"
+#include "configured-chat-style-renderer-factory-provider.moc"
 
 #include "chat-style/engine/chat-style-renderer-factory.h"
 
@@ -41,5 +42,3 @@ void ConfiguredChatStyleRendererFactoryProvider::setChatStyleRendererFactory(
     m_chatStyleRendererFactory = std::move(chatStyleRendererFactory);
     emit chatStyleRendererFactoryChanged(m_chatStyleRendererFactory);
 }
-
-#include "moc_configured-chat-style-renderer-factory-provider.cpp"

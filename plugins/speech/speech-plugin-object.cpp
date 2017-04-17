@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "speech-plugin-object.h"
+#include "speech-plugin-object.moc"
 
 #include "speech-configuration-ui-handler.h"
 #include "speech.h"
@@ -83,5 +84,3 @@ void SpeechPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/speech.ui"));
 }
-
-#include "moc_speech-plugin-object.cpp"

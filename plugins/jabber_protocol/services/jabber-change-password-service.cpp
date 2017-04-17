@@ -18,6 +18,7 @@
  */
 
 #include "jabber-change-password-service.h"
+#include "jabber-change-password-service.moc"
 
 #include "qxmpp/jabber-register-extension.h"
 #include "services/jabber-change-password.h"
@@ -43,5 +44,3 @@ JabberChangePassword *JabberChangePasswordService::changePassword(const QString 
     result->setErrorService(m_errorService);
     return result;
 }
-
-#include "moc_jabber-change-password-service.cpp"

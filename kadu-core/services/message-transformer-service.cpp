@@ -19,6 +19,7 @@
  */
 
 #include "message-transformer-service.h"
+#include "message-transformer-service.moc"
 
 MessageTransformerService::MessageTransformerService(QObject *parent) : QObject(parent)
 {
@@ -27,5 +28,3 @@ MessageTransformerService::MessageTransformerService(QObject *parent) : QObject(
 MessageTransformerService::~MessageTransformerService()
 {
 }
-
-#include "moc_message-transformer-service.cpp"

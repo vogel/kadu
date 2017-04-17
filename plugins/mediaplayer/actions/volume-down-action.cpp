@@ -18,6 +18,7 @@
  */
 
 #include "volume-down-action.h"
+#include "volume-down-action.moc"
 
 #include "mediaplayer.h"
 
@@ -46,5 +47,3 @@ void VolumeDownAction::actionTriggered(QAction *, bool)
 {
     m_mediaPlayer->decrVolume();
 }
-
-#include "moc_volume-down-action.cpp"

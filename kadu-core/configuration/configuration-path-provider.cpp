@@ -18,6 +18,7 @@
  */
 
 #include "configuration-path-provider.h"
+#include "configuration-path-provider.moc"
 
 #include "misc/paths-provider.h"
 
@@ -71,5 +72,3 @@ QString ConfigurationPathProvider::backupFilePath() const
     return m_pathsProvider->profilePath() +
            QString("kadu-4.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 }
-
-#include "moc_configuration-path-provider.cpp"

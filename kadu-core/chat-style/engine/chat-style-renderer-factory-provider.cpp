@@ -18,6 +18,7 @@
  */
 
 #include "chat-style-renderer-factory-provider.h"
+#include "chat-style-renderer-factory-provider.moc"
 
 ChatStyleRendererFactoryProvider::ChatStyleRendererFactoryProvider(QObject *parent) : QObject{parent}
 {
@@ -26,5 +27,3 @@ ChatStyleRendererFactoryProvider::ChatStyleRendererFactoryProvider(QObject *pare
 ChatStyleRendererFactoryProvider::~ChatStyleRendererFactoryProvider()
 {
 }
-
-#include "moc_chat-style-renderer-factory-provider.cpp"

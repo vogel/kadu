@@ -30,6 +30,7 @@
 #include "otr-peer-identity-verification-service.h"
 
 #include "otr-peer-identity-verification-window-factory.h"
+#include "otr-peer-identity-verification-window-factory.moc"
 
 OtrPeerIdentityVerificationWindowFactory::OtrPeerIdentityVerificationWindowFactory()
 {
@@ -105,5 +106,3 @@ OtrPeerIdentityVerificationWindow *OtrPeerIdentityVerificationWindowFactory::win
 
     return result;
 }
-
-#include "moc_otr-peer-identity-verification-window-factory.cpp"

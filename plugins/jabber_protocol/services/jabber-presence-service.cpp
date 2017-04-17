@@ -18,6 +18,7 @@
  */
 
 #include "jabber-presence-service.h"
+#include "jabber-presence-service.moc"
 
 #include "status/status-type.h"
 #include "status/status.h"
@@ -101,5 +102,3 @@ Status JabberPresenceService::presenceToStatus(const QXmppPresence &presence)
 
     return status;
 }
-
-#include "moc_jabber-presence-service.cpp"

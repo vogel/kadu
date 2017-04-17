@@ -22,6 +22,7 @@
 #include "oauth/oauth-token-fetcher.h"
 
 #include "oauth-authorization-chain.h"
+#include "oauth-authorization-chain.moc"
 
 OAuthAuthorizationChain::OAuthAuthorizationChain(
     OAuthConsumer consumer, QNetworkAccessManager *networkAccessManager, QObject *parent)
@@ -98,5 +99,3 @@ void OAuthAuthorizationChain::accessTokenFetched(OAuthToken token)
 
     deleteLater();
 }
-
-#include "moc_oauth-authorization-chain.cpp"

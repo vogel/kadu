@@ -18,6 +18,7 @@
  */
 
 #include "more-actions-action.h"
+#include "more-actions-action.moc"
 
 #include "actions/action.h"
 #include "actions/actions.h"
@@ -92,5 +93,3 @@ void MoreActionsAction::actionTriggered(QAction *sender, bool toggled)
     menu.addMenu(subMenu);
     menu.exec(widget->mapToGlobal(QPoint(0, widget->height())));
 }
-
-#include "moc_more-actions-action.cpp"

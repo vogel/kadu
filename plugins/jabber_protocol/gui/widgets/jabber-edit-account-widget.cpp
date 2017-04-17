@@ -20,6 +20,7 @@
  */
 
 #include "jabber-edit-account-widget.h"
+#include "jabber-edit-account-widget.moc"
 
 #include "gui/windows/jabber-change-password-window.h"
 #include "jabber-protocol.h"
@@ -548,5 +549,3 @@ void JabberEditAccountWidget::passwordChanged(const QString &newPassword)
 {
     AccountPassword->setText(newPassword);
 }
-
-#include "moc_jabber-edit-account-widget.cpp"

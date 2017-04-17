@@ -39,6 +39,7 @@
 #include "gui/widgets/screenshot-tool-box.h"
 
 #include "screenshot-widget.h"
+#include "screenshot-widget.moc"
 
 ScreenshotWidget::ScreenshotWidget(QWidget *parent)
         : QWidget(
@@ -109,5 +110,3 @@ void ScreenshotWidget::canceledSlot()
     emit canceled();
     deleteLater();
 }
-
-#include "moc_screenshot-widget.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "otr-peer-identity-verification-window.h"
+#include "otr-peer-identity-verification-window.moc"
 
 OtrPeerIdentityVerificationWindow::OtrPeerIdentityVerificationWindow(const Contact &contact, QWidget *parent)
         : QWizard(parent), MyContact(contact)
@@ -52,5 +53,3 @@ void OtrPeerIdentityVerificationWindow::reject()
 
     QWizard::reject();
 }
-
-#include "moc_otr-peer-identity-verification-window.cpp"

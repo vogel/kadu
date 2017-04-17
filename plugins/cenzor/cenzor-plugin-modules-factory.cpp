@@ -18,6 +18,7 @@
  */
 
 #include "cenzor-plugin-modules-factory.h"
+#include "cenzor-plugin-modules-factory.moc"
 
 #include "cenzor-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> CenzorPluginModulesFactory::createP
 
     return modules;
 }
-
-#include "moc_cenzor-plugin-modules-factory.cpp"

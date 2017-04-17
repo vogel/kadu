@@ -18,6 +18,7 @@
  */
 
 #include "block-user-action.h"
+#include "block-user-action.moc"
 
 #include "actions/action.h"
 #include "buddies/buddy-set.h"
@@ -110,5 +111,3 @@ void BlockUserAction::updateBlockingActions(Buddy buddy)
                 action->setChecked(buddy.isBlocked());
     }
 }
-
-#include "moc_block-user-action.cpp"

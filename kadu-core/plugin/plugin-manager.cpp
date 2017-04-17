@@ -19,6 +19,7 @@
  */
 
 #include "plugin-manager.h"
+#include "plugin-manager.moc"
 
 #include "misc/algorithm.h"
 #include "plugin/activation/plugin-activation-service.h"
@@ -152,5 +153,3 @@ void PluginManager::deactivatePlugins()
     for (auto const &pluginName : m_pluginActivationService->activePlugins())
         m_pluginActivationService->deactivatePluginWithDependents(pluginName);
 }
-
-#include "moc_plugin-manager.cpp"

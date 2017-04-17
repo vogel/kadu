@@ -18,6 +18,7 @@
  */
 
 #include "otr-message-event-service.h"
+#include "otr-message-event-service.moc"
 
 #include "otr-op-data.h"
 
@@ -131,5 +132,3 @@ QString OtrMessageEventService::gpgErrorString(gcry_error_t errorCode) const
         return gcry_strerror(errorCode);
     }
 }
-
-#include "moc_otr-message-event-service.cpp"

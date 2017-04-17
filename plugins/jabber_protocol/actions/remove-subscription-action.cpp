@@ -18,6 +18,7 @@
  */
 
 #include "remove-subscription-action.h"
+#include "remove-subscription-action.moc"
 
 #include "protocols/services/subscription-service.h"
 
@@ -36,5 +37,3 @@ void RemoveSubscriptionAction::execute(SubscriptionService *subscriptionService,
 {
     subscriptionService->removeSubscription(contact);
 }
-
-#include "moc_remove-subscription-action.cpp"

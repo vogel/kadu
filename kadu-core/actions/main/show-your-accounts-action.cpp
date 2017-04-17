@@ -18,6 +18,7 @@
  */
 
 #include "show-your-accounts-action.h"
+#include "show-your-accounts-action.moc"
 
 #include "windows/your-accounts-window-service.h"
 
@@ -44,5 +45,3 @@ void ShowYourAccountsAction::actionTriggered(QAction *, bool)
 {
     m_yourAccountsWindowService->show();
 }
-
-#include "moc_show-your-accounts-action.cpp"

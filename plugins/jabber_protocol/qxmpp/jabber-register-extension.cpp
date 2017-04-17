@@ -18,6 +18,7 @@
  */
 
 #include "jabber-register-extension.h"
+#include "jabber-register-extension.moc"
 
 #include <QtXml/QDomElement>
 #include <qxmpp/QXmppClient.h>
@@ -58,5 +59,3 @@ bool JabberRegisterExtension::handleStanza(const QDomElement &stanza)
     emit registerIqReceived(registerIq);
     return true;
 }
-
-#include "moc_jabber-register-extension.cpp"

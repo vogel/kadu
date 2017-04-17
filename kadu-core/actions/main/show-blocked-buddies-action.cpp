@@ -18,6 +18,7 @@
  */
 
 #include "show-blocked-buddies-action.h"
+#include "show-blocked-buddies-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -93,5 +94,3 @@ void ShowBlockedBuddiesAction::configurationUpdated()
         action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowBlocked"))
         action(context)->trigger();
 }
-
-#include "moc_show-blocked-buddies-action.cpp"

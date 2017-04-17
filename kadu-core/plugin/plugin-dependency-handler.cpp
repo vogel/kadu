@@ -19,6 +19,7 @@
  */
 
 #include "plugin-dependency-handler.h"
+#include "plugin-dependency-handler.moc"
 
 #include "misc/algorithm.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
@@ -111,5 +112,3 @@ QVector<QString> PluginDependencyHandler::findDependents(const QString &pluginNa
 {
     return hasPluginMetadata(pluginName) ? m_pluginDependencyDAG.findDependents(pluginName) : QVector<QString>{};
 }
-
-#include "moc_plugin-dependency-handler.cpp"

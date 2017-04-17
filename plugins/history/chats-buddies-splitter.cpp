@@ -19,6 +19,7 @@
  */
 
 #include "chats-buddies-splitter.h"
+#include "chats-buddies-splitter.moc"
 
 #include "buddies/buddy-manager.h"
 #include "chat/buddy-chat-manager.h"
@@ -109,5 +110,3 @@ QSet<Buddy> ChatsBuddiesSplitter::buddies() const
 {
     return Buddies;
 }
-
-#include "moc_chats-buddies-splitter.cpp"

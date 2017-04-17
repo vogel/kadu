@@ -18,6 +18,7 @@
  */
 
 #include "group-edit-window.h"
+#include "group-edit-window.moc"
 
 #include "buddies/group-manager.h"
 #include "buddies/group-storage.h"
@@ -243,5 +244,3 @@ void GroupEditWindow::apply()
     storeValues();
     loadValues();
 }
-
-#include "moc_group-edit-window.cpp"

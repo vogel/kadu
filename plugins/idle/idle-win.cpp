@@ -19,6 +19,7 @@
  */
 
 #include "idle.h"
+#include "idle.moc"
 
 #include <qlibrary.h>
 #include <windows.h>
@@ -97,5 +98,3 @@ long Idle::secondsIdle()
 
     return (GetTickCount() - i) / 1000;
 }
-
-#include "moc_idle.cpp"

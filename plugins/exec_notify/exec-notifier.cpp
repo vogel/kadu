@@ -21,6 +21,7 @@
  */
 
 #include "exec-notifier.h"
+#include "exec-notifier.moc"
 
 #include "exec-configuration-widget.h"
 
@@ -229,5 +230,3 @@ NotifierConfigurationWidget *ExecNotifier::createConfigurationWidget(QWidget *pa
 {
     return m_pluginInjectedFactory->makeInjected<ExecConfigurationWidget>(parent);
 }
-
-#include "moc_exec-notifier.cpp"

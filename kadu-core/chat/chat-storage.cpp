@@ -18,6 +18,7 @@
  */
 
 #include "chat-storage.h"
+#include "chat-storage.moc"
 
 #include "chat/chat-shared.h"
 #include "chat/chat.h"
@@ -61,5 +62,3 @@ Chat ChatStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storagePo
 
     return result;
 }
-
-#include "moc_chat-storage.cpp"

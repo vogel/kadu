@@ -18,6 +18,7 @@
  */
 
 #include "mpris-player-plugin-modules-factory.h"
+#include "mpris-player-plugin-modules-factory.moc"
 
 #include "mpris-player-module.h"
 
@@ -43,5 +44,3 @@ QString MprisPlayerPluginModulesFactory::parentInjectorName() const
 {
     return "mediaplayer";
 }
-
-#include "moc_mpris-player-plugin-modules-factory.cpp"

@@ -23,6 +23,7 @@
  */
 
 #include "chat-manager.h"
+#include "chat-manager.moc"
 
 ChatManager::ChatManager(QObject *parent) : Manager<Chat>{parent}
 {
@@ -51,5 +52,3 @@ void ChatManager::itemRemoved(Chat item)
 {
     emit chatRemoved(item);
 }
-
-#include "moc_chat-manager.cpp"

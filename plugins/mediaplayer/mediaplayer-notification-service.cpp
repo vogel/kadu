@@ -18,6 +18,7 @@
  */
 
 #include "mediaplayer-notification-service.h"
+#include "mediaplayer-notification-service.moc"
 
 #include "html/html-conversion.h"
 #include "html/html-string.h"
@@ -67,5 +68,3 @@ void MediaplayerNotificationService::notifyPlayingTitle(const QString &title)
 
     m_notificationService->notify(notification);
 }
-
-#include "moc_mediaplayer-notification-service.cpp"

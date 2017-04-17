@@ -18,6 +18,7 @@
  */
 
 #include "merge-buddies-action.h"
+#include "merge-buddies-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -80,5 +81,3 @@ void MergeBuddiesAction::updateActionState(Action *action)
     if (1 != action->context()->buddies().size())
         action->setEnabled(false);
 }
-
-#include "moc_merge-buddies-action.cpp"

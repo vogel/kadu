@@ -34,6 +34,7 @@
 #include "services/image-storage-service.h"
 
 #include "formatted-string-factory.h"
+#include "formatted-string-factory.moc"
 
 #include <QtXml/QDomDocument>
 #include <memory>
@@ -171,5 +172,3 @@ bool FormattedStringFactory::isHtml(const QString &text) const
 {
     return text.contains('<');
 }
-
-#include "moc_formatted-string-factory.cpp"

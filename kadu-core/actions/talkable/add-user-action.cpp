@@ -18,6 +18,7 @@
  */
 
 #include "add-user-action.h"
+#include "add-user-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -58,5 +59,3 @@ void AddUserAction::actionTriggered(QAction *sender, bool)
     else
         (m_injectedFactory->makeInjected<AddBuddyWindow>(action->parentWidget()))->show();
 }
-
-#include "moc_add-user-action.cpp"

@@ -23,6 +23,7 @@
 #include "misc/paths-provider.h"
 
 #include "autostatus-configuration.h"
+#include "autostatus-configuration.moc"
 
 AutostatusConfiguration::AutostatusConfiguration(QObject *parent) : QObject{parent}
 {
@@ -54,5 +55,3 @@ void AutostatusConfiguration::configurationUpdated()
     StatusFilePath = m_configuration->deprecatedApi()->readEntry(
         "PowerKadu", "status_file_path", m_pathsProvider->profilePath() + QStringLiteral("autostatus.list"));
 }
-
-#include "moc_autostatus-configuration.cpp"

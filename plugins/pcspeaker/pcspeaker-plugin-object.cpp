@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "pcspeaker-plugin-object.h"
+#include "pcspeaker-plugin-object.moc"
 
 #include "pcspeaker-notifier.h"
 
@@ -50,5 +51,3 @@ void PCSpeakerPluginObject::done()
 {
     m_notifierRepository->unregisterNotifier(m_pcSpeakerNotifier);
 }
-
-#include "moc_pcspeaker-plugin-object.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "plugin-state-service.h"
+#include "plugin-state-service.moc"
 
 #include "misc/change-notifier.h"
 #include "plugin/state/plugin-state.h"
@@ -87,5 +88,3 @@ ChangeNotifier &PluginStateService::changeNotifier()
 {
     return m_changeNotifier;
 }
-
-#include "moc_plugin-state-service.cpp"

@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QCursor>
-#include <QtWidgets/QMenu>
+#include "jabber-url-handler.h"
+#include "jabber-url-handler.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -40,7 +40,8 @@
 #include "url-handlers/simple-url-expander.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 
-#include "jabber-url-handler.h"
+#include <QtGui/QCursor>
+#include <QtWidgets/QMenu>
 
 JabberUrlHandler::JabberUrlHandler(QObject *parent) : QObject{parent}
 {
@@ -163,5 +164,3 @@ void JabberUrlHandler::accountSelected(QAction *action)
     const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
     m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
-
-#include "moc_jabber-url-handler.cpp"

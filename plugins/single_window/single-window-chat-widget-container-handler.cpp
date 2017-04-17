@@ -18,6 +18,7 @@
  */
 
 #include "single-window-chat-widget-container-handler.h"
+#include "single-window-chat-widget-container-handler.moc"
 
 #include "single-window.h"
 
@@ -94,5 +95,3 @@ void SingleWindowChatWidgetContainerHandler::tryActivateChatWidget(ChatWidget *c
 void SingleWindowChatWidgetContainerHandler::tryMinimizeChatWidget(ChatWidget *)
 {
 }
-
-#include "moc_single-window-chat-widget-container-handler.cpp"

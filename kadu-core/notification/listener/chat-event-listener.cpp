@@ -28,6 +28,7 @@
 #include "widgets/chat-widget/chat-widget.h"
 
 #include "chat-event-listener.h"
+#include "chat-event-listener.moc"
 
 ChatEventListener::ChatEventListener(QObject *parent) : QObject{parent}
 {
@@ -68,5 +69,3 @@ void ChatEventListener::messageReceived(const Message &message)
     else
         m_messageNotificationService->notifyNewChat(message);
 }
-
-#include "moc_chat-event-listener.cpp"

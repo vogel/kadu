@@ -18,6 +18,7 @@
  */
 
 #include "open-description-link-action.h"
+#include "open-description-link-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -75,5 +76,3 @@ void OpenDescriptionLinkAction::updateActionState(Action *action)
         action->context()->contacts().toContact().currentStatus().description().indexOf(
             m_urlHandlerManager->urlRegExp()) >= 0);
 }
-
-#include "moc_open-description-link-action.cpp"

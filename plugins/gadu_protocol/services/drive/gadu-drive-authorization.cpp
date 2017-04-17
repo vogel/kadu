@@ -18,6 +18,7 @@
  */
 
 #include "gadu-drive-authorization.h"
+#include "gadu-drive-authorization.moc"
 
 #include "services/drive/gadu-drive-session-token.h"
 
@@ -81,5 +82,3 @@ void GaduDriveAuthorization::requestFinished()
 
     deleteLater();
 }
-
-#include "moc_gadu-drive-authorization.cpp"

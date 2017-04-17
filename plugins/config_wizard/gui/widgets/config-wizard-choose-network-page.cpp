@@ -28,6 +28,7 @@
 #include "windows/your-accounts.h"
 
 #include "config-wizard-choose-network-page.h"
+#include "config-wizard-choose-network-page.moc"
 
 ConfigWizardChooseNetworkPage::ConfigWizardChooseNetworkPage(QWidget *parent)
         : ConfigWizardPage(parent), LastProtocol(0)
@@ -97,5 +98,3 @@ void ConfigWizardChooseNetworkPage::protocolChanged()
 
     LastProtocol = protocol;
 }
-
-#include "moc_config-wizard-choose-network-page.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "message-notification-service.h"
+#include "message-notification-service.moc"
 
 #include "accounts/account.h"
 #include "chat/chat.h"
@@ -127,5 +128,3 @@ void MessageNotificationService::openChat(const Notification &notification)
     if (chat)
         m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
-
-#include "moc_message-notification-service.cpp"

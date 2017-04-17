@@ -19,6 +19,7 @@
  */
 
 #include "jabber-wait-for-account-register-window.h"
+#include "jabber-wait-for-account-register-window.moc"
 
 #include "services/jabber-register-account.h"
 
@@ -72,5 +73,3 @@ void JabberWaitForAccountRegisterWindow::error(const QString &errorMessage)
     emit jidRegistered(Jid());
     deleteLater();
 }
-
-#include "moc_jabber-wait-for-account-register-window.cpp"

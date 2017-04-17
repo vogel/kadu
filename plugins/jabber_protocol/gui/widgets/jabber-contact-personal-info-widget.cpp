@@ -36,6 +36,7 @@
 #include "protocols/services/contact-personal-info-service.h"
 
 #include "jabber-contact-personal-info-widget.h"
+#include "jabber-contact-personal-info-widget.moc"
 
 JabberContactPersonalInfoWidget::JabberContactPersonalInfoWidget(const Contact &contact, QWidget *parent)
         : QWidget(parent), MyContact(contact)
@@ -128,5 +129,3 @@ void JabberContactPersonalInfoWidget::urlClicked(const QString &link)
 {
     m_urlOpener->openUrl(link.toUtf8());
 }
-
-#include "moc_jabber-contact-personal-info-widget.cpp"

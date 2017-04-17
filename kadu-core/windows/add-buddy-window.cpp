@@ -25,6 +25,7 @@
  */
 
 #include "add-buddy-window.h"
+#include "add-buddy-window.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -659,5 +660,3 @@ void AddBuddyWindow::sendAuthorization(const Contact &contact)
 
     account.protocolHandler()->subscriptionService()->resendSubscription(contact);
 }
-
-#include "moc_add-buddy-window.cpp"

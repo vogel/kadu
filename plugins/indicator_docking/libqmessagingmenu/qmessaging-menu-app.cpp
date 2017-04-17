@@ -21,6 +21,7 @@
 #define QT_NO_SIGNALS_SLOTS_KEYWORDS
 
 #include "qmessaging-menu-app.h"
+#include "qmessaging-menu-app.moc"
 
 #include "qmessaging-menu-source.h"
 #include "qmessaging-menu-status.h"
@@ -122,5 +123,3 @@ void status_changed(MessagingMenuApp *app, MessagingMenuStatus status, gpointer 
     auto messagingMenuApp = static_cast<QMessagingMenuApp *>(user_data);
     messagingMenuApp->statusChangedSlot(static_cast<QMessagingMenuStatus>(status));
 }
-
-#include "moc_qmessaging-menu-app.cpp"

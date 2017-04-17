@@ -18,6 +18,7 @@
  */
 
 #include "show-myself-action.h"
+#include "show-myself-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -96,5 +97,3 @@ void ShowMyselfAction::configurationUpdated()
         action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("General", "ShowMyself"))
         action(context)->trigger();
 }
-
-#include "moc_show-myself-action.cpp"

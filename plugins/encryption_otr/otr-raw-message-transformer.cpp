@@ -18,6 +18,7 @@
  */
 
 #include "otr-raw-message-transformer.h"
+#include "otr-raw-message-transformer.moc"
 
 #include "otr-app-ops-service.h"
 #include "otr-op-data-factory.h"
@@ -157,5 +158,3 @@ RawMessage OtrRawMessageTransformer::transformSent(const RawMessage &rawMessage,
 
     return rawMessage;
 }
-
-#include "moc_otr-raw-message-transformer.cpp"

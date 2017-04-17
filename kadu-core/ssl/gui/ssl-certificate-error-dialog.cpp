@@ -18,6 +18,7 @@
  */
 
 #include "ssl-certificate-error-dialog.h"
+#include "ssl-certificate-error-dialog.moc"
 
 #include "ssl/gui/ssl-certificate-widget.h"
 #include "ssl/ssl-certificate-repository.h"
@@ -135,5 +136,3 @@ void SslCertificateErrorDialog::trustCertificate()
     m_sslCertificateRepository->addPersistentCertificate(m_certificate);
     accept();
 }
-
-#include "moc_ssl-certificate-error-dialog.cpp"

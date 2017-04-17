@@ -41,6 +41,7 @@
 #include "history.h"
 
 #include "show-history-action.h"
+#include "show-history-action.moc"
 
 ShowHistoryAction::ShowHistoryAction(QObject *parent) : ActionDescription(parent)
 {
@@ -192,5 +193,3 @@ void ShowHistoryAction::showDaysMessages(QAction *action, int days)
 
     new HistoryMessagesPrepender(historyStorage->messages(query), chatMessagesView);
 }
-
-#include "moc_show-history-action.cpp"

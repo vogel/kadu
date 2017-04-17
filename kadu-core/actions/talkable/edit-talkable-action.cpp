@@ -36,6 +36,7 @@
 #include "windows/kadu-window.h"
 
 #include "edit-talkable-action.h"
+#include "edit-talkable-action.moc"
 
 EditTalkableAction::EditTalkableAction(QObject *parent) : ActionDescription(parent)
 {
@@ -214,5 +215,3 @@ void EditTalkableAction::trigger(ActionContext *context)
         break;
     }
 }
-
-#include "moc_edit-talkable-action.cpp"

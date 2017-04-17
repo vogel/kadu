@@ -20,6 +20,7 @@
  */
 
 #include "infos_dialog.h"
+#include "infos_dialog.moc"
 
 #include "infos.h"
 
@@ -171,5 +172,3 @@ void InfosDialog::customContextMenuRequested(const QPoint &point)
     m_menuInventory->menu("buddy-list")->update();
     menu->exec(QCursor::pos());
 }
-
-#include "moc_infos_dialog.cpp"

@@ -19,6 +19,7 @@
  */
 
 #include "chat-type.h"
+#include "chat-type.moc"
 
 /**
  * @short Creates empty ChatType object.
@@ -33,5 +34,3 @@ ChatType::ChatType(QObject *parent) : QObject(parent)
 ChatType::~ChatType()
 {
 }
-
-#include "moc_chat-type.cpp"

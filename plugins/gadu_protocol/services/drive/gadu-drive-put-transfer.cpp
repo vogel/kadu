@@ -18,6 +18,7 @@
  */
 
 #include "gadu-drive-put-transfer.h"
+#include "gadu-drive-put-transfer.moc"
 
 #include "services/drive/gadu-drive-send-ticket.h"
 #include "services/drive/gadu-drive-session-token.h"
@@ -63,5 +64,3 @@ void GaduDrivePutTransfer::requestFinished()
     emit finished();
     deleteLater();
 }
-
-#include "moc_gadu-drive-put-transfer.cpp"

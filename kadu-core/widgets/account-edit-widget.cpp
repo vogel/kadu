@@ -25,6 +25,7 @@
 #include "account-configuration-widget-factory-repository.h"
 
 #include "account-configuration-widget-factory.h"
+
 #include "account-edit-widget.h"
 #include "account-edit-widget.moc"
 
@@ -116,5 +117,3 @@ const ConfigurationValueStateNotifier *AccountEditWidget::stateNotifier() const
 {
     return CompositeStateNotifier;
 }
-
-#include "moc_account-edit-widget.cpp"

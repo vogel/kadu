@@ -18,6 +18,7 @@
  */
 
 #include "emoticons-plugin-object.h"
+#include "emoticons-plugin-object.moc"
 
 #include "configuration/emoticon-configurator.h"
 #include "expander/emoticon-expander-dom-visitor-provider.h"
@@ -114,5 +115,3 @@ void EmoticonsPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/emoticons.ui"));
 }
-
-#include "moc_emoticons-plugin-object.cpp"

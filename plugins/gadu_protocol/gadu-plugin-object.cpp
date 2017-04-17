@@ -18,6 +18,7 @@
  */
 
 #include "gadu-plugin-object.h"
+#include "gadu-plugin-object.moc"
 
 #include "gadu-protocol-factory.h"
 #include "gadu-url-dom-visitor-provider.h"
@@ -103,5 +104,3 @@ void GaduPluginObject::done()
     m_urlHandlerManager->unregisterUrlHandler(m_gaduUrlHandler);
     m_protocolsManager->unregisterProtocolFactory(m_gaduProtocolFactory);
 }
-
-#include "moc_gadu-plugin-object.cpp"

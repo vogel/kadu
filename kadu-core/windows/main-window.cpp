@@ -21,6 +21,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <QtGui/QContextMenuEvent>
 #include <QtWidgets/QMenu>
 
@@ -41,6 +42,7 @@
 #include "widgets/toolbar.h"
 
 #include "main-window.h"
+#include "main-window.moc"
 
 #if defined(Q_OS_UNIX)
 #include <QtX11Extras/QX11Info>
@@ -531,5 +533,3 @@ void MainWindow::showEvent(QShowEvent *event)
         setBlur(true);
     QMainWindow::showEvent(event);
 }
-
-#include "moc_main-window.cpp"

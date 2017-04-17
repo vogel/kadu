@@ -21,6 +21,7 @@
 #define QT_NO_SIGNALS_SLOTS_KEYWORDS
 
 #include "qunity.h"
+#include "qunity.moc"
 
 #include <unity.h>
 
@@ -60,5 +61,3 @@ void QUnity::updateProgress(int progress)
     else
         unity_launcher_entry_set_progress_visible(m_launcher, false);
 }
-
-#include "moc_qunity.cpp"

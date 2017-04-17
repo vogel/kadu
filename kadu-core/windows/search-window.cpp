@@ -24,6 +24,7 @@
  */
 
 #include "search-window.h"
+#include "search-window.moc"
 
 #include "accounts/account-manager.h"
 #include "actions/actions.h"
@@ -706,5 +707,3 @@ void SearchWindow::setActionEnabled(ActionDescription *actionDescription, bool e
     if (action)
         action->setEnabled(enable);
 }
-
-#include "moc_search-window.cpp"

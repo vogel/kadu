@@ -18,6 +18,7 @@
  */
 
 #include "indicator-docking-plugin-modules-factory.h"
+#include "indicator-docking-plugin-modules-factory.moc"
 
 #include "indicator-docking-module.h"
 
@@ -39,5 +40,3 @@ std::vector<std::unique_ptr<injeqt::module>> IndicatorDockingPluginModulesFactor
 
     return modules;
 }
-
-#include "moc_indicator-docking-plugin-modules-factory.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "roster-service.h"
+#include "roster-service.moc"
 
 #include "protocols/protocol.h"
 #include "roster/roster-entry-state.h"
@@ -128,5 +129,3 @@ RosterService *rosterService(Protocol *protocol)
 {
     return protocol ? protocol->rosterService() : nullptr;
 }
-
-#include "moc_roster-service.cpp"

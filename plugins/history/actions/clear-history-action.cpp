@@ -18,6 +18,7 @@
  */
 
 #include "clear-history-action.h"
+#include "clear-history-action.moc"
 
 #include "history.h"
 
@@ -79,5 +80,3 @@ void ClearHistoryAction::updateActionState(Action *action)
 
     action->setEnabled(true);
 }
-
-#include "moc_clear-history-action.cpp"

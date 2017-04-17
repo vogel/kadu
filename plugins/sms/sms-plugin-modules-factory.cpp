@@ -18,6 +18,7 @@
  */
 
 #include "sms-plugin-modules-factory.h"
+#include "sms-plugin-modules-factory.moc"
 
 #include "sms-module.h"
 
@@ -43,5 +44,3 @@ QString SmsPluginModulesFactory::parentInjectorName() const
 {
     return "history";
 }
-
-#include "moc_sms-plugin-modules-factory.cpp"

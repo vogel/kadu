@@ -20,6 +20,7 @@
  */
 
 #include "menu-inventory.h"
+#include "menu-inventory.moc"
 
 #include "accounts/account.h"
 #include "actions/action-context.h"
@@ -61,5 +62,3 @@ void MenuInventory::unregisterProtocolMenuManager(ProtocolMenuManager *manager)
 {
     ProtocolMenuManagers.removeAll(manager);
 }
-
-#include "moc_menu-inventory.cpp"

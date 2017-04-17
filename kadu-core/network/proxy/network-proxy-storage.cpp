@@ -18,6 +18,7 @@
  */
 
 #include "network-proxy-storage.h"
+#include "network-proxy-storage.moc"
 
 #include "core/injected-factory.h"
 #include "network/proxy/network-proxy-shared.h"
@@ -59,5 +60,3 @@ NetworkProxy NetworkProxyStorage::loadFromStorage(const std::shared_ptr<StorageP
 
     return result;
 }
-
-#include "moc_network-proxy-storage.cpp"

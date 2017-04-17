@@ -21,6 +21,7 @@
  */
 
 #include "hint.h"
+#include "hint.moc"
 
 #include "hints-configuration.h"
 
@@ -226,5 +227,3 @@ void Hint::discardNotification()
 {
     m_notificationService->discardNotification(m_notification);
 }
-
-#include "moc_hint.cpp"

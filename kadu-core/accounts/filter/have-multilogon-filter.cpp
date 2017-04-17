@@ -18,10 +18,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "have-multilogon-filter.h"
+#include "have-multilogon-filter.moc"
+
 #include "accounts/account.h"
 #include "protocols/protocol.h"
-
-#include "have-multilogon-filter.h"
 
 HaveMultilogonFilter::HaveMultilogonFilter(QObject *parent) : AbstractAccountFilter(parent)
 {
@@ -39,5 +40,3 @@ bool HaveMultilogonFilter::acceptAccount(Account account)
         return false;
     return 0 != account.protocolHandler()->multilogonService();
 }
-
-#include "moc_have-multilogon-filter.cpp"

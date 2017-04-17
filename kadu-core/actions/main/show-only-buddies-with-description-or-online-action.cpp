@@ -18,6 +18,7 @@
  */
 
 #include "show-only-buddies-with-description-or-online-action.h"
+#include "show-only-buddies-with-description-or-online-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -95,5 +96,3 @@ void ShowOnlyBuddiesWithDescriptionOrOnlineAction::configurationUpdated()
             m_configuration->deprecatedApi()->readBoolEntry("General", "ShowOnlineAndDescription"))
         action(context)->trigger();
 }
-
-#include "moc_show-only-buddies-with-description-or-online-action.cpp"

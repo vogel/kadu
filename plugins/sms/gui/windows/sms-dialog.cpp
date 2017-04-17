@@ -58,6 +58,7 @@
 #include "sms-internal-sender.h"
 
 #include "sms-dialog.h"
+#include "sms-dialog.moc"
 
 SmsDialog::SmsDialog(
     History *history, MobileNumberManager *mobileNumberManager, SmsGatewayManager *smsGatewayManager,
@@ -361,5 +362,3 @@ void SmsDialog::keyPressEvent(QKeyEvent *e)
     else
         QWidget::keyPressEvent(e);
 }
-
-#include "moc_sms-dialog.cpp"

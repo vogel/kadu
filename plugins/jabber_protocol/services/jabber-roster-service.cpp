@@ -20,6 +20,7 @@
  */
 
 #include "jabber-roster-service.h"
+#include "jabber-roster-service.moc"
 
 #include "jabber-protocol.h"
 #include "jid.h"
@@ -322,5 +323,3 @@ void JabberRosterService::executeTask(const RosterTask &task)
         return;
     }
 }
-
-#include "moc_jabber-roster-service.cpp"

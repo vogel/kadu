@@ -23,8 +23,10 @@
 
 #include "message/message.h"
 
-#include "history-save-thread.h"
 #include "history.h"
+
+#include "history-save-thread.h"
+#include "history-save-thread.moc"
 
 // 15 seconds
 #define SYNCHRONIZATION_TIMEOUT 15 * 1000
@@ -168,5 +170,3 @@ void HistorySaveThread::stop()
     WaitForSomethingToSave.wakeAll();
     SomethingToSave.unlock();
 }
-
-#include "moc_history-save-thread.cpp"

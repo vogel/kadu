@@ -18,6 +18,7 @@
  */
 
 #include "sound-actions.h"
+#include "sound-actions.moc"
 
 #include "gui/sound-mute-action.h"
 
@@ -57,5 +58,3 @@ void SoundActions::configurationUpdated()
 {
     m_soundMuteAction->updateActionStates();
 }
-
-#include "moc_sound-actions.cpp"

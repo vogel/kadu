@@ -24,6 +24,7 @@
 #include "otr-policy.h"
 
 #include "otr-policy-service.h"
+#include "otr-policy-service.moc"
 
 OtrlPolicy OtrPolicyService::wrapperOtrPolicy(void *data, ConnContext *context)
 {
@@ -76,5 +77,3 @@ OtrPolicy OtrPolicyService::contactPolicy(const Contact &contact) const
     else
         return fromBuddy;
 }
-
-#include "moc_otr-policy-service.cpp"

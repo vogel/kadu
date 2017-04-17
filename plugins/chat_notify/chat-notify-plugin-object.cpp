@@ -18,6 +18,7 @@
  */
 
 #include "chat-notify-plugin-object.h"
+#include "chat-notify-plugin-object.moc"
 
 #include "chat-notifier.h"
 
@@ -74,5 +75,3 @@ void ChatNotifyPluginObject::createDefaultConfiguration()
     m_configuration->deprecatedApi()->addVariable("Notify", "StatusChanged/ToOnline_ChatNotifier", true);
     m_configuration->deprecatedApi()->addVariable("Notify", "OTR_ChatNotifier", true);
 }
-
-#include "moc_chat-notify-plugin-object.cpp"

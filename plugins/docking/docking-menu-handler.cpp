@@ -18,6 +18,7 @@
  */
 
 #include "docking-menu-handler.h"
+#include "docking-menu-handler.moc"
 
 #include "docking-menu-action-repository.h"
 #include "status-notifier-item.h"
@@ -219,5 +220,3 @@ void DockingMenuHandler::silentModeToggled(bool enabled)
 {
     m_silentModeService->setSilent(enabled);
 }
-
-#include "moc_docking-menu-handler.cpp"

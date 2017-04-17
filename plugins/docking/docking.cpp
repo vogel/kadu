@@ -25,6 +25,7 @@
  */
 
 #include "docking.h"
+#include "docking.moc"
 
 #include "docking-configuration-provider.h"
 #include "docking-menu-handler.h"
@@ -176,5 +177,3 @@ void Docking::configurationUpdated()
     configuration.Icon = m_statusContainerManager->statusIcon();
     m_statusNotifierItem->setConfiguration(configuration);
 }
-
-#include "moc_docking.cpp"

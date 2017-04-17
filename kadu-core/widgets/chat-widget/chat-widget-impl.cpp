@@ -19,6 +19,7 @@
  */
 
 #include "chat-widget-impl.h"
+#include "chat-widget-impl.moc"
 
 #include "actions/action.h"
 #include "actions/actions.h"
@@ -768,5 +769,3 @@ void ChatWidgetImpl::keyPressedSlot(QKeyEvent *e, CustomInput *input, bool &hand
 
     handled = keyPressEventHandled(e);
 }
-
-#include "moc_chat-widget-impl.cpp"

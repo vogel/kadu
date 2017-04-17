@@ -48,6 +48,7 @@
 #include "windows/message-dialog.h"
 
 #include "jabber-create-account-widget.h"
+#include "jabber-create-account-widget.moc"
 
 JabberCreateAccountWidget::JabberCreateAccountWidget(bool showButtons, QWidget *parent)
         : AccountCreateWidget{parent}, m_showButtons{showButtons}
@@ -270,5 +271,3 @@ void JabberCreateAccountWidget::jidRegistered(const Jid &jid)
 
     emit accountCreated(jabberAccount);
 }
-
-#include "moc_jabber-create-account-widget.cpp"

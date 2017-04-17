@@ -34,6 +34,7 @@
 #include "plugin/plugin-injected-factory.h"
 
 #include "gadu-protocol-factory.h"
+#include "gadu-protocol-factory.moc"
 
 GaduProtocolFactory::GaduProtocolFactory(QObject *parent) : ProtocolFactory{}
 {
@@ -131,5 +132,3 @@ KaduIcon GaduProtocolFactory::icon()
 {
     return KaduIcon("protocols/gadu-gadu/gadu-gadu");
 }
-
-#include "moc_gadu-protocol-factory.cpp"

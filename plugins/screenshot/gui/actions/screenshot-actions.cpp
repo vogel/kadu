@@ -19,6 +19,7 @@
  */
 
 #include "screenshot-actions.h"
+#include "screenshot-actions.moc"
 
 #include "actions/actions.h"
 #include "configuration/screen-shot-configuration.h"
@@ -59,5 +60,3 @@ void ScreenshotActions::done()
 {
     m_actions->remove(m_screenShotActionDescription);
 }
-
-#include "moc_screenshot-actions.cpp"

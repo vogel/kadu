@@ -71,6 +71,7 @@
 #include "languages-manager.h"
 
 #include "main-configuration-window.h"
+#include "main-configuration-window.moc"
 
 #if defined(Q_OS_UNIX)
 #include "os/x11/x11tools.h"   // this should be included as last one,
@@ -375,5 +376,3 @@ void MainConfigurationWindow::showLookChatAdvanced()
 
     lookChatAdvanced.data()->show();
 }
-
-#include "moc_main-configuration-window.cpp"

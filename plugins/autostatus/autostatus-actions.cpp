@@ -20,6 +20,7 @@
  */
 
 #include "autostatus-actions.h"
+#include "autostatus-actions.moc"
 
 #include "autostatus-service.h"
 #include "toggle-autostatus-action.h"
@@ -63,5 +64,3 @@ void AutostatusActions::unregisterActions()
 {
     m_menuInventory->menu("main")->removeAction(m_toggleAutostatusAction)->update();
 }
-
-#include "moc_autostatus-actions.cpp"

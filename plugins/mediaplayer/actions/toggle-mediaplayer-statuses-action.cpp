@@ -18,6 +18,7 @@
  */
 
 #include "toggle-mediaplayer-statuses-action.h"
+#include "toggle-mediaplayer-statuses-action.moc"
 
 #include "mediaplayer.h"
 
@@ -47,5 +48,3 @@ void ToggleMediaplayerStatusesAction::actionTriggered(QAction *, bool toggled)
 {
     m_mediaPlayer->toggleStatuses(toggled);
 }
-
-#include "moc_toggle-mediaplayer-statuses-action.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "adium-style-renderer.h"
+#include "adium-style-renderer.moc"
 
 #include "avatars/avatar-id.h"
 #include "avatars/avatars.h"
@@ -402,5 +403,3 @@ void AdiumStyleRenderer::displayChatImage(const ChatImage &chatImage, const QStr
             .arg(Qt::escape(chatImage.key()))
             .arg(Qt::escape(fileName)));
 }
-
-#include "moc_adium-style-renderer.cpp"

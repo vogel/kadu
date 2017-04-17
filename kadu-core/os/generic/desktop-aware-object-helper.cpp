@@ -20,6 +20,7 @@
  */
 
 #include "desktop-aware-object-helper.h"
+#include "desktop-aware-object-helper.moc"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -47,5 +48,3 @@ void DesktopAwareObjectHelper::workAreaResized()
 {
     DesktopAwareObject::notifyDesktopModified();
 }
-
-#include "moc_desktop-aware-object-helper.cpp"

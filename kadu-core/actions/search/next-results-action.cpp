@@ -18,6 +18,7 @@
  */
 
 #include "next-results-action.h"
+#include "next-results-action.moc"
 
 #include "windows/search-window.h"
 
@@ -51,5 +52,3 @@ void NextResultsAction::actionTriggered(QAction *sender, bool)
     if (search)
         search->nextSearch();
 }
-
-#include "moc_next-results-action.cpp"

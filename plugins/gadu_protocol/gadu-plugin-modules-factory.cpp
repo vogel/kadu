@@ -18,6 +18,7 @@
  */
 
 #include "gadu-plugin-modules-factory.h"
+#include "gadu-plugin-modules-factory.moc"
 
 #include "gadu-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> GaduPluginModulesFactory::createPlu
 
     return modules;
 }
-
-#include "moc_gadu-plugin-modules-factory.cpp"

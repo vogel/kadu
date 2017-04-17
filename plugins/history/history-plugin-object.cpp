@@ -18,6 +18,7 @@
  */
 
 #include "history-plugin-object.h"
+#include "history-plugin-object.moc"
 
 #include "buddy-history-delete-handler.h"
 #include "gui/widgets/history-buddy-configuration-widget-factory.h"
@@ -112,5 +113,3 @@ void HistoryPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/history.ui"));
 }
-
-#include "moc_history-plugin-object.cpp"

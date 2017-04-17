@@ -20,6 +20,7 @@
  */
 
 #include "sound-manager.h"
+#include "sound-manager.moc"
 
 #include "sound-player.h"
 #include "sound-theme-manager.h"
@@ -131,5 +132,3 @@ void SoundManager::setPlayer(SoundPlayer *player)
 {
     m_player = player;
 }
-
-#include "moc_sound-manager.cpp"

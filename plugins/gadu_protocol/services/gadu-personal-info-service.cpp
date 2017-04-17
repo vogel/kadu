@@ -27,6 +27,7 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "gadu-personal-info-service.h"
+#include "gadu-personal-info-service.moc"
 
 GaduPersonalInfoService::GaduPersonalInfoService(Account account, QObject *parent)
         : PersonalInfoService(account, parent), FetchSeq(0), UpdateSeq(0)
@@ -138,5 +139,3 @@ void GaduPersonalInfoService::updatePersonalInfo(const QString &id, Buddy buddy)
     UpdateSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
     // gg_pubdir50_free(req);
 }
-
-#include "moc_gadu-personal-info-service.cpp"

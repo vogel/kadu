@@ -20,6 +20,8 @@
 
 #pragma once
 
+#include "jid.h"
+
 #include "accounts/account.h"
 #include "widgets/account-create-widget.h"
 #include "widgets/identities-combo-box.h"
@@ -39,7 +41,6 @@ class IconsManager;
 class IdentityManager;
 class PluginInjectedFactory;
 class JabberServersService;
-class Jid;
 
 class QGridLayout;
 class QLineEdit;

@@ -18,6 +18,7 @@
  */
 
 #include "kadu-style-renderer.h"
+#include "kadu-style-renderer.moc"
 
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/kadu/kadu-chat-syntax.h"
@@ -127,5 +128,3 @@ QString KaduStyleRenderer::formatMessage(const Message &message, const MessageRe
 
     return m_parser->parse(format, Talkable{sender}, &messageRenderInfo, ParserEscape::HtmlEscape);
 }
-
-#include "moc_kadu-style-renderer.cpp"

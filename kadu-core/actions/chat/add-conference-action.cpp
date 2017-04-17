@@ -27,6 +27,7 @@
 #include "windows/add-conference-window.h"
 
 #include "add-conference-action.h"
+#include "add-conference-action.moc"
 
 AddConferenceAction::AddConferenceAction(QObject *parent) : ActionDescription(parent)
 {
@@ -74,5 +75,3 @@ void AddConferenceAction::updateAddChatMenuItem()
         action->setVisible(isConferenceSupported);
     }
 }
-
-#include "moc_add-conference-action.cpp"

@@ -31,6 +31,7 @@
 #include "configuration/autostatus-configuration.h"
 
 #include "autostatus-service.h"
+#include "autostatus-service.moc"
 
 AutostatusService::AutostatusService(QObject *parent) : QObject{parent}
 {
@@ -128,5 +129,3 @@ void AutostatusService::toggle(bool toggled)
         on();
     }
 }
-
-#include "moc_autostatus-service.cpp"

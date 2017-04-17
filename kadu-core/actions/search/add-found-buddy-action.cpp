@@ -18,6 +18,7 @@
  */
 
 #include "add-found-buddy-action.h"
+#include "add-found-buddy-action.moc"
 
 #include "windows/search-window.h"
 
@@ -51,5 +52,3 @@ void AddFoundBuddyAction::actionTriggered(QAction *sender, bool)
     if (search)
         search->addFound();
 }
-
-#include "moc_add-found-buddy-action.cpp"

@@ -19,6 +19,7 @@
  */
 
 #include "raw-message-transformer-service.h"
+#include "raw-message-transformer-service.moc"
 
 RawMessageTransformerService::RawMessageTransformerService(QObject *parent) : QObject(parent)
 {
@@ -27,5 +28,3 @@ RawMessageTransformerService::RawMessageTransformerService(QObject *parent) : QO
 RawMessageTransformerService::~RawMessageTransformerService()
 {
 }
-
-#include "moc_raw-message-transformer-service.cpp"

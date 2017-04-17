@@ -18,6 +18,7 @@
  */
 
 #include "chat-widget-activation-service.h"
+#include "chat-widget-activation-service.moc"
 
 #include "widgets/chat-widget/chat-widget-container-handler-mapper.h"
 #include "widgets/chat-widget/chat-widget-container-handler-repository.h"
@@ -106,5 +107,3 @@ void ChatWidgetActivationService::tryMinimizeChatWidget(ChatWidget *chatWidget)
     if (chatWidgetContainerHandler)
         chatWidgetContainerHandler->tryMinimizeChatWidget(chatWidget);
 }
-
-#include "moc_chat-widget-activation-service.cpp"

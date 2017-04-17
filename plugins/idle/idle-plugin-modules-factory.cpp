@@ -18,6 +18,7 @@
  */
 
 #include "idle-plugin-modules-factory.h"
+#include "idle-plugin-modules-factory.moc"
 
 #include "idle-module.h"
 
@@ -36,5 +37,3 @@ std::vector<std::unique_ptr<injeqt::module>> IdlePluginModulesFactory::createPlu
 
     return modules;
 }
-
-#include "moc_idle-plugin-modules-factory.cpp"

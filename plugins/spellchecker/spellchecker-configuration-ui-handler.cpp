@@ -18,6 +18,7 @@
  */
 
 #include "spellchecker-configuration-ui-handler.h"
+#include "spellchecker-configuration-ui-handler.moc"
 
 #include "configuration/spellchecker-configuration.h"
 #include "spellchecker.h"
@@ -135,5 +136,3 @@ void SpellcheckerConfigurationUiHandler::configBackward2(QListWidgetItem *item)
     delete m_checkedLanguagesList->takeItem(m_checkedLanguagesList->row(item));
     m_spellChecker->removeCheckedLang(langName);
 }
-
-#include "moc_spellchecker-configuration-ui-handler.cpp"

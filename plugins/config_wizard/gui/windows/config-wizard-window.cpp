@@ -30,6 +30,7 @@
 #include "protocols/protocols-manager.h"
 
 #include "config-wizard-window.h"
+#include "config-wizard-window.moc"
 
 /**
  * @ingroup config_wizard
@@ -133,5 +134,3 @@ void ConfigWizardWindow::rejectedSlot()
 }
 
 /** @} */
-
-#include "moc_config-wizard-window.cpp"

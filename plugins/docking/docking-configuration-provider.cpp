@@ -18,6 +18,7 @@
  */
 
 #include "docking-configuration-provider.h"
+#include "docking-configuration-provider.moc"
 
 #include "docking-configuration.h"
 
@@ -65,5 +66,3 @@ void DockingConfigurationProvider::configurationUpdated()
 
     emit updated();
 }
-
-#include "moc_docking-configuration-provider.cpp"

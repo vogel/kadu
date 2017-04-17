@@ -23,6 +23,7 @@
 #include "scripts/sms-script-manager.h"
 
 #include "sms-gateway-query.h"
+#include "sms-gateway-query.moc"
 
 SmsGatewayQuery::SmsGatewayQuery(SmsScriptsManager *smsScriptsManager, QObject *parent)
         : QObject{parent}, m_smsScriptsManager{smsScriptsManager}
@@ -52,5 +53,3 @@ void SmsGatewayQuery::process(const QString &number)
 
     jsGetGateway.call(jsGatewayQueryObject, arguments);
 }
-
-#include "moc_sms-gateway-query.cpp"

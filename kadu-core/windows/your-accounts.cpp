@@ -24,6 +24,7 @@
  */
 
 #include "your-accounts.h"
+#include "your-accounts.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/filter/have-protocol-filter.h"
@@ -553,5 +554,3 @@ void YourAccounts::keyPressEvent(QKeyEvent *e)
     else
         QWidget::keyPressEvent(e);
 }
-
-#include "moc_your-accounts.cpp"

@@ -19,6 +19,7 @@
  */
 
 #include "gadu-add-account-widget.h"
+#include "gadu-add-account-widget.moc"
 
 #include "gadu-id-validator.h"
 #include "gadu-protocol-factory.h"
@@ -221,5 +222,3 @@ void GaduAddAccountWidget::remindPassword()
 {
     m_urlOpener->openUrl("https://login.gg.pl/account/remindPassword/");
 }
-
-#include "moc_gadu-add-account-widget.cpp"

@@ -20,6 +20,7 @@
  */
 
 #include "tab-bar.h"
+#include "tab-bar.moc"
 
 TabBar::TabBar(QWidget *parent) : QTabBar(parent)
 {
@@ -45,5 +46,3 @@ void TabBar::mouseDoubleClickEvent(QMouseEvent *e)
     // w celu ulatwienia sobie zadania przekazujemy zdarzenie dalej- tu klasie tabdialog
     emit mouseDoubleClickEventSignal(e);
 }
-
-#include "moc_tab-bar.cpp"

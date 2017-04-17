@@ -22,8 +22,9 @@
 #include <QtWidgets/QApplication>
 
 #include "widgets/configuration/config-group-box.h"
-#include "widgets/configuration/config-line-separator.h"
-#include "widgets/configuration/config-line-separator.moc"
+
+#include "config-line-separator.h"
+#include "config-line-separator.moc"
 
 ConfigLineSeparator::ConfigLineSeparator(
     ConfigGroupBox *parentConfigGroupBox, ConfigurationWindowDataManager *dataManager)
@@ -39,5 +40,3 @@ void ConfigLineSeparator::createWidgets()
     setMinimumHeight(2 * margin + 1);
     parentConfigGroupBox->addWidget(this, true);
 }
-
-#include "moc_config-line-separator.cpp"

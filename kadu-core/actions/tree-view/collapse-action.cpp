@@ -18,6 +18,7 @@
  */
 
 #include "collapse-action.h"
+#include "collapse-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -67,5 +68,3 @@ void CollapseAction::updateActionState(Action *action)
             return;
         }
 }
-
-#include "moc_collapse-action.cpp"

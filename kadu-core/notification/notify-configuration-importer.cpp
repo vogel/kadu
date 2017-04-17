@@ -18,6 +18,7 @@
  */
 
 #include "notify-configuration-importer.h"
+#include "notify-configuration-importer.moc"
 
 #include "buddies/buddy-manager.h"
 #include "configuration/configuration.h"
@@ -61,5 +62,3 @@ void NotifyConfigurationImporter::import()
 
     m_configuration->deprecatedApi()->addVariable("General", "ImportedPre10", true);
 }
-
-#include "moc_notify-configuration-importer.cpp"

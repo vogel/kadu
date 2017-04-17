@@ -18,6 +18,7 @@
  */
 
 #include "open-translate-action.h"
+#include "open-translate-action.moc"
 
 #include "os/generic/url-opener.h"
 
@@ -44,5 +45,3 @@ void OpenTranslateAction::actionTriggered(QAction *, bool)
 {
     m_urlOpener->openUrl("http://www.transifex.net/projects/p/kadu/");
 }
-
-#include "moc_open-translate-action.cpp"

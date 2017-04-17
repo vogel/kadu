@@ -22,6 +22,7 @@
  */
 
 #include "subscription-window.h"
+#include "subscription-window.moc"
 
 #include "buddies/buddy-manager.h"
 #include "contacts/contact-manager.h"
@@ -142,5 +143,3 @@ void SubscriptionWindow::rejected()
     emit requestConsidered(m_contact, false);
     close();
 }
-
-#include "moc_subscription-window.cpp"

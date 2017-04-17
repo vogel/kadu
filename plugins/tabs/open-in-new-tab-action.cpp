@@ -18,6 +18,7 @@
  */
 
 #include "open-in-new-tab-action.h"
+#include "open-in-new-tab-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -104,5 +105,3 @@ void OpenInNewTabAction::updateActionState(Action *action)
     else
         action->setText(QCoreApplication::translate("TabsManager", "Chat in New Tab"));
 }
-
-#include "moc_open-in-new-tab-action.cpp"

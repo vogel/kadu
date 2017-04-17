@@ -18,6 +18,7 @@
  */
 
 #include "history-chat-configuration-widget-factory.h"
+#include "history-chat-configuration-widget-factory.moc"
 
 #include "gui/widgets/history-chat-configuration-widget.h"
 #include "plugin/plugin-injected-factory.h"
@@ -39,5 +40,3 @@ ChatConfigurationWidget *HistoryChatConfigurationWidgetFactory::createWidget(con
 {
     return m_pluginInjectedFactory->makeInjected<HistoryChatConfigurationWidget>(chat, parent);
 }
-
-#include "moc_history-chat-configuration-widget-factory.cpp"

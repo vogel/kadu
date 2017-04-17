@@ -19,6 +19,7 @@
  */
 
 #include "chat-type-buddy.h"
+#include "chat-type-buddy.moc"
 
 #include "chat/chat-details-buddy.h"
 #include "chat/chat.h"
@@ -111,5 +112,3 @@ ChatEditWidget *ChatTypeBuddy::createEditWidget(const Chat &chat, QWidget *paren
 
     return 0;
 }
-
-#include "moc_chat-type-buddy.cpp"

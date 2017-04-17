@@ -33,6 +33,7 @@
 #include "gui/widgets/screenshot-tool-box.h"
 
 #include "crop-image-widget.h"
+#include "crop-image-widget.moc"
 
 #define HANDLER_SIZE 10
 #define HANDLER_HALF_SIZE (HANDLER_SIZE / 2)
@@ -296,5 +297,3 @@ void CropImageWidget::setCropRect(const QRect &cropRect)
     CropRect = cropRect.normalized();
     updateCropRectDisplay();
 }
-
-#include "moc_crop-image-widget.cpp"

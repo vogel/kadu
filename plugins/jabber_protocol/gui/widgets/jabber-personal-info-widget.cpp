@@ -19,6 +19,7 @@
  */
 
 #include "jabber-personal-info-widget.h"
+#include "jabber-personal-info-widget.moc"
 
 #include "accounts/account.h"
 #include "buddies/buddy-storage.h"
@@ -139,5 +140,3 @@ void JabberPersonalInfoWidget::cancel()
 {
     fillForm();
 }
-
-#include "moc_jabber-personal-info-widget.cpp"

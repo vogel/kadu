@@ -18,6 +18,7 @@
  */
 
 #include "winamp-plugin-modules-factory.h"
+#include "winamp-plugin-modules-factory.moc"
 
 #include "winamp-module.h"
 
@@ -43,5 +44,3 @@ QString WinampPluginModulesFactory::parentInjectorName() const
 {
     return "mediaplayer";
 }
-
-#include "moc_winamp-plugin-modules-factory.cpp"

@@ -39,6 +39,7 @@
 #include "plugins/docking/docking.h"
 
 #include "docking-notifier.h"
+#include "docking-notifier.moc"
 
 /**
  * @ingroup qt4_notify
@@ -222,5 +223,3 @@ void DockingNotifier::createDefaultConfiguration()
 }
 
 /** @} */
-
-#include "moc_docking-notifier.cpp"

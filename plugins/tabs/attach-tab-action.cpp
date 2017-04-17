@@ -18,6 +18,7 @@
  */
 
 #include "attach-tab-action.h"
+#include "attach-tab-action.moc"
 
 #include "tabs.h"
 
@@ -73,5 +74,3 @@ void AttachTabAction::actionTriggered(QAction *sender, bool toggled)
     else
         m_tabsManager->attachChat(chatWidget);
 }
-
-#include "moc_attach-tab-action.cpp"

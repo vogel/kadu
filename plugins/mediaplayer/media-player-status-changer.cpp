@@ -18,6 +18,7 @@
  */
 
 #include "media-player-status-changer.h"
+#include "media-player-status-changer.moc"
 
 #include "status/status.h"
 
@@ -97,5 +98,3 @@ MediaPlayerStatusChanger::ChangeDescriptionTo MediaPlayerStatusChanger::changeDe
 {
     return _mediaPlayerStatusPosition;
 }
-
-#include "moc_media-player-status-changer.cpp"

@@ -23,6 +23,7 @@
  */
 
 #include "plugin-model.h"
+#include "plugin-model.moc"
 
 #include "model/categorized-sort-filter-proxy-model.h"
 #include "plugin/metadata/plugin-metadata.h"
@@ -123,5 +124,3 @@ int PluginModel::rowCount(const QModelIndex &parent) const
 {
     return parent.isValid() ? 0 : m_pluginEntries.count();
 }
-
-#include "moc_plugin-model.cpp"

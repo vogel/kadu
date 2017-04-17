@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "image-link-plugin-object.h"
+#include "image-link-plugin-object.moc"
 
 #include "configuration/image-link-configurator.h"
 #include "image-expander-dom-visitor-provider.h"
@@ -85,5 +86,3 @@ void ImageLinkPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/image-link.ui"));
 }
-
-#include "moc_image-link-plugin-object.cpp"

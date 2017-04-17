@@ -18,6 +18,7 @@
  */
 
 #include "gadu-notify-service.h"
+#include "gadu-notify-service.moc"
 
 #include "helpers/gadu-protocol-helper.h"
 #include "server/gadu-connection.h"
@@ -133,5 +134,3 @@ void GaduNotifyService::sendNewFlags(const Contact &contact, int newFlags) const
     if (f1 && f2 && f3)
         contact.addProperty("gadu:flags", newFlags, CustomProperties::NonStorable);
 }
-
-#include "moc_gadu-notify-service.cpp"

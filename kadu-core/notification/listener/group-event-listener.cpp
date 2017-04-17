@@ -20,6 +20,7 @@
  */
 
 #include "group-event-listener.h"
+#include "group-event-listener.moc"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/group-manager.h"
@@ -73,5 +74,3 @@ void GroupEventListener::groupUpdated()
             buddy.addProperty("notify:Notify", false, CustomProperties::Storable);
     }
 }
-
-#include "moc_group-event-listener.cpp"

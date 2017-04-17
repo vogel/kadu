@@ -19,6 +19,7 @@
  */
 
 #include "jabber-file-transfer-service.h"
+#include "jabber-file-transfer-service.moc"
 
 #include "file-transfer/jabber-outgoing-file-transfer-handler.h"
 #include "file-transfer/jabber-stream-incoming-file-transfer-handler.h"
@@ -130,5 +131,3 @@ void JabberFileTransferService::fileReceived(QXmppTransferJob *transferJob)
 
     emit incomingFileTransfer(transfer);
 }
-
-#include "moc_jabber-file-transfer-service.cpp"

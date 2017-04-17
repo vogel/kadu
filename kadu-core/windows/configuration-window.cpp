@@ -23,14 +23,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QKeyEvent>
-#include <QtWidgets/QApplication>
-#include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QListWidget>
-#include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
-#include <QtXml/QDomElement>
+#include "configuration-window.h"
+#include "configuration-window.moc"
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
@@ -57,10 +51,17 @@
 #include "widgets/configuration/config-syntax-editor.h"
 #include "widgets/configuration/config-widget.h"
 #include "widgets/configuration/configuration-widget.h"
-#include "windows/configuration-window.h"
 #include "windows/kadu-window.h"
-
 #include "activate.h"
+
+#include <QtGui/QKeyEvent>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QDialogButtonBox>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QListWidget>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QWidget>
+#include <QtXml/QDomElement>
 
 ConfigurationWindow::ConfigurationWindow(
     const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager,
@@ -171,5 +172,3 @@ void ConfigurationWindow::keyPressEvent(QKeyEvent *e)
     else
         QDialog::keyPressEvent(e);
 }
-
-#include "moc_configuration-window.cpp"

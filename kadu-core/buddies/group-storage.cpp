@@ -18,6 +18,7 @@
  */
 
 #include "group-storage.h"
+#include "group-storage.moc"
 
 #include "buddies/group-shared.h"
 #include "buddies/group.h"
@@ -59,5 +60,3 @@ Group GroupStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &storage
 
     return result;
 }
-
-#include "moc_group-storage.cpp"

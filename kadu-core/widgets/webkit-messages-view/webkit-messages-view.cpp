@@ -18,6 +18,7 @@
  */
 
 #include "webkit-messages-view.h"
+#include "webkit-messages-view.moc"
 
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-renderer-configuration.h"
@@ -347,5 +348,3 @@ void WebkitMessagesView::compositingDisabled()
 {
     refreshView();
 }
-
-#include "moc_webkit-messages-view.cpp"

@@ -21,6 +21,7 @@
 #include "formatted-string/formatted-string-image-block.h"
 
 #include "formatted-string-image-key-received-visitor.h"
+#include "formatted-string-image-key-received-visitor.moc"
 
 FormattedStringImageKeyReceivedVisitor::FormattedStringImageKeyReceivedVisitor(const QString &id, QObject *parent)
         : QObject(parent), Id(id)
@@ -53,5 +54,3 @@ void FormattedStringImageKeyReceivedVisitor::visit(const FormattedStringTextBloc
 {
     Q_UNUSED(formattedStringTextBlock);
 }
-
-#include "moc_formatted-string-image-key-received-visitor.cpp"

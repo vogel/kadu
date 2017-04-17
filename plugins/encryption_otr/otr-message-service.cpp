@@ -29,6 +29,7 @@
 #include "otr-op-data.h"
 
 #include "otr-message-service.h"
+#include "otr-message-service.moc"
 
 void OtrMessageService::wrapperOtrInjectMessage(
     void *data, const char *accountName, const char *protocol, const char *recipient, const char *message)
@@ -121,5 +122,3 @@ QString OtrMessageService::resentMessagePrefix() const
 {
     return tr("[resent]");
 }
-
-#include "moc_otr-message-service.cpp"

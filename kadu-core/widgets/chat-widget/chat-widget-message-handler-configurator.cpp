@@ -18,6 +18,7 @@
  */
 
 #include "chat-widget-message-handler-configurator.h"
+#include "chat-widget-message-handler-configurator.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -72,5 +73,3 @@ ChatWidgetMessageHandlerConfiguration ChatWidgetMessageHandlerConfigurator::load
         m_configuration->deprecatedApi()->readBoolEntry("Chat", "OpenChatOnMessageMinimized", false));
     return configuration;
 }
-
-#include "moc_chat-widget-message-handler-configurator.cpp"

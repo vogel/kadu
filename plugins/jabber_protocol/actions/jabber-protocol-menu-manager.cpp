@@ -19,6 +19,7 @@
  */
 
 #include "jabber-protocol-menu-manager.h"
+#include "jabber-protocol-menu-manager.moc"
 
 #include "actions/ask-for-subscription-action.h"
 #include "actions/jabber-actions.h"
@@ -65,5 +66,3 @@ const QList<ActionDescription *> &JabberProtocolMenuManager::protocolActions() c
 
     return m_rosterActions;
 }
-
-#include "moc_jabber-protocol-menu-manager.cpp"

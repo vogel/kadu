@@ -19,6 +19,7 @@
  */
 
 #include "jabber-contact-personal-info-service.h"
+#include "jabber-contact-personal-info-service.moc"
 
 #include "jabber-vcard-downloader.h"
 #include "jabber-vcard-service.h"
@@ -84,5 +85,3 @@ void JabberContactPersonalInfoService::vCardDownloaded(bool ok, const QXmppVCard
 
     emit personalInfoAvailable(CurrentBuddy);
 }
-
-#include "moc_jabber-contact-personal-info-service.cpp"

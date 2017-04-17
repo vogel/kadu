@@ -29,6 +29,7 @@
 #include "mobile-number.h"
 
 #include "mobile-number-manager.h"
+#include "mobile-number-manager.moc"
 
 MobileNumberManager::MobileNumberManager(QObject *parent) : StorableObject{parent}
 {
@@ -142,5 +143,3 @@ QString MobileNumberManager::gatewayId(const QString &mobileNumber)
 
     return QString();
 }
-
-#include "moc_mobile-number-manager.cpp"

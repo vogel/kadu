@@ -25,6 +25,7 @@
 #include "model/roles.h"
 
 #include "status-window-description-proxy-model.h"
+#include "status-window-description-proxy-model.moc"
 
 #define DESCRIPTION_SELECT_DISPLAY_MAX_LENGTH 60
 
@@ -50,5 +51,3 @@ QVariant StatusWindowDescriptionProxyModel::data(const QModelIndex &index, int r
     text = StringUtils::ellipsis(text, DESCRIPTION_SELECT_DISPLAY_MAX_LENGTH);
     return QVariant(text);
 }
-
-#include "moc_status-window-description-proxy-model.cpp"

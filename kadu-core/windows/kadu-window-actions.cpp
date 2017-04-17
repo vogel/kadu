@@ -26,6 +26,7 @@
  */
 
 #include "kadu-window-actions.h"
+#include "kadu-window-actions.moc"
 
 #include "actions/chat-widget/block-user-action.h"
 #include "actions/talkable/copy-description-action.h"
@@ -106,22 +107,12 @@ void KaduWindowActions::init()
 {
     m_menuInventory->menu("buddy-list")->addAction(m_expandAction, KaduMenu::SectionActionsGui, 2);
     m_menuInventory->menu("buddy-list")->addAction(m_collapseAction, KaduMenu::SectionActionsGui, 1);
-
     m_menuInventory->menu("buddy-list")->addAction(m_copyDescriptionAction, KaduMenu::SectionActions, 10);
-
     m_menuInventory->menu("buddy-list")->addAction(m_copyPersonalInfoAction, KaduMenu::SectionActions, 20);
-
     m_menuInventory->menu("buddy-list")->addAction(m_openDescriptionLinkAction, KaduMenu::SectionActions, 30);
-
     m_menuInventory->menu("buddy-list")->addAction(m_openBuddyEmailAction, KaduMenu::SectionSend, 200);
-
     m_menuInventory->menu("buddy-list")->addAction(m_editTalkableAction, KaduMenu::SectionView);
-
     m_menuInventory->menu("buddy-list")->addAction(m_mergeBuddiesAction, KaduMenu::SectionManagement, 100);
-
     m_menuInventory->menu("buddy-list")->addAction(m_blockUserAction, KaduMenu::SectionManagement, 500);
-
     m_menuInventory->menu("buddy-list")->addAction(m_deleteTalkableAction, KaduMenu::SectionManagement, 1000);
 }
-
-#include "moc_kadu-window-actions.cpp"

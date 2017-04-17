@@ -18,6 +18,7 @@
  */
 
 #include "show-info-panel-action.h"
+#include "show-info-panel-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -74,5 +75,3 @@ void ShowInfoPanelAction::configurationUpdated()
         action(context)->isChecked() != m_configuration->deprecatedApi()->readBoolEntry("Look", "ShowInfoPanel"))
         action(context)->trigger();
 }
-
-#include "moc_show-info-panel-action.cpp"

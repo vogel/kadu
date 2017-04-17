@@ -20,6 +20,7 @@
  */
 
 #include "action-description.h"
+#include "action-description.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -212,5 +213,3 @@ void ActionDescription::connectNotify(const QMetaMethod &signal)
         for (auto action : MappedActions)
             emit actionCreated(action);
 }
-
-#include "moc_action-description.cpp"

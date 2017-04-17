@@ -37,6 +37,7 @@
 #include "scripts/sms-translator.h"
 
 #include "sms-script-manager.h"
+#include "sms-script-manager.moc"
 
 SmsScriptsManager::SmsScriptsManager(QObject *parent) : QObject{parent}
 {
@@ -122,5 +123,3 @@ void SmsScriptsManager::loadScript(const QFileInfo &fileInfo)
 
     Engine->evaluate(content);
 }
-
-#include "moc_sms-script-manager.cpp"

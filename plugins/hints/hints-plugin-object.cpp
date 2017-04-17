@@ -18,6 +18,7 @@
  */
 
 #include "hints-plugin-object.h"
+#include "hints-plugin-object.moc"
 
 #include "hints-notifier.h"
 
@@ -68,5 +69,3 @@ void HintsPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/hints.ui"));
 }
-
-#include "moc_hints-plugin-object.cpp"

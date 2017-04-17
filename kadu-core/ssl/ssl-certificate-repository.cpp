@@ -18,6 +18,7 @@
  */
 
 #include "ssl-certificate-repository.h"
+#include "ssl-certificate-repository.moc"
 
 #include "ssl/ssl-certificate.h"
 
@@ -76,5 +77,3 @@ void SslCertificateRepository::removeCertificate(SslCertificate certificate)
     m_certificates.remove(certificate);
     m_persistentCertificates.remove(certificate);
 }
-
-#include "moc_ssl-certificate-repository.cpp"

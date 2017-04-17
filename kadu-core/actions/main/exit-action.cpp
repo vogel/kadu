@@ -18,6 +18,7 @@
  */
 
 #include "exit-action.h"
+#include "exit-action.moc"
 
 #include "core/application.h"
 
@@ -45,5 +46,3 @@ void ExitAction::actionTriggered(QAction *, bool)
 {
     m_application->quit();
 }
-
-#include "moc_exit-action.cpp"

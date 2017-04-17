@@ -18,6 +18,7 @@
  */
 
 #include "plugin-metadata-provider.h"
+#include "plugin-metadata-provider.moc"
 
 PluginMetadataProvider::PluginMetadataProvider(QObject *parent) : QObject{parent}
 {
@@ -26,5 +27,3 @@ PluginMetadataProvider::PluginMetadataProvider(QObject *parent) : QObject{parent
 PluginMetadataProvider::~PluginMetadataProvider()
 {
 }
-
-#include "moc_plugin-metadata-provider.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "open-chat-with-action.h"
+#include "open-chat-with-action.moc"
 
 #include "actions/action.h"
 #include "windows/open-chat-with/open-chat-with-service.h"
@@ -50,5 +51,3 @@ void OpenChatWithAction::actionTriggered(QAction *sender, bool)
 
     m_openChatWithService->show();
 }
-
-#include "moc_open-chat-with-action.cpp"

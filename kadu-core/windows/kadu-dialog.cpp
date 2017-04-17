@@ -36,6 +36,7 @@
 #include "widgets/dialog/title-widget.h"
 
 #include "kadu-dialog.h"
+#include "kadu-dialog.moc"
 
 KaduDialog::KaduDialog(DialogWidget *dialogWidget, QWidget *parent)
         : QDialog(parent), DesktopAwareObject(this), CentralWidget(dialogWidget)
@@ -114,5 +115,3 @@ void KaduDialog::widgetValidated(bool valid)
 {
     OkButton->setEnabled(valid);
 }
-
-#include "moc_kadu-dialog.cpp"

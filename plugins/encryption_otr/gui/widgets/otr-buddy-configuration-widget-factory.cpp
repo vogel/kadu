@@ -21,6 +21,7 @@
 #include "otr-policy-service.h"
 
 #include "otr-buddy-configuration-widget-factory.h"
+#include "otr-buddy-configuration-widget-factory.moc"
 
 OtrBuddyConfigurationWidgetFactory::~OtrBuddyConfigurationWidgetFactory()
 {
@@ -38,5 +39,3 @@ BuddyConfigurationWidget *OtrBuddyConfigurationWidgetFactory::createWidget(const
 
     return result;
 }
-
-#include "moc_otr-buddy-configuration-widget-factory.cpp"

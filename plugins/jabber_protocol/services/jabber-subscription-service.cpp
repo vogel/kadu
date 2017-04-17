@@ -20,6 +20,7 @@
  */
 
 #include "jabber-subscription-service.h"
+#include "jabber-subscription-service.moc"
 
 #include "jabber-protocol.h"
 #include "plugin/plugin-injected-factory.h"
@@ -77,5 +78,3 @@ void JabberSubscriptionService::requestSubscription(const Contact &contact)
 {
     m_roster->subscribe(contact.id());
 }
-
-#include "moc_jabber-subscription-service.cpp"

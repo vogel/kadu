@@ -24,8 +24,9 @@
 #include <QtWidgets/QApplication>
 
 #include "widgets/configuration/config-group-box.h"
-#include "widgets/configuration/config-label.h"
-#include "widgets/configuration/config-label.moc"
+
+#include "config-label.h"
+#include "config-label.moc"
 
 ConfigLabel::ConfigLabel(
     const QString &widgetCaption, const QString &toolTip, ConfigGroupBox *parentConfigGroupBox,
@@ -55,5 +56,3 @@ void ConfigLabel::setText(const QString &text, bool defaultFormatting)
 {
     QLabel::setText((defaultFormatting ? "<i>" : "") + text + (defaultFormatting ? "</i>" : ""));
 }
-
-#include "moc_config-label.cpp"

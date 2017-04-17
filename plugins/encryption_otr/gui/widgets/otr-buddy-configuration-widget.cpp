@@ -27,6 +27,7 @@
 #include "otr-policy.h"
 
 #include "otr-buddy-configuration-widget.h"
+#include "otr-buddy-configuration-widget.moc"
 
 OtrBuddyConfigurationWidget::OtrBuddyConfigurationWidget(const Buddy &buddy, QWidget *parent)
         : BuddyConfigurationWidget(buddy, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
@@ -173,5 +174,3 @@ void OtrBuddyConfigurationWidget::cancel()
 {
     loadValues();
 }
-
-#include "moc_otr-buddy-configuration-widget.cpp"

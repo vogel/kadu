@@ -49,6 +49,7 @@
 #include "notifier.h"
 
 #include "notify-configuration-ui-handler.h"
+#include "notify-configuration-ui-handler.moc"
 
 NotifyConfigurationUiHandler::NotifyConfigurationUiHandler(QObject *parent)
         : QObject{parent}, allUsers{}, notifiedUsers{}, notificationsGroupBox{}, useCustomSettingsCheckBox{},
@@ -343,5 +344,3 @@ void NotifyConfigurationUiHandler::customSettingsCheckBoxToggled(bool toggled)
         if (guiItem.ConfigurationGroupBox)
             guiItem.ConfigurationGroupBox->setVisible(toggled);
 }
-
-#include "moc_notify-configuration-ui-handler.cpp"

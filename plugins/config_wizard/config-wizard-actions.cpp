@@ -20,6 +20,7 @@
  */
 
 #include "config-wizard-actions.h"
+#include "config-wizard-actions.moc"
 
 #include "show-config-wizard-action.h"
 
@@ -57,5 +58,3 @@ void ConfigWizardActions::unregisterActions()
 {
     m_menuInventory->menu("tools")->removeAction(m_showConfigWizardAction)->update();
 }
-
-#include "moc_config-wizard-actions.cpp"

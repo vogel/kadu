@@ -18,6 +18,7 @@
  */
 
 #include "docking-notify-plugin-modules-factory.h"
+#include "docking-notify-plugin-modules-factory.moc"
 
 #include "docking-notify-module.h"
 
@@ -43,5 +44,3 @@ QString DockingNotifyPluginModulesFactory::parentInjectorName() const
 {
     return "docking";
 }
-
-#include "moc_docking-notify-plugin-modules-factory.cpp"

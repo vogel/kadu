@@ -18,6 +18,7 @@
  */
 
 #include "auto-send-action.h"
+#include "auto-send-action.moc"
 
 #include "actions/action.h"
 #include "configuration/configuration.h"
@@ -74,5 +75,3 @@ void AutoSendAction::autoSendActionCheck()
     for (auto const action : actions())
         action->setChecked(check);
 }
-
-#include "moc_auto-send-action.cpp"

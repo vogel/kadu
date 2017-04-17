@@ -18,6 +18,7 @@
  */
 
 #include "chat-style-renderer.h"
+#include "chat-style-renderer.moc"
 
 ChatStyleRenderer::ChatStyleRenderer(ChatStyleRendererConfiguration configuration, QObject *parent)
         : QObject{parent}, m_configuration{std::move(configuration)}, m_ready{false}
@@ -46,5 +47,3 @@ void ChatStyleRenderer::setReady()
     m_ready = true;
     emit ready();
 }
-
-#include "moc_chat-style-renderer.cpp"

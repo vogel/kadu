@@ -18,6 +18,7 @@
  */
 
 #include "ssl-certificate-manager.h"
+#include "ssl-certificate-manager.moc"
 
 #include "ssl/gui/ssl-certificate-error-dialog.h"
 #include "ssl/ssl-certificate-repository.h"
@@ -78,5 +79,3 @@ void SslCertificateManager::askForCertificateAcceptance(
 
     sslCertificateErrorDialog->show();
 }
-
-#include "moc_ssl-certificate-manager.cpp"

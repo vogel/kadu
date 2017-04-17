@@ -19,6 +19,8 @@
  */
 
 #include "gadu-file-transfer-service.h"
+#include "gadu-file-transfer-service.moc"
+
 #include "gadu-imtoken-service.h"
 
 #include "file-transfer/gadu-outgoing-file-transfer-handler.h"
@@ -103,5 +105,3 @@ void GaduFileTransferService::fileTransferReceived(Contact peer, QString downloa
 
     emit incomingFileTransfer(transfer);
 }
-
-#include "moc_gadu-file-transfer-service.cpp"

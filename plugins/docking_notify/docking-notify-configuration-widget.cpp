@@ -34,6 +34,7 @@
 #include "windows/main-configuration-window.h"
 
 #include "docking-notify-configuration-widget.h"
+#include "docking-notify-configuration-widget.moc"
 
 DockingNotifyConfigurationWidget::DockingNotifyConfigurationWidget(QWidget *parent)
         : NotifierConfigurationWidget(parent)
@@ -94,5 +95,3 @@ void DockingNotifyConfigurationWidget::showConfigurationWindow()
     configWindow->show();
     _activateWindow(m_configuration, configWindow);
 }
-
-#include "moc_docking-notify-configuration-widget.cpp"

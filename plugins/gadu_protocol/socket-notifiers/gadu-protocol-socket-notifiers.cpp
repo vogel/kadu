@@ -19,6 +19,7 @@
  */
 
 #include "gadu-protocol-socket-notifiers.h"
+#include "gadu-protocol-socket-notifiers.moc"
 
 #include "services/gadu-imtoken-service.h"
 #include "services/gadu-roster-service.h"
@@ -322,5 +323,3 @@ void GaduProtocolSocketNotifiers::connectionTimeout()
 {
     m_protocol->socketConnFailed(GaduProtocol::ConnectionTimeout);
 }
-
-#include "moc_gadu-protocol-socket-notifiers.cpp"

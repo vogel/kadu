@@ -27,6 +27,7 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "gadu-contact-personal-info-service.h"
+#include "gadu-contact-personal-info-service.moc"
 
 GaduContactPersonalInfoService::GaduContactPersonalInfoService(Account account, QObject *parent)
         : ContactPersonalInfoService(account, parent), FetchSeq(0)
@@ -79,5 +80,3 @@ void GaduContactPersonalInfoService::fetchPersonalInfo(Contact contact)
     FetchSeq = gg_pubdir50(writableSessionToken.rawSession(), req);
     // gg_pubdir50_free(req);
 }
-
-#include "moc_gadu-contact-personal-info-service.cpp"

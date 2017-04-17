@@ -18,6 +18,7 @@
  */
 
 #include "sql-history-plugin-modules-factory.h"
+#include "sql-history-plugin-modules-factory.moc"
 
 #include "sql-history-module.h"
 
@@ -43,5 +44,3 @@ QString SqlHistoryPluginModulesFactory::parentInjectorName() const
 {
     return "history";
 }
-
-#include "moc_sql-history-plugin-modules-factory.cpp"

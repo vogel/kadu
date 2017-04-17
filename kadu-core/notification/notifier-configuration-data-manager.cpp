@@ -24,6 +24,7 @@
 #include "windows/configuration-window.h"
 
 #include "notifier-configuration-data-manager.h"
+#include "notifier-configuration-data-manager.moc"
 
 QMap<QString, NotifierConfigurationDataManager *> NotifierConfigurationDataManager::DataManagers;
 
@@ -87,5 +88,3 @@ void NotifierConfigurationDataManager::configurationWindowDestroyed()
         deleteLater();
     }
 }
-
-#include "moc_notifier-configuration-data-manager.cpp"

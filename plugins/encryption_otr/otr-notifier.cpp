@@ -31,6 +31,7 @@
 #include "widgets/chat-widget/chat-widget.h"
 
 #include "otr-notifier.h"
+#include "otr-notifier.moc"
 
 QString OtrNotifier::OtrNotifyTopic("OTR");
 QString OtrNotifier::CreatePrivateKeyStartedNotifyTopic("OTR/CreatePrivateKeyStarted");
@@ -164,5 +165,3 @@ void OtrNotifier::notifyCreatePrivateKeyFinished(const Account &account, bool ok
                      plainToHtml(account.id())))
            : normalizeHtml(HtmlString{tr("%1: private key creation failed")}.arg(plainToHtml(account.id()))));
 }
-
-#include "moc_otr-notifier.cpp"

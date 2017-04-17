@@ -18,6 +18,7 @@
  */
 
 #include "open-chat-action.h"
+#include "open-chat-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -56,5 +57,3 @@ void OpenChatAction::updateActionState(Action *action)
 {
     disableNoChat(action);
 }
-
-#include "moc_open-chat-action.cpp"

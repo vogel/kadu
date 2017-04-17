@@ -18,6 +18,7 @@
  */
 
 #include "chat-style-manager.h"
+#include "chat-style-manager.moc"
 
 #include "chat-style/chat-style-configuration-ui-handler.h"
 #include "chat-style/engine/adium/adium-style-engine.h"
@@ -284,5 +285,3 @@ StyleInfo ChatStyleManager::chatStyleInfo(const QString &name) const
     else
         return StyleInfo();
 }
-
-#include "moc_chat-style-manager.cpp"

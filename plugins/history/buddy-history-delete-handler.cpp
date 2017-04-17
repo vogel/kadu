@@ -25,6 +25,7 @@
 #include "history.h"
 
 #include "buddy-history-delete-handler.h"
+#include "buddy-history-delete-handler.moc"
 
 BuddyHistoryDeleteHandler::BuddyHistoryDeleteHandler(QObject *parent) : QObject{parent}
 {
@@ -54,5 +55,3 @@ void BuddyHistoryDeleteHandler::deleteBuddyAdditionalData(Buddy buddy)
     if (m_history->currentStorage())
         m_history->currentStorage()->deleteHistory(buddy);
 }
-
-#include "moc_buddy-history-delete-handler.cpp"

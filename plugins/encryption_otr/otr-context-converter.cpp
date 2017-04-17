@@ -31,6 +31,7 @@ extern "C" {
 #include "otr-user-state-service.h"
 
 #include "otr-context-converter.h"
+#include "otr-context-converter.moc"
 
 OtrContextConverter::OtrContextConverter(QObject *parent) : QObject{parent}
 {
@@ -93,5 +94,3 @@ ConnContext *OtrContextConverter::contactToContextConverter(const Contact &conta
         qPrintable(contact.contactAccount().protocolName()), OTRL_INSTAG_BEST, notFoundAction == ActionCreateAndAdd, 0,
         0, 0);
 }
-
-#include "moc_otr-context-converter.cpp"

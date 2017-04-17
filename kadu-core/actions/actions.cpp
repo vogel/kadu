@@ -25,6 +25,7 @@
 #include "windows/main-window.h"
 
 #include "actions.h"
+#include "actions.moc"
 
 Actions::Actions(QObject *parent) : QObject{parent}, BlockSignals{false}
 {
@@ -74,5 +75,3 @@ QAction *Actions::createAction(const QString &name, ActionContext *context, QObj
 
     return result;
 }
-
-#include "moc_actions.cpp"

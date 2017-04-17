@@ -21,6 +21,7 @@
 #include <QtNetwork/QNetworkReply>
 
 #include "network-reply-wrapper.h"
+#include "network-reply-wrapper.moc"
 
 NetworkReplyWrapper::NetworkReplyWrapper(QNetworkReply *reply) : QObject(reply), Reply(reply)
 {
@@ -45,5 +46,3 @@ QString NetworkReplyWrapper::redirect()
 {
     return Reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl().toString();
 }
-
-#include "moc_network-reply-wrapper.cpp"

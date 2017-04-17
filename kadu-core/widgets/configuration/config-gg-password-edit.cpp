@@ -60,5 +60,3 @@ void ConfigGGPasswordEdit::saveConfiguration()
         return;
     dataManager->writeEntry(section, item, QVariant(pwHash(text())));
 }
-
-#include "moc_config-gg-password-edit.cpp"

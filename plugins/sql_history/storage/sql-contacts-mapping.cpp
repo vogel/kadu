@@ -28,6 +28,7 @@
 #include "storage/sql-accounts-mapping.h"
 
 #include "sql-contacts-mapping.h"
+#include "sql-contacts-mapping.moc"
 
 SqlContactsMapping::SqlContactsMapping(
     const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, QObject *parent)
@@ -140,5 +141,3 @@ const QMap<int, Contact> &SqlContactsMapping::mapping() const
 
     return ContactMapping;
 }
-
-#include "moc_sql-contacts-mapping.cpp"

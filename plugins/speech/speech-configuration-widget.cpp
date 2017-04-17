@@ -27,6 +27,7 @@
 #include "configuration/deprecated-configuration-api.h"
 
 #include "speech-configuration-widget.h"
+#include "speech-configuration-widget.moc"
 
 SpeechConfigurationWidget::SpeechConfigurationWidget(QWidget *parent) : NotifierConfigurationWidget(parent)
 {
@@ -96,5 +97,3 @@ void SpeechConfigurationWidget::switchToEvent(const QString &event)
     else
         femaleLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Speech", event + "_Syntax/Female"));
 }
-
-#include "moc_speech-configuration-widget.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "underline-action.h"
+#include "underline-action.moc"
 
 #include "accounts/account.h"
 #include "actions/action.h"
@@ -67,5 +68,3 @@ void UnderlineAction::updateActionState(Action *action)
 
     action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
-
-#include "moc_underline-action.cpp"

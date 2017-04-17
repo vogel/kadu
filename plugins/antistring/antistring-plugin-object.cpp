@@ -18,6 +18,7 @@
  */
 
 #include "antistring-plugin-object.h"
+#include "antistring-plugin-object.moc"
 
 #include "antistring-configuration-ui-handler.h"
 #include "antistring-message-filter.h"
@@ -84,5 +85,3 @@ void AntistringPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/antistring.ui"));
 }
-
-#include "moc_antistring-plugin-object.cpp"

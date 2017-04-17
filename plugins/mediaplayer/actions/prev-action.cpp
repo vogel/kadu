@@ -18,6 +18,7 @@
  */
 
 #include "prev-action.h"
+#include "prev-action.moc"
 
 #include "mediaplayer.h"
 
@@ -46,5 +47,3 @@ void PrevAction::actionTriggered(QAction *, bool)
 {
     m_mediaPlayer->prevTrack();
 }
-
-#include "moc_prev-action.cpp"

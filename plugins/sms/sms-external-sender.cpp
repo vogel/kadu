@@ -25,6 +25,7 @@
 #include "core/core.h"
 
 #include "sms-external-sender.h"
+#include "sms-external-sender.moc"
 
 SmsExternalSender::SmsExternalSender(const QString &number, QObject *parent) : SmsSender{number, parent}, Process{}
 {
@@ -108,5 +109,3 @@ void SmsExternalSender::cancel()
 
     deleteLater();
 }
-
-#include "moc_sms-external-sender.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "message-storage.h"
+#include "message-storage.moc"
 
 #include "core/injected-factory.h"
 #include "message/message-shared.h"
@@ -59,5 +60,3 @@ Message MessageStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &sto
 
     return result;
 }
-
-#include "moc_message-storage.cpp"

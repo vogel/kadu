@@ -18,6 +18,7 @@
  */
 
 #include "protocol-service.h"
+#include "protocol-service.moc"
 
 #include "protocols/protocol.h"
 
@@ -35,5 +36,3 @@ Protocol *ProtocolService::protocol() const
 {
     return m_protocol;
 }
-
-#include "moc_protocol-service.cpp"

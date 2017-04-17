@@ -19,6 +19,7 @@
  */
 
 #include "cenzor-configuration.h"
+#include "cenzor-configuration.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -117,5 +118,3 @@ void CenzorConfiguration::saveConfiguration()
     m_configuration->deprecatedApi()->writeEntry(
         "PowerKadu", "cenzor exclusions", toStringList(ExclusionList).join("\t"));
 }
-
-#include "moc_cenzor-configuration.cpp"

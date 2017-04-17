@@ -18,6 +18,7 @@
  */
 
 #include "multilogon-service.h"
+#include "multilogon-service.moc"
 
 #include "multilogon/multilogon-session.h"
 
@@ -28,5 +29,3 @@ MultilogonService::MultilogonService(Account account, QObject *parent) : Account
 MultilogonService::~MultilogonService()
 {
 }
-
-#include "moc_multilogon-service.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "antistring-plugin-modules-factory.h"
+#include "antistring-plugin-modules-factory.moc"
 
 #include "antistring-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> AntistringPluginModulesFactory::cre
 
     return modules;
 }
-
-#include "moc_antistring-plugin-modules-factory.cpp"

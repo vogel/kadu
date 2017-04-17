@@ -18,6 +18,7 @@
  */
 
 #include "indicator-docking.h"
+#include "indicator-docking.moc"
 
 #include "avatars/avatar-id.h"
 #include "avatars/avatars.h"
@@ -176,5 +177,3 @@ void IndicatorDocking::statusContainerUpdated(StatusContainer *statusContainer)
         break;
     }
 }
-
-#include "moc_indicator-docking.cpp"

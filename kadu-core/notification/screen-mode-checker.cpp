@@ -22,6 +22,7 @@
 #include <QtCore/QTimer>
 
 #include "screen-mode-checker.h"
+#include "screen-mode-checker.moc"
 
 #define FULLSCREENCHECKTIMER_INTERVAL 2000 /*ms*/
 
@@ -68,5 +69,3 @@ void ScreenModeChecker::checkFullScreen()
         emit fullscreenToggled(InFullScreen);
     }
 }
-
-#include "moc_screen-mode-checker.cpp"

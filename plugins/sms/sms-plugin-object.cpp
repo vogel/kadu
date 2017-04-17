@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "sms-plugin-object.h"
+#include "sms-plugin-object.moc"
 
 #include "scripts/sms-script-manager.h"
 #include "sms-actions.h"
@@ -87,5 +88,3 @@ void SmsPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/sms.ui"));
 }
-
-#include "moc_sms-plugin-object.cpp"

@@ -33,6 +33,7 @@
 #include "plugins/mediaplayer/mediaplayer.h"
 
 #include "mpris_controller.h"
+#include "mpris_controller.moc"
 
 MPRISController::MPRISController(MediaPlayer *mediaPlayer, const QString &service, QObject *parent)
         : QObject(parent), m_mediaPlayer(mediaPlayer), CurrentStatus(StatusStopped), Active(false), Service(service)
@@ -293,5 +294,3 @@ QList<TrackInfo> MPRISController::getTrackList() const
 
     return result;
 }
-
-#include "moc_mpris_controller.cpp"

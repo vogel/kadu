@@ -18,11 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "chat-details-buddy.h"
+#include "chat-details-buddy.moc"
+
 #include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "contacts/contact-set.h"
-
-#include "chat-details-buddy.h"
 
 /**
  * @short Creates empty ChatDetailsBuddy object.
@@ -140,5 +141,3 @@ void ChatDetailsBuddy::removeChat(const Chat &chat)
     if (indexOf >= 0)
         m_chats.remove(indexOf);
 }
-
-#include "moc_chat-details-buddy.cpp"

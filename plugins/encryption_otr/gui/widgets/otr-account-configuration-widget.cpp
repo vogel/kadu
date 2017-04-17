@@ -27,6 +27,7 @@
 #include "otr-policy.h"
 
 #include "otr-account-configuration-widget.h"
+#include "otr-account-configuration-widget.moc"
 
 OtrAccountConfigurationWidget::OtrAccountConfigurationWidget(const Account &account, QWidget *parent)
         : AccountConfigurationWidget(account, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
@@ -151,5 +152,3 @@ void OtrAccountConfigurationWidget::cancel()
 {
     loadValues();
 }
-
-#include "moc_otr-account-configuration-widget.cpp"

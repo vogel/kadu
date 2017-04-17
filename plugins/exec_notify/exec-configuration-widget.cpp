@@ -21,6 +21,7 @@
  */
 
 #include "exec-configuration-widget.h"
+#include "exec-configuration-widget.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -73,5 +74,3 @@ void ExecConfigurationWidget::switchToEvent(const QString &event)
     else
         m_commandLineEdit->setText(m_configuration->deprecatedApi()->readEntry("Exec Notify", event + "Cmd"));
 }
-
-#include "moc_exec-configuration-widget.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "word-fix-plugin-modules-factory.h"
+#include "word-fix-plugin-modules-factory.moc"
 
 #include "word-fix-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> WordFixPluginModulesFactory::create
 
     return modules;
 }
-
-#include "moc_word-fix-plugin-modules-factory.cpp"

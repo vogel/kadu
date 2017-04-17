@@ -18,6 +18,7 @@
  */
 
 #include "idle-plugin-object.h"
+#include "idle-plugin-object.moc"
 
 #include "idle.h"
 
@@ -46,5 +47,3 @@ void IdlePluginObject::init()
 void IdlePluginObject::done()
 {
 }
-
-#include "moc_idle-plugin-object.cpp"

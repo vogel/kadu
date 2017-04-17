@@ -20,6 +20,7 @@
  */
 
 #include "chat-notifier.h"
+#include "chat-notifier.moc"
 
 #include "contacts/contact-set.h"
 #include "formatted-string/formatted-string-factory.h"
@@ -84,5 +85,3 @@ void ChatNotifier::notify(const Notification &notification)
         if (buddies.isEmpty() || !chatWidget->chat().contacts().toBuddySet().intersect(buddies).isEmpty())
             sendNotificationToChatWidget(notification, chatWidget);
 }
-
-#include "moc_chat-notifier.cpp"

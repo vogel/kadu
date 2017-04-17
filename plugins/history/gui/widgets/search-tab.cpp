@@ -51,6 +51,7 @@
 #include "talkable/talkable-converter.h"
 
 #include "search-tab.h"
+#include "search-tab.moc"
 
 SearchTab::SearchTab(QWidget *parent)
         : HistoryTab(parent), m_historyChatStorage(0), StatusStorage(0), SmsStorage(0),
@@ -362,5 +363,3 @@ void SearchTab::setSizes(const QList<int> &newSizes)
     Splitter->setSizes(newSizes.mid(0, 2));
     TimelineView->setSizes(newSizes.mid(2, 2));
 }
-
-#include "moc_search-tab.cpp"

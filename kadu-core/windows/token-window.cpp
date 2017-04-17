@@ -27,6 +27,7 @@
 #include <QtWidgets/QStyle>
 
 #include "token-window.h"
+#include "token-window.moc"
 
 TokenWindow::TokenWindow(const QPixmap &tokenPixmap, QWidget *parent) : QDialog(parent)
 {
@@ -85,5 +86,3 @@ void TokenWindow::reject()
     emit tokenValueEntered(QString());
     QDialog::reject();
 }
-
-#include "moc_token-window.cpp"

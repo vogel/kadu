@@ -18,6 +18,7 @@
  */
 
 #include "jabber-servers-service.h"
+#include "jabber-servers-service.moc"
 
 #include <QtCore/QStringList>
 
@@ -192,5 +193,3 @@ QStringList JabberServersService::knownNoXDataServers()
                          << "xmppcomm.com"
                          << "xmppcomm.net";
 }
-
-#include "moc_jabber-servers-service.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "status-notifier-item-attention-static.h"
+#include "status-notifier-item-attention-static.moc"
 
 #include <QtWidgets/QSystemTrayIcon>
 
@@ -31,5 +32,3 @@ StatusNotifierItemAttentionStatic::StatusNotifierItemAttentionStatic(
 StatusNotifierItemAttentionStatic::~StatusNotifierItemAttentionStatic()
 {
 }
-
-#include "moc_status-notifier-item-attention-static.cpp"

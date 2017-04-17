@@ -18,6 +18,7 @@
  */
 
 #include "volume-up-action.h"
+#include "volume-up-action.moc"
 
 #include "mediaplayer.h"
 
@@ -46,5 +47,3 @@ void VolumeUpAction::actionTriggered(QAction *, bool)
 {
     m_mediaPlayer->incrVolume();
 }
-
-#include "moc_volume-up-action.cpp"

@@ -23,6 +23,7 @@
  */
 
 #include "parser.h"
+#include "parser.moc"
 
 #include "accounts/account-manager.h"
 #include "buddies/group.h"
@@ -881,5 +882,3 @@ QString Parser::parse(
 
     return ret;
 }
-
-#include "moc_parser.cpp"

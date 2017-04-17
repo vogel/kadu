@@ -18,6 +18,7 @@
  */
 
 #include "docking-plugin-object.h"
+#include "docking-plugin-object.moc"
 
 #include "docking.h"
 
@@ -60,5 +61,3 @@ void DockingPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/docking.ui"));
 }
-
-#include "moc_docking-plugin-object.cpp"

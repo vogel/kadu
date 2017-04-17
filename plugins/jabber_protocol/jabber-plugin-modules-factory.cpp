@@ -18,6 +18,7 @@
  */
 
 #include "jabber-plugin-modules-factory.h"
+#include "jabber-plugin-modules-factory.moc"
 
 #include "jabber-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> JabberPluginModulesFactory::createP
 
     return modules;
 }
-
-#include "moc_jabber-plugin-modules-factory.cpp"

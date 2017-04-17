@@ -18,6 +18,7 @@
  */
 
 #include "cenzor-notification-service.h"
+#include "cenzor-notification-service.moc"
 
 #include "accounts/account.h"
 #include "chat/chat.h"
@@ -75,5 +76,3 @@ void CenzorNotificationService::notifyCenzored(const Chat &chat)
 
     m_notificationService->notify(notification);
 }
-
-#include "moc_cenzor-notification-service.cpp"

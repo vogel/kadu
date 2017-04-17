@@ -78,6 +78,7 @@
 #include "storage/sql-messages-status-storage.h"
 
 #include "history-sql-storage.h"
+#include "history-sql-storage.moc"
 
 #define DATE_TITLE_LENGTH 120
 
@@ -1158,5 +1159,3 @@ HistoryMessagesStorage *HistorySqlStorage::statusStorage()
 {
     return StatusStorage;
 }
-
-#include "moc_history-sql-storage.cpp"

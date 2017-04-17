@@ -27,6 +27,7 @@
 #include "services/gadu-chat-service.h"
 
 #include "gadu-chat-image-service.h"
+#include "gadu-chat-image-service.moc"
 
 GaduChatImageService::GaduChatImageService(Account account, QObject *parent)
         : ChatImageService(account, parent), ReceiveImages(false)
@@ -146,5 +147,3 @@ Error GaduChatImageService::checkImageSize(qint64 size) const
 
     return Error(ErrorLow, message);
 }
-
-#include "moc_gadu-chat-image-service.cpp"

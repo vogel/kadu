@@ -26,6 +26,7 @@
 #include "history.h"
 
 #include "history-query-results-model.h"
+#include "history-query-results-model.moc"
 
 HistoryQueryResultsModel::HistoryQueryResultsModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -161,5 +162,3 @@ void HistoryQueryResultsModel::addEntry(const QDate &date, const Talkable &talka
     Results.insert(i, newItem);
     endInsertRows();
 }
-
-#include "moc_history-query-results-model.cpp"

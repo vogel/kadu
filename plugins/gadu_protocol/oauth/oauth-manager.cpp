@@ -26,6 +26,7 @@
 #include "oauth/oauth-token-fetcher.h"
 
 #include "oauth-manager.h"
+#include "oauth-manager.moc"
 
 OAuthManager::OAuthManager(QObject *parent) : QObject(parent)
 {
@@ -47,5 +48,3 @@ void OAuthManager::authorize(OAuthConsumer consumer)
     connect(chain, SIGNAL(authorized(OAuthToken)), this, SIGNAL(authorized(OAuthToken)));
     chain->authorize();
 }
-
-#include "moc_oauth-manager.cpp"

@@ -20,6 +20,7 @@
  */
 
 #include "jabber-vcard-downloader.h"
+#include "jabber-vcard-downloader.moc"
 
 #include "jabber-protocol.h"
 
@@ -63,5 +64,3 @@ void JabberVCardDownloader::vCardReceived(const QXmppVCardIq &vcard)
 
     done(vcard);
 }
-
-#include "moc_jabber-vcard-downloader.cpp"

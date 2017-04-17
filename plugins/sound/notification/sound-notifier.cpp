@@ -20,6 +20,7 @@
  */
 
 #include "sound-notifier.h"
+#include "sound-notifier.moc"
 
 #include "gui/sound-configuration-ui-handler.h"
 #include "sound-manager.h"
@@ -100,5 +101,3 @@ NotifierConfigurationWidget *SoundNotifier::createConfigurationWidget(QWidget *p
 {
     return m_soundConfigurationUiHandler ? m_soundConfigurationUiHandler->createConfigurationWidget(parent) : nullptr;
 }
-
-#include "moc_sound-notifier.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "otr-plugin-modules-factory.h"
+#include "otr-plugin-modules-factory.moc"
 
 #include "otr-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> OtrPluginModulesFactory::createPlug
 
     return modules;
 }
-
-#include "moc_otr-plugin-modules-factory.cpp"

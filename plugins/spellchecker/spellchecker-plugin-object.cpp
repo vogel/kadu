@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "spellchecker-plugin-object.h"
+#include "spellchecker-plugin-object.moc"
 
 #include "spellchecker-configuration-ui-handler.h"
 #include "spellchecker.h"
@@ -76,5 +77,3 @@ void SpellcheckerPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/spellchecker.ui"));
 }
-
-#include "moc_spellchecker-plugin-object.cpp"

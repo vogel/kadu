@@ -18,6 +18,7 @@
  */
 
 #include "window-chat-widget-container-handler.h"
+#include "window-chat-widget-container-handler.moc"
 
 #include "activate.h"
 #include "core/injected-factory.h"
@@ -131,5 +132,3 @@ void WindowChatWidgetContainerHandler::chatWindowActivated(ChatWindow *chatWindo
     if (chatWindow && chatWindow->chatWidget())
         emit chatWidgetActivated(chatWindow->chatWidget());
 }
-
-#include "moc_window-chat-widget-container-handler.cpp"

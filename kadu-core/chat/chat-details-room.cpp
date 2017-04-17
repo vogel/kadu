@@ -19,6 +19,7 @@
  */
 
 #include "chat-details-room.h"
+#include "chat-details-room.moc"
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat.h"
@@ -232,5 +233,3 @@ void ChatDetailsRoom::removeContact(const Contact &contact)
     m_contacts.remove(contact);
     emit contactRemoved(contact);
 }
-
-#include "moc_chat-details-room.cpp"

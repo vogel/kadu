@@ -27,6 +27,7 @@
 #include "video-expander-dom-visitor-provider.h"
 
 #include "image-link-configurator.h"
+#include "image-link-configurator.moc"
 
 ImageLinkConfigurator::ImageLinkConfigurator(QObject *parent)
 {
@@ -79,5 +80,3 @@ void ImageLinkConfigurator::configurationUpdated()
     if (m_videoExpander)
         m_videoExpander->setConfiguration(configuration);
 }
-
-#include "moc_image-link-configurator.cpp"

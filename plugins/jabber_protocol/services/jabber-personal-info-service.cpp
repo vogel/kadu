@@ -25,6 +25,7 @@
 #include "services/jabber-vcard-uploader.h"
 
 #include "jabber-personal-info-service.h"
+#include "jabber-personal-info-service.moc"
 
 #include "buddies/buddy-storage.h"
 
@@ -125,5 +126,3 @@ void JabberPersonalInfoService::updatePersonalInfo(const QString &id, Buddy budd
     vCardUploader->uploadVCard(vcard);
     emit personalInfoUpdated(true);
 }
-
-#include "moc_jabber-personal-info-service.cpp"

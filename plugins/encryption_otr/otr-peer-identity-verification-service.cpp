@@ -27,6 +27,7 @@
 #include "otr-user-state-service.h"
 
 #include "otr-peer-identity-verification-service.h"
+#include "otr-peer-identity-verification-service.moc"
 
 void OtrPeerIdentityVerificationService::wrapperHandleSmpEvent(
     void *data, OtrlSMPEvent smpEvent, ConnContext *context, unsigned short progressPercent, char *question)
@@ -170,5 +171,3 @@ void OtrPeerIdentityVerificationService::handleSmpEvent(
 
     updateContactState(contact, OtrPeerIdentityVerificationState(state, progressPercent));
 }
-
-#include "moc_otr-peer-identity-verification-service.cpp"

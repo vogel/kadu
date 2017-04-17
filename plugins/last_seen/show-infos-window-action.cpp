@@ -18,6 +18,7 @@
  */
 
 #include "show-infos-window-action.h"
+#include "show-infos-window-action.moc"
 
 #include "infos.h"
 
@@ -43,5 +44,3 @@ void ShowInfosWindowAction::actionTriggered(QAction *, bool)
 {
     m_infos->onShowInfos();
 }
-
-#include "moc_show-infos-window-action.cpp"

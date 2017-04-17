@@ -30,6 +30,7 @@
 #include "otr-peer-identity-verification-service.h"
 
 #include "otr-peer-identity-verification-respond-shared-secret-page.h"
+#include "otr-peer-identity-verification-respond-shared-secret-page.moc"
 
 OtrPeerIdentityVerificationRespondSharedSecretPage::OtrPeerIdentityVerificationRespondSharedSecretPage(
     const Contact &contact, QWidget *parent)
@@ -97,5 +98,3 @@ bool OtrPeerIdentityVerificationRespondSharedSecretPage::validatePage()
 
     return true;
 }
-
-#include "moc_otr-peer-identity-verification-respond-shared-secret-page.cpp"

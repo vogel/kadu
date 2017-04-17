@@ -29,6 +29,7 @@ extern "C" {
 #include "otr-user-state-service.h"
 
 #include "otr-create-private-key-job.h"
+#include "otr-create-private-key-job.moc"
 
 OtrCreatePrivateKeyJob::OtrCreatePrivateKeyJob(QObject *parent) : QObject(parent), KeyPointer(0)
 {
@@ -108,5 +109,3 @@ void OtrCreatePrivateKeyJob::workerFinished(bool ok)
 
     emit finished(MyAccount, 0 == err);
 }
-
-#include "moc_otr-create-private-key-job.cpp"

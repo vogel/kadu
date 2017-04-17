@@ -31,6 +31,7 @@
 #include "mpris_controller.h"
 
 #include "mpris_mediaplayer.h"
+#include "mpris_mediaplayer.moc"
 
 MPRISMediaPlayer::MPRISMediaPlayer(QObject *parent) : QObject(parent)
 {
@@ -236,5 +237,3 @@ bool MPRISMediaPlayer::isActive()
 
     return m_controller->active();
 }
-
-#include "moc_mpris_mediaplayer.cpp"

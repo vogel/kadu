@@ -18,6 +18,7 @@
  */
 
 #include "notification-event-repository.h"
+#include "notification-event-repository.moc"
 
 #include "notification/notification-event.h"
 
@@ -53,5 +54,3 @@ const std::vector<NotificationEvent> &NotificationEventRepository::notificationE
 {
     return m_events;
 }
-
-#include "moc_notification-event-repository.cpp"

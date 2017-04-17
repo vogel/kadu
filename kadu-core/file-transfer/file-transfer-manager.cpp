@@ -22,6 +22,7 @@
  */
 
 #include "file-transfer-manager.h"
+#include "file-transfer-manager.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -409,5 +410,3 @@ int FileTransferManager::totalProgress() const
 {
     return m_totalProgress;
 }
-
-#include "moc_file-transfer-manager.cpp"

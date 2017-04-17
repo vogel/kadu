@@ -18,6 +18,7 @@
  */
 
 #include "stop-search-action.h"
+#include "stop-search-action.moc"
 
 #include "windows/search-window.h"
 
@@ -48,5 +49,3 @@ void StopSearchAction::actionTriggered(QAction *sender, bool)
     if (search)
         search->stopSearch();
 }
-
-#include "moc_stop-search-action.cpp"

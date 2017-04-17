@@ -18,6 +18,7 @@
  */
 
 #include "notify-about-buddy-action.h"
+#include "notify-about-buddy-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -75,5 +76,3 @@ void NotifyAboutBuddyAction::updateActionState(Action *action)
 
     action->setChecked(notifyAll);
 }
-
-#include "moc_notify-about-buddy-action.cpp"

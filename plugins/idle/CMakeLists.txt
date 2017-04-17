@@ -12,6 +12,7 @@ set (SOURCES
 	idle-module.cpp
 	idle-plugin-modules-factory.cpp
 	idle-plugin-object.cpp
+	idle.cpp
 )
 
 if (UNIX AND NOT APPLE)

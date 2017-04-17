@@ -18,11 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "open-chat-with-runner-manager.h"
+#include "open-chat-with-runner-manager.moc"
+
 #include "buddies/buddy.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
-
-#include "open-chat-with-runner-manager.h"
 
 OpenChatWithRunnerManager *OpenChatWithRunnerManager::Instance = 0;
 
@@ -60,5 +61,3 @@ BuddyList OpenChatWithRunnerManager::matchingContacts(const QString &query)
 
     return matchingContacts;
 }
-
-#include "moc_open-chat-with-runner-manager.cpp"

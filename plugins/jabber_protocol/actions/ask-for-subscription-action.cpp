@@ -18,6 +18,7 @@
  */
 
 #include "ask-for-subscription-action.h"
+#include "ask-for-subscription-action.moc"
 
 #include "protocols/services/subscription-service.h"
 
@@ -36,5 +37,3 @@ void AskForSubscriptionAction::execute(SubscriptionService *subscriptionService,
 {
     subscriptionService->requestSubscription(contact);
 }
-
-#include "moc_ask-for-subscription-action.cpp"

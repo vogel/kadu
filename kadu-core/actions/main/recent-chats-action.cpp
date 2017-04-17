@@ -20,6 +20,7 @@
  */
 
 #include "recent-chats-action.h"
+#include "recent-chats-action.moc"
 
 #include "accounts/account-manager.h"
 #include "accounts/account.h"
@@ -62,5 +63,3 @@ void RecentChatsAction::openRecentChats(QAction *action)
 {
     m_chatWidgetManager->openChat(action->data().value<Chat>(), OpenChatActivation::Activate);
 }
-
-#include "moc_recent-chats-action.cpp"

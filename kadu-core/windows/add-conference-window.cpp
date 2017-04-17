@@ -19,6 +19,7 @@
  */
 
 #include "add-conference-window.h"
+#include "add-conference-window.moc"
 
 #include "accounts/filter/protocol-filter.h"
 #include "buddies/model/buddy-list-model.h"
@@ -320,5 +321,3 @@ void AddConferenceWindow::start()
     m_chatWidgetManager->openChat(computeChat(), OpenChatActivation::Activate);
     QDialog::accept();
 }
-
-#include "moc_add-conference-window.cpp"

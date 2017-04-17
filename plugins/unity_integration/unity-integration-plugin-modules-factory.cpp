@@ -18,6 +18,7 @@
  */
 
 #include "unity-integration-plugin-modules-factory.h"
+#include "unity-integration-plugin-modules-factory.moc"
 
 #include "unity-integration-module.h"
 
@@ -39,5 +40,3 @@ std::vector<std::unique_ptr<injeqt::module>> UnityIntegrationPluginModulesFactor
 
     return modules;
 }
-
-#include "moc_unity-integration-plugin-modules-factory.cpp"

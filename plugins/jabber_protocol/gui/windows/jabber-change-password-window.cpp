@@ -19,6 +19,7 @@
  */
 
 #include "jabber-change-password-window.h"
+#include "jabber-change-password-window.moc"
 
 #include "services/jabber-change-password-service.h"
 #include "services/jabber-change-password.h"
@@ -178,5 +179,3 @@ void JabberChangePasswordWindow::keyPressEvent(QKeyEvent *e)
     else
         QWidget::keyPressEvent(e);
 }
-
-#include "moc_jabber-change-password-window.cpp"

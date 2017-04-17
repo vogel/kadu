@@ -18,6 +18,7 @@
  */
 
 #include "windows-integration.h"
+#include "windows-integration.moc"
 
 #include "windows-taskbar-progress.h"
 #include "windows-thumbnail-toolbar.h"
@@ -74,5 +75,3 @@ void WindowsIntegration::mainWindowAdded(QWidget *mainWindow)
         m_pluginInjectedFactory->makeNotOwned<StatusActions>(m_statusContainerManager, false, true, nullptr);
     m_pluginInjectedFactory->makeOwned<WindowsThumbnailToolbar>(std::move(statusActions), mainWindow->window());
 }
-
-#include "moc_windows-integration.cpp"

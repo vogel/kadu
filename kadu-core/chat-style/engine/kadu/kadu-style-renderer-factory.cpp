@@ -18,6 +18,7 @@
  */
 
 #include "kadu-style-renderer-factory.h"
+#include "kadu-style-renderer-factory.moc"
 
 #include "chat-style/engine/kadu/kadu-style-renderer.h"
 #include "core/injected-factory.h"
@@ -44,5 +45,3 @@ KaduStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguration
     auto renderer = m_injectedFactory->makeNotOwned<KaduStyleRenderer>(std::move(configuration), m_style);
     return not_owned_qptr<ChatStyleRenderer>{renderer.release()};
 }
-
-#include "moc_kadu-style-renderer-factory.cpp"

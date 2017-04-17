@@ -18,6 +18,7 @@
  */
 
 #include "url-incoming-file-transfer-handler.h"
+#include "url-incoming-file-transfer-handler.moc"
 
 UrlIncomingFileTransferHandler::UrlIncomingFileTransferHandler(FileTransfer transfer, QObject *parent)
         : FileTransferHandler{transfer, parent}
@@ -27,5 +28,3 @@ UrlIncomingFileTransferHandler::UrlIncomingFileTransferHandler(FileTransfer tran
 UrlIncomingFileTransferHandler::~UrlIncomingFileTransferHandler()
 {
 }
-
-#include "moc_url-incoming-file-transfer-handler.cpp"

@@ -21,6 +21,7 @@
 #include "message/message-filter.h"
 
 #include "message-filter-service.h"
+#include "message-filter-service.moc"
 
 MessageFilterService::MessageFilterService(QObject *parent) : QObject(parent)
 {
@@ -50,5 +51,3 @@ bool MessageFilterService::acceptMessage(const Message &message)
             return false;
     return true;
 }
-
-#include "moc_message-filter-service.cpp"

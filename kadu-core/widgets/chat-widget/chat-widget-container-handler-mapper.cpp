@@ -18,6 +18,7 @@
  */
 
 #include "chat-widget-container-handler-mapper.h"
+#include "chat-widget-container-handler-mapper.moc"
 
 #include "message/sorted-messages.h"
 #include "widgets/chat-widget/chat-widget-container-handler-mapper.h"
@@ -168,5 +169,3 @@ void ChatWidgetContainerHandlerMapper::chatWidgetRemoved(ChatWidget *chatWidget)
     if (chatWidget)
         unmap(chatWidget->chat());
 }
-
-#include "moc_chat-widget-container-handler-mapper.cpp"

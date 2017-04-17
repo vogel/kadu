@@ -19,6 +19,7 @@
  */
 
 #include "sms-sender.h"
+#include "sms-sender.moc"
 
 SmsSender::SmsSender(const QString &number, QObject *parent) : QObject(parent), Number(number)
 {
@@ -44,5 +45,3 @@ void SmsSender::setSignature(const QString &signature)
 {
     Signature = signature;
 }
-
-#include "moc_sms-sender.cpp"

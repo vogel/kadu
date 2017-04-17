@@ -18,6 +18,7 @@
  */
 
 #include "chat-window-storage.h"
+#include "chat-window-storage.moc"
 
 #include "chat/chat-manager.h"
 #include "storage/chat-list-storage.h"
@@ -73,5 +74,3 @@ void ChatWindowStorage::storeChats(const QVector<Chat> &chats)
     auto chatListStorage = ChatListStorage{storage.get(), QStringLiteral("Chat")};
     chatListStorage.store(chats);
 }
-
-#include "moc_chat-window-storage.cpp"

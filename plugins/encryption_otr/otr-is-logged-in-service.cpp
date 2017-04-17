@@ -23,6 +23,7 @@
 #include "otr-op-data.h"
 
 #include "otr-is-logged-in-service.h"
+#include "otr-is-logged-in-service.moc"
 
 int OtrIsLoggedInService::wrapperOtrIsLoggedIn(
     void *data, const char *accountName, const char *protocol, const char *recipient)
@@ -64,5 +65,3 @@ OtrIsLoggedInService::isLoggedIn(const Account &account, const QString &contactI
     else
         return LoggedIn;
 }
-
-#include "moc_otr-is-logged-in-service.cpp"

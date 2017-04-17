@@ -39,6 +39,7 @@
 #include "storage/sql-contacts-mapping.h"
 
 #include "sql-import.h"
+#include "sql-import.moc"
 
 #define CURRENT_SCHEMA_VERSION 4
 
@@ -706,5 +707,3 @@ void SqlImport::performImport(QSqlDatabase &database)
 
     m_configuration->deprecatedApi()->writeEntry("History", "Schema", CURRENT_SCHEMA_VERSION);
 }
-
-#include "moc_sql-import.cpp"

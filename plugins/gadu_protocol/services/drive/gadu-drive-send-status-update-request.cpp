@@ -18,6 +18,7 @@
  */
 
 #include "gadu-drive-send-status-update-request.h"
+#include "gadu-drive-send-status-update-request.moc"
 
 #include "services/drive/gadu-drive-send-ticket-parser.h"
 #include "services/drive/gadu-drive-session-token.h"
@@ -72,5 +73,3 @@ void GaduDriveSendStatusUpdateRequest::requestFinished()
     emit statusUpdateReceived(ticket);
     deleteLater();
 }
-
-#include "moc_gadu-drive-send-status-update-request.cpp"

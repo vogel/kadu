@@ -33,6 +33,7 @@
 #include "icons/kadu-icon.h"
 
 #include "action.h"
+#include "action.moc"
 
 Action::Action(ActionDescription *description, ActionContext *context, QObject *parent)
         : QAction(parent), Description(description), Context(context)
@@ -122,5 +123,3 @@ void disableNoChat(Action *action)
 {
     action->setEnabled(action->context()->chat() && !action->context()->buddies().isAnyTemporary());
 }
-
-#include "moc_action.cpp"

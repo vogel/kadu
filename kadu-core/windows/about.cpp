@@ -50,6 +50,7 @@
 #include "url-handlers/url-handler-manager.h"
 
 #include "about.h"
+#include "about.moc"
 
 About::About(QWidget *parent) : QWidget(parent, Qt::Window), DesktopAwareObject(this)
 {
@@ -285,5 +286,3 @@ void KaduLink::mousePressEvent(QMouseEvent *)
 {
     m_urlOpener->openUrl(Link);
 }
-
-#include "moc_about.cpp"

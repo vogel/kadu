@@ -20,6 +20,7 @@
  */
 
 #include "gadu-edit-account-widget.h"
+#include "gadu-edit-account-widget.moc"
 
 #include "gadu-account-data.h"
 #include "gadu-id-validator.h"
@@ -468,5 +469,3 @@ void GaduEditAccountWidget::showStatusToEveryoneToggled(bool toggled)
 
     ShowStatusToEveryone->setChecked(false);
 }
-
-#include "moc_gadu-edit-account-widget.cpp"

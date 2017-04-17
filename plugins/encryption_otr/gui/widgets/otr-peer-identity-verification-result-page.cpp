@@ -24,6 +24,7 @@
 #include "otr-peer-identity-verification-state.h"
 
 #include "otr-peer-identity-verification-result-page.h"
+#include "otr-peer-identity-verification-result-page.moc"
 
 OtrPeerIdentityVerificationResultPage::OtrPeerIdentityVerificationResultPage(const Contact &contact, QWidget *parent)
         : QWizardPage(parent), MyContact(contact)
@@ -84,5 +85,3 @@ QString OtrPeerIdentityVerificationResultPage::stateToString(
         return tr("Verification of %1 succeeded.").arg(MyContact.display(true));
     return tr("Unknown.");
 }
-
-#include "moc_otr-peer-identity-verification-result-page.cpp"

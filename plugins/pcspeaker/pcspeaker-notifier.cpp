@@ -21,6 +21,7 @@
  */
 
 #include "pcspeaker-notifier.h"
+#include "pcspeaker-notifier.moc"
 
 #include "pcspeaker-configuration-widget.h"
 
@@ -263,5 +264,3 @@ void PCSpeakerNotifier::createDefaultConfiguration()
     m_configuration->deprecatedApi()->addVariable("PC Speaker", "StatusChanged_Sound", "A3/2");
     m_configuration->deprecatedApi()->addVariable("PC Speaker", "FileTransfer_Sound", "E4/4");
 }
-
-#include "moc_pcspeaker-notifier.cpp"

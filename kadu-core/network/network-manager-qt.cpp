@@ -23,6 +23,7 @@
 #include <QtNetwork/QNetworkConfigurationManager>
 
 #include "network-manager-qt.h"
+#include "network-manager-qt.moc"
 
 NetworkManagerQt::NetworkManagerQt(QObject *parent) : NetworkManager{parent}
 {
@@ -58,5 +59,3 @@ void NetworkManagerQt::forceOnline()
 {
     onlineStateChanged(true);
 }
-
-#include "moc_network-manager-qt.cpp"

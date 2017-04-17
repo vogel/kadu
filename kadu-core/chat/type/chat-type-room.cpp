@@ -26,6 +26,7 @@
 #include "widgets/chat-room-edit-widget.h"
 
 #include "chat-type-room.h"
+#include "chat-type-room.moc"
 
 Chat ChatTypeRoom::findChat(
     ChatManager *chatManager, ChatStorage *chatStorage, const Account &account, const QString &room,
@@ -147,5 +148,3 @@ ChatEditWidget *ChatTypeRoom::createEditWidget(const Chat &chat, QWidget *parent
 {
     return m_injectedFactory->makeInjected<ChatRoomEditWidget>(chat, parent);
 }
-
-#include "moc_chat-type-room.cpp"

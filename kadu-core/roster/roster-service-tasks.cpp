@@ -18,6 +18,7 @@
  */
 
 #include "roster-service-tasks.h"
+#include "roster-service-tasks.moc"
 
 #include "contacts/contact.h"
 #include "roster/roster-entry-state.h"
@@ -122,5 +123,3 @@ RosterServiceTasks *rosterServiceTasks(RosterService *rs)
 {
     return rs ? rs->tasks() : nullptr;
 }
-
-#include "moc_roster-service-tasks.cpp"

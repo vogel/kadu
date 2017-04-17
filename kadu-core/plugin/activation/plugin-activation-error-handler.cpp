@@ -20,6 +20,7 @@
  */
 
 #include "plugin-activation-error-handler.h"
+#include "plugin-activation-error-handler.moc"
 
 #include "core/injected-factory.h"
 #include "plugin/activation/plugin-activation-service.h"
@@ -79,5 +80,3 @@ void PluginActivationErrorHandler::setStateEnabledIfInactive(const QString &plug
 
     m_pluginStateService->setPluginState(pluginName, enable ? PluginState::Enabled : PluginState::Disabled);
 }
-
-#include "moc_plugin-activation-error-handler.cpp"

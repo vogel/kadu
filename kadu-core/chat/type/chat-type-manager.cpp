@@ -20,6 +20,7 @@
  */
 
 #include "chat-type-manager.h"
+#include "chat-type-manager.moc"
 
 #include "chat/type/chat-type-buddy.h"
 #include "chat/type/chat-type-contact-set.h"
@@ -70,5 +71,3 @@ ChatType *ChatTypeManager::chatType(const QString &alias) const
                 return chatType;
     return nullptr;
 }
-
-#include "moc_chat-type-manager.cpp"

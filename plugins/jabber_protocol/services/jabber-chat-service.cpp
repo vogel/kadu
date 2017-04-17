@@ -20,6 +20,7 @@
  */
 
 #include "jabber-chat-service.h"
+#include "jabber-chat-service.moc"
 
 #include "jabber-protocol.h"
 #include "jid.h"
@@ -239,5 +240,3 @@ void JabberChatService::leaveChat(const Chat &chat)
     if (m_roomChatService->isRoomChat(chat))
         m_roomChatService->leaveChat(chat);
 }
-
-#include "moc_jabber-chat-service.cpp"

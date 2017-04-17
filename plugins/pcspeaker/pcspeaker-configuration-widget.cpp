@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -32,6 +33,7 @@
 #include "pcspeaker-notifier.h"
 
 #include "pcspeaker-configuration-widget.h"
+#include "pcspeaker-configuration-widget.moc"
 
 PCSpeakerConfigurationWidget::PCSpeakerConfigurationWidget(PCSpeakerNotifier *notifier, QWidget *parent)
         : NotifierConfigurationWidget{parent}, m_notifier{notifier}
@@ -95,5 +97,3 @@ void PCSpeakerConfigurationWidget::test()
 {
     m_notifier->parseAndPlay(soundEdit->text());
 }
-
-#include "moc_pcspeaker-configuration-widget.cpp"

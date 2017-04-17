@@ -18,6 +18,7 @@
  */
 
 #include "file-transfer-actions.h"
+#include "file-transfer-actions.moc"
 
 #include "actions/main/show-file-transfer-window-action.h"
 #include "actions/talkable/send-file-action.h"
@@ -59,5 +60,3 @@ void FileTransferActions::done()
 
     m_menuInventory->menu("tools")->removeAction(m_showFileTransferWindowAction);
 }
-
-#include "moc_file-transfer-actions.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "chat-window-repository.h"
+#include "chat-window-repository.moc"
 
 #include "core/core.h"
 #include "widgets/chat-widget/chat-widget.h"
@@ -83,5 +84,3 @@ ChatWindow *ChatWindowRepository::windowForChat(const Chat &chat)
     auto it = m_windows.find(chat);
     return it != m_windows.end() ? it->second : nullptr;
 }
-
-#include "moc_chat-window-repository.cpp"

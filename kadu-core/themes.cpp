@@ -35,6 +35,7 @@
 #include "windows/message-dialog.h"
 
 #include "themes.h"
+#include "themes.moc"
 
 Themes::Themes(const QString &themename, const QString &configname)
         : QObject(), ThemesList(), ThemesPaths(), additional(), ConfigName(configname), Name(themename),
@@ -204,5 +205,3 @@ QString Themes::getThemeEntry(const QString &name) const
     else
         return QString();
 }
-
-#include "moc_themes.cpp"

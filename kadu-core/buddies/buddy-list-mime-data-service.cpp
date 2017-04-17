@@ -20,6 +20,7 @@
  */
 
 #include "buddy-list-mime-data-service.h"
+#include "buddy-list-mime-data-service.moc"
 
 #include "buddies/buddy-manager.h"
 #include "buddies/buddy.h"
@@ -77,5 +78,3 @@ BuddyList BuddyListMimeDataService::fromMimeData(const QMimeData *mimeData)
 
     return result;
 }
-
-#include "moc_buddy-list-mime-data-service.cpp"

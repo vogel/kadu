@@ -37,6 +37,7 @@
 #endif
 
 #include "system-info.h"
+#include "system-info.moc"
 
 SystemInfo::~SystemInfo()
 {
@@ -371,5 +372,3 @@ QString SystemInfo::localHostName()
     else
         return hostname;
 }
-
-#include "moc_system-info.cpp"

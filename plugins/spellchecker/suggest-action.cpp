@@ -18,6 +18,7 @@
  */
 
 #include "suggest-action.h"
+#include "suggest-action.moc"
 
 #include "suggester.h"
 
@@ -44,5 +45,3 @@ void SuggestAction::actionTriggered(QAction *, bool)
 {
     m_suggester->replaceWith(m_word);
 }
-
-#include "moc_suggest-action.cpp"

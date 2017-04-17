@@ -18,6 +18,7 @@
  */
 
 #include "gadu-buddy-list-serialization-service.h"
+#include "gadu-buddy-list-serialization-service.moc"
 
 #include "buddies/buddy-list.h"
 
@@ -42,5 +43,3 @@ QByteArray GaduBuddyListSerializationService::serialize(const BuddyList &buddies
 {
     return m_gaduListHelper->buddyListToByteArray(account(), buddies);
 }
-
-#include "moc_gadu-buddy-list-serialization-service.cpp"

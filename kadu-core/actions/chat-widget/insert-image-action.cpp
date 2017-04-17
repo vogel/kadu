@@ -18,6 +18,7 @@
  */
 
 #include "insert-image-action.h"
+#include "insert-image-action.moc"
 
 #include "actions/action.h"
 #include "protocols/protocol.h"
@@ -66,5 +67,3 @@ void InsertImageAction::updateActionState(Action *action)
 
     action->setEnabled(protocol->chatImageService());
 }
-
-#include "moc_insert-image-action.cpp"

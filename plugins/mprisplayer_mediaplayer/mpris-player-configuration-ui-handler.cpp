@@ -38,8 +38,10 @@
 #include "windows/main-configuration-window.h"
 
 #include "gui/windows/mpris-player-dialog.h"
-#include "mpris-player-configuration-ui-handler.h"
 #include "mpris-player.h"
+
+#include "mpris-player-configuration-ui-handler.h"
+#include "mpris-player-configuration-ui-handler.moc"
 
 MPRISPlayerConfigurationUiHandler::MPRISPlayerConfigurationUiHandler(QObject *parent) : QObject{parent}, PlayersBox{}
 {
@@ -276,5 +278,3 @@ void MPRISPlayerConfigurationUiHandler::configurationApplied()
 
     m_mprisPlayer->configurationApplied();
 }
-
-#include "moc_mpris-player-configuration-ui-handler.cpp"

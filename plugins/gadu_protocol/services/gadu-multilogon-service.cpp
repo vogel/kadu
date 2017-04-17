@@ -25,6 +25,7 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "gadu-multilogon-service.h"
+#include "gadu-multilogon-service.moc"
 
 // for Q_OS_WIN macro
 #include <QtCore/QDataStream>
@@ -171,5 +172,3 @@ void GaduMultilogonService::removeAllSessions()
         emit multilogonSessionDisconnected(session);
     }
 }
-
-#include "moc_gadu-multilogon-service.cpp"

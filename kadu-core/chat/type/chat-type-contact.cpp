@@ -27,6 +27,7 @@
 #include "icons/kadu-icon.h"
 
 #include "chat-type-contact.h"
+#include "chat-type-contact.moc"
 
 Chat ChatTypeContact::findChat(
     ChatManager *chatManager, ChatStorage *chatStorage, const Contact &contact, NotFoundAction notFoundAction)
@@ -152,5 +153,3 @@ ChatEditWidget *ChatTypeContact::createEditWidget(const Chat &chat, QWidget *par
 
     return 0;
 }
-
-#include "moc_chat-type-contact.cpp"

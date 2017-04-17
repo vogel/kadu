@@ -37,6 +37,7 @@
 #include "antistring-configuration.h"
 
 #include "antistring-configuration-ui-handler.h"
+#include "antistring-configuration-ui-handler.moc"
 
 AntistringConfigurationUiHandler::AntistringConfigurationUiHandler(QObject *parent)
         : QObject{parent}, ConditionListWidget{}, ConditionWidget{}, FactorWidget{}
@@ -180,5 +181,3 @@ void AntistringConfigurationUiHandler::wordSelected(QListWidgetItem *item)
     FactorWidget->setValue(condition.second);
     ConditionWidget->setText(condition.first);
 }
-
-#include "moc_antistring-configuration-ui-handler.cpp"

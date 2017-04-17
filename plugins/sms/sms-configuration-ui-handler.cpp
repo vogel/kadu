@@ -51,6 +51,7 @@
 #include "sms-actions.h"
 
 #include "sms-configuration-ui-handler.h"
+#include "sms-configuration-ui-handler.moc"
 
 SmsConfigurationUiHandler::SmsConfigurationUiHandler(QObject *parent)
         : QObject{parent}, useBuiltIn{}, customApp{}, useCustomString{}, customString{}, EraGatewayComboBox{},
@@ -153,5 +154,3 @@ void SmsConfigurationUiHandler::createDefaultConfiguration()
 
     m_configuration->deprecatedApi()->addVariable("ShortCuts", "kadu_sendsms", "Ctrl+S");
 }
-
-#include "moc_sms-configuration-ui-handler.cpp"

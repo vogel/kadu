@@ -18,6 +18,7 @@
  */
 
 #include "show-config-wizard-action.h"
+#include "show-config-wizard-action.moc"
 
 #include "gui/windows/config-wizard-window.h"
 
@@ -67,5 +68,3 @@ void ShowConfigWizardAction::actionTriggered(QAction *, bool)
 {
     showConfigWindow();
 }
-
-#include "moc_show-config-wizard-action.cpp"

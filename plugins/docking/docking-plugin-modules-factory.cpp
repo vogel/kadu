@@ -18,6 +18,7 @@
  */
 
 #include "docking-plugin-modules-factory.h"
+#include "docking-plugin-modules-factory.moc"
 
 #include "docking-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> DockingPluginModulesFactory::create
 
     return modules;
 }
-
-#include "moc_docking-plugin-modules-factory.cpp"

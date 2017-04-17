@@ -19,6 +19,7 @@
  */
 
 #include "status-notifier-item.h"
+#include "status-notifier-item.moc"
 
 #include "status-notifier-item-attention-animator.h"
 #include "status-notifier-item-attention-blinker.h"
@@ -131,5 +132,3 @@ void StatusNotifierItem::activated(QSystemTrayIcon::ActivationReason reason)
     if (reason == QSystemTrayIcon::Trigger)
         emit activateRequested();
 }
-
-#include "moc_status-notifier-item.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "send-sms-action.h"
+#include "send-sms-action.moc"
 
 #include "sms-actions.h"
 
@@ -53,5 +54,3 @@ void SendSmsAction::actionTriggered(QAction *sender, bool)
 
     m_smsActions->newSms(action->context()->buddies().toBuddy().mobile());
 }
-
-#include "moc_send-sms-action.cpp"

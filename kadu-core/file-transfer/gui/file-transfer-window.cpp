@@ -18,6 +18,7 @@
  */
 
 #include "file-transfer-window.h"
+#include "file-transfer-window.moc"
 
 #include "configuration/config-file-variant-wrapper.h"
 #include "core/injected-factory.h"
@@ -182,5 +183,3 @@ void FileTransferWindow::contentsChanged()
 
     m_transfersLayout->invalidate();
 }
-
-#include "moc_file-transfer-window.cpp"

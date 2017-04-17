@@ -24,6 +24,7 @@
 #include <QtWidgets/QVBoxLayout>
 
 #include "screenshot-tool-box.h"
+#include "screenshot-tool-box.moc"
 
 ScreenshotToolBox::ScreenshotToolBox(QWidget *parent) : QFrame(parent)
 {
@@ -66,5 +67,3 @@ void ScreenshotToolBox::setFileSize(const QString &fileSize)
 {
     FileSizeLabel->setText(fileSize);
 }
-
-#include "moc_screenshot-tool-box.cpp"

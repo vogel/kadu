@@ -22,6 +22,7 @@
 #include <QtCore/QTimer>
 
 #include "gadu-socket-notifiers.h"
+#include "gadu-socket-notifiers.moc"
 
 GaduSocketNotifiers::GaduSocketNotifiers(QObject *parent)
         : QObject(parent), Socket(-1), Started(false), ReadNotifier(0), WriteNotifier(0), TimeoutTimer(0)
@@ -143,5 +144,3 @@ void GaduSocketNotifiers::dataSent()
     socketEvent();
     enable();
 }
-
-#include "moc_gadu-socket-notifiers.cpp"

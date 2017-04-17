@@ -18,6 +18,7 @@
  */
 
 #include "windows-integration-plugin-object.h"
+#include "windows-integration-plugin-object.moc"
 
 #include "windows-integration.h"
 
@@ -33,5 +34,3 @@ void WindowsIntegrationPluginObject::setWindowsIntegration(WindowsIntegration *w
 {
     m_windowsIntegration = windowsIntegration;
 }
-
-#include "moc_windows-integration-plugin-object.cpp"

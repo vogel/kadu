@@ -18,6 +18,7 @@
  */
 
 #include "toggle-autostatus-action.h"
+#include "toggle-autostatus-action.moc"
 
 #include "autostatus-service.h"
 
@@ -47,5 +48,3 @@ void ToggleAutostatusAction::actionTriggered(QAction *, bool toggled)
 {
     m_autostatusService->toggle(toggled);
 }
-
-#include "moc_toggle-autostatus-action.cpp"

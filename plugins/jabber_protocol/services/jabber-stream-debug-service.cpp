@@ -21,6 +21,7 @@
  */
 
 #include "jabber-stream-debug-service.h"
+#include "jabber-stream-debug-service.moc"
 
 #include <qxmpp/QXmppClient.h>
 
@@ -51,5 +52,3 @@ void JabberStreamDebugService::message(QXmppLogger::MessageType type, const QStr
     else
         emit outgoingStream(filterPrivateData(message));
 }
-
-#include "moc_jabber-stream-debug-service.cpp"

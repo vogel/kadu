@@ -20,6 +20,7 @@
  */
 
 #include "autoaway.h"
+#include "autoaway.moc"
 
 #include "plugins/idle/idle-plugin-object.h"
 #include "plugins/idle/idle.h"
@@ -236,5 +237,3 @@ void Autoaway::createDefaultConfiguration()
 }
 
 /** @} */
-
-#include "moc_autoaway.cpp"

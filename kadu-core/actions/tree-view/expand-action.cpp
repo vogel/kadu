@@ -18,6 +18,7 @@
  */
 
 #include "expand-action.h"
+#include "expand-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -67,5 +68,3 @@ void ExpandAction::updateActionState(Action *action)
             return;
         }
 }
-
-#include "moc_expand-action.cpp"

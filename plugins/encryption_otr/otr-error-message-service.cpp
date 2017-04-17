@@ -20,6 +20,7 @@
 #include "otr-op-data.h"
 
 #include "otr-error-message-service.h"
+#include "otr-error-message-service.moc"
 
 const char *OtrErrorMessageService::wrapperOtrErrorMessage(void *data, ConnContext *context, OtrlErrorCode errorCode)
 {
@@ -64,5 +65,3 @@ QString OtrErrorMessageService::errorMessage(const QString &peerDisplay, OtrlErr
         return QString();
     }
 }
-
-#include "moc_otr-error-message-service.cpp"

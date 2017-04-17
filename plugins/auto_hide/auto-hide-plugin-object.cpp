@@ -18,6 +18,7 @@
  */
 
 #include "auto-hide-plugin-object.h"
+#include "auto-hide-plugin-object.moc"
 
 #include "auto-hide-configuration-ui-handler.h"
 #include "auto-hide.h"
@@ -76,5 +77,3 @@ void AutoHidePluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/auto_hide.ui"));
 }
-
-#include "moc_auto-hide-plugin-object.cpp"

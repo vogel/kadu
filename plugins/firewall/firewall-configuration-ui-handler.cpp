@@ -20,6 +20,7 @@
  */
 
 #include "firewall-configuration-ui-handler.h"
+#include "firewall-configuration-ui-handler.moc"
 
 #include "firewall-message-filter.h"
 
@@ -234,5 +235,3 @@ void FirewallConfigurationUiHandler::configurationApplied()
     m_configuration->deprecatedApi()->writeEntry("Firewall", "question", QuestionEdit->toPlainText());
     m_configuration->deprecatedApi()->writeEntry("Firewall", "answer", AnswerEdit->text());
 }
-
-#include "moc_firewall-configuration-ui-handler.cpp"

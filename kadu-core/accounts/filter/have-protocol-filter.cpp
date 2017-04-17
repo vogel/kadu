@@ -18,6 +18,7 @@
  */
 
 #include "have-protocol-filter.h"
+#include "have-protocol-filter.moc"
 
 #include "accounts/account.h"
 
@@ -33,5 +34,3 @@ bool HaveProtocolFilter::acceptAccount(Account account)
 {
     return account.protocolHandler();
 }
-
-#include "moc_have-protocol-filter.cpp"

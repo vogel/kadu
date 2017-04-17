@@ -21,6 +21,7 @@
 #include "otr-policy-service.h"
 
 #include "otr-account-configuration-widget-factory.h"
+#include "otr-account-configuration-widget-factory.moc"
 
 OtrAccountConfigurationWidgetFactory::~OtrAccountConfigurationWidgetFactory()
 {
@@ -38,5 +39,3 @@ AccountConfigurationWidget *OtrAccountConfigurationWidgetFactory::createWidget(c
 
     return result;
 }
-
-#include "moc_otr-account-configuration-widget-factory.cpp"

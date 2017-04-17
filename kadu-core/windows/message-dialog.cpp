@@ -23,10 +23,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "message-dialog.h"
+#include "message-dialog.moc"
+
 #include <QtGui/QPixmap>
 #include <QtWidgets/QStyle>
-
-#include "message-dialog.h"
 
 MessageDialog *
 MessageDialog::create(const QIcon &icon, const QString &title, const QString &text, QWidget *parent, Qt::WindowFlags f)
@@ -86,5 +87,3 @@ bool MessageDialog::ask()
 {
     return QMessageBox::Yes == Box->exec();
 }
-
-#include "moc_message-dialog.cpp"

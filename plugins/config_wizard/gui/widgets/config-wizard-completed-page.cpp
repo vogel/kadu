@@ -19,6 +19,7 @@
  */
 
 #include "config-wizard-completed-page.h"
+#include "config-wizard-completed-page.moc"
 
 #include "accounts/account-manager.h"
 #include "windows/your-accounts-window-service.h"
@@ -67,5 +68,3 @@ void ConfigWizardCompletedPage::acceptPage()
     if (ConfigureAccouuntsCheckBox->isChecked())
         m_yourAccountsWindowService->show();
 }
-
-#include "moc_config-wizard-completed-page.cpp"

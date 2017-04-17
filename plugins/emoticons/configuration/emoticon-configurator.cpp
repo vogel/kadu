@@ -30,6 +30,7 @@
 #include "theme/gadu-emoticon-theme-loader.h"
 
 #include "emoticon-configurator.h"
+#include "emoticon-configurator.moc"
 
 EmoticonConfigurator::EmoticonConfigurator(QObject *parent) : ConfigurationHolder{parent}
 {
@@ -115,5 +116,3 @@ void EmoticonConfigurator::configurationUpdated()
     if (EmoticonExpanderProvider)
         EmoticonExpanderProvider->setConfiguration(m_emoticonConfiguration);
 }
-
-#include "moc_emoticon-configurator.cpp"

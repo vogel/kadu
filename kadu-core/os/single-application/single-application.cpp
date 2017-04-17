@@ -22,6 +22,7 @@
  */
 
 #include "single-application.h"
+#include "single-application.moc"
 
 #include "long-lived-lock-file.h"
 
@@ -223,5 +224,3 @@ void SingleApplication::sendMessage(const QString &message, int timeout) const
     ds.writeBytes(uMsg.constData(), static_cast<uint>(uMsg.size()));
     socket.waitForBytesWritten(timeout);
 }
-
-#include "moc_single-application.cpp"

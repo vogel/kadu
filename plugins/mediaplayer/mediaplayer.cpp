@@ -63,6 +63,7 @@
 #include "player-info.h"
 
 #include "mediaplayer.h"
+#include "mediaplayer.moc"
 
 #define MODULE_MEDIAPLAYER_VERSION 1.3
 #define CHECK_STATUS_INTERVAL 1 * 1000 /* 1s */
@@ -1017,5 +1018,3 @@ void MediaPlayer::insertPlaylistFilenames()
 {
     putPlayList(4);
 }
-
-#include "moc_mediaplayer.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "spellchecker-plugin-modules-factory.h"
+#include "spellchecker-plugin-modules-factory.moc"
 
 #include "spellchecker-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> SpellcheckerPluginModulesFactory::c
 
     return modules;
 }
-
-#include "moc_spellchecker-plugin-modules-factory.cpp"

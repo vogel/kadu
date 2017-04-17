@@ -32,6 +32,7 @@
 #include "otr-trust-level-service.h"
 
 #include "otr-op-data-factory.h"
+#include "otr-op-data-factory.moc"
 
 OtrOpDataFactory::OtrOpDataFactory()
 {
@@ -129,5 +130,3 @@ OtrOpData OtrOpDataFactory::opDataForContact(const Contact &contact)
 
     return result;
 }
-
-#include "moc_otr-op-data-factory.cpp"

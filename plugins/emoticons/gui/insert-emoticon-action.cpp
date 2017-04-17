@@ -29,6 +29,7 @@
 #include "gui/emoticon-selector.h"
 
 #include "insert-emoticon-action.h"
+#include "insert-emoticon-action.moc"
 
 InsertEmoticonAction::InsertEmoticonAction(QObject *parent) : ActionDescription(parent)
 {
@@ -97,5 +98,3 @@ void InsertEmoticonAction::setConfiguration(const EmoticonConfiguration &configu
     for (auto action : actions())
         updateActionState(action);
 }
-
-#include "moc_insert-emoticon-action.cpp"

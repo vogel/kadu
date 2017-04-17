@@ -20,6 +20,7 @@
  */
 
 #include "timeline-chat-messages-view.h"
+#include "timeline-chat-messages-view.moc"
 
 #include "history-query-result.h"
 #include "model/history-query-results-model.h"
@@ -339,5 +340,3 @@ void TimelineChatMessagesView::setSizes(const QList<int> &newSizes)
 
     Splitter->setSizes(newSizes);
 }
-
-#include "moc_timeline-chat-messages-view.cpp"

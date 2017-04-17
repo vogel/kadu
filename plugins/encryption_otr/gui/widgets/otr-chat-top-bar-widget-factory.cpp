@@ -28,6 +28,7 @@
 #include "otr-trust-level-service.h"
 
 #include "otr-chat-top-bar-widget-factory.h"
+#include "otr-chat-top-bar-widget-factory.moc"
 
 OtrChatTopBarWidgetFactory::OtrChatTopBarWidgetFactory()
 {
@@ -94,5 +95,3 @@ void OtrChatTopBarWidgetFactory::widgetDestroyed(QObject *widget)
     OtrChatTopBarWidget *otrWidget = static_cast<OtrChatTopBarWidget *>(widget);
     Widgets.removeAll(otrWidget);
 }
-
-#include "moc_otr-chat-top-bar-widget-factory.cpp"

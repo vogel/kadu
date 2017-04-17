@@ -18,6 +18,7 @@
  */
 
 #include "gadu-outgoing-file-transfer-handler.h"
+#include "gadu-outgoing-file-transfer-handler.moc"
 
 #include "gadu-protocol.h"
 #include "services/drive/gadu-drive-put-transfer.h"
@@ -153,5 +154,3 @@ void GaduOutgoingFileTransferHandler::stop()
     clenaup();
     transfer().setTransferStatus(FileTransferStatus::NotConnected);
 }
-
-#include "moc_gadu-outgoing-file-transfer-handler.cpp"

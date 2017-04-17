@@ -18,6 +18,7 @@
  */
 
 #include "chat-style-configuration-ui-handler.h"
+#include "chat-style-configuration-ui-handler.moc"
 
 #include "chat-style/chat-style-manager.h"
 #include "chat-style/engine/chat-style-engine.h"
@@ -180,5 +181,3 @@ void ChatStyleConfigurationUiHandler::styleChangedSlot(const QString &styleName)
     m_enginePreview->setRendererFactory(engine->createRendererFactory({styleName, m_variantListCombo->currentText()}));
     m_turnOnTransparency->setChecked(engine->styleUsesTransparencyByDefault(styleName));
 }
-
-#include "moc_chat-style-configuration-ui-handler.cpp"

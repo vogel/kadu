@@ -18,6 +18,7 @@
  */
 
 #include "cenzor-plugin-object.h"
+#include "cenzor-plugin-object.moc"
 
 #include "cenzor-message-filter.h"
 #include "configuration/gui/cenzor-configuration-ui-handler.h"
@@ -84,5 +85,3 @@ void CenzorPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/cenzor.ui"));
 }
-
-#include "moc_cenzor-plugin-object.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "screenshot-notification-service.h"
+#include "screenshot-notification-service.moc"
 
 #include "html/html-conversion.h"
 #include "html/html-string.h"
@@ -68,5 +69,3 @@ void ScreenshotNotificationService::notifySizeLimit(long size)
 
     m_notificationService->notify(notification);
 }
-
-#include "moc_screenshot-notification-service.cpp"

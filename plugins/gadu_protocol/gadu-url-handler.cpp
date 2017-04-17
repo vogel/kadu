@@ -37,6 +37,7 @@
 #include "widgets/chat-widget/chat-widget-manager.h"
 
 #include "gadu-url-handler.h"
+#include "gadu-url-handler.moc"
 
 GaduUrlHandler::GaduUrlHandler(QObject *parent) : QObject{parent}
 {
@@ -143,5 +144,3 @@ void GaduUrlHandler::accountSelected(QAction *action)
     const Chat &chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
     m_chatWidgetManager->openChat(chat, OpenChatActivation::Activate);
 }
-
-#include "moc_gadu-url-handler.cpp"

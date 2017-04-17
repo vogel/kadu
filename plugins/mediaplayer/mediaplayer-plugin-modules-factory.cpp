@@ -18,6 +18,7 @@
  */
 
 #include "mediaplayer-plugin-modules-factory.h"
+#include "mediaplayer-plugin-modules-factory.moc"
 
 #include "mediaplayer-module.h"
 
@@ -43,5 +44,3 @@ QString MediaplayerPluginModulesFactory::parentInjectorName() const
 {
     return "docking";
 }
-
-#include "moc_mediaplayer-plugin-modules-factory.cpp"

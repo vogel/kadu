@@ -18,6 +18,7 @@
  */
 
 #include "roster-replacer.h"
+#include "roster-replacer.moc"
 
 #include "accounts/account.h"
 #include "buddies/buddy-list.h"
@@ -290,5 +291,3 @@ void RosterReplacer::copySupportedBuddyInformation(const Buddy &destination, con
     destination.setOfflineTo(source.isOfflineTo());
     destination.setHomePhone(source.homePhone());
 }
-
-#include "moc_roster-replacer.cpp"

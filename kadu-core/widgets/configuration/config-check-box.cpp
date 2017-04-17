@@ -24,8 +24,8 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QListWidget>
 
-#include "widgets/configuration/config-check-box.h"
-#include "widgets/configuration/config-check-box.moc"
+#include "config-check-box.h"
+#include "config-check-box.moc"
 
 #include "widgets/configuration/config-group-box.h"
 
@@ -66,5 +66,3 @@ void ConfigCheckBox::saveConfiguration()
         return;
     dataManager->writeEntry(section, item, QVariant(isChecked() ? "true" : "false"));
 }
-
-#include "moc_config-check-box.cpp"

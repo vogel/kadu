@@ -18,6 +18,7 @@
  */
 
 #include "jabber-register-account.h"
+#include "jabber-register-account.moc"
 
 #include "jid.h"
 #include "qxmpp/jabber-register-extension.h"
@@ -230,5 +231,3 @@ void JabberRegisterAccount::handleRegistrationConfirmation(const QXmppRegisterIq
     else
         handleError(tr("Unknown error: received stanza type %1").arg(registerIq.type()));
 }
-
-#include "moc_jabber-register-account.cpp"

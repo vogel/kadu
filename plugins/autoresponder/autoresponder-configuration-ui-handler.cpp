@@ -19,6 +19,7 @@
  */
 
 #include "autoresponder-configuration-ui-handler.h"
+#include "autoresponder-configuration-ui-handler.moc"
 
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/main-configuration-window.h"
@@ -49,5 +50,3 @@ void AutoresponderConfigurationUiHandler::mainConfigurationWindowDestroyed()
 void AutoresponderConfigurationUiHandler::mainConfigurationWindowApplied()
 {
 }
-
-#include "moc_autoresponder-configuration-ui-handler.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "file-transfer-storage.h"
+#include "file-transfer-storage.moc"
 
 #include "core/injected-factory.h"
 #include "file-transfer/file-transfer-shared.h"
@@ -59,5 +60,3 @@ FileTransfer FileTransferStorage::loadFromStorage(const std::shared_ptr<StorageP
 
     return result;
 }
-
-#include "moc_file-transfer-storage.cpp"

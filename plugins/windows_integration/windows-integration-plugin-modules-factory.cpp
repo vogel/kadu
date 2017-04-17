@@ -18,6 +18,7 @@
  */
 
 #include "windows-integration-plugin-modules-factory.h"
+#include "windows-integration-plugin-modules-factory.moc"
 
 #include "windows-integration-module.h"
 
@@ -40,4 +41,3 @@ std::vector<std::unique_ptr<injeqt::module>> WindowsIntegrationPluginModulesFact
     return modules;
 }
 
-#include "moc_windows-integration-plugin-modules-factory.cpp"

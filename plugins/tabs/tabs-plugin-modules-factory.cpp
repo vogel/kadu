@@ -18,6 +18,7 @@
  */
 
 #include "tabs-plugin-modules-factory.h"
+#include "tabs-plugin-modules-factory.moc"
 
 #include "tabs-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> TabsPluginModulesFactory::createPlu
 
     return modules;
 }
-
-#include "moc_tabs-plugin-modules-factory.cpp"

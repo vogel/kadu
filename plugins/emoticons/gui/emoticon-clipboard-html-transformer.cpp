@@ -18,6 +18,7 @@
  */
 
 #include "emoticon-clipboard-html-transformer.h"
+#include "emoticon-clipboard-html-transformer.moc"
 
 // Assume we don't use apostrophes in HTML attributes.
 // Expected string to replace is as follows (capitalics are captured):
@@ -35,5 +36,3 @@ QString EmoticonClipboardHtmlTransformer::transform(const QString &clipboardHtml
 {
     return QString(clipboardHtml).replace(EmoticonRegularExpression, QStringLiteral("\\1"));
 }
-
-#include "moc_emoticon-clipboard-html-transformer.cpp"

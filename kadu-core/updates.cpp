@@ -41,6 +41,7 @@
 #include "windows/updates-dialog.h"
 
 #include "updates.h"
+#include "updates.moc"
 
 Updates::Updates(QObject *parent) : QObject(parent), UpdateChecked{false}
 {
@@ -235,5 +236,3 @@ void Updates::gotUpdatesInfo(QNetworkReply *reply)
         }
     }
 }
-
-#include "moc_updates.cpp"

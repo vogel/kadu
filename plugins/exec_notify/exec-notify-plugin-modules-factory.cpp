@@ -18,6 +18,7 @@
  */
 
 #include "exec-notify-plugin-modules-factory.h"
+#include "exec-notify-plugin-modules-factory.moc"
 
 #include "exec-notify-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> ExecNotifyPluginModulesFactory::cre
 
     return modules;
 }
-
-#include "moc_exec-notify-plugin-modules-factory.cpp"

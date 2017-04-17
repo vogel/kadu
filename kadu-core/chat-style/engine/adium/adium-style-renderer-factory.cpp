@@ -18,6 +18,7 @@
  */
 
 #include "adium-style-renderer-factory.h"
+#include "adium-style-renderer-factory.moc"
 
 #include "chat-style/engine/adium/adium-style-renderer.h"
 #include "core/core.h"
@@ -44,5 +45,3 @@ AdiumStyleRendererFactory::createChatStyleRenderer(ChatStyleRendererConfiguratio
     auto result = m_injectedFactory->makeNotOwned<AdiumStyleRenderer>(std::move(configuration), m_style);
     return not_owned_qptr<ChatStyleRenderer>(result.release());
 }
-
-#include "moc_adium-style-renderer-factory.cpp"

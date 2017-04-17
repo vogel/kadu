@@ -18,6 +18,7 @@
  */
 
 #include "autoaway-plugin-object.h"
+#include "autoaway-plugin-object.moc"
 
 #include "autoaway-configuration-ui-handler.h"
 #include "autoaway.h"
@@ -89,5 +90,3 @@ void AutoawayPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoaway.ui"));
 }
-
-#include "moc_autoaway-plugin-object.cpp"

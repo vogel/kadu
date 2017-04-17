@@ -22,6 +22,7 @@
  */
 
 #include "open-chat-with.h"
+#include "open-chat-with.moc"
 
 #include "open-chat-with-contact-list-runner.h"
 #include "open-chat-with-runner-manager.h"
@@ -260,5 +261,3 @@ void OpenChatWith::show()
     else
         _activateWindow(m_configuration, this);
 }
-
-#include "moc_open-chat-with.cpp"

@@ -23,8 +23,8 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 
-#include "widgets/configuration/config-color-button.h"
-#include "widgets/configuration/config-color-button.moc"
+#include "config-color-button.h"
+#include "config-color-button.moc"
 
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-widget-value.h"
@@ -82,5 +82,3 @@ void ConfigColorButton::setVisible(bool visible)
     label->setVisible(visible);
     ColorButton::setVisible(visible);
 }
-
-#include "moc_config-color-button.cpp"

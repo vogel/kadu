@@ -21,6 +21,7 @@
 #include "spellchecker.h"
 
 #include "highlighter.h"
+#include "highlighter.moc"
 
 QList<Highlighter *> Highlighter::Highlighters;
 QTextCharFormat Highlighter::HighlightFormat;
@@ -66,5 +67,3 @@ void Highlighter::removeAll()
         delete highlighter;
     Q_ASSERT(Highlighters.isEmpty());
 }
-
-#include "moc_highlighter.cpp"

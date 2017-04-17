@@ -18,6 +18,7 @@
  */
 
 #include "jabber-stream-incoming-file-transfer-handler.h"
+#include "jabber-stream-incoming-file-transfer-handler.moc"
 
 #include "jabber-protocol.h"
 
@@ -135,5 +136,3 @@ void JabberStreamIncomingFileTransferHandler::error(QXmppTransferJob::Error erro
     transfer().setError(errorMessage);
     cleanup(FileTransferStatus::NotConnected);
 }
-
-#include "moc_jabber-stream-incoming-file-transfer-handler.cpp"

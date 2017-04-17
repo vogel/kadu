@@ -41,7 +41,9 @@
 #include "screenshot-taker.h"
 
 #include "screen-shot-saver.h"
+
 #include "screenshot.h"
+#include "screenshot.moc"
 
 ScreenShot::ScreenShot(ScreenShotConfiguration *screenShotConfiguration, ChatWidget *chatWidget)
         : m_screenShotConfiguration{screenShotConfiguration}, Mode{}, MyScreenshotTaker{}, MyChatWidget{chatWidget}
@@ -184,5 +186,3 @@ void ScreenShot::checkShotsSize()
 }
 
 #undef Bool
-
-#include "moc_screenshot.cpp"

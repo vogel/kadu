@@ -18,6 +18,7 @@
  */
 
 #include "bold-action.h"
+#include "bold-action.moc"
 
 #include "actions/action.h"
 #include "protocols/protocol-factory.h"
@@ -67,5 +68,3 @@ void BoldAction::updateActionState(Action *action)
 
     action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
-
-#include "moc_bold-action.cpp"

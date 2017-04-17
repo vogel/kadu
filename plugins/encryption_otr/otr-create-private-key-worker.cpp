@@ -22,6 +22,7 @@ extern "C" {
 }
 
 #include "otr-create-private-key-worker.h"
+#include "otr-create-private-key-worker.moc"
 
 OtrCreatePrivateKeyWorker::OtrCreatePrivateKeyWorker(void *keyPointer, QObject *parent)
         : QObject(parent), KeyPointer(keyPointer)
@@ -37,5 +38,3 @@ void OtrCreatePrivateKeyWorker::start()
     gcry_error_t err = otrl_privkey_generate_calculate(KeyPointer);
     emit finished(0 == err);
 }
-
-#include "moc_otr-create-private-key-worker.cpp"

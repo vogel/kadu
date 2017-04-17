@@ -18,6 +18,7 @@
  */
 
 #include "pcspeaker-plugin-modules-factory.h"
+#include "pcspeaker-plugin-modules-factory.moc"
 
 #include "pcspeaker-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> PCSpeakerPluginModulesFactory::crea
 
     return modules;
 }
-
-#include "moc_pcspeaker-plugin-modules-factory.cpp"

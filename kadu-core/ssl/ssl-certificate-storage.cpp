@@ -18,6 +18,7 @@
  */
 
 #include "ssl-certificate-storage.h"
+#include "ssl-certificate-storage.moc"
 
 #include "chat/chat-manager.h"
 #include "ssl/ssl-certificate.h"
@@ -80,5 +81,3 @@ void SslCertificateStorage::storeCertificates(const QSet<SslCertificate> &certif
         element.appendChild(textNode);
     }
 }
-
-#include "moc_ssl-certificate-storage.cpp"

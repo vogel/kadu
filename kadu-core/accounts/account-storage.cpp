@@ -18,6 +18,7 @@
  */
 
 #include "account-storage.h"
+#include "account-storage.moc"
 
 #include "accounts/account-shared.h"
 #include "accounts/account.h"
@@ -57,5 +58,3 @@ Account AccountStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &sto
 
     return result;
 }
-
-#include "moc_account-storage.cpp"

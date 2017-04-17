@@ -21,6 +21,7 @@
  */
 
 #include "status-window.h"
+#include "status-window.moc"
 
 #include "activate.h"
 #include "configuration/configuration.h"
@@ -418,5 +419,3 @@ void StatusWindow::clearDescriptionsHistory()
     DescriptionSelect->setEnabled(false);
     ClearDescriptionsHistoryButton->setEnabled(false);
 }
-
-#include "moc_status-window.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "italic-action.h"
+#include "italic-action.moc"
 
 #include "actions/action.h"
 #include "protocols/protocol-factory.h"
@@ -66,5 +67,3 @@ void ItalicAction::updateActionState(Action *action)
 
     action->setEnabled(protocol->protocolFactory()->name() == "gadu");
 }
-
-#include "moc_italic-action.cpp"

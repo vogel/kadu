@@ -23,6 +23,7 @@
 #include <libgadu.h>
 
 #include "gadu-pubdir-socket-notifiers.h"
+#include "gadu-pubdir-socket-notifiers.moc"
 
 void GaduPubdirSocketNotifiers::watchFor(struct gg_http *h)
 {
@@ -87,5 +88,3 @@ void GaduPubdirSocketNotifiers::connectionTimeout()
 {
     finished(false);
 }
-
-#include "moc_gadu-pubdir-socket-notifiers.cpp"

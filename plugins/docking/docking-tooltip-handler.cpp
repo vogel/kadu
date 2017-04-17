@@ -18,6 +18,7 @@
  */
 
 #include "docking-tooltip-handler.h"
+#include "docking-tooltip-handler.moc"
 
 #include "docking-configuration-provider.h"
 #include "docking-configuration.h"
@@ -83,5 +84,3 @@ QString DockingTooltipHandler::tooltip() const
 
     return result;
 }
-
-#include "moc_docking-tooltip-handler.cpp"

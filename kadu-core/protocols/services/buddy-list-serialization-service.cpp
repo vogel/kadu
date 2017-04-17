@@ -18,6 +18,7 @@
  */
 
 #include "buddy-list-serialization-service.h"
+#include "buddy-list-serialization-service.moc"
 
 BuddyListSerializationService::BuddyListSerializationService(Account account, QObject *parent)
         : AccountService{account, parent}
@@ -27,5 +28,3 @@ BuddyListSerializationService::BuddyListSerializationService(Account account, QO
 BuddyListSerializationService::~BuddyListSerializationService()
 {
 }
-
-#include "moc_buddy-list-serialization-service.cpp"

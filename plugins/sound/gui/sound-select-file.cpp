@@ -18,6 +18,7 @@
  */
 
 #include "sound-select-file.h"
+#include "sound-select-file.moc"
 
 #include "sound-manager.h"
 
@@ -90,5 +91,3 @@ void SoundSelectFile::stopSound()
     if (m_sound)
         delete m_sound.data();
 }
-
-#include "moc_sound-select-file.cpp"

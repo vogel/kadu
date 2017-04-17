@@ -18,6 +18,7 @@
  */
 
 #include "jabber-roster-extension.h"
+#include "jabber-roster-extension.moc"
 
 #include "jid.h"
 #include "services/jabber-error-service.h"
@@ -56,5 +57,3 @@ bool JabberRosterExtension::handleStanza(const QDomElement &stanza)
 
     return false;
 }
-
-#include "moc_jabber-roster-extension.cpp"

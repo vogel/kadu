@@ -22,6 +22,7 @@
 #include "storage/history-sql-storage.h"
 
 #include "sql-messages-status-storage.h"
+#include "sql-messages-status-storage.moc"
 
 SqlMessagesStatusStorage::SqlMessagesStatusStorage(HistorySqlStorage *sqlStorage)
         : HistoryMessagesStorage(sqlStorage), SqlStorage(sqlStorage)
@@ -52,5 +53,3 @@ void SqlMessagesStatusStorage::deleteMessages(const Talkable &talkable, const QD
 {
     SqlStorage->clearStatusHistory(talkable, date);
 }
-
-#include "moc_sql-messages-status-storage.cpp"

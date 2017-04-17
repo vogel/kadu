@@ -20,6 +20,8 @@
 #ifndef MULTILOGON_MODEL_H
 #define MULTILOGON_MODEL_H
 
+#include "multilogon/multilogon-session.h"
+
 #include <QtCore/QAbstractTableModel>
 
 class MultilogonService;

@@ -24,6 +24,7 @@
 #include "accounts/account.h"
 
 #include "sql-accounts-mapping.h"
+#include "sql-accounts-mapping.moc"
 
 SqlAccountsMapping::SqlAccountsMapping(const QSqlDatabase &database, QObject *parent)
         : QObject(parent), Database(database), Mutex(QMutex::Recursive)
@@ -139,5 +140,3 @@ int SqlAccountsMapping::idByAccount(const Account &account)
 {
     return account.property("sql_history:id", 0).toInt();
 }
-
-#include "moc_sql-accounts-mapping.cpp"

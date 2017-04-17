@@ -26,6 +26,7 @@
 #include "otr-user-state-service.h"
 
 #include "otr-instance-tag-service.h"
+#include "otr-instance-tag-service.moc"
 
 void OtrInstanceTagService::wrapperOtrCreateInstanceTag(void *data, const char *accountName, const char *protocol)
 {
@@ -84,5 +85,3 @@ void OtrInstanceTagService::createInstanceTag(const Account &account)
         account.protocolName().toUtf8().data());
     writeInstanceTags();
 }
-
-#include "moc_otr-instance-tag-service.cpp"

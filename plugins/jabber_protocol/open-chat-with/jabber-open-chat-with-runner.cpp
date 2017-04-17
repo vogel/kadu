@@ -19,6 +19,7 @@
  */
 
 #include "jabber-open-chat-with-runner.h"
+#include "jabber-open-chat-with-runner.moc"
 
 #include "jabber-id-validator.h"
 
@@ -66,5 +67,3 @@ void JabberOpenChatWithRunner::setAccount(Account account)
 {
     m_account = account;
 }
-
-#include "moc_jabber-open-chat-with-runner.cpp"

@@ -29,6 +29,7 @@
 #include "protocols/services/personal-info-service.h"
 
 #include "gadu-personal-info-widget.h"
+#include "gadu-personal-info-widget.moc"
 
 GaduPersonalInfoWidget::GaduPersonalInfoWidget(Account account, QWidget *parent)
         : QWidget(parent), m_account{account}, Id(account.id())
@@ -151,5 +152,3 @@ void GaduPersonalInfoWidget::cancel()
 {
     fillForm();
 }
-
-#include "moc_gadu-personal-info-widget.cpp"

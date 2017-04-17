@@ -18,6 +18,7 @@
  */
 
 #include "configuration-factory.h"
+#include "configuration-factory.moc"
 
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-path-provider.h"
@@ -106,5 +107,3 @@ bool ConfigurationFactory::isConfigurationPathUsable() const
 
     return true;
 }
-
-#include "moc_configuration-factory.cpp"

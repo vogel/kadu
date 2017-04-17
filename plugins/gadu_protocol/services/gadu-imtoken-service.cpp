@@ -18,6 +18,7 @@
  */
 
 #include "gadu-imtoken-service.h"
+#include "gadu-imtoken-service.moc"
 
 GaduIMTokenService::GaduIMTokenService(QObject *parent) : QObject{parent}
 {
@@ -37,5 +38,3 @@ QByteArray GaduIMTokenService::imToken() const
 {
     return m_imToken;
 }
-
-#include "moc_gadu-imtoken-service.cpp"

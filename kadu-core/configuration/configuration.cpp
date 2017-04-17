@@ -18,6 +18,7 @@
  */
 
 #include "configuration.h"
+#include "configuration.moc"
 
 #include "configuration/configuration-api.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -53,5 +54,3 @@ QString Configuration::content() const
 {
     return m_configurationApi->configuration();
 }
-
-#include "moc_configuration.cpp"

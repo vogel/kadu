@@ -18,6 +18,7 @@
  */
 
 #include "multilogon-window-service.h"
+#include "multilogon-window-service.moc"
 
 #include "activate.h"
 #include "core/injected-factory.h"
@@ -49,5 +50,3 @@ void MultilogonWindowService::show()
     m_multilogonWindow->show();
     _activateWindow(m_configuration, m_multilogonWindow);
 }
-
-#include "moc_multilogon-window-service.cpp"

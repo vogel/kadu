@@ -18,6 +18,7 @@
  */
 
 #include "open-get-involved-action.h"
+#include "open-get-involved-action.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -54,5 +55,3 @@ void OpenGetInvolvedAction::actionTriggered(QAction *, bool)
     else
         m_urlOpener->openUrl("http://www.kadu.im/w/English:GetInvolved");
 }
-
-#include "moc_open-get-involved-action.cpp"

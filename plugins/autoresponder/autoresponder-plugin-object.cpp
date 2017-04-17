@@ -18,6 +18,7 @@
  */
 
 #include "autoresponder-plugin-object.h"
+#include "autoresponder-plugin-object.moc"
 
 #include "autoresponder-configuration-ui-handler.h"
 #include "autoresponder-message-filter.h"
@@ -84,5 +85,3 @@ void AutoresponderPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autoresponder.ui"));
 }
-
-#include "moc_autoresponder-plugin-object.cpp"

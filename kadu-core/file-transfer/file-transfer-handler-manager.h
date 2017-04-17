@@ -20,13 +20,13 @@
 #pragma once
 
 #include "accounts/accounts-aware-object.h"
+#include "file-transfer/file-transfer.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QPointer>
 #include <injeqt/injeqt.h>
 
 class AccountManager;
-class FileTransfer;
 class FileTransferManager;
 
 class KADUAPI FileTransferHandlerManager : public QObject, AccountsAwareObject

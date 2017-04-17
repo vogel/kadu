@@ -18,6 +18,7 @@
  */
 
 #include "word-fix-plugin-object.h"
+#include "word-fix-plugin-object.moc"
 
 #include "word-fix-configuration-ui-handler.h"
 #include "word-fix.h"
@@ -75,5 +76,3 @@ void WordFixPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/word_fix.ui"));
 }
-
-#include "moc_word-fix-plugin-object.cpp"

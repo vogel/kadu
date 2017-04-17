@@ -35,6 +35,7 @@
 #include "protocols/services/contact-personal-info-service.h"
 
 #include "gadu-contact-personal-info-widget.h"
+#include "gadu-contact-personal-info-widget.moc"
 
 GaduContactPersonalInfoWidget::GaduContactPersonalInfoWidget(const Contact &contact, QWidget *parent)
         : QWidget(parent), MyContact(contact)
@@ -136,5 +137,3 @@ void GaduContactPersonalInfoWidget::personalInfoAvailable(Buddy buddy)
     CityText->setText(buddy.city());
     StateProvinceText->clear();   // do not have any info, do we need this control anyway?
 }
-
-#include "moc_gadu-contact-personal-info-widget.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "gadu-drive-get-transfer.h"
+#include "gadu-drive-get-transfer.moc"
 
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
@@ -87,5 +88,3 @@ void GaduDriveGetTransfer::requestFinished()
 
     deleteLater();
 }
-
-#include "moc_gadu-drive-get-transfer.cpp"

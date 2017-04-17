@@ -19,6 +19,7 @@
  */
 
 #include "external-player.h"
+#include "external-player.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -67,5 +68,3 @@ void ExternalPlayer::createDefaultConfiguration()
 {
     m_configuration->deprecatedApi()->addVariable("Sounds", "SoundPlayer", "/usr/bin/play");
 }
-
-#include "moc_external-player.cpp"

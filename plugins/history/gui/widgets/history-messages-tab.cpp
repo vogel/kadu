@@ -58,6 +58,7 @@
 #include "storage/history-messages-storage.h"
 
 #include "history-messages-tab.h"
+#include "history-messages-tab.moc"
 
 HistoryMessagesTab::HistoryMessagesTab(QWidget *parent)
         : HistoryTab(parent), Storage(0), TabWaitOverlay(0), TalkablesFutureWatcher(0)
@@ -428,5 +429,3 @@ HistoryMessagesStorage *HistoryMessagesTab::historyMessagesStorage() const
 {
     return Storage;
 }
-
-#include "moc_history-messages-tab.cpp"

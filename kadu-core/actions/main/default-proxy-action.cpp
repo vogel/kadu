@@ -19,6 +19,7 @@
  */
 
 #include "default-proxy-action.h"
+#include "default-proxy-action.moc"
 
 #include "actions/action.h"
 #include "core/injected-factory.h"
@@ -126,5 +127,3 @@ void DefaultProxyAction::editProxyConfiguration()
 {
     m_proxyEditWindowService->show();
 }
-
-#include "moc_default-proxy-action.cpp"

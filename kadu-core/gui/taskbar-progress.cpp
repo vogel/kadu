@@ -18,6 +18,7 @@
  */
 
 #include "taskbar-progress.h"
+#include "taskbar-progress.moc"
 
 #include "file-transfer/file-transfer-manager.h"
 
@@ -63,5 +64,3 @@ void TaskbarProgress::progressChanged(int progress)
     Q_UNUSED(progress);
 #endif
 }
-
-#include "moc_taskbar-progress.cpp"

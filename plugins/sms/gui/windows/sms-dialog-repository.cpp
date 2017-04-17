@@ -18,6 +18,8 @@
  */
 
 #include "sms-dialog-repository.h"
+#include "sms-dialog-repository.moc"
+
 
 #include "gui/windows/sms-dialog.h"
 
@@ -61,5 +63,3 @@ void SmsDialogRepository::dialogDestroyed(QObject *object)
 {
     removeDialog(static_cast<SmsDialog *>(object));
 }
-
-#include "moc_sms-dialog-repository.cpp"

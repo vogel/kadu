@@ -32,9 +32,11 @@
 #include "misc/paths-provider.h"
 #include "plugin/plugin-injected-factory.h"
 
-#include "infos.h"
 #include "infos_dialog.h"
 #include "show-infos-window-action.h"
+
+#include "infos.h"
+#include "infos.moc"
 
 Infos::Infos(QObject *parent) : QObject{parent}, menuID{}
 {
@@ -181,5 +183,3 @@ void Infos::updateTimes()
             lastSeen[qMakePair(contact.contactAccount().protocolName(), contact.id())] =
                 QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm");
 }
-
-#include "moc_infos.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "plugin-error-dialog.h"
+#include "plugin-error-dialog.moc"
 
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"
@@ -92,5 +93,3 @@ void PluginErrorDialog::accept()
     if (LoadInFutureCheck)
         emit accepted(m_pluginName, LoadInFutureCheck->isChecked());
 }
-
-#include "moc_plugin-error-dialog.cpp"

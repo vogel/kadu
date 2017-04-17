@@ -24,8 +24,9 @@
 #include <QtWidgets/QLabel>
 
 #include "widgets/configuration/config-group-box.h"
-#include "widgets/configuration/config-hot-key-edit.h"
-#include "widgets/configuration/config-hot-key-edit.moc"
+
+#include "config-hot-key-edit.h"
+#include "config-hot-key-edit.moc"
 
 ConfigHotKeyEdit::ConfigHotKeyEdit(
     const QString &section, const QString &item, const QString &widgetCaption, const QString &toolTip,
@@ -80,5 +81,3 @@ void ConfigHotKeyEdit::setVisible(bool visible)
     label->setVisible(visible);
     HotKeyEdit::setVisible(visible);
 }
-
-#include "moc_config-hot-key-edit.cpp"

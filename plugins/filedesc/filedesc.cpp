@@ -19,6 +19,7 @@
  */
 
 #include "filedesc.h"
+#include "filedesc.moc"
 
 #include "filedesc-status-changer.h"
 
@@ -102,5 +103,3 @@ void FileDescription::createDefaultConfiguration()
     m_configuration->deprecatedApi()->addVariable("FileDesc", "forceDescr", true);
     m_configuration->deprecatedApi()->addVariable("FileDesc", "allowOther", true);
 }
-
-#include "moc_filedesc.cpp"

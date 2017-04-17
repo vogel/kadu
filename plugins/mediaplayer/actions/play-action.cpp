@@ -18,6 +18,7 @@
  */
 
 #include "play-action.h"
+#include "play-action.moc"
 
 #include "mediaplayer.h"
 
@@ -46,5 +47,3 @@ void PlayAction::actionTriggered(QAction *, bool)
 {
     m_mediaPlayer->playPause();
 }
-
-#include "moc_play-action.cpp"

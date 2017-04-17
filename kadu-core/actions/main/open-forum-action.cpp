@@ -18,6 +18,7 @@
  */
 
 #include "open-forum-action.h"
+#include "open-forum-action.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -53,5 +54,3 @@ void OpenForumAction::actionTriggered(QAction *, bool)
     else
         m_urlOpener->openUrl("http://www.kadu.im/forum/viewforum.php?f=12");
 }
-
-#include "moc_open-forum-action.cpp"

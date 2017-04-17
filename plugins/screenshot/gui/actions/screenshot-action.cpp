@@ -34,6 +34,7 @@
 #include "screenshot.h"
 
 #include "screenshot-action.h"
+#include "screenshot-action.moc"
 
 ScreenshotAction::ScreenshotAction(ScreenShotConfiguration *screenShotConfiguration, QObject *parent)
         : ActionDescription(parent), m_screenShotConfiguration{screenShotConfiguration}
@@ -134,5 +135,3 @@ void ScreenshotAction::takeWindowShotSlot()
     if (chatWidget)
         (m_pluginInjectedFactory->makeInjected<ScreenShot>(m_screenShotConfiguration, chatWidget))->takeWindowShot();
 }
-
-#include "moc_screenshot-action.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "gadu-roster-state-machine.h"
+#include "gadu-roster-state-machine.moc"
 
 #include "services/gadu-roster-service.h"
 
@@ -187,5 +188,3 @@ bool GaduRosterStateMachine::isPerformingGet() const
 {
     return configuration().contains(m_getState);
 }
-
-#include "moc_gadu-roster-state-machine.cpp"

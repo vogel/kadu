@@ -24,6 +24,7 @@
 #include "otr-user-state-service.h"
 
 #include "otr-trust-level-service.h"
+#include "otr-trust-level-service.moc"
 
 void OtrTrustLevelService::wrapperOtrUpdateContextList(void *data)
 {
@@ -99,5 +100,3 @@ void OtrTrustLevelService::updateTrustLevels()
 
     emit trustLevelsUpdated();
 }
-
-#include "moc_otr-trust-level-service.cpp"

@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "filedesc-plugin-object.h"
+#include "filedesc-plugin-object.moc"
 
 #include "filedesc-status-changer.h"
 
@@ -68,5 +69,3 @@ void FiledescPluginObject::done()
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/filedesc.ui"));
     m_statusChangerManager->unregisterStatusChanger(m_fileDescStatusChanger);
 }
-
-#include "moc_filedesc-plugin-object.cpp"

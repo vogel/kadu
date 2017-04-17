@@ -28,6 +28,7 @@
 #include "widgets/simple-configuration-value-state-notifier.h"
 
 #include "history-chat-configuration-widget.h"
+#include "history-chat-configuration-widget.moc"
 
 HistoryChatConfigurationWidget::HistoryChatConfigurationWidget(const Chat &chat, QWidget *parent)
         : ChatConfigurationWidget(chat, parent), StateNotifier(new SimpleConfigurationValueStateNotifier(this))
@@ -102,5 +103,3 @@ void HistoryChatConfigurationWidget::cancel()
 {
     loadValues();
 }
-
-#include "moc_history-chat-configuration-widget.cpp"

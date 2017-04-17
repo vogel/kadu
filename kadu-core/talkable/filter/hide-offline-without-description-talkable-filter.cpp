@@ -71,5 +71,3 @@ void HideOfflineWithoutDescriptionTalkableFilter::setEnabled(bool enabled)
     m_enabled = enabled;
     emit filterChanged();
 }
-
-#include "moc_hide-offline-without-description-talkable-filter.cpp"

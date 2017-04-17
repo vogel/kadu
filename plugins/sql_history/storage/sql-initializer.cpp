@@ -35,6 +35,7 @@
 #include "storage/sql-restore.h"
 
 #include "sql-initializer.h"
+#include "sql-initializer.moc"
 
 #define HISTORY_FILE_0 "history/history.db"
 #define HISTORY_FILE_1 "history1.db"
@@ -180,5 +181,3 @@ void SqlInitializer::initDatabase()
         emit progressFinished(true, "dialog-information", tr("Copying completed."));
     }
 }
-
-#include "moc_sql-initializer.cpp"

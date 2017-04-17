@@ -19,6 +19,7 @@
  */
 
 #include "chat-window.h"
+#include "chat-window.moc"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QTimer>
@@ -220,5 +221,3 @@ bool ChatWindow::isChatWidgetActive(const ChatWidget *chatWidget)
 
     return _isWindowActiveOrFullyVisible(this);
 }
-
-#include "moc_chat-window.cpp"

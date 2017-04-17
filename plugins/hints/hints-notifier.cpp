@@ -22,6 +22,7 @@
  */
 
 #include "hints-notifier.h"
+#include "hints-notifier.moc"
 
 #include "hints-widget.h"
 
@@ -50,5 +51,3 @@ void HintsNotifier::notify(const Notification &notification)
 {
     m_hintsWidget->addNotification(notification);
 }
-
-#include "moc_hints-notifier.cpp"

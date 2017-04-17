@@ -18,6 +18,7 @@
  */
 
 #include "jabber-plugin-object.h"
+#include "jabber-plugin-object.moc"
 
 #include "actions/jabber-actions.h"
 #include "actions/jabber-protocol-menu-manager.h"
@@ -109,5 +110,3 @@ void JabberPluginObject::done()
     m_protocolsManager->registerProtocolFactory(m_gtalkProtocolFactory);
     m_protocolsManager->unregisterProtocolFactory(m_jabberProtocolFactory);
 }
-
-#include "moc_jabber-plugin-object.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "identity-storage.h"
+#include "identity-storage.moc"
 
 #include "core/injected-factory.h"
 #include "identities/identity-shared.h"
@@ -59,5 +60,3 @@ Identity IdentityStorage::loadFromStorage(const std::shared_ptr<StoragePoint> &s
 
     return result;
 }
-
-#include "moc_identity-storage.cpp"

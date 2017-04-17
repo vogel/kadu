@@ -19,6 +19,7 @@
  */
 
 #include "unread-message-repository.h"
+#include "unread-message-repository.moc"
 
 #include "buddies/buddy-manager.h"
 #include "chat/chat-details-buddy.h"
@@ -227,5 +228,3 @@ Message UnreadMessageRepository::unreadMessageForContact(const Contact &contact)
 
     return Message::null;
 }
-
-#include "moc_unread-message-repository.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "simpleview-plugin-modules-factory.h"
+#include "simpleview-plugin-modules-factory.moc"
 
 #include "simpleview-module.h"
 
@@ -43,5 +44,3 @@ QString SimpleviewPluginModulesFactory::parentInjectorName() const
 {
     return "docking";
 }
-
-#include "moc_simpleview-plugin-modules-factory.cpp"

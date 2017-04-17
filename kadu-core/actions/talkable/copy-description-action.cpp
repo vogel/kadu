@@ -18,6 +18,7 @@
  */
 
 #include "copy-description-action.h"
+#include "copy-description-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -62,5 +63,3 @@ void CopyDescriptionAction::updateActionState(Action *action)
 {
     action->setEnabled(!action->context()->contacts().toContact().currentStatus().description().isEmpty());
 }
-
-#include "moc_copy-description-action.cpp"

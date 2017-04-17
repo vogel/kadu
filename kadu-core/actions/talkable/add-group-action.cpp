@@ -18,6 +18,7 @@
  */
 
 #include "add-group-action.h"
+#include "add-group-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -50,5 +51,3 @@ void AddGroupAction::actionTriggered(QAction *sender, bool)
     auto window = m_injectedFactory->makeInjected<GroupEditWindow>(Group::null, sender->parentWidget());
     window->show();
 }
-
-#include "moc_add-group-action.cpp"

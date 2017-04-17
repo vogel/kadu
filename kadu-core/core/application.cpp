@@ -29,6 +29,7 @@
  */
 
 #include "core/application.h"
+#include "core/application.moc"
 
 #include "configuration/configuration-writer.h"
 
@@ -70,5 +71,3 @@ void Application::quit()
 {
     qApp->quit();
 }
-
-#include "moc_application.cpp"

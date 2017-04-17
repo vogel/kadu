@@ -19,6 +19,7 @@
  */
 
 #include "change-notifier.h"
+#include "change-notifier.moc"
 
 ChangeNotifier::ChangeNotifier(QObject *parent) : QObject(parent), Blocked(0), Changed(false)
 {
@@ -61,5 +62,3 @@ void ChangeNotifier::forget()
 {
     Changed = false;
 }
-
-#include "moc_change-notifier.cpp"

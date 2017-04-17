@@ -63,6 +63,7 @@
 #include "open-in-new-tab-action.h"
 
 #include "tabs.h"
+#include "tabs.moc"
 
 TabsManager::TabsManager(QObject *parent) : StorableObject(parent), TargetTabs(-1)
 {
@@ -606,5 +607,3 @@ void TabsManager::createDefaultConfiguration()
     m_configuration->deprecatedApi()->addVariable("Tabs", "OldStyleClosing", "false");
     m_configuration->deprecatedApi()->addVariable("Tabs", "CloseButtonOnTab", "false");
 }
-
-#include "moc_tabs.cpp"

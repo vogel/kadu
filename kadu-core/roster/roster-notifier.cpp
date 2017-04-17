@@ -18,6 +18,7 @@
  */
 
 #include "roster-notifier.h"
+#include "roster-notifier.moc"
 
 #include "accounts/account.h"
 #include "html/html-conversion.h"
@@ -102,5 +103,3 @@ void RosterNotifier::notifyExportFailed(const Account &account)
         sm_exportFailedNotifyTopic, account,
         normalizeHtml(HtmlString{tr("%1: roster export failed")}.arg(plainToHtml(account.id()))));
 }
-
-#include "moc_roster-notifier.cpp"

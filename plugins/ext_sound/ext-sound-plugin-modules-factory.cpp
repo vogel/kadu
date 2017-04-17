@@ -18,6 +18,7 @@
  */
 
 #include "ext-sound-plugin-modules-factory.h"
+#include "ext-sound-plugin-modules-factory.moc"
 
 #include "ext-sound-module.h"
 
@@ -43,5 +44,3 @@ QString ExtSoundPluginModulesFactory::parentInjectorName() const
 {
     return "sound";
 }
-
-#include "moc_ext-sound-plugin-modules-factory.cpp"

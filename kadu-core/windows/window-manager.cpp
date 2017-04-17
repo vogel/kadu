@@ -19,6 +19,7 @@
  */
 
 #include "window-manager.h"
+#include "window-manager.moc"
 
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDesktopWidget>
@@ -66,5 +67,3 @@ void WindowManager::ensureWholeVisible(QWidget *window)
 
     window->move(windowPosition);
 }
-
-#include "moc_window-manager.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "webkit-messages-view-handler.h"
+#include "webkit-messages-view-handler.moc"
 
 #include "chat-style/engine/chat-style-renderer.h"
 #include "protocols/services/chat-state.h"
@@ -129,5 +130,3 @@ void WebkitMessagesViewHandler::displayChatImage(const ChatImage &chatImage, con
     if (m_chatStyleRenderer->isReady())
         m_chatStyleRenderer->displayChatImage(chatImage, fileName);
 }
-
-#include "moc_webkit-messages-view-handler.cpp"

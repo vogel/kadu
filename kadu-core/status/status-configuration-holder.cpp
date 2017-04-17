@@ -18,6 +18,7 @@
  */
 
 #include "status-configuration-holder.h"
+#include "status-configuration-holder.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -60,5 +61,3 @@ void StatusConfigurationHolder::configurationUpdated()
         emit setStatusModeChanged();
     }
 }
-
-#include "moc_status-configuration-holder.cpp"

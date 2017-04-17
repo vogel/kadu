@@ -18,6 +18,7 @@
  */
 
 #include "sound-player.h"
+#include "sound-player.moc"
 
 SoundPlayer::SoundPlayer(QObject *parent) : QObject{parent}
 {
@@ -26,5 +27,3 @@ SoundPlayer::SoundPlayer(QObject *parent) : QObject{parent}
 SoundPlayer::~SoundPlayer()
 {
 }
-
-#include "moc_sound-player.cpp"

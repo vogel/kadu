@@ -19,6 +19,7 @@
  */
 
 #include "jabber-actions.h"
+#include "jabber-actions.moc"
 
 #include "actions/show-xml-console-action.h"
 
@@ -34,5 +35,3 @@ void JabberActions::setShowXmlConsoleAction(ShowXmlConsoleAction *showXmlConsole
 {
     m_showXmlConsoleAction = showXmlConsoleAction;
 }
-
-#include "moc_jabber-actions.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "speech-plugin-modules-factory.h"
+#include "speech-plugin-modules-factory.moc"
 
 #include "speech-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> SpeechPluginModulesFactory::createP
 
     return modules;
 }
-
-#include "moc_speech-plugin-modules-factory.cpp"

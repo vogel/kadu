@@ -25,6 +25,7 @@
 #include "themes.h"
 
 #include "sound-theme-manager.h"
+#include "sound-theme-manager.moc"
 
 SoundThemeManager::SoundThemeManager(QObject *parent) : QObject{parent}
 {
@@ -86,5 +87,3 @@ void SoundThemeManager::loadThemes()
     if (soundTheme != "custom")
         applyTheme(soundTheme);
 }
-
-#include "moc_sound-theme-manager.cpp"

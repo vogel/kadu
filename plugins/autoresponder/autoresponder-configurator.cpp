@@ -28,6 +28,7 @@
 #include "autoresponder-message-filter.h"
 
 #include "autoresponder-configurator.h"
+#include "autoresponder-configurator.moc"
 
 AutoresponderConfigurator::AutoresponderConfigurator(QObject *parent) : QObject{parent}
 {
@@ -80,5 +81,3 @@ void AutoresponderConfigurator::configurationUpdated()
 
     m_autoresponderMessageFilter->setConfiguration(configuration);
 }
-
-#include "moc_autoresponder-configurator.cpp"

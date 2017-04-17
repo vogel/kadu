@@ -45,6 +45,7 @@
 #include "plugin/gui/plugin-list/plugin-list-view-delegate-widgets.h"
 
 #include "plugin-list-view-delegate.h"
+#include "plugin-list-view-delegate.moc"
 
 Q_DECLARE_METATYPE(QList<QEvent::Type>)
 
@@ -287,5 +288,3 @@ QList<QEvent::Type> PluginListWidgetDelegate::blockedEventTypes(QWidget *widget)
 {
     return widget->property("goya:blockedEventTypes").value<QList<QEvent::Type>>();
 }
-
-#include "moc_plugin-list-view-delegate.cpp"

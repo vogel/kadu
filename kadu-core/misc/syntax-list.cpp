@@ -20,6 +20,7 @@
  */
 
 #include "syntax-list.h"
+#include "syntax-list.moc"
 
 #include "misc/paths-provider.h"
 
@@ -213,5 +214,3 @@ bool SyntaxList::isGlobal(const QString &name)
     SyntaxInfo info = *(find(name));
     return info.global;
 }
-
-#include "moc_syntax-list.cpp"

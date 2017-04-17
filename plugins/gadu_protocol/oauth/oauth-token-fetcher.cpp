@@ -25,6 +25,7 @@
 #include "oauth/oauth-parameters.h"
 
 #include "oauth-token-fetcher.h"
+#include "oauth-token-fetcher.moc"
 
 OAuthTokenFetcher::OAuthTokenFetcher(
     QString requestTokenUrl, OAuthToken token, QNetworkAccessManager *networkAccessManager, QObject *parent)
@@ -122,5 +123,3 @@ void OAuthTokenFetcher::requestFinished()
 
     deleteLater();
 }
-
-#include "moc_oauth-token-fetcher.cpp"

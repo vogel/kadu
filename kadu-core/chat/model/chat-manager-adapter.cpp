@@ -22,6 +22,7 @@
 #include "chat/model/chat-list-model.h"
 
 #include "chat-manager-adapter.h"
+#include "chat-manager-adapter.moc"
 
 ChatManagerAdapter::ChatManagerAdapter(ChatManager *chatManager, ChatListModel *model) : QObject{model}, m_model{model}
 {
@@ -44,5 +45,3 @@ void ChatManagerAdapter::chatRemoved(const Chat &chat)
 {
     m_model->removeChat(chat);
 }
-
-#include "moc_chat-manager-adapter.cpp"

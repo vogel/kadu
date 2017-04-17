@@ -18,6 +18,7 @@
  */
 
 #include "account-notification-service.h"
+#include "account-notification-service.moc"
 
 #include "accounts/account.h"
 #include "html/html-conversion.h"
@@ -155,5 +156,3 @@ void AccountNotificationService::accountConnected()
     auto account = Account{sender()};
     account.removeProperty(QStringLiteral("notify:ignore-connection-errors"));
 }
-
-#include "moc_account-notification-service.cpp"

@@ -19,6 +19,7 @@
  */
 
 #include "languages-manager.h"
+#include "languages-manager.moc"
 
 #include "misc/paths-provider.h"
 
@@ -64,5 +65,3 @@ QMap<QString, QString> LanguagesManager::languages() const
 {
     return m_languages;
 }
-
-#include "moc_languages-manager.cpp"

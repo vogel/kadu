@@ -18,6 +18,7 @@
  */
 
 #include "jabber-register-account-service.h"
+#include "jabber-register-account-service.moc"
 
 #include "services/jabber-error-service.h"
 #include "services/jabber-register-account.h"
@@ -51,5 +52,3 @@ JabberRegisterAccount *JabberRegisterAccountService::registerAccount(Jid jid, QS
     result->setErrorService(m_errorService);
     return result;
 }
-
-#include "moc_jabber-register-account-service.cpp"

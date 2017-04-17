@@ -18,6 +18,7 @@
  */
 
 #include "injector-provider.h"
+#include "injector-provider.moc"
 
 InjectorProvider::InjectorProvider(QObject *parent) : QObject{parent}, m_injector{nullptr}
 {
@@ -36,5 +37,3 @@ void InjectorProvider::setInjector(injeqt::injector *injector)
 {
     m_injector = injector;
 }
-
-#include "moc_injector-provider.cpp"

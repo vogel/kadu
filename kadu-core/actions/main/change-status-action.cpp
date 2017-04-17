@@ -28,6 +28,7 @@
 #include "widgets/status-menu.h"
 
 #include "change-status-action.h"
+#include "change-status-action.moc"
 
 ChangeStatusAction::ChangeStatusAction(QObject *parent) : ActionDescription(parent)
 {
@@ -65,5 +66,3 @@ void ChangeStatusAction::actionInstanceCreated(Action *action)
         action->setIcon(icon->icon());
     }
 }
-
-#include "moc_change-status-action.cpp"

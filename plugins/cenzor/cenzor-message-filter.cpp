@@ -19,6 +19,7 @@
  */
 
 #include "cenzor-message-filter.h"
+#include "cenzor-message-filter.moc"
 
 #include "cenzor-notification-service.h"
 
@@ -98,5 +99,3 @@ bool CenzorMessageFilter::isExclusion(const QString &word)
 
     return false;
 }
-
-#include "moc_cenzor-message-filter.cpp"

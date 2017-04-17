@@ -18,6 +18,7 @@
  */
 
 #include "kadu-window-service.h"
+#include "kadu-window-service.moc"
 
 #include "core/injected-factory.h"
 #include "windows/kadu-window.h"
@@ -86,5 +87,3 @@ std::shared_ptr<DefaultProvider<QWidget *>> KaduWindowService::mainWindowProvide
 {
     return m_mainWindowProvider;
 }
-
-#include "moc_kadu-window-service.cpp"

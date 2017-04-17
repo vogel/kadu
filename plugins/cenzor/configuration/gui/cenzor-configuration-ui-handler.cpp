@@ -19,6 +19,7 @@
  */
 
 #include "cenzor-configuration-ui-handler.h"
+#include "cenzor-configuration-ui-handler.moc"
 
 #include "configuration/cenzor-configuration.h"
 #include "gui/widgets/list-edit-widget.h"
@@ -69,5 +70,3 @@ void CenzorConfigurationUiHandler::mainConfigurationWindowApplied()
     m_cenzorConfiguration->setExclusionList(CenzorConfiguration::toRegExpList(m_exclusionsWidget->list()));
     m_cenzorConfiguration->saveConfiguration();
 }
-
-#include "moc_cenzor-configuration-ui-handler.cpp"

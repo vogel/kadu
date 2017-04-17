@@ -19,6 +19,7 @@
  */
 
 #include "message-html-renderer-service.h"
+#include "message-html-renderer-service.moc"
 
 #include "dom/dom-processor-service.h"
 #include "html/normalized-html-string.h"
@@ -42,5 +43,3 @@ QString MessageHtmlRendererService::renderMessage(const Message &message)
     return QString{R"(<span style="white-space: pre-wrap;">%1</span>)"}.arg(
         m_domProcessorService->process(message.content().string()));
 }
-
-#include "moc_message-html-renderer-service.cpp"

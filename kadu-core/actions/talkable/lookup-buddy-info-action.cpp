@@ -18,6 +18,7 @@
  */
 
 #include "lookup-buddy-info-action.h"
+#include "lookup-buddy-info-action.moc"
 
 #include "actions/action-context.h"
 #include "actions/action.h"
@@ -77,5 +78,3 @@ void LookupBuddyInfoAction::updateActionState(Action *action)
         contact && contact.contactAccount().protocolHandler() &&
         contact.contactAccount().protocolHandler()->searchService());
 }
-
-#include "moc_lookup-buddy-info-action.cpp"

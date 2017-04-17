@@ -18,6 +18,7 @@
  */
 
 #include "chat-widget-container-handler.h"
+#include "chat-widget-container-handler.moc"
 
 ChatWidgetContainerHandler::ChatWidgetContainerHandler(QObject *parent) : QObject{parent}
 {
@@ -26,5 +27,3 @@ ChatWidgetContainerHandler::ChatWidgetContainerHandler(QObject *parent) : QObjec
 ChatWidgetContainerHandler::~ChatWidgetContainerHandler()
 {
 }
-
-#include "moc_chat-widget-container-handler.cpp"

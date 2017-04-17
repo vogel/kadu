@@ -19,6 +19,8 @@
  */
 
 #include "group-tab-bar.h"
+#include "group-tab-bar.moc"
+
 #include "group-filter-tab-data.h"
 
 #include "buddies/buddy-list-mime-data-service.h"
@@ -462,5 +464,3 @@ void GroupTabBar::updateTabData(int tabIndex, GroupFilter groupFilter)
     setTabText(tabIndex, tabData.tabName());
     setTabIcon(tabIndex, tabData.tabIcon(m_iconsManager));
 }
-
-#include "moc_group-tab-bar.cpp"

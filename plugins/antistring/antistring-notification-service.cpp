@@ -18,6 +18,7 @@
  */
 
 #include "antistring-notification-service.h"
+#include "antistring-notification-service.moc"
 
 #include "accounts/account.h"
 #include "chat/chat.h"
@@ -75,5 +76,3 @@ void AntistringNotificationService::notifyStringReceived(const Chat &chat)
 
     m_notificationService->notify(notification);
 }
-
-#include "moc_antistring-notification-service.cpp"

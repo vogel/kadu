@@ -18,6 +18,7 @@
  */
 
 #include "autostatus-plugin-object.h"
+#include "autostatus-plugin-object.moc"
 
 #include "autostatus-actions.h"
 #include "autostatus-service.h"
@@ -80,5 +81,3 @@ void AutostatusPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/autostatus.ui"));
 }
-
-#include "moc_autostatus-plugin-object.cpp"

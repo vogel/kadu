@@ -12,12 +12,13 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "mediaplayer-plugin-object.h"
+#include "mediaplayer-plugin-object.moc"
 
 #include "mediaplayer-configuration-ui-handler.h"
 #include "mediaplayer.h"
@@ -81,5 +82,3 @@ void MediaplayerPluginObject::done()
     m_mainConfigurationWindowService->unregisterUiFile(
         m_pathsProvider->dataPath() + QStringLiteral("plugins/configuration/mediaplayer.ui"));
 }
-
-#include "moc_mediaplayer-plugin-object.cpp"

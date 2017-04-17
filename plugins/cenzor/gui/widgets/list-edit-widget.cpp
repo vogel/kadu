@@ -18,12 +18,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "list-edit-widget.h"
+#include "list-edit-widget.moc"
+
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QPushButton>
-
-#include "list-edit-widget.h"
 
 ListEditWidget::ListEditWidget(QWidget *parent) : QWidget(parent)
 {
@@ -112,5 +113,3 @@ void ListEditWidget::deleteItem()
     delete item;
     LineEdit->clear();
 }
-
-#include "moc_list-edit-widget.cpp"

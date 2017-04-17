@@ -18,6 +18,7 @@
  */
 
 #include "show-about-window-action.h"
+#include "show-about-window-action.moc"
 
 #include "core/injected-factory.h"
 #include "windows/about.h"
@@ -52,5 +53,3 @@ void ShowAboutWindowAction::actionTriggered(QAction *, bool)
 {
     m_injectedFactory->makeInjected<About>(m_kaduWindowService->kaduWindow())->show();
 }
-
-#include "moc_show-about-window-action.cpp"

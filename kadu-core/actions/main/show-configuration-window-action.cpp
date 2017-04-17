@@ -18,6 +18,7 @@
  */
 
 #include "show-configuration-window-action.h"
+#include "show-configuration-window-action.moc"
 
 #include "windows/main-configuration-window-service.h"
 
@@ -46,5 +47,3 @@ void ShowConfigurationWindowAction::actionTriggered(QAction *, bool)
 {
     m_mainConfigurationWindowService->show();
 }
-
-#include "moc_show-configuration-window-action.cpp"

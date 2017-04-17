@@ -19,6 +19,7 @@
  */
 
 #include "chat-history-tab.h"
+#include "chat-history-tab.moc"
 
 #include "gui/widgets/timeline-chat-messages-view.h"
 #include "storage/history-messages-storage.h"
@@ -81,5 +82,3 @@ void ChatHistoryTab::selectTalkable(const Talkable &talkable)
 {
     m_talkableToSelect = talkable;
 }
-
-#include "moc_chat-history-tab.cpp"

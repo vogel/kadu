@@ -21,6 +21,7 @@
  */
 
 #include "icons-manager.h"
+#include "icons-manager.moc"
 
 #include "accounts/account-manager.h"
 #include "configuration/configuration.h"
@@ -242,5 +243,3 @@ QSize IconsManager::getIconsSize()
 {
     return QSize(16, 16);
 }
-
-#include "moc_icons-manager.cpp"

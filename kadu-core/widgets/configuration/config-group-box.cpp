@@ -79,5 +79,3 @@ void ConfigGroupBox::insertWidgets(int pos, QWidget *widget1, QWidget *widget2)
 {
     MainLayout->insertRow(pos, widget1, widget2);
 }
-
-#include "moc_config-group-box.cpp"

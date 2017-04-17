@@ -32,6 +32,7 @@
 #include "windows/kadu-window.h"
 
 #include "kadu-menu.h"
+#include "kadu-menu.moc"
 
 KaduMenu::KaduMenu(const QString &category, KaduMenu *parent) : QObject{parent}, Category{category}, IsSorted{true}
 {
@@ -222,5 +223,3 @@ void KaduMenu::update()
 {
     updateGuiMenuLater();
 }
-
-#include "moc_kadu-menu.cpp"

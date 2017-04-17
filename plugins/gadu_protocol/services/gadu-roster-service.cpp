@@ -19,6 +19,7 @@
  */
 
 #include "gadu-roster-service.h"
+#include "gadu-roster-service.moc"
 
 #include "gadu-account-data.h"
 #include "helpers/gadu-list-helper.h"
@@ -296,5 +297,3 @@ void GaduRosterService::exportContactList()
         putFinished(false);
     }
 }
-
-#include "moc_gadu-roster-service.cpp"

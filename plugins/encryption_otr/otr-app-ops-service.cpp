@@ -31,6 +31,7 @@
 #include "otr-trust-level-service.h"
 
 #include "otr-app-ops-service.h"
+#include "otr-app-ops-service.moc"
 
 OtrAppOpsService::OtrAppOpsService()
 {
@@ -69,5 +70,3 @@ const OtrlMessageAppOps *OtrAppOpsService::appOps() const
 {
     return &AppOps;
 }
-
-#include "moc_otr-app-ops-service.cpp"

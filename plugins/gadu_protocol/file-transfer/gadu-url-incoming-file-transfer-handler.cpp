@@ -18,6 +18,7 @@
  */
 
 #include "gadu-url-incoming-file-transfer-handler.h"
+#include "gadu-url-incoming-file-transfer-handler.moc"
 
 #include "gadu-protocol.h"
 #include "services/drive/gadu-drive-get-transfer.h"
@@ -92,5 +93,3 @@ void GaduUrlIncomingFileTransferHandler::downloadFinished(QNetworkReply *reply)
         break;
     }
 }
-
-#include "moc_gadu-url-incoming-file-transfer-handler.cpp"

@@ -18,6 +18,7 @@
  */
 
 #include "ssl-certificate-widget.h"
+#include "ssl-certificate-widget.moc"
 
 #include <QtNetwork/QSslCertificate>
 #include <QtWidgets/QDialogButtonBox>
@@ -136,5 +137,3 @@ void SslCertificateWidget::addItem(const QString &name, bool value, bool valid)
 {
     addItem(name, value ? tr("Yes") : tr("No"), valid);
 }
-
-#include "moc_ssl-certificate-widget.cpp"

@@ -54,6 +54,7 @@
 #include "server/gadu-writable-session-token.h"
 
 #include "gadu-chat-service.h"
+#include "gadu-chat-service.moc"
 
 #include <QtGui/QTextDocument>
 
@@ -430,5 +431,3 @@ void GaduChatService::leaveChat(const Chat &chat)
 {
     chat.setIgnoreAllMessages(true);
 }
-
-#include "moc_gadu-chat-service.cpp"

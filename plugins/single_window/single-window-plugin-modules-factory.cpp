@@ -18,6 +18,7 @@
  */
 
 #include "single-window-plugin-modules-factory.h"
+#include "single-window-plugin-modules-factory.moc"
 
 #include "single-window-module.h"
 
@@ -38,5 +39,3 @@ std::vector<std::unique_ptr<injeqt::module>> SingleWindowPluginModulesFactory::c
 
     return modules;
 }
-
-#include "moc_single-window-plugin-modules-factory.cpp"

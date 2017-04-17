@@ -18,6 +18,7 @@
  */
 
 #include "hints-widget.h"
+#include "hints-widget.moc"
 
 #include "hint.h"
 #include "hints-configuration.h"
@@ -194,5 +195,3 @@ void HintsWidget::updateHints()
 
     updateTimer();
 }
-
-#include "moc_hints-widget.cpp"

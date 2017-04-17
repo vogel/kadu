@@ -18,6 +18,7 @@
  */
 
 #include "facebook-depreceated-message.h"
+#include "facebook-depreceated-message.moc"
 
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
@@ -59,5 +60,3 @@ void FacebookDepreceatedMessage::showIfNotSeen()
 
     MessageDialog::show(m_iconsManager->iconByPath(KaduIcon("dialog-information")), tr("Kadu - Facebook"), message);
 }
-
-#include "moc_facebook-depreceated-message.cpp"

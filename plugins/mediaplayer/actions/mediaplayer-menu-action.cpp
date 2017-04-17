@@ -18,6 +18,7 @@
  */
 
 #include "mediaplayer-menu-action.h"
+#include "mediaplayer-menu-action.moc"
 
 #include "mediaplayer.h"
 
@@ -62,5 +63,3 @@ void MediaplayerMenuAction::actionTriggered(QAction *sender, bool)
         m_mediaPlayer->menu()->popup(widget->mapToGlobal(QPoint(0, widget->height())));
     }
 }
-
-#include "moc_mediaplayer-menu-action.cpp"

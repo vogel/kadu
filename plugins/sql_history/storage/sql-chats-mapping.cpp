@@ -34,6 +34,7 @@
 #include "storage/sql-contacts-mapping.h"
 
 #include "sql-chats-mapping.h"
+#include "sql-chats-mapping.moc"
 
 SqlChatsMapping::SqlChatsMapping(
     const QSqlDatabase &database, SqlAccountsMapping *accountsMapping, SqlContactsMapping *contactsMapping,
@@ -237,5 +238,3 @@ Chat SqlChatsMapping::stringToChat(const Account &account, const QString &string
 
     return m_chatStorage->create("");
 }
-
-#include "moc_sql-chats-mapping.cpp"

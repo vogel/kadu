@@ -19,6 +19,7 @@
  */
 
 #include "chat-widget-message-handler.h"
+#include "chat-widget-message-handler.moc"
 
 #include "chat/buddy-chat-manager.h"
 #include "configuration/configuration-api.h"
@@ -240,5 +241,3 @@ void ChatWidgetMessageHandler::messageSent(const Message &message)
     if (chatWidget)
         chatWidget->addMessage(message);
 }
-
-#include "moc_chat-widget-message-handler.cpp"

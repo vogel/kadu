@@ -20,6 +20,7 @@
  */
 
 #include "sql-restore.h"
+#include "sql-restore.moc"
 
 #include "misc/paths-provider.h"
 
@@ -98,5 +99,3 @@ SqlRestore::RestoreError SqlRestore::performRestore(const QString &databaseFileP
 
     return static_cast<RestoreError>(restoreProcess.exitCode());
 }
-
-#include "moc_sql-restore.cpp"

@@ -32,6 +32,7 @@ extern "C" {
 #include "otr-user-state-service.h"
 
 #include "otr-private-key-service.h"
+#include "otr-private-key-service.moc"
 
 void OtrPrivateKeyService::wrapperOtrCreatePrivateKey(void *data, const char *accountName, const char *protocol)
 {
@@ -97,5 +98,3 @@ void OtrPrivateKeyService::readPrivateKeys()
     OtrlUserState userState = UserStateService->userState();
     otrl_privkey_read(userState, PathService->privateKeysStoreFilePath().toUtf8().data());
 }
-
-#include "moc_otr-private-key-service.cpp"

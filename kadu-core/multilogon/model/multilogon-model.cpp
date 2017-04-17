@@ -18,11 +18,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "model/roles.h"
 #include "multilogon/multilogon-session.h"
 #include "protocols/services/multilogon-service.h"
 
 #include "multilogon-model.h"
-#include <model/roles.h>
+#include "multilogon-model.moc"
 
 MultilogonModel::MultilogonModel(MultilogonService *service, QObject *parent)
         : QAbstractTableModel(parent), Service(service)
@@ -135,5 +136,3 @@ void MultilogonModel::multilogonSessionDisconnected(MultilogonSession session)
 
     endRemoveRows();
 }
-
-#include "moc_multilogon-model.cpp"

@@ -19,6 +19,7 @@
  */
 
 #include "buddy-chat-manager.h"
+#include "buddy-chat-manager.moc"
 
 #include "accounts/account-manager.h"
 #include "buddies/buddy-manager.h"
@@ -167,5 +168,3 @@ Chat BuddyChatManager::buddyChat(const Buddy &buddy)
     else
         return createAndInsertBuddyChat(buddy);
 }
-
-#include "moc_buddy-chat-manager.cpp"

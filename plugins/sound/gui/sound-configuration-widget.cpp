@@ -18,6 +18,7 @@
  */
 
 #include "sound-configuration-widget.h"
+#include "sound-configuration-widget.moc"
 
 #include "gui/sound-select-file.h"
 #include "sound-manager.h"
@@ -99,5 +100,3 @@ void SoundConfigurationWidget::themeChanged(int index)
             m_soundSelectFile->setFile(it.value());
     }
 }
-
-#include "moc_sound-configuration-widget.cpp"

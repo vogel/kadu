@@ -44,6 +44,7 @@
 #include "sms-gateway-manager.h"
 
 #include "sms-actions.h"
+#include "sms-actions.moc"
 
 SmsActions::SmsActions(QObject *parent) : QObject{parent}
 {
@@ -138,5 +139,3 @@ void SmsActions::talkableActivated(const Talkable &talkable)
     if (buddy.contacts().isEmpty() && !buddy.mobile().isEmpty())
         newSms(buddy.mobile());
 }
-
-#include "moc_sms-actions.cpp"

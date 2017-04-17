@@ -18,6 +18,7 @@
  */
 
 #include "otr-plugin-object.h"
+#include "otr-plugin-object.moc"
 
 #include "gui/widgets/otr-account-configuration-widget-factory.h"
 #include "gui/widgets/otr-buddy-configuration-widget-factory.h"
@@ -226,5 +227,3 @@ void OtrPluginObject::done()
     m_buddyConfigurationWidgetFactoryRepository->unregisterFactory(m_otrBuddyConfigurationWidgetFactory);
     m_accountConfigurationWidgetFactoryRepository->unregisterFactory(m_otrAccountConfigurationWidgetFactory);
 }
-
-#include "moc_otr-plugin-object.cpp"

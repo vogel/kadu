@@ -27,6 +27,7 @@
 #include "misc/paths-provider.h"
 
 #include "emoticon-theme-manager.h"
+#include "emoticon-theme-manager.moc"
 
 QString EmoticonThemeManager::defaultTheme()
 {
@@ -89,5 +90,3 @@ bool EmoticonThemeManager::isValidThemePath(const QString &themePath) const
 
     return false;
 }
-
-#include "moc_emoticon-theme-manager.cpp"
