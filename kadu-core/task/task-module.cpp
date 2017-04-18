@@ -17,21 +17,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatar-module.h"
+#include "task-module.h"
 
-#include "avatars/aggregated-account-avatar-service.h"
-#include "avatars/aggregated-contact-avatar-service.h"
-#include "avatars/avatars.h"
-#include "avatars/contact-avatar-downloader.h"
+#include "task/serial-delayed-task-executor.h"
 
-AvatarModule::AvatarModule()
+TaskModule::TaskModule()
 {
-    add_type<AggregatedAccountAvatarService>();
-    add_type<AggregatedContactAvatarService>();
-    add_type<Avatars>();
-    add_type<ContactAvatarDownloader>();
+    add_type<SerialDelayedTaskExecutor>();
 }
 
-AvatarModule::~AvatarModule()
+TaskModule::~TaskModule()
 {
 }

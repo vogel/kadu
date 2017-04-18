@@ -64,6 +64,7 @@
 #include "ssl/ssl-module.h"
 #include "status/status-module.h"
 #include "talkable/talkable-module.h"
+#include "task/task-module.h"
 #include "themes/themes-module.h"
 #include "widgets/chat-widget/chat-widget-module.h"
 #include "windows/chat-window/chat-window-module.h"
@@ -230,6 +231,7 @@ int main(int argc, char *argv[]) try
     modules.emplace_back(std::make_unique<SslModule>());
     modules.emplace_back(std::make_unique<StatusModule>());
     modules.emplace_back(std::make_unique<TalkableModule>());
+    modules.emplace_back(std::make_unique<TaskModule>());
     modules.emplace_back(std::make_unique<ThemesModule>());
 
     auto injector = injeqt::injector{std::move(modules)};

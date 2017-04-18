@@ -1,7 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2011, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
- * Copyright 2010, 2011, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -21,33 +20,30 @@
 #pragma once
 
 #include "exports.h"
+#include "task/task.h"
 
 #include <QtCore/QObject>
-#include <QtCore/QPointer>
 #include <QtCore/QTimer>
 #include <injeqt/injeqt.h>
+#include <queue>
 
 class AggregatedContactAvatarService;
 struct ContactAvatarGlobalId;
 
-class KADUAPI SerialAvatarDownloader : public QObject
+class KADUAPI SerialDelayedTaskExecutor : public QObject
 {
     Q_OBJECT
 
 public:
-    Q_INVOKABLE explicit SerialAvatarDownloader(QObject *parent = nullptr);
-    virtual ~SerialAvatarDownloader();
+    Q_INVOKABLE explicit SerialDelayedTaskExecutor(QObject *parent = nullptr);
+    virtual ~SerialDelayedTaskExecutor();
 
-    void downloadAvatar(const ContactAvatarGlobalId &id);
+    void execute(Task task);
 
 private:
-    QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
-
-    std::vector<ContactAvatarGlobalId> m_avatarsToDownload;
+    std::queue<Task> m_tasks;
     QTimer m_timer;
 
 private slots:
-    INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
-
-    void downloadNextAvatar();
+    void executeNext();
 };

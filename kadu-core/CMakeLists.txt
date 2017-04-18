@@ -96,6 +96,7 @@ set (kadu_SUBDIRS
 	status
 	storage
 	talkable
+	task
 	themes
 	url-handlers
 	widgets
@@ -327,6 +328,7 @@ kadu_api_directories (kadu-core
 	talkable
 	talkable/filter
 	talkable/model
+	task
 	themes
 	url-handlers
 	widgets

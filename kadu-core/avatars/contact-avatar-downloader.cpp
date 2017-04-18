@@ -26,11 +26,11 @@
 #include "avatars/avatar-id.h"
 #include "avatars/avatars.h"
 #include "avatars/contact-avatar-global-id.h"
-#include "avatars/serial-avatar-downloader.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact-global-id.h"
 #include "contacts/contact-manager.h"
+#include "task/serial-delayed-task-executor.h"
 
 #include <QtGui/QPixmap>
 
@@ -61,9 +61,9 @@ void ContactAvatarDownloader::setContactManager(ContactManager *contactManager)
     m_contactManager = contactManager;
 }
 
-void ContactAvatarDownloader::setSerialAvatarDownloader(SerialAvatarDownloader *serialAvatarDownloader)
+void ContactAvatarDownloader::setSerialDelayedTaskExecutor(SerialDelayedTaskExecutor *serialDelayedTaskExecutor)
 {
-    m_serialAvatarDownloader = serialAvatarDownloader;
+    m_serialDelayedTaskExecutor = serialDelayedTaskExecutor;
 }
 
 void ContactAvatarDownloader::init()
@@ -93,7 +93,9 @@ void ContactAvatarDownloader::downloadIfNeeded(const ContactAvatarGlobalId &id) 
         return;
 
     if (downloadRequired(id))
-        m_serialAvatarDownloader->downloadAvatar({id.contact, id.id});
+        m_serialDelayedTaskExecutor->execute([this, id](){
+            return m_aggregatedContactAvatarService->download(id);
+        });
 }
 
 bool ContactAvatarDownloader::downloadRequired(const ContactAvatarGlobalId &id) const

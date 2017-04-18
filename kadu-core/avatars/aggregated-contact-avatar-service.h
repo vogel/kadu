@@ -43,7 +43,7 @@ public:
 
     void add(ContactAvatarService *service);
     void remove(ContactAvatarService *service);
-    void download(const ContactAvatarGlobalId &id) const;
+    bool download(const ContactAvatarGlobalId &id) const;
 
 signals:
     void available(const ContactAvatarGlobalId &id);

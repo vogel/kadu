@@ -28,13 +28,14 @@
 
 #include <cassert>
 
-void AggregatedContactAvatarService::download(const ContactAvatarGlobalId &id) const
+bool AggregatedContactAvatarService::download(const ContactAvatarGlobalId &id) const
 {
     auto service = m_services.find(id.contact.account);
     if (service == std::end(m_services))
-        return;
+        return false;
 
     service->second->download({id.contact.id, id.id});
+    return true;
 }
 
 void AggregatedContactAvatarService::add(ContactAvatarService *service)

@@ -1,6 +1,6 @@
 /*
  * %kadu copyright begin%
- * Copyright 2016 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,21 +17,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "avatar-module.h"
-
-#include "avatars/aggregated-account-avatar-service.h"
-#include "avatars/aggregated-contact-avatar-service.h"
-#include "avatars/avatars.h"
-#include "avatars/contact-avatar-downloader.h"
-
-AvatarModule::AvatarModule()
-{
-    add_type<AggregatedAccountAvatarService>();
-    add_type<AggregatedContactAvatarService>();
-    add_type<Avatars>();
-    add_type<ContactAvatarDownloader>();
-}
-
-AvatarModule::~AvatarModule()
-{
-}
+#include "task.h"

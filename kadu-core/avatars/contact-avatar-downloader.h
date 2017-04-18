@@ -34,7 +34,7 @@ class Avatars;
 class Configuration;
 class ContactManager;
 class Contact;
-class SerialAvatarDownloader;
+class SerialDelayedTaskExecutor;
 struct AvatarId;
 struct ContactAvatarGlobalId;
 struct ContactGlobalId;
@@ -56,7 +56,7 @@ private:
     QPointer<Avatars> m_avatars;
     QPointer<Configuration> m_configuration;
     QPointer<ContactManager> m_contactManager;
-    QPointer<SerialAvatarDownloader> m_serialAvatarDownloader;
+    QPointer<SerialDelayedTaskExecutor> m_serialDelayedTaskExecutor;
     bool m_downloadAvatars{false};
 
     void downloadIfNeeded(const ContactAvatarGlobalId &id) const;
@@ -70,6 +70,6 @@ private slots:
     INJEQT_SET void setAvatars(Avatars *avatars);
     INJEQT_SET void setConfiguration(Configuration *configuration);
     INJEQT_SET void setContactManager(ContactManager *contactManager);
-    INJEQT_SET void setSerialAvatarDownloader(SerialAvatarDownloader *serialAvatarDownloader);
+    INJEQT_SET void setSerialDelayedTaskExecutor(SerialDelayedTaskExecutor *serialDelayedTaskExecutor);
     INJEQT_INIT void init();
 };
