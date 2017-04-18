@@ -37,7 +37,7 @@ GaduDrivePutTransfer::GaduDrivePutTransfer(
     auto metadata = QJsonObject{};
     metadata["node_type"] = "file";
 
-    // sigh, %2C inside string forbits me from using .arg().arg()
+    // sigh, %2C inside string forbids me from using .arg().arg()
     auto url = QString{"https://drive.mpa.gg.pl/me/file/outbox/%1%2%3"}.arg(
         ticket.ticketId(), "%2C", QString::fromUtf8(QUrl::toPercentEncoding(fileName)));
 
