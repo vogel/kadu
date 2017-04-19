@@ -178,7 +178,8 @@ protected:
             }
         }
 
-        for (auto const &item : Items)
+        auto copy = Items;
+        for (auto const &item : copy)
         {
             itemAboutToBeAdded(item);
             itemAdded(item);
