@@ -43,6 +43,9 @@ public:
     explicit FacebookRosterService(QVector<Contact> contacts, Protocol &protocol, QFacebookSession &facebookSession);
     virtual ~FacebookRosterService();
 
+signals:
+    void added(const QFacebookContact &c);
+
 private:
     QPointer<BuddyManager> m_buddyManager;
     QPointer<ContactManager> m_contactManager;

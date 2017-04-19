@@ -61,7 +61,9 @@ set (SOURCES
 	qthrift/qthrift-writer.cpp
 	qthrift/qthrift.cpp
 
+	services/facebook-avatar-downloader.cpp
 	services/facebook-chat-service.cpp
+	services/facebook-contact-avatar-service.cpp
 	services/facebook-roster-service.cpp
 
 	widgets/facebook-add-account-widget.cpp

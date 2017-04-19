@@ -22,8 +22,10 @@
 
 #include "qfacebook/session/qfacebook-session.h"
 #include "services/facebook-chat-service.h"
+#include "services/facebook-contact-avatar-service.h"
 #include "services/facebook-roster-service.h"
 
+#include "avatars/aggregated-contact-avatar-service.h"
 #include "chat/chat-service-repository.h"
 #include "contacts/contact-manager.h"
 #include "plugin/plugin-injected-factory.h"
@@ -35,7 +37,13 @@ FacebookServices::FacebookServices(Account account, std::unique_ptr<QFacebookSes
 
 FacebookServices::~FacebookServices()
 {
+    m_aggregatedContactAvatarService->remove(m_contactAvatarService.get());
     m_chatServiceRepository->removeChatService(m_chatService.get());
+}
+
+void FacebookServices::setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService)
+{
+    m_aggregatedContactAvatarService = aggregatedContactAvatarService;
 }
 
 void FacebookServices::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
@@ -55,10 +63,15 @@ void FacebookServices::setPluginInjectedFactory(PluginInjectedFactory *pluginInj
 
 void FacebookServices::init()
 {
+    m_contactAvatarService = m_pluginInjectedFactory->makeUnique<FacebookContactAvatarService>(m_account);
+    m_aggregatedContactAvatarService->add(m_contactAvatarService.get());
+
     m_chatService = m_pluginInjectedFactory->makeUnique<FacebookChatService>(m_account, *m_session);
     m_chatServiceRepository->addChatService(m_chatService.get());
 
     auto contacts = m_contactManager->contacts(m_account, ContactManager::ExcludeAnonymous);
     m_rosterService = m_pluginInjectedFactory->makeUnique<FacebookRosterService>(
         std::move(contacts), *m_account.protocolHandler(), *m_session);
+
+    connect(m_rosterService.get(), &FacebookRosterService::added, m_contactAvatarService.get(), &FacebookContactAvatarService::contactAdded);
 }

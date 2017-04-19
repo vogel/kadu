@@ -28,9 +28,11 @@
 #include <memory>
 
 class FacebookChatService;
+class FacebookContactAvatarService;
 class FacebookRosterService;
 class QFacebookSession;
 
+class AggregatedContactAvatarService;
 class ChatServiceRepository;
 class ContactManager;
 class PluginInjectedFactory;
@@ -44,6 +46,7 @@ public:
     virtual ~FacebookServices();
 
 private:
+    QPointer<AggregatedContactAvatarService> m_aggregatedContactAvatarService;
     QPointer<ChatServiceRepository> m_chatServiceRepository;
     QPointer<ContactManager> m_contactManager;
     QPointer<PluginInjectedFactory> m_pluginInjectedFactory;
@@ -51,9 +54,11 @@ private:
     Account m_account;
     std::unique_ptr<QFacebookSession> m_session;
     std::unique_ptr<FacebookChatService> m_chatService;
+    std::unique_ptr<FacebookContactAvatarService> m_contactAvatarService;
     std::unique_ptr<FacebookRosterService> m_rosterService;
 
 private slots:
+    INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);
     INJEQT_SET void setContactManager(ContactManager *contactManager);
     INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);

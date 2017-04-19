@@ -160,6 +160,7 @@ void FacebookRosterService::addContact(const QFacebookContact &c)
     contact.rosterEntry()->setSynchronized();
 
     RosterService::addContact(contact);
+    emit added(c);
 }
 
 void FacebookRosterService::removeContact(const QString &id)
