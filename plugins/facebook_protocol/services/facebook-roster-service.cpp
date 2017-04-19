@@ -128,9 +128,7 @@ void FacebookRosterService::replaceContacts(std::vector<QFacebookContact> newCon
     std::transform(
         std::begin(newContacts), std::end(newContacts), std::back_inserter(newIds),
         [](const QFacebookContact &c) { return QString::fromUtf8(c.id()); });
-    std::sort(std::begin(newContacts), std::end(newContacts), [](const QFacebookContact &x, const QFacebookContact &y) {
-        return x.id() < y.id();
-    });
+    std::sort(std::begin(newIds), std::end(newIds));
 
     std::vector<QString> toRemove;
     std::set_difference(
