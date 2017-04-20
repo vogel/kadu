@@ -24,6 +24,7 @@
 #include "icons/icons-manager.h"
 #include "identities/identity-manager.h"
 #include "plugin/plugin-injected-factory.h"
+#include "widgets/account-avatar-widget.h"
 #include "widgets/account-configuration-widget-tab-adapter.h"
 #include "widgets/identities-combo-box.h"
 #include "widgets/proxy-combo-box.h"
@@ -142,7 +143,7 @@ void FacebookEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
     connect(m_rememberPassword, &QCheckBox::clicked, this, &FacebookEditAccountWidget::dataChanged);
     formLayout->addRow(0, m_rememberPassword);
 
-    m_identities = m_pluginInjectedFactory->makeInjected<IdentitiesComboBox>(this);
+    m_identities = m_pluginInjectedFactory->makeOwned<IdentitiesComboBox>(this);
     connect(
         m_identities, static_cast<void (IdentitiesComboBox::*)(int)>(&IdentitiesComboBox::currentIndexChanged), this,
         &FacebookEditAccountWidget::dataChanged);
@@ -154,6 +155,9 @@ void FacebookEditAccountWidget::createGeneralTab(QTabWidget *tabWidget)
         m_proxies, static_cast<void (ProxyComboBox::*)(int)>(&IdentitiesComboBox::currentIndexChanged), this,
         &FacebookEditAccountWidget::dataChanged);
     formLayout->addRow(tr("Proxy") + ':', m_proxies);
+
+    auto avatarWidget = m_pluginInjectedFactory->makeOwned<AccountAvatarWidget>(account(), this);
+    layout->addWidget(avatarWidget, 0, 1, Qt::AlignTop);
 
     tabWidget->addTab(generalTab, tr("General"));
 }

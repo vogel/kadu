@@ -99,19 +99,19 @@ void AccountAvatarWidget::createGui()
 
 void AccountAvatarWidget::serviceAvailabilityChanged()
 {
+    m_changePhotoButton->show();
+
     switch (m_aggregatedAccountAvatarService->availability(m_account))
     {
     case AggregatedAccountAvatarService::Availability::None:
-        setEnabled(false);
+        m_changePhotoButton->hide();
         return;
     case AggregatedAccountAvatarService::Availability::UploadOnly:
-        setEnabled(true);
         Mode = ModeChange;
         break;
     case AggregatedAccountAvatarService::Availability::Full:
     {
         auto avatar = m_avatars->pixmap(avatarId(m_account.accountContact()));
-        setEnabled(true);
         Mode = avatar.isNull() ? ModeChange : ModeRemove;
         break;
     }
