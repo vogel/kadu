@@ -41,7 +41,6 @@
 #include "widgets/configuration/config-check-box.h"
 #include "widgets/configuration/config-color-button.h"
 #include "widgets/configuration/config-combo-box.h"
-#include "widgets/configuration/config-gg-password-edit.h"
 #include "widgets/configuration/config-group-box.h"
 #include "widgets/configuration/config-hot-key-edit.h"
 #include "widgets/configuration/config-label.h"
@@ -331,8 +330,6 @@ ConfigWidget *ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNode
 
     if (tagName == "line-edit")
         widget = m_injectedFactory->makeInjected<ConfigLineEdit>(configGroupBox, DataManager);
-    else if (tagName == "gg-password-edit")
-        widget = m_injectedFactory->makeInjected<ConfigGGPasswordEdit>(configGroupBox, DataManager);
     else if (tagName == "check-box")
         widget = m_injectedFactory->makeInjected<ConfigCheckBox>(configGroupBox, DataManager);
     else if (tagName == "radio-button")

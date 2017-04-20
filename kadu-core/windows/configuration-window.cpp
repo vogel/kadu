@@ -30,26 +30,6 @@
 #include "configuration/configuration-manager.h"
 #include "core/injected-factory.h"
 #include "os/generic/window-geometry-manager.h"
-#include "widgets/configuration/config-action-button.h"
-#include "widgets/configuration/config-check-box.h"
-#include "widgets/configuration/config-color-button.h"
-#include "widgets/configuration/config-combo-box.h"
-#include "widgets/configuration/config-gg-password-edit.h"
-#include "widgets/configuration/config-group-box.h"
-#include "widgets/configuration/config-hot-key-edit.h"
-#include "widgets/configuration/config-label.h"
-#include "widgets/configuration/config-line-edit.h"
-#include "widgets/configuration/config-line-separator.h"
-#include "widgets/configuration/config-list-widget.h"
-#include "widgets/configuration/config-path-list-edit.h"
-#include "widgets/configuration/config-preview.h"
-#include "widgets/configuration/config-section.h"
-#include "widgets/configuration/config-select-file.h"
-#include "widgets/configuration/config-select-font.h"
-#include "widgets/configuration/config-slider.h"
-#include "widgets/configuration/config-spin-box.h"
-#include "widgets/configuration/config-syntax-editor.h"
-#include "widgets/configuration/config-widget.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/kadu-window.h"
 #include "activate.h"
@@ -57,11 +37,9 @@
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialogButtonBox>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QListWidget>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QStyle>
 #include <QtWidgets/QVBoxLayout>
-#include <QtWidgets/QWidget>
-#include <QtXml/QDomElement>
 
 ConfigurationWindow::ConfigurationWindow(
     const QString &name, const QString &caption, const QString &section, ConfigurationWindowDataManager *dataManager,

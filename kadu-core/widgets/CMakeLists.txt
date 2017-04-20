@@ -124,7 +124,6 @@ set (widgets_SRCS
 	configuration/config-check-box.cpp
 	configuration/config-color-button.cpp
 	configuration/config-combo-box.cpp
-	configuration/config-gg-password-edit.cpp
 	configuration/config-hot-key-edit.cpp
 	configuration/config-label.cpp
 	configuration/config-line-separator.cpp
