@@ -20,6 +20,7 @@
 #pragma once
 
 #include "avatars/contact-avatar-id.h"
+#include "exports.h"
 #include "misc/memory.h"
 
 #include <QtCore/QObject>
@@ -27,13 +28,13 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
-class GaduAvatarDownloader : public QObject
+class KADUAPI HttpAvatarDownloader : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit GaduAvatarDownloader(ContactAvatarId id, QObject *parent = nullptr);
-    virtual ~GaduAvatarDownloader();
+    explicit HttpAvatarDownloader(ContactAvatarId id, QString url, QObject *parent = nullptr);
+    virtual ~HttpAvatarDownloader();
 
 signals:
     void downloaded(const ContactAvatarId &id, const QByteArray &content);
@@ -48,7 +49,7 @@ private:
     void done(QByteArray avatar);
     void failed();
 
-    void fetch(const QString &url);
+    void fetch(QString url);
     void parseReply();
 
 private slots:

@@ -1,6 +1,7 @@
 /*
  * %kadu copyright begin%
- * Copyright 2017 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
+ * Copyright 2012, 2013 Bartosz Brachaczek (b.brachaczek@gmail.com)
+ * Copyright 2012, 2013, 2014 Rafał Przemysław Malinowski (rafal.przemyslaw.malinowski@gmail.com)
  * %kadu copyright end%
  *
  * This program is free software; you can redistribute it and/or
@@ -17,37 +18,37 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "facebook-avatar-downloader.h"
-#include "facebook-avatar-downloader.moc"
+#include "http-avatar-downloader.h"
+#include "http-avatar-downloader.moc"
 
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QtNetwork/QNetworkRequest>
 
-FacebookAvatarDownloader::FacebookAvatarDownloader(ContactAvatarId id, QObject *parent)
+HttpAvatarDownloader::HttpAvatarDownloader(ContactAvatarId id, QString url, QObject *parent)
         : QObject{parent}, m_reply{}, m_redirectCount{0}, m_id{std::move(id)}
 {
     m_nam = make_owned<QNetworkAccessManager>(this);
-    fetch(m_id.id);
+    fetch(std::move(url));
 }
 
-FacebookAvatarDownloader::~FacebookAvatarDownloader()
+HttpAvatarDownloader::~HttpAvatarDownloader()
 {
 }
 
-void FacebookAvatarDownloader::done(QByteArray avatar)
+void HttpAvatarDownloader::done(QByteArray avatar)
 {
     emit downloaded(m_id, std::move(avatar));
     deleteLater();
 }
 
-void FacebookAvatarDownloader::failed()
+void HttpAvatarDownloader::failed()
 {
     deleteLater();
 }
 
-void FacebookAvatarDownloader::requestFinished()
+void HttpAvatarDownloader::requestFinished()
 {
     auto redirect = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
     m_reply->deleteLater();
@@ -69,16 +70,16 @@ void FacebookAvatarDownloader::requestFinished()
     fetch(redirect.toString());
 }
 
-void FacebookAvatarDownloader::fetch(const QString &url)
+void HttpAvatarDownloader::fetch(QString url)
 {
     QNetworkRequest request;
-    request.setUrl(url);
+    request.setUrl(std::move(url));
 
     m_reply = m_nam->get(request);
     connect(m_reply, SIGNAL(finished()), this, SLOT(requestFinished()));
 }
 
-void FacebookAvatarDownloader::parseReply()
+void HttpAvatarDownloader::parseReply()
 {
     done(m_reply->readAll());
 }

@@ -21,9 +21,9 @@
 #include "facebook-contact-avatar-service.moc"
 
 #include "qfacebook/qfacebook-contact.h"
-#include "services/facebook-avatar-downloader.h"
 
 #include "avatars/contact-avatar-id.h"
+#include "avatars/http-avatar-downloader.h"
 #include "contacts/contact-id.h"
 
 FacebookContactAvatarService::FacebookContactAvatarService(Account account, QObject *parent)
@@ -35,8 +35,8 @@ FacebookContactAvatarService::~FacebookContactAvatarService() = default;
 
 void FacebookContactAvatarService::download(const ContactAvatarId &id)
 {
-    auto avatarDownloader = make_owned<FacebookAvatarDownloader>(id, this);
-    connect(avatarDownloader, &FacebookAvatarDownloader::downloaded, this, &FacebookContactAvatarService::downloaded);
+    auto avatarDownloader = make_owned<HttpAvatarDownloader>(id, id.id, this);
+    connect(avatarDownloader, &HttpAvatarDownloader::downloaded, this, &FacebookContactAvatarService::downloaded);
 }
 
 void FacebookContactAvatarService::contactAdded(const QFacebookContact &c)

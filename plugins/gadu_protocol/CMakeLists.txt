@@ -46,7 +46,6 @@ set (SOURCES
 
 	open-chat-with/gadu-open-chat-with-runner.cpp
 
-	server/gadu-avatar-downloader.cpp
 	server/gadu-connection.cpp
 	server/gadu-servers-manager.cpp
 	server/gadu-writable-session-token.cpp

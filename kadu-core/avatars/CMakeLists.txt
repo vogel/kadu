@@ -9,6 +9,7 @@ set (avatars_SRCS
 	contact-avatar-global-id.cpp
 	contact-avatar-id.cpp
 	contact-avatar-service.cpp
+	http-avatar-downloader.cpp
 )
 
 kadu_subdirectory (avatars "${avatars_SRCS}")

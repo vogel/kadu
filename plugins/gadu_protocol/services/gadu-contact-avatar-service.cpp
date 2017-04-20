@@ -20,9 +20,8 @@
 #include "gadu-contact-avatar-service.h"
 #include "gadu-contact-avatar-service.moc"
 
-#include "server/gadu-avatar-downloader.h"
-
 #include "avatars/contact-avatar-id.h"
+#include "avatars/http-avatar-downloader.h"
 #include "misc/memory.h"
 
 GaduContactAvatarService::GaduContactAvatarService(Account account, QObject *parent)
@@ -34,8 +33,9 @@ GaduContactAvatarService::~GaduContactAvatarService() = default;
 
 void GaduContactAvatarService::download(const ContactAvatarId &id)
 {
-    auto avatarDownloader = make_owned<GaduAvatarDownloader>(id, this);
-    connect(avatarDownloader, &GaduAvatarDownloader::downloaded, this, &GaduContactAvatarService::downloaded);
+    auto url = QString{"http://avatars.gg.pl/%1/s,big"}.arg(QString::fromUtf8(id.contact.value));
+    auto avatarDownloader = make_owned<HttpAvatarDownloader>(id, std::move(url), this);
+    connect(avatarDownloader, &HttpAvatarDownloader::downloaded, this, &GaduContactAvatarService::downloaded);
 }
 
 void GaduContactAvatarService::handleAvatarData(const uin_t uin, const struct gg_event_user_data_attr *const avatarData)
