@@ -28,7 +28,6 @@
 #include <libgadu.h>
 
 #include "services/gadu-account-avatar-service.h"
-#include "services/gadu-buddy-list-serialization-service.h"
 #include "services/gadu-chat-image-service.h"
 #include "services/gadu-chat-service.h"
 #include "services/gadu-chat-state-service.h"
@@ -54,6 +53,7 @@ class GaduContactAvatarService;
 class GaduContactListHandler;
 class GaduDriveService;
 class GaduIMTokenService;
+class GaduListHelper;
 class GaduNotifyService;
 class GaduOpenChatWithRunner;
 class GaduProtocolSocketNotifiers;
@@ -104,7 +104,6 @@ private:
     GaduOpenChatWithRunner *OpenChatRunner;
 
     GaduAccountAvatarService *m_gaduAccountAvatarService;
-    GaduBuddyListSerializationService *CurrentBuddyListSerializationService;
     GaduChatImageService *CurrentChatImageService;
     GaduChatService *CurrentChatService;
     GaduContactAvatarService *m_gaduContactAvatarService;
@@ -183,10 +182,6 @@ public:
         ProtocolFactory *factory);
     virtual ~GaduProtocol();
 
-    virtual BuddyListSerializationService *buddyListSerializationService()
-    {
-        return CurrentBuddyListSerializationService;
-    }
     virtual ChatImageService *chatImageService()
     {
         return CurrentChatImageService;

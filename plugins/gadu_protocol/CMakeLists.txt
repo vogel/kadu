@@ -65,7 +65,6 @@ set (SOURCES
 	services/user-data/gadu-user-data-service.cpp
 
 	services/gadu-account-avatar-service.cpp
-	services/gadu-buddy-list-serialization-service.cpp
 	services/gadu-chat-image-service.cpp
 	services/gadu-chat-service.cpp
 	services/gadu-chat-state-service.cpp

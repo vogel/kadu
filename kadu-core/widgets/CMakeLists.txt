@@ -24,7 +24,6 @@ set (widgets_SRCS
 
 	account-add-widget.cpp
 	account-avatar-widget.cpp
-	account-buddy-list-widget.cpp
 	account-configuration-widget.cpp
 	account-configuration-widget-factory.cpp
 	account-configuration-widget-factory-repository.cpp

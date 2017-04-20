@@ -38,7 +38,6 @@
 #include "talkable/filter/hide-anonymous-talkable-filter.h"
 #include "talkable/filter/name-talkable-filter.h"
 #include "talkable/model/talkable-proxy-model.h"
-#include "widgets/account-buddy-list-widget.h"
 #include "widgets/accounts-combo-box.h"
 #include "widgets/chat-widget/chat-widget-manager.h"
 #include "widgets/filtered-tree-view.h"
@@ -51,6 +50,7 @@
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QVBoxLayout>
 
 AddConferenceWindow::AddConferenceWindow(QWidget *parent) : QDialog(parent)

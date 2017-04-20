@@ -94,7 +94,6 @@ private:
     void createGeneralTab(QTabWidget *);
     void createGeneralGroupBox(QVBoxLayout *layout);
     void createPersonalInfoTab(QTabWidget *);
-    void createBuddiesTab(QTabWidget *);
     void createOptionsTab(QTabWidget *);
 
     void loadAccountData();

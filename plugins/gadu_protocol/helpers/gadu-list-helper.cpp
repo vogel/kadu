@@ -93,14 +93,6 @@ QString GaduListHelper::contactToLine70(Contact contact)
     return list.join(";");
 }
 
-QByteArray GaduListHelper::buddyListToByteArray(Account account, const BuddyList &buddies)
-{
-    auto contacts = QVector<Contact>{};
-    for (auto &&buddy : buddies)
-        contacts += buddy.contacts(account);
-    return contactListToByteArray(contacts);
-}
-
 QByteArray GaduListHelper::contactListToByteArray(const QVector<Contact> &contacts)
 {
     auto result = QStringList{};

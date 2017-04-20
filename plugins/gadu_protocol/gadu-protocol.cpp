@@ -146,8 +146,6 @@ void GaduProtocol::init()
 
     m_gaduAccountAvatarService = new GaduAccountAvatarService(account(), this);
 
-    CurrentBuddyListSerializationService = new GaduBuddyListSerializationService{m_gaduListHelper, account(), this};
-
     CurrentChatImageService = new GaduChatImageService(account(), this);
     CurrentChatImageService->setConnection(Connection);
 

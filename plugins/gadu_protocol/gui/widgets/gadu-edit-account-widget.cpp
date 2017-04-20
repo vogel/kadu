@@ -40,7 +40,6 @@
 #include "plugin/plugin-injected-factory.h"
 #include "protocols/protocol.h"
 #include "widgets/account-avatar-widget.h"
-#include "widgets/account-buddy-list-widget.h"
 #include "widgets/account-configuration-widget-tab-adapter.h"
 #include "widgets/identities-combo-box.h"
 #include "widgets/proxy-combo-box.h"
@@ -126,7 +125,6 @@ void GaduEditAccountWidget::createGui()
 
     createGeneralTab(tabWidget);
     createPersonalInfoTab(tabWidget);
-    createBuddiesTab(tabWidget);
     createOptionsTab(tabWidget);
 
     new AccountConfigurationWidgetTabAdapter(this, tabWidget, this);
@@ -212,17 +210,6 @@ void GaduEditAccountWidget::createPersonalInfoTab(QTabWidget *tabWidget)
     gpiw = m_pluginInjectedFactory->makeInjected<GaduPersonalInfoWidget>(account(), tabWidget);
     connect(gpiw, SIGNAL(dataChanged()), this, SLOT(dataChanged()));
     tabWidget->addTab(gpiw, tr("Personal info"));
-}
-
-void GaduEditAccountWidget::createBuddiesTab(QTabWidget *tabWidget)
-{
-    auto widget = new QWidget(this);
-    auto layout = new QVBoxLayout(widget);
-
-    auto buddiesWidget = m_pluginInjectedFactory->makeInjected<AccountBuddyListWidget>(account(), widget);
-    layout->addWidget(buddiesWidget);
-
-    tabWidget->addTab(widget, tr("Buddies"));
 }
 
 void GaduEditAccountWidget::createOptionsTab(QTabWidget *tabWidget)

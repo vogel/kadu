@@ -45,8 +45,6 @@ public:
     Q_INVOKABLE explicit GaduListHelper(QObject *parent = nullptr);
     virtual ~GaduListHelper();
 
-    void setSupportedBuddyInformation(const Buddy &destination, const Buddy &source);
-    QByteArray buddyListToByteArray(Account account, const BuddyList &buddies);
     QByteArray contactListToByteArray(const QVector<Contact> &contacts);
     QString contactToLine70(Contact contact);
     BuddyList byteArrayToBuddyList(Account account, QByteArray &content);

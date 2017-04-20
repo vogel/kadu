@@ -36,7 +36,6 @@
 #include "os/generic/system-info.h"
 #include "plugin/plugin-injected-factory.h"
 #include "widgets/account-avatar-widget.h"
-#include "widgets/account-buddy-list-widget.h"
 #include "widgets/account-configuration-widget-tab-adapter.h"
 #include "widgets/proxy-combo-box.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
@@ -51,6 +50,7 @@
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QVBoxLayout>
 
