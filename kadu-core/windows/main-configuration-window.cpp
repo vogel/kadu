@@ -98,10 +98,8 @@ void MainConfigurationWindow::configurationUiHandlerAdded(ConfigurationUiHandler
     configurationUiHandler->mainConfigurationWindowCreated(this);
 }
 
-void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler)
-{
-    Q_UNUSED(configurationUiHandler)
-}
+void MainConfigurationWindow::configurationUiHandlerRemoved(ConfigurationUiHandler *configurationUiHandler){
+    Q_UNUSED(configurationUiHandler)}
 
 MainConfigurationWindow::MainConfigurationWindow(ConfigurationWindowDataManager *dataManager, QWidget *parent)
         : ConfigurationWindow("MainConfiguration", tr("Kadu configuration"), "General", dataManager, parent)

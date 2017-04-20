@@ -103,9 +103,8 @@ QList<QRegExp> CenzorConfiguration::loadRegExpList(const QString &itemName, cons
 void CenzorConfiguration::configurationUpdated()
 {
     Enabled = m_configuration->deprecatedApi()->readBoolEntry("PowerKadu", "enable_cenzor");
-    Admonition = normalizeHtml(
-        HtmlString{m_configuration->deprecatedApi()->readEntry(
-            "PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>")});
+    Admonition = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry(
+        "PowerKadu", "admonition_content_cenzor", "Cenzor: Watch your mouth!! <nonono>")});
     SwearList = loadRegExpList(
         "cenzor swearwords", m_pathsProvider->dataPath() + QStringLiteral("plugins/data/cenzor/cenzor_words.conf"));
     ExclusionList = loadRegExpList(

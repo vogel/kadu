@@ -93,9 +93,7 @@ void ContactAvatarDownloader::downloadIfNeeded(const ContactAvatarGlobalId &id) 
         return;
 
     if (downloadRequired(id))
-        m_serialDelayedTaskExecutor->execute([this, id](){
-            return m_aggregatedContactAvatarService->download(id);
-        });
+        m_serialDelayedTaskExecutor->execute([this, id]() { return m_aggregatedContactAvatarService->download(id); });
 }
 
 bool ContactAvatarDownloader::downloadRequired(const ContactAvatarGlobalId &id) const

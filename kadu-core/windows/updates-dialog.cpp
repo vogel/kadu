@@ -69,18 +69,14 @@ void UpdatesDialog::init()
     messageLabel->setWordWrap(true);
 
 #if defined(Q_OS_UNIX)
-    messageLabel->setText(
-        QString(
-            tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
-               "Please <a href='download'>download</a> an installer and upgrade or use "
-               "your package management system to update Kadu."))
-            .arg(m_newestVersion));
+    messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
+                                     "Please <a href='download'>download</a> an installer and upgrade or use "
+                                     "your package management system to update Kadu."))
+                              .arg(m_newestVersion));
 #else
-    messageLabel->setText(
-        QString(
-            tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
-               "Please <a href='download'>download</a> an installer and upgrade."))
-            .arg(m_newestVersion));
+    messageLabel->setText(QString(tr("A new version <b>%1</b> of Kadu Instant Messenger is available for download. "
+                                     "Please <a href='download'>download</a> an installer and upgrade."))
+                              .arg(m_newestVersion));
 #endif
 
     connect(messageLabel, SIGNAL(linkActivated(QString)), this, SLOT(downloadClicked()));

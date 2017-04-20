@@ -84,11 +84,9 @@ QString WordFixFormattedStringVisitor::fixWords(const QString &content)
 
 void WordFixFormattedStringVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-    cloned(
-        std::make_unique<FormattedStringTextBlock>(
-            fixWords(formattedStringTextBlock->content()), formattedStringTextBlock->bold(),
-            formattedStringTextBlock->italic(), formattedStringTextBlock->underline(),
-            formattedStringTextBlock->color()));
+    cloned(std::make_unique<FormattedStringTextBlock>(
+        fixWords(formattedStringTextBlock->content()), formattedStringTextBlock->bold(),
+        formattedStringTextBlock->italic(), formattedStringTextBlock->underline(), formattedStringTextBlock->color()));
 }
 
 void WordFixFormattedStringVisitor::visit(const FormattedStringImageBlock *const formattedStringImageBlock)

@@ -33,7 +33,6 @@
 #include "plugin/gui/plugin-list/plugin-list-widget.h"
 #include "plugin/metadata/plugin-metadata.h"
 #include "plugin/model/plugin-model.h"
-#include "plugin/model/plugin-model.h"
 #include "plugin/model/plugin-proxy-model.h"
 #include "plugin/plugin-dependency-handler.h"
 #include "widgets/categorized-list-view-painter.h"
@@ -154,14 +153,14 @@ QList<QWidget *> PluginListWidgetItemDelegate::createItemWidgets() const
     connect(aboutPushButton, SIGNAL(clicked(bool)), this, SLOT(slotAboutClicked()));
 
     setBlockedEventTypes(
-        enabledCheckBox, QList<QEvent::Type>() << QEvent::MouseButtonPress << QEvent::MouseButtonRelease
-                                               << QEvent::MouseButtonDblClick << QEvent::KeyPress
-                                               << QEvent::KeyRelease);
+        enabledCheckBox,
+        QList<QEvent::Type>() << QEvent::MouseButtonPress << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
+                              << QEvent::KeyPress << QEvent::KeyRelease);
 
     setBlockedEventTypes(
-        aboutPushButton, QList<QEvent::Type>() << QEvent::MouseButtonPress << QEvent::MouseButtonRelease
-                                               << QEvent::MouseButtonDblClick << QEvent::KeyPress
-                                               << QEvent::KeyRelease);
+        aboutPushButton,
+        QList<QEvent::Type>() << QEvent::MouseButtonPress << QEvent::MouseButtonRelease << QEvent::MouseButtonDblClick
+                              << QEvent::KeyPress << QEvent::KeyRelease);
 
     return {enabledCheckBox, aboutPushButton};
 }

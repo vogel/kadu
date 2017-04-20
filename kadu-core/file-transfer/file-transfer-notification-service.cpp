@@ -127,9 +127,8 @@ void FileTransferNotificationService::notifyIncomingFileTransfer(const FileTrans
     auto notification = Notification{};
     notification.type = QStringLiteral("FileTransfer/IncomingFile");
     notification.title = tr("Incoming transfer");
-    notification.text = normalizeHtml(
-        HtmlString{tr("<b>%1</b> wants to send you a file %2")}.arg(
-            plainToHtml(fileTransfer.peer().display(true)), plainToHtml(fileTransfer.remoteFileName())));
+    notification.text = normalizeHtml(HtmlString{tr("<b>%1</b> wants to send you a file %2")}.arg(
+        plainToHtml(fileTransfer.peer().display(true)), plainToHtml(fileTransfer.remoteFileName())));
     notification.details = incomingFileTransferDetails(chat, fileTransfer);
     notification.data = std::move(data);
 
@@ -164,10 +163,8 @@ FileTransferNotificationService::incomingFileTransferDetails(const Chat &chat, c
     }
 
     if (fileTransfer.fileSize() > 0)
-        return normalizeHtml(
-            HtmlString{tr("size: <b>%1</b>, account: <b>%2</b>")}.arg(
-                plainToHtml(textFileSize.arg(size, 0, 'f', 2)),
-                plainToHtml(chat.chatAccount().accountIdentity().name())));
+        return normalizeHtml(HtmlString{tr("size: <b>%1</b>, account: <b>%2</b>")}.arg(
+            plainToHtml(textFileSize.arg(size, 0, 'f', 2)), plainToHtml(chat.chatAccount().accountIdentity().name())));
     else
         return normalizeHtml(
             HtmlString{tr("account: <b>%1</b>")}.arg(plainToHtml(chat.chatAccount().accountIdentity().name())));

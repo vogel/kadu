@@ -26,13 +26,13 @@
 #include "configuration-window.h"
 #include "configuration-window.moc"
 
+#include "activate.h"
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-manager.h"
 #include "core/injected-factory.h"
 #include "os/generic/window-geometry-manager.h"
 #include "widgets/configuration/configuration-widget.h"
 #include "windows/kadu-window.h"
-#include "activate.h"
 
 #include <QtGui/QKeyEvent>
 #include <QtWidgets/QApplication>

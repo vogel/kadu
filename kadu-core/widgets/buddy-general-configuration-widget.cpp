@@ -41,7 +41,6 @@
 #include "widgets/buddy-contacts-table.h"
 #include "widgets/composite-configuration-value-state-notifier.h"
 #include "widgets/simple-configuration-value-state-notifier.h"
-#include "widgets/simple-configuration-value-state-notifier.h"
 #include "windows/message-dialog.h"
 
 #include <QtWidgets/QCheckBox>

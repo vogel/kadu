@@ -21,8 +21,8 @@
 
 ChatStyleRendererConfiguration::ChatStyleRendererConfiguration(
     Chat chat, QWebFrame &webFrame, QString javaScript, bool useTransparency)
-        : m_chat{std::move(chat)}, m_webFrame(webFrame), m_javaScript{std::move(javaScript)},
-          m_useTransparency{useTransparency}
+        : m_chat{std::move(chat)},
+          m_webFrame(webFrame), m_javaScript{std::move(javaScript)}, m_useTransparency{useTransparency}
 {
 }
 

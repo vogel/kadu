@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message/message-html-renderer-service.h"
 #include "dom/dom-processor-service.h"
 #include "html/html-conversion.h"
 #include "html/html-string.h"
+#include "message/message-html-renderer-service.h"
 #include "message/message.h"
 
 #include <QtTest/QtTest>

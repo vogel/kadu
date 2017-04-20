@@ -20,7 +20,6 @@
 #include "sms-dialog-repository.h"
 #include "sms-dialog-repository.moc"
 
-
 #include "gui/windows/sms-dialog.h"
 
 SmsDialogRepository::SmsDialogRepository(QObject *parent) : QObject{parent}

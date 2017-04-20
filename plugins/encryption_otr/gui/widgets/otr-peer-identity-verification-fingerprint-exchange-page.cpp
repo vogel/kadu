@@ -49,21 +49,19 @@ void OtrPeerIdentityVerificationFingerprintExchangePage::createGui()
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     layout->addWidget(
-        new QLabel(
-            tr("Your Key Fingerprint (%1: %2):")
-                .arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
-                .arg(MyContact.contactAccount().id())));
+        new QLabel(tr("Your Key Fingerprint (%1: %2):")
+                       .arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
+                       .arg(MyContact.contactAccount().id())));
 
     OwnFingerprint = new QLineEdit();
     OwnFingerprint->setReadOnly(true);
     layout->addWidget(OwnFingerprint);
 
     layout->addWidget(
-        new QLabel(
-            tr("<b>%1</b> Key Fingerprint (%2: %3):")
-                .arg(MyContact.display(true))
-                .arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
-                .arg(MyContact.id())));
+        new QLabel(tr("<b>%1</b> Key Fingerprint (%2: %3):")
+                       .arg(MyContact.display(true))
+                       .arg(MyContact.contactAccount().protocolHandler()->protocolFactory()->displayName())
+                       .arg(MyContact.id())));
 
     PeerFingerprint = new QLineEdit();
     PeerFingerprint->setReadOnly(true);

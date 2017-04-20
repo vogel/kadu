@@ -38,8 +38,8 @@
 SmsInternalSender::SmsInternalSender(
     SmsGatewayManager *smsGatewayManager, SmsScriptsManager *smsScriptsManager, const QString &number,
     const SmsGateway &gateway, QObject *parent)
-        : SmsSender{number, parent}, m_smsGatewayManager{smsGatewayManager}, m_smsScriptsManager{smsScriptsManager},
-          Gateway{gateway}, TokenJob{0}
+        : SmsSender{number, parent}, m_smsGatewayManager{smsGatewayManager},
+          m_smsScriptsManager{smsScriptsManager}, Gateway{gateway}, TokenJob{0}
 {
 }
 

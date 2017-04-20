@@ -127,9 +127,10 @@ void ExcutionArgumentsParserTest::shouldProperlyParseListOfIds()
     QCOMPARE(executionArguments.queryUsage(), false);
     QCOMPARE(executionArguments.profileDirectory(), QString{});
     QCOMPARE(
-        executionArguments.openIds(), QStringList{} << "gg:123"
-                                                    << "gg:456"
-                                                    << "xmpp:test@example.com");
+        executionArguments.openIds(),
+        QStringList{} << "gg:123"
+                      << "gg:456"
+                      << "xmpp:test@example.com");
 }
 
 void ExcutionArgumentsParserTest::shouldIgnoreInvalidIds()
@@ -147,9 +148,10 @@ void ExcutionArgumentsParserTest::shouldIgnoreInvalidIds()
     QCOMPARE(executionArguments.queryUsage(), false);
     QCOMPARE(executionArguments.profileDirectory(), QString{});
     QCOMPARE(
-        executionArguments.openIds(), QStringList{} << "gg:123"
-                                                    << "gg:456"
-                                                    << "xmpp:test@example.com");
+        executionArguments.openIds(),
+        QStringList{} << "gg:123"
+                      << "gg:456"
+                      << "xmpp:test@example.com");
 }
 
 void ExcutionArgumentsParserTest::shouldProperlyParseComplexArguments()
@@ -167,8 +169,9 @@ void ExcutionArgumentsParserTest::shouldProperlyParseComplexArguments()
     QCOMPARE(executionArguments.queryUsage(), true);
     QCOMPARE(executionArguments.profileDirectory(), QString{"kadu-7"});
     QCOMPARE(
-        executionArguments.openIds(), QStringList{} << "gg:15"
-                                                    << "xmpp:12");
+        executionArguments.openIds(),
+        QStringList{} << "gg:15"
+                      << "xmpp:12");
 }
 
 QTEST_APPLESS_MAIN(ExcutionArgumentsParserTest)

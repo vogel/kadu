@@ -33,7 +33,6 @@
 #include "configuration/configuration-api.h"
 #include "configuration/configuration-manager.h"
 #include "configuration/configuration.h"
-#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/injected-factory.h"
 #include "core/session-service.h"

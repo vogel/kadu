@@ -77,10 +77,9 @@ void FormattedStringCloneVisitor::visit(const FormattedStringImageBlock *const f
 
 void FormattedStringCloneVisitor::visit(const FormattedStringTextBlock *const formattedStringTextBlock)
 {
-    cloned(
-        std::make_unique<FormattedStringTextBlock>(
-            formattedStringTextBlock->content(), formattedStringTextBlock->bold(), formattedStringTextBlock->italic(),
-            formattedStringTextBlock->underline(), formattedStringTextBlock->color()));
+    cloned(std::make_unique<FormattedStringTextBlock>(
+        formattedStringTextBlock->content(), formattedStringTextBlock->bold(), formattedStringTextBlock->italic(),
+        formattedStringTextBlock->underline(), formattedStringTextBlock->color()));
 }
 
 std::unique_ptr<FormattedString> FormattedStringCloneVisitor::result()

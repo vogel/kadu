@@ -27,7 +27,6 @@
 #include "qfacebook-http-reply.h"
 #include "qfacebook-http-request.h"
 #include "qfacebook/exceptions/qfacebook-invalid-data-exception.h"
-#include "qfacebook/exceptions/qfacebook-invalid-data-exception.h"
 #include "qfacebook/session/qfacebook-session-token.h"
 
 #include <QtCore/QJsonArray>

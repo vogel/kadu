@@ -23,8 +23,8 @@
 #include "chat-edit-widget.moc"
 
 ChatEditWidget::ChatEditWidget(Chat chat, QWidget *parent)
-        : ModalConfigurationWidget{parent}, m_stateNotifier{make_owned<SimpleConfigurationValueStateNotifier>(this)},
-          m_chat{chat}
+        : ModalConfigurationWidget{parent},
+          m_stateNotifier{make_owned<SimpleConfigurationValueStateNotifier>(this)}, m_chat{chat}
 {
 }
 

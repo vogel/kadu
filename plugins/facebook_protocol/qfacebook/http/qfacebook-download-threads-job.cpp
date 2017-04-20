@@ -51,9 +51,8 @@ void QFacebookDownloadThreadsJob::replyFinished(const std::experimental::optiona
         return;
 
     auto messageThreads = result->readObject("viewer").readObject("message_threads");
-    emit finished(
-        QFacebookDownloadThreadsResult{messageThreads.readString("sync_sequence_id").toInt(),
-                                       messageThreads.readInt("unread_count")});
+    emit finished(QFacebookDownloadThreadsResult{messageThreads.readString("sync_sequence_id").toInt(),
+                                                 messageThreads.readInt("unread_count")});
 }
 catch (QFacebookInvalidDataException &)
 {

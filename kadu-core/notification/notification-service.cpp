@@ -19,7 +19,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notification/notification.h"
 #include "actions/talkable/notify-about-buddy-action.h"
 #include "buddies/buddy-set.h"
 #include "configuration/configuration.h"
@@ -30,6 +29,7 @@
 #include "notification/notification-callback-repository.h"
 #include "notification/notification-callback.h"
 #include "notification/notification-dispatcher.h"
+#include "notification/notification.h"
 #include "notification/notify-configuration-ui-handler.h"
 #include "notification/silent-mode-service.h"
 #include "parser/parser.h"

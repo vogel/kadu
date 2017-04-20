@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "misc/graph/graph.h"
 #include "misc/algorithm.h"
 #include "misc/graph/graph-algorithm.h"
+#include "misc/graph/graph.h"
 
 #include <QtTest/QtTest>
 #include <algorithm>

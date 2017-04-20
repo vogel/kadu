@@ -46,7 +46,6 @@
 #include "configuration/config-file-variant-wrapper.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "contacts/contact.h"
 #include "core/injected-factory.h"

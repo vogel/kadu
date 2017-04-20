@@ -208,9 +208,8 @@ void ExecNotifier::notify(const Notification &notification)
 
         Contact contact = *contacts.constBegin();
         for (auto it : s)
-            result.append(
-                m_parser->parse(
-                    it.replace("%ids", sendersString), Talkable(contact), &notification, ParserEscape::HtmlEscape));
+            result.append(m_parser->parse(
+                it.replace("%ids", sendersString), Talkable(contact), &notification, ParserEscape::HtmlEscape));
     }
     else
         for (auto const &it : s)

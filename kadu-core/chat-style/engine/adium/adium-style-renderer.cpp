@@ -233,9 +233,8 @@ QString AdiumStyleRenderer::replaceKeywords(const QString &styleHref, const QStr
     int pos = 0;
     while ((pos = timeRegExp.indexIn(result, pos)) != -1)
         result.replace(
-            pos, timeRegExp.cap(0).length(),
-            Qt::escape(
-                AdiumTimeFormatter::convertTimeDate(m_systemInfo, timeRegExp.cap(1), QDateTime::currentDateTime())));
+            pos, timeRegExp.cap(0).length(), Qt::escape(AdiumTimeFormatter::convertTimeDate(
+                                                 m_systemInfo, timeRegExp.cap(1), QDateTime::currentDateTime())));
 
     QString photoIncoming;
     QString photoOutgoing;
@@ -285,9 +284,8 @@ QString AdiumStyleRenderer::replaceKeywords(
         // Replace protocolIcon (sender statusIcon). TODO:
         result.replace(
             QString("%senderStatusIcon%"),
-            Qt::escape(
-                m_iconsManager->iconPath(
-                    message.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon())));
+            Qt::escape(m_iconsManager->iconPath(
+                message.messageChat().chatAccount().protocolHandler()->protocolFactory()->icon())));
     }
     else
     {
@@ -389,17 +387,15 @@ void AdiumStyleRenderer::displayMessageStatus(const QString &id, MessageStatus s
 
 void AdiumStyleRenderer::displayChatState(ChatState state, const QString &message, const QString &name)
 {
-    configuration().webFrame().evaluateJavaScript(
-        QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");")
-            .arg(static_cast<int>(state))
-            .arg(Qt::escape(message))
-            .arg(Qt::escape(name)));
+    configuration().webFrame().evaluateJavaScript(QString("adium_contactActivityChanged(%1, \"%2\", \"%3\");")
+                                                      .arg(static_cast<int>(state))
+                                                      .arg(Qt::escape(message))
+                                                      .arg(Qt::escape(name)));
 }
 
 void AdiumStyleRenderer::displayChatImage(const ChatImage &chatImage, const QString &fileName)
 {
-    configuration().webFrame().evaluateJavaScript(
-        QString("adium_chatImageAvailable(\"%1\", \"%2\");")
-            .arg(Qt::escape(chatImage.key()))
-            .arg(Qt::escape(fileName)));
+    configuration().webFrame().evaluateJavaScript(QString("adium_chatImageAvailable(\"%1\", \"%2\");")
+                                                      .arg(Qt::escape(chatImage.key()))
+                                                      .arg(Qt::escape(fileName)));
 }

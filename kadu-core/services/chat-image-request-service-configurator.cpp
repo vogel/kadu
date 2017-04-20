@@ -17,11 +17,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "services/chat-image-request-service.h"
 #include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/core.h"
 #include "services/chat-image-request-service-configuration.h"
+#include "services/chat-image-request-service.h"
 
 #include "chat-image-request-service-configurator.h"
 

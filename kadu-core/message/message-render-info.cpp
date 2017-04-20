@@ -147,8 +147,8 @@ MessageRenderInfo::MessageRenderInfo(
     Message message, QString backgroundColor, QString fontColor, QString nickColor, bool includeHeader,
     int separatorSize, bool showServerTime)
         : m_message{std::move(message)}, m_backgroundColor{std::move(backgroundColor)},
-          m_fontColor{std::move(fontColor)}, m_nickColor{std::move(nickColor)}, m_includeHeader(includeHeader),
-          m_separatorSize{separatorSize}, m_showServerTime{showServerTime}
+          m_fontColor{std::move(fontColor)}, m_nickColor{std::move(nickColor)},
+          m_includeHeader(includeHeader), m_separatorSize{separatorSize}, m_showServerTime{showServerTime}
 {
 }
 

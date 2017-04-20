@@ -64,7 +64,7 @@ private:
     QDir m_dir;
     std::map<AvatarId, QPixmap> m_avatars;
 
-    bool m_canImport {false};
+    bool m_canImport{false};
     std::vector<Import> m_toImport;
 
     bool ensureDirExists() const;

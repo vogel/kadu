@@ -79,10 +79,9 @@ void SelectFile::selectFileClicked()
 {
     if (Type == "image")
     {
-        QString s(
-            QFileDialog::getOpenFileName(
-                this, tr("Insert image"), LineEdit->text(),
-                tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)"));
+        QString s(QFileDialog::getOpenFileName(
+            this, tr("Insert image"), LineEdit->text(),
+            tr("Images") + " (*.png *.PNG *.jpg *.JPG *.jpeg *.JPEG *.gif *.GIF *.bmp *.BMP)"));
         if (!s.isEmpty())
         {
             LineEdit->setText(s);
@@ -100,9 +99,8 @@ void SelectFile::selectFileClicked()
     }
     else if (Type == "audio")
     {
-        QString s(
-            QFileDialog::getOpenFileName(
-                this, tr("Select audio File"), LineEdit->text(), tr("Audio Files (*.wav *.au *.raw);;All Files (*)")));
+        QString s(QFileDialog::getOpenFileName(
+            this, tr("Select audio File"), LineEdit->text(), tr("Audio Files (*.wav *.au *.raw);;All Files (*)")));
         if (!s.isEmpty())
         {
             LineEdit->setText(s);

@@ -642,9 +642,8 @@ void SqlImport::removeDuplicatesFromVersion2Schema(
 
         // This should be prepared outside of loop and ids should be only binded here.
         // But I have no idea how to bind a list...
-        query.prepare(
-            QString("UPDATE kadu_messages SET %1 = %2 WHERE %1 IN (%3)")
-                .arg(idFieldName, pair.first, pair.second.join(", ")));
+        query.prepare(QString("UPDATE kadu_messages SET %1 = %2 WHERE %1 IN (%3)")
+                          .arg(idFieldName, pair.first, pair.second.join(", ")));
         query.setForwardOnly(true);
         query.exec();
     }

@@ -34,10 +34,11 @@
 #include "protocols/services/multilogon-service.h"
 
 MultilogonNotificationService::MultilogonNotificationService(QObject *parent)
-        : QObject{parent},
-          m_mutlilogonDisconnectCallback{
-              QStringLiteral("multilogon-disconnect"), tr("Disconnect session"),
-              [this](const Notification &notification) { return disconnectSession(notification); }},
+        : QObject{parent}, m_mutlilogonDisconnectCallback{QStringLiteral("multilogon-disconnect"),
+                                                          tr("Disconnect session"),
+                                                          [this](const Notification &notification) {
+                                                              return disconnectSession(notification);
+                                                          }},
           m_multilogonEvent{QStringLiteral("multilogon"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon"))},
           m_multilogonConnectedEvent{QStringLiteral("multilogon/sessionConnected"),
                                      QStringLiteral(QT_TRANSLATE_NOOP("@default", "Multilogon session connected"))},
@@ -96,10 +97,9 @@ void MultilogonNotificationService::notifyMultilogonSessionConnected(const Multi
     notification.type = m_multilogonConnectedEvent.name();
     notification.title = tr("Multilogon");
     notification.text = normalizeHtml(plainToHtml(tr("Multilogon session connected")));
-    notification.details = normalizeHtml(
-        HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
-            plainToHtml(session.remoteAddress.toString()), plainToHtml(session.logonTime.toString()),
-            plainToHtml(session.name), plainToHtml(session.account.id())));
+    notification.details = normalizeHtml(HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
+        plainToHtml(session.remoteAddress.toString()), plainToHtml(session.logonTime.toString()),
+        plainToHtml(session.name), plainToHtml(session.account.id())));
     notification.data = std::move(data);
     notification.callbacks.append(QStringLiteral("ignore"));
     notification.callbacks.append(m_mutlilogonDisconnectCallback.name());
@@ -116,10 +116,9 @@ void MultilogonNotificationService::notifyMultilogonSessionDisonnected(const Mul
     notification.type = m_multilogonDisconnectedEvent.name();
     notification.title = tr("Multilogon");
     notification.text = normalizeHtml(HtmlString{tr("Multilogon session disconnected")});
-    notification.details = normalizeHtml(
-        HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
-            plainToHtml(session.remoteAddress.toString()), plainToHtml(session.logonTime.toString()),
-            plainToHtml(session.name), plainToHtml(session.account.id())));
+    notification.details = normalizeHtml(HtmlString{tr("from %1 at %2 with %3 for %4 account")}.arg(
+        plainToHtml(session.remoteAddress.toString()), plainToHtml(session.logonTime.toString()),
+        plainToHtml(session.name), plainToHtml(session.account.id())));
 
     m_notificationService->notify(notification);
 }

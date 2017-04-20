@@ -97,9 +97,8 @@ void QFacebookDownloadContactsDeltaJob::replyFinished(
         return !b.isEmpty();
     });
 
-    emit finished(
-        QFacebookDownloadContactsDeltaResult{QFacebookDownloadContactsDeltaStatus::OK,
-                                             pageInfo.readString("end_cursor").toUtf8(), m_added, m_removed});
+    emit finished(QFacebookDownloadContactsDeltaResult{QFacebookDownloadContactsDeltaStatus::OK,
+                                                       pageInfo.readString("end_cursor").toUtf8(), m_added, m_removed});
 }
 catch (QFacebookInvalidDataException &)
 {

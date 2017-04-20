@@ -23,8 +23,8 @@
 #include "configuration/deprecated-configuration-api.h"
 
 NotificationConfiguration::NotificationConfiguration(QObject *parent)
-        : QObject{parent}, m_newMessageOnlyIfInactive{true}, m_notifyIgnoreOnConnection{true},
-          m_ignoreOnlineToOnline{true}
+        : QObject{parent}, m_newMessageOnlyIfInactive{true}, m_notifyIgnoreOnConnection{true}, m_ignoreOnlineToOnline{
+                                                                                                   true}
 {
 }
 

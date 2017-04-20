@@ -36,8 +36,8 @@ public:
         QByteArray sessionKey, long uid, QByteArray secret, QByteArray accessToken, QByteArray machineId,
         QByteArray userStorageKey)
             : m_sessionKey{std::move(sessionKey)}, m_uid{uid}, m_secret{std::move(secret)},
-              m_accessToken{std::move(accessToken)}, m_machineId{std::move(machineId)},
-              m_userStorageKey{std::move(userStorageKey)}
+              m_accessToken{std::move(accessToken)}, m_machineId{std::move(machineId)}, m_userStorageKey{
+                                                                                            std::move(userStorageKey)}
     {
     }
 

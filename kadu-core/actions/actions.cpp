@@ -19,8 +19,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "actions/action.h"
 #include "actions/action-description.h"
+#include "actions/action.h"
 #include "core/session-service.h"
 #include "windows/main-window.h"
 

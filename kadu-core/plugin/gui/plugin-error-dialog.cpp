@@ -34,8 +34,9 @@ PluginErrorDialog::PluginErrorDialog(
     QWidget *parent)
         :   // using C++ initializers breaks Qt's lupdate
           QDialog(parent),
-          DesktopAwareObject(this), m_pluginName(std::move(pluginName)), m_text{text},
-          m_offerLoadInFutureChoice{offerLoadInFutureChoice}, LoadInFutureCheck(0)
+          DesktopAwareObject(this),
+          m_pluginName(std::move(pluginName)), m_text{text}, m_offerLoadInFutureChoice{offerLoadInFutureChoice},
+          LoadInFutureCheck(0)
 {
 }
 

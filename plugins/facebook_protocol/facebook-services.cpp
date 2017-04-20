@@ -73,5 +73,7 @@ void FacebookServices::init()
     m_rosterService = m_pluginInjectedFactory->makeUnique<FacebookRosterService>(
         std::move(contacts), *m_account.protocolHandler(), *m_session);
 
-    connect(m_rosterService.get(), &FacebookRosterService::added, m_contactAvatarService.get(), &FacebookContactAvatarService::contactAdded);
+    connect(
+        m_rosterService.get(), &FacebookRosterService::added, m_contactAvatarService.get(),
+        &FacebookContactAvatarService::contactAdded);
 }

@@ -31,8 +31,8 @@
 
 GaduDriveSendStatusUpdateRequest::GaduDriveSendStatusUpdateRequest(
     GaduDriveSessionToken sessionToken, QString ticketId, QNetworkAccessManager *networkAccessManager, QObject *parent)
-        : QObject{parent}, m_sessionToken{std::move(sessionToken)}, m_ticketId{ticketId},
-          m_networkAccessManager{networkAccessManager}
+        : QObject{parent}, m_sessionToken{std::move(sessionToken)}, m_ticketId{ticketId}, m_networkAccessManager{
+                                                                                              networkAccessManager}
 {
     if (!m_sessionToken.isValid())
     {

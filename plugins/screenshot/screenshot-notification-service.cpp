@@ -28,9 +28,9 @@
 #include "notification/notification.h"
 
 ScreenshotNotificationService::ScreenshotNotificationService(QObject *parent)
-        : QObject{parent},
-          m_sizeLimitEvent{QStringLiteral("ssSizeLimit"),
-                           QStringLiteral(QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"))}
+        : QObject{parent}, m_sizeLimitEvent{
+                               QStringLiteral("ssSizeLimit"),
+                               QStringLiteral(QT_TRANSLATE_NOOP("@default", "ScreenShot images size limit"))}
 {
 }
 

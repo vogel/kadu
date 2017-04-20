@@ -23,7 +23,6 @@
 #include "buddies/group-manager.h"
 #include "configuration/configuration-api.h"
 #include "configuration/configuration.h"
-#include "configuration/configuration.h"
 #include "configuration/deprecated-configuration-api.h"
 #include "core/application.h"
 #include "widgets/group-tab-bar/group-tab-bar-configuration.h"

@@ -31,8 +31,8 @@
 
 ChatWidgetTitle::ChatWidgetTitle(ChatWidget *parent)
         : QObject{parent}, m_composingStatePosition{ChatWidgetTitleComposingStatePosition::None},
-          m_showUnreadMessagesCount{false}, m_blinkTitleWhenUnreadMessages{false}, m_blinkIconWhenUnreadMessages{false},
-          m_blink{false}
+          m_showUnreadMessagesCount{false}, m_blinkTitleWhenUnreadMessages{false},
+          m_blinkIconWhenUnreadMessages{false}, m_blink{false}
 {
     connect(parent->chat(), SIGNAL(updated()), this, SLOT(update()));
     for (auto &&contact : parent->chat().contacts())

@@ -897,10 +897,9 @@ QString MediaPlayer::getTitle()
         // Lets cut nasty signatures
         if (m_configuration->deprecatedApi()->readBoolEntry("MediaPlayer", "signature", true))
         {
-            QStringList sigList(
-                m_configuration->deprecatedApi()
-                    ->readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES)
-                    .split('\n'));
+            QStringList sigList(m_configuration->deprecatedApi()
+                                    ->readEntry("MediaPlayer", "signatures", DEFAULT_SIGNATURES)
+                                    .split('\n'));
             for (int i = 0; i < sigList.count(); i++)
                 title.remove(sigList[i]);
         }

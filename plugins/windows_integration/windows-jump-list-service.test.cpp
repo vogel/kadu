@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows-jump-list-service.h"
 #include "jump-list.h"
+#include "windows-jump-list-service.h"
 
 #include "chat/chat.h"
 #include "chat/open-chat-repository.h"

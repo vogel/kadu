@@ -28,8 +28,8 @@
 #include "icons/kadu-icon.h"
 #include "widgets/line-edit-clear-button.h"
 
-#include "line-edit-with-clear-button.moc"
 #include "line-edit-with-clear-button.h"
+#include "line-edit-with-clear-button.moc"
 
 LineEditWithClearButton::LineEditWithClearButton(QWidget *parent) : QLineEdit(parent), ClearButtonVisible(true)
 {

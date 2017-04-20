@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/windows/otr-peer-identity-verification-window.h"
 #include "gui/windows/otr-peer-identity-verification-window-factory.h"
+#include "gui/windows/otr-peer-identity-verification-window.h"
 
 #include "otr-peer-identity-verification-window-repository.h"
 #include "otr-peer-identity-verification-window-repository.moc"

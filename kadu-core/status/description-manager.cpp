@@ -88,10 +88,9 @@ DescriptionModel *DescriptionManager::model()
 void DescriptionManager::import()
 {
     StringList.clear();
-    StringList.append(
-        m_configuration->deprecatedApi()
-            ->readEntry("General", "DefaultDescription")
-            .split("<-->", QString::SkipEmptyParts));
+    StringList.append(m_configuration->deprecatedApi()
+                          ->readEntry("General", "DefaultDescription")
+                          .split("<-->", QString::SkipEmptyParts));
     StringList.removeDuplicates();
 
     truncate();

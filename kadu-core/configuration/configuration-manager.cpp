@@ -106,8 +106,7 @@ void ConfigurationManager::importConfiguration()
 
     auto general = m_configuration->api()->findElementByProperty(
         root.firstChild().firstChild().toElement(), "Group", "name", "General");
-    auto mainConfiguration =
-        m_configuration->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
+    auto mainConfiguration = m_configuration->api()->findElementByProperty(general, "Entry", "name", "ConfigGeometry");
 
     if (!mainConfiguration.isNull())
         mainConfiguration.setAttribute("name", "MainConfiguration_Geometry");

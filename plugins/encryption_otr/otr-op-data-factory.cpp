@@ -17,13 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "otr-op-data.h"
 #include "otr-error-message-service.h"
 #include "otr-fingerprint-service.h"
 #include "otr-instance-tag-service.h"
 #include "otr-is-logged-in-service.h"
 #include "otr-message-event-service.h"
 #include "otr-message-service.h"
+#include "otr-op-data.h"
 #include "otr-peer-identity-verification-service.h"
 #include "otr-policy-service.h"
 #include "otr-private-key-service.h"

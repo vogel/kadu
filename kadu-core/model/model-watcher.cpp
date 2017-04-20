@@ -99,14 +99,13 @@ void ModelWatcher::columnsAboutToBeMoved(
     int destinationColumn)
 {
     printf(
-        "columnsAboutToBeMoved: %s\n", qPrintable(
-                                           QString("%1 - %2 - %3 - %4 - %5")
-                                               .arg(Name)
-                                               .arg(indexToString(sourceParent))
-                                               .arg(sourceStart)
-                                               .arg(sourceEnd)
-                                               .arg(indexToString(destinationParent))
-                                               .arg(destinationColumn)));
+        "columnsAboutToBeMoved: %s\n", qPrintable(QString("%1 - %2 - %3 - %4 - %5")
+                                                      .arg(Name)
+                                                      .arg(indexToString(sourceParent))
+                                                      .arg(sourceStart)
+                                                      .arg(sourceEnd)
+                                                      .arg(indexToString(destinationParent))
+                                                      .arg(destinationColumn)));
 }
 
 void ModelWatcher::columnsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
@@ -128,14 +127,13 @@ void ModelWatcher::columnsMoved(
     int destinationColumn)
 {
     printf(
-        "columnsAboutToBeMoved: %s\n", qPrintable(
-                                           QString("%1 - %2 - %3 - %4 - %5")
-                                               .arg(Name)
-                                               .arg(indexToString(sourceParent))
-                                               .arg(sourceStart)
-                                               .arg(sourceEnd)
-                                               .arg(indexToString(destinationParent))
-                                               .arg(destinationColumn)));
+        "columnsAboutToBeMoved: %s\n", qPrintable(QString("%1 - %2 - %3 - %4 - %5")
+                                                      .arg(Name)
+                                                      .arg(indexToString(sourceParent))
+                                                      .arg(sourceStart)
+                                                      .arg(sourceEnd)
+                                                      .arg(indexToString(destinationParent))
+                                                      .arg(destinationColumn)));
 }
 
 void ModelWatcher::columnsRemoved(const QModelIndex &parent, int start, int end)
@@ -191,14 +189,13 @@ void ModelWatcher::rowsAboutToBeMoved(
     int destinationRow)
 {
     printf(
-        "rowsAboutToBeMoved: %s\n", qPrintable(
-                                        QString("%1 - %2 - %3 - %4 - %5")
-                                            .arg(Name)
-                                            .arg(indexToString(sourceParent))
-                                            .arg(sourceStart)
-                                            .arg(sourceEnd)
-                                            .arg(indexToString(destinationParent))
-                                            .arg(destinationRow)));
+        "rowsAboutToBeMoved: %s\n", qPrintable(QString("%1 - %2 - %3 - %4 - %5")
+                                                   .arg(Name)
+                                                   .arg(indexToString(sourceParent))
+                                                   .arg(sourceStart)
+                                                   .arg(sourceEnd)
+                                                   .arg(indexToString(destinationParent))
+                                                   .arg(destinationRow)));
 }
 
 void ModelWatcher::rowsAboutToBeRemoved(const QModelIndex &parent, int start, int end)
@@ -220,14 +217,13 @@ void ModelWatcher::rowsMoved(
     int destinationRow)
 {
     printf(
-        "rowsMoved: %s\n", qPrintable(
-                               QString("%1 - %2 - %3 - %4 - %5")
-                                   .arg(Name)
-                                   .arg(indexToString(sourceParent))
-                                   .arg(sourceStart)
-                                   .arg(sourceEnd)
-                                   .arg(indexToString(destinationParent))
-                                   .arg(destinationRow)));
+        "rowsMoved: %s\n", qPrintable(QString("%1 - %2 - %3 - %4 - %5")
+                                          .arg(Name)
+                                          .arg(indexToString(sourceParent))
+                                          .arg(sourceStart)
+                                          .arg(sourceEnd)
+                                          .arg(indexToString(destinationParent))
+                                          .arg(destinationRow)));
 }
 
 void ModelWatcher::rowsRemoved(const QModelIndex &parent, int start, int end)

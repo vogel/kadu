@@ -21,9 +21,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "buddy.h"
 #include "accounts/account-manager.h"
 #include "buddies/buddy-set.h"
+#include "buddy.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-set.h"

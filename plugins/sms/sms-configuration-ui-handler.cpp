@@ -33,7 +33,6 @@
 #include "configuration/deprecated-configuration-api.h"
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/core.h"
-#include "core/core.h"
 #include "gui/hot-key.h"
 #include "icons/icons-manager.h"
 #include "widgets/configuration/config-combo-box.h"

@@ -17,7 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gui/windows/otr-peer-identity-verification-window.h"
 #include "gui/widgets/otr-peer-identity-verification-fingerprint-exchange-page.h"
 #include "gui/widgets/otr-peer-identity-verification-progress-page.h"
 #include "gui/widgets/otr-peer-identity-verification-question-and-answer-page.h"
@@ -26,6 +25,7 @@
 #include "gui/widgets/otr-peer-identity-verification-result-page.h"
 #include "gui/widgets/otr-peer-identity-verification-select-method-page.h"
 #include "gui/widgets/otr-peer-identity-verification-shared-secret-page.h"
+#include "gui/windows/otr-peer-identity-verification-window.h"
 #include "otr-fingerprint-service.h"
 #include "otr-peer-identity-verification-service.h"
 

@@ -698,9 +698,8 @@ QString Parser::parse(
                         if (content.contains(':'))
                         {
                             QStringList parts = content.split(':');
-                            pe.setContent(
-                                PathsProvider::webKitPath(
-                                    m_iconsManager->iconPath(KaduIcon(parts.at(0), parts.at(1)))));
+                            pe.setContent(PathsProvider::webKitPath(
+                                m_iconsManager->iconPath(KaduIcon(parts.at(0), parts.at(1)))));
                         }
                         else
                             pe.setContent(PathsProvider::webKitPath(m_iconsManager->iconPath(KaduIcon(content))));

@@ -18,9 +18,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "protocols/protocol.h"
 #include "accounts/account.h"
 #include "protocols/protocol-factory.h"
+#include "protocols/protocol.h"
 
 #include "protocol-filter.h"
 #include "protocol-filter.moc"

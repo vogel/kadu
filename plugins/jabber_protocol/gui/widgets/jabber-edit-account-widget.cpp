@@ -410,8 +410,9 @@ void JabberEditAccountWidget::dataChanged()
 
     if (/*AccountName->text().isEmpty()
 		|| sameNameExists
-		|| */ AccountId->text().isEmpty() || sameIdExists ||
-        StateChangedDataInvalid == widgetsState)
+		|| */ AccountId->text()
+            .isEmpty() ||
+        sameIdExists || StateChangedDataInvalid == widgetsState)
         simpleStateNotifier()->setState(StateChangedDataInvalid);
     else
         simpleStateNotifier()->setState(StateChangedDataValid);
@@ -472,9 +473,8 @@ void JabberEditAccountWidget::apply()
     accountData.setUseCustomHostPort(CustomHostPort->isChecked());
     accountData.setCustomHost(CustomHost->text());
     accountData.setCustomPort(CustomPort->text().toInt());
-    accountData.setEncryptionMode(
-        static_cast<JabberAccountData::EncryptionFlag>(
-            EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()));
+    accountData.setEncryptionMode(static_cast<JabberAccountData::EncryptionFlag>(
+        EncryptionMode->itemData(EncryptionMode->currentIndex()).toInt()));
     accountData.setPlainAuthMode(
         static_cast<JabberAccountData::AllowPlainType>(PlainTextAuth->itemData(PlainTextAuth->currentIndex()).toInt()));
     accountData.setAutoResource(AutoResource->isChecked());

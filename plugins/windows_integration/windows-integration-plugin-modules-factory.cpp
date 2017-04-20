@@ -40,4 +40,3 @@ std::vector<std::unique_ptr<injeqt::module>> WindowsIntegrationPluginModulesFact
 
     return modules;
 }
-

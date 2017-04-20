@@ -106,25 +106,22 @@ void OtrNotifier::notify(const Contact &contact, const NormalizedHtmlString &mes
 void OtrNotifier::notifyTryingToStartSession(const Contact &contact)
 {
     notify(
-        contact,
-        normalizeHtml(
-            HtmlString{tr("%1: trying to start private conversation")}.arg(plainToHtml(contact.display(true)))));
+        contact, normalizeHtml(HtmlString{tr("%1: trying to start private conversation")}.arg(
+                     plainToHtml(contact.display(true)))));
 }
 
 void OtrNotifier::notifyTryingToRefreshSession(const Contact &contact)
 {
     notify(
-        contact,
-        normalizeHtml(
-            HtmlString{tr("%1: trying to refresh private conversation")}.arg(plainToHtml(contact.display(true)))));
+        contact, normalizeHtml(HtmlString{tr("%1: trying to refresh private conversation")}.arg(
+                     plainToHtml(contact.display(true)))));
 }
 
 void OtrNotifier::notifyPeerEndedSession(const Contact &contact)
 {
     notify(
-        contact, normalizeHtml(
-                     HtmlString{tr("%1: peer ended private conversation; you should do the same")}.arg(
-                         plainToHtml(contact.display(true)))));
+        contact, normalizeHtml(HtmlString{tr("%1: peer ended private conversation; you should do the same")}.arg(
+                     plainToHtml(contact.display(true)))));
 }
 
 void OtrNotifier::notifyGoneSecure(const Contact &contact)
@@ -160,8 +157,7 @@ void OtrNotifier::notifyCreatePrivateKeyFinished(const Account &account, bool ok
 {
     notify(
         CreatePrivateKeyFinishedNotifyTopic, account,
-        ok ? normalizeHtml(
-                 HtmlString{tr("%1: private key created, you can start a private conversation now")}.arg(
-                     plainToHtml(account.id())))
+        ok ? normalizeHtml(HtmlString{tr("%1: private key created, you can start a private conversation now")}.arg(
+                 plainToHtml(account.id())))
            : normalizeHtml(HtmlString{tr("%1: private key creation failed")}.arg(plainToHtml(account.id()))));
 }

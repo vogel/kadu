@@ -39,7 +39,6 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QLineEdit>
-#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSpinBox>
 
 /**

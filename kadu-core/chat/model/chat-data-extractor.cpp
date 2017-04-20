@@ -18,8 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "chat/chat.h"
 #include "accounts/account.h"
+#include "chat/chat.h"
 #include "chat/type/chat-type-manager.h"
 #include "icons/icons-manager.h"
 #include "icons/kadu-icon.h"

@@ -26,8 +26,9 @@
 #include <QtWidgets/QLabel>
 
 ToolTipWidget::ToolTipWidget(const Talkable &talkable, QWidget *parent)
-        : QFrame{parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint |
-                             Qt::WindowStaysOnTopHint | Qt::MSWindowsOwnDC},
+        : QFrame{parent,
+                 Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |
+                     Qt::MSWindowsOwnDC},
           m_talkable{talkable}
 {
     setObjectName(QStringLiteral("tool_tip"));
@@ -59,25 +60,24 @@ void ToolTipWidget::setParser(Parser *parser)
 
 void ToolTipWidget::init()
 {
-    auto syntax = QStringLiteral(
-        QT_TRANSLATE_NOOP(
-            "HintManager",
-            "<table>"
-            "<tr>"
-            "<td align=\"left\" valign=\"top\">"
-            "<img style=\"max-width:64px; max-height:64px;\" "
-            "src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
-            ">"
-            "</td>"
-            "<td width=\"100%\">"
-            "<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
-            "[<div><img height=\"16\" width=\"16\" src=\"#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
-            "[<div><img height=\"16\" width=\"16\" src=\"@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
-            "[<div><img height=\"16\" width=\"16\" src=\"@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
-            "</td>"
-            "</tr>"
-            "</table>"
-            "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
+    auto syntax = QStringLiteral(QT_TRANSLATE_NOOP(
+        "HintManager",
+        "<table>"
+        "<tr>"
+        "<td align=\"left\" valign=\"top\">"
+        "<img style=\"max-width:64px; max-height:64px;\" "
+        "src=\"{#{avatarPath} #{avatarPath}}{~#{avatarPath} @{kadu_icons/kadu:64x64}}\""
+        ">"
+        "</td>"
+        "<td width=\"100%\">"
+        "<div>[<b>%a</b>][&nbsp;<b>(%g)</b>]</div>"
+        "[<div><img height=\"16\" width=\"16\" src=\"#{statusIconPath}\">&nbsp;&nbsp;%u</div>]"
+        "[<div><img height=\"16\" width=\"16\" src=\"@{phone:16x16}\">&nbsp;&nbsp;%m</div>]"
+        "[<div><img height=\"16\" width=\"16\" src=\"@{mail-message-new:16x16}\">&nbsp;&nbsp;%e</div>]"
+        "</td>"
+        "</tr>"
+        "</table>"
+        "[<hr><b>%s</b>][<b>:</b><br><small>%d</small>]"));
 
     auto text = m_parser->parse(syntax, m_talkable, ParserEscape::HtmlEscape);
     while (text.endsWith(QStringLiteral("<br/>")))

@@ -331,11 +331,10 @@ bool FirewallMessageFilter::checkChat(const Chat &chat, const Contact &sender, c
                 }
 
                 m_messageManager->sendMessage(
-                    chat, normalizeHtml(
-                              HtmlString{
-                                  tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't "
-                                     "have time for stupid chats with the persons hiding itself. If you want to talk "
-                                     "with me change the status to Online or Busy first.")}),
+                    chat, normalizeHtml(HtmlString{
+                              tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I don't "
+                                 "have time for stupid chats with the persons hiding itself. If you want to talk "
+                                 "with me change the status to Online or Busy first.")}),
                     true);
             }
 
@@ -582,16 +581,14 @@ void FirewallMessageFilter::configurationUpdated()
         m_configuration->deprecatedApi()->readBoolEntry("Firewall", "drop_anonymous_when_invisible", false);
     IgnoreInvisible = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "ignore_invisible", false);
     Confirmation = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "confirmation", true);
-    ConfirmationText = normalizeHtml(
-        HtmlString{m_configuration->deprecatedApi()->readEntry(
-            "Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"))});
+    ConfirmationText = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry(
+        "Firewall", "confirmation_text", tr("OK, now say hello, and introduce yourself ;-)"))});
     Search = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "search", true);
-    ConfirmationQuestion = normalizeHtml(
-        HtmlString{m_configuration->deprecatedApi()->readEntry(
-            "Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I "
-                                       "don't have time for stupid chats. Find another person to chat with. If you "
-                                       "REALLY want something from me, simple type \"I want something\" (capital "
-                                       "doesn't matter)"))});
+    ConfirmationQuestion = normalizeHtml(HtmlString{m_configuration->deprecatedApi()->readEntry(
+        "Firewall", "question", tr("This message has been generated AUTOMATICALLY!\n\nI'm a busy person and I "
+                                   "don't have time for stupid chats. Find another person to chat with. If you "
+                                   "REALLY want something from me, simple type \"I want something\" (capital "
+                                   "doesn't matter)"))});
     WriteInHistory = m_configuration->deprecatedApi()->readBoolEntry("Firewall", "write_history", true);
     DosInterval = m_configuration->deprecatedApi()->readNumEntry("Firewall", "dos_interval", 500);
     MaxEmoticons = m_configuration->deprecatedApi()->readNumEntry("Firewall", "emoticons_max", 15);

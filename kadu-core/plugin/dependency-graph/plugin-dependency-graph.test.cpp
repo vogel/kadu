@@ -17,10 +17,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin/dependency-graph/plugin-dependency-graph.h"
 #include "misc/algorithm.h"
 #include "misc/exception.h"
 #include "plugin/dependency-graph/plugin-dependency-cycle-exception.h"
+#include "plugin/dependency-graph/plugin-dependency-graph.h"
 
 #include <QtTest/QtTest>
 #include <algorithm>
@@ -148,23 +148,27 @@ void PluginDependencyGraphTest::linearDependencyTest()
     auto graph = linearGraph();
 
     QCOMPARE(
-        graph.findDependencies("p1"), QVector<QString>{} << "p4"
-                                                         << "p3"
-                                                         << "p2");
+        graph.findDependencies("p1"),
+        QVector<QString>{} << "p4"
+                           << "p3"
+                           << "p2");
     QCOMPARE(graph.findDependents("p1"), QVector<QString>{});
     QCOMPARE(
-        graph.findDependencies("p2"), QVector<QString>{} << "p4"
-                                                         << "p3");
+        graph.findDependencies("p2"),
+        QVector<QString>{} << "p4"
+                           << "p3");
     QCOMPARE(graph.findDependents("p2"), QVector<QString>{} << "p1");
     QCOMPARE(graph.findDependencies("p3"), QVector<QString>{} << "p4");
     QCOMPARE(
-        graph.findDependents("p3"), QVector<QString>{} << "p1"
-                                                       << "p2");
+        graph.findDependents("p3"),
+        QVector<QString>{} << "p1"
+                           << "p2");
     QCOMPARE(graph.findDependencies("p4"), QVector<QString>{});
     QCOMPARE(
-        graph.findDependents("p4"), QVector<QString>{} << "p1"
-                                                       << "p2"
-                                                       << "p3");
+        graph.findDependents("p4"),
+        QVector<QString>{} << "p1"
+                           << "p2"
+                           << "p3");
 }
 
 void PluginDependencyGraphTest::treeCycleTest()
@@ -179,8 +183,9 @@ void PluginDependencyGraphTest::treeDirectDependencyTest()
     QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
     QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
     QCOMPARE(
-        graph.directDependencies("p2"), QSet<QString>{} << "p3"
-                                                        << "p4");
+        graph.directDependencies("p2"),
+        QSet<QString>{} << "p3"
+                        << "p4");
     QCOMPARE(graph.directDependents("p2"), QSet<QString>{} << "p1");
     QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
     QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
@@ -188,8 +193,9 @@ void PluginDependencyGraphTest::treeDirectDependencyTest()
     QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
     QCOMPARE(graph.directDependencies("p5"), QSet<QString>{} << "p6");
     QCOMPARE(
-        graph.directDependents("p5"), QSet<QString>{} << "p3"
-                                                      << "p4");
+        graph.directDependents("p5"),
+        QSet<QString>{} << "p3"
+                        << "p4");
     QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
     QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }
@@ -237,10 +243,11 @@ void PluginDependencyGraphTest::treeDependencyTest()
 void PluginDependencyGraphTest::cycleCycleTest()
 {
     QCOMPARE(
-        cycleGraph().findPluginsInDependencyCycle(), QSet<QString>{} << "p2"
-                                                                     << "p3"
-                                                                     << "p4"
-                                                                     << "p5");
+        cycleGraph().findPluginsInDependencyCycle(),
+        QSet<QString>{} << "p2"
+                        << "p3"
+                        << "p4"
+                        << "p5");
 }
 
 void PluginDependencyGraphTest::cycleDirectDependencyTest()
@@ -250,21 +257,25 @@ void PluginDependencyGraphTest::cycleDirectDependencyTest()
     QCOMPARE(graph.directDependencies("p1"), QSet<QString>{} << "p2");
     QCOMPARE(graph.directDependents("p1"), QSet<QString>{});
     QCOMPARE(
-        graph.directDependencies("p2"), QSet<QString>{} << "p3"
-                                                        << "p4");
+        graph.directDependencies("p2"),
+        QSet<QString>{} << "p3"
+                        << "p4");
     QCOMPARE(
-        graph.directDependents("p2"), QSet<QString>{} << "p1"
-                                                      << "p5");
+        graph.directDependents("p2"),
+        QSet<QString>{} << "p1"
+                        << "p5");
     QCOMPARE(graph.directDependencies("p3"), QSet<QString>{} << "p5");
     QCOMPARE(graph.directDependents("p3"), QSet<QString>{} << "p2");
     QCOMPARE(graph.directDependencies("p4"), QSet<QString>{} << "p5");
     QCOMPARE(graph.directDependents("p4"), QSet<QString>{} << "p2");
     QCOMPARE(
-        graph.directDependencies("p5"), QSet<QString>{} << "p6"
-                                                        << "p2");
+        graph.directDependencies("p5"),
+        QSet<QString>{} << "p6"
+                        << "p2");
     QCOMPARE(
-        graph.directDependents("p5"), QSet<QString>{} << "p3"
-                                                      << "p4");
+        graph.directDependents("p5"),
+        QSet<QString>{} << "p3"
+                        << "p4");
     QCOMPARE(graph.directDependencies("p6"), QSet<QString>{});
     QCOMPARE(graph.directDependents("p6"), QSet<QString>{} << "p5");
 }

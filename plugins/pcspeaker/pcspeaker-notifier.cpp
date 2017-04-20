@@ -91,8 +91,8 @@ void PCSpeakerNotifier::beep(int pitch, int duration)
 #endif
 
 PCSpeakerNotifier::PCSpeakerNotifier(QObject *parent)
-        : QObject{parent},
-          Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"), KaduIcon("audio-volume-low")},
+        : QObject{parent}, Notifier{"PC Speaker", QT_TRANSLATE_NOOP("@default", "PC Speaker"),
+                                    KaduIcon("audio-volume-low")},
 #if defined(Q_OS_UNIX)
           xdisplay{},
 #endif

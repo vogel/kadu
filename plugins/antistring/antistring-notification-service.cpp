@@ -30,9 +30,9 @@
 #include "notification/notification.h"
 
 AntistringNotificationService::AntistringNotificationService(QObject *parent)
-        : QObject{parent},
-          m_stringReceivedEvent{QStringLiteral("Antistring"),
-                                QStringLiteral(QT_TRANSLATE_NOOP("@default", "Antistring notifications"))}
+        : QObject{parent}, m_stringReceivedEvent{
+                               QStringLiteral("Antistring"),
+                               QStringLiteral(QT_TRANSLATE_NOOP("@default", "Antistring notifications"))}
 {
 }
 

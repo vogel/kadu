@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows/buddy-data-window.h"
 #include "core/injected-factory.h"
 #include "core/myself.h"
+#include "windows/buddy-data-window.h"
 
 #include "buddy-data-window-repository.h"
 #include "buddy-data-window-repository.moc"

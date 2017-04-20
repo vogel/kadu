@@ -17,9 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "formatted-string/formatted-string-factory.h"
 #include "dom/dom-processor-service-impl.h"
 #include "dom/dom-visitor-provider-repository.h"
+#include "formatted-string/formatted-string-factory.h"
 #include "formatted-string/formatted-string-html-visitor.h"
 #include "html/html-string.h"
 #include "services/image-storage-service.h"

@@ -50,8 +50,8 @@
 constexpr auto const KEEP_ALIVE = uint16_t{60};
 
 QFacebookMqttApi::QFacebookMqttApi(QFacebookSessionToken session, QFacebookDeviceId deviceId, QObject *parent)
-        : QObject{parent}, m_session{std::move(session)}, m_deviceId{std::move(deviceId)},
-          m_socket{make_owned<QSslSocket>(this)}
+        : QObject{parent}, m_session{std::move(session)},
+          m_deviceId{std::move(deviceId)}, m_socket{make_owned<QSslSocket>(this)}
 {
     m_pingTimer.setInterval(KEEP_ALIVE * 1000);
     m_connectionTimeoutTimer.setInterval(KEEP_ALIVE * 1500);
@@ -153,9 +153,8 @@ void QFacebookMqttApi::connectAckReceived(const QFacebookConnectAck &connectAck)
 
     auto foregroundState = QFacebookPublishForegroundState{true, 60};
     sendPublish("/foreground_state", foregroundState.encode());
-    sendSubscribe(
-        {"/mercury", "/messaging_events", "/orca_presence", "/orca_typing_notifications", "/orca_message_notifications",
-         "/pp", "/t_ms", "/t_p", "/t_rtc", "/webrtc", "/webrtc_response"});
+    sendSubscribe({"/mercury", "/messaging_events", "/orca_presence", "/orca_typing_notifications",
+                   "/orca_message_notifications", "/pp", "/t_ms", "/t_p", "/t_rtc", "/webrtc", "/webrtc_response"});
 
     emit connected();
 }

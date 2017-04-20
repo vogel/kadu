@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "model/merged-proxy-model.h"
 #include "model/kadu-merged-proxy-model.h"
+#include "model/merged-proxy-model.h"
 
 #include "merged-proxy-model-factory.h"
 

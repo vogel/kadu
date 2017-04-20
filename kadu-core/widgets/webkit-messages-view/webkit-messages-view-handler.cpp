@@ -27,8 +27,8 @@
 WebkitMessagesViewHandler::WebkitMessagesViewHandler(
     not_owned_qptr<ChatStyleRenderer> chatStyleRenderer, std::unique_ptr<WebkitMessagesViewDisplay> messagesDisplay,
     QObject *parent)
-        : QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)},
-          m_messagesDisplay{std::move(messagesDisplay)}
+        : QObject{parent}, m_chatStyleRenderer{std::move(chatStyleRenderer)}, m_messagesDisplay{
+                                                                                  std::move(messagesDisplay)}
 {
     if (m_chatStyleRenderer->isReady())
         rendererReady();

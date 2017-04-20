@@ -52,12 +52,11 @@ QString ScreenShotSaver::createScreenshotPath()
         return QString();
     }
 
-    return QDir::cleanPath(
-        QString("%1/%2%3.%4")
-            .arg(dir.absolutePath())
-            .arg(m_screenShotConfiguration->fileNamePrefix())
-            .arg(QString::number(QDateTime::currentDateTime().toTime_t()))
-            .arg(m_screenShotConfiguration->screenshotFileNameExtension().toLower()));
+    return QDir::cleanPath(QString("%1/%2%3.%4")
+                               .arg(dir.absolutePath())
+                               .arg(m_screenShotConfiguration->fileNamePrefix())
+                               .arg(QString::number(QDateTime::currentDateTime().toTime_t()))
+                               .arg(m_screenShotConfiguration->screenshotFileNameExtension().toLower()));
 }
 
 QString ScreenShotSaver::saveScreenShot(QPixmap pixmap)

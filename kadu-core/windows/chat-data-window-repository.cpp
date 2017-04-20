@@ -17,8 +17,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "windows/chat-data-window.h"
 #include "core/injected-factory.h"
+#include "windows/chat-data-window.h"
 
 #include "chat-data-window-repository.h"
 #include "chat-data-window-repository.moc"

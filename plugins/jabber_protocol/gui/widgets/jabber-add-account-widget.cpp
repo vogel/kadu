@@ -47,8 +47,8 @@
 #include <QtWidgets/QVBoxLayout>
 
 JabberAddAccountWidget::JabberAddAccountWidget(bool isGmail, QString defaultServer, bool showButtons, QWidget *parent)
-        : AccountAddWidget{parent}, m_isGmail{isGmail}, m_defaultServer{std::move(defaultServer)},
-          m_showButtons{showButtons}
+        : AccountAddWidget{parent}, m_isGmail{isGmail}, m_defaultServer{std::move(defaultServer)}, m_showButtons{
+                                                                                                       showButtons}
 {
 }
 

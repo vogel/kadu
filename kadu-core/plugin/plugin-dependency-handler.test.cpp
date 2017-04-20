@@ -17,12 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin/plugin-dependency-handler.h"
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/metadata/plugin-metadata-provider.h"
 #include "plugin/metadata/plugin-metadata.h"
+#include "plugin/plugin-dependency-handler.h"
 
 #include <QtTest/QtTest>
 #include <algorithm>
@@ -116,10 +116,9 @@ void PluginDependencyHandlerTest::verifyDependencies(
 
 void PluginDependencyHandlerTest::simpleDependencyTest()
 {
-    auto handler = createPluginDependencyHandler(
-        QVector<QPair<QString, QStringList>>{
-            qMakePair(QString{"p1"}, QStringList{"p2", "p3", "p4"}), qMakePair(QString{"p2"}, QStringList{"p3", "p4"}),
-            qMakePair(QString{"p3"}, QStringList{"p4"}), qMakePair(QString{"p4"}, QStringList{})});
+    auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>{
+        qMakePair(QString{"p1"}, QStringList{"p2", "p3", "p4"}), qMakePair(QString{"p2"}, QStringList{"p3", "p4"}),
+        qMakePair(QString{"p3"}, QStringList{"p4"}), qMakePair(QString{"p4"}, QStringList{})});
 
     QCOMPARE(handler.get()->pluginNames(), (std::set<QString>{"p1", "p2", "p3", "p4"}));
     QVERIFY(handler.get()->hasPluginMetadata("p1"));
@@ -132,31 +131,37 @@ void PluginDependencyHandlerTest::simpleDependencyTest()
     QCOMPARE(handler.get()->pluginMetadata("p3").name, QString{"p3"});
     QCOMPARE(handler.get()->pluginMetadata("p4").name, QString{"p4"});
     QCOMPARE(
-        handler.get()->withDependencies("p1"), QVector<QString>{} << "p4"
-                                                                  << "p3"
-                                                                  << "p2"
-                                                                  << "p1");
+        handler.get()->withDependencies("p1"),
+        QVector<QString>{} << "p4"
+                           << "p3"
+                           << "p2"
+                           << "p1");
     QCOMPARE(handler.get()->withDependents("p1"), QVector<QString>{} << "p1");
     QCOMPARE(
-        handler.get()->withDependencies("p2"), QVector<QString>{} << "p4"
-                                                                  << "p3"
-                                                                  << "p2");
+        handler.get()->withDependencies("p2"),
+        QVector<QString>{} << "p4"
+                           << "p3"
+                           << "p2");
     QCOMPARE(
-        handler.get()->withDependents("p2"), QVector<QString>{} << "p1"
-                                                                << "p2");
+        handler.get()->withDependents("p2"),
+        QVector<QString>{} << "p1"
+                           << "p2");
     QCOMPARE(
-        handler.get()->withDependencies("p3"), QVector<QString>{} << "p4"
-                                                                  << "p3");
+        handler.get()->withDependencies("p3"),
+        QVector<QString>{} << "p4"
+                           << "p3");
     QCOMPARE(
-        handler.get()->withDependents("p3"), QVector<QString>{} << "p1"
-                                                                << "p2"
-                                                                << "p3");
+        handler.get()->withDependents("p3"),
+        QVector<QString>{} << "p1"
+                           << "p2"
+                           << "p3");
     QCOMPARE(handler.get()->withDependencies("p4"), QVector<QString>{} << "p4");
     QCOMPARE(
-        handler.get()->withDependents("p4"), QVector<QString>{} << "p1"
-                                                                << "p2"
-                                                                << "p3"
-                                                                << "p4");
+        handler.get()->withDependents("p4"),
+        QVector<QString>{} << "p1"
+                           << "p2"
+                           << "p3"
+                           << "p4");
     QCOMPARE(handler.get()->withDependencies("p5"), QVector<QString>{});
     QCOMPARE(handler.get()->withDependents("p5"), QVector<QString>{});
 }
@@ -176,10 +181,9 @@ void PluginDependencyHandlerTest::selfDependencyTest()
 
 void PluginDependencyHandlerTest::pluginOnlyAsDependencyTest()
 {
-    auto handler = createPluginDependencyHandler(
-        QVector<QPair<QString, QStringList>>{qMakePair(QString{"p1"}, QStringList{"p2"}),
-                                             qMakePair(QString{"p2"}, QStringList{"p3"}),
-                                             qMakePair(QString{"p3"}, QStringList{"p4"})});
+    auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>{
+        qMakePair(QString{"p1"}, QStringList{"p2"}), qMakePair(QString{"p2"}, QStringList{"p3"}),
+        qMakePair(QString{"p3"}, QStringList{"p4"})});
 
     QCOMPARE(handler.get()->pluginNames(), std::set<QString>{});
     QVERIFY(!handler.get()->hasPluginMetadata("p1"));
@@ -190,9 +194,8 @@ void PluginDependencyHandlerTest::pluginOnlyAsDependencyTest()
 
 void PluginDependencyHandlerTest::cycleDependencyTest()
 {
-    auto handler = createPluginDependencyHandler(
-        QVector<QPair<QString, QStringList>>{qMakePair(QString{"p1"}, QStringList{"p2"}),
-                                             qMakePair(QString{"p2"}, QStringList{"p1"})});
+    auto handler = createPluginDependencyHandler(QVector<QPair<QString, QStringList>>{
+        qMakePair(QString{"p1"}, QStringList{"p2"}), qMakePair(QString{"p2"}, QStringList{"p1"})});
 
     QCOMPARE(handler.get()->pluginNames(), std::set<QString>{});
     QVERIFY(!handler.get()->hasPluginMetadata("p1"));

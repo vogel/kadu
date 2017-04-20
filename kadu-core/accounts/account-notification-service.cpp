@@ -54,9 +54,10 @@ static QString getErrorServer(const ParserData *const object)
 }
 
 AccountNotificationService::AccountNotificationService(QObject *parent)
-        : QObject{parent},
-          m_ignoreErrorsCallback{QStringLiteral("connection-ignore-errors"), tr("Ignore"),
-                                 [this](const Notification &notification) { return ignoreErrors(notification); }},
+        : QObject{parent}, m_ignoreErrorsCallback{QStringLiteral("connection-ignore-errors"), tr("Ignore"),
+                                                  [this](const Notification &notification) {
+                                                      return ignoreErrors(notification);
+                                                  }},
           m_connectionErrorEvent{QStringLiteral("ConnectionError"),
                                  QStringLiteral(QT_TRANSLATE_NOOP("@default", "Connection error"))}
 {
@@ -139,9 +140,9 @@ void AccountNotificationService::notifyConnectionError(
 
 QString AccountNotificationService::errorDetails(const QString &errorServer, const QString &errorMessage)
 {
-    return errorMessage.isEmpty() ? QString{} : errorServer.isEmpty()
-                                                    ? errorMessage
-                                                    : QStringLiteral("%1 (%2)").arg(errorMessage, errorServer);
+    return errorMessage.isEmpty()
+               ? QString{}
+               : errorServer.isEmpty() ? errorMessage : QStringLiteral("%1 (%2)").arg(errorMessage, errorServer);
 }
 
 void AccountNotificationService::ignoreErrors(const Notification &notification)

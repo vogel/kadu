@@ -48,8 +48,8 @@ PluginLoader::PluginLoader(
     QObject *parent) noexcept(false)
         :   // using C++ initializers breaks Qt's lupdate
           QObject(parent),
-          m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)},
-          m_pluginInjector{createPluginInjector(pluginName, pluginInjectorProvider)},
+          m_pluginLoader{createPluginLoader(pluginDirPath, pluginName)}, m_pluginInjector{createPluginInjector(
+                                                                             pluginName, pluginInjectorProvider)},
           m_pluginInjectorProviderContainer{pluginName, pluginInjectorProvider, m_pluginInjector},
           m_injectorRegisteredActions{*m_pluginInjector.get<Actions>(), m_pluginInjector}
 {

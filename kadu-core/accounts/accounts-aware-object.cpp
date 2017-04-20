@@ -29,10 +29,7 @@ void AccountsAwareObject::accountAdded(Account account)
     Q_UNUSED(account)
 }
 
-void AccountsAwareObject::accountRemoved(Account account)
-{
-    Q_UNUSED(account)
-}
+void AccountsAwareObject::accountRemoved(Account account){Q_UNUSED(account)}
 
 AccountsAwareObject::AccountsAwareObject()
 {

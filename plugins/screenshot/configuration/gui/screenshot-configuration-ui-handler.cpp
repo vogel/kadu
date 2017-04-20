@@ -23,7 +23,6 @@
 
 #include "configuration/gui/configuration-ui-handler-repository.h"
 #include "core/core.h"
-#include "core/core.h"
 #include "misc/paths-provider.h"
 
 #include "widgets/configuration/config-combo-box.h"

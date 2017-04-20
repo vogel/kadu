@@ -108,11 +108,10 @@ void KaduStyleRenderer::displayMessageStatus(const QString &id, MessageStatus st
 
 void KaduStyleRenderer::displayChatState(ChatState state, const QString &message, const QString &name)
 {
-    configuration().webFrame().evaluateJavaScript(
-        QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");")
-            .arg(static_cast<int>(state))
-            .arg(Qt::escape(message))
-            .arg(Qt::escape(name)));
+    configuration().webFrame().evaluateJavaScript(QString("kadu_contactActivityChanged(%1, \"%2\", \"%3\");")
+                                                      .arg(static_cast<int>(state))
+                                                      .arg(Qt::escape(message))
+                                                      .arg(Qt::escape(name)));
 }
 
 void KaduStyleRenderer::displayChatImage(const ChatImage &chatImage, const QString &fileName)

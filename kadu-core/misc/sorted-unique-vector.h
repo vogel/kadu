@@ -37,8 +37,8 @@
  * @param LessThanComparator comparator used for sorting
  * @param EqualityComparator comparator used for uniqueness testing
  */
-template <typename T, bool (*LessThanComparator)(const T &, const T &),
-          bool (*EqualityComparator)(const T &, const T &)>
+template <
+    typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
 class KADUAPI sorted_unique_vector
 {
 public:
@@ -148,8 +148,8 @@ private:
 /**
  * @return begin iterator to content of sorted_unique_vector.
  */
-template <typename T, bool (*LessThanComparator)(const T &, const T &),
-          bool (*EqualityComparator)(const T &, const T &)>
+template <
+    typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
 typename sorted_unique_vector<T, LessThanComparator, EqualityComparator>::Storage::const_iterator
 begin(const sorted_unique_vector<T, LessThanComparator, EqualityComparator> &sortedVector)
 {
@@ -159,8 +159,8 @@ begin(const sorted_unique_vector<T, LessThanComparator, EqualityComparator> &sor
 /**
  * @return end iterator to content of sorted_unique_vector.
  */
-template <typename T, bool (*LessThanComparator)(const T &, const T &),
-          bool (*EqualityComparator)(const T &, const T &)>
+template <
+    typename T, bool (*LessThanComparator)(const T &, const T &), bool (*EqualityComparator)(const T &, const T &)>
 typename sorted_unique_vector<T, LessThanComparator, EqualityComparator>::Storage::const_iterator
 end(const sorted_unique_vector<T, LessThanComparator, EqualityComparator> &sortedVector)
 {

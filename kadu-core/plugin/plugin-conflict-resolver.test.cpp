@@ -17,12 +17,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "plugin/plugin-conflict-resolver.h"
 #include "misc/algorithm.h"
 #include "misc/memory.h"
 #include "plugin/dependency-graph/plugin-dependency-graph-builder.h"
 #include "plugin/metadata/plugin-metadata-provider.h"
 #include "plugin/metadata/plugin-metadata.h"
+#include "plugin/plugin-conflict-resolver.h"
 #include "plugin/plugin-dependency-handler.h"
 
 #include <QtTest/QtTest>

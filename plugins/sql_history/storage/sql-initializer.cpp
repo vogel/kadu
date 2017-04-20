@@ -121,8 +121,9 @@ void SqlInitializer::initDatabase()
     if (!currentFileExists && oldHistoryFileExists())
     {
         emit progressMessage(
-            "dialog-information", tr("Copying history file to new location: %1 ...")
-                                      .arg(m_pathsProvider->profilePath() + QStringLiteral(HISTORY_FILE_CURRENT)));
+            "dialog-information",
+            tr("Copying history file to new location: %1 ...")
+                .arg(m_pathsProvider->profilePath() + QStringLiteral(HISTORY_FILE_CURRENT)));
         if (!copyHistoryFile())
         {
             emit progressFinished(

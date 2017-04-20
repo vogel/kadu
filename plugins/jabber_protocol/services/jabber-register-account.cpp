@@ -32,8 +32,8 @@
 #include <qxmpp/QXmppRegisterIq.h>
 
 JabberRegisterAccount::JabberRegisterAccount(Jid jid, QString password, QString email, QObject *parent)
-        : QObject{parent}, m_jid{std::move(jid)}, m_password{std::move(password)}, m_email{std::move(email)},
-          m_state{State::None}
+        : QObject{parent}, m_jid{std::move(jid)},
+          m_password{std::move(password)}, m_email{std::move(email)}, m_state{State::None}
 {
 }
 

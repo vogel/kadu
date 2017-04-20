@@ -28,9 +28,9 @@
 #include "notification/notification.h"
 
 MediaplayerNotificationService::MediaplayerNotificationService(QObject *parent)
-        : QObject{parent},
-          m_playingTitleEvent{QStringLiteral("MediaPlayerOsd"),
-                              QStringLiteral(QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"))}
+        : QObject{parent}, m_playingTitleEvent{
+                               QStringLiteral("MediaPlayerOsd"),
+                               QStringLiteral(QT_TRANSLATE_NOOP("@default", "Pseudo-OSD for MediaPlayer"))}
 {
 }
 

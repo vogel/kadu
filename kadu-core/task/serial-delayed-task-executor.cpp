@@ -26,9 +26,7 @@
 
 namespace
 {
-
 auto const DELAY = 500;
-
 };
 
 SerialDelayedTaskExecutor::SerialDelayedTaskExecutor(QObject *parent) : QObject{parent}

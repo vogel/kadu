@@ -113,8 +113,9 @@ void PluginListWidgetDelegate::updateRowRange(const QModelIndex &parent, int sta
             optionView.rect = ItemView->visualRect(index);
 
             QList<QWidget *> widgetList = widgetPool->findWidgets(
-                index, optionView, isRemoving ? PluginListWidgetDelegateWidgets::NotUpdateWidgets
-                                              : PluginListWidgetDelegateWidgets::UpdateWidgets);
+                index, optionView,
+                isRemoving ? PluginListWidgetDelegateWidgets::NotUpdateWidgets
+                           : PluginListWidgetDelegateWidgets::UpdateWidgets);
 
             if (isRemoving)
             {

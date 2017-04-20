@@ -34,9 +34,10 @@
 #include "widgets/chat-widget/chat-widget-manager.h"
 
 MessageNotificationService::MessageNotificationService(QObject *parent)
-        : QObject{parent},
-          m_openChatCallback{QStringLiteral("chat-open"), tr("Chat"),
-                             [this](const Notification &notification) { return openChat(notification); }},
+        : QObject{parent}, m_openChatCallback{QStringLiteral("chat-open"), tr("Chat"),
+                                              [this](const Notification &notification) {
+                                                  return openChat(notification);
+                                              }},
           m_newChatEvent{QStringLiteral("NewChat"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New chat"))},
           m_newMessageEvent{QStringLiteral("NewMessage"), QStringLiteral(QT_TRANSLATE_NOOP("@default", "New message"))}
 {

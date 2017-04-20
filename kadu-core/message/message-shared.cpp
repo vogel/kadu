@@ -18,7 +18,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "message/message.h"
 #include "chat/chat-manager.h"
 #include "chat/chat.h"
 #include "contacts/contact-manager.h"
@@ -27,6 +26,7 @@
 #include "html/html-conversion.h"
 #include "html/html-string.h"
 #include "message/message-manager.h"
+#include "message/message.h"
 #include "message/unread-message-repository.h"
 #include "misc/change-notifier.h"
 

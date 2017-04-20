@@ -33,8 +33,9 @@
 #include <QtWidgets/QVBoxLayout>
 
 HintsWidget::HintsWidget(QWidget *parent)
-        : QFrame{parent, Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint |
-                             Qt::WindowStaysOnTopHint | Qt::MSWindowsOwnDC}
+        : QFrame{parent,
+                 Qt::FramelessWindowHint | Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint |
+                     Qt::MSWindowsOwnDC}
 {
     setObjectName(QStringLiteral("hints"));
     setStyleSheet(QStringLiteral("#hints { border: 1px solid %1; }").arg(palette().window().color().darker().name()));

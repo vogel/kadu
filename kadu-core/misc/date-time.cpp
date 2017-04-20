@@ -74,10 +74,9 @@ QString printDateTime(bool niceDateFormat, const QDateTime &datetime)
                 else if (tmp == 1)
                     ret.prepend(QCoreApplication::translate("@default", "%1 weeks and day ago at ").arg(delta / 7));
                 else
-                    ret.prepend(
-                        QCoreApplication::translate("@default", "%1 weeks and %2 days ago at ")
-                            .arg(delta / 7)
-                            .arg(delta % 7));
+                    ret.prepend(QCoreApplication::translate("@default", "%1 weeks and %2 days ago at ")
+                                    .arg(delta / 7)
+                                    .arg(delta % 7));
             }
             else
                 ret.prepend(datetime.toString(QCoreApplication::translate("@default", "d MMMM yyyy at ")));

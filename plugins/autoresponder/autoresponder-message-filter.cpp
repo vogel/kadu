@@ -102,11 +102,11 @@ bool AutoresponderMessageFilter::acceptMessage(const Message &message)
         (Configuration.statusBusy() && group == StatusTypeGroup::Away))
     {
         m_messageManager->sendMessage(
-            message.messageChat(), normalizeHtml(
-                                       HtmlString{tr("KADU AUTORESPONDER:") + '\n' +
-                                                  m_parser->parse(
-                                                      Configuration.autoRespondText(),
-                                                      Talkable(message.messageSender()), ParserEscape::HtmlEscape)}),
+            message.messageChat(),
+            normalizeHtml(HtmlString{
+                tr("KADU AUTORESPONDER:") + '\n' +
+                m_parser->parse(
+                    Configuration.autoRespondText(), Talkable(message.messageSender()), ParserEscape::HtmlEscape)}),
             true);
 
         RepliedChats.insert(message.messageChat());
