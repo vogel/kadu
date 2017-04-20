@@ -169,5 +169,6 @@ void FacebookRosterService::removeContact(const QString &id)
         m_buddyManager->clearOwnerAndRemoveEmptyBuddy(contact);
         RosterService::removeContact(contact);
         contact.rosterEntry()->setSynchronized();
+        m_contactManager->removeItem(contact);
     }
 }

@@ -77,7 +77,7 @@ void ContactAvatarDownloader::init()
     connect(
         m_aggregatedContactAvatarService, &AggregatedContactAvatarService::removed, this,
         &ContactAvatarDownloader::remove);
-    connect(m_contactManager, &ContactManager::contactRemoved, this, &ContactAvatarDownloader::removeFor);
+    connect(m_contactManager, &ContactManager::contactAboutToBeRemoved, this, &ContactAvatarDownloader::removeFor);
 
     configurationUpdated();
 }
@@ -135,6 +135,6 @@ void ContactAvatarDownloader::remove(const ContactGlobalId &id)
 
 void ContactAvatarDownloader::removeFor(const Contact &contact)
 {
-    contact.removeProperty("avatar:id");
     m_avatars->remove(avatarId(contact));
+    contact.removeProperty("avatar:id");
 }
