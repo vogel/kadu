@@ -41,6 +41,5 @@ void FacebookContactAvatarService::download(const ContactAvatarId &id)
 
 void FacebookContactAvatarService::contactAdded(const QFacebookContact &c)
 {
-    printf("contact added!\n");
     emit available({{c.id()}, c.avatarUrl()});
 }
