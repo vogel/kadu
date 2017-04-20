@@ -57,6 +57,8 @@ private:
     std::unique_ptr<FacebookContactAvatarService> m_contactAvatarService;
     std::unique_ptr<FacebookRosterService> m_rosterService;
 
+    void selfAvatarAvailable(const QByteArray &path);
+
 private slots:
     INJEQT_SET void setAggregatedContactAvatarService(AggregatedContactAvatarService *aggregatedContactAvatarService);
     INJEQT_SET void setChatServiceRepository(ChatServiceRepository *chatServiceRepository);

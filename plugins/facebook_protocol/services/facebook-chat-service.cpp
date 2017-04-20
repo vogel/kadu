@@ -215,6 +215,10 @@ void FacebookChatService::threadsReceived(const QFacebookDownloadThreadsResult &
     m_syncSequenceId = result.syncSequenceId;
     if (result.unreadCount > 0)
         m_facebookSession.downloadUnreadThreads(result.unreadCount);
+
+    // for some reason this data is sent here, probably it is due to my lack of
+    // understanding of facebook protocol
+    emit selfAvatarAvailable(result.avatarPath);
 }
 
 void FacebookChatService::unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result)

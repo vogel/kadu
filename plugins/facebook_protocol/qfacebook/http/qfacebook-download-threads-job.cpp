@@ -50,9 +50,11 @@ void QFacebookDownloadThreadsJob::replyFinished(const std::experimental::optiona
     if (!result)
         return;
 
+    auto avatarPath =
+        result->readObject("viewer").readObject("actor").readObject("profile_picture").readString("uri").toUtf8();
     auto messageThreads = result->readObject("viewer").readObject("message_threads");
     emit finished(QFacebookDownloadThreadsResult{messageThreads.readString("sync_sequence_id").toInt(),
-                                                 messageThreads.readInt("unread_count")});
+                                                 messageThreads.readInt("unread_count"), avatarPath});
 }
 catch (QFacebookInvalidDataException &)
 {

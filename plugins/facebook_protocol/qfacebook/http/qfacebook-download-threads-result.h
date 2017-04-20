@@ -29,4 +29,5 @@ struct QFacebookDownloadThreadsResult
 {
     int syncSequenceId;
     int unreadCount;
+    QByteArray avatarPath;   // TODO: check why I'm getting this data here...
 };

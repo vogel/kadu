@@ -64,6 +64,9 @@ public slots:
     virtual bool sendRawMessage(const Chat &chat, const QByteArray &rawMessage) override;
     virtual void leaveChat(const Chat &chat) override;
 
+signals:
+    void selfAvatarAvailable(const QByteArray &path);
+
 private:
     QPointer<ChatManager> m_chatManager;
     QPointer<ChatStorage> m_chatStorage;

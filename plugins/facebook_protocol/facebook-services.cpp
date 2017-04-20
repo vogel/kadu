@@ -26,6 +26,7 @@
 #include "services/facebook-roster-service.h"
 
 #include "avatars/aggregated-contact-avatar-service.h"
+#include "avatars/contact-avatar-id.h"
 #include "chat/chat-service-repository.h"
 #include "contacts/contact-manager.h"
 #include "plugin/plugin-injected-factory.h"
@@ -76,4 +77,11 @@ void FacebookServices::init()
     connect(
         m_rosterService.get(), &FacebookRosterService::added, m_contactAvatarService.get(),
         &FacebookContactAvatarService::contactAdded);
+    connect(
+        m_chatService.get(), &FacebookChatService::selfAvatarAvailable, this, &FacebookServices::selfAvatarAvailable);
+}
+
+void FacebookServices::selfAvatarAvailable(const QByteArray &path)
+{
+    m_contactAvatarService->download(ContactAvatarId{{m_account.accountContact().id().toUtf8()}, path});
 }
