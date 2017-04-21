@@ -73,9 +73,9 @@ void MessageManagerImpl::done()
     for (auto chatService : m_chatServiceRepository)
         removeChatService(chatService);
 
-    connect(
+    disconnect(
         m_chatServiceRepository, &ChatServiceRepository::chatServiceAdded, this, &MessageManagerImpl::addChatService);
-    connect(
+    disconnect(
         m_chatServiceRepository, &ChatServiceRepository::chatServiceRemoved, this,
         &MessageManagerImpl::removeChatService);
 }

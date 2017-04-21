@@ -92,7 +92,7 @@ public:
     void activateReplacementPlugins();
 
     /**
-     * @short Activate all plugins that are enabled.
+     * @short Deactivate all plugins that are enabled.
      *
      * This method deactivated all active plugins. First iteration of deactivation check Plugin::usageCounter() value
      * to check if given plugin can be safely removed (no other active plugins depends on it). This procedure is
