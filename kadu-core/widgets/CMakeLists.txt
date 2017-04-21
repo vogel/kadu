@@ -130,6 +130,7 @@ set (widgets_SRCS
 	configuration/config-list-widget.cpp
 	configuration/config-path-list-edit.cpp
 	configuration/config-preview.cpp
+	configuration/config-proxy-combo-box.cpp
 	configuration/config-radio-button.cpp
 	configuration/config-select-file.cpp
 	configuration/config-select-font.cpp

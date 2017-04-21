@@ -49,6 +49,7 @@
 #include "widgets/configuration/config-list-widget.h"
 #include "widgets/configuration/config-path-list-edit.h"
 #include "widgets/configuration/config-preview.h"
+#include "widgets/configuration/config-proxy-combo-box.h"
 #include "widgets/configuration/config-radio-button.h"
 #include "widgets/configuration/config-section.h"
 #include "widgets/configuration/config-select-file.h"
@@ -355,7 +356,7 @@ ConfigWidget *ConfigurationWidget::appendUiElementFromDom(QDomNode uiElementNode
     else if (tagName == "preview")
         widget = m_injectedFactory->makeInjected<ConfigPreview>(configGroupBox, DataManager);
     else if (tagName == "proxy-combo-box")
-        widget = m_injectedFactory->makeInjected<ConfigPreview>(configGroupBox, DataManager);
+        widget = m_injectedFactory->makeInjected<ConfigProxyComboBox>(configGroupBox, DataManager);
     else if (tagName == "slider")
         widget = m_injectedFactory->makeInjected<ConfigSlider>(configGroupBox, DataManager);
     else if (tagName == "label")
