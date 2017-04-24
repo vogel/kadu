@@ -3,15 +3,15 @@
     <name>@default</name>
     <message>
         <source>Chat</source>
-        <translation type="unfinished"/>
+        <translation>Чат</translation>
     </message>
     <message>
         <source>Antistring</source>
-        <translation type="unfinished"/>
+        <translation>Нестрока</translation>
     </message>
     <message>
         <source>General</source>
-        <translation type="unfinished"/>
+        <translation>Основные</translation>
     </message>
     <message>
         <source>Enable Antistring</source>

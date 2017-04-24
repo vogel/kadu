@@ -1,5 +1,12 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="pt_BR" version="2.1">
 <context>
+    <name>AskForSubscriptionAction</name>
+    <message>
+        <source>Ask for Subscription</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FacebookDepreceatedMessage</name>
     <message>
         <source>Facebook XMPP support is disabled since 01.05.2015. This means Kadu will be no longer able to connect to Facebook accounts. You can leave your Facebook accounts configured for chat history or you can remove them from Kadu using Your Account dialog</source>
@@ -18,26 +25,7 @@
     </message>
 </context>
 <context>
-    <name>JabberActions</name>
-    <message>
-        <source>Resend Subscription</source>
-        <translation>Re-solicitar autorização</translation>
-    </message>
-    <message>
-        <source>Remove Subscription</source>
-        <translation>Remover autorização</translation>
-    </message>
-    <message>
-        <source>Ask for Subscription</source>
-        <translation>Solicitar autorização</translation>
-    </message>
-</context>
-<context>
     <name>JabberAddAccountWidget</name>
-    <message>
-        <source>&lt;a href=&apos;#&apos;&gt;What is my username?&lt;/a&gt;</source>
-        <translation>&lt;a href=&apos;#&apos;&gt;Qual é meu nome de usuário?&lt;/a&gt;</translation>
-    </message>
     <message>
         <source>Username</source>
         <translation>Nome de usuário</translation>
@@ -643,10 +631,31 @@ Mensagem do servidor: %1</translation>
     </message>
 </context>
 <context>
-    <name>ShowXmlConsoleActionDescription</name>
+    <name>RemoveSubscriptionAction</name>
+    <message>
+        <source>Remove Subscription</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ResendSubscriptionAction</name>
+    <message>
+        <source>Resend Subscription</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowXmlConsoleAction</name>
     <message>
         <source>Show XML Console</source>
-        <translation>Mostrar console XML</translation>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>SubscriptionAction</name>
+    <message>
+        <source>Resend Subscription</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

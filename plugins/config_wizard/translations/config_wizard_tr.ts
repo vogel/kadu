@@ -7,13 +7,6 @@
     </message>
 </context>
 <context>
-    <name>ConfigWizardActions</name>
-    <message>
-        <source>Start Configuration Wizard</source>
-        <translation>Ayarlama Sihirbazını Başlat</translation>
-    </message>
-</context>
-<context>
     <name>ConfigWizardChooseNetworkPage</name>
     <message>
         <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
@@ -90,6 +83,13 @@
     <message>
         <source>Kadu Wizard</source>
         <translation>Kadu Sihirbazı</translation>
+    </message>
+</context>
+<context>
+    <name>ShowConfigWizardAction</name>
+    <message>
+        <source>Start Configuration Wizard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

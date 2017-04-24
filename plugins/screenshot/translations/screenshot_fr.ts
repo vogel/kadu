@@ -130,6 +130,10 @@ Elle devrait être plus grosse.</translation>
         <source>Window Shot</source>
         <translation>Capture d&apos;écran d&apos;une fenêtre</translation>
     </message>
+    <message>
+        <source>ScreenShot</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ScreenshotNotificationService</name>

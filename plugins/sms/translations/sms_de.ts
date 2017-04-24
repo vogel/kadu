@@ -81,10 +81,10 @@ Die Parameter sollten mit Leerzeichen getrennt werden. %k wird zu einer Nummer u
     </message>
 </context>
 <context>
-    <name>SmsActions</name>
+    <name>SendSmsAction</name>
     <message>
         <source>Send SMS...</source>
-        <translation>Sende SMS...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -140,6 +140,10 @@ Die Parameter sollten mit Leerzeichen getrennt werden. %k wird zu einer Nummer u
     <message>
         <source>Sending SMS...</source>
         <translation>Sende SMS...</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

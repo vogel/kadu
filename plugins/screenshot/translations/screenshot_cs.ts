@@ -130,6 +130,10 @@ Měl by být větší.</translation>
         <source>Window Shot</source>
         <translation>Snímek okna</translation>
     </message>
+    <message>
+        <source>ScreenShot</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ScreenshotNotificationService</name>

@@ -91,6 +91,20 @@
     </message>
 </context>
 <context>
+    <name>AttachTabAction</name>
+    <message>
+        <source>Attach Chat to Tabs</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenInNewTabAction</name>
+    <message>
+        <source>Chat in New Tab</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
@@ -133,10 +147,6 @@
     </message>
     <message>
         <source>Chat in New Tab</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Attach Chat to Tabs</source>
         <translation type="unfinished"/>
     </message>
     <message>

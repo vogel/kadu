@@ -3,14 +3,7 @@
     <name>@default</name>
     <message>
         <source>Kadu needs to be restarted before changes to the language settings will take effect.</source>
-        <translation>Um die Spracheinstellungen zu aktivieren, muss Kadu neu gestartet werden.</translation>
-    </message>
-</context>
-<context>
-    <name>ConfigWizardActions</name>
-    <message>
-        <source>Start Configuration Wizard</source>
-        <translation>Einrichtungsassistent starten</translation>
+        <translation>Um die Sprache zu übernehmen, muss Kadu neu gestartet werden.</translation>
     </message>
 </context>
 <context>
@@ -37,7 +30,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Please choose the network for the account that you would like to set up.&lt;/p&gt;&lt;p&gt;You can also create a new account in the wizard if you don&apos;t already have one&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Wähle bitte das Netzwerk für das Konto aus, das eingerichtet werden soll.&lt;/p&gt;&lt;p&gt;Es kann auch ein neues Konto im Einrichtungsassistenten erstellt werden, falls noch keins existiert.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Wähle bitte das Netzwerk für das Konto aus, das eingerichtet werden soll.&lt;/p&gt;&lt;p&gt;Du kannst auch ein neues Konto erstellten, falls Du noch keins hast.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -59,7 +52,7 @@
     <name>ConfigWizardProfilePage</name>
     <message>
         <source>&lt;h3&gt;Welcome to Kadu Instant Messenger&lt;/h3&gt;&lt;p&gt;This wizard will help you to configure the basic settings of Kadu.&lt;/p&gt;&lt;p&gt;Please choose a preferred language and create a nickname&lt;/p&gt;</source>
-        <translation>&lt;h3&gt;Willkommen bei Kadu&lt;/h3&gt;&lt;p&gt;Dieser Einrichtungsassistent hilft dir bei der Konfiguration der Grundeinstellungen von Kadu-&lt;/p&gt;&lt;p&gt;Bitte wähle eine bevorzugte Sprache und einen Benutzernamen aus&lt;/p&gt;</translation>
+        <translation>&lt;h3&gt;Willkommen bei Kadu&lt;/h3&gt;&lt;p&gt;Dieser Einrichtungsassistent hilft dir bei der Konfiguration der Grundeinstellungen von Kadu-&lt;/p&gt;&lt;p&gt;Bitte wähle eine bevorzugte Sprache und gib einen Namen  ein.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>&lt;h3&gt;Profile setup&lt;/h3&gt;</source>
@@ -71,7 +64,7 @@
     </message>
     <message>
         <source>Nickname</source>
-        <translation>Benutzername</translation>
+        <translation>Nickname</translation>
     </message>
 </context>
 <context>
@@ -90,6 +83,13 @@
     <message>
         <source>Kadu Wizard</source>
         <translation>Kadu Assistent</translation>
+    </message>
+</context>
+<context>
+    <name>ShowConfigWizardAction</name>
+    <message>
+        <source>Start Configuration Wizard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

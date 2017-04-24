@@ -1,75 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Notification</source>
-        <translation>Notificación</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tray Icon Balloon</source>
-        <translation>Globo del icono de barra</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Timeout</source>
-        <translation>Tiempo de espera</translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <source>Notification icon</source>
-        <translation>Icono de Notificación</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Information</source>
-        <translation>Información</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Critical</source>
-        <translation>Crítico</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Syntax</source>
-        <translation>Sintaxis</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>No Icon</source>
-        <translation>Sin icono</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Notifications</source>
-        <translation>Notificaciones</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation type="unfinished">Configurar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

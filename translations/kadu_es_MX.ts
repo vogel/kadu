@@ -114,10 +114,6 @@
         <translation>Permitir ejecutar comandos por el analizador</translation>
     </message>
     <message>
-        <source>Debugging mask</source>
-        <translation>Máscara de depuración</translation>
-    </message>
-    <message>
         <source>Filters</source>
         <translation>Filtros</translation>
     </message>
@@ -1102,14 +1098,6 @@ cambios al establecer conexión con el servidor</translation>
 <context>
     <name>AccountAvatarWidget</name>
     <message>
-        <source>Remove Photo...</source>
-        <translation>Eliminar Foto...</translation>
-    </message>
-    <message>
-        <source>Change Photo...</source>
-        <translation>Cambiar Foto...</translation>
-    </message>
-    <message>
         <source>Select avatar file</source>
         <translation>Seleccionar archivo de avatar</translation>
     </message>
@@ -1117,48 +1105,13 @@ cambios al establecer conexión con el servidor</translation>
         <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
         <translation>Imágenes (*.jpeg *.jpg *.png);;Todos los Archivos (*)</translation>
     </message>
-</context>
-<context>
-    <name>AccountBuddyListWidget</name>
-    <message>
-        <source>Restore from file</source>
-        <translation>Restaurar desde archivo</translation>
-    </message>
-    <message>
-        <source>Store to file</source>
-        <translation>Guardar a archivo</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Select file</source>
-        <translation>Seleccionar archivo</translation>
-    </message>
-    <message>
-        <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
-        <translation>La lista de contactos no pudo ser importada. El archivo %0 no contiene la lista de contactos correcta.</translation>
-    </message>
-    <message>
-        <source>Contact List Files (*.txt *.xml);;All Files (*)</source>
-        <translation>Archivos de Lista de Contactos (*.txt *.xml);;Todos los Archivos (*)</translation>
-    </message>
-    <message>
-        <source>Contact List Files (*.txt)</source>
-        <translation>Archivos de Listas de Contactos (*.txt)</translation>
-    </message>
-    <message>
-        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation>Los siguientes contactos de su lista were no se encontraron en el archivo:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;¿Quiere eliminarlos de la lista de contactos?</translation>
-    </message>
     <message>
         <source>Remove</source>
-        <translation>Eliminar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <source>Change</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1177,6 +1130,10 @@ cambios al establecer conexión con el servidor</translation>
     <message>
         <source>Connection error on account: %1 (%2)</source>
         <translation>Error de conexión en la cuenta: %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1356,6 +1313,20 @@ cambios al establecer conexión con el servidor</translation>
     </message>
 </context>
 <context>
+    <name>AddFoundBuddyAction</name>
+    <message>
+        <source>Add selected user</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>AddGroupAction</name>
+    <message>
+        <source>Add Group...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AddRoomChatAction</name>
     <message>
         <source>Join Room...</source>
@@ -1430,6 +1401,13 @@ cambios al establecer conexión con el servidor</translation>
     </message>
 </context>
 <context>
+    <name>AddUserAction</name>
+    <message>
+        <source>Add Buddy...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
@@ -1456,6 +1434,31 @@ cambios al establecer conexión con el servidor</translation>
     </message>
 </context>
 <context>
+    <name>AutoSendAction</name>
+    <message>
+        <source>More...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Return Sends Message</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BlockUserAction</name>
+    <message>
+        <source>Block Buddy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>BoldAction</name>
+    <message>
+        <source>Bold</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Buddy</name>
     <message>
         <source>Example description</source>
@@ -1469,20 +1472,20 @@ cambios al establecer conexión con el servidor</translation>
 <context>
     <name>BuddyAvatarWidget</name>
     <message>
-        <source>Remove Custom Photo...</source>
-        <translation>Eliminar Foto Personalizada...</translation>
-    </message>
-    <message>
-        <source>Change Photo...</source>
-        <translation>Cambiar Foto...</translation>
-    </message>
-    <message>
         <source>Select new photo</source>
         <translation>Selecionar nueva foto</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg *.bmp);;All Files (*)</source>
         <translation>Imágenes (*.png *.jpg *.bmp);;Todos los Archivos (*)</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1776,6 +1779,13 @@ no pueden recibir imágenes.</translation>
     </message>
 </context>
 <context>
+    <name>ChatFoundAction</name>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ChatGroupsConfigurationWidget</name>
     <message>
         <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
@@ -1844,57 +1854,6 @@ Esto excede sus límites configurados.
     </message>
 </context>
 <context>
-    <name>ChatWidgetActions</name>
-    <message>
-        <source>More...</source>
-        <translation>Más...</translation>
-    </message>
-    <message>
-        <source>Return Sends Message</source>
-        <translation>Devolver Mensaje Enviado</translation>
-    </message>
-    <message>
-        <source>Clear Messages in Chat Window</source>
-        <translation>Borrar Mensajes en la Ventana de Conversación</translation>
-    </message>
-    <message>
-        <source>Insert Image</source>
-        <translation>Insertar Imagen</translation>
-    </message>
-    <message>
-        <source>Bold</source>
-        <translation>Negrita</translation>
-    </message>
-    <message>
-        <source>Italic</source>
-        <translation>Cursiva</translation>
-    </message>
-    <message>
-        <source>Underline</source>
-        <translation>Subrayar</translation>
-    </message>
-    <message>
-        <source>&amp;Send</source>
-        <translation>&amp;Enviar</translation>
-    </message>
-    <message>
-        <source>Block Buddy</source>
-        <translation>Bloquear Compañero</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Conversación</translation>
-    </message>
-    <message>
-        <source>Open Chat with...</source>
-        <translation>Abrir conversación con...</translation>
-    </message>
-    <message>
-        <source>More</source>
-        <translation>Más</translation>
-    </message>
-</context>
-<context>
     <name>ChatWidgetImpl</name>
     <message>
         <source>Kadu</source>
@@ -1960,6 +1919,20 @@ Esto excede sus límites configurados.
     </message>
 </context>
 <context>
+    <name>ClearChatAction</name>
+    <message>
+        <source>Clear Messages in Chat Window</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ClearResultsAction</name>
+    <message>
+        <source>Clear results</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CollapseAction</name>
     <message>
         <source>Collapse</source>
@@ -1979,6 +1952,36 @@ Esto excede sus límites configurados.
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>CopyDescriptionAction</name>
+    <message>
+        <source>Copy Description</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>CopyPersonalInfoAction</name>
+    <message>
+        <source>Copy Personal Info</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Contact:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Mobile:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2069,6 +2072,13 @@ Esto excede sus límites configurados.
     </message>
 </context>
 <context>
+    <name>ExitAction</name>
+    <message>
+        <source>&amp;Quit</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ExpandAction</name>
     <message>
         <source>Expand</source>
@@ -2127,6 +2137,22 @@ Esto excede sus límites configurados.
     <message>
         <source>account: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>cuenta: &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2228,6 +2254,13 @@ Esto excede sus límites configurados.
     <message>
         <source>Search</source>
         <translation>Buscar</translation>
+    </message>
+</context>
+<context>
+    <name>FirstSearchAction</name>
+    <message>
+        <source>&amp;Search</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2458,6 +2491,20 @@ Esto excede sus límites configurados.
     </message>
 </context>
 <context>
+    <name>InsertImageAction</name>
+    <message>
+        <source>Insert Image</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ItalicAction</name>
+    <message>
+        <source>Italic</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>KaduDialog</name>
     <message>
         <source>Ok</source>
@@ -2556,124 +2603,8 @@ Esto excede sus límites configurados.
         <translation>Ver Propiedades de Compañero</translation>
     </message>
     <message>
-        <source>&amp;Quit</source>
-        <translation>&amp;Salir</translation>
-    </message>
-    <message>
-        <source>Add Group...</source>
-        <translation>Agregar Grupo...</translation>
-    </message>
-    <message>
-        <source>Search for Buddy...</source>
-        <translation>Buscar Compañero...</translation>
-    </message>
-    <message>
-        <source>A&amp;bout Kadu</source>
-        <translation>A&amp;cerca de Kadu</translation>
-    </message>
-    <message>
-        <source>Show Information Panel</source>
-        <translation>Mostrar Panel de Información</translation>
-    </message>
-    <message>
-        <source>Show Blocked Buddies</source>
-        <translation>Mostrar Compañeros Bloqueados</translation>
-    </message>
-    <message>
-        <source>Copy Description</source>
-        <translation>Copiar Descripción</translation>
-    </message>
-    <message>
-        <source>Copy Personal Info</source>
-        <translation>Copiar Información Personal</translation>
-    </message>
-    <message>
-        <source>Send E-Mail</source>
-        <translation>Enviar correo electrónico</translation>
-    </message>
-    <message>
-        <source>Search in Directory</source>
-        <translation>Buscar en Directorio</translation>
-    </message>
-    <message>
-        <source>Show Offline Buddies</source>
-        <translation>Mostrar Compañeros Desconectados</translation>
-    </message>
-    <message>
-        <source>Only Show Buddies with Description</source>
-        <translation>Sólo Mostrar Compañeros con Descripción</translation>
-    </message>
-    <message>
-        <source>Show Descriptions</source>
-        <translation>Mostrar Descripciones</translation>
-    </message>
-    <message>
-        <source>Only Show Online Buddies and Buddies with Description</source>
-        <translation>Sólo Mostrar Compañeros en Línea y Compañeros con Descripción</translation>
-    </message>
-    <message>
-        <source>Merge Buddies...</source>
-        <translation>Combinar Compañeros...</translation>
-    </message>
-    <message>
-        <source>Show Myself Buddy</source>
-        <translation>Mostrarme de Compañero</translation>
-    </message>
-    <message>
         <source>View Chat Properties</source>
         <translation>Ver Propiedades de Conversación</translation>
-    </message>
-    <message>
-        <source>Preferences</source>
-        <translation>Preferencias</translation>
-    </message>
-    <message>
-        <source>Your Accounts</source>
-        <translation>Sus Cuentas</translation>
-    </message>
-    <message>
-        <source>Multilogons</source>
-        <translation>Múltiples inicios de sesión</translation>
-    </message>
-    <message>
-        <source>Report a Bug</source>
-        <translation>Informar de un error</translation>
-    </message>
-    <message>
-        <source>Get Involved</source>
-        <translation>Participa</translation>
-    </message>
-    <message>
-        <source>Translate Kadu</source>
-        <translation>Traducir Kadu</translation>
-    </message>
-    <message>
-        <source>Open Description Link in Browser</source>
-        <translation>Abrir Enlace de Descripción en Navegador</translation>
-    </message>
-    <message>
-        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Elegir que compañero le gustaria combinar con &lt;i&gt;%1&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>Merge</source>
-        <translation>Combinar</translation>
-    </message>
-    <message>
-        <source>Contact:</source>
-        <translation>Contacto:</translation>
-    </message>
-    <message>
-        <source>First name:</source>
-        <translation>Nombre:</translation>
-    </message>
-    <message>
-        <source>Last name:</source>
-        <translation>Apellido:</translation>
-    </message>
-    <message>
-        <source>Mobile:</source>
-        <translation>Celular:</translation>
     </message>
     <message>
         <source>Delete Chat</source>
@@ -2682,10 +2613,6 @@ Esto excede sus límites configurados.
     <message>
         <source>Delete Buddy</source>
         <translation>Eliminar Compañero</translation>
-    </message>
-    <message>
-        <source>Forum</source>
-        <translation>Foro</translation>
     </message>
 </context>
 <context>
@@ -2721,6 +2648,13 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
+    <name>LookupBuddyInfoAction</name>
+    <message>
+        <source>Search in Directory</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>MainConfigurationWindow</name>
     <message>
         <source>Kadu configuration</source>
@@ -2748,6 +2682,21 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     <message>
         <source>Create new toolbar</source>
         <translation>Crear nueva barra de herramientas</translation>
+    </message>
+</context>
+<context>
+    <name>MergeBuddiesAction</name>
+    <message>
+        <source>Merge Buddies...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Merge</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2783,6 +2732,21 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Nuevo mensaje de &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Chat</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>MoreActionsAction</name>
+    <message>
+        <source>More...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>More</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>MultilogonModel</name>
@@ -2817,6 +2781,10 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
         <source>Multilogon session disconnected</source>
         <translation>Múltiple inicio de sesión desconectado</translation>
     </message>
+    <message>
+        <source>Disconnect session</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>MultilogonWindow</name>
@@ -2845,14 +2813,24 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
-    <name>NotificationService</name>
+    <name>NextResultsAction</name>
     <message>
-        <source>Notify About Buddy</source>
-        <translation>Notificar Acerca de Compañero</translation>
+        <source>&amp;Next results</source>
+        <translation type="unfinished"/>
     </message>
+</context>
+<context>
+    <name>NotificationService</name>
     <message>
         <source>Ignore</source>
         <translation>Ignorar</translation>
+    </message>
+</context>
+<context>
+    <name>NotifyAboutBuddyAction</name>
+    <message>
+        <source>Notify About Buddy</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2874,6 +2852,20 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
+    <name>OpenBuddyEmailAction</name>
+    <message>
+        <source>Send E-Mail</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenChatAction</name>
+    <message>
+        <source>&amp;Chat</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OpenChatWith</name>
     <message>
         <source>Open chat with...</source>
@@ -2890,6 +2882,55 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     <message>
         <source>User name:</source>
         <translation>Nombre de usuario:</translation>
+    </message>
+</context>
+<context>
+    <name>OpenChatWithAction</name>
+    <message>
+        <source>Open Chat with...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenDescriptionLinkAction</name>
+    <message>
+        <source>Open Description Link in Browser</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenForumAction</name>
+    <message>
+        <source>Forum</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenGetInvolvedAction</name>
+    <message>
+        <source>Get Involved</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenRedmineAction</name>
+    <message>
+        <source>Report a Bug</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenSearchAction</name>
+    <message>
+        <source>Search for Buddy...</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenTranslateAction</name>
+    <message>
+        <source>Translate Kadu</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2939,6 +2980,10 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     <message>
         <source>Choose a directory</source>
         <translation>Elegir un directorio</translation>
+    </message>
+    <message>
+        <source>Select paths</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3402,32 +3447,9 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
         <source>There were no results of your search.</source>
         <translation>No hubo resultados para su búsqueda.</translation>
     </message>
-</context>
-<context>
-    <name>SearchWindowActions</name>
     <message>
-        <source>&amp;Search</source>
-        <translation>&amp;Buscar</translation>
-    </message>
-    <message>
-        <source>&amp;Next results</source>
-        <translation>&amp;Siguientes resultados</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation>Detener</translation>
-    </message>
-    <message>
-        <source>Clear results</source>
-        <translation>Borrar resultados</translation>
-    </message>
-    <message>
-        <source>Add selected user</source>
-        <translation>Agregar usuario seleccionado</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Conversación</translation>
+        <source>Search User in Directory</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3469,6 +3491,13 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
+    <name>SendAction</name>
+    <message>
+        <source>&amp;Send</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>SendFileAction</name>
     <message>
         <source>Select file location</source>
@@ -3480,6 +3509,34 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
+    <name>ShowAboutWindowAction</name>
+    <message>
+        <source>A&amp;bout Kadu</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowBlockedBuddiesAction</name>
+    <message>
+        <source>Show Blocked Buddies</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowConfigurationWindowAction</name>
+    <message>
+        <source>Preferences</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowDescriptionsAction</name>
+    <message>
+        <source>Show Descriptions</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ShowFileTransferWindowAction</name>
     <message>
         <source>View File Transfers</source>
@@ -3487,10 +3544,52 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
-    <name>SilentModeService</name>
+    <name>ShowInfoPanelAction</name>
     <message>
-        <source>Silent Mode</source>
-        <translation>Modo Silencioso</translation>
+        <source>Show Information Panel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowMultilogonsAction</name>
+    <message>
+        <source>Multilogons</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowMyselfAction</name>
+    <message>
+        <source>Show Myself Buddy</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowOfflineBuddiesAction</name>
+    <message>
+        <source>Show Offline Buddies</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowOnlyBuddiesWithDescriptionAction</name>
+    <message>
+        <source>Only Show Buddies with Description</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowOnlyBuddiesWithDescriptionOrOnlineAction</name>
+    <message>
+        <source>Only Show Online Buddies and Buddies with Description</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowYourAccountsAction</name>
+    <message>
+        <source>Your Accounts</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3739,6 +3838,13 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
+    <name>StopSearchAction</name>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>StringListDialog</name>
     <message>
         <source>Kadu</source>
@@ -3766,6 +3872,17 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     <message>
         <source>Allow and add buddy...</source>
         <translation>Permitir y agregar compañero...</translation>
+    </message>
+    <message>
+        <source>Ask For Sharing Status</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ToggleSilentModeAction</name>
+    <message>
+        <source>Silent Mode</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3867,6 +3984,13 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     </message>
 </context>
 <context>
+    <name>UnderlineAction</name>
+    <message>
+        <source>Underline</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>UpdatesDialog</name>
     <message>
         <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
@@ -3883,6 +4007,10 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
     <message>
         <source>Ok</source>
         <translation>OK</translation>
+    </message>
+    <message>
+        <source>New version is available. Please update</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

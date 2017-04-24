@@ -101,7 +101,7 @@
     </message>
 </context>
 <context>
-    <name>History</name>
+    <name>ClearHistoryAction</name>
     <message>
         <source>Clear History</source>
         <translation>Wyczyść historię</translation>
@@ -266,7 +266,7 @@
     </message>
 </context>
 <context>
-    <name>ShowHistoryActionDescription</name>
+    <name>ShowHistoryAction</name>
     <message>
         <source>View Chat History</source>
         <translation>Pokaż historię rozmów</translation>

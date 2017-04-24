@@ -201,19 +201,7 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Buddies</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Connection</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Options</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Use default servers</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -269,14 +257,6 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <source>Gadu-Gadu Server</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Custom server IP addresses</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <source>Network</source>
         <translation type="unfinished"/>
     </message>
@@ -318,10 +298,6 @@ Are you sure to allow them to know you are available?</source>
     <name>GaduFileTransferService</name>
     <message>
         <source>Connect before sending files.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <source>Enable SSL in account configuration and reconnect before sending files.</source>
         <translation type="unfinished"/>
     </message>
     <message>

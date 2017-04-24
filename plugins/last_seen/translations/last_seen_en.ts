@@ -2,13 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en">
 <context>
-    <name>Infos</name>
-    <message>
-        <source>&amp;Show infos about buddies</source>
-        <translation>&amp;Show infos about buddies</translation>
-    </message>
-</context>
-<context>
     <name>InfosDialog</name>
     <message>
         <source>Buddy</source>
@@ -41,6 +34,17 @@
     <message>
         <source>Username</source>
         <translation>Username</translation>
+    </message>
+    <message>
+        <source>Buddies Information</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ShowInfosWindowAction</name>
+    <message>
+        <source>&amp;Show infos about buddies</source>
+        <translation type="unfinished">&amp;Show infos about buddies</translation>
     </message>
 </context>
 </TS>

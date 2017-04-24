@@ -130,6 +130,10 @@ Powinien być większy.</translation>
         <source>Window Shot</source>
         <translation>Zrzut okna</translation>
     </message>
+    <message>
+        <source>ScreenShot</source>
+        <translation>ScreenShot</translation>
+    </message>
 </context>
 <context>
     <name>ScreenshotNotificationService</name>

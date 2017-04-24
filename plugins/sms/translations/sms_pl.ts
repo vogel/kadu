@@ -81,7 +81,7 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     </message>
 </context>
 <context>
-    <name>SmsActions</name>
+    <name>SendSmsAction</name>
     <message>
         <source>Send SMS...</source>
         <translation>Wyślij SMS-a...</translation>
@@ -140,6 +140,10 @@ Argumenty powinny być rozdzielone spacjami. Argument %k jest traktowany jak num
     <message>
         <source>Sending SMS...</source>
         <translation>Wysyłanie SMSa...</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation>Wyślij SMS</translation>
     </message>
 </context>
 <context>

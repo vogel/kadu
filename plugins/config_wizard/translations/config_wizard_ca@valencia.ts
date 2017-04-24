@@ -7,13 +7,6 @@
     </message>
 </context>
 <context>
-    <name>ConfigWizardActions</name>
-    <message>
-        <source>Start Configuration Wizard</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>ConfigWizardChooseNetworkPage</name>
     <message>
         <source>&lt;h3&gt;Account Setup&lt;/h3&gt;</source>
@@ -89,6 +82,13 @@
     <name>ConfigWizardWindow</name>
     <message>
         <source>Kadu Wizard</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowConfigWizardAction</name>
+    <message>
+        <source>Start Configuration Wizard</source>
         <translation type="unfinished"/>
     </message>
 </context>

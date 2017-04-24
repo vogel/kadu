@@ -39,7 +39,7 @@
     </message>
     <message>
         <source>Shortcuts</source>
-        <translation type="unfinished"/>
+        <translation>Комбинации клавиш</translation>
     </message>
     <message>
         <source>View history</source>
@@ -59,7 +59,7 @@
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
-        <translation type="unfinished"/>
+        <translation>Выберите период времени в течение которого сообщение можно цитировать в окно чата</translation>
     </message>
     <message>
         <source>yesterday</source>
@@ -75,11 +75,11 @@
     </message>
     <message>
         <source>Limit number of messages from history</source>
-        <translation type="unfinished"/>
+        <translation>Лимит сообщений из истории</translation>
     </message>
     <message>
         <source>Behavior</source>
-        <translation type="unfinished"/>
+        <translation>Поведение</translation>
     </message>
     <message>
         <source>Chat window</source>
@@ -97,14 +97,14 @@
     <name>ChatHistoryTab</name>
     <message>
         <source>&amp;Clear Chat History</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Отчистить историю чата</translation>
     </message>
 </context>
 <context>
-    <name>History</name>
+    <name>ClearHistoryAction</name>
     <message>
         <source>Clear History</source>
-        <translation>Очистить историю</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -133,7 +133,7 @@
     <name>HistoryMessagesTab</name>
     <message>
         <source>&amp;Remove entries</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Удалить</translation>
     </message>
     <message>
         <source>Filter</source>
@@ -187,11 +187,11 @@
     </message>
     <message>
         <source>&amp;Clear Status History</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Отчистить историю статусов</translation>
     </message>
     <message>
         <source>&amp;Clear SMS History</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Отчистить историю СМС</translation>
     </message>
     <message>
         <source>Chats</source>
@@ -242,7 +242,7 @@
     </message>
     <message>
         <source>to</source>
-        <translation type="unfinished"/>
+        <translation>кому</translation>
     </message>
     <message>
         <source>Search</source>
@@ -266,14 +266,14 @@
     </message>
 </context>
 <context>
-    <name>ShowHistoryActionDescription</name>
+    <name>ShowHistoryAction</name>
     <message>
         <source>View Chat History</source>
-        <translation>Показать историю чата</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation>Показывать последние %1 сообщений</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages since yesterday</source>

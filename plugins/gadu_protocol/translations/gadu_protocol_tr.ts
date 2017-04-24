@@ -201,20 +201,8 @@
         <translation>Kişisel bilgi</translation>
     </message>
     <message>
-        <source>Buddies</source>
-        <translation>Arkadaşlar</translation>
-    </message>
-    <message>
-        <source>Connection</source>
-        <translation>Bağlantı</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Ayarlar</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Varsayılan sunucuları kullan</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -269,14 +257,6 @@
         <translation>Bilinmeyen arkadaşlardan gelen mesajlarda potansiyel zararlı linklere karşı korur</translation>
     </message>
     <message>
-        <source>Gadu-Gadu Server</source>
-        <translation>Gadu-Gadu Sunucu</translation>
-    </message>
-    <message>
-        <source>Custom server IP addresses</source>
-        <translation>Özel sunucu IP adresi</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Ağ</translation>
     </message>
@@ -320,10 +300,6 @@ Müsait olduğunuzu bilmelerine izin veriyor musunuz?</translation>
     <message>
         <source>Connect before sending files.</source>
         <translation>Dosyaları göndermeden önce bağlanın.</translation>
-    </message>
-    <message>
-        <source>Enable SSL in account configuration and reconnect before sending files.</source>
-        <translation>Dosyaları göndermeden önce yeniden bağlanın ve hesap ayarlarından SSL açın.</translation>
     </message>
     <message>
         <source>Unable to login to GG Drive. Reconnect before sending files.</source>

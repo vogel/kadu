@@ -130,6 +130,10 @@ Büyük olmalıdır.</translation>
         <source>Window Shot</source>
         <translation>Pencere Çekimi</translation>
     </message>
+    <message>
+        <source>ScreenShot</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ScreenshotNotificationService</name>

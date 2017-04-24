@@ -83,10 +83,10 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     </message>
 </context>
 <context>
-    <name>SmsActions</name>
+    <name>SendSmsAction</name>
     <message>
         <source>Send SMS...</source>
-        <translation>Send SMS...</translation>
+        <translation type="unfinished">Send SMS...</translation>
     </message>
 </context>
 <context>
@@ -142,6 +142,10 @@ Arguments should be separated with spaces. %k argument is converted to number, %
     <message>
         <source>Sending SMS...</source>
         <translation>Sending SMS...</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished">Send SMS</translation>
     </message>
 </context>
 <context>

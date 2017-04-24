@@ -143,10 +143,6 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
         <translation>Enable MediaPlayer statuses</translation>
     </message>
     <message>
-        <source>MediaPlayer</source>
-        <translation>MediaPlayer</translation>
-    </message>
-    <message>
         <source>%1 isn&apos;t running!</source>
         <translation>%1 isn&apos;t running!</translation>
     </message>
@@ -163,32 +159,8 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
         <translation>Player turned off.</translation>
     </message>
     <message>
-        <source>Enable MediaPlayer Statuses</source>
-        <translation>Enable MediaPlayer Statuses</translation>
-    </message>
-    <message>
         <source>Play</source>
         <translation>Play</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation>Stop</translation>
-    </message>
-    <message>
-        <source>Previous Track</source>
-        <translation>Previous Track</translation>
-    </message>
-    <message>
-        <source>Next Track</source>
-        <translation>Next Track</translation>
-    </message>
-    <message>
-        <source>Volume Up</source>
-        <translation>Volume Up</translation>
-    </message>
-    <message>
-        <source>Volume Down</source>
-        <translation>Volume Down</translation>
     </message>
     <message>
         <source>Kadu</source>
@@ -217,6 +189,62 @@ Win+ Enter/Backspace/Left/Right/Up/Down.</translation>
     <message>
         <source>Send</source>
         <translation>Send</translation>
+    </message>
+</context>
+<context>
+    <name>MediaplayerMenuAction</name>
+    <message>
+        <source>MediaPlayer</source>
+        <translation type="unfinished">MediaPlayer</translation>
+    </message>
+</context>
+<context>
+    <name>NextAction</name>
+    <message>
+        <source>Next Track</source>
+        <translation type="unfinished">Next Track</translation>
+    </message>
+</context>
+<context>
+    <name>PlayAction</name>
+    <message>
+        <source>Play</source>
+        <translation type="unfinished">Play</translation>
+    </message>
+</context>
+<context>
+    <name>PrevAction</name>
+    <message>
+        <source>Previous Track</source>
+        <translation type="unfinished">Previous Track</translation>
+    </message>
+</context>
+<context>
+    <name>StopAction</name>
+    <message>
+        <source>Stop</source>
+        <translation type="unfinished">Stop</translation>
+    </message>
+</context>
+<context>
+    <name>ToggleMediaplayerStatusesAction</name>
+    <message>
+        <source>Enable MediaPlayer Statuses</source>
+        <translation type="unfinished">Enable MediaPlayer Statuses</translation>
+    </message>
+</context>
+<context>
+    <name>VolumeDownAction</name>
+    <message>
+        <source>Volume Down</source>
+        <translation type="unfinished">Volume Down</translation>
+    </message>
+</context>
+<context>
+    <name>VolumeUpAction</name>
+    <message>
+        <source>Volume Up</source>
+        <translation type="unfinished">Volume Up</translation>
     </message>
 </context>
 </TS>

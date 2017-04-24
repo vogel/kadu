@@ -103,10 +103,10 @@
     </message>
 </context>
 <context>
-    <name>History</name>
+    <name>ClearHistoryAction</name>
     <message>
         <source>Clear History</source>
-        <translation>Clear History</translation>
+        <translation type="unfinished">Clear History</translation>
     </message>
 </context>
 <context>
@@ -268,30 +268,30 @@
     </message>
 </context>
 <context>
-    <name>ShowHistoryActionDescription</name>
+    <name>ShowHistoryAction</name>
     <message>
         <source>View Chat History</source>
-        <translation>View Chat History</translation>
+        <translation type="unfinished">View Chat History</translation>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation>Show last %1 messages</translation>
+        <translation type="unfinished">Show last %1 messages</translation>
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation>Show messages since yesterday</translation>
+        <translation type="unfinished">Show messages since yesterday</translation>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation>Show messages from last 7 days</translation>
+        <translation type="unfinished">Show messages from last 7 days</translation>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation>Show messages from last 30 days</translation>
+        <translation type="unfinished">Show messages from last 30 days</translation>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation>Show whole history</translation>
+        <translation type="unfinished">Show whole history</translation>
     </message>
 </context>
 </TS>

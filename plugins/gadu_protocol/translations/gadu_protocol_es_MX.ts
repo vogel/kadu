@@ -201,20 +201,8 @@
         <translation>Información personal</translation>
     </message>
     <message>
-        <source>Buddies</source>
-        <translation>Compañeros</translation>
-    </message>
-    <message>
-        <source>Connection</source>
-        <translation>Conexión</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Opciones</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Usar los servidores predeterminados</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -269,14 +257,6 @@
         <translation>Te protege de enlaces potencialmente peligrosos en mensajes de compañeros anónimos</translation>
     </message>
     <message>
-        <source>Gadu-Gadu Server</source>
-        <translation>Servidor Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Custom server IP addresses</source>
-        <translation>Dirección IP del servidor personalizada</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Red</translation>
     </message>
@@ -320,10 +300,6 @@ Are you sure to allow them to know you are available?</source>
     <message>
         <source>Connect before sending files.</source>
         <translation>Conectar antes de enviar los archivos.</translation>
-    </message>
-    <message>
-        <source>Enable SSL in account configuration and reconnect before sending files.</source>
-        <translation>Habilite SSL en la configuración de cuenta y vuelva a conectarse antes de enviar los archivos.</translation>
     </message>
     <message>
         <source>Unable to login to GG Drive. Reconnect before sending files.</source>

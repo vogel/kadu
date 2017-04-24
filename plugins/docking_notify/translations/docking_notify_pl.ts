@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
     <name>@default</name>
     <message>
@@ -17,11 +15,7 @@
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n sekunda</numerusform>
-            <numerusform>%n sekundy</numerusform>
-            <numerusform>%n sekund</numerusform>
-        </translation>
+        <translation><numerusform>1 sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Notification icon</source>
@@ -60,17 +54,17 @@
     <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation type="unfinished">Konfiguruj</translation>
+        <translation>Konfiguruj</translation>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation type="unfinished">Konfiguracja wyglądu balonika nad ikoną w zasobniku</translation>
+        <translation>Konfiguracja wyglądu balonika nad ikoną w zasobniku</translation>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation type="unfinished">%&amp;t - tytuł (np. Nowa wiadomość) %&amp;m - treść powiadomienia (np. Wiadomość od Jasia), %&amp;d - szczegóły (np. treść wiadomości),%&amp;i - ikona powiadomienia</translation>
+        <translation>%&amp;t - tytuł (np. Nowa wiadomość) %&amp;m - treść powiadomienia (np. Wiadomość od Jasia), %&amp;d - szczegóły (np. treść wiadomości),%&amp;i - ikona powiadomienia</translation>
     </message>
 </context>
 </TS>

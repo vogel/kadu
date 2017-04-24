@@ -79,15 +79,29 @@
     </message>
     <message>
         <source>Show &apos;Open chat&apos; button</source>
-        <translation>Knopf zum Eröffnen einer Unterhaltung anzeigen</translation>
+        <translation>Button zum Eröffnen einer Unterhaltung anzeigen</translation>
     </message>
     <message>
         <source>Show common &apos;Close Tab&apos; button on tab bar</source>
-        <translation>In der Reiterleiste gemeinsamen Knopf zum Schließen von Reitern anzeigen</translation>
+        <translation>In der Reiterleiste einen Button zum Schließen des aktuellen Reiters anzeigen</translation>
     </message>
     <message>
         <source>Show &apos;Close&apos; button on each tab</source>
-        <translation>Zeige &quot;Schließen&quot;-Knopf auf jedem Reiter</translation>
+        <translation>Zeige &quot;Schließen&quot;-Button auf jedem Reiter</translation>
+    </message>
+</context>
+<context>
+    <name>AttachTabAction</name>
+    <message>
+        <source>Attach Chat to Tabs</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OpenInNewTabAction</name>
+    <message>
+        <source>Chat in New Tab</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -134,10 +148,6 @@
     <message>
         <source>Chat in New Tab</source>
         <translation>Chat im neuen Reiter</translation>
-    </message>
-    <message>
-        <source>Attach Chat to Tabs</source>
-        <translation>Verbinde Chat mit Reitern</translation>
     </message>
     <message>
         <source>Detach</source>

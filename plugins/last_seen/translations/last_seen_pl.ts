@@ -1,12 +1,5 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="pl" version="2.1">
 <context>
-    <name>Infos</name>
-    <message>
-        <source>&amp;Show infos about buddies</source>
-        <translation>Informacje o znajomych</translation>
-    </message>
-</context>
-<context>
     <name>InfosDialog</name>
     <message>
         <source>Buddy</source>
@@ -39,6 +32,17 @@
     <message>
         <source>Username</source>
         <translation>Nazwa użytkownika</translation>
+    </message>
+    <message>
+        <source>Buddies Information</source>
+        <translation>Informacje o znajomych</translation>
+    </message>
+</context>
+<context>
+    <name>ShowInfosWindowAction</name>
+    <message>
+        <source>&amp;Show infos about buddies</source>
+        <translation>&amp;Pokaż informacje o znajomych</translation>
     </message>
 </context>
 </TS>

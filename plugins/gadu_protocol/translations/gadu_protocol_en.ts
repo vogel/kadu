@@ -203,20 +203,8 @@
         <translation>Personal info</translation>
     </message>
     <message>
-        <source>Buddies</source>
-        <translation>Buddies</translation>
-    </message>
-    <message>
-        <source>Connection</source>
-        <translation>Connection</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Options</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Use default servers</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -271,14 +259,6 @@
         <translation>Protects you from potentially malicious links in messages from anonymous buddies</translation>
     </message>
     <message>
-        <source>Gadu-Gadu Server</source>
-        <translation>Gadu-Gadu Server</translation>
-    </message>
-    <message>
-        <source>Custom server IP addresses</source>
-        <translation>Custom server IP addresses</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Network</translation>
     </message>
@@ -322,10 +302,6 @@ Are you sure to allow them to know you are available?</translation>
     <message>
         <source>Connect before sending files.</source>
         <translation>Connect before sending files.</translation>
-    </message>
-    <message>
-        <source>Enable SSL in account configuration and reconnect before sending files.</source>
-        <translation>Enable SSL in account configuration and reconnect before sending files.</translation>
     </message>
     <message>
         <source>Unable to login to GG Drive. Reconnect before sending files.</source>

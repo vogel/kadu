@@ -81,10 +81,10 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     </message>
 </context>
 <context>
-    <name>SmsActions</name>
+    <name>SendSmsAction</name>
     <message>
         <source>Send SMS...</source>
-        <translation>Envoyez SMS...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -140,6 +140,10 @@ Les arguments doivent être séparés par des espaces. L&apos;argument %k est co
     <message>
         <source>Sending SMS...</source>
         <translation>Envoi du SMS...</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

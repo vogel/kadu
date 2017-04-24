@@ -81,10 +81,10 @@ Argumenty mají být odděleny mezerami. %k argument je převeden na číslo, %m
     </message>
 </context>
 <context>
-    <name>SmsActions</name>
+    <name>SendSmsAction</name>
     <message>
         <source>Send SMS...</source>
-        <translation>Poslat SMS...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -140,6 +140,10 @@ Argumenty mají být odděleny mezerami. %k argument je převeden na číslo, %m
     <message>
         <source>Sending SMS...</source>
         <translation>Posílá se SMS...</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

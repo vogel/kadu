@@ -93,6 +93,20 @@
     </message>
 </context>
 <context>
+    <name>AttachTabAction</name>
+    <message>
+        <source>Attach Chat to Tabs</source>
+        <translation type="unfinished">Attach Chat to Tabs</translation>
+    </message>
+</context>
+<context>
+    <name>OpenInNewTabAction</name>
+    <message>
+        <source>Chat in New Tab</source>
+        <translation type="unfinished">Chat in New Tab</translation>
+    </message>
+</context>
+<context>
     <name>TabWidget</name>
     <message>
         <source>Kadu</source>
@@ -136,10 +150,6 @@
     <message>
         <source>Chat in New Tab</source>
         <translation>Chat in New Tab</translation>
-    </message>
-    <message>
-        <source>Attach Chat to Tabs</source>
-        <translation>Attach Chat to Tabs</translation>
     </message>
     <message>
         <source>Detach</source>

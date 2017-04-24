@@ -43,10 +43,10 @@
     </message>
 </context>
 <context>
-    <name>AutostatusActions</name>
+    <name>ToggleAutostatusAction</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation>&amp;Estado automático</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

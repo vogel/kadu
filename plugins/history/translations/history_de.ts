@@ -55,7 +55,7 @@
     </message>
     <message>
         <source>Show messages from history since</source>
-        <translation>Zeige Nachrichten aus dem Verlauf seit</translation>
+        <translation>Zeige Nachrichten aus dem Verlauf von</translation>
     </message>
     <message>
         <source>Choose time period in which messages can be quoted in chat window</source>
@@ -63,15 +63,15 @@
     </message>
     <message>
         <source>yesterday</source>
-        <translation>letzter Tag</translation>
+        <translation>Gestern</translation>
     </message>
     <message>
         <source>last week</source>
-        <translation>letzte Woche</translation>
+        <translation>letzter Woche</translation>
     </message>
     <message>
         <source>last month</source>
-        <translation>letzter Monat</translation>
+        <translation>letztem Monat</translation>
     </message>
     <message>
         <source>Limit number of messages from history</source>
@@ -101,10 +101,10 @@
     </message>
 </context>
 <context>
-    <name>History</name>
+    <name>ClearHistoryAction</name>
     <message>
         <source>Clear History</source>
-        <translation>Verlauf leeren</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -266,30 +266,30 @@
     </message>
 </context>
 <context>
-    <name>ShowHistoryActionDescription</name>
+    <name>ShowHistoryAction</name>
     <message>
         <source>View Chat History</source>
-        <translation>Zeige Chat-Verlauf</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation>Letzte %1 Nachrichten anzeigen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation>Zeige Nachrichten seit gestern</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation>Zeige Nachrichten der letzten 7 Tage</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation>Zeige Nachrichten der letzten 30 Tage</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation>Zeige gesamten Verlauf</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

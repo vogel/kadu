@@ -101,10 +101,10 @@
     </message>
 </context>
 <context>
-    <name>History</name>
+    <name>ClearHistoryAction</name>
     <message>
         <source>Clear History</source>
-        <translation>Geçmişi Temizle</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -266,30 +266,30 @@
     </message>
 </context>
 <context>
-    <name>ShowHistoryActionDescription</name>
+    <name>ShowHistoryAction</name>
     <message>
         <source>View Chat History</source>
-        <translation>Konuşma Geçmişini Göster</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show last %1 messages</source>
-        <translation>Son %1 mesajı göster</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages since yesterday</source>
-        <translation>Dünden bu yana olan mesajları göster</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages from last 7 days</source>
-        <translation>Son 7 günün mesajlarını göster</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show messages from last 30 days</source>
-        <translation>Son 30 günün mesajlarını göster</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Show whole history</source>
-        <translation>Tüm geçmişi göster</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

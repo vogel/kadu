@@ -1,76 +1,70 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="tr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="tr" version="2.1">
 <context>
     <name>@default</name>
     <message>
         <source>Notification</source>
-        <translation>Uyarı</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tray Icon Balloon</source>
-        <translation>Sistem Tepsisi Simge Balonu</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Timeout</source>
-        <translation>Zaman aşımı</translation>
+        <translation type="unfinished"/>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation>
-            <numerusform>%n saniye</numerusform>
-        </translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
         <source>Notification icon</source>
-        <translation>Uyarı simgesi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Information</source>
-        <translation>Bilgi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Uyarı</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Critical</source>
-        <translation>Kritik</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Title</source>
-        <translation>Başlık</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Syntax</source>
-        <translation>Sözdizimi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>No Icon</source>
-        <translation>Simge Yok</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Notifications</source>
-        <translation>Uyarılar</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DockingNotifyConfigurationWidget</name>
     <message>
         <source>Configure</source>
-        <translation type="unfinished">Ayar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>Tray icon balloon&apos;s look configuration</source>
-        <translation type="unfinished">Sistem tepsisi simge balonu görünüş ayarı</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <source>
 %&amp;t - title (eg. New message) %&amp;m - notification text (eg. Message from Jim), %&amp;d - details (eg. message quotation),
 %&amp;i - notification icon</source>
-        <translation type="unfinished">
-%&amp;t - başlık (örn. Yeni mesaj) %&amp;m - uyarı yazısı (örn. Ahmet&apos;ten mesaj), %&amp;d - detaylar (örn. mesaj alıntısı),
-%&amp;i - uyarı simgesi</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

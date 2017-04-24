@@ -48,10 +48,10 @@
     </message>
 </context>
 <context>
-    <name>AutostatusActions</name>
+    <name>ToggleAutostatusAction</name>
     <message>
         <source>&amp;Autostatus</source>
-        <translation>&amp;Autostatus</translation>
+        <translation type="unfinished">&amp;Autostatus</translation>
     </message>
 </context>
 </TS>

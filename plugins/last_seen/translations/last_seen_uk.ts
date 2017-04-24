@@ -1,12 +1,5 @@
 <?xml version="1.0" ?><!DOCTYPE TS><TS language="uk" version="2.1">
 <context>
-    <name>Infos</name>
-    <message>
-        <source>&amp;Show infos about buddies</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>InfosDialog</name>
     <message>
         <source>Buddy</source>
@@ -38,6 +31,17 @@
     </message>
     <message>
         <source>Username</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Buddies Information</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShowInfosWindowAction</name>
+    <message>
+        <source>&amp;Show infos about buddies</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -132,6 +132,10 @@ It should be bigger.</translation>
         <source>Window Shot</source>
         <translation>Window Shot</translation>
     </message>
+    <message>
+        <source>ScreenShot</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ScreenshotNotificationService</name>

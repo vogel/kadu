@@ -128,6 +128,10 @@ It should be bigger.</source>
         <source>Window Shot</source>
         <translation type="unfinished"/>
     </message>
+    <message>
+        <source>ScreenShot</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>ScreenshotNotificationService</name>

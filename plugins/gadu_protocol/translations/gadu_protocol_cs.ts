@@ -201,20 +201,8 @@
         <translation>Osobní údaje</translation>
     </message>
     <message>
-        <source>Buddies</source>
-        <translation>Kamarádi</translation>
-    </message>
-    <message>
-        <source>Connection</source>
-        <translation>Připojení</translation>
-    </message>
-    <message>
         <source>Options</source>
         <translation>Volby</translation>
-    </message>
-    <message>
-        <source>Use default servers</source>
-        <translation>Použít výchozí servery</translation>
     </message>
     <message>
         <source>Remove account</source>
@@ -269,14 +257,6 @@
         <translation>Chrání vás před možnými škodlivými odkazy ve zprávách od nepodepsaných kamarádů</translation>
     </message>
     <message>
-        <source>Gadu-Gadu Server</source>
-        <translation>Server Gadu-Gadu</translation>
-    </message>
-    <message>
-        <source>Custom server IP addresses</source>
-        <translation>Vlastní serverové adresy IP</translation>
-    </message>
-    <message>
         <source>Network</source>
         <translation>Síť</translation>
     </message>
@@ -320,10 +300,6 @@ Jste si jistý, že jim chcete umožnit vědět, že jste dostupný?</translatio
     <message>
         <source>Connect before sending files.</source>
         <translation>Připojit před posláním souborů.</translation>
-    </message>
-    <message>
-        <source>Enable SSL in account configuration and reconnect before sending files.</source>
-        <translation>povolit SSL v nastavení účtu a připojit znovu před posláním souborů.</translation>
     </message>
     <message>
         <source>Unable to login to GG Drive. Reconnect before sending files.</source>

@@ -114,10 +114,6 @@
         <translation>Zezwól na wykonywanie komend przez parser</translation>
     </message>
     <message>
-        <source>Debugging mask</source>
-        <translation>Maska debugowania</translation>
-    </message>
-    <message>
         <source>Filters</source>
         <translation>Filtry</translation>
     </message>
@@ -573,11 +569,11 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
     <message numerus="yes">
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <source>Send message</source>
@@ -1098,14 +1094,6 @@ znajomych po połączeniu się z serwerem</translation>
 <context>
     <name>AccountAvatarWidget</name>
     <message>
-        <source>Remove Photo...</source>
-        <translation>Usuń zdjęcie...</translation>
-    </message>
-    <message>
-        <source>Change Photo...</source>
-        <translation>Zmień zdjęcie...</translation>
-    </message>
-    <message>
         <source>Select avatar file</source>
         <translation>Wybierz plik z awatarem</translation>
     </message>
@@ -1113,48 +1101,13 @@ znajomych po połączeniu się z serwerem</translation>
         <source>Images (*.jpeg *.jpg *.png);;All Files (*)</source>
         <translation>Obrazki (*.jpeg *.jpg *.png);;Wszystkie pliki(*) </translation>
     </message>
-</context>
-<context>
-    <name>AccountBuddyListWidget</name>
-    <message>
-        <source>Restore from file</source>
-        <translation>Przywróć z pliku</translation>
-    </message>
-    <message>
-        <source>Store to file</source>
-        <translation>Zapisz do pliku</translation>
-    </message>
-    <message>
-        <source>Kadu</source>
-        <translation>Kadu</translation>
-    </message>
-    <message>
-        <source>Select file</source>
-        <translation>Wybierz plik</translation>
-    </message>
-    <message>
-        <source>Contacts list couldn&apos;t be imported. File %0 doesn&apos;t contain correct contacts list.</source>
-        <translation>Lista kontaktów nie została zaimportowana. Plik %0 nie zawiera poprawnej listy kontaktów.</translation>
-    </message>
-    <message>
-        <source>Contact List Files (*.txt *.xml);;All Files (*)</source>
-        <translation>Pliki list kontaktów (*.txt *.xml);;Wszystkie pliki (*)</translation>
-    </message>
-    <message>
-        <source>Contact List Files (*.txt)</source>
-        <translation>Pliki list kontaktów (*.txt)</translation>
-    </message>
-    <message>
-        <source>The following contacts from your list were not found in file:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Do you want to remove them from contact list?</source>
-        <translation>Następujące kontakty z listy nie zostały odnalezione w pliku:&lt;br/&gt;&lt;b&gt;%1&lt;/b&gt;.&lt;br/&gt;Czy chcesz usunąć je z listy kontaktów?</translation>
-    </message>
     <message>
         <source>Remove</source>
         <translation>Usuń</translation>
     </message>
     <message>
-        <source>Cancel</source>
-        <translation>Anuluj</translation>
+        <source>Change</source>
+        <translation>Zmień</translation>
     </message>
 </context>
 <context>
@@ -1173,6 +1126,10 @@ znajomych po połączeniu się z serwerem</translation>
     <message>
         <source>Connection error on account: %1 (%2)</source>
         <translation>Błąd połączenia konta %1 (%2)</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation>Ignoruj</translation>
     </message>
 </context>
 <context>
@@ -1352,6 +1309,20 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>AddFoundBuddyAction</name>
+    <message>
+        <source>Add selected user</source>
+        <translation>Dodaj wybrany kontakt</translation>
+    </message>
+</context>
+<context>
+    <name>AddGroupAction</name>
+    <message>
+        <source>Add Group...</source>
+        <translation>Dodaj grupę...</translation>
+    </message>
+</context>
+<context>
     <name>AddRoomChatAction</name>
     <message>
         <source>Join Room...</source>
@@ -1426,6 +1397,13 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>AddUserAction</name>
+    <message>
+        <source>Add Buddy...</source>
+        <translation>Dodaj znajomego...</translation>
+    </message>
+</context>
+<context>
     <name>AdiumStyleRenderer</name>
     <message>
         <source>Conference [%1]</source>
@@ -1452,6 +1430,31 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>AutoSendAction</name>
+    <message>
+        <source>More...</source>
+        <translation>Więcej...</translation>
+    </message>
+    <message>
+        <source>Return Sends Message</source>
+        <translation>Enter wysyła wiadomość</translation>
+    </message>
+</context>
+<context>
+    <name>BlockUserAction</name>
+    <message>
+        <source>Block Buddy</source>
+        <translation>Blokuj znajomego</translation>
+    </message>
+</context>
+<context>
+    <name>BoldAction</name>
+    <message>
+        <source>Bold</source>
+        <translation>Pogrubienie</translation>
+    </message>
+</context>
+<context>
     <name>Buddy</name>
     <message>
         <source>Example description</source>
@@ -1465,20 +1468,20 @@ znajomych po połączeniu się z serwerem</translation>
 <context>
     <name>BuddyAvatarWidget</name>
     <message>
-        <source>Remove Custom Photo...</source>
-        <translation>Usuń przypisane zdjęcie...</translation>
-    </message>
-    <message>
-        <source>Change Photo...</source>
-        <translation>Zmień zdjęcie...</translation>
-    </message>
-    <message>
         <source>Select new photo</source>
         <translation>Wybierz nowe zdjęcie</translation>
     </message>
     <message>
         <source>Images (*.png *.jpg *.bmp);;All Files (*)</source>
         <translation>Obrazy (*.png *.jpg *.bmp);;Wszystkie pliki (*)</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Usuń</translation>
+    </message>
+    <message>
+        <source>Change</source>
+        <translation>Zmień</translation>
     </message>
 </context>
 <context>
@@ -1771,6 +1774,13 @@ znajomych po połączeniu się z serwerem</translation>
     </message>
 </context>
 <context>
+    <name>ChatFoundAction</name>
+    <message>
+        <source>&amp;Chat</source>
+        <translation>&amp;Rozmowa</translation>
+    </message>
+</context>
+<context>
     <name>ChatGroupsConfigurationWidget</name>
     <message>
         <source>Add &lt;b&gt;%1&lt;/b&gt; to the groups below by checking the box next to the appropriate groups.</source>
@@ -1839,57 +1849,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
-    <name>ChatWidgetActions</name>
-    <message>
-        <source>More...</source>
-        <translation>Więcej...</translation>
-    </message>
-    <message>
-        <source>Return Sends Message</source>
-        <translation>Enter wysyła wiadomość</translation>
-    </message>
-    <message>
-        <source>Clear Messages in Chat Window</source>
-        <translation>Wyczyść wiadomości w oknie rozmowy</translation>
-    </message>
-    <message>
-        <source>Insert Image</source>
-        <translation>Wstaw obrazek</translation>
-    </message>
-    <message>
-        <source>Bold</source>
-        <translation>Pogrubienie</translation>
-    </message>
-    <message>
-        <source>Italic</source>
-        <translation>Kursywa</translation>
-    </message>
-    <message>
-        <source>Underline</source>
-        <translation>Podkreślenie</translation>
-    </message>
-    <message>
-        <source>&amp;Send</source>
-        <translation>&amp;Wyślij</translation>
-    </message>
-    <message>
-        <source>Block Buddy</source>
-        <translation>Blokuj znajomego</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Rozmowa</translation>
-    </message>
-    <message>
-        <source>Open Chat with...</source>
-        <translation>Rozpocznij rozmowę z ...</translation>
-    </message>
-    <message>
-        <source>More</source>
-        <translation>Więcej</translation>
-    </message>
-</context>
-<context>
     <name>ChatWidgetImpl</name>
     <message>
         <source>Kadu</source>
@@ -1955,6 +1914,20 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
+    <name>ClearChatAction</name>
+    <message>
+        <source>Clear Messages in Chat Window</source>
+        <translation>Wyczyść wiadomości w oknie rozmowy</translation>
+    </message>
+</context>
+<context>
+    <name>ClearResultsAction</name>
+    <message>
+        <source>Clear results</source>
+        <translation>Wyczyść rezultaty</translation>
+    </message>
+</context>
+<context>
     <name>CollapseAction</name>
     <message>
         <source>Collapse</source>
@@ -1974,6 +1947,36 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>CopyDescriptionAction</name>
+    <message>
+        <source>Copy Description</source>
+        <translation>Kopiuj opis</translation>
+    </message>
+</context>
+<context>
+    <name>CopyPersonalInfoAction</name>
+    <message>
+        <source>Copy Personal Info</source>
+        <translation>Kopiuj informacje osobiste</translation>
+    </message>
+    <message>
+        <source>Contact:</source>
+        <translation>Kontakt:</translation>
+    </message>
+    <message>
+        <source>First name:</source>
+        <translation>Imię:</translation>
+    </message>
+    <message>
+        <source>Last name:</source>
+        <translation>Nazwisko:</translation>
+    </message>
+    <message>
+        <source>Mobile:</source>
+        <translation>Telefon komórkowy:</translation>
     </message>
 </context>
 <context>
@@ -2064,6 +2067,13 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
+    <name>ExitAction</name>
+    <message>
+        <source>&amp;Quit</source>
+        <translation>&amp;Zakończ</translation>
+    </message>
+</context>
+<context>
     <name>ExpandAction</name>
     <message>
         <source>Expand</source>
@@ -2122,6 +2132,22 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>account: &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>konto: &lt;b&gt;%1&lt;/b&gt;</translation>
+    </message>
+    <message>
+        <source>Accept</source>
+        <translation>Akceptuj</translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation>Zapisz</translation>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation>Odrzuć</translation>
+    </message>
+    <message>
+        <source>Ignore</source>
+        <translation>Ignoruj</translation>
     </message>
 </context>
 <context>
@@ -2223,6 +2249,13 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>Search</source>
         <translation>Szukaj</translation>
+    </message>
+</context>
+<context>
+    <name>FirstSearchAction</name>
+    <message>
+        <source>&amp;Search</source>
+        <translation>&amp;Szukaj</translation>
     </message>
 </context>
 <context>
@@ -2453,6 +2486,20 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     </message>
 </context>
 <context>
+    <name>InsertImageAction</name>
+    <message>
+        <source>Insert Image</source>
+        <translation>Wstaw obrazek</translation>
+    </message>
+</context>
+<context>
+    <name>ItalicAction</name>
+    <message>
+        <source>Italic</source>
+        <translation>Kursywa</translation>
+    </message>
+</context>
+<context>
     <name>KaduDialog</name>
     <message>
         <source>Ok</source>
@@ -2551,124 +2598,8 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
         <translation>Dane znajomego</translation>
     </message>
     <message>
-        <source>&amp;Quit</source>
-        <translation>&amp;Zakończ</translation>
-    </message>
-    <message>
-        <source>Add Group...</source>
-        <translation>Dodaj grupę...</translation>
-    </message>
-    <message>
-        <source>Search for Buddy...</source>
-        <translation>Znajdź znajomego...</translation>
-    </message>
-    <message>
-        <source>A&amp;bout Kadu</source>
-        <translation>&amp;O Kadu</translation>
-    </message>
-    <message>
-        <source>Show Information Panel</source>
-        <translation>Pokaż panel informacyjny</translation>
-    </message>
-    <message>
-        <source>Show Blocked Buddies</source>
-        <translation>Pokaż zablokowane kontakty</translation>
-    </message>
-    <message>
-        <source>Copy Description</source>
-        <translation>Kopiuj opis</translation>
-    </message>
-    <message>
-        <source>Copy Personal Info</source>
-        <translation>Kopiuj informacje osobiste</translation>
-    </message>
-    <message>
-        <source>Send E-Mail</source>
-        <translation>Wyślij e-mail</translation>
-    </message>
-    <message>
-        <source>Search in Directory</source>
-        <translation>Szukaj w katalogu</translation>
-    </message>
-    <message>
-        <source>Show Offline Buddies</source>
-        <translation>Pokaż niedostępnych znajomych</translation>
-    </message>
-    <message>
-        <source>Only Show Buddies with Description</source>
-        <translation>Pokaż tylko znajomych z opisem</translation>
-    </message>
-    <message>
-        <source>Show Descriptions</source>
-        <translation>Pokaż opisy</translation>
-    </message>
-    <message>
-        <source>Only Show Online Buddies and Buddies with Description</source>
-        <translation>Pokaż tylko dostępnych znajomych i znajomych z opisem</translation>
-    </message>
-    <message>
-        <source>Merge Buddies...</source>
-        <translation>Połącz znajomych...</translation>
-    </message>
-    <message>
-        <source>Show Myself Buddy</source>
-        <translation>Pokaż mnie na liście znajomych</translation>
-    </message>
-    <message>
         <source>View Chat Properties</source>
         <translation>Dane rozmowy</translation>
-    </message>
-    <message>
-        <source>Preferences</source>
-        <translation>Ustawienia</translation>
-    </message>
-    <message>
-        <source>Your Accounts</source>
-        <translation>Twoje konta</translation>
-    </message>
-    <message>
-        <source>Multilogons</source>
-        <translation>Multilogowania</translation>
-    </message>
-    <message>
-        <source>Report a Bug</source>
-        <translation>Zgłoś błąd</translation>
-    </message>
-    <message>
-        <source>Get Involved</source>
-        <translation>Dołącz</translation>
-    </message>
-    <message>
-        <source>Translate Kadu</source>
-        <translation>Przetłumacz Kadu</translation>
-    </message>
-    <message>
-        <source>Open Description Link in Browser</source>
-        <translation>Otwórz opis w przeglądarce WWW</translation>
-    </message>
-    <message>
-        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
-        <translation>Wybierz kontakt z którym chcesz połączyć &lt;i&gt;%1&lt;/i&gt;</translation>
-    </message>
-    <message>
-        <source>Merge</source>
-        <translation>Połącz</translation>
-    </message>
-    <message>
-        <source>Contact:</source>
-        <translation>Kontakt:</translation>
-    </message>
-    <message>
-        <source>First name:</source>
-        <translation>Imię:</translation>
-    </message>
-    <message>
-        <source>Last name:</source>
-        <translation>Nazwisko:</translation>
-    </message>
-    <message>
-        <source>Mobile:</source>
-        <translation>Telefon komórkowy:</translation>
     </message>
     <message>
         <source>Delete Chat</source>
@@ -2677,10 +2608,6 @@ Czy chcesz mimo to odebrać ten obrazek?</translation>
     <message>
         <source>Delete Buddy</source>
         <translation>Usuń znajomego</translation>
-    </message>
-    <message>
-        <source>Forum</source>
-        <translation>Forum</translation>
     </message>
 </context>
 <context>
@@ -2716,6 +2643,13 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>LookupBuddyInfoAction</name>
+    <message>
+        <source>Search in Directory</source>
+        <translation>Szukaj w katalogu</translation>
+    </message>
+</context>
+<context>
     <name>MainConfigurationWindow</name>
     <message>
         <source>Kadu configuration</source>
@@ -2743,6 +2677,21 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Create new toolbar</source>
         <translation>Utwórz nowy pasek narzędziowy</translation>
+    </message>
+</context>
+<context>
+    <name>MergeBuddiesAction</name>
+    <message>
+        <source>Merge Buddies...</source>
+        <translation>Połącz znajomych...</translation>
+    </message>
+    <message>
+        <source>Choose which buddy would you like to merge with &lt;i&gt;%1&lt;/i&gt;</source>
+        <translation>Wybierz kontakt z którym chcesz połączyć &lt;i&gt;%1&lt;/i&gt;</translation>
+    </message>
+    <message>
+        <source>Merge</source>
+        <translation>Połącz</translation>
     </message>
 </context>
 <context>
@@ -2778,6 +2727,21 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <source>New message from &lt;b&gt;%1&lt;/b&gt;</source>
         <translation>Nowa wiadomość od &lt;b&gt;%1&lt;/b&gt;</translation>
     </message>
+    <message>
+        <source>Chat</source>
+        <translation>Rozmowa</translation>
+    </message>
+</context>
+<context>
+    <name>MoreActionsAction</name>
+    <message>
+        <source>More...</source>
+        <translation>Więcej...</translation>
+    </message>
+    <message>
+        <source>More</source>
+        <translation>Więcej</translation>
+    </message>
 </context>
 <context>
     <name>MultilogonModel</name>
@@ -2812,6 +2776,10 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <source>Multilogon session disconnected</source>
         <translation>Rozłączono sesję multilogowania</translation>
     </message>
+    <message>
+        <source>Disconnect session</source>
+        <translation>Rozłącz sesję</translation>
+    </message>
 </context>
 <context>
     <name>MultilogonWindow</name>
@@ -2840,14 +2808,24 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>NotificationService</name>
+    <name>NextResultsAction</name>
     <message>
-        <source>Notify About Buddy</source>
-        <translation>Powiadom o znajomym</translation>
+        <source>&amp;Next results</source>
+        <translation>&amp;Następne wyniki</translation>
     </message>
+</context>
+<context>
+    <name>NotificationService</name>
     <message>
         <source>Ignore</source>
         <translation>Ignoruj</translation>
+    </message>
+</context>
+<context>
+    <name>NotifyAboutBuddyAction</name>
+    <message>
+        <source>Notify About Buddy</source>
+        <translation>Powiadom o znajomym</translation>
     </message>
 </context>
 <context>
@@ -2869,6 +2847,20 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>OpenBuddyEmailAction</name>
+    <message>
+        <source>Send E-Mail</source>
+        <translation>Wyślij e-mail</translation>
+    </message>
+</context>
+<context>
+    <name>OpenChatAction</name>
+    <message>
+        <source>&amp;Chat</source>
+        <translation>&amp;Rozmowa</translation>
+    </message>
+</context>
+<context>
     <name>OpenChatWith</name>
     <message>
         <source>Open chat with...</source>
@@ -2885,6 +2877,55 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>User name:</source>
         <translation>Nazwa użytkownika:</translation>
+    </message>
+</context>
+<context>
+    <name>OpenChatWithAction</name>
+    <message>
+        <source>Open Chat with...</source>
+        <translation>Rozpocznij rozmowę z ...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenDescriptionLinkAction</name>
+    <message>
+        <source>Open Description Link in Browser</source>
+        <translation>Otwórz opis w przeglądarce WWW</translation>
+    </message>
+</context>
+<context>
+    <name>OpenForumAction</name>
+    <message>
+        <source>Forum</source>
+        <translation>Forum</translation>
+    </message>
+</context>
+<context>
+    <name>OpenGetInvolvedAction</name>
+    <message>
+        <source>Get Involved</source>
+        <translation>Dołącz</translation>
+    </message>
+</context>
+<context>
+    <name>OpenRedmineAction</name>
+    <message>
+        <source>Report a Bug</source>
+        <translation>Zgłoś błąd</translation>
+    </message>
+</context>
+<context>
+    <name>OpenSearchAction</name>
+    <message>
+        <source>Search for Buddy...</source>
+        <translation>Znajdź znajomego...</translation>
+    </message>
+</context>
+<context>
+    <name>OpenTranslateAction</name>
+    <message>
+        <source>Translate Kadu</source>
+        <translation>Przetłumacz Kadu</translation>
     </message>
 </context>
 <context>
@@ -2934,6 +2975,10 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Choose a directory</source>
         <translation>Wybierz katalog</translation>
+    </message>
+    <message>
+        <source>Select paths</source>
+        <translation>Wybierz ścieżki</translation>
     </message>
 </context>
 <context>
@@ -3397,32 +3442,9 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <source>There were no results of your search.</source>
         <translation>Nie było żadnych wyników Twojego wyszukiwania.</translation>
     </message>
-</context>
-<context>
-    <name>SearchWindowActions</name>
     <message>
-        <source>&amp;Search</source>
-        <translation>&amp;Szukaj</translation>
-    </message>
-    <message>
-        <source>&amp;Next results</source>
-        <translation>&amp;Następne wyniki</translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation>Zatrzymaj</translation>
-    </message>
-    <message>
-        <source>Clear results</source>
-        <translation>Wyczyść rezultaty</translation>
-    </message>
-    <message>
-        <source>Add selected user</source>
-        <translation>Dodaj wybrany kontakt</translation>
-    </message>
-    <message>
-        <source>&amp;Chat</source>
-        <translation>&amp;Rozmowa</translation>
+        <source>Search User in Directory</source>
+        <translation>Znajdź kontakt w katalogu</translation>
     </message>
 </context>
 <context>
@@ -3464,6 +3486,13 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>SendAction</name>
+    <message>
+        <source>&amp;Send</source>
+        <translation>&amp;Wyślij</translation>
+    </message>
+</context>
+<context>
     <name>SendFileAction</name>
     <message>
         <source>Select file location</source>
@@ -3475,6 +3504,34 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>ShowAboutWindowAction</name>
+    <message>
+        <source>A&amp;bout Kadu</source>
+        <translation>&amp;O Kadu</translation>
+    </message>
+</context>
+<context>
+    <name>ShowBlockedBuddiesAction</name>
+    <message>
+        <source>Show Blocked Buddies</source>
+        <translation>Pokaż zablokowane kontakty</translation>
+    </message>
+</context>
+<context>
+    <name>ShowConfigurationWindowAction</name>
+    <message>
+        <source>Preferences</source>
+        <translation>Ustawienia</translation>
+    </message>
+</context>
+<context>
+    <name>ShowDescriptionsAction</name>
+    <message>
+        <source>Show Descriptions</source>
+        <translation>Pokaż opisy</translation>
+    </message>
+</context>
+<context>
     <name>ShowFileTransferWindowAction</name>
     <message>
         <source>View File Transfers</source>
@@ -3482,10 +3539,52 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
-    <name>SilentModeService</name>
+    <name>ShowInfoPanelAction</name>
     <message>
-        <source>Silent Mode</source>
-        <translation>Tryb cichy</translation>
+        <source>Show Information Panel</source>
+        <translation>Pokazuj panel informacyjny</translation>
+    </message>
+</context>
+<context>
+    <name>ShowMultilogonsAction</name>
+    <message>
+        <source>Multilogons</source>
+        <translation>Multilogowania</translation>
+    </message>
+</context>
+<context>
+    <name>ShowMyselfAction</name>
+    <message>
+        <source>Show Myself Buddy</source>
+        <translation>Pokaż mnie na liście znajomych</translation>
+    </message>
+</context>
+<context>
+    <name>ShowOfflineBuddiesAction</name>
+    <message>
+        <source>Show Offline Buddies</source>
+        <translation>Pokaż niedostępnych znajomych</translation>
+    </message>
+</context>
+<context>
+    <name>ShowOnlyBuddiesWithDescriptionAction</name>
+    <message>
+        <source>Only Show Buddies with Description</source>
+        <translation>Pokaż tylko znajomych z opisem</translation>
+    </message>
+</context>
+<context>
+    <name>ShowOnlyBuddiesWithDescriptionOrOnlineAction</name>
+    <message>
+        <source>Only Show Online Buddies and Buddies with Description</source>
+        <translation>Pokaż tylko dostępnych znajomych i znajomych z opisem</translation>
+    </message>
+</context>
+<context>
+    <name>ShowYourAccountsAction</name>
+    <message>
+        <source>Your Accounts</source>
+        <translation>Twoje konta</translation>
     </message>
 </context>
 <context>
@@ -3734,6 +3833,13 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>StopSearchAction</name>
+    <message>
+        <source>Stop</source>
+        <translation>Zatrzymaj</translation>
+    </message>
+</context>
+<context>
     <name>StringListDialog</name>
     <message>
         <source>Kadu</source>
@@ -3761,6 +3867,17 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Allow and add buddy...</source>
         <translation>Zezwól i dodaj znajomego...</translation>
+    </message>
+    <message>
+        <source>Ask For Sharing Status</source>
+        <translation>Poproś o udostępnienie statusu</translation>
+    </message>
+</context>
+<context>
+    <name>ToggleSilentModeAction</name>
+    <message>
+        <source>Silent Mode</source>
+        <translation>Tryb cichy</translation>
     </message>
 </context>
 <context>
@@ -3862,6 +3979,13 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     </message>
 </context>
 <context>
+    <name>UnderlineAction</name>
+    <message>
+        <source>Underline</source>
+        <translation>Podkreślenie</translation>
+    </message>
+</context>
+<context>
     <name>UpdatesDialog</name>
     <message>
         <source>A new version &lt;b&gt;%1&lt;/b&gt; of Kadu Instant Messenger is available for download. Please &lt;a href=&apos;download&apos;&gt;download&lt;/a&gt; an installer and upgrade or use your package management system to update Kadu.</source>
@@ -3878,6 +4002,10 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
     <message>
         <source>Ok</source>
         <translation>Ok</translation>
+    </message>
+    <message>
+        <source>New version is available. Please update</source>
+        <translation>Dostępna jest nowa wersja. Proszę zaktualizować</translation>
     </message>
 </context>
 <context>

@@ -81,10 +81,10 @@ Argümanları boşlukla ayırın. %k argümanı numaraya, %m mesaj olarak çevir
     </message>
 </context>
 <context>
-    <name>SmsActions</name>
+    <name>SendSmsAction</name>
     <message>
         <source>Send SMS...</source>
-        <translation>SMS Gönder...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -140,6 +140,10 @@ Argümanları boşlukla ayırın. %k argümanı numaraya, %m mesaj olarak çevir
     <message>
         <source>Sending SMS...</source>
         <translation>SMS gönderiliyor...</translation>
+    </message>
+    <message>
+        <source>Send SMS</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
