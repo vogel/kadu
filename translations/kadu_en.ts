@@ -3605,24 +3605,24 @@ from now on. Are you sure you want to leave this conference?</translation>
         <translation>Certificate for &lt;b&gt;%1&lt;/b&gt; failed authenticity validation:</translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation>Show certificate details...</translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
         <translation>Certificate details:</translation>
     </message>
     <message>
-        <source>Connect anyway</source>
-        <translation>Connect anyway</translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
-        <translation>Trust certificate</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

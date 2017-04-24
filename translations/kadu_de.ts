@@ -3598,24 +3598,24 @@ Konferenz wirklich verlassen?</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; hat die Zertifikatsüberprüfung nicht bestanden:</translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation>Zeige Details über das Zertifikat...</translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
         <translation>Zertifikat-Details:</translation>
     </message>
     <message>
-        <source>Connect anyway</source>
-        <translation>Trotzdem verbinden</translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
-        <translation>Zertifikat vertrauen</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -3597,24 +3597,24 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation>Le certificat pour &lt;b&gt;%1&lt;/b&gt; a échoué lors de la validation de l&apos;authenticité:</translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation>Montrer les informations détaillées du certificat...</translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
         <translation>Informations détaillés du certificat:</translation>
     </message>
     <message>
-        <source>Connect anyway</source>
-        <translation>Se connecter malgré tout</translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
-        <translation>Certificat de confiance</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

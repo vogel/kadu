@@ -3599,24 +3599,24 @@ de ahora en adelante. ¿Está seguro que quiere salir de esta conferencia?</tran
         <translation>El certificado para &lt;b&gt;%1&lt;/b&gt; falló la validación de autenticidad:</translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation>Mostrar detalles del certificado...</translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
         <translation>Detalles del certificado:</translation>
     </message>
     <message>
-        <source>Connect anyway</source>
-        <translation>Conectar de todos modos</translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
-        <translation>Certificado de confianza</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

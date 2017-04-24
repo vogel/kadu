@@ -3594,24 +3594,24 @@ zostaną zignorowane. Czy na pewno chcesz opuścić konferencję?</translation>
         <translation>Certyfikat %1 nie przeszedł testu autentyczności:</translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation>Pokaż szczegóły certyfikatu...</translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
         <translation>Szczegóły certfyfikatu:</translation>
     </message>
     <message>
-        <source>Connect anyway</source>
-        <translation>Połącz mimo wszystko</translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
-        <translation>Zaufaj temu certyfikatowi</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation>Pokaż szczegóły...</translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation>Połącz</translation>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation>Zaufaj</translation>
     </message>
 </context>
 <context>

@@ -69,7 +69,7 @@ void SslCertificateErrorDialog::createGui(const QList<QSslError> &errors)
     auto errorLabel = new QLabel{errorMessage, this};
     errorLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-    auto showCertificateButton = new QPushButton{tr("Show certificate details..."), this};
+    auto showCertificateButton = new QPushButton{tr("Show details..."), this};
     showCertificateButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
     auto showCertificateWidget = new QWidget{this};
@@ -89,11 +89,11 @@ void SslCertificateErrorDialog::createGui(const QList<QSslError> &errors)
     dataWidget->hide();
 
     auto connectAnywayButton =
-        new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Connect anyway"), this};
+        new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogOkButton), tr("Connect"), this};
     connect(connectAnywayButton, SIGNAL(clicked()), this, SLOT(connectAnyway()));
 
     auto trustCertificateButton =
-        new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Trust certificate"), this};
+        new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogApplyButton), tr("Trust"), this};
     connect(trustCertificateButton, SIGNAL(clicked()), this, SLOT(trustCertificate()));
 
     auto cancelButton = new QPushButton{qApp->style()->standardIcon(QStyle::SP_DialogCloseButton), tr("Cancel"), this};

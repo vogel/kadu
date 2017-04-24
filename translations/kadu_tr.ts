@@ -3597,24 +3597,24 @@ Konferanstan ayrılmak istediğinizden emin misiniz?</translation>
         <translation>&lt;b&gt;%1&lt;/b&gt; sertifikası için özgünlük doğrulaması başarısız:</translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation>Sertifika detaylarını göster...</translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
         <translation>Sertifika detayları:</translation>
     </message>
     <message>
-        <source>Connect anyway</source>
-        <translation>Yinede bağlan</translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
-        <translation>Sertifikaya güven</translation>
-    </message>
-    <message>
         <source>Cancel</source>
         <translation>İptal</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

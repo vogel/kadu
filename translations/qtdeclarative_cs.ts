@@ -3595,24 +3595,24 @@ from now on. Are you sure you want to leave this conference?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show certificate details...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Certificate details:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connect anyway</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Trust certificate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Cancel</source>
         <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Show details...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trust</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
