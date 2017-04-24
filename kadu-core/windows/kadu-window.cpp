@@ -100,6 +100,7 @@ KaduWindow::KaduWindow() : MainWindow(nullptr, QString(), 0), Docked(false), Win
 
 KaduWindow::~KaduWindow()
 {
+    m_mainWindowRepository->removeMainWindow(this);
 }
 
 void KaduWindow::setAddConferenceAction(AddConferenceAction *addConferenceAction)
@@ -280,11 +281,6 @@ void KaduWindow::init()
     new WindowGeometryManager(
         new ConfigFileVariantWrapper(configuration(), "General", "Geometry"), QRect(0, 50, 350, 650), this);
     m_mainWindowRepository->addMainWindow(this);
-}
-
-void KaduWindow::done()
-{
-    m_mainWindowRepository->removeMainWindow(this);
 }
 
 void KaduWindow::createGui()

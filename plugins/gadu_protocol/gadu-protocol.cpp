@@ -92,6 +92,11 @@ GaduProtocol::~GaduProtocol()
     OpenChatRunner = 0;
 
     disconnect(account(), 0, this, 0);
+
+    m_chatStateServiceRepository->removeChatStateService(CurrentChatStateService);
+    m_chatServiceRepository->removeChatService(CurrentChatService);
+    m_aggregatedContactAvatarService->remove(m_gaduContactAvatarService);
+    m_aggregatedAccountAvatarService->remove(m_gaduAccountAvatarService);
 }
 
 void GaduProtocol::setAggregatedAccountAvatarService(AggregatedAccountAvatarService *aggregatedAccountAvatarService)
@@ -211,14 +216,6 @@ void GaduProtocol::init()
     m_aggregatedContactAvatarService->add(m_gaduContactAvatarService);
     m_chatServiceRepository->addChatService(CurrentChatService);
     m_chatStateServiceRepository->addChatStateService(CurrentChatStateService);
-}
-
-void GaduProtocol::done()
-{
-    m_chatStateServiceRepository->removeChatStateService(CurrentChatStateService);
-    m_chatServiceRepository->removeChatService(CurrentChatService);
-    m_aggregatedContactAvatarService->remove(m_gaduContactAvatarService);
-    m_aggregatedAccountAvatarService->remove(m_gaduAccountAvatarService);
 }
 
 int GaduProtocol::maxDescriptionLength()

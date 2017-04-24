@@ -200,7 +200,6 @@ private slots:
     INJEQT_SET void setUrlHandlerManager(UrlHandlerManager *urlHandlerManager);
     INJEQT_SET void setUrlOpener(UrlOpener *urlOpener);
     INJEQT_INIT void init();
-    INJEQT_DONE void done();
 
 #ifdef Q_OS_WIN
     void setHiddenParent();

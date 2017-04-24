@@ -161,7 +161,6 @@ private slots:
     INJEQT_SET void setPluginInjectedFactory(PluginInjectedFactory *pluginInjectedFactory);
     INJEQT_SET void setVersionService(VersionService *versionService);
     INJEQT_INIT void init();
-    INJEQT_DONE void done();
 
     void accountUpdated();
 

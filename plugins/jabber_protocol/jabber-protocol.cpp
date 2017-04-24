@@ -89,6 +89,11 @@ JabberProtocol::~JabberProtocol()
     OpenChatWithRunnerManager::instance()->unregisterRunner(m_jabberOpenChatWithRunner);
     delete m_jabberOpenChatWithRunner;
     m_jabberOpenChatWithRunner = 0;
+
+    m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
+    m_chatServiceRepository->removeChatService(m_chatService);
+    m_aggregatedContactAvatarService->remove(m_contactAvatarService);
+    m_aggregatedAccountAvatarService->remove(m_accountAvatarService);
 }
 
 void JabberProtocol::setChatServiceRepository(ChatServiceRepository *chatServiceRepository)
@@ -207,14 +212,6 @@ void JabberProtocol::init()
     m_aggregatedContactAvatarService->add(m_contactAvatarService);
     m_chatServiceRepository->addChatService(m_chatService);
     m_chatStateServiceRepository->addChatStateService(m_chatStateService);
-}
-
-void JabberProtocol::done()
-{
-    m_chatStateServiceRepository->removeChatStateService(m_chatStateService);
-    m_chatServiceRepository->removeChatService(m_chatService);
-    m_aggregatedContactAvatarService->remove(m_contactAvatarService);
-    m_aggregatedAccountAvatarService->remove(m_accountAvatarService);
 }
 
 void JabberProtocol::rosterReady()

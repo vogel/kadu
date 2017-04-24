@@ -154,7 +154,6 @@ private slots:
     INJEQT_SET void setSystemInfo(SystemInfo *systemInfo);
     INJEQT_SET void setVersionService(VersionService *versionService);
     INJEQT_INIT void init();
-    INJEQT_DONE void done();
 
     void connectedToServer();
     void disconenctedFromServer();
