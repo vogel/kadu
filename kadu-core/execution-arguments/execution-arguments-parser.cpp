@@ -19,7 +19,6 @@
 
 #include "execution-arguments-parser.h"
 
-#include "execution-arguments/execution-arguments-builder.h"
 #include "execution-arguments/execution-arguments.h"
 
 #include <cstdio>
@@ -56,11 +55,6 @@ ExecutionArguments ExecutionArgumentsParser::parse(const QStringList &arguments)
             fprintf(stderr, "Ignoring unknown parameter '%s'\n", it->toUtf8().constData());
     }
 
-    return ExecutionArgumentsBuilder{}
-        .setQueryVersion(queryVersion)
-        .setQueryUsage(queryUsage)
-        .setProfileDirectory(std::move(profileDirectory))
-        .setOpenIds(std::move(openIds))
-        .setOpenUuid(std::move(openUuid))
-        .build();
+    return ExecutionArguments{
+        queryVersion, queryUsage, std::move(profileDirectory), std::move(openIds), std::move(openUuid)};
 }
