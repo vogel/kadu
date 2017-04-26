@@ -362,6 +362,12 @@ void Core::init()
 
 void Core::deleteOldConfigurationFiles()
 {
+    QDir oldConfigs0(
+        m_injector.get<PathsProvider>()->profilePath(), "kadu-5.conf.xml.backup.*", QDir::Name, QDir::Files);
+    if (oldConfigs0.count() > 20)
+        for (unsigned int i = 0, max = oldConfigs0.count() - 20; i < max; ++i)
+            QFile::remove(m_injector.get<PathsProvider>()->profilePath() + oldConfigs0[static_cast<int>(i)]);
+
     QDir oldConfigs(
         m_injector.get<PathsProvider>()->profilePath(), "kadu-4.conf.xml.backup.*", QDir::Name, QDir::Files);
     if (oldConfigs.count() > 20)

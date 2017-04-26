@@ -70,5 +70,5 @@ QString ConfigurationPathProvider::configurationFilePath() const
 QString ConfigurationPathProvider::backupFilePath() const
 {
     return m_pathsProvider->profilePath() +
-           QString("kadu-4.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
+           QString("kadu-5.conf.xml.backup.%1").arg(QDateTime::currentDateTime().toString("yyyy.MM.dd.hh.mm.ss"));
 }
