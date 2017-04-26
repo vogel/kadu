@@ -7,7 +7,6 @@ set (message_SRCS
 	message-module.cpp
 	message-notification-service.cpp
 	message-render-info.cpp
-	message-render-info-builder.cpp
 	message-render-info-factory.cpp
 	message-shared.cpp
 	message-storage.cpp

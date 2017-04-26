@@ -23,7 +23,6 @@
 #include "core/core.h"
 #include "gui/configuration/chat-configuration-holder.h"
 #include "message/message-render-header-behavior.h"
-#include "message/message-render-info-builder.h"
 #include "message/message-render-info.h"
 #include "message/message.h"
 
@@ -48,17 +47,12 @@ void MessageRenderInfoFactory::setChatStyleManager(ChatStyleManager *chatStyleMa
 MessageRenderInfo MessageRenderInfoFactory::messageRenderInfo(
     const Message &previous, const Message &message, MessageRenderHeaderBehavior renderHeaderBehavior)
 {
-    auto builder = MessageRenderInfoBuilder{};
     auto header = includeHeader(previous, message, renderHeaderBehavior);
-    return builder.setMessage(message)
-        .setBackgroundColor(backgroundColor(message))
-        .setNickColor(nickColor(message))
-        .setFontColor(fontColor(message))
-        .setIncludeHeader(header)
-        .setSeparatorSize(
-            header ? m_chatStyleManager->cfgHeaderSeparatorHeight() : m_chatStyleManager->paragraphSeparator())
-        .setShowServerTime(showServerTime(message))
-        .create();
+    return MessageRenderInfo{
+        message, backgroundColor(message), fontColor(message), nickColor(message), header,
+        header ? m_chatStyleManager->cfgHeaderSeparatorHeight() : m_chatStyleManager->paragraphSeparator(),
+        showServerTime(message)
+    };
 }
 
 QString MessageRenderInfoFactory::backgroundColor(const Message &message) const
