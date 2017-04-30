@@ -47,7 +47,7 @@ void JabberSslHandler::sslErrors(const QList<QSslError> &errors)
 {
     auto client = static_cast<QXmppClient *>(parent());
     if (errors.size() == 0 ||
-        m_sslCertificateManager->acceptCertificate(client->configuration().domain(), errors.first().certificate()))
+        m_sslCertificateManager->acceptCertificate(client->configuration().domain(), errors.first()))
         client->configuration().setIgnoreSslErrors(true);
     else
         m_sslCertificateManager->askForCertificateAcceptance(

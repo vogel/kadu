@@ -61,9 +61,13 @@ void SslCertificateManager::storePersistentSslCertificates()
     m_sslCertificateStorage->storeCertificates(m_sslCertificateRepository->persistentCertificates());
 }
 
-bool SslCertificateManager::acceptCertificate(const QString &hostName, const QSslCertificate &certificate) const
+bool SslCertificateManager::acceptCertificate(const QString &hostName, const QSslError &error) const
 {
-    auto hostCertificate = SslCertificate{hostName, certificate.toPem().toHex()};
+    if (error.error() == QSslError::HostNameMismatch)
+        if (m_sslCertificateRepository->containsCertificateFor(hostName, error.certificate().subjectAlternativeNames().values(QSsl::DnsEntry)))
+            return true;
+
+    auto hostCertificate = SslCertificate{hostName, error.certificate().toPem().toHex()};
     return m_sslCertificateRepository->containsCertificate(hostCertificate);
 }
 

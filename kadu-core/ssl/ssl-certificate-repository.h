@@ -49,6 +49,7 @@ public:
     QSet<SslCertificate> persistentCertificates() const;
 
     bool containsCertificate(const SslCertificate &certificate) const;
+    bool containsCertificateFor(const QString &hostName, QList<QString> hostNames) const;
 
 public slots:
     void addCertificate(SslCertificate certificate);

@@ -22,6 +22,8 @@
 
 #include "ssl/ssl-certificate.h"
 
+#include <QtNetwork/QSslCertificate>
+
 SslCertificateRepository::SslCertificateRepository(QObject *parent) : QObject{parent}
 {
 }
@@ -59,6 +61,29 @@ QSet<SslCertificate> SslCertificateRepository::persistentCertificates() const
 bool SslCertificateRepository::containsCertificate(const SslCertificate &certificate) const
 {
     return m_certificates.contains(certificate);
+}
+
+
+bool SslCertificateRepository::containsCertificateFor(const QString &hostName, QList<QString> hostNames) const
+{
+    qSort(hostNames);
+    for (auto const& c : m_certificates)
+    {
+        if (c.hostName() != hostName)
+            continue;
+
+        auto ssl = QSslCertificate::fromData(QByteArray::fromHex(c.pemHexEncodedCertificate()));
+        if (ssl.isEmpty())
+            continue;
+
+        auto sslHostnames = ssl[0].subjectAlternativeNames().values(QSsl::DnsEntry);
+        qSort(sslHostnames);
+
+        if (hostNames == sslHostnames)
+            return true;
+    }
+
+    return false;
 }
 
 void SslCertificateRepository::addCertificate(SslCertificate certificate)

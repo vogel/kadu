@@ -43,7 +43,7 @@ public:
     void loadPersistentSslCertificates();
     void storePersistentSslCertificates();
 
-    bool acceptCertificate(const QString &hostName, const QSslCertificate &certificate) const;
+    bool acceptCertificate(const QString &hostName, const QSslError &error) const;
     void askForCertificateAcceptance(
         const QString &hostName, const QSslCertificate &certificate, const QList<QSslError> &errors,
         const std::function<void()> &onAccepted, const std::function<void()> &onRejected);
