@@ -3,6 +3,7 @@
 * configuration: update configuration file format (Vogel)
 * facebook_protocol: support avatars (Vogel)
 * jabber_protocol: #3163 fixed: be nicer for SSL certificated for Hangouts on different domains (Vogel)
+* icons: #3144 fixed: storing and restoring icons choise works again (Vogel)
 
 +++ version 5.0-alpha1:
 * plugins: #2796 fixed: do not bother user with idle plugin (Vogel)

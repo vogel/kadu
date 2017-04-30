@@ -59,6 +59,7 @@ void IconsManager::setIconThemeManager(IconThemeManager *iconThemeManager)
 
 void IconsManager::init()
 {
+    m_iconThemeManager->loadThemes();
     configurationUpdated();
 
     // TODO: localized protocol
