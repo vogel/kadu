@@ -72,7 +72,6 @@ private:
     QString localProtocolPath;
 
     QIcon buildPngIcon(const QString &themePath, const QString &path);
-    QIcon buildSvgIcon(const QString &themePath, const QString &path);
 
 private slots:
     INJEQT_SET void setAccountManager(AccountManager *accountManager);

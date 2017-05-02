@@ -68,7 +68,7 @@ public:
     /**
      * @short Creates KaduIcon object.
      * @param path path to this icon
-     * @param size requested size as string formatted as "WIDTHxHEIGHT" or "svg"
+     * @param size requested size as string formatted as "WIDTHxHEIGHT"
      *
      * Creates KaduIcon object from given path and optionally size and name.
      */
@@ -144,7 +144,7 @@ public:
 
     /**
      * @short Sets the requested size of icon file.
-     * @param size requested size as string formatted as "WIDTHxHEIGHT" or "svg"
+     * @param size requested size as string formatted as "WIDTHxHEIGHT"
      *
      * Sets the requested size of icon file returned by fullPath() and webKitPath() methods.
      */
