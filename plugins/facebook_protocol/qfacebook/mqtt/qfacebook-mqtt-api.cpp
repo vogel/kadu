@@ -33,8 +33,8 @@
 #include "qfacebook/messages/qfacebook-unsubscribe.h"
 #include "qfacebook/mqtt/qfacebook-mqtt-connection.h"
 #include "qfacebook/publish/qfacebook-publish-foreground-state.h"
+#include "qfacebook/publish/qfacebook-publish-inbox.h"
 #include "qfacebook/publish/qfacebook-publish-mark-thread.h"
-#include "qfacebook/publish/qfacebook-publish-orca-message-notifications.h"
 #include "qfacebook/publish/qfacebook-publish-presence.h"
 #include "qfacebook/publish/qfacebook-publish-send-message-2.h"
 #include "qfacebook/publish/qfacebook-publish-send-message-response.h"
@@ -121,7 +121,7 @@ void QFacebookMqttApi::sendConnect()
     auto connect = QFacebookConnect{};
     connect.cid = m_deviceId.clientId;
     connect.uid = m_session.uid();
-    connect.information = "[FBAN/Orca-Android;FBAV/38.0.0.22.155;FBBV/14477681]";
+    connect.information = "Facebook plugin / Kadu / [FBAN/Orca-Android;FBAV/38.0.0.22.155;FBBV/14477681]";
     connect.visible = true;
     connect.did = m_deviceId.deviceId;
     connect.mid = m_deviceId.mqttId;
@@ -153,8 +153,9 @@ void QFacebookMqttApi::connectAckReceived(const QFacebookConnectAck &connectAck)
 
     auto foregroundState = QFacebookPublishForegroundState{true, 60};
     sendPublish("/foreground_state", foregroundState.encode());
-    sendSubscribe({"/mercury", "/messaging_events", "/orca_presence", "/orca_typing_notifications",
+    sendSubscribe({"/inbox", "/mercury", "/messaging_events", "/orca_presence", "/orca_typing_notifications",
                    "/orca_message_notifications", "/pp", "/t_ms", "/t_p", "/t_rtc", "/webrtc", "/webrtc_response"});
+    sendUnsubscribe({"/orca_message_notifications"});
 
     emit connected();
 }
@@ -188,8 +189,8 @@ void QFacebookMqttApi::publishReceived(const QFacebookPublish &publish)
             emit presenceReceived(QFacebookPublishPresence::decode(publish.content));
         else if (publish.topic == "/send_message_response")
             emit sendMessageResponseReceived(QFacebookPublishSendMessageResponse::decode(publish.content));
-        else if (publish.topic == "/orca_message_notifications")
-            emit orcaMessageNotificationsReceived(QFacebookPublishOrcaMessageNotifications::decode(publish.content));
+        else if (publish.topic == "/inbox")
+            emit inboxReceived(QFacebookPublishInbox::decode(publish.content));
     }
     catch (...)
     {

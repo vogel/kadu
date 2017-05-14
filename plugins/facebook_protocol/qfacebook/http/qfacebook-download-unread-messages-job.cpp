@@ -62,7 +62,9 @@ void QFacebookDownloadUnreadMessagesJob::replyFinished(
             return QFacebookDownloadUnreadMessageResult{
                 v.readObject("message_sender").readObject("messaging_actor").readString("id").toLongLong(),
                 v.readObject("message").readString("text"),
-                QDateTime::fromMSecsSinceEpoch(v.readString("timestamp_precise").toLongLong())};
+                QDateTime::fromMSecsSinceEpoch(v.readString("timestamp_precise").toLongLong()),
+                v.readString("message_id")
+            };
         });
 
     emit finished(unreadMessagesResult);

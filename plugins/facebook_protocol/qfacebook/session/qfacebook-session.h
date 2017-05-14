@@ -36,9 +36,9 @@ struct QFacebookDownloadContactsResult;
 struct QFacebookDownloadThreadsResult;
 struct QFacebookDownloadUnreadMessagesResult;
 struct QFacebookDownloadUnreadThreadsResult;
+struct QFacebookPublishInbox;
 struct QFacebookPublishPresence;
 struct QFacebookPublishSendMessageResponse;
-struct QFacebookPublishOrcaMessageNotifications;
 
 class QByteArray;
 
@@ -74,7 +74,7 @@ signals:
     void unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result);
     void unreadMessagesReceived(const QFacebookDownloadUnreadMessagesResult &result);
     void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
-    void messageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
+    void inboxReceived(const QFacebookPublishInbox &inbox);
 
 private:
     const QFacebookSessionToken m_sessionToken;

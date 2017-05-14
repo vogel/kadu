@@ -43,8 +43,8 @@ QFacebookSession::QFacebookSession(
         m_mqttApi.get(), &QFacebookMqttApi::sendMessageResponseReceived, this,
         &QFacebookSession::sendMessageResponseReceived);
     connect(
-        m_mqttApi.get(), &QFacebookMqttApi::orcaMessageNotificationsReceived, this,
-        &QFacebookSession::messageNotificationsReceived);
+        m_mqttApi.get(), &QFacebookMqttApi::inboxReceived, this,
+        &QFacebookSession::inboxReceived);
     connect(m_mqttApi.get(), &QFacebookMqttApi::presenceReceived, this, &QFacebookSession::presenceReceived);
 }
 

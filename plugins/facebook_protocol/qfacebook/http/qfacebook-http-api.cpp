@@ -139,6 +139,7 @@ QFacebookHttpReply *QFacebookHttpApi::get(const QFacebookHttpRequest &request)
     url.setQuery(urlQuery);
 
     auto httpRequest = QNetworkRequest{url};
+    httpRequest.setHeader(QNetworkRequest::UserAgentHeader, "Facebook plugin / Kadu / [FBAN/Orca-Android;FBAV/38.0.0.22.155;FBBV/14477681]");
     auto token = request.token();
     if (token)
         httpRequest.setRawHeader("Authorization", QByteArray{"OAuth "} + *token);

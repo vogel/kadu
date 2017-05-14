@@ -37,7 +37,7 @@ class QFacebookPong;
 class QFacebookPublish;
 class QFacebookMqttConnection;
 class QMqttConnection;
-struct QFacebookPublishOrcaMessageNotifications;
+struct QFacebookPublishInbox;
 struct QFacebookPublishPresence;
 struct QFacebookPublishSendMessageResponse;
 struct QMqttMessage;
@@ -62,7 +62,7 @@ signals:
     void invalidDataReceived(const QByteArray &data);
     void presenceReceived(const QFacebookPublishPresence &presence);
     void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
-    void orcaMessageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
+    void inboxReceived(const QFacebookPublishInbox &inbox);
 
 private:
     QFacebookSessionToken m_session;

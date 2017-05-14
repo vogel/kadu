@@ -34,7 +34,7 @@ struct QFacebookDownloadThreadsResult;
 struct QFacebookDownloadUnreadMessageResult;
 struct QFacebookDownloadUnreadMessagesResult;
 struct QFacebookDownloadUnreadThreadsResult;
-struct QFacebookPublishOrcaMessageNotifications;
+struct QFacebookPublishInbox;
 struct QFacebookPublishSendMessageResponse;
 
 class ChatManager;
@@ -76,14 +76,14 @@ private:
 
     QFacebookSession &m_facebookSession;
     std::map<QFacebookMsgId, Message> m_undeliveredMessages;
-    std::map<QFacebookMsgId, QDateTime> m_sentMessages;
+    std::map<QString, QDateTime> m_receivedMessages;
     QTimer m_eachSecondTimer;
     int m_syncSequenceId{-1};
 
     void sendMessageResponseReceived(const QFacebookPublishSendMessageResponse &sendMessageResponse);
-    void messageNotificationsReceived(const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications);
+    void inboxReceived(const QFacebookPublishInbox &inbox);
     void removeOldUndeliveredMessages();
-    void removeOldSentMessages();
+    void removeOldReceivedMessages();
 
     void threadsReceived(const QFacebookDownloadThreadsResult &result);
     void unreadThreadsReceived(const QFacebookDownloadUnreadThreadsResult &result);

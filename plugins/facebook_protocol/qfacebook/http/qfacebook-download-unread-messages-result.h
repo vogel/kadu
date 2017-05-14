@@ -34,6 +34,7 @@ struct QFacebookDownloadUnreadMessageResult
     QFacebookUid senderUid;
     QString text;
     QDateTime timestamp;
+    QString messageId;
 };
 
 struct QFacebookDownloadUnreadMessagesResult

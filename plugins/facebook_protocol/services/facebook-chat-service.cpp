@@ -26,7 +26,7 @@
 #include "qfacebook/http/qfacebook-download-threads-result.h"
 #include "qfacebook/http/qfacebook-download-unread-messages-result.h"
 #include "qfacebook/http/qfacebook-download-unread-threads-result.h"
-#include "qfacebook/publish/qfacebook-publish-orca-message-notifications.h"
+#include "qfacebook/publish/qfacebook-publish-inbox.h"
 #include "qfacebook/publish/qfacebook-publish-send-message-response.h"
 #include "qfacebook/session/qfacebook-session.h"
 
@@ -58,12 +58,12 @@ FacebookChatService::FacebookChatService(Account account, QFacebookSession &face
         &m_facebookSession, &QFacebookSession::sendMessageResponseReceived, this,
         &FacebookChatService::sendMessageResponseReceived);
     connect(
-        &m_facebookSession, &QFacebookSession::messageNotificationsReceived, this,
-        &FacebookChatService::messageNotificationsReceived);
+        &m_facebookSession, &QFacebookSession::inboxReceived, this,
+        &FacebookChatService::inboxReceived);
 
     m_eachSecondTimer.setInterval(1000);
     connect(&m_eachSecondTimer, &QTimer::timeout, this, &FacebookChatService::removeOldUndeliveredMessages);
-    connect(&m_eachSecondTimer, &QTimer::timeout, this, &FacebookChatService::removeOldSentMessages);
+    connect(&m_eachSecondTimer, &QTimer::timeout, this, &FacebookChatService::removeOldReceivedMessages);
 
     m_facebookSession.downloadThreads();
 }
@@ -112,7 +112,6 @@ bool FacebookChatService::sendMessage(const Message &message)
     auto contact = *message.messageChat().contacts().begin();
     auto msgId = m_facebookSession.sendMessage(contact.id().toULongLong(), plainTextVisitor.result().toUtf8());
     m_undeliveredMessages[msgId] = message;
-    m_sentMessages.insert(std::make_pair(msgId, QDateTime::currentDateTime()));
 
     return true;
 }
@@ -144,36 +143,11 @@ void FacebookChatService::sendMessageResponseReceived(const QFacebookPublishSend
     m_undeliveredMessages.erase(it);
 }
 
-void FacebookChatService::messageNotificationsReceived(
-    const QFacebookPublishOrcaMessageNotifications &orcaMessageNotifications)
+void FacebookChatService::inboxReceived(
+    const QFacebookPublishInbox &inbox)
 {
-    auto sentMessageIt = m_sentMessages.find(orcaMessageNotifications.offlineThreadingId);
-    if (sentMessageIt != std::end(m_sentMessages))
-        return;
-
-    auto contact =
-        m_contactManager->byId(account(), QString::number(orcaMessageNotifications.otherUserFbid), ActionCreateAndAdd);
-    auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
-    auto message = m_messageStorage->create();
-    message.setMessageChat(chat);
-    message.setType(
-        orcaMessageNotifications.otherUserFbid == orcaMessageNotifications.senderFbid ? MessageType::MessageTypeReceived
-                                                                                      : MessageType::MessageTypeSent);
-    message.setMessageSender(
-        orcaMessageNotifications.otherUserFbid == orcaMessageNotifications.senderFbid ? contact
-                                                                                      : account().accountContact());
-
-    auto sendDate = QDateTime::fromMSecsSinceEpoch(orcaMessageNotifications.timestamp);
-    message.setSendDate(sendDate.toLocalTime());
-    message.setReceiveDate(QDateTime::currentDateTime());
-    message.setContent(normalizeHtml(plainToHtml(orcaMessageNotifications.body)));
-
-    if (orcaMessageNotifications.otherUserFbid == orcaMessageNotifications.senderFbid)
-        emit messageReceived(message);
-    else
-        emit messageSent(message);
-
-    m_facebookSession.markRead(orcaMessageNotifications.otherUserFbid, m_syncSequenceId);
+    if (inbox.unread > 0)
+        m_facebookSession.downloadUnreadThreads(inbox.unread);
 }
 
 void FacebookChatService::removeOldUndeliveredMessages()
@@ -198,14 +172,14 @@ void FacebookChatService::removeOldUndeliveredMessages()
     }
 }
 
-void FacebookChatService::removeOldSentMessages()
+void FacebookChatService::removeOldReceivedMessages()
 {
     auto now = QDateTime::currentDateTime();
-    auto it = m_sentMessages.begin();
+    auto it = m_receivedMessages.begin();
 
-    while (it != m_sentMessages.end())
+    while (it != m_receivedMessages.end())
         if (it->second.addSecs(60) < now)
-            it = m_sentMessages.erase(it);
+            it = m_receivedMessages.erase(it);
         else
             ++it;
 }
@@ -241,6 +215,11 @@ void FacebookChatService::unreadMessagesReceived(const QFacebookDownloadUnreadMe
 
 void FacebookChatService::unreadMessageReceived(const QFacebookDownloadUnreadMessageResult &result)
 {
+    if (m_receivedMessages.find(result.messageId) != std::end(m_receivedMessages))
+        return;
+
+    m_receivedMessages.insert(std::make_pair(result.messageId, QDateTime::currentDateTime()));
+
     auto contact = m_contactManager->byId(account(), QString::number(result.senderUid), ActionCreateAndAdd);
     auto chat = ChatTypeContact::findChat(m_chatManager, m_chatStorage, contact, ActionCreateAndAdd);
     auto message = m_messageStorage->create();

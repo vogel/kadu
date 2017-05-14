@@ -20,22 +20,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "qfacebook-publish-orca-message-notifications.h"
+#include "qfacebook-publish-inbox.h"
 
 #include "qfacebook/qfacebook-json-reader.h"
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
-QFacebookPublishOrcaMessageNotifications QFacebookPublishOrcaMessageNotifications::decode(const QByteArray &content)
+QFacebookPublishInbox QFacebookPublishInbox::decode(const QByteArray &content)
 {
-    auto result = QFacebookPublishOrcaMessageNotifications{};
+    auto result = QFacebookPublishInbox{};
     auto jsonReader = QFacebookJsonReader{content};
-    result.otherUserFbid = jsonReader.readString("other_user_fbid").toLongLong();
-    result.senderFbid = jsonReader.readUid("sender_fbid");
-    result.timestamp = jsonReader.readLongLong("timestamp");
-    result.offlineThreadingId = jsonReader.readString("offline_threading_id").toLongLong();
-    result.body = jsonReader.readString("body");
+    result.unseen = jsonReader.readInt("unseen");
+    result.unread = jsonReader.readInt("unread");
+    result.recentUnread = jsonReader.readInt("recent_unread");
+    result.seenTimestamp = jsonReader.readLongLong("seen_timestamp");
+    result.realtimeViewerFbId = jsonReader.readUid("realtime_viewer_fbid");
 
     return result;
 }

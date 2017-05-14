@@ -28,13 +28,13 @@
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
 
-struct QFacebookPublishOrcaMessageNotifications
+struct QFacebookPublishInbox
 {
-    static QFacebookPublishOrcaMessageNotifications decode(const QByteArray &content);
+    static QFacebookPublishInbox decode(const QByteArray &content);
 
-    QFacebookUid otherUserFbid;
-    QFacebookUid senderFbid;
-    long long timestamp;
-    QFacebookMsgId offlineThreadingId;
-    QString body;
+    int unseen;
+    int unread;
+    int recentUnread;
+    long long seenTimestamp;
+    QFacebookUid realtimeViewerFbId;
 };

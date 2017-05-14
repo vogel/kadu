@@ -34,8 +34,8 @@ set (SOURCES
 	qfacebook/mqtt/qfacebook-mqtt-connection.cpp
 
 	qfacebook/publish/qfacebook-publish-foreground-state.cpp
+	qfacebook/publish/qfacebook-publish-inbox.cpp
 	qfacebook/publish/qfacebook-publish-mark-thread.cpp
-	qfacebook/publish/qfacebook-publish-orca-message-notifications.cpp
 	qfacebook/publish/qfacebook-publish-presence.cpp
 	qfacebook/publish/qfacebook-publish-send-message-2.cpp
 	qfacebook/publish/qfacebook-publish-send-message-response.cpp
