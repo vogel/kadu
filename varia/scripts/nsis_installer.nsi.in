@@ -1,4 +1,4 @@
-; -*- coding: cp-1250 -*-
+; -*- coding: utf-8 -*-
 
 ; Modern UI
 !include "MUI2.nsh"
@@ -82,7 +82,7 @@ Var START_MENU_FOLDER
 
 ; Language Strings
 LangString ALREADY_INSTALLED_MESSAGE ${LANG_ENGLISH} "${PRODUCT_NAME} is already installed.$\n$\nClose ${PRODUCT_NAME} and click `OK` to remove the previous version and continue upgrade or `Cancel` to cancel this upgrade."
-LangString ALREADY_INSTALLED_MESSAGE ${LANG_POLISH} "Program ${PRODUCT_NAME} jest ju¿ zainstalowany na tym systemie.$\n$\nZamknij program ${PRODUCT_NAME} i kliknij $\"OK$\", aby usun¹æ poprzedni¹ wersjê i kontynuowaæ aktualizacjê, lub $\"Anuluj$\", aby anulowaæ tê aktualizacjê."
+LangString ALREADY_INSTALLED_MESSAGE ${LANG_POLISH} "Program ${PRODUCT_NAME} jest juÅ¼ zainstalowany na tym systemie.$\n$\nZamknij program ${PRODUCT_NAME} i kliknij $\"OK$\", aby usunÄ…Ä‡ poprzedniÄ… wersjÄ™ i kontynuowaÄ‡ aktualizacjÄ™, lub $\"Anuluj$\", aby anulowaÄ‡ tÄ™ aktualizacjÄ™."
 
 LangString section_kadu ${LANG_ENGLISH} "Kadu"
 LangString section_kadu ${LANG_POLISH} "Kadu"
@@ -92,27 +92,27 @@ LangString section_kadu_description ${LANG_POLISH} "Podstawowe elementy Kadu."
 LangString section_icon_themes ${LANG_ENGLISH} "Icon themes"
 LangString section_icon_themes ${LANG_POLISH} "Zestawy ikon"
 LangString section_icon_themes_description ${LANG_ENGLISH} "Various icon themes to use in Kadu"
-LangString section_icon_themes_description ${LANG_POLISH} "Ró¿ne zestawy ikon do u¿ycia w Kadu"
+LangString section_icon_themes_description ${LANG_POLISH} "RÃ³Å¼ne zestawy ikon do uÅ¼ycia w Kadu"
 
 LangString section_icon_themes_default ${LANG_ENGLISH} "Default"
-LangString section_icon_themes_default ${LANG_POLISH} "Domyœlny"
+LangString section_icon_themes_default ${LANG_POLISH} "DomyÅ›lny"
 LangString section_icon_themes_default_description ${LANG_ENGLISH} "Default Kadu icon theme"
-LangString section_icon_themes_default_description ${LANG_POLISH} "Domyœlny zestaw ikon Kadu"
+LangString section_icon_themes_default_description ${LANG_POLISH} "DomyÅ›lny zestaw ikon Kadu"
 
 LangString section_sound_themes ${LANG_ENGLISH} "Sound themes"
-LangString section_sound_themes ${LANG_POLISH} "Zestawy dŸwiêków"
+LangString section_sound_themes ${LANG_POLISH} "Zestawy dÅºwiÄ™kÃ³w"
 LangString section_sound_themes_description ${LANG_ENGLISH} "Various sound themes to use in Kadu"
-LangString section_sound_themes_description ${LANG_POLISH} "Ró¿ne zestawy dŸwiêków do u¿ycia w Kadu"
+LangString section_sound_themes_description ${LANG_POLISH} "RÃ³Å¼ne zestawy dÅºwiÄ™kÃ³w do uÅ¼ycia w Kadu"
 
 LangString section_sound_themes_default ${LANG_ENGLISH} "Default"
-LangString section_sound_themes_default ${LANG_POLISH} "Domyœlny"
+LangString section_sound_themes_default ${LANG_POLISH} "DomyÅ›lny"
 LangString section_sound_themes_default_description ${LANG_ENGLISH} "Default Kadu sound theme"
-LangString section_sound_themes_default_description ${LANG_POLISH} "Domyœlny zestaw dŸwiêków Kadu"
+LangString section_sound_themes_default_description ${LANG_POLISH} "DomyÅ›lny zestaw dÅºwiÄ™kÃ³w Kadu"
 
 LangString section_protocols ${LANG_ENGLISH} "Protocols"
-LangString section_protocols ${LANG_POLISH} "Protoko³y"
+LangString section_protocols ${LANG_POLISH} "ProtokoÂ³y"
 LangString section_protocols_description ${LANG_ENGLISH} "Protocols supported by Kadu"
-LangString section_protocols_description ${LANG_POLISH} "Protoko³y wspierane przez Kadu"
+LangString section_protocols_description ${LANG_POLISH} "ProtokoÂ³y wspierane przez Kadu"
 
 LangString section_plugins ${LANG_ENGLISH} "Plugins"
 LangString section_plugins ${LANG_POLISH} "Wtyczki"
@@ -120,7 +120,7 @@ LangString section_plugins_description ${LANG_ENGLISH} "Official Kadu plugins"
 LangString section_plugins_description ${LANG_POLISH} "Oficjalne wtyczki do Kadu"
 
 LangString section_desktop_shortcut ${LANG_ENGLISH} "Desktop Shortcut"
-LangString section_desktop_shortcut ${LANG_POLISH} "Skrót na pulpicie"
+LangString section_desktop_shortcut ${LANG_POLISH} "SkrÃ³t na pulpicie"
 
 Function .onInit
 	${If} "@WINDOWS_ARCHITECTURE@" == "x86"
