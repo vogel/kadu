@@ -19,7 +19,6 @@
  */
 
 #include "idle.h"
-#include "idle.moc"
 
 #include <qlibrary.h>
 #include <windows.h>
