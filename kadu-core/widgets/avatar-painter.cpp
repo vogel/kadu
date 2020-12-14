@@ -22,6 +22,7 @@
 
 #include <QtCore/QModelIndex>
 #include <QtGui/QPainter>
+#include <QtGui/QPainterPath>
 #include <QtGui/QPixmap>
 #include <QtGui/QPixmapCache>
 #include <QtWidgets/QStyleOptionViewItem>

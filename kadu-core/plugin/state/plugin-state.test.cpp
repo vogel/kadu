@@ -33,7 +33,7 @@ private slots:
 
 void PluginStateTest::newTest()
 {
-    QCOMPARE(pluginStateToString(PluginState::New), {});
+    QCOMPARE(pluginStateToString(PluginState::New), QString(""));
     QCOMPARE(stringToPluginState(""), PluginState::New);
     QCOMPARE(stringToPluginState("New"), PluginState::New);
     QCOMPARE(stringToPluginState("Invalid"), PluginState::New);
